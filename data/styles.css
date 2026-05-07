@@ -120,6 +120,15 @@
 }
 .line {
 }
+.heading_2 {
+  font-family:"Arial Negreta", "Arial Normal", "Arial", sans-serif;
+  font-weight:700;
+  font-style:normal;
+  font-size:24px;
+  text-align:left;
+}
+.arrow {
+}
 .heading_1 {
   font-family:"Arial Negreta", "Arial Normal", "Arial", sans-serif;
   font-weight:700;
