@@ -74,7 +74,7 @@
   text-align:left;
 }
 .checkbox {
-  font-family:"微软雅黑 Light", "微软雅黑", sans-serif;
+  font-family:'微软雅黑 Light', '微软雅黑', '微软雅黑', sans-serif;
   font-weight:250;
   font-style:normal;
   text-align:left;
@@ -229,7 +229,7 @@
   font-style:normal;
 }
 .label1 {
-  font-family:"微软雅黑 Light", "微软雅黑", sans-serif;
+  font-family:'微软雅黑 Light', '微软雅黑', '微软雅黑', sans-serif;
   font-weight:250;
   font-style:normal;
   font-size:13px;
@@ -269,7 +269,7 @@
 .shape1 {
 }
 .basicbutton-embossed {
-  font-family:"Roboto Medium", "Roboto", sans-serif;
+  font-family:'Roboto Medium', 'Roboto', 'Roboto', sans-serif;
   font-weight:500;
   font-style:normal;
   font-size:16px;
@@ -298,7 +298,7 @@
   color:#333333;
 }
 .primary-button {
-  font-family:"Roboto Medium", "Roboto", sans-serif;
+  font-family:'Roboto Medium', 'Roboto', 'Roboto', sans-serif;
   font-weight:500;
   font-style:normal;
   font-size:16px;
@@ -400,7 +400,7 @@
 ._表格 {
 }
 .basicbutton {
-  font-family:"Roboto Medium", "Roboto", sans-serif;
+  font-family:'Roboto Medium', 'Roboto', 'Roboto', sans-serif;
   font-weight:500;
   font-style:normal;
   font-size:16px;
@@ -410,7 +410,7 @@
 ._形状4 {
 }
 .basicbutton-outline {
-  font-family:"Roboto Medium", "Roboto", sans-serif;
+  font-family:'Roboto Medium', 'Roboto', 'Roboto', sans-serif;
   font-weight:500;
   font-style:normal;
   font-size:16px;
@@ -442,7 +442,7 @@
   text-align:left;
 }
 .basictextlabel {
-  font-family:"Roboto Medium", "Roboto", sans-serif;
+  font-family:'Roboto Medium', 'Roboto', 'Roboto', sans-serif;
   font-weight:500;
   font-style:normal;
   font-size:13px;
@@ -458,7 +458,7 @@
   text-align:left;
 }
 .grouped-buttons {
-  font-family:"Roboto Medium", "Roboto", sans-serif;
+  font-family:'Roboto Medium', 'Roboto', 'Roboto', sans-serif;
   font-weight:500;
   font-style:normal;
   font-size:16px;
@@ -467,7 +467,7 @@
   line-height:16px;
 }
 .basicbutton1 {
-  font-family:"Roboto Medium", "Roboto", sans-serif;
+  font-family:'Roboto Medium', 'Roboto', 'Roboto', sans-serif;
   font-weight:500;
   font-style:normal;
   font-size:16px;
@@ -512,7 +512,7 @@
   font-style:normal;
 }
 ._形状5 {
-  font-family:"微软雅黑 Bold", "微软雅黑", sans-serif;
+  font-family:'微软雅黑 Bold', '微软雅黑', '微软雅黑', sans-serif;
   font-weight:700;
   font-style:normal;
   font-size:16px;
