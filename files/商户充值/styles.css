@@ -1,0 +1,561 @@
+.ax_default {
+  font-family: 'Arial', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 13px;
+  color: #333333;
+  text-align: left;
+  line-height: 1.2;
+}
+
+/* 页面整体背景 */
+#base {
+  position: absolute;
+  width: 1200px;
+  height: 700px;
+  overflow: auto;
+  background-color: #f5f7fa;
+}
+
+/* 主容器 */
+#u6282 {
+  position: absolute;
+  width: 100%;
+  height: 600px;
+  left: 0px;
+  top: 80px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+/* 充值标题样式 */
+.ax_default._三级标题 {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 200px;
+  height: 30px;
+  font-family: 'Microsoft YaHei';
+  font-size: 18px;
+  font-weight: bold;
+  color: #262626;
+  line-height: 30px;
+}
+
+#u6283_div {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 200px;
+  height: 30px;
+  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(245,247,250,1) 100%);
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+}
+
+/* 文本段落样式 */
+.ax_default._文本段落 {
+  position: absolute;
+  left: 0px;
+  top: 40px;
+  width: 100px;
+  height: 20px;
+  font-family: 'Microsoft YaHei';
+  font-size: 14px;
+  color: #595959;
+  line-height: 20px;
+}
+
+#u6284_div, #u6286_div, #u6288_div {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 60px;
+  height: 20px;
+  background-color: transparent;
+}
+
+/* 下拉框样式 */
+.ax_default.droplist {
+  position: absolute;
+  left: 100px;
+  top: 40px;
+  width: 200px;
+  height: 30px;
+  font-family: 'Microsoft YaHei';
+  font-size: 14px;
+  color: #333333;
+  line-height: 30px;
+}
+
+#u6285_div, #u6287_div, #u6299_div, #u6314_div, #u6325_div, #u6327_div {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 200px;
+  height: 30px;
+  background-color: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding: 0 10px;
+}
+
+.u6285_input, .u6287_input, .u6299_input, .u6314_input, .u6325_input, .u6327_input {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 200px;
+  height: 30px;
+  background-color: #ffffff;
+  border: none;
+  outline: none;
+  font-family: 'Microsoft YaHei';
+  font-size: 14px;
+  color: #333333;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+/* 充值地址区域 */
+#u6288_div, #u6290_div, #u6289, #u6291 {
+  top: 80px;
+}
+
+#u6288_div {
+  left: 0px;
+  top: 80px;
+}
+
+#u6290_div, #u6290 {
+  left: 100px;
+  top: 80px;
+  width: 300px;
+  height: 30px;
+  font-size: 13px;
+  line-height: 30px;
+  color: #1890ff;
+  word-wrap: break-word;
+}
+
+#u6290_div {
+  background-color: transparent;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.ax_default.icon {
+  position: absolute;
+  left: 410px;
+  top: 80px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+#u6289_img, #u6291_img {
+  width: 100%;
+  height: 100%;
+}
+
+.ax_default.primary_button {
+  position: absolute;
+  left: 100px;
+  top: 130px;
+  width: 100px;
+  height: 35px;
+  font-family: 'Microsoft YaHei';
+  font-size: 14px;
+  color: #ffffff;
+  text-align: center;
+  line-height: 35px;
+  cursor: pointer;
+}
+
+#u6292_div, #u6304_div, #u6318_div {
+  background-color: #1890ff;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(24, 144, 255, 0.2);
+}
+
+.ax_default.primary_button:hover {
+  background-color: #40a9ff;
+}
+
+.ax_default._文本段落.transition.notrs {
+  position: absolute;
+  font-family: 'Microsoft YaHei';
+  font-size: 13px;
+  color: #595959;
+  line-height: 20px;
+}
+
+#u6293_div, #u6293 {
+  left: 100px;
+  top: 180px;
+  width: 200px;
+  height: 20px;
+}
+
+#u6294_div, #u6294 {
+  left: 100px;
+  top: 210px;
+  width: 200px;
+  height: 20px;
+  color: #fa8c16;
+}
+
+#u6295_div, #u6295 {
+  left: 100px;
+  top: 240px;
+  width: 200px;
+  height: 20px;
+  color: #f5222d;
+}
+
+#u6296_div, #u6296 {
+  left: 100px;
+  top: 270px;
+  width: 400px;
+  height: 20px;
+  color: #f5222d;
+  font-size: 12px;
+}
+
+/* 法币充值部分样式 */
+#u6297_div, #u6297 {
+  top: 0px;
+}
+
+#u6298_div, #u6298 {
+  top: 40px;
+  left: 0px;
+}
+
+#u6299_div, #u6299 {
+  top: 40px;
+  left: 100px;
+  width: 200px;
+}
+
+#u6300_div, #u6300 {
+  top: 80px;
+  left: 0px;
+}
+
+.ax_default.text_field1 {
+  position: absolute;
+  width: 200px;
+  height: 30px;
+  font-family: 'Microsoft YaHei';
+  font-size: 14px;
+  color: #333333;
+  line-height: 30px;
+  box-sizing: border-box;
+}
+
+#u6301_div, #u6301, #u6316_div, #u6316, #u6329_div, #u6329 {
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  background-color: #ffffff;
+  padding: 0 10px;
+}
+
+#u6301, #u6316, #u6329 {
+  outline: none;
+}
+
+#u6301_div, #u6301 {
+  top: 80px;
+  left: 100px;
+}
+
+#u6302_div, #u6302 {
+  top: 120px;
+  left: 0px;
+}
+
+#u6303_div, #u6303 {
+  top: 120px;
+  left: 100px;
+  width: 200px;
+}
+
+#u6304_div, #u6304 {
+  top: 160px;
+  left: 100px;
+  width: 100px;
+  height: 35px;
+}
+
+#u6305_div, #u6305 {
+  top: 210px;
+  left: 100px;
+  width: 200px;
+  height: 20px;
+}
+
+#u6307_div, #u6307 {
+  top: 240px;
+  left: 100px;
+  width: 200px;
+  height: 20px;
+  color: #fa8c16;
+}
+
+#u6310_div, #u6310 {
+  top: 270px;
+  left: 100px;
+  width: 200px;
+  height: 20px;
+  color: #f5222d;
+}
+
+#u6311_div, #u6311 {
+  top: 300px;
+  left: 100px;
+  width: 400px;
+  height: 20px;
+  color: #f5222d;
+  font-size: 12px;
+}
+
+/* U币充值部分样式 */
+#u6312_div, #u6312 {
+  top: 0px;
+}
+
+#u6313_div, #u6313 {
+  top: 40px;
+  left: 0px;
+}
+
+#u6314_div, #u6314 {
+  top: 40px;
+  left: 100px;
+  width: 200px;
+}
+
+#u6315_div, #u6315 {
+  top: 80px;
+  left: 0px;
+}
+
+#u6316_div, #u6316 {
+  top: 80px;
+  left: 100px;
+  width: 200px;
+}
+
+#u6317_div, #u6317 {
+  top: 120px;
+  left: 0px;
+}
+
+#u6318_div, #u6318 {
+  top: 160px;
+  left: 100px;
+  width: 100px;
+  height: 35px;
+}
+
+#u6319 {
+  position: absolute;
+  top: 200px;
+  left: 100px;
+  width: 300px;
+  height: 100px;
+}
+
+#u6319_state0_content {
+  width: 100%;
+  height: 100%;
+}
+
+#u6320_div, #u6320 {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 80px;
+  height: 20px;
+}
+
+#u6321_div, #u6321 {
+  position: absolute;
+  top: 0px;
+  left: 100px;
+  width: 80px;
+  height: 20px;
+  color: #52c41a;
+  font-weight: bold;
+}
+
+#u6322_div, #u6322 {
+  position: absolute;
+  top: 30px;
+  left: 0px;
+  width: 80px;
+  height: 20px;
+}
+
+#u6323_div, #u6323 {
+  position: absolute;
+  top: 30px;
+  left: 100px;
+  width: 80px;
+  height: 20px;
+  color: #1890ff;
+  font-weight: bold;
+}
+
+#u6324_div, #u6324 {
+  position: absolute;
+  top: 220px;
+  left: 100px;
+  width: 200px;
+  height: 40px;
+  font-size: 14px;
+  color: #fa8c16;
+}
+
+#u6325_div, #u6325 {
+  position: absolute;
+  top: 260px;
+  left: 100px;
+  width: 200px;
+  height: 30px;
+}
+
+#u6326_div, #u6326 {
+  position: absolute;
+  top: 300px;
+  left: 0px;
+  width: 100px;
+  height: 20px;
+}
+
+#u6327_div, #u6327 {
+  position: absolute;
+  top: 300px;
+  left: 100px;
+  width: 200px;
+  height: 30px;
+}
+
+#u6328_div, #u6328 {
+  position: absolute;
+  top: 340px;
+  left: 0px;
+  width: 120px;
+  height: 20px;
+}
+
+#u6329_div, #u6329 {
+  position: absolute;
+  top: 340px;
+  left: 100px;
+  width: 300px;
+  height: 30px;
+}
+
+#u6330_div, #u6330 {
+  position: absolute;
+  top: 380px;
+  left: 100px;
+  width: 200px;
+  height: 20px;
+  color: #f5222d;
+}
+
+#u6331_div, #u6331 {
+  position: absolute;
+  top: 410px;
+  left: 100px;
+  width: 400px;
+  height: 20px;
+  color: #f5222d;
+  font-size: 12px;
+}
+
+/* 按钮组样式 */
+#u6332 {
+  position: absolute;
+  left: 45px;
+  top: 53px;
+  width: 298px;
+  height: 40px;
+}
+
+.ax_default.box_3, .ax_default.box_2 {
+  position: absolute;
+  width: 98px;
+  height: 40px;
+  font-family: 'Microsoft YaHei';
+  font-size: 14px;
+  color: #595959;
+  text-align: center;
+  line-height: 40px;
+  cursor: pointer;
+  border-radius: 4px 4px 0 0;
+}
+
+.ax_default.box_3.selected {
+  background-color: #ffffff;
+  color: #1890ff;
+  font-weight: bold;
+  border-bottom: 2px solid #ffffff;
+  z-index: 10;
+}
+
+.ax_default.box_2 {
+  background-color: #f0f0f0;
+  color: #8c8c8c;
+}
+
+#u6333_div.selected {
+  background-color: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-bottom: 2px solid #ffffff;
+}
+
+#u6334_div, #u6335_div {
+  background-color: #f0f0f0;
+  border: 1px solid #d9d9d9;
+  border-bottom: none;
+}
+
+#u6333, #u6334, #u6335 {
+  display: inline-block;
+  margin-right: -1px;
+}
+
+#u6333 {
+  left: 0px;
+  top: 0px;
+}
+
+#u6334 {
+  left: 99px;
+  top: 0px;
+}
+
+#u6335 {
+  left: 198px;
+  top: 0px;
+}
+
+/* 响应式调整 */
+@media screen and (max-width: 1200px) {
+  #base {
+    width: 100%;
+  }
+  
+  #u6282 {
+    width: calc(100% - 60px);
+  }
+}
