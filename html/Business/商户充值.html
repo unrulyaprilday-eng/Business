@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商户充值</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .recharge-container {
+            padding: 20px;
+        }
+        .usdt-logo {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .amount-box {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        .amount-box.active {
+            background-color: #f0f0f0;
+        }
+        .input-group {
+            margin-top: 20px;
+        }
+        .input-group input {
+            width: calc(100% - 80px);
+            height: 40px;
+            padding: 0 10px;
+            border: 1px solid #ccc;
+        }
+        .input-group button {
+            width: 80px;
+            height: 40px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .recharge-btn {
+            margin-top: 20px;
+            width: 100%;
+            height: 40px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .tips {
+            margin-top: 20px;
+            color: red;
+        }
+        .gift-explanation {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="recharge-container">
+        <div class="usdt-logo">
+            <img src="https://placehold.co/20x20" alt="USDT Logo">
+            <span>USDT</span>
+        </div>
+        <div class="amount-selection">
+            <div class="amount-box">1000 U <span>+1%</span></div>
+            <div class="amount-box">2000 U <span>+1%</span></div>
+            <div class="amount-box">5000 U <span>+0.5% +1%</span></div>
+            <div class="amount-box">10000 U <span>+1% +1%</span></div>
+            <div class="amount-box">20000 U <span>+1% +1%</span></div>
+            <div class="amount-box">50000 U <span>+1% +1%</span></div>
+        </div>
+        <p style="color: red;">实际转账的金额必须与输入的充值金额一致，否则可能无法快速自动到账</p>
+        <div class="input-group">
+            <input type="number" value="1000">
+            <button>USDT</button>
+        </div>
+        <p>充值以上数量将赠送您10 USDT</p>
+        <button class="recharge-btn">立即充值</button>
+        <div class="tips">
+            <p>温馨提示:</p>
+            <ol>
+                <li>仅支持USDT充值, 网络为TRC20协议</li>
+                <li>因充币地址不定期更换, 请在当前页面充值! 切勿保存地址充币, 否则自行承担损失!</li>
+                <li>拉取订单后, 请勿修改金额。</li>
+            </ol>
+        </div>
+        <div class="gift-explanation">
+            <p>赠送说明:</p>
+            <ol>
+                <li>笔笔送 每一笔充值都赠送充值金额的1%。</li>
+                <li>额外再送阶梯:
+                    <ul>
+                        <li>>= 1000U 赠送 0U</li>
+                        <li>>= 2000U 赠送 0U</li>
+                        <li>>= 5000U 赠送 0.5%</li>
+                        <li>>= 10000U 赠送 1%</li>
+                        <li>>= 20000U 赠送 1%</li>
+                        <li>>= 50000U 赠送 1%</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>

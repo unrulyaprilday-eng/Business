@@ -1,0 +1,297 @@
+html,
+body {
+  min-height: 100%;
+  background: #f5f7fb;
+}
+
+body {
+  margin: 0;
+  color: #142033;
+  font-family: Inter, "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.merchant-recharge-page {
+  display: block;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 18px 24px 36px;
+  background:
+    radial-gradient(circle at top right, rgba(56, 115, 255, 0.08), transparent 32%),
+    #f5f7fb;
+}
+
+.recharge-shell {
+  display: grid;
+  grid-template-columns: minmax(560px, 760px);
+  align-items: start;
+  max-width: 760px;
+}
+
+.recharge-card {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid #e2e8f2;
+  border-radius: 8px;
+  box-shadow: 0 14px 34px rgba(28, 43, 72, 0.08);
+}
+
+.recharge-card {
+  padding: 0 28px 30px;
+}
+
+.page-tabs {
+  display: flex;
+  height: 48px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #edf1f7;
+}
+
+.tab {
+  width: 70px;
+  border: 0;
+  border-bottom: 2px solid #1d66ff;
+  background: transparent;
+  color: #0f66ff;
+  cursor: default;
+  font-size: 14px;
+}
+
+.channel-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.coin-mark {
+  display: inline-grid;
+  width: 26px;
+  height: 24px;
+  place-items: center;
+  border-radius: 7px;
+  background: #55b299;
+  color: #fff;
+  font-weight: 800;
+  line-height: 1;
+  clip-path: polygon(50% 0, 100% 22%, 82% 78%, 50% 100%, 18% 78%, 0 22%);
+}
+
+.amount-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(150px, 1fr));
+  gap: 12px 10px;
+  max-width: 640px;
+}
+
+.amount-card {
+  position: relative;
+  min-height: 54px;
+  padding: 0 12px;
+  overflow: hidden;
+  border: 1px solid #cfd8e8;
+  border-radius: 5px;
+  background: #fff;
+  color: #0d1b2e;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+
+.amount-card > span:first-child {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.amount-card:hover,
+.amount-card.is-selected {
+  border-color: #2f74ff;
+  box-shadow: 0 8px 18px rgba(47, 116, 255, 0.13);
+  transform: translateY(-1px);
+}
+
+.bonus {
+  position: absolute;
+  top: 0;
+  height: 20px;
+  padding: 0 5px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.bonus-rate {
+  right: 34px;
+  background: #ff4c62;
+}
+
+.bonus-extra {
+  right: 0;
+  background: #ff8b1a;
+}
+
+.danger-copy {
+  margin: 14px 0 10px;
+  color: #ff1f2e;
+  font-size: 12px;
+}
+
+.form-stack {
+  display: grid;
+  max-width: 640px;
+  gap: 10px;
+}
+
+.amount-input {
+  display: grid;
+  grid-template-columns: 1fr 56px;
+  height: 44px;
+  overflow: hidden;
+  border: 1px solid #d8e0ec;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.amount-input input,
+.remark-input {
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  color: #12233d;
+  background: #fff;
+  font-size: 14px;
+}
+
+.amount-input input {
+  padding: 0 14px;
+}
+
+.amount-input span {
+  display: grid;
+  place-items: center;
+  border-left: 1px solid #d8e0ec;
+  background: #f6f8fc;
+  color: #6f7f95;
+  font-size: 12px;
+}
+
+.remark-input {
+  height: 34px;
+  box-sizing: border-box;
+  padding: 0 14px;
+  border: 1px solid #d8e0ec;
+  border-radius: 5px;
+}
+
+.amount-input input::placeholder,
+.remark-input::placeholder {
+  color: #b6c1d2;
+}
+
+.bonus-hint {
+  min-height: 34px;
+  box-sizing: border-box;
+  padding: 7px 12px;
+  border: 1px solid #ffd76c;
+  border-radius: 4px;
+  background: #fffaf0;
+  color: #303949;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.bonus-hint strong {
+  color: #ff8b1a;
+  font-size: 15px;
+}
+
+.submit-button {
+  height: 44px;
+  margin-top: 4px;
+  border: 0;
+  border-radius: 22px;
+  background: #2f74ff;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0;
+  box-shadow: 0 10px 18px rgba(47, 116, 255, 0.2);
+  cursor: pointer;
+}
+
+.submit-button:disabled {
+  background: #aec6ef;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.notice-block {
+  margin-top: 24px;
+  font-size: 12px;
+  line-height: 1.95;
+}
+
+.notice-block h3 {
+  margin: 0 0 6px;
+  color: #111827;
+  font-size: 13px;
+}
+
+.notice-block ol {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.notice-block li {
+  padding-left: 2px;
+}
+
+.is-red {
+  color: #ff1f2e;
+}
+
+.rules dl {
+  display: grid;
+  gap: 2px;
+  margin: 4px 0 0 48px;
+}
+
+.rules dl div {
+  display: grid;
+  grid-template-columns: 110px 100px;
+}
+
+.rules dt,
+.rules dd {
+  margin: 0;
+}
+
+@media (max-width: 960px) {
+  .merchant-recharge-page {
+    padding: 12px;
+  }
+
+  .recharge-shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .recharge-card {
+    padding: 0 14px 22px;
+  }
+
+  .amount-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .rules dl {
+    margin-left: 0;
+  }
+}

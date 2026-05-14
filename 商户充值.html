@@ -4,13 +4,11 @@
     <title>商户充值</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
     <link href="data/styles.css" type="text/css" rel="stylesheet"/>
     <link href="files/商户充值/styles.css" type="text/css" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com" rel="preconnect"/>
-    <link href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
-    <link href="https://demo.axureux.com/fontawesome/5.7.2/pro/css/all.min.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/merchant-recharge.css" type="text/css" rel="stylesheet"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
     <script src="resources/scripts/axure/axQuery.js"></script>
     <script src="resources/scripts/axure/globals.js"></script>
@@ -51,441 +49,95 @@
   </head>
   <body>
     <div id="base" class="">
-      <!-- 商户充值 (动态面板) -->
-      <div id="u6282" class="ax_default" data-label="商户充值">
-        <div id="u6282_state0" class="panel_state" data-label="加密货币充值" style="">
-          <div id="u6282_state0_content" class="panel_state_content">
-
-            <!-- 标题 -->
-            <div id="u6283" class="ax_default _三级标题 transition notrs">
-              <div id="u6283_div" class=""></div>
-              <div id="u6283_text" class="text ">
-                <p><span>加密货币充值</span></p>
-              </div>
-            </div>
-
-            <!-- 主链标签 -->
-            <div id="u6284" class="ax_default _文本段落 transition notrs">
-              <div id="u6284_div" class=""></div>
-              <div id="u6284_text" class="text ">
-                <p><span>主链</span></p>
-              </div>
-            </div>
-
-            <!-- 主链下拉框 -->
-            <div id="u6285" class="ax_default droplist transition notrs">
-              <div id="u6285_div" class=""></div>
-              <select id="u6285_input" class="u6285_input">
-                <option class="u6285_input_option" value="ERC20">ERC20</option>
-                <option class="u6285_input_option" value="TRC20">TRC20</option>
-              </select>
-            </div>
-
-            <!-- 币种标签 -->
-            <div id="u6286" class="ax_default _文本段落 transition notrs">
-              <div id="u6286_div" class=""></div>
-              <div id="u6286_text" class="text ">
-                <p><span>币种</span></p>
-              </div>
-            </div>
-
-            <!-- 币种下拉框 -->
-            <div id="u6287" class="ax_default droplist transition notrs">
-              <div id="u6287_div" class=""></div>
-              <select id="u6287_input" class="u6287_input">
-                <option class="u6287_input_option" value="USDT">USDT</option>
-                <option class="u6287_input_option" value="ETH">ETH</option>
-              </select>
-            </div>
-
-            <!-- 充值地址标签 -->
-            <div id="u6288" class="ax_default _文本段落 transition notrs">
-              <div id="u6288_div" class=""></div>
-              <div id="u6288_text" class="text ">
-                <p><span>充值地址</span></p>
-              </div>
-            </div>
-
-            <!-- 复制图标1 -->
-            <div id="u6289" class="ax_default icon transition notrs">
-              <svg data="images/商户充值/u6289.svg" id="u6289_img" class="img generatedImage">
-                <defs>
-                  <pattern id="u6289_img_bgp" patternUnits="userSpaceOnUse" alignment="0 0" imageRepeat="None" />
-                  <mask fill="white" id="u6289_img_cl38">
-                    <path d="M 34 128  L 51 128  L 51 144  L 34 144  L 34 128  Z M 34 32  L 51 32  L 51 48  L 34 48  L 34 32  Z M 135 32  L 152 32  L 152 48  L 135 48  L 135 32  Z M 17 112  L 17 159  L 68 159  L 68 112  L 17 112  Z M 17 16  L 17 64  L 68 64  L 68 16  L 17 16  Z M 118 16  L 118 64  L 169 64  L 169 16  L 118 16  Z M 0 96  L 85 96  L 85 176  L 0 176  L 0 96  Z M 135 160  L 152 160  L 152 176  L 135 176  L 135 160  Z M 169 160  L 186 160  L 186 176  L 169 176  L 169 160  Z M 169 96  L 186 96  L 186 144  L 135 144  L 135 128  L 118 128  L 118 176  L 101 176  L 101 96  L 152 96  L 152 112  L 169 112  L 169 96  Z M 0 0  L 85 0  L 85 80  L 0 80  L 0 0  Z M 101 0  L 186 0  L 186 80  L 101 80  L 101 0  Z " fill-rule="evenodd" />
-                  </mask>
-                </defs>
-                <g transform="matrix(1 0 0 1 -91 -282 )">
-                  <path d="M 34 128  L 51 128  L 51 144  L 34 144  L 34 128  Z M 34 32  L 51 32  L 51 48  L 34 48  L 34 32  Z M 135 32  L 152 32  L 152 48  L 135 48  L 135 32  Z M 17 112  L 17 159  L 68 159  L 68 112  L 17 112  Z M 17 16  L 17 64  L 68 64  L 68 16  L 17 16  Z M 118 16  L 118 64  L 169 64  L 169 16  L 118 16  Z M 0 96  L 85 96  L 85 176  L 0 176  L 0 96  Z M 135 160  L 152 160  L 152 176  L 135 176  L 135 160  Z M 169 160  L 186 160  L 186 176  L 169 176  L 169 160  Z M 169 96  L 186 96  L 186 144  L 135 144  L 135 128  L 118 128  L 118 176  L 101 176  L 101 96  L 152 96  L 152 112  L 169 112  L 169 96  Z M 0 0  L 85 0  L 85 80  L 0 80  L 0 0  Z M 101 0  L 186 0  L 186 80  L 101 80  L 101 0  Z " fill-rule="nonzero" fill="rgba(0, 0, 0, 1)" stroke="none" transform="matrix(1 0 0 1 91 282 )" class="fill" />
-                  <path d="M 34 128  L 51 128  L 51 144  L 34 144  L 34 128  Z " stroke-width="0" stroke-dasharray="0" stroke="rgba(255, 255, 255, 0)" fill="none" transform="matrix(1 0 0 1 91 282 )" class="stroke" mask="url(#u6289_img_cl38)" />
-                  <path d="M 34 32  L 51 32  L 51 48  L 34 48  L 34 32  Z " stroke-width="0" stroke-dasharray="0" stroke="rgba(255, 255, 255, 0)" fill="none" transform="matrix(1 0 0 1 91 282 )" class="stroke" mask="url(#u6289_img_cl38)" />
-                  <path d="M 135 32  L 152 32  L 152 48  L 135 48  L 135 32  Z " stroke-width="0" stroke-dasharray="0" stroke="rgba(255, 255, 255, 0)" fill="none" transform="matrix(1 0 0 1 91 282 )" class="stroke" mask="url(#u6289_img_cl38)" />
-                  <path d="M 17 112  L 17 159  L 68 159  L 68 112  L 17 112  Z " stroke-width="0" stroke-dasharray="0" stroke="rgba(255, 255, 255, 0)" fill="none" transform="matrix(1 0 0 1 91 282 )" class="stroke" mask="url(#u6289_img_cl38)" />
-                  <path d="M 17 16  L 17 64  L 68 64  L 68 16  L 17 16  Z " stroke-width="0" stroke-dasharray="0" stroke="rgba(255, 255, 255, 0)" fill="none" transform="matrix(1 0 0 1 91 282 )" class="stroke" mask="url(#u6289_img_cl38)" />
-                  <path d="M 118 16  L 118 64  L 169 64  L 169 16  L 118 16  Z " stroke-width="0" stroke-dasharray="0" stroke="rgba(255, 255, 255, 0)" fill="none" transform="matrix(1 0 0 1 91 282 )" class="stroke" mask="url(#u6289_img_cl38)" />
-                  <path d="M 0 96  L 85 96  L 85 176  L 0 176  L 0 96  Z " stroke-width="0" stroke-dasharray="0" stroke="rgba(255, 255, 255, 0)" fill="none" transform="matrix(1 0 0 1 91 282 )" class="stroke" mask="url(#u6289_img_cl38)" />
-                  <path d="M 135 160  L 152 160  L 152 176  L 135 176  L 135 160  Z " stroke-width="0" stroke-dasharray="0" stroke="rgba(255, 255, 255, 0)" fill="none" transform="matrix(1 0 0 1 91 282 )" class="stroke" mask="url(#u6289_img_cl38)" />
-                  <path d="M 169 160  L 186 160  L 186 176  L 169 176  L 169 160  Z " stroke-width="0" stroke-dasharray="0" stroke="rgba(255, 255, 255, 0)" fill="none" transform="matrix(1 0 0 1 91 282 )" class="stroke" mask="url(#u6289_img_cl38)" />
-                  <path d="M 169 96  L 186 96  L 186 144  L 135 144  L 135 128  L 118 128  L 118 176  L 101 176  L 101 96  L 152 96  L 152 112  L 169 112  L 169 96  Z " stroke-width="0" stroke-dasharray="0" stroke="rgba(255, 255, 255, 0)" fill="none" transform="matrix(1 0 0 1 91 282 )" class="stroke" mask="url(#u6289_img_cl38)" />
-                  <path d="M 0 0  L 85 0  L 85 80  L 0 80  L 0 0  Z " stroke-width="0" stroke-dasharray="0" stroke="rgba(255, 255, 255, 0)" fill="none" transform="matrix(1 0 0 1 91 282 )" class="stroke" mask="url(#u6289_img_cl38)" />
-                  <path d="M 101 0  L 186 0  L 186 80  L 101 80  L 101 0  Z " stroke-width="0" stroke-dasharray="0" stroke="rgba(255, 255, 255, 0)" fill="none" transform="matrix(1 0 0 1 91 282 )" class="stroke" mask="url(#u6289_img_cl38)" />
-                </g>
-              </svg>
-              <div id="u6289_text" class="text " style="display:none; visibility: hidden">
-                <p></p>
-              </div>
-            </div>
-
-            <!-- 充值地址显示 -->
-            <div id="u6290" class="ax_default _文本段落 transition notrs">
-              <div id="u6290_div" class=""></div>
-              <div id="u6290_text" class="text ">
-                <p><span>XXX XXX BBB CCC DDD 1111 2222 33333 </span></p>
-              </div>
-            </div>
-
-            <!-- 复制图标2 -->
-            <div id="u6291" class="ax_default icon transition notrs">
-              <svg data="images/商户充值/u6291.svg" id="u6291_img" class="img generatedImage">
-                <defs>
-                  <pattern id="u6291_img_bgp" patternUnits="userSpaceOnUse" alignment="0 0" imageRepeat="None" />
-                  <mask fill="white" id="u6291_img_cl39">
-                    <path d="M 27.69810267857143 27.69810267857143  C 27.80412946428572 27.592075892857146  27.857142857142858 27.466517857142858  27.857142857142858 27.32142857142857  L 27.857142857142858 9.107142857142858  C 27.857142857142858 8.96205357142857  27.80412946428572 8.836495535714285  27.69810267857143 8.73046875  C 27.592075892857146 8.624441964285712  27.466517857142858 8.571428571428571  27.32142857142857 9  L 9.107142857142856 9  C 8.962053571428573 8.571428571428571  8.836495535714286 8.624441964285712  8.73046875 8.73046875  C 8.624441964285715 8.836495535714285  8.571428571428571 8.96205357142857  9 9.107142857142858  L 9 27.32142857142857  C 8.571428571428571 27.466517857142858  8.624441964285715 27.592075892857146  8.73046875 27.69810267857143  C 8.836495535714286 27.804129464285715  8.962053571428573 27.857142857142858  9.107142857142856 27.857142857142858  L 27.32142857142857 27.857142857142858  C 27.466517857142858 27.857142857142858  27.592075892857146 27.804129464285715  27.69810267857143 27.69810267857143  Z M 29.213169642857142 7.215401785714287  C 29.73772321428572 7.739955357142856  30 8.370535714285714  30 9.107142857142858  L 30 27.32142857142857  C 30 28.05803571428571  29.73772321428572 28.688616071428573  29.213169642857142 29.213169642857142  C 28.688616071428577 29.737723214285715  28.05803571428572 30  27.32142857142857 30  L 9.107142857142856 30  C 8.370535714285715 30  7.739955357142858 29.737723214285715  7.215401785714286 29.213169642857142  C 6.6908482142857135 28.688616071428573  6.428571428571428 28.05803571428571  7 27.32142857142857  L 7 9.107142857142858  C 6.428571428571428 8.370535714285714  6.6908482142857135 7.739955357142856  7.215401785714286 7.215401785714287  C 7.739955357142858 6.690848214285712  8.370535714285715 6.428571428571429  9.107142857142856 7  L 27.32142857142857 7  C 28.05803571428572 6.428571428571429  28.688616071428577 6.690848214285712  29.213169642857142 7.215401785714287  Z M 22.78459821428571 0.7868303571428581  C 23.30915178571429 1.3113839285714268  23.57142857142857 1.9419642857142871  23.57142857142857 2.678571428571429  L 23.57142857142857 5.357142857142858  L 21.42857142857143 5.357142857142858  L 21.42857142857143 2.678571428571429  C 21.42857142857143 2.5334821428571432  21.37555803571429 2.407924107142856  21.26953125 2.301897321428571  C 21.163504464285715 2.195870535714283  21.03794642857143 2.142857142857142  20.892857142857142 2.142857142857142  L 2.678571428571429 2.142857142857142  C 2.5334821428571432 2.142857142857142  2.407924107142857 2.195870535714283  2.301897321428571 2.301897321428571  C 2.195870535714286 2.407924107142856  2.142857142857143 2.5334821428571432  2.142857142857143 2.678571428571429  L 2.142857142857143 20.892857142857142  C 2.142857142857143 21.037946428571427  2.195870535714286 21.16350446428571  2.301897321428571 21.26953125  C 2.407924107142857 21.375558035714285  2.5334821428571432 21.42857142857143  2.678571428571429 21.42857142857143  L 5.357142857142858 21.42857142857143  L 5.357142857142858 23.57142857142857  L 2.678571428571429 23.57142857142857  C 1.9419642857142858 23.57142857142857  1.3113839285714286 23.309151785714285  0.7868303571428572 22.784598214285715  C 0.2622767857142857 22.260044642857142  0 21.629464285714285  0 20.892857142857142  L 0 2.678571428571429  C 0 1.9419642857142871  0.2622767857142857 1.3113839285714268  0.7868303571428572 0.7868303571428581  C 1.3113839285714286 0.26227678571428603  1.9419642857142858 0  2.678571428571429 0  L 20.892857142857142 0  C 21.62946428571429 0  22.260044642857146 0.26227678571428603  22.78459821428571 0.7868303571428581  Z " fill-rule="evenodd" />
-                  </mask>
-                </defs>
-                <g transform="matrix(1 0 0 1 -344 -409 )">
-                  <path d="M 27.69810267857143 27.69810267857143  C 27.80412946428572 27.592075892857146  27.857142857142858 27.466517857142858  27.857142857142858 27.32142857142857  L 27.857142857142858 9.107142857142858  C 27.857142857142858 8.96205357142857  27.80412946428572 8.836495535714285  27.69810267857143 8.73046875  C 27.592075892857146 8.624441964285712  27.466517857142858 8.571428571428571  27.32142857142857 9  L 9.107142857142856 9  C 8.962053571428573 8.571428571428571  8.836495535714286 8.624441964285712  8.73046875 8.73046875  C 8.624441964285715 8.836495535714285  8.571428571428571 8.96205357142857  9 9.107142857142858  L 9 27.32142857142857  C 8.571428571428571 27.466517857142858  8.624441964285715 27.592075892857146  8.73046875 27.69810267857143  C 8.836495535714286 27.804129464285715  8.962053571428573 27.857142857142858  9.107142857142856 27.857142857142858  L 27.32142857142857 27.857142857142858  C 27.466517857142858 27.857142857142858  27.592075892857146 27.804129464285715  27.69810267857143 27.69810267857143  Z M 29.213169642857142 7.215401785714287  C 29.73772321428572 7.739955357142856  30 8.370535714285714  30 9.107142857142858  L 30 27.32142857142857  C 30 28.05803571428571  29.73772321428572 28.688616071428573  29.213169642857142 29.213169642857142  C 28.688616071428577 29.737723214285715  28.05803571428572 30  27.32142857142857 30  L 9.107142857142856 30  C 8.370535714285715 30  7.739955357142858 29.737723214285715  7.215401785714286 29.213169642857142  C 6.6908482142857135 28.688616071428573  6.428571428571428 28.05803571428571  7 27.32142857142857  L 7 9.107142857142858  C 6.428571428571428 8.370535714285714  6.6908482142857135 7.739955357142856  7.215401785714286 7.215401785714287  C 7.739955357142858 6.690848214285712  8.370535714285715 6.428571428571429  9.107142857142856 7  L 27.32142857142857 7  C 28.05803571428572 6.428571428571429  28.688616071428577 6.690848214285712  29.213169642857142 7.215401785714287  Z M 22.78459821428571 0.7868303571428581  C 23.30915178571429 1.3113839285714268  23.57142857142857 1.9419642857142871  23.57142857142857 2.678571428571429  L 23.57142857142857 5.357142857142858  L 21.42857142857143 5.357142857142858  L 21.42857142857143 2.678571428571429  C 21.42857142857143 2.5334821428571432  21.37555803571429 2.407924107142856  21.26953125 2.301897321428571  C 21.163504464285715 2.195870535714283  21.03794642857143 2.142857142857142  20.892857142857142 2.142857142857142  L 2.678571428571429 2.142857142857142  C 2.5334821428571432 2.142857142857142  2.407924107142857 2.195870535714283  2.301897321428571 2.301897321428571  C 2.195870535714286 2.407924107142856  2.142857142857143 2.5334821428571432  2.142857142857143 2.678571428571429  L 2.142857142857143 20.892857142857142  C 2.142857142857143 21.037946428571427  2.195870535714286 21.16350446428571  2.301897321428571 21.26953125  C 2.407924107142857 21.375558035714285  2.5334821428571432 21.42857142857143  2.678571428571429 21.42857142857143  L 5.357142857142858 21.42857142857143  L 5.357142857142858 23.57142857142857  L 2.678571428571429 23.57142857142857  C 1.9419642857142858 23.57142857142857  1.3113839285714286 23.309151785714285  0.7868303571428572 22.784598214285715  C 0.2622767857142857 22.260044642857142  0 21.629464285714285  0 20.892857142857142  L 0 2.678571428571429  C 0 1.9419642857142871  0.2622767857142857 1.3113839285714268  0.7868303571428572 0.7868303571428581  C 1.3113839285714286 0.26227678571428603  1.9419642857142858 0  2.678571428571429 0  L 20.892857142857142 0  C 21.62946428571429 0  22.260044642857146 0.26227678571428603  22.78459821428571 0.7868303571428581  Z " fill-rule="nonzero" fill="rgba(0, 0, 0, 1)" stroke="none" transform="matrix(1 0 0 1 344 409 )" class="fill" />
-                  <path d="M 27.69810267857143 27.69810267857143  C 27.80412946428572 27.592075892857146  27.857142857142858 27.466517857142858  27.857142857142858 27.32142857142857  L 27.857142857142858 9.107142857142858  C 27.857142857142858 8.96205357142857  27.80412946428572 8.836495535714285  27.69810267857143 8.73046875  C 27.592075892857146 8.624441964285712  27.466517857142858 8.571428571428571  27.32142857142857 9  L 9.107142857142856 9  C 8.962053571428573 8.571428571428571  8.836495535714286 8.624441964285712  8.73046875 8.73046875  C 8.624441964285715 8.836495535714285  8.571428571428571 8.96205357142857  9 9.107142857142858  L 9 27.32142857142857  C 8.571428571428571 27.466517857142858  8.624441964285715 27.592075892857146  8.73046875 27.69810267857143  C 8.836495535714286 27.804129464285715  8.962053571428573 27.857142857142858  9.107142857142856 27.857142857142858  L 27.32142857142857 27.857142857142858  C 27.466517857142858 27.857142857142858  27.592075892857146 27.804129464285715  27.69810267857143 27.69810267857143  Z " stroke-width="0" stroke-dasharray="0" stroke="rgba(255, 255, 255, 0)" fill="none" transform="matrix(1 0 0 1 344 409 )" class="stroke" mask="url(#u6291_img_cl39)" />
-                  <path d="M 29.213169642857142 7.215401785714287  C 29.73772321428572 7.739955357142856  30 8.370535714285714  30 9.107142857142858  L 30 27.32142857142857  C 30 28.05803571428571  29.73772321428572 28.688616071428573  29.213169642857142 29.213169642857142  C 28.688616071428577 29.737723214285715  28.05803571428572 30  27.32142857142857 30  L 9.107142857142856 30  C 8.370535714285715 30  7.739955357142858 29.737723214285715  7.215401785714286 29.213169642857142  C 6.6908482142857135 28.688616071428573  6.428571428571428 28.05803571428571  7 27.32142857142857  L 7 9.107142857142858  C 6.428571428571428 8.370535714285714  6.6908482142857135 7.739955357142856  7.215401785714286 7.215401785714287  C 7.739955357142858 6.690848214285712  8.370535714285715 6.428571428571429  9.107142857142856 7  L 27.32142857142857 7  C 28.05803571428572 6.428571428571429  28.688616071428577 6.690848214285712  29.213169642857142 7.215401785714287  Z " stroke-width="0" stroke-dasharray="0" stroke="rgba(255, 255, 255, 0)" fill="none" transform="matrix(1 0 0 1 344 409 )" class="stroke" mask="url(#u6291_img_cl39)" />
-                  <path d="M 22.78459821428571 0.7868303571428581  C 23.30915178571429 1.3113839285714268  23.57142857142857 1.9419642857142871  23.57142857142857 2.678571428571429  L 23.57142857142857 5.357142857142858  L 21.42857142857143 5.357142857142858  L 21.42857142857143 2.678571428571429  C 21.42857142857143 2.5334821428571432  21.37555803571429 2.407924107142856  21.26953125 2.301897321428571  C 21.163504464285715 2.195870535714283  21.03794642857143 2.142857142857142  20.892857142857142 2.142857142857142  L 2.678571428571429 2.142857142857142  C 2.5334821428571432 2.142857142857142  2.407924107142857 2.195870535714283  2.301897321428571 2.301897321428571  C 2.195870535714286 2.407924107142856  2.142857142857143 2.5334821428571432  2.142857142857143 2.678571428571429  L 2.142857142857143 20.892857142857142  C 2.142857142857143 21.037946428571427  2.195870535714286 21.16350446428571  2.301897321428571 21.26953125  C 2.407924107142857 21.375558035714285  2.5334821428571432 21.42857142857143  2.678571428571429 21.42857142857143  L 5.357142857142858 21.42857142857143  L 5.357142857142858 23.57142857142857  L 2.678571428571429 23.57142857142857  C 1.9419642857142858 23.57142857142857  1.3113839285714286 23.309151785714285  0.7868303571428572 22.784598214285715  C 0.2622767857142857 22.260044642857142  0 21.629464285714285  0 20.892857142857142  L 0 2.678571428571429  C 0 1.9419642857142871  0.2622767857142857 1.3113839285714268  0.7868303571428572 0.7868303571428581  C 1.3113839285714286 0.26227678571428603  1.9419642857142858 0  2.678571428571429 0  L 20.892857142857142 0  C 21.62946428571429 0  22.260044642857146 0.26227678571428603  22.78459821428571 0.7868303571428581  Z " stroke-width="0" stroke-dasharray="0" stroke="rgba(255, 255, 255, 0)" fill="none" transform="matrix(1 0 0 1 344 409 )" class="stroke" mask="url(#u6291_img_cl39)" />
-                </g>
-              </svg>
-              <div id="u6291_text" class="text " style="display:none; visibility: hidden">
-                <p></p>
-              </div>
-            </div>
-
-            <!-- 确定按钮 -->
-            <div id="u6292" class="ax_default primary_button transition notrs">
-              <div id="u6292_div" class=""></div>
-              <div id="u6292_text" class="text ">
-                <p><span>确定</span></p>
-              </div>
-            </div>
-
-            <!-- 当前余额 -->
-            <div id="u6293" class="ax_default _文本段落 transition notrs">
-              <div id="u6293_div" class=""></div>
-              <div id="u6293_text" class="text ">
-                <p><span>当前余额： 999 .0000  USDT </span></p>
-              </div>
-            </div>
-
-            <!-- 手续费说明 -->
-            <div id="u6294" class="ax_default _文本段落 transition notrs">
-              <div id="u6294_div" class=""></div>
-              <div id="u6294_text" class="text ">
-                <p><span>手续费（0.5% + 1 USDT）</span></p>
-              </div>
-            </div>
-
-            <!-- 最低充值额 -->
-            <div id="u6295" class="ax_default _文本段落 transition notrs">
-              <div id="u6295_div" class=""></div>
-              <div id="u6295_text" class="text ">
-                <p><span>最低充值额：1000 USDT</span></p>
-              </div>
-            </div>
-
-            <!-- 注意事项 -->
-            <div id="u6296" class="ax_default _文本段落 transition notrs">
-              <div id="u6296_div" class=""></div>
-              <div id="u6296_text" class="text ">
-                <p><span>注意：充值低于最低充值额，将无法充值成功且无法找回</span></p>
-              </div>
-            </div>
+      <main class="merchant-recharge-page recharge-shell">
+        <section class="recharge-card">
+          <div class="page-tabs" role="tablist" aria-label="充值方式">
+            <button class="tab is-active" type="button">充值</button>
           </div>
-        </div>
-        
-        <div id="u6282_state1" class="panel_state" data-label="法币充值" style="visibility: hidden;">
-          <div id="u6282_state1_content" class="panel_state_content">
-            <div id="u6297" class="ax_default _三级标题 transition notrs">
-              <div id="u6297_div" class=""></div>
-              <div id="u6297_text" class="text ">
-                <p><span>法币充值</span></p>
-              </div>
-            </div>
 
-            <div id="u6298" class="ax_default _文本段落 transition notrs">
-              <div id="u6298_div" class=""></div>
-              <div id="u6298_text" class="text ">
-                <p><span>币种</span></p>
-              </div>
-            </div>
-
-            <div id="u6299" class="ax_default droplist transition notrs">
-              <div id="u6299_div" class=""></div>
-              <select id="u6299_input" class="u6299_input">
-                <option class="u6299_input_option" value="USD">USD</option>
-                <option class="u6299_input_option" value="BRL">BRL</option>
-              </select>
-            </div>
-
-            <div id="u6300" class="ax_default _文本段落 transition notrs">
-              <div id="u6300_div" class=""></div>
-              <div id="u6300_text" class="text ">
-                <p><span>金额</span></p>
-              </div>
-            </div>
-
-            <div id="u6301" class="ax_default text_field1 transition notrs">
-              <div id="u6301_div" class=""></div>
-              <input id="u6301_input" type="text" value="1000" class="u6301_input"/>
-            </div>
-
-            <div id="u6302" class="ax_default _文本段落 transition notrs">
-              <div id="u6302_div" class=""></div>
-              <div id="u6302_text" class="text ">
-                <p><span>充值方式</span></p>
-              </div>
-            </div>
-
-            <div id="u6303" class="ax_default droplist transition notrs">
-              <div id="u6303_div" class=""></div>
-              <select id="u6303_input" class="u6303_input">
-                <option class="u6303_input_option" value="PIX">PIX</option>
-                <option class="u6303_input_option" value="PAYPAL">PAYPAL</option>
-              </select>
-            </div>
-
-            <div id="u6304" class="ax_default primary_button transition notrs">
-              <div id="u6304_div" class=""></div>
-              <div id="u6304_text" class="text ">
-                <p><span>确定</span></p>
-              </div>
-            </div>
-
-            <div id="u6305" class="ax_default _文本段落 transition notrs">
-              <div id="u6305_div" class=""></div>
-              <div id="u6305_text" class="text ">
-                <p><span>当前余额： 999 .0000  USD</span></p>
-              </div>
-            </div>
-
-            <div id="u6306" class="ax_default _文本段落 transition notrs">
-              <div id="u6306_div" class=""></div>
-              <div id="u6306_text" class="text " style="display:none; visibility: hidden">
-                <p></p>
-              </div>
-            </div>
-
-            <div id="u6307" class="ax_default _文本段落 transition notrs">
-              <div id="u6307_div" class=""></div>
-              <div id="u6307_text" class="text ">
-                <p><span>手续费（0.5% + 1 USD）</span></p>
-              </div>
-            </div>
-
-            <div id="u6308" class="ax_default _文本段落 transition notrs">
-              <div id="u6308_div" class=""></div>
-              <div id="u6308_text" class="text " style="display:none; visibility: hidden">
-                <p></p>
-              </div>
-            </div>
-
-            <div id="u6309" class="ax_default _文本段落 transition notrs">
-              <div id="u6309_div" class=""></div>
-              <div id="u6309_text" class="text ">
-                <p><span>2 USD</span></p>
-              </div>
-            </div>
-
-            <div id="u6310" class="ax_default _文本段落 transition notrs">
-              <div id="u6310_div" class=""></div>
-              <div id="u6310_text" class="text ">
-                <p><span>最低充值额：1000 USDT</span></p>
-              </div>
-            </div>
-
-            <div id="u6311" class="ax_default _文本段落 transition notrs">
-              <div id="u6311_div" class=""></div>
-              <div id="u6311_text" class="text ">
-                <p><span>注意：充值低于最低充值额，将无法充值成功且无法找回</span></p>
-              </div>
-            </div>
+          <div class="channel-title">
+            <span class="coin-mark" aria-hidden="true">T</span>
+            <span>USDT</span>
           </div>
-        </div>
-        
-        <div id="u6282_state2" class="panel_state" data-label="U币充值" style="visibility: hidden;">
-          <div id="u6282_state2_content" class="panel_state_content">
-            <div id="u6312" class="ax_default _三级标题 transition notrs">
-              <div id="u6312_div" class=""></div>
-              <div id="u6312_text" class="text ">
-                <p><span>USDT充值法币</span></p>
-              </div>
-            </div>
 
-            <div id="u6313" class="ax_default _文本段落 transition notrs">
-              <div id="u6313_div" class=""></div>
-              <div id="u6313_text" class="text ">
-                <p><span>币种</span></p>
-              </div>
-            </div>
-
-            <div id="u6314" class="ax_default droplist transition notrs">
-              <div id="u6314_div" class=""></div>
-              <select id="u6314_input" class="u6314_input">
-                <option class="u6314_input_option" value="USD">USD</option>
-                <option class="u6314_input_option" selected value="BRL">BRL</option>
-              </select>
-            </div>
-
-            <div id="u6315" class="ax_default _文本段落 transition notrs">
-              <div id="u6315_div" class=""></div>
-              <div id="u6315_text" class="text ">
-                <p><span>USDT数量</span></p>
-              </div>
-            </div>
-
-            <div id="u6316" class="ax_default text_field1 transition notrs">
-              <div id="u6316_div" class=""></div>
-              <input id="u6316_input" type="text" value="1111" class="u6316_input"/>
-            </div>
-
-            <div id="u6317" class="ax_default _文本段落 transition notrs">
-              <div id="u6317_div" class=""></div>
-              <div id="u6317_text" class="text ">
-                <p><span>主链</span></p>
-              </div>
-            </div>
-
-            <div id="u6318" class="ax_default primary_button transition notrs">
-              <div id="u6318_div" class=""></div>
-              <div id="u6318_text" class="text ">
-                <p><span>确定</span></p>
-              </div>
-            </div>
-
-            <div id="u6319" class="ax_default">
-              <div id="u6319_state0" class="panel_state" data-label="State1" style="">
-                <div id="u6319_state0_content" class="panel_state_content">
-                  <div id="u6320" class="ax_default _文本段落 transition notrs">
-                    <div id="u6320_div" class=""></div>
-                    <div id="u6320_text" class="text ">
-                      <p><span>交易限额</span></p>
-                    </div>
-                  </div>
-
-                  <div id="u6321" class="ax_default _文本段落 transition notrs">
-                    <div id="u6321_div" class=""></div>
-                    <div id="u6321_text" class="text ">
-                      <p><span>1-1000</span></p>
-                    </div>
-                  </div>
-
-                  <div id="u6322" class="ax_default _文本段落 transition notrs">
-                    <div id="u6322_div" class=""></div>
-                    <div id="u6322_text" class="text ">
-                      <p><span>汇率</span></p>
-                    </div>
-                  </div>
-
-                  <div id="u6323" class="ax_default _文本段落 transition notrs">
-                    <div id="u6323_div" class=""></div>
-                    <div id="u6323_text" class="text ">
-                      <p><span>4.67</span></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div id="u6324" class="ax_default _文本段落 transition notrs">
-              <div id="u6324_div" class=""></div>
-              <div id="u6324_text" class="text ">
-                <p><span>將收到：</span></p><p><span>5183.37 BRL</span></p>
-              </div>
-            </div>
-
-            <div id="u6325" class="ax_default droplist transition notrs">
-              <div id="u6325_div" class=""></div>
-              <select id="u6325_input" class="u6325_input">
-                <option class="u6325_input_option" value="ERC20">ERC20</option>
-                <option class="u6325_input_option" selected value="TRC20">TRC20</option>
-              </select>
-            </div>
-
-            <div id="u6326" class="ax_default _文本段落 transition notrs">
-              <div id="u6326_div" class=""></div>
-              <div id="u6326_text" class="text ">
-                <p><span>支付币种</span></p>
-              </div>
-            </div>
-
-            <div id="u6327" class="ax_default droplist transition notrs">
-              <div id="u6327_div" class=""></div>
-              <select id="u6327_input" class="u6327_input">
-                <option class="u6327_input_option" value="USDT">USDT</option>
-                <option class="u6327_input_option" value="ETH">ETH</option>
-              </select>
-            </div>
-
-            <div id="u6328" class="ax_default _文本段落 transition notrs">
-              <div id="u6328_div" class=""></div>
-              <div id="u6328_text" class="text ">
-                <p><span>付款钱包地址</span></p>
-              </div>
-            </div>
-
-            <div id="u6329" class="ax_default text_field1 transition notrs">
-              <div id="u6329_div" class=""></div>
-              <input id="u6329_input" type="text" value="" class="u6329_input"/>
-            </div>
-
-            <div id="u6330" class="ax_default _文本段落 transition notrs">
-              <div id="u6330_div" class=""></div>
-              <div id="u6330_text" class="text ">
-                <p><span>最低充值额：1000 USDT</span></p>
-              </div>
-            </div>
-
-            <div id="u6331" class="ax_default _文本段落 transition notrs">
-              <div id="u6331_div" class=""></div>
-              <div id="u6331_text" class="text ">
-                <p><span>注意：充值低于最低充值额，将无法充值成功且无法找回</span></p>
-              </div>
-            </div>
+          <div class="amount-grid" aria-label="快捷金额">
+            <button class="amount-card" type="button" data-amount="1000">
+              <span>1000 U</span>
+              <span class="bonus bonus-rate">+1%</span>
+              <span class="bonus bonus-extra">+2%</span>
+            </button>
+            <button class="amount-card" type="button" data-amount="2000">
+              <span>2000 U</span>
+              <span class="bonus bonus-rate">+1%</span>
+              <span class="bonus bonus-extra">+2U</span>
+            </button>
+            <button class="amount-card" type="button" data-amount="5000">
+              <span>5000 U</span>
+              <span class="bonus bonus-rate">+1%</span>
+              <span class="bonus bonus-extra">+2U</span>
+            </button>
+            <button class="amount-card" type="button" data-amount="10000">
+              <span>10000 U</span>
+              <span class="bonus bonus-rate">+1%</span>
+              <span class="bonus bonus-extra">+2%</span>
+            </button>
+            <button class="amount-card" type="button" data-amount="20000">
+              <span>20000 U</span>
+              <span class="bonus bonus-rate">+1%</span>
+              <span class="bonus bonus-extra">+2U</span>
+            </button>
+            <button class="amount-card" type="button" data-amount="50000">
+              <span>50000 U</span>
+              <span class="bonus bonus-rate">+1%</span>
+              <span class="bonus bonus-extra">+2%</span>
+            </button>
           </div>
-        </div>
-      </div>
 
-      <!-- Button Group (组合) -->
-      <div id="u6332" class="ax_default" data-label="Button Group" data-left="45" data-top="53" data-width="298" data-height="40" layer-opacity="1">
-        <!-- Button 1 (矩形) -->
-        <div id="u6333" class="ax_default box_3 selected transition notrs" data-label="Button 1" selectiongroup="My Button Group">
-          <div id="u6333_div" class="selected"></div>
-          <div id="u6333_text" class="text ">
-            <p><span>加密货币充值</span></p>
-          </div>
-        </div>
+          <p class="danger-copy">实际转账的金额 必须与 输入的充值金额 一致，否则可能无法快速自动到账</p>
 
-        <!-- Button 2 (矩形) -->
-        <div id="u6334" class="ax_default box_2 transition notrs" data-label="Button 2" selectiongroup="My Button Group">
-          <div id="u6334_div" class=""></div>
-          <div id="u6334_text" class="text ">
-            <p><span>法币充值</span></p>
+          <div class="form-stack">
+            <label class="amount-input">
+              <input id="rechargeAmount" inputmode="decimal" placeholder="请输入充值金额" type="text"/>
+              <span>USDT</span>
+            </label>
+            <div id="bonusHint" class="bonus-hint" hidden>
+              充值以上数量将赠送您 <strong id="giftBonusAmount">0</strong> USDT
+            </div>
+            <input id="rechargeRemark" class="remark-input" maxlength="40" placeholder="备注（可选）" type="text"/>
+            <button id="submitRecharge" class="submit-button" disabled type="button">立即充值</button>
           </div>
-        </div>
 
-        <!-- Button 3 (矩形) -->
-        <div id="u6335" class="ax_default box_2 transition notrs" data-label="Button 3" selectiongroup="My Button Group">
-          <div id="u6335_div" class=""></div>
-          <div id="u6335_text" class="text ">
-            <p><span>U币充值</span></p>
+          <div class="notice-block">
+            <h3>温馨提示:</h3>
+            <ol>
+              <li class="is-red">仅支持USDT充值，网络为TRC20协议</li>
+              <li class="is-red">因充币地址不定期更换，请在当前页面充值！切勿保存地址充币，否则自行承担损失！</li>
+              <li>拉取订单后，请勿修改金额。</li>
+            </ol>
           </div>
-        </div>
-      </div>
+
+          <div class="notice-block rules">
+            <h3>赠送说明:</h3>
+            <ol>
+              <li>笔笔送：每一笔充值都赠送充值金额的1%。</li>
+              <li>
+                额外再送阶梯:
+                <dl>
+                  <div><dt>&gt;= 1000U</dt><dd>赠送 2%</dd></div>
+                  <div><dt>&gt;= 2000U</dt><dd>赠送 2U</dd></div>
+                  <div><dt>&gt;= 5000U</dt><dd>赠送 2U</dd></div>
+                  <div><dt>&gt;= 10000U</dt><dd>赠送 2%</dd></div>
+                  <div><dt>&gt;= 20000U</dt><dd>赠送 2U</dd></div>
+                  <div><dt>&gt;= 50000U</dt><dd>赠送 2%</dd></div>
+                </dl>
+              </li>
+            </ol>
+          </div>
+        </section>
+      </main>
     </div>
+    <script src="custom/js/merchant-recharge.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
   </body>
 </html>

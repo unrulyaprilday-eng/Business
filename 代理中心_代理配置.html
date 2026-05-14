@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>代理中心 - 代理配置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/代理中心_代理配置/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/agent-config.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/代理中心_代理配置/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="agent-config-page">
+        <header class="agent-topbar">
+          <div class="agent-breadcrumb">
+            <span class="icon-button" aria-hidden="true">‹</span>
+            <span class="icon-button" aria-hidden="true">↻</span>
+            <span class="muted">代理中心</span>
+            <span class="slash">/</span>
+            <strong>代理配置</strong>
+          </div>
+        </header>
+
+        <main class="agent-shell">
+          <section class="config-card">
+            <div class="tabs" role="tablist" aria-label="佣金类型">
+              <button class="tab is-active" type="button">棋牌佣金</button>
+              <button class="tab" type="button">捕鱼佣金</button>
+              <button class="tab" type="button">电子佣金</button>
+              <button class="tab" type="button">体育佣金</button>
+              <button class="tab" type="button">视讯佣金</button>
+              <button class="tab" type="button">彩票佣金</button>
+              <button class="tab" type="button">区块链佣金</button>
+              <span class="help-wrap">
+                <button class="help-dot" type="button" aria-label="查看说明">?</button>
+                <span class="help-popover" role="tooltip">
+                  <strong>返佣设置说明：</strong>
+                  <span>对游戏类型设置返佣比例；</span>
+                  <span>有效投注业绩（单元：万）：有效投注以历史总计结算，可设置0-0.0001万（如0.1为1千，0.01为1百）；</span>
+                  <span>每万返佣比例：如配置1万返佣0.5，则会员该游戏类型投注达到1万获得奖励0.5。</span>
+                </span>
+              </span>
+            </div>
+
+            <div class="toolbar">
+              <button class="primary-btn" type="button">新增</button>
+              <span class="hint">档位同时满足“有效人数”和“有效投注业绩”后，取最高档返佣比例。</span>
+            </div>
+
+            <div class="table-wrap">
+              <table class="config-table">
+                <thead>
+                  <tr>
+                    <th>序号</th>
+                    <th>有效人数</th>
+                    <th>有效投注业绩（单位：万）</th>
+                    <th>每万返佣（比例）</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="commissionRows">
+                </tbody>
+              </table>
+            </div>
+
+            <div class="pager">
+              <span>‹‹</span>
+              <span>‹</span>
+              <strong>1</strong>
+              <span>/ 1</span>
+              <span>›</span>
+              <span>››</span>
+              <button type="button">10条/页</button>
+              <em id="pagerTotal">共 8 条记录</em>
+            </div>
+          </section>
+
+          <section class="lower-grid">
+            <article class="rule-card performance-card">
+              <div class="section-title">
+                <div>
+                  <h2>业绩计算</h2>
+                  <p>设置后只有达到条件的下级产生的有效投注才会统计业绩。</p>
+                </div>
+                <button class="primary-btn js-open-config" data-dialog="performance" type="button">修改</button>
+              </div>
+
+              <div class="condition-box">
+                <div class="condition-row">
+                  <label>周期内总有效投注 ≥</label>
+                  <strong>10</strong>
+                </div>
+                <div class="condition-row">
+                  <label>周期内总存款 ≥</label>
+                  <strong>200</strong>
+                </div>
+              </div>
+            </article>
+          </section>
+        </main>
+      </div>
+
+      <div id="configDialog" class="config-dialog" hidden>
+        <div class="dialog-mask" data-close-dialog></div>
+        <section class="dialog-panel" role="dialog" aria-modal="true" aria-labelledby="configDialogTitle">
+          <header class="dialog-head">
+            <h3 id="configDialogTitle">修改配置</h3>
+            <button class="dialog-close" type="button" aria-label="关闭" data-close-dialog>×</button>
+          </header>
+          <div class="dialog-body">
+            <label class="dialog-field">
+              <span><i>*</i> 有效投注业绩(单位：万):</span>
+              <input id="dialogPerformance" type="number" min="0" step="0.01" value="4"/>
+            </label>
+            <label class="dialog-field">
+              <span><i>*</i> 每万返佣(比例):</span>
+              <input id="dialogCommission" type="number" min="0" step="1" value="4"/>
+            </label>
+          </div>
+          <footer class="dialog-foot">
+            <button class="ghost-btn" type="button" data-close-dialog>取消</button>
+            <button class="primary-btn" type="button" data-confirm-dialog>确定</button>
+          </footer>
+        </section>
+      </div>
+    </div>
+    <script src="custom/js/agent-config.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

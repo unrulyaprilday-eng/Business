@@ -1,6 +1,6 @@
 $axure.loadCurrentPage({
-  "url": "商户充值.html",
-  "generationDate": new Date(1778461200000),
+  "url": "代理中心_代理配置.html",
+  "generationDate": new Date(1778547600000),
   "defaultAdaptiveView": {
     "name": "",
     "cursor": 1,
@@ -24,9 +24,9 @@ $axure.loadCurrentPage({
     "HoverNum"
   ],
   "page": {
-    "packageId": "merchant_recharge",
+    "packageId": "agent_center_config",
     "type": "Axure:Page",
-    "name": "商户充值",
+    "name": "代理配置",
     "notes": {},
     "annotations": [],
     "style": {
