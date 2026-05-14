@@ -190,7 +190,13 @@ files/页面名/styles.css
 4. 新增 `custom/css/页面名.css`，如有交互再新增 `custom/js/页面名.js`
 5. 修改 sitemap，保证 `id / packageId / url` 一致
 6. 检查 `#base class=""`、ready 脚本、ios 脚本、相对路径
-7. 跑 JS 语法检查，并确认能从 `index.html` 菜单打开
+7. 做静态验证：检查 JS 语法、关键文件引用、sitemap 节点与页面 `data.js` 一致，并确认 `index.html` 菜单可识别对应页面
+
+## 验证与预览约定
+
+默认只做静态验证，不做浏览器预览、截图或 Playwright 检查，除非用户明确要求。
+
+验证保持简单、低 token 消耗，只运行与本次修改直接相关的命令。
 
 ## 回复用户时
 
@@ -203,3 +209,5 @@ files/页面名/styles.css
 - GitHub Pages 注意事项
 
 不要输出冗长的内部排查清单。
+
+默认不输出 git 信息，除非用户明确要求。
