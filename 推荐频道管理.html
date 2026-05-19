@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>推荐频道管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/推荐频道管理/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/推荐频道管理.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/推荐频道管理/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="recommend-channel-page">
+        <header class="page-head">
+          <div>
+            <h1>推荐频道管理</h1>
+            <p><mark>维护推荐频道游戏、展示顺序和候选游戏添加。</mark></p>
+          </div>
+        </header>
+
+        <main class="channel-layout">
+          <section class="panel selected-panel" aria-labelledby="selectedTitle">
+            <div class="panel-title-row">
+              <h2 id="selectedTitle">推荐游戏列表</h2>
+            </div>
+            <form class="filter-bar">
+              <label>游戏名 <input type="text"/></label>
+              <label>游戏ID <input type="text"/></label>
+              <button class="primary-btn" type="button">查询</button>
+              <button class="gray-btn" type="reset">重置</button>
+              <button class="link-btn js-more-filter" type="button">更多筛选</button>
+              <div class="more-filter-row" id="moreFilterRow">
+                <label>游戏类型 <select><option>类型1</option><option>类型2</option></select></label>
+                <label>游戏厂商 <select><option>厂商1</option><option>厂商2</option></select></label>
+              </div>
+            </form>
+            <div class="table-tools">
+              <button class="primary-btn" id="openSelector" type="button">添加</button>
+              <label class="check-label"><input id="selectAllRecommended" type="checkbox"/> 全选</label>
+              <button class="danger-btn" id="batchRemove" type="button">批量移除</button>
+            </div>
+            <div class="table-frame">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th class="check-col"></th>
+                    <th>游戏ID</th>
+                    <th>游戏名</th>
+                    <th>封面图</th>
+                    <th>排序</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="recommendedRows"></tbody>
+              </table>
+            </div>
+            <div class="pager">
+              <button type="button">‹</button>
+              <button class="active" type="button">1</button>
+              <button type="button">2</button>
+              <button type="button">3</button>
+              <button type="button">4</button>
+              <button type="button">5</button>
+              <button type="button">›</button>
+            </div>
+          </section>
+        </main>
+
+        <div class="drawer-layer" id="selectorDrawer" hidden>
+          <div class="drawer-mask" data-close-selector></div>
+          <aside class="selector-drawer" aria-labelledby="selectorTitle" role="dialog" aria-modal="true">
+            <header class="drawer-head">
+              <h2 id="selectorTitle">游戏选择器</h2>
+              <button class="drawer-close" type="button" aria-label="关闭" data-close-selector>×</button>
+            </header>
+            <form class="filter-bar selector-filter">
+              <label>游戏名 <input type="text"/></label>
+              <label>游戏ID <input type="text"/></label>
+              <label>游戏类型 <select><option>类型1</option><option>类型2</option></select></label>
+              <label>游戏厂商 <select><option>厂商1</option><option>厂商2</option></select></label>
+              <button class="primary-btn" type="button">查询</button>
+              <button class="gray-btn" type="reset">重置</button>
+            </form>
+            <div class="selector-summary">
+              <span>已选：<strong id="selectedCount">3</strong>个</span>
+            </div>
+            <div class="game-picker">
+              <div class="game-list" id="candidateList"></div>
+              <mark>已添加到左边的游戏不可选择，左侧移除后恢复可选。</mark>
+            </div>
+            <footer class="drawer-actions">
+              <button class="ghost-btn" type="button" data-close-selector>取消</button>
+              <button class="primary-btn add-btn" id="addSelected" type="button">添加</button>
+            </footer>
+          </aside>
+        </div>
+
+        <footer class="page-actions">
+          <button class="ghost-btn" type="button">取消</button>
+          <button class="primary-btn save-btn" type="button">保存</button>
+        </footer>
+      </div>
+    </div>
+    <script src="custom/js/推荐频道管理.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

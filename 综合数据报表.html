@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>综合数据报表</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/综合数据报表/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/综合数据报表.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/综合数据报表/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell summary-report-page">
+        <form class="summary-toolbar">
+          <label class="date-range">
+            <span class="calendar-icon">▦</span>
+            <input type="text" value="2026-05-18"/>
+            <span>-</span>
+            <input type="text" value="2026-05-18"/>
+          </label>
+          <label class="site-select">
+            <span>站点:</span>
+            <select>
+              <option>全部站点</option>
+              <option>主站</option>
+              <option>海外站</option>
+            </select>
+          </label>
+          <button class="primary-btn" type="button">搜索</button>
+          <button class="plain-btn" type="reset">重置</button>
+          <button class="primary-btn wide-btn" type="button">导出表格</button>
+        </form>
+
+        <div class="update-tip">数据更新时间：实时</div>
+
+        <section class="table-panel">
+          <table class="summary-table">
+            <thead>
+              <tr class="group-head">
+                <th rowspan="2">日期</th>
+                <th colspan="3" class="group-user">用户增长</th>
+                <th colspan="6" class="group-fund">充值提现</th>
+                <th colspan="2" class="group-bet">投注数据</th>
+                <th colspan="3" class="group-cost">营销成本</th>
+                <th colspan="2" class="group-result">经营结果</th>
+              </tr>
+              <tr>
+                <th>新增注册</th>
+                <th>站点新增</th>
+                <th>首充会员</th>
+                <th>充值金额</th>
+                <th>充值人数</th>
+                <th>提现金额</th>
+                <th>提现人数</th>
+                <th>首充金额</th>
+                <th>老用户充值金额</th>
+                <th>投注人数</th>
+                <th>投注金额</th>
+                <th>优惠</th>
+                <th>广告投入<br/>(USDT)</th>
+                <th>佣金派送</th>
+                <th>充提差</th>
+                <th>毛利营收<br/>(USDT)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2026-05-18</td>
+                <td>1,428</td>
+                <td>186</td>
+                <td>318</td>
+                <td>856,420.00</td>
+                <td>1,286</td>
+                <td>502,180.00</td>
+                <td>746</td>
+                <td>96,540.00</td>
+                <td>759,880.00</td>
+                <td>4,826</td>
+                <td>3,652,900.00</td>
+                <td><a class="amount-link" href="优惠数据报表.html">128,560.00</a></td>
+                <td>18,600.00</td>
+                <td>42,180.00</td>
+                <td class="positive">354,240.00</td>
+                <td class="positive">165,830.00</td>
+              </tr>
+              <tr>
+                <td>2026-05-17</td>
+                <td>1,286</td>
+                <td>164</td>
+                <td>286</td>
+                <td>792,300.00</td>
+                <td>1,172</td>
+                <td>468,960.00</td>
+                <td>701</td>
+                <td>88,730.00</td>
+                <td>703,570.00</td>
+                <td>4,512</td>
+                <td>3,401,760.00</td>
+                <td><a class="amount-link" href="优惠数据报表.html">116,230.00</a></td>
+                <td>16,900.00</td>
+                <td>39,760.00</td>
+                <td class="positive">323,340.00</td>
+                <td class="positive">150,450.00</td>
+              </tr>
+              <tr>
+                <td>2026-05-16</td>
+                <td>1,104</td>
+                <td>151</td>
+                <td>251</td>
+                <td>735,880.00</td>
+                <td>1,095</td>
+                <td>421,600.00</td>
+                <td>652</td>
+                <td>79,460.00</td>
+                <td>656,420.00</td>
+                <td>4,208</td>
+                <td>3,126,430.00</td>
+                <td><a class="amount-link" href="优惠数据报表.html">109,875.00</a></td>
+                <td>15,200.00</td>
+                <td>35,480.00</td>
+                <td class="positive">314,280.00</td>
+                <td class="positive">143,725.00</td>
+              </tr>
+              <tr class="summary-row">
+                <td>合计</td>
+                <td>3,818</td>
+                <td>501</td>
+                <td>855</td>
+                <td>2,384,600.00</td>
+                <td>3,553</td>
+                <td>1,392,740.00</td>
+                <td>2,099</td>
+                <td>264,730.00</td>
+                <td>2,119,870.00</td>
+                <td>13,546</td>
+                <td>10,181,090.00</td>
+                <td><a class="amount-link" href="优惠数据报表.html">354,665.00</a></td>
+                <td>50,700.00</td>
+                <td>117,420.00</td>
+                <td class="positive">991,860.00</td>
+                <td class="positive">459,005.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="calc-panel">
+          <div class="calc-title">字段计算</div>
+          <div class="calc-grid">
+            <div class="calc-item">
+              <span>首充会员</span>
+              <p>统计周期内完成首次充值的会员人数。</p>
+            </div>
+            <div class="calc-item">
+              <span>首充金额</span>
+              <p>统计周期内首充会员产生的首笔充值金额合计。</p>
+            </div>
+            <div class="calc-item">
+              <span>老用户充值金额</span>
+              <p>充值金额 - 首充金额。</p>
+            </div>
+            <div class="calc-item">
+              <span>充提差</span>
+              <p>充值金额 - 提现金额。</p>
+            </div>
+            <div class="calc-item">
+              <span>优惠</span>
+              <p>活动、任务、返水、返佣、VIP奖励、充值优惠、余额宝、票券等优惠金额合计。</p>
+            </div>
+            <div class="calc-item">
+              <span>毛利营收</span>
+              <p>投注输赢口径营收 - 优惠 - 佣金派送 - 广告投入。</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <script src="custom/js/综合数据报表.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>
