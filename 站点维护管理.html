@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <title>站点维护管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet" />
+    <link href="data/styles.css" type="text/css" rel="stylesheet" />
+    <link href="files/站点维护管理/styles.css" type="text/css" rel="stylesheet" />
+    <link href="custom/css/site-maintenance.css" type="text/css" rel="stylesheet" />
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/站点维护管理/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body data-axure-page-id="site_maintenance_manage">
+    <div id="base" class="">
+      <main class="maintenance-page">
+        <section class="maintenance-panel" aria-label="站点维护管理">
+          <form class="maintenance-form" id="maintenanceForm">
+            <header class="page-head">
+              <div>
+                <h1>站点维护管理</h1>
+                <p>配置当前商户全部站点或指定站点的维护范围、时间与访问提示。</p>
+              </div>
+            </header>
+
+              <section class="scope-area" aria-label="维护范围">
+                <div class="scope-head">
+                  <div>
+                    <h3>维护范围</h3>
+                    <p>按当前商户下的所有站点或指定站点控制维护影响对象。</p>
+                  </div>
+                  <span id="scopeImpactText">所有站点访问</span>
+                </div>
+                <div class="scope-options" id="scopeOptions">
+                  <label class="scope-option is-active">
+                    <input type="radio" name="scopeType" value="所有站点" checked />
+                    <b>所有站点</b>
+                  </label>
+                  <label class="scope-option">
+                    <input type="radio" name="scopeType" value="指定站点" />
+                    <b>指定站点</b>
+                  </label>
+                </div>
+                <div class="target-area" id="siteTargetArea">
+                  <label class="form-field target-input-field">
+                    <span>目标站点</span>
+                    <div class="site-options" id="siteOptions">
+                      <span class="empty-text">请选择需要维护的站点</span>
+                    </div>
+                    <textarea id="targetSiteInput" placeholder="选择站点后自动添加，可手动调整"></textarea>
+                  </label>
+                </div>
+              </section>
+
+              <div class="form-grid time-form-grid">
+                <label class="form-field">
+                  <span>生效方式</span>
+                  <select id="effectMode">
+                    <option value="定时维护">定时维护</option>
+                    <option value="立即维护">立即维护</option>
+                  </select>
+                </label>
+                <label class="form-field">
+                  <span>目标时区</span>
+                  <select id="targetTimeZone">
+                    <option value="8">UTC +8 北京/新加坡</option>
+                    <option value="7">UTC +7 曼谷/雅加达</option>
+                    <option value="0">UTC +0 伦敦</option>
+                    <option value="-3">UTC -3 圣保罗</option>
+                  </select>
+                </label>
+                <label class="form-field schedule-field">
+                  <span>开始时间</span>
+                  <input id="startTime" type="datetime-local" step="60" value="2026-05-20T02:00" />
+                </label>
+                <label class="form-field schedule-field">
+                  <span>维护时长</span>
+                  <select id="durationSelect">
+                    <option value="30">30 分钟</option>
+                    <option value="60">1 小时</option>
+                    <option value="120" selected>2 小时</option>
+                    <option value="240">4 小时</option>
+                    <option value="480">8 小时</option>
+                  </select>
+                </label>
+                <label class="form-field">
+                  <span>结束时间</span>
+                  <input id="endTime" type="text" value="2026-05-20 04:00:00" readonly />
+                </label>
+              </div>
+
+              <section class="timezone-compare" aria-label="时区对比">
+                <div>
+                  <span>UTC 0</span>
+                  <strong id="utcBaseTime">2026-05-19 18:00:00 - 20:00:00</strong>
+                </div>
+                <div>
+                  <span>目标时区</span>
+                  <strong id="targetZoneTime">2026-05-20 02:00:00 - 04:00:00</strong>
+                </div>
+              </section>
+
+              <label class="form-field full">
+                <span>维护提示文案</span>
+                <textarea id="messageInput">系统将于 2026-05-20 02:00 至 04:00 进行维护，期间对应端口暂不可访问，请维护结束后再试。</textarea>
+              </label>
+
+              <footer class="form-actions">
+                <button class="btn ghost" type="button" id="resetBtn">重置</button>
+                <button class="btn warning" type="button" id="recoverBtn">一键恢复</button>
+                <button class="btn primary" type="submit">提交维护</button>
+              </footer>
+            </form>
+        </section>
+
+        <section class="dialog-layer is-hidden" id="confirmDialog" aria-label="确认维护操作">
+          <div class="dialog-mask"></div>
+          <div class="dialog-card">
+            <header class="dialog-header">
+              <h2 id="dialogTitle">确认提交维护</h2>
+              <button class="close-btn" type="button" id="closeDialog" aria-label="关闭">×</button>
+            </header>
+            <div class="dialog-body">
+              <p id="dialogContent">提交后将按当前配置变更维护状态，请确认以下影响信息。</p>
+              <dl class="confirm-summary" id="confirmSummary"></dl>
+            </div>
+            <footer class="dialog-footer">
+              <button class="btn ghost" type="button" id="cancelDialog">取消</button>
+              <button class="btn primary" type="button" id="confirmAction">确认</button>
+            </footer>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/site-maintenance.js"></script>
+  </body>
+</html>

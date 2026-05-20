@@ -121,6 +121,15 @@ files/页面名/styles.css
 - `url` 是页面 HTML 相对路径
 - 如果用户指定“放到某目录下面一级”，必须插入对应父级节点的 `children`
 
+调整目录结构或批量移动菜单节点时：
+
+- 先解析 `data/document.js` 得到真实 `sitemap.rootNodes`，不要直接手改 Axure 压缩变量表。
+- `data/document.js` 如果是 `$axure.loadDocument((function(){...})())` 这类压缩变量表，可用 Node 临时定义 `global.$axure.loadDocument = d => doc = d` 后 `eval` 读取对象，再只修改 `doc.sitemap.rootNodes`。
+- 写回时必须保留 `$axure.loadDocument(...)` 外壳；可以写成格式化 JSON 形式，便于后续维护。
+- 批量重排前先确认现有节点的 `pageName / id / url / children`，复用原节点，不要无故重建已有页面节点，避免丢失子级关系。
+- 仅新建用户要求的缺失目录或缺失菜单节点；不要为了菜单目录额外移动 HTML 文件位置，除非用户明确要求。
+- 重排后检查顶层顺序、关键子级归属、`id` 唯一性和页面 `url` 是否仍指向存在的 HTML。
+
 ## B 端 SaaS UI 风格
 
 默认风格：
@@ -180,6 +189,14 @@ files/页面名/styles.css
 - 不依赖外部网络资源作为必要能力
 - 静态文件可直接访问
 
+Windows PowerShell 环境下处理中文时：
+
+- 不要把包含中文字符串的长脚本通过 PowerShell here-string 管道传给 Node/Python 后直接写入项目文件；管道编码可能把中文转换成 `?`。
+- 需要脚本写入中文内容时，优先使用 `apply_patch` 编辑文件，或在脚本中使用 Unicode 转义字符串，再由运行时生成 UTF-8。
+- 控制台显示中文为 `?` 不一定代表文件损坏；必须检查文件实际内容或字符码点。若码点是 `0x3f`，说明已经真实损坏，需要从备份或 Git 对象恢复。
+- 写入 `data/document.js`、页面 `data.js` 或中文 HTML 后，至少做一次中文关键字/码点验证，确认不是乱码。
+- 不要假设系统存在 `git` 命令；需要恢复文件时，优先用可用的 Git 工具。若命令不可用，再考虑从 `.git` 对象库读取 HEAD 版本，但这只作为应急恢复手段。
+
 ## 默认执行流程
 
 生成新页面时：
@@ -197,6 +214,21 @@ files/页面名/styles.css
 默认只做静态验证，不做浏览器预览、截图或 Playwright 检查，除非用户明确要求。
 
 验证保持简单、低 token 消耗，只运行与本次修改直接相关的命令。
+
+为避免重复消耗 token，目录和 sitemap 类任务优先使用以下最小验证：
+
+- `node -c data/document.js` 检查 JS 语法。
+- 用一次 Node 读取 `$axure.loadDocument` 对象，输出顶层 `pageName` 顺序和必要的子级树。
+- 检查本次新建的目录或文件是否存在。
+- 检查本次涉及的中文菜单名码点是否正常。
+- 不反复打印完整 `data/document.js`，不做与本次修改无关的全项目扫描。
+
+如果发现编码写坏、脚本误写或 sitemap 结构异常：
+
+- 先停止继续写入。
+- 优先从修改前备份或 Git HEAD 恢复目标文件。
+- 恢复后用不会破坏中文编码的方式重新应用变更。
+- 最后只重复必要的最小验证，不重复所有探索命令。
 
 ## 回复用户时
 

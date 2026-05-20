@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>模板管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/模板管理/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/模板管理.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/模板管理/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="template-manage-page">
+        <section class="template-list-view" aria-label="模板管理列表">
+          <div class="crumb-bar">
+            <span class="icon-back">‹</span>
+            <span class="icon-refresh">↻</span>
+            <span>站点配置</span>
+            <strong>/ 模板管理</strong>
+          </div>
+          <div class="list-card">
+            <div class="toolbar">
+              <a class="primary-btn" href="#editorPreview">+ 新建模板</a>
+              <label class="search-box">
+                <span>⌕</span>
+                <input type="text" placeholder="搜索页面..."/>
+              </label>
+            </div>
+            <table class="template-table">
+              <thead>
+                <tr>
+                  <th>模板名称</th>
+                  <th>页面ID</th>
+                  <th>状态</th>
+                  <th>绑定域名</th>
+                  <th>更新时间</th>
+                  <th>创建时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>首页</td>
+                  <td><span class="page-id">685101b3-a40...</span></td>
+                  <td><span class="tag tag-draft">草稿</span></td>
+                  <td>
+                    <div class="domain-list"><a href="#previewModal">jyowhite.cc</a><a href="#previewModal">www.jyowhite.cc</a></div>
+                  </td>
+                  <td>2026-05-20 14:39:20</td>
+                  <td>2026-03-12 13:17:01</td>
+                  <td class="row-actions">
+                    <a href="#editorPreview">编辑</a>
+                    <a class="success" href="#previewModal">预览</a>
+                    <a class="publish-link" href="#editorPreview">发布</a>
+                    <a class="danger" href="#deleteConfirm">删除</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>测试站点 模板</td>
+                  <td><span class="page-id">c0d1c3a8-c11...</span></td>
+                  <td><span class="tag tag-live">已发布</span></td>
+                  <td>
+                    <div class="domain-list"><a href="#previewModal">test1.gbsoft8686.com</a></div>
+                  </td>
+                  <td>2026-05-20 14:38:57</td>
+                  <td>2026-05-13 18:41:51</td>
+                  <td class="row-actions">
+                    <a href="#editorPreview">编辑</a>
+                    <a class="success" href="#previewModal">预览</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="empty-area"></div>
+          </div>
+        </section>
+
+        <section class="editor-view" id="editorPreview" aria-label="新增和编辑页面样式">
+          <div class="editor-title">
+            <strong>编辑页面</strong>
+            <a href="#" aria-label="关闭编辑页面">×</a>
+          </div>
+          <div class="editor-shell">
+            <aside class="component-panel">
+              <nav class="template-tabs">
+                <button class="active" type="button"><span class="tab-icon home"></span>首页模板</button>
+                <button type="button"><span class="tab-icon login"></span>登录模板</button>
+                <button type="button"><span class="tab-icon vip"></span>VIP模板</button>
+              </nav>
+              <div class="component-group">
+                <p>营销</p>
+                <div class="component-grid">
+                  <button type="button">轮播图</button>
+                  <button type="button">奖池</button>
+                </div>
+              </div>
+              <div class="component-group">
+                <p>导航</p>
+                <div class="component-grid">
+                  <button type="button"><span class="blue-icon">☰</span>快捷入口</button>
+                  <button type="button">楼层导航</button>
+                  <button type="button"><span class="blue-icon">♙</span>个人引导</button>
+                  <button type="button">底部导航</button>
+                </div>
+              </div>
+              <div class="component-group">
+                <p>内容</p>
+                <div class="component-grid">
+                  <button type="button"><span class="blue-icon">♢</span>公告栏</button>
+                  <button type="button">游戏模块</button>
+                </div>
+              </div>
+              <div class="component-group">
+                <p>基础</p>
+              </div>
+            </aside>
+
+            <main class="canvas-area">
+              <div class="canvas-toolbar">
+                <input type="text" value="首页"/>
+                <span class="divider"></span>
+                <button type="button">↶</button>
+                <button type="button">↷</button>
+                <div class="toolbar-actions">
+                  <button class="save-btn" type="button">更改</button>
+                  <button class="publish-btn" type="button">发布</button>
+                </div>
+              </div>
+              <div class="canvas-scroll">
+                <article class="phone-frame">
+                  <div class="phone-notch"></div>
+                  <div class="phone-screen">
+                    <div class="phone-status">
+                      <span>9:41</span>
+                      <span>100%</span>
+                    </div>
+                    <div class="phone-line"></div>
+                    <header class="mobile-head">
+                      <span class="hamburger">≡</span>
+                      <strong>LOGO</strong>
+                      <span>⌕ ◉</span>
+                    </header>
+                    <section class="hero-block">轮播图</section>
+                    <section class="notice-block">
+                      <span class="notice-icon">!</span>
+                      <p>到game! 新用户注册即送豪礼，更多活动请关注</p>
+                      <span>◇</span>
+                    </section>
+                    <section class="banner-block">JACKPOT</section>
+                    <section class="quick-menu">
+                      <button type="button">登录</button>
+                      <button type="button">注册</button>
+                      <div>分享赚钱</div>
+                      <div>VIP</div>
+                      <div>客服</div>
+                      <div>更多</div>
+                    </section>
+                    <div class="more-tip">更多菜单: 20项</div>
+                    <nav class="game-tabs">
+                      <span class="active">热门</span>
+                      <span>棋牌</span>
+                      <span>捕鱼</span>
+                      <span>电子</span>
+                    </nav>
+                    <div class="scroll-bar"><span></span></div>
+                    <div class="game-grid">
+                      <span></span><span></span><span></span><span></span><span></span>
+                      <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                    <div class="load-more">▽ 加载更多</div>
+                    <section class="floor-grid">
+                      <article><strong>热门</strong><span>›</span></article>
+                      <article><strong>电子</strong><span>›</span></article>
+                      <article><strong>捕鱼</strong><span>›</span></article>
+                      <article><strong>真人</strong><span>›</span></article>
+                      <article><strong>棋牌</strong><span>›</span></article>
+                      <article><strong>区块链</strong><span>›</span></article>
+                      <article><strong>更多</strong><span>›</span></article>
+                    </section>
+                  </div>
+                </article>
+              </div>
+            </main>
+
+            <aside class="setting-panel">
+              <h2>页面设置</h2>
+              <section class="setting-section">
+                <h3>主题预设</h3>
+                <div class="theme-grid">
+                  <div class="theme-card dark-blue"><span></span><small>默认蓝</small></div>
+                  <div class="theme-card wine"><span></span><small>活力红</small></div>
+                  <div class="theme-card green"><span></span><small>清新绿</small></div>
+                  <div class="theme-card purple"><span></span><small>高贵紫</small></div>
+                  <div class="theme-card pink"><span></span><small>粉色浅色</small></div>
+                  <div class="theme-card sky"><span></span><small>浅蓝色</small></div>
+                  <div class="theme-card orange selected"><span></span><small>橙色浅色</small></div>
+                  <div class="theme-card gray"><span></span><small>深灰色</small></div>
+                </div>
+              </section>
+              <section class="setting-section">
+                <h3>自定义主色调</h3>
+                <div class="color-field"><i></i><input type="text" value="#F26B2A"/></div>
+              </section>
+              <section class="setting-section">
+                <h3>页面背景色</h3>
+                <div class="color-field pale"><i></i><input type="text" value="#FFF5EF"/><i></i></div>
+              </section>
+              <section class="setting-section">
+                <h3>页面背景图片</h3>
+                <p>上传背景图片后将覆盖背景色，配合主题色使用效果更佳</p>
+                <div class="image-setting">
+                  <div class="image-thumb"></div>
+                  <div>
+                    <button type="button">更换</button>
+                    <button class="danger-outline" type="button">删除</button>
+                  </div>
+                </div>
+              </section>
+              <section class="setting-section collapsed">
+                <h3>高级颜色配置 <span>⌄</span></h3>
+              </section>
+              <section class="setting-section button-preview">
+                <h3>按钮样式</h3>
+                <div class="button-sample">
+                  <button type="button">Login</button>
+                  <button type="button">Register</button>
+                </div>
+              </section>
+              <section class="setting-section color-config">
+                <label><span class="color-dot"></span>主按钮背景色</label>
+                <input type="text" value="#F26B2A"/>
+                <label><span></span>主按钮文字色</label>
+                <input type="text" value="#ffffff"/>
+                <label><span class="color-dot"></span>副按钮边框色</label>
+                <input type="text" value="#F26B2A"/>
+                <label><span class="color-dot"></span>副按钮文字色</label>
+                <input type="text" value="#F26B2A"/>
+              </section>
+            </aside>
+          </div>
+        </section>
+
+        <section class="delete-confirm" id="deleteConfirm" aria-label="删除模板确认">
+          <div class="confirm-dialog">
+            <h2>删除模板</h2>
+            <p>确认删除“首页”模板吗？该操作不可恢复。</p>
+            <div>
+              <a class="cancel-btn" href="#">取消</a>
+              <a class="confirm-btn" href="#">确定删除</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="preview-modal" id="previewModal" aria-label="页面预览">
+          <div class="preview-dialog">
+            <header class="preview-title">
+              <strong>页面预览</strong>
+              <a href="#" aria-label="关闭页面预览">×</a>
+            </header>
+            <div class="preview-body">
+              <article class="preview-phone">
+                <div class="preview-notch"></div>
+                <div class="preview-screen">
+                  <div class="preview-status">
+                    <span>9:41</span>
+                    <span>100%</span>
+                  </div>
+                  <div class="preview-blue-line"></div>
+                  <header class="preview-head">
+                    <span>≡</span>
+                    <strong>LOGO</strong>
+                    <div>
+                      <button type="button">登录</button>
+                      <button type="button">注册</button>
+                    </div>
+                  </header>
+                  <section class="preview-jackpot">
+                    <strong>JACKPOT</strong>
+                    <b>8,888,888.88</b>
+                    <span>每 3 秒变动</span>
+                  </section>
+                  <section class="preview-carousel">轮播图</section>
+                  <section class="preview-shortcuts">
+                    <div class="shortcut-title">
+                      <strong>快捷入口</strong>
+                      <span>⌃ ⌄ 删</span>
+                    </div>
+                    <div class="shortcut-grid">
+                      <span><i></i>入口1</span>
+                      <span><i></i>入口2</span>
+                      <span><i></i>入口3</span>
+                      <span><i></i>入口4</span>
+                      <span><i></i>入口5</span>
+                      <span><i></i>入口6</span>
+                    </div>
+                  </section>
+                  <section class="preview-drop-zone"></section>
+                  <div class="preview-add">⊞</div>
+                  <nav class="preview-tabbar">
+                    <span>⊞<small>首页</small></span>
+                    <span>⊞<small>优惠</small></span>
+                    <span>⊞<small>存款</small></span>
+                    <span>⊞<small>提现</small></span>
+                    <span>⊞<small>我的</small></span>
+                  </nav>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

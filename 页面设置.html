@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>页面设置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/页面设置/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/页面设置.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/页面设置/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="page-settings-shell">
+        <section class="setting-panel">
+          <div class="panel-head">
+            <h2>网站图标</h2>
+            <button class="blue-btn" type="button" data-modal="编辑网站图标">编辑</button>
+          </div>
+          <div class="asset-grid">
+            <div class="asset-field">
+              <label>Logo <em>*</em></label>
+              <div class="logo-box"><span class="brand-crown">♕</span><strong>WTGAME</strong></div>
+              <p>要求 200*60规格或等比例，PNG、JPG、GIF图片，500KB以内</p>
+            </div>
+            <div class="asset-field">
+              <label>Favicon <em>*</em></label>
+              <div class="favicon-box"><span>♜</span></div>
+              <p>要求 32*32规格或等比例，PNG、JPG、GIF图片，20KB以内</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="setting-panel">
+          <div class="panel-head">
+            <h2>币种管理</h2>
+            <button class="blue-btn" type="button" data-modal="编辑币种">编辑</button>
+          </div>
+          <div class="asset-grid currency-grid">
+            <div class="asset-field">
+              <label>货币图标 <em>*</em></label>
+              <div class="coin-icon">$</div>
+            </div>
+            <div class="asset-field">
+              <label>货币符号 <em>*</em></label>
+              <div class="currency-symbol">$</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="setting-panel">
+          <div class="panel-head">
+            <h2>侧滑优惠中心</h2>
+            <button class="blue-btn" type="button" data-modal="新增侧滑项">+ 新增</button>
+          </div>
+          <div class="card-grid">
+            <article class="config-card" data-type="侧滑项">
+              <header><span class="code">activity</span><strong>活动</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
+              <dl><dt>路由</dt><dd>/promotion?tab=activity</dd><dt>排序</dt><dd>1</dd></dl>
+              <div class="icon-preview icon-purple">♛</div>
+              <footer><button type="button" data-modal="编辑侧滑项">编辑</button><button type="button" class="danger">删除</button></footer>
+            </article>
+            <article class="config-card" data-type="侧滑项">
+              <header><span class="code">task</span><strong>任务</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
+              <dl><dt>路由</dt><dd>/promotion?tab=task</dd><dt>排序</dt><dd>2</dd></dl>
+              <div class="icon-preview icon-green">▣</div>
+              <footer><button type="button" data-modal="编辑侧滑项">编辑</button><button type="button" class="danger">删除</button></footer>
+            </article>
+            <article class="config-card" data-type="侧滑项">
+              <header><span class="code">rebate</span><strong>返水</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
+              <dl><dt>路由</dt><dd>/</dd><dt>排序</dt><dd>3</dd></dl>
+              <div class="icon-preview icon-red">☘</div>
+              <footer><button type="button" data-modal="编辑侧滑项">编辑</button><button type="button" class="danger">删除</button></footer>
+            </article>
+            <article class="config-card" data-type="侧滑项">
+              <header><span class="code">interest</span><strong>利息宝</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
+              <dl><dt>路由</dt><dd>/</dd><dt>排序</dt><dd>4</dd></dl>
+              <div class="icon-preview icon-mint">●</div>
+              <footer><button type="button" data-modal="编辑侧滑项">编辑</button><button type="button" class="danger">删除</button></footer>
+            </article>
+            <article class="config-card" data-type="侧滑项">
+              <header><span class="code">vip</span><strong>VIP</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
+              <dl><dt>路由</dt><dd>/promotion?tab=vip</dd><dt>排序</dt><dd>5</dd></dl>
+              <div class="icon-preview icon-pink">♕</div>
+              <footer><button type="button" data-modal="编辑侧滑项">编辑</button><button type="button" class="danger">删除</button></footer>
+            </article>
+            <article class="config-card" data-type="侧滑项">
+              <header><span class="code">unclaimed</span><strong>待领取</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
+              <dl><dt>路由</dt><dd>/</dd><dt>排序</dt><dd>6</dd></dl>
+              <div class="icon-preview icon-gold">▣</div>
+              <footer><button type="button" data-modal="编辑侧滑项">编辑</button><button type="button" class="danger">删除</button></footer>
+            </article>
+          </div>
+        </section>
+
+        <section class="setting-panel">
+          <div class="panel-head">
+            <h2>首页快捷操作配置</h2>
+            <button class="blue-btn" type="button" data-modal="新增快捷操作">+ 新增</button>
+          </div>
+          <div class="card-grid">
+            <article class="config-card">
+              <header><span class="code">share_earn</span><strong>分享赚钱</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
+              <dl><dt>路由</dt><dd>-</dd><dt>排序</dt><dd>1</dd><dt>颜色</dt><dd><span class="dot purple"></span>紫色</dd></dl>
+              <div class="icon-preview icon-soft">☁</div>
+              <footer><button type="button" data-modal="编辑快捷操作">编辑</button><button type="button" class="danger">删除</button></footer>
+            </article>
+            <article class="config-card">
+              <header><span class="code">unclaimed</span><strong>待领取</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
+              <dl><dt>路由</dt><dd>/</dd><dt>排序</dt><dd>2</dd><dt>颜色</dt><dd><span class="dot orange"></span>橙色</dd></dl>
+              <div class="icon-preview icon-warm">◉</div>
+              <footer><button type="button" data-modal="编辑快捷操作">编辑</button><button type="button" class="danger">删除</button></footer>
+            </article>
+            <article class="config-card">
+              <header><span class="code">interest</span><strong>利息宝</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
+              <dl><dt>路由</dt><dd>/</dd><dt>排序</dt><dd>3</dd><dt>颜色</dt><dd><span class="dot red"></span>红色</dd></dl>
+              <div class="icon-preview icon-yellow">♘</div>
+              <footer><button type="button" data-modal="编辑快捷操作">编辑</button><button type="button" class="danger">删除</button></footer>
+            </article>
+            <article class="config-card">
+              <header><span class="code">rebate</span><strong>实时返水</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
+              <dl><dt>路由</dt><dd>/</dd><dt>排序</dt><dd>4</dd><dt>颜色</dt><dd><span class="dot pink"></span>粉色</dd></dl>
+              <div class="icon-preview icon-cool">◎</div>
+              <footer><button type="button" data-modal="编辑快捷操作">编辑</button><button type="button" class="danger">删除</button></footer>
+            </article>
+            <article class="config-card">
+              <header><span class="code">task_center</span><strong>任务中心</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
+              <dl><dt>路由</dt><dd>/promotion?tab=task</dd><dt>排序</dt><dd>5</dd><dt>颜色</dt><dd><span class="dot green"></span>绿色</dd></dl>
+              <div class="icon-preview icon-lime">✓</div>
+              <footer><button type="button" data-modal="编辑快捷操作">编辑</button><button type="button" class="danger">删除</button></footer>
+            </article>
+            <article class="config-card">
+              <header><span class="code">vip</span><strong>VIP</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
+              <dl><dt>路由</dt><dd>/promotion?tab=vip</dd><dt>排序</dt><dd>6</dd><dt>颜色</dt><dd><span class="dot blue"></span>蓝色</dd></dl>
+              <div class="icon-preview icon-amber">V</div>
+              <footer><button type="button" data-modal="编辑快捷操作">编辑</button><button type="button" class="danger">删除</button></footer>
+            </article>
+          </div>
+        </section>
+
+        <section class="setting-panel">
+          <div class="panel-head">
+            <h2>首页悬浮按钮配置</h2>
+            <button class="blue-btn" type="button" data-modal="新增悬浮按钮">+ 新增</button>
+          </div>
+          <div class="float-grid">
+            <article class="float-card">
+              <header><strong>左侧悬浮框1</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
+              <dl><dt>位置</dt><dd>左</dd><dt>排序</dt><dd>1</dd><dt>按钮数</dt><dd>3</dd></dl>
+              <ul><li><span class="mini-icon warm"></span>抽奖助力<label class="switch tiny"><input type="checkbox" checked/><i></i></label></li><li><span class="mini-icon dark"></span>邀请<label class="switch tiny"><input type="checkbox" checked/><i></i></label></li><li><span class="mini-icon gift"></span>任务<label class="switch tiny"><input type="checkbox" checked/><i></i></label></li></ul>
+              <footer><button type="button" data-modal="编辑悬浮按钮">编辑</button><button type="button" class="danger">删除</button></footer>
+            </article>
+            <article class="float-card">
+              <header><strong>右侧悬浮框1</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
+              <dl><dt>位置</dt><dd>右</dd><dt>排序</dt><dd>1</dd><dt>按钮数</dt><dd>1</dd></dl>
+              <ul><li><span class="mini-icon bright"></span>转盘抽奖<label class="switch tiny"><input type="checkbox" checked/><i></i></label></li></ul>
+              <footer><button type="button" data-modal="编辑悬浮按钮">编辑</button><button type="button" class="danger">删除</button></footer>
+            </article>
+            <article class="float-card">
+              <header><strong>右侧悬浮窗2</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
+              <dl><dt>位置</dt><dd>右</dd><dt>排序</dt><dd>2</dd><dt>按钮数</dt><dd>2</dd></dl>
+              <ul><li><span class="mini-icon vip"></span>vip<label class="switch tiny"><input type="checkbox" checked/><i></i></label></li><li><span class="mini-icon promo"></span>推广<label class="switch tiny"><input type="checkbox" checked/><i></i></label></li></ul>
+              <footer><button type="button" data-modal="编辑悬浮按钮">编辑</button><button type="button" class="danger">删除</button></footer>
+            </article>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="modal-mask" hidden>
+      <div class="modal-card modal-basic" role="dialog" aria-modal="true">
+        <button class="modal-close" type="button" aria-label="关闭">×</button>
+        <h3 id="modalTitle">编辑侧滑项</h3>
+        <div class="modal-body" id="modalBody"></div>
+        <footer class="modal-actions">
+          <button class="ghost-btn" type="button">取消</button>
+          <button class="blue-btn" type="button">提交</button>
+        </footer>
+      </div>
+    </div>
+    <script src="custom/js/页面设置.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>
