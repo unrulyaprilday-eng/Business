@@ -7,6 +7,7 @@
     <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
     <link href="data/styles.css" type="text/css" rel="stylesheet"/>
     <link href="files/新增活动/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/新增活动.css" type="text/css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
@@ -1293,7 +1294,7 @@
 
             <!-- 奖金配置 (动态面板) -->
             <div id="u162" class="ax_default" data-label="奖金配置">
-              <div id="u162_state0" class="panel_state" data-label="首充" style="">
+              <div id="u162_state0" class="panel_state" data-label="首充" style="visibility: hidden;">
                 <div id="u162_state0_content" class="panel_state_content">
 
                   <!-- Unnamed (矩形) -->
@@ -9101,7 +9102,7 @@
                   </div>
                 </div>
               </div>
-              <div id="u162_state4" class="panel_state" data-label="补偿救济" style="visibility: hidden;">
+              <div id="u162_state4" class="panel_state" data-label="补偿救济" style="">
                 <div id="u162_state4_content" class="panel_state_content">
 
                   <!-- Unnamed (矩形) -->
@@ -24899,8 +24900,137 @@
             </div>
           </div>
         </div>
-        <div id="u6_state2" class="panel_state" data-label="排行-打码" style="visibility: hidden;">
+        <div id="u6_state2" class="panel_state" data-label="救济金" style="visibility: hidden;">
           <div id="u6_state2_content" class="panel_state_content">
+            <div class="custom-relief-form">
+              <div class="custom-relief-grid">
+                <label class="custom-field required">
+                  <span>活动名称</span>
+                  <input type="text" placeholder="请输入活动名称">
+                </label>
+                <label class="custom-field required">
+                  <span>活动标题</span>
+                  <input type="text" placeholder="请输入活动标题">
+                </label>
+                <label class="custom-field required custom-field-wide">
+                  <span>活动时间</span>
+                  <input type="text" placeholder="开始时间">
+                  <em>至</em>
+                  <input type="text" placeholder="结束时间">
+                </label>
+                <div class="custom-field">
+                  <span>派发方式</span>
+                  <div class="custom-radio-group">
+                    <label><input type="radio" name="reliefSendType" checked>立即派发</label>
+                    <label><input type="radio" name="reliefSendType">玩家自领</label>
+                  </div>
+                </div>
+                <label class="custom-field">
+                  <span>救济金余额门槛</span>
+                  <input type="number" value="1">
+                </label>
+                <label class="custom-field">
+                  <span>最大限额</span>
+                  <input type="number" value="0">
+                </label>
+              </div>
+
+              <div class="custom-relief-table">
+                <div class="custom-relief-table-head">
+                  <span>档位</span>
+                  <span><i>*</i> VIP等级</span>
+                  <span><i>*</i> 充值百分比（%）</span>
+                  <span>操作</span>
+                </div>
+                <div class="custom-relief-table-body">
+                  <div class="custom-relief-table-row">
+                    <span class="custom-tier">1 - 3</span>
+                    <div class="custom-vip-cell">
+                      <input class="custom-vip-end" type="number" value="3">
+                      <small></small>
+                    </div>
+                    <input class="custom-reward-input" type="number" value="3" placeholder="请输入充值百分比">
+                    <button type="button" class="custom-row-delete" aria-label="删除">删除</button>
+                  </div>
+                  <div class="custom-relief-table-row">
+                    <span class="custom-tier">4 - 5</span>
+                    <div class="custom-vip-cell">
+                      <input class="custom-vip-end" type="number" value="5">
+                      <small></small>
+                    </div>
+                    <input class="custom-reward-input" type="number" value="4" placeholder="请输入充值百分比">
+                    <button type="button" class="custom-row-delete" aria-label="删除">删除</button>
+                  </div>
+                  <div class="custom-relief-table-row">
+                    <span class="custom-tier">6 - 10</span>
+                    <div class="custom-vip-cell">
+                      <input class="custom-vip-end" type="number" value="10">
+                      <small></small>
+                    </div>
+                    <input class="custom-reward-input" type="number" value="5" placeholder="请输入充值百分比">
+                    <button type="button" class="custom-row-delete" aria-label="删除">删除</button>
+                  </div>
+                  <div class="custom-relief-table-row">
+                    <span class="custom-tier">11</span>
+                    <div class="custom-vip-cell">
+                      <input class="custom-vip-end" type="number" value="11">
+                      <small></small>
+                    </div>
+                    <input class="custom-reward-input" type="number" value="6" placeholder="请输入充值百分比">
+                    <button type="button" class="custom-row-delete" aria-label="删除">删除</button>
+                  </div>
+                  <div class="custom-relief-table-row">
+                    <span class="custom-tier">12</span>
+                    <div class="custom-vip-cell">
+                      <input class="custom-vip-end" type="number" value="12">
+                      <small></small>
+                    </div>
+                    <input class="custom-reward-input" type="number" value="8" placeholder="请输入充值百分比">
+                    <button type="button" class="custom-row-delete" aria-label="删除">删除</button>
+                  </div>
+                  <div class="custom-relief-table-row">
+                    <span class="custom-tier">13 - 15</span>
+                    <div class="custom-vip-cell">
+                      <input class="custom-vip-end" type="number" value="15">
+                      <small></small>
+                    </div>
+                    <input class="custom-reward-input" type="number" value="10" placeholder="请输入充值百分比">
+                    <button type="button" class="custom-row-delete" aria-label="删除">删除</button>
+                  </div>
+                </div>
+                <button type="button" class="custom-add-row">+ 添加档位</button>
+              </div>
+
+              <div class="custom-relief-media">
+                <div class="custom-upload required">
+                  <span>活动Banner</span>
+                  <button type="button">+<small>点击或拖拽上传</small></button>
+                  <p>Banner 建议尺寸 800×400，支持等比例缩放，最大 500KB</p>
+                </div>
+                <label class="custom-field required">
+                  <span>打码倍数</span>
+                  <input type="number" value="1">
+                </label>
+                <label class="custom-field">
+                  <span>排序</span>
+                  <input type="number" value="0">
+                </label>
+                <div class="custom-upload">
+                  <span>活动图片</span>
+                  <button type="button">+<small>点击或拖拽上传</small></button>
+                  <p>支持上传多张图片，最多5张，用于活动详情展示</p>
+                </div>
+                <label class="custom-field custom-field-wide">
+                  <span>外部链接</span>
+                  <input type="text" placeholder="请输入外部链接（http://或https://开头，可选）">
+                </label>
+                <div class="custom-editor">
+                  <span>活动描述</span>
+                  <div class="custom-toolbar">B U I S H x₂ x² “ ” · 1 2 🔗 ▣ ↶ ↷ 💾</div>
+                  <textarea></textarea>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -24909,26 +25039,31 @@
       <div id="u3011" class="ax_default _默认样式 transition notrs">
         <div id="u3011_div" class=""></div>
         <div id="u3011_text" class="text ">
-          <p><span>活动类型</span></p>
+          <p><span>活动模板</span></p>
         </div>
       </div>
 
-      <!-- 活动类型下拉 (下拉框) -->
-      <div id="u3012" class="ax_default droplist transition notrs" data-label="活动类型下拉">
+      <!-- 活动模板下拉 (下拉框) -->
+      <div id="u3012" class="ax_default droplist transition notrs" data-label="活动模板下拉">
         <div id="u3012_div" class=""></div>
         <select id="u3012_input" class="u3012_input">
-          <option class="u3012_input_option" selected value="打码达标">打码达标</option>
+          <option class="u3012_input_option" value="">请选择活动模板</option>
+          <option class="u3012_input_option" value="首充奖励">首充奖励</option>
+          <option class="u3012_input_option" value="充值送金">充值送金</option>
+          <option class="u3012_input_option" value="拉新返金">拉新返金</option>
+          <option class="u3012_input_option" selected value="救济金">救济金</option>
+          <option class="u3012_input_option" value="签到奖励">签到奖励</option>
+          <option class="u3012_input_option" value="打码返水">打码返水</option>
+          <option class="u3012_input_option" value="优惠券赠送">优惠券赠送</option>
+          <option class="u3012_input_option" value="会员礼包">会员礼包</option>
+          <option class="u3012_input_option" value="游戏排行榜">游戏排行榜</option>
+          <option class="u3012_input_option" value="充值排行榜">充值排行榜</option>
+          <option class="u3012_input_option" value="幸运转盘">幸运转盘</option>
           <option class="u3012_input_option" value="拼多多">拼多多</option>
-          <option class="u3012_input_option" value="首充">首充</option>
-          <option class="u3012_input_option" value="充值">充值</option>
-          <option class="u3012_input_option" value="排行">排行</option>
-          <option class="u3012_input_option" value="补偿救济">补偿救济</option>
-          <option class="u3012_input_option" value="免费送活动">免费送活动</option>
-          <option class="u3012_input_option" value="手动派奖活动">手动派奖活动</option>
-          <option class="u3012_input_option" value="首充失败补偿">首充失败补偿</option>
         </select>
       </div>
     </div>
+    <script src="custom/js/新增活动.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
   </body>
 </html>

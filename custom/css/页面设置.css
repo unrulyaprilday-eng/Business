@@ -390,6 +390,10 @@ select {
   background: rgba(0, 0, 0, 0.45);
 }
 
+.modal-mask[hidden] {
+  display: none;
+}
+
 .modal-card {
   width: 620px;
   max-height: 88vh;

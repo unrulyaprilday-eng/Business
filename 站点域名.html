@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>站点域名</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/站点域名/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/站点域名.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/站点域名/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <main class="custom-page-shell domain-page">
+        <header class="domain-titlebar">
+          <button class="icon-btn" type="button" aria-label="返回">‹</button>
+          <button class="icon-btn" type="button" aria-label="刷新">↻</button>
+          <span>站点配置</span>
+          <b>/</b>
+          <strong>站点域名</strong>
+        </header>
+
+        <section class="domain-panel">
+          <nav class="domain-tabs" aria-label="域名类型">
+            <button class="tab-btn is-active" data-tab="frontend" type="button">前台域名管理</button>
+            <button class="tab-btn" data-tab="backend" type="button">后台域名管理</button>
+            <button class="tab-btn" data-tab="promotion" type="button">推广域名</button>
+          </nav>
+
+          <div class="toolbar">
+            <label class="field inline">
+              <span>节点类型:</span>
+              <select>
+                <option>请选择节点类型</option>
+                <option>CF</option>
+                <option>CDN</option>
+              </select>
+            </label>
+            <label class="field inline">
+              <span>主域名:</span>
+              <input placeholder="请输入主域名" type="text"/>
+            </label>
+            <button class="btn primary" type="button">搜索</button>
+            <button class="btn" type="button">重置</button>
+            <div class="toolbar-spacer"></div>
+            <button class="btn primary" data-open-add type="button">新增</button>
+          </div>
+
+          <section class="table-view is-active" data-panel="frontend">
+            <div class="table-scroll">
+              <table class="domain-table">
+                <thead>
+                  <tr>
+                    <th>CDN节点名称</th>
+                    <th>域名</th>
+                    <th>主域名是否已激活</th>
+                    <th>站点</th>
+                    <th>域名状态</th>
+                    <th>过期时间</th>
+                    <th>操作人</th>
+                    <th>操作时间</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="table-view" data-panel="backend">
+            <div class="table-scroll">
+              <table class="domain-table">
+                <thead>
+                  <tr>
+                    <th>CDN节点名称</th>
+                    <th>域名</th>
+                    <th>主域名是否已激活</th>
+                    <th>站点</th>
+                    <th>域名状态</th>
+                    <th>过期时间</th>
+                    <th>操作人</th>
+                    <th>操作时间</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="table-view" data-panel="promotion">
+            <div class="table-scroll">
+              <table class="domain-table">
+                <thead>
+                  <tr>
+                    <th>CDN节点名称</th>
+                    <th>域名</th>
+                    <th>主域名是否已激活</th>
+                    <th>站点</th>
+                    <th>落地页模板</th>
+                    <th>域名状态</th>
+                    <th>过期时间</th>
+                    <th>操作人</th>
+                    <th>操作时间</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+
+          <div class="table-footer">
+            <div class="fake-scrollbar"><span></span></div>
+            <div class="pager">
+              <button type="button">|‹</button>
+              <button type="button">‹‹</button>
+              <button type="button">‹</button>
+              <input value="1" aria-label="当前页"/>
+              <span>/ 1</span>
+              <button type="button">›</button>
+              <button type="button">››</button>
+              <button type="button">›|</button>
+              <select aria-label="分页条数">
+                <option>10条/页</option>
+              </select>
+              <span class="total-count">共 0 条记录</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="modal-mask is-hidden" data-modal="bind">
+          <div class="modal bind-modal">
+            <div class="modal-head">
+              <strong>绑定站点</strong>
+              <button class="close-btn" data-close type="button">×</button>
+            </div>
+            <div class="modal-body">
+              <label class="field row">
+                <span>选择站点</span>
+                <select id="bindSiteSelect">
+                  <option value="">请选择站点</option>
+                  <option>测试站点</option>
+                  <option>测试站点2</option>
+                  <option>测试站点03</option>
+                  <option>测试003</option>
+                </select>
+              </label>
+              <p class="form-hint" id="bindStatusHint"></p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn primary" id="confirmBind" type="button">确定</button>
+              <button class="btn" data-close type="button">取消</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-mask is-hidden" data-modal="add">
+          <div class="modal add-modal">
+            <div class="modal-head">
+              <strong id="addModalTitle">新增前台域名</strong>
+              <button class="close-btn" data-close type="button">×</button>
+            </div>
+            <div class="modal-body add-form">
+              <label class="field row required">
+                <span>CDN节点:</span>
+                <div class="radio-line">
+                  <label><input type="radio" name="cdnNode" checked/> CF</label>
+                </div>
+              </label>
+              <label class="field row required domain-input">
+                <span>主域名:</span>
+                <textarea placeholder="支持批量添加，最多20个，多个域名请换行"></textarea>
+              </label>
+              <p class="warm-tip">温馨提示：支持顶级域名及子域名。</p>
+              <div class="fee-note">
+                <strong>费用说明:</strong>
+                <p>域名解析：前30个域名免费（含子域名），超出部分额外收取5USDT/条解析/月;</p>
+                <p>流量：每月前500G免费，超出部分额外收取0.03USDT/G/月;</p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn" data-close type="button">取消</button>
+              <button class="btn primary" data-close type="button">提交</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="custom/js/站点域名.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

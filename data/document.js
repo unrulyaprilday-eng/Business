@@ -38,6 +38,36 @@ $axure.loadDocument(
             "pageName": "页面设置",
             "type": "Wireframe",
             "url": "页面设置.html"
+          },
+          {
+            "id": "site_domain",
+            "pageName": "站点域名",
+            "type": "Wireframe",
+            "url": "站点域名.html"
+          },
+          {
+            "id": "customer_service_config",
+            "pageName": "客服配置",
+            "type": "Wireframe",
+            "url": "客服配置.html"
+          },
+          {
+            "id": "share_config",
+            "pageName": "分享配置",
+            "type": "Wireframe",
+            "url": "分享配置.html"
+          },
+          {
+            "id": "third_party_login_config",
+            "pageName": "第三方登录配置",
+            "type": "Wireframe",
+            "url": "第三方登录配置.html"
+          },
+          {
+            "id": "payment_channel_config",
+            "pageName": "支付通道配置",
+            "type": "Wireframe",
+            "url": "支付通道配置.html"
           }
         ]
       },
@@ -84,6 +114,12 @@ $axure.loadDocument(
             "pageName": "优惠数据报表",
             "type": "Wireframe",
             "url": "优惠数据报表.html"
+          },
+          {
+            "id": "promotion_global_config",
+            "pageName": "全局配置",
+            "type": "Wireframe",
+            "url": "全局配置.html"
           }
         ]
       },
@@ -94,48 +130,10 @@ $axure.loadDocument(
         "url": "",
         "children": [
           {
-            "id": "ds99qq",
-            "pageName": "充值",
+            "id": "member_withdraw_settings",
+            "pageName": "会员提现设置",
             "type": "Wireframe",
-            "url": "充值.html"
-          },
-          {
-            "id": "merchant_recharge",
-            "pageName": "商户充值",
-            "type": "Wireframe",
-            "url": "商户充值.html"
-          },
-          {
-            "id": "sknrt8",
-            "pageName": "提现",
-            "type": "Wireframe",
-            "url": "提现.html"
-          },
-          {
-            "id": "fvs6nu",
-            "pageName": "商户订单查询",
-            "type": "Wireframe",
-            "url": "商户订单查询.html"
-          },
-          {
-            "id": "guj0qp",
-            "pageName": "账户余额详情",
-            "type": "Wireframe",
-            "url": "账户余额详情.html",
-            "children": [
-              {
-                "id": "ynwtxm",
-                "pageName": "余额变动详细",
-                "type": "Wireframe",
-                "url": "余额变动详细.html"
-              }
-            ]
-          },
-          {
-            "id": "n5n16n",
-            "pageName": "支付费率",
-            "type": "Wireframe",
-            "url": "支付费率.html"
+            "url": "会员提现设置.html"
           }
         ]
       },
@@ -398,6 +396,18 @@ $axure.loadDocument(
             "pageName": "商户信息",
             "type": "Wireframe",
             "url": "商户信息.html"
+          },
+          {
+            "id": "merchant_recharge",
+            "pageName": "商户充值",
+            "type": "Wireframe",
+            "url": "商户充值.html"
+          },
+          {
+            "id": "fvs6nu",
+            "pageName": "商户订单查询",
+            "type": "Wireframe",
+            "url": "商户订单查询.html"
           }
         ]
       },

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>全局配置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/全局配置/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/全局配置.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/全局配置/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell global-config-page">
+        <section class="tab-panel">
+          <div class="tab-list" role="tablist" aria-label="优惠全局配置">
+            <button class="tab-button is-active" type="button" role="tab" aria-selected="true">免费奖励领取限制</button>
+          </div>
+
+          <div class="tab-content" role="tabpanel">
+            <article class="setting-card">
+              <div class="setting-head">
+                <div>
+                  <h1>免费奖励领取限制</h1>
+                </div>
+                <span class="status-tag enabled">启用</span>
+              </div>
+
+              <div class="setting-grid">
+                <label class="form-row">
+                  <span>配置状态</span>
+                  <span class="switch-field">
+                    <input type="checkbox" id="rewardLimitEnabled" checked/>
+                    <span class="switch-track" aria-hidden="true"></span>
+                    <span class="switch-text">启用</span>
+                  </span>
+                </label>
+                <label class="form-row">
+                  <span>领取限制</span>
+                  <div class="rule-line">
+                    <span>当用户余额 ＞</span>
+                    <input type="number" value="5" min="0" step="0.01"/>
+                    <span>时，不允许领取免费奖励</span>
+                  </div>
+                </label>
+              </div>
+
+              <div class="scope-note">
+                <strong>影响范围</strong>
+                <p>除充值送活动以外的所有系统赠送的活动、任务、奖励、代理佣金领取。</p>
+              </div>
+
+              <div class="form-actions">
+                <button class="primary-btn" type="button">保存</button>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </div>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

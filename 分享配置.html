@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>分享配置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/分享配置/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/分享配置.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/分享配置/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <main class="custom-page-shell share-page">
+        <header class="share-titlebar">
+          <button class="icon-btn" type="button" aria-label="返回">‹</button>
+          <button class="icon-btn refresh" type="button" aria-label="刷新">↻</button>
+          <span>站点配置</span>
+          <b>/</b>
+          <strong>分享配置</strong>
+        </header>
+
+        <section class="share-panel">
+          <div class="share-toolbar">
+            <button class="btn primary" data-open-add type="button">＋新增</button>
+          </div>
+
+          <table class="share-table">
+            <thead>
+              <tr>
+                <th>排序</th>
+                <th>名称</th>
+                <th>图标</th>
+                <th>唤醒H5地址</th>
+                <th>展示开关</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="shareRows"></tbody>
+          </table>
+        </section>
+
+        <div class="modal-mask is-hidden" data-modal="form">
+          <div class="modal form-modal">
+            <div class="modal-head">
+              <strong id="formTitle">新增</strong>
+              <button class="close-btn" data-close type="button">×</button>
+            </div>
+            <div class="modal-body">
+              <label class="field upload-row required">
+                <span>图标</span>
+                <div class="upload-control" id="uploadControl">
+                  <div class="upload-empty">
+                    <i>＋</i>
+                    <em>点击或拖<br/>拽上传</em>
+                  </div>
+                  <div class="upload-preview is-hidden" id="uploadPreview">
+                    <span class="share-icon tg"></span>
+                    <button class="remove-icon" type="button" aria-label="移除">×</button>
+                  </div>
+                </div>
+              </label>
+              <p class="upload-hint">请上传64*64规格或等比例，PNG、JPG、GIF图片，200KB以内。</p>
+              <label class="field required">
+                <span>名称</span>
+                <input id="shareName" placeholder="请输入名称" type="text"/>
+              </label>
+              <label class="field required">
+                <span>唤醒H5</span>
+                <input id="shareUrl" placeholder="请输入唤醒H5地址" type="text"/>
+              </label>
+              <label class="field required">
+                <span>排序</span>
+                <input id="shareSort" min="1" type="number" value="1"/>
+              </label>
+            </div>
+            <div class="modal-footer">
+              <button class="btn" data-close type="button">取消</button>
+              <button class="btn primary" id="submitShare" type="button">提交</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-mask is-hidden" data-modal="delete">
+          <div class="modal delete-modal">
+            <div class="modal-head">
+              <strong>系统提示</strong>
+              <button class="close-btn" data-close type="button">×</button>
+            </div>
+            <div class="modal-body delete-body">
+              <span class="warn-dot">!</span>
+              <span>确定要删除「<em id="deleteName">TG</em>」吗?</span>
+            </div>
+            <div class="modal-footer">
+              <button class="btn" data-close type="button">取消</button>
+              <button class="btn primary" id="confirmDelete" type="button">确认</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="custom/js/分享配置.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

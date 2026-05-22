@@ -91,23 +91,16 @@
               <div class="form-grid time-form-grid">
                 <label class="form-field">
                   <span>生效方式</span>
-                  <select id="effectMode">
-                    <option value="定时维护">定时维护</option>
-                    <option value="立即维护">立即维护</option>
-                  </select>
+                  <input id="effectMode" type="text" value="立即维护" readonly />
                 </label>
                 <label class="form-field">
-                  <span>目标时区</span>
-                  <select id="targetTimeZone">
-                    <option value="8">UTC +8 北京/新加坡</option>
-                    <option value="7">UTC +7 曼谷/雅加达</option>
-                    <option value="0">UTC +0 伦敦</option>
-                    <option value="-3">UTC -3 圣保罗</option>
-                  </select>
+                  <span>时区</span>
+                  <input id="targetTimeZoneLabel" type="text" value="UTC +8 北京/新加坡" readonly />
+                  <input id="targetTimeZone" type="hidden" value="8" />
                 </label>
                 <label class="form-field schedule-field">
                   <span>开始时间</span>
-                  <input id="startTime" type="datetime-local" step="60" value="2026-05-20T02:00" />
+                  <input id="startTime" type="text" value="" readonly />
                 </label>
                 <label class="form-field schedule-field">
                   <span>维护时长</span>
@@ -117,28 +110,29 @@
                     <option value="120" selected>2 小时</option>
                     <option value="240">4 小时</option>
                     <option value="480">8 小时</option>
+                    <option value="unlimited">不限时</option>
                   </select>
                 </label>
                 <label class="form-field">
                   <span>结束时间</span>
-                  <input id="endTime" type="text" value="2026-05-20 04:00:00" readonly />
+                  <input id="endTime" type="text" value="2026/05/20 04:00:00" readonly />
                 </label>
               </div>
 
               <section class="timezone-compare" aria-label="时区对比">
                 <div>
                   <span>UTC 0</span>
-                  <strong id="utcBaseTime">2026-05-19 18:00:00 - 20:00:00</strong>
+                  <strong id="utcBaseTime">2026/05/19 18:00:00 - 20:00:00</strong>
                 </div>
                 <div>
-                  <span>目标时区</span>
-                  <strong id="targetZoneTime">2026-05-20 02:00:00 - 04:00:00</strong>
+                  <span id="targetZoneLabel">UTC +8</span>
+                  <strong id="targetZoneTime">2026/05/20 02:00:00 - 04:00:00</strong>
                 </div>
               </section>
 
               <label class="form-field full">
                 <span>维护提示文案</span>
-                <textarea id="messageInput">系统将于 2026-05-20 02:00 至 04:00 进行维护，期间对应端口暂不可访问，请维护结束后再试。</textarea>
+                <textarea id="messageInput">系统将立即进入维护，期间对应端口暂不可访问，请维护结束后再试。</textarea>
               </label>
 
               <footer class="form-actions">

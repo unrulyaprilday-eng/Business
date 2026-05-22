@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>支付通道配置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/支付通道配置/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/支付通道配置.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/支付通道配置/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <main class="custom-page-shell payment-page">
+        <header class="payment-titlebar">
+          <button class="icon-btn" type="button" aria-label="返回">‹</button>
+          <button class="icon-btn" type="button" aria-label="刷新">↻</button>
+          <span>站点配置</span>
+          <b>/</b>
+          <strong>支付通道配置</strong>
+        </header>
+
+        <section class="payment-panel">
+          <nav class="payment-tabs" aria-label="支付配置类型">
+            <button class="tab-btn is-active" type="button">在线支付类型配置</button>
+          </nav>
+
+          <div class="toolbar">
+            <label class="field inline">
+              <span>支付通道:</span>
+              <select id="filterChannel">
+                <option value="">请选择支付通道</option>
+                <option>SuccusPay</option>
+                <option>UsdtPay</option>
+                <option>WiwiPay</option>
+                <option>QQPay</option>
+              </select>
+            </label>
+            <button class="btn primary" type="button">⌕ 搜索</button>
+            <button class="btn" type="button">↻ 重置</button>
+            <div class="toolbar-spacer"></div>
+            <button class="btn primary" data-open-form="add" type="button">新增支付平台</button>
+          </div>
+
+          <div class="table-scroll">
+            <table class="payment-table">
+              <thead>
+                <tr>
+                  <th>通道类型</th>
+                  <th>通道名称</th>
+                  <th>代收渠道</th>
+                  <th>代付渠道</th>
+                  <th>货币类型</th>
+                  <th>创建时间</th>
+                  <th>状态</th>
+                  <th>商户号</th>
+                  <th>使用站点</th>
+                  <th>备注</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="paymentRows"></tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <span class="total-count">共 0 条记录</span>
+            <button class="page-btn is-active" type="button">1</button>
+            <button class="page-btn" type="button">2</button>
+            <button class="page-btn" type="button">›</button>
+          </div>
+        </section>
+
+        <div class="modal-mask is-hidden" data-modal="form">
+          <div class="modal form-modal">
+            <div class="modal-head">
+              <strong id="formTitle">新增在线支付平台</strong>
+              <button class="close-btn" data-close type="button">×</button>
+            </div>
+            <div class="modal-body config-form">
+              <label class="field row">
+                <span>支付通道</span>
+                <select id="channelType">
+                  <option>SuccusPay</option>
+                  <option>UsdtPay</option>
+                  <option>QQPay</option>
+                  <option>WiwiPay</option>
+                </select>
+              </label>
+              <label class="field row required">
+                <span>通道名称</span>
+                <input id="channelName" placeholder="请输入自定义通道名称" type="text"/>
+              </label>
+              <label class="field row">
+                <span>货币类型</span>
+                <select id="currencyType">
+                  <option>USD</option>
+                  <option>USDT</option>
+                  <option>BRL</option>
+                  <option>MXN</option>
+                </select>
+              </label>
+              <div class="field row">
+                <span>代收渠道</span>
+                <div class="check-panel" data-group="collection">
+                  <label><input type="checkbox" checked value="Cashapp"/> Cashapp</label>
+                  <label><input type="checkbox" checked value="Btcpay"/> Btcpay</label>
+                  <label><input type="checkbox" checked value="Paypal"/> Paypal</label>
+                  <label><input type="checkbox" checked value="Applepay"/> Applepay</label>
+                  <label><input type="checkbox" checked value="Googlepay"/> Googlepay</label>
+                  <label><input type="checkbox" checked value="Manual Deposit"/> Manual Deposit</label>
+                </div>
+              </div>
+              <div class="field row">
+                <span>代付渠道</span>
+                <div class="check-panel" data-group="payout">
+                  <label><input type="checkbox" checked value="Paypal"/> Paypal</label>
+                  <label><input type="checkbox" checked value="Card"/> Card</label>
+                  <label><input type="checkbox" checked value="Ecashapp"/> Ecashapp</label>
+                  <label><input type="checkbox" checked value="Chime"/> Chime</label>
+                  <label><input type="checkbox" checked value="ACH"/> ACH</label>
+                </div>
+              </div>
+              <label class="field row required">
+                <span>代收商户ID</span>
+                <input placeholder="请输入代收商户ID" type="text"/>
+              </label>
+              <label class="field row required">
+                <span>代收商户Key</span>
+                <input placeholder="请输入代收商户Key" type="text"/>
+              </label>
+              <label class="field row required">
+                <span>代付商户号</span>
+                <input id="merchantNo" placeholder="请输入代付商户号" type="text"/>
+              </label>
+              <label class="field row required">
+                <span>代付商户Key</span>
+                <input placeholder="请输入代付商户Key" type="text"/>
+              </label>
+              <label class="field row">
+                <span>备注</span>
+                <textarea id="remark" placeholder="请输入备注"></textarea>
+              </label>
+              <div class="field row enable-row">
+                <span>是否启用</span>
+                <label class="switch">
+                  <input id="enableSwitch" type="checkbox"/>
+                  <i></i>
+                </label>
+                <p>提示：启用后将会调用第三方接口检测配置</p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn" data-close type="button">取消</button>
+              <button class="btn primary" id="confirmForm" type="button">确定</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-mask is-hidden" data-modal="sites">
+          <div class="modal site-modal">
+            <div class="modal-head">
+              <strong>使用站点</strong>
+              <button class="close-btn" data-close type="button">×</button>
+            </div>
+            <div class="modal-body site-body">
+              <p class="info-tip">提示：不勾选站点表示全部站点可用，勾选站点表示仅选中的站点可用</p>
+              <table class="site-table">
+                <thead>
+                  <tr>
+                    <th><input id="siteCheckAll" type="checkbox"/></th>
+                    <th>站点ID</th>
+                    <th>站点名称</th>
+                  </tr>
+                </thead>
+                <tbody id="siteRows"></tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button class="btn primary" id="saveSites" type="button">保存</button>
+              <button class="btn" data-close type="button">取消</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-mask is-hidden" data-modal="delete">
+          <div class="modal confirm-modal">
+            <div class="modal-head">
+              <strong>删除确认</strong>
+              <button class="close-btn" data-close type="button">×</button>
+            </div>
+            <div class="modal-body confirm-body">
+              <strong>确认删除该支付通道配置吗？</strong>
+              <p>删除后该通道配置将不再展示，请确认已完成停用。</p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn" data-close type="button">取消</button>
+              <button class="btn danger" id="confirmDelete" type="button">确认删除</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="toast is-hidden" id="toast"></div>
+      </main>
+    </div>
+    <script src="custom/js/支付通道配置.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

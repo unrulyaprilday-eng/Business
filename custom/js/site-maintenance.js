@@ -2,6 +2,8 @@
   var currentMerchant = {
     id: "B20018",
     name: "星河游戏",
+    timezoneOffset: 8,
+    timezoneLabel: "UTC +8 北京/新加坡",
     sites: [
       { id: "S1001", name: "主站 H5", domain: "star-h5.com" },
       { id: "S1002", name: "PC 官网", domain: "star-web.com" },
@@ -14,6 +16,8 @@
     {
       id: currentMerchant.id,
       name: currentMerchant.name,
+      timezoneOffset: currentMerchant.timezoneOffset,
+      timezoneLabel: currentMerchant.timezoneLabel,
       sites: currentMerchant.sites
     }
   ];
@@ -72,7 +76,7 @@
   }
 
   function parseDateTime(value) {
-    var match = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})[T\s](\d{2}):(\d{2})(?::(\d{2}))?$/);
+    var match = String(value || "").match(/^(\d{4})[/-](\d{2})[/-](\d{2})[T\s](\d{2}):(\d{2})(?::(\d{2}))?$/);
     if (!match) return null;
     return new Date(Date.UTC(
       Number(match[1]),
@@ -85,17 +89,18 @@
   }
 
   function formatDateTimeValue(date) {
-    return date.getUTCFullYear() + "-"
-      + pad(date.getUTCMonth() + 1) + "-"
-      + pad(date.getUTCDate()) + "T"
+    return date.getUTCFullYear() + "/"
+      + pad(date.getUTCMonth() + 1) + "/"
+      + pad(date.getUTCDate()) + " "
       + pad(date.getUTCHours()) + ":"
-      + pad(date.getUTCMinutes());
+      + pad(date.getUTCMinutes()) + ":"
+      + pad(date.getUTCSeconds());
   }
 
   function formatLocalDisplay(date) {
     if (!date) return "--";
-    return date.getUTCFullYear() + "-"
-      + pad(date.getUTCMonth() + 1) + "-"
+    return date.getUTCFullYear() + "/"
+      + pad(date.getUTCMonth() + 1) + "/"
       + pad(date.getUTCDate()) + " "
       + pad(date.getUTCHours()) + ":"
       + pad(date.getUTCMinutes()) + ":"
@@ -103,7 +108,7 @@
   }
 
   function currentTargetTimeValue() {
-    var offset = Number(els.targetTimeZone.value || 0);
+    var offset = Number(currentMerchant.timezoneOffset || 0);
     return formatDateTimeValue(new Date(Date.now() + offset * 60 * 60 * 1000));
   }
 
@@ -114,34 +119,42 @@
   function formatInOffset(date, offset) {
     if (!date) return "--";
     var shifted = new Date(date.getTime() + offset * 60 * 60 * 1000);
-    return shifted.getUTCFullYear() + "-"
-      + pad(shifted.getUTCMonth() + 1) + "-"
+    return shifted.getUTCFullYear() + "/"
+      + pad(shifted.getUTCMonth() + 1) + "/"
       + pad(shifted.getUTCDate()) + " "
       + pad(shifted.getUTCHours()) + ":"
       + pad(shifted.getUTCMinutes()) + ":"
       + pad(shifted.getUTCSeconds());
   }
 
+  function formatUtcLabel(offset) {
+    var value = Number(offset || 0);
+    if (value === 0) return "UTC 0";
+    return "UTC " + (value > 0 ? "+" : "") + value;
+  }
+
   function refreshTimezoneCompare() {
-    var offset = Number(els.targetTimeZone.value || 0);
+    var offset = Number(currentMerchant.timezoneOffset || 0);
     var startTarget = parseDateTime(els.start.value);
+    var isUnlimited = els.duration.value === "unlimited";
     var durationMs = Number(els.duration.value || 0) * 60 * 1000;
-    var endTarget = startTarget ? new Date(startTarget.getTime() + durationMs) : null;
-    els.end.value = formatLocalDisplay(endTarget);
+    var endTarget = startTarget && !isUnlimited ? new Date(startTarget.getTime() + durationMs) : null;
+    els.end.value = isUnlimited ? "不限时" : formatLocalDisplay(endTarget);
     var startUtc = startTarget ? new Date(startTarget.getTime() - offset * 60 * 60 * 1000) : null;
     var endUtc = endTarget ? new Date(endTarget.getTime() - offset * 60 * 60 * 1000) : null;
-    els.utcBaseTime.textContent = formatInOffset(startUtc, 0) + " - " + formatInOffset(endUtc, 0);
-    els.targetZoneTime.textContent = formatInOffset(startUtc, offset) + " - " + formatInOffset(endUtc, offset);
+    els.utcBaseTime.textContent = formatInOffset(startUtc, 0) + " - " + (isUnlimited ? "不限时" : formatInOffset(endUtc, 0));
+    els.targetZoneLabel.textContent = formatUtcLabel(offset);
+    els.targetZoneTime.textContent = formatInOffset(startUtc, offset) + " - " + (isUnlimited ? "不限时" : formatInOffset(endUtc, offset));
   }
 
   function refreshSummary() {
     refreshScopeArea();
-    var isImmediate = els.effectMode.value === "立即维护";
-    els.form.classList.toggle("is-immediate", isImmediate);
-    els.start.readOnly = isImmediate;
-    if (isImmediate) {
-      els.start.value = currentTargetTimeValue();
-    }
+    els.effectMode.value = "立即维护";
+    els.targetTimeZone.value = String(currentMerchant.timezoneOffset || 0);
+    els.targetTimeZoneLabel.value = currentMerchant.timezoneLabel || ("UTC " + currentMerchant.timezoneOffset);
+    els.form.classList.add("is-immediate");
+    els.start.readOnly = true;
+    els.start.value = currentTargetTimeValue();
     refreshTimezoneCompare();
   }
 
@@ -159,13 +172,27 @@
   }
 
   function setConfirmSummary() {
+    var durationText = els.duration.options[els.duration.selectedIndex].text;
+    var endText = els.duration.value === "unlimited" ? "不限时" : (els.end.value || "--");
     var rows = [
       ["维护范围", scopeDesc()],
       ["目标对象", selectedTargetText()],
       ["生效方式", els.effectMode.value],
-      ["维护时间", formatLocalDisplay(parseDateTime(els.start.value)) + " 至 " + (els.end.value || "--")],
-      ["维护时长", els.duration.options[els.duration.selectedIndex].text],
+      ["时区", currentMerchant.timezoneLabel],
+      ["维护时间", formatLocalDisplay(parseDateTime(els.start.value)) + " 至 " + endText],
+      ["维护时长", durationText],
       ["UTC 0", els.utcBaseTime.textContent]
+    ];
+    els.confirmSummary.innerHTML = rows.map(function (row) {
+      return "<div><dt>" + escapeHtml(row[0]) + "</dt><dd>" + escapeHtml(row[1]) + "</dd></div>";
+    }).join("");
+  }
+
+  function setRecoverSummary() {
+    var rows = [
+      ["恢复范围", scopeDesc()],
+      ["恢复对象", selectedTargetText()],
+      ["恢复效果", "取消当前维护状态，恢复正常访问"]
     ];
     els.confirmSummary.innerHTML = rows.map(function (row) {
       return "<div><dt>" + escapeHtml(row[0]) + "</dt><dd>" + escapeHtml(row[1]) + "</dd></div>";
@@ -174,11 +201,12 @@
 
   function openDialog(action) {
     pendingAction = action;
-    setConfirmSummary();
     if (action === "recover") {
+      setRecoverSummary();
       els.dialogTitle.textContent = "确认一键恢复";
-      els.dialogContent.textContent = "确认恢复后，当前维护范围将立即恢复访问。";
+      els.dialogContent.textContent = "确认后将对以下范围执行恢复，相关站点立即恢复正常访问。";
     } else {
+      setConfirmSummary();
       els.dialogTitle.textContent = "确认提交维护";
       els.dialogContent.textContent = "提交后将按当前配置变更维护状态，请确认以下影响信息。";
     }
@@ -203,10 +231,11 @@
     els.form.reset();
     selectedSites = [];
     renderSiteOptions();
-    els.effectMode.value = "定时维护";
+    els.effectMode.value = "立即维护";
     els.duration.value = "120";
-    els.targetTimeZone.value = "8";
-    els.start.value = "2026-05-20T02:00";
+    els.targetTimeZone.value = String(currentMerchant.timezoneOffset || 0);
+    els.targetTimeZoneLabel.value = currentMerchant.timezoneLabel || ("UTC " + currentMerchant.timezoneOffset);
+    els.start.value = currentTargetTimeValue();
     refreshSummary();
   }
 
@@ -240,6 +269,7 @@
       effectMode: document.getElementById("effectMode"),
       duration: document.getElementById("durationSelect"),
       targetTimeZone: document.getElementById("targetTimeZone"),
+      targetTimeZoneLabel: document.getElementById("targetTimeZoneLabel"),
       start: document.getElementById("startTime"),
       end: document.getElementById("endTime"),
       message: document.getElementById("messageInput"),
@@ -248,6 +278,7 @@
       siteOptions: document.getElementById("siteOptions"),
       targetSite: document.getElementById("targetSiteInput"),
       utcBaseTime: document.getElementById("utcBaseTime"),
+      targetZoneLabel: document.getElementById("targetZoneLabel"),
       targetZoneTime: document.getElementById("targetZoneTime"),
       recover: document.getElementById("recoverBtn"),
       reset: document.getElementById("resetBtn"),

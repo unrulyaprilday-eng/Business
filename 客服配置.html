@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>客服配置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/客服配置/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/客服配置.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/客服配置/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <main class="custom-page-shell service-page">
+        <header class="service-titlebar">
+          <button class="icon-btn" type="button" aria-label="返回">‹</button>
+          <button class="icon-btn" type="button" aria-label="刷新">↻</button>
+          <span>站点配置</span>
+          <b>/</b>
+          <strong>客服配置</strong>
+        </header>
+
+        <section class="service-panel">
+          <nav class="service-tabs" aria-label="客服类型">
+            <button class="tab-btn is-active" data-tab="online" type="button">在线客服</button>
+            <button class="tab-btn" data-tab="other" type="button">其他客服</button>
+          </nav>
+
+          <section class="tab-panel is-active" data-panel="online">
+            <form class="online-form" data-readonly-form>
+              <div class="form-row switch-row">
+                <label>在线客服开关</label>
+                <button class="switch is-on" type="button" aria-label="在线客服开关"><span></span></button>
+              </div>
+              <div class="form-row avatar-row">
+                <label>客服头像</label>
+                <div class="avatar-field">
+                  <div class="service-avatar q-icon" aria-hidden="true"></div>
+                  <button class="remove-image" type="button" aria-label="删除头像">×</button>
+                  <p>请上传64*64规格或等比例，PNG、JPG、GIF图片，100KB以内。</p>
+                </div>
+              </div>
+              <label class="form-row">
+                <span>前端标题</span>
+                <input type="text" value="测试" disabled/>
+              </label>
+              <label class="form-row text-row">
+                <span>前端说明</span>
+                <textarea disabled>测试说明</textarea>
+              </label>
+              <div class="form-actions">
+                <button class="btn primary" data-edit-online type="button">编辑</button>
+                <button class="btn" data-cancel-online type="button">取消</button>
+                <button class="btn primary" data-save-online type="button">保存</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="tab-panel" data-panel="other">
+            <div class="table-toolbar">
+              <button class="btn primary add-btn" data-open-other-modal type="button"><span>＋</span>新增</button>
+            </div>
+            <div class="table-wrap">
+              <table class="service-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>排序</th>
+                    <th>IM</th>
+                    <th>配置客服</th>
+                    <th>图标</th>
+                    <th>开关</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="otherServiceBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <div class="modal-mask is-hidden" data-modal="other">
+            <div class="modal other-modal">
+              <div class="modal-head">
+                <strong id="otherModalTitle">新增其他客服</strong>
+                <button class="close-btn" data-close-modal type="button">×</button>
+              </div>
+              <div class="modal-body">
+                <label class="modal-row">
+                  <span>排序</span>
+                  <input id="otherSort" type="number" value="5"/>
+                </label>
+                <label class="modal-row required">
+                  <span>IM</span>
+                  <select id="otherIm">
+                    <option value="">请选择IM类型</option>
+                    <option>Telegram</option>
+                    <option>WhatsApp</option>
+                    <option>Facebook</option>
+                    <option>Line</option>
+                  </select>
+                </label>
+                <div class="modal-row required">
+                  <span>图标</span>
+                  <div class="upload-area">
+                    <div class="upload-box">＋<small>点击或拖拽上传</small></div>
+                    <p>请上传64*64规格或等比例，PNG、JPG、GIF图片，100KB以内。</p>
+                  </div>
+                </div>
+                <label class="modal-row required">
+                  <span>昵称</span>
+                  <input id="otherName" type="text" placeholder="请输入客服昵称"/>
+                </label>
+                <label class="modal-row required">
+                  <span>链接</span>
+                  <input id="otherLink" type="text" placeholder="请输入客服链接"/>
+                </label>
+                <div class="modal-row service-config-row">
+                  <span>在线时间</span>
+                  <div class="config-editor">
+                    <div class="config-table-head">
+                      <span>时间段</span>
+                      <span>操作</span>
+                    </div>
+                    <div id="timeRows" class="config-rows"></div>
+                    <button class="btn add-line" data-add-time type="button">＋ 添加时间段</button>
+                    <p class="config-note">客服图标、昵称、链接为唯一信息；在线时间段可添加多条，每条也支持多选。</p>
+                  </div>
+                </div>
+                <div class="modal-row switch-row">
+                  <span>开关</span>
+                  <button class="switch is-on" id="otherEnabled" type="button" aria-label="其他客服开关"><span></span></button>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn" data-close-modal type="button">取消</button>
+                <button class="btn primary" data-save-other type="button">确定</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="custom/js/客服配置.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

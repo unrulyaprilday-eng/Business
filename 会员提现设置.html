@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>会员提现设置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/会员提现设置/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/会员提现设置.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/会员提现设置/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <main class="custom-page-shell withdraw-page">
+        <section class="withdraw-panel">
+          <nav class="withdraw-tabs" aria-label="提现设置类型">
+            <button class="tab-btn is-active" data-tab="online" type="button">在线提现设置</button>
+            <button class="tab-btn" data-tab="usdt" type="button">USDT提现配置</button>
+          </nav>
+
+          <div class="toolbar">
+            <button class="btn primary" data-open-modal="auto" type="button">免审自动出款</button>
+            <button class="btn primary" data-open-modal="params" type="button">提现参数设置</button>
+            <button class="btn primary" data-open-modal="vip" type="button">VIP提现限制设置</button>
+            <button class="btn primary" type="button">导出报表</button>
+          </div>
+
+          <div class="table-wrap">
+            <table class="withdraw-table">
+              <thead>
+                <tr>
+                  <th>排序</th>
+                  <th>支付方式</th>
+                  <th>图标</th>
+                  <th>是否开通通道</th>
+                  <th>单笔限额</th>
+                  <th>百分比手续费%</th>
+                  <th>固定手续费</th>
+                  <th>百分比手续费最小金额</th>
+                  <th>备注</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="withdrawRows"></tbody>
+            </table>
+          </div>
+          <div class="pager" id="pager"></div>
+        </section>
+
+        <div class="modal-mask is-hidden" data-modal="edit">
+          <div class="modal edit-modal">
+            <div class="modal-head">
+              <strong>修改</strong>
+              <button class="close-btn" data-close type="button">×</button>
+            </div>
+            <div class="modal-body edit-form">
+              <label class="form-row">
+                <span>支付方式:</span>
+                <input id="editMethod" disabled type="text"/>
+              </label>
+              <label class="form-row">
+                <span>百分比手续费:</span>
+                <input id="editRate" type="number"/>
+                <em>%</em>
+              </label>
+              <label class="form-row">
+                <span>固定手续费:</span>
+                <input id="editFixed" type="number"/>
+              </label>
+              <label class="form-row">
+                <span>百分比手续费最小金额:</span>
+                <input id="editMinFee" type="number"/>
+              </label>
+              <div class="form-row">
+                <span>是否开启通道:</span>
+                <label class="switch">
+                  <input id="editEnabled" type="checkbox"/>
+                  <i></i>
+                  <b>开启</b>
+                </label>
+              </div>
+              <div class="form-row limit-row">
+                <span>单笔限制:</span>
+                <input id="editMinLimit" type="number"/>
+                <b>~</b>
+                <input id="editMaxLimit" type="number"/>
+              </div>
+              <div class="form-row upload-row">
+                <span>图标:</span>
+                <div class="upload-card">
+                  <button class="remove-pic" type="button">×</button>
+                  <div id="editIconPreview" class="pay-icon large"></div>
+                </div>
+                <p>请上传100*100或等比例，PNG/JPG/GIF格式小于50KB的图片</p>
+              </div>
+              <label class="form-row">
+                <span>排序值:</span>
+                <input id="editSort" type="number"/>
+              </label>
+              <label class="form-row">
+                <span>备注:</span>
+                <input id="editRemark" placeholder="请输入备注" type="text"/>
+              </label>
+            </div>
+            <div class="modal-footer">
+              <button class="btn" data-close type="button">取消</button>
+              <button class="btn primary" data-close type="button">保存</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-mask is-hidden" data-modal="auto">
+          <div class="modal auto-modal">
+            <div class="modal-head">
+              <strong>免审自动出款</strong>
+              <button class="close-btn" data-close type="button">×</button>
+            </div>
+            <div class="modal-body auto-form">
+              <label class="form-row compact">
+                <span>提现金额:</span>
+                <b>≤</b>
+                <input value="100" type="number"/>
+                <em>免审</em>
+              </label>
+              <label class="form-row compact">
+                <span>自动出款支付通道:</span>
+                <select>
+                  <option>wiwipay01</option>
+                  <option>SuccusPay</option>
+                  <option>UsdtPay</option>
+                </select>
+              </label>
+              <label class="form-row compact">
+                <span>充值次数:</span>
+                <b>≥</b>
+                <input value="1" type="number"/>
+              </label>
+              <label class="form-row compact">
+                <span>提现次数:</span>
+                <b>≥</b>
+                <input value="1" type="number"/>
+              </label>
+              <div class="form-row vip-checks">
+                <span>VIP等级:</span>
+                <label><input type="checkbox"/> 全部层级</label>
+                <div class="check-grid" data-count="15"></div>
+              </div>
+            </div>
+            <div class="modal-footer center">
+              <button class="btn" data-close type="button">取消</button>
+              <button class="btn primary" data-close type="button">提交</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-mask is-hidden" data-modal="params">
+          <div class="modal params-modal">
+            <div class="modal-head">
+              <strong>提现参数设置</strong>
+              <button class="close-btn" data-close type="button">×</button>
+            </div>
+            <div class="modal-body params-form">
+              <label class="form-row">
+                <span>会员可同时进行提现笔数:</span>
+                <input value="2" type="number"/>
+                <em>笔</em>
+              </label>
+              <p class="muted">说明：若填1笔，则未审核出账完成无法发起第二笔，填0表示无限制，默认为0</p>
+              <div class="form-row radio-row">
+                <span>是否需要风控审核:</span>
+                <label><input name="risk" type="radio"/> 关闭</label>
+                <label><input checked name="risk" type="radio"/> 开启</label>
+              </div>
+              <ol class="help-list">
+                <li>开启后将增加风控页签，所有提现都需要先经过风控审核，最后再由财务审核出款；</li>
+                <li>需要后台加上相应的风控审核权限才能使用；</li>
+                <li>以下条件为非且关系（即所有条件都符合才能免风控审核），若都必须审核，配置需大于0，则都需要先风控审核。</li>
+              </ol>
+              <div class="form-row inline-rules">
+                <span>累计提现≥</span>
+                <input value="1" type="number"/>
+                <em>次可免风控，提现金额≤</em>
+                <input value="100" type="number"/>
+                <em>元可免风控</em>
+              </div>
+              <div class="form-row vip-checks wide">
+                <span>免风控层级:</span>
+                <label><input type="checkbox"/> 全部层级</label>
+                <div class="check-grid selected" data-count="15"></div>
+              </div>
+              <section class="mode-card">
+                <div class="mode-card-head">
+                  <strong>选择模式配置</strong>
+                </div>
+                <div class="mode-layout">
+                  <div class="mode-choice" aria-label="提现规则模式">
+                    <label class="mode-option is-active">
+                      <input checked name="withdrawRuleMode" value="legacy" type="radio"/>
+                      <span>常规提现规则</span>
+                    </label>
+                    <label class="mode-option">
+                      <input name="withdrawRuleMode" value="wager" type="radio"/>
+                      <span>独立提现规则</span>
+                    </label>
+                  </div>
+                  <div class="mode-content">
+                    <div class="mode-panel" data-rule-panel="legacy">
+                      <label class="form-row long">
+                        <span>会员首次提现前提条件:</span>
+                        <em>首次提现要求累计充值金额达到:</em>
+                        <input value="100" type="number"/>
+                      </label>
+                      <label class="form-row long">
+                        <span></span>
+                        <em>首次提现金额最低要求:</em>
+                        <input value="50" type="number"/>
+                      </label>
+                      <label class="form-row">
+                        <span>最大提现金额设置:</span>
+                        <input value="50000" type="number"/>
+                      </label>
+                      <label class="form-row">
+                        <span>最低提现金额设置:</span>
+                        <input value="10" type="number"/>
+                      </label>
+                      <label class="form-row">
+                        <span>未充值的会员累计提现上限:</span>
+                        <input value="500" type="number"/>
+                      </label>
+                    </div>
+                    <div class="mode-panel is-hidden" data-rule-panel="wager">
+                      <p class="mode-alert">启用后不遵循常规提现规则的单笔上下限和打码规则，也不受 VIP 提现限制中的单笔上下限约束。</p>
+                      <div class="rule-title">
+                        <strong>免费玩家提现</strong>
+                      </div>
+                      <label class="form-row">
+                        <span>余额提现门槛:</span>
+                        <em>余额大于</em>
+                        <input value="100" type="number"/>
+                        <em>后可以提现</em>
+                      </label>
+                      <label class="form-row">
+                        <span>提现后处理:</span>
+                        <em>提现成功后余额清零</em>
+                      </label>
+                      <div class="rule-title">
+                        <strong>充值玩家提现</strong>
+                      </div>
+                      <label class="form-row long">
+                        <span>打码要求:</span>
+                        <em>最后一次充值成功时，余额的</em>
+                        <input value="1" type="number"/>
+                        <em>倍</em>
+                      </label>
+                      <label class="form-row long">
+                        <span>提现金额限制:</span>
+                        <em>最后一次充值成功时，余额的</em>
+                        <input value="3" type="number"/>
+                        <em>倍 - 余额上限</em>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+            <div class="modal-footer">
+              <button class="btn" data-close type="button">关闭</button>
+              <button class="btn primary" data-close type="button">提交</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-mask is-hidden" data-modal="vip">
+          <div class="modal vip-modal">
+            <div class="modal-head">
+              <strong>VIP提现限制设置</strong>
+              <button class="close-btn" data-close type="button">×</button>
+            </div>
+            <div class="modal-body vip-body">
+              <button class="btn primary edit-vip" type="button">修改</button>
+              <div class="vip-table-wrap">
+                <table class="vip-table" id="vipTable"></table>
+              </div>
+              <div class="range-track"><i></i></div>
+              <label class="prompt-row">
+                <span>VIP1前端提示语:</span>
+                <input disabled value='<p data-line="0"><strong>Withdrawal Rules</strong><br>' type="text"/>
+              </label>
+              <p class="muted indent">注：只对VIP1的会员显示该提示，未配置则使用系统默认提示语</p>
+              <label class="prompt-row">
+                <span>VIP1+前端提示语:</span>
+                <input disabled value='<p data-line="0"><strong>Withdrawal Rules</strong><br>' type="text"/>
+              </label>
+              <p class="muted indent">注：达到VIP2及以上的VIP等级显示该提示，未配置则使用系统默认提示语</p>
+              <div class="tips-box">
+                <strong>提示:</strong>
+                <p>当日额度：当日可提现最大额度，上限9000000000；</p>
+                <p>当日次数：当日可提现次数，上限1000；</p>
+                <p>总额度：总可提现额度，上限900000000000；</p>
+                <p>总次数：总可提现次数，上限10000；</p>
+                <p>每日免手续费次数：上限10000；</p>
+                <p>配置项为空表示不限制，所有配置项数值必须随VIP等级递增，无限制（置空）为最大。</p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn primary" data-close type="button">关闭</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="custom/js/会员提现设置.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>
