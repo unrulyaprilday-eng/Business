@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>音乐管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/音乐管理/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/音乐管理.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/音乐管理/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell music-manage-shell">
+        <header class="page-bar">
+          <button class="icon-btn" type="button" aria-label="返回">‹</button>
+          <button class="icon-btn" type="button" aria-label="刷新">⟳</button>
+          <span>站点配置</span>
+          <i>/</i>
+          <strong>音乐管理</strong>
+        </header>
+
+        <main class="music-panel">
+          <div class="toolbar">
+            <label class="switch-line">音乐开关：
+              <span class="switch">
+                <input type="checkbox" checked/>
+                <i></i>
+              </span>
+            </label>
+            <button class="primary-btn" type="button" data-modal="add"><span>＋</span>新增</button>
+          </div>
+
+          <table class="music-table">
+            <thead>
+              <tr>
+                <th class="col-index">序号</th>
+                <th>歌曲名称</th>
+                <th>大小/MB</th>
+                <th>源文件</th>
+                <th>停/启用</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>测试</td>
+                <td>0.92</td>
+                <td class="file-url">https://img.gbsoft8686.com/platform/2d3d5461-a045-4...</td>
+                <td>
+                  <span class="switch small"><input type="checkbox" checked/><i></i></span>
+                </td>
+                <td class="actions">
+                  <button type="button" data-modal="edit">修改</button>
+                  <button class="danger" type="button">删除</button>
+                </td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>图图听话</td>
+                <td>1.45</td>
+                <td class="file-url">https://img.gbsoft8686.com/platform/fa8366d4-8033-4a...</td>
+                <td>
+                  <span class="switch small"><input type="checkbox" checked/><i></i></span>
+                </td>
+                <td class="actions">
+                  <button type="button" data-modal="edit">修改</button>
+                  <button class="danger" type="button">删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p class="page-note">音乐开关关闭后，将关闭客户端的音乐播放功能，不再展示侧滑菜单的音乐播放器</p>
+        </main>
+      </div>
+    </div>
+
+    <div class="modal-mask" hidden>
+      <div class="music-modal" role="dialog" aria-modal="true">
+        <button class="modal-close" type="button" aria-label="关闭">×</button>
+        <h3 id="modalTitle">新增音乐</h3>
+        <form class="modal-form">
+          <div class="form-row required">
+            <label>歌曲名称:</label>
+            <input id="songName" type="text" placeholder="请输入歌曲名称"/>
+          </div>
+          <div class="form-row">
+            <label>排序:</label>
+            <input id="sortValue" type="number" placeholder="请输入排序值"/>
+          </div>
+          <div class="form-row required file-row">
+            <label>音乐文件:</label>
+            <div class="file-control">
+              <button class="upload-btn" type="button">↥ 上传歌曲</button>
+              <div class="current-file" hidden>
+                <span>⌕ 测试</span>
+                <button type="button" aria-label="删除文件">⌫</button>
+              </div>
+              <audio class="audio-preview" controls hidden>
+                <source src="" type="audio/mpeg"/>
+              </audio>
+              <p>请上传MP3格式，小于10240KB的文件</p>
+            </div>
+          </div>
+        </form>
+        <footer class="modal-actions">
+          <button class="ghost-btn" type="button">取消</button>
+          <button class="submit-btn" type="button">提交</button>
+        </footer>
+      </div>
+    </div>
+
+    <script src="custom/js/音乐管理.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

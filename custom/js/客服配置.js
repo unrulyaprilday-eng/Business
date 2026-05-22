@@ -3,34 +3,33 @@
     {
       sort: 1,
       im: "Telegram",
-      name: "dzh",
-      link: "https://t.me/h_l_j_hui",
-      times: ["全天"],
       enabled: true,
+      configs: [
+        { name: "dzh", link: "https://t.me/h_l_j_hui", time: "00:00-21:00" }
+      ]
     },
     {
       sort: 2,
       im: "WhatsApp",
-      name: "11",
-      link: "11",
-      times: ["09:00-18:00", "18:00-24:00"],
       enabled: true,
+      configs: [
+        { name: "11", link: "11", time: "00:00-21:00" },
+        { name: "22", link: "22", time: "00:00-21:00" }
+      ]
     },
     {
       sort: 3,
       im: "Facebook",
-      name: "aa",
-      link: "",
-      times: ["全天"],
       enabled: true,
+      configs: [
+        { name: "aa", link: "", time: "00:00-21:00" }
+      ]
     },
     {
       sort: 4,
       im: "Line",
-      name: "",
-      link: "",
-      times: [],
       enabled: true,
+      configs: []
     }
   ];
 
@@ -69,17 +68,15 @@
   function renderOtherRows() {
     var body = $("#otherServiceBody");
     body.innerHTML = rows.map(function (row, index) {
-      var timeHtml = row.times.length
-        ? "<div class=\"time-tags\">" + row.times.map(function (time) {
-          return "<span>" + escapeHtml(time) + "</span>";
-        }).join("") + "</div>"
-        : "";
-      var configHtml = row.name || row.link
-        ? "<div class=\"config-item\">"
-          + imIcon(row.im, "mini-im")
-          + "<span>" + escapeHtml(row.name || "-") + "</span>"
-          + (row.link ? "<a class=\"link\" href=\"javascript:void(0)\">" + escapeHtml(row.link) + "</a>" : "")
-          + "</div>" + timeHtml
+      var configHtml = row.configs.length
+        ? row.configs.map(function (item) {
+          return "<div class=\"config-item\">"
+            + imIcon(row.im, "mini-im")
+            + "<span>" + escapeHtml(item.name) + "</span>"
+            + (item.link ? "<a class=\"link\" href=\"javascript:void(0)\">" + escapeHtml(item.link) + "</a>" : "")
+            + (item.time ? "<em>" + escapeHtml(item.time) + "</em>" : "")
+            + "</div>";
+        }).join("")
         : "-";
 
       return "<tr>"
@@ -116,10 +113,8 @@
     $("#otherModalTitle").textContent = editingIndex === null ? "新增其他客服" : "编辑其他客服";
     $("#otherSort").value = row ? row.sort : 5;
     $("#otherIm").value = row ? row.im : "";
-    $("#otherName").value = row ? row.name : "";
-    $("#otherLink").value = row ? row.link : "";
     $("#otherEnabled").classList.toggle("is-on", !row || row.enabled);
-    renderTimeRows(row && row.times.length ? row.times : ["全天"]);
+    renderConfigRows(row && row.configs.length ? row.configs : [{ name: "", link: "", time: "" }]);
     $("[data-modal=\"other\"]").classList.remove("is-hidden");
   }
 
@@ -127,36 +122,37 @@
     $("[data-modal=\"other\"]").classList.add("is-hidden");
   }
 
-  function renderTimeRows(times) {
-    var target = $("#timeRows");
-    target.innerHTML = times.map(function (time) {
-      return timeLineHtml([time]);
+  function renderConfigRows(configs) {
+    var target = $("#configRows");
+    target.innerHTML = configs.map(function (item) {
+      return configLineHtml(item);
     }).join("");
   }
 
-  function timeLineHtml(times) {
-    var options = ["全天", "09:00-18:00", "18:00-24:00", "周末"].map(function (time) {
-      return "<option " + (times.indexOf(time) >= 0 ? "selected" : "") + ">" + time + "</option>";
-    }).join("");
-
+  function configLineHtml(item) {
     return "<div class=\"config-line\">"
-      + "<select class=\"time-select\" multiple>" + options + "</select>"
+      + "<input class=\"config-name\" value=\"" + escapeHtml(item.name) + "\" placeholder=\"请输入昵称\"/>"
+      + "<input class=\"config-link\" value=\"" + escapeHtml(item.link) + "\" placeholder=\"请输入链接\"/>"
+      + "<input class=\"time-input\" value=\"" + escapeHtml(item.time || "") + "\" placeholder=\"如 00:00 - 23:59\"/>"
+      + "<span class=\"line-icon\">" + imIcon($("#otherIm").value || "Telegram", "mini-im") + "</span>"
       + "<button class=\"action-link danger\" data-remove-config type=\"button\">删除</button>"
       + "</div>";
   }
 
-  function collectTimeRows() {
-    var values = [];
-    $all(".config-line").forEach(function (line) {
-      $all(".time-select option", line)
-        .filter(function (option) { return option.selected; })
-        .forEach(function (option) {
-          if (values.indexOf(option.value) < 0) {
-            values.push(option.value);
-          }
-        });
+  function collectConfigRows() {
+    return $all(".config-line").map(function (line) {
+      return {
+        name: $(".config-name", line).value || "未命名",
+        link: $(".config-link", line).value || "",
+        time: $(".time-input", line).value || "00:00-21:00"
+      };
     });
-    return values.length ? values : ["全天"];
+  }
+
+  function refreshLineIcons() {
+    $all(".line-icon").forEach(function (holder) {
+      holder.innerHTML = imIcon($("#otherIm").value || "Telegram", "mini-im");
+    });
   }
 
   document.addEventListener("click", function (event) {
@@ -190,15 +186,15 @@
       return;
     }
 
-    if (event.target.closest("[data-add-time]")) {
-      $("#timeRows").insertAdjacentHTML("beforeend", timeLineHtml(["09:00-18:00"]));
+    if (event.target.closest("[data-add-config]")) {
+      $("#configRows").insertAdjacentHTML("beforeend", configLineHtml({ name: "", link: "", time: "" }));
       return;
     }
 
     if (event.target.closest("[data-remove-config]")) {
       event.target.closest(".config-line").remove();
       if (!$(".config-line")) {
-        $("#timeRows").insertAdjacentHTML("beforeend", timeLineHtml(["全天"]));
+        $("#configRows").insertAdjacentHTML("beforeend", configLineHtml({ name: "", link: "", time: "" }));
       }
       return;
     }
@@ -207,10 +203,8 @@
       var row = {
         sort: Number($("#otherSort").value || 0),
         im: $("#otherIm").value || "Telegram",
-        name: $("#otherName").value || "未命名",
-        link: $("#otherLink").value || "",
         enabled: $("#otherEnabled").classList.contains("is-on"),
-        times: collectTimeRows()
+        configs: collectConfigRows()
       };
       if (editingIndex === null) {
         rows.push(row);
@@ -241,6 +235,8 @@
       }
     }
   });
+
+  $("#otherIm").addEventListener("change", refreshLineIcons);
 
   renderOtherRows();
 })();

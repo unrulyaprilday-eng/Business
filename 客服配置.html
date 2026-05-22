@@ -144,24 +144,19 @@
                     <p>请上传64*64规格或等比例，PNG、JPG、GIF图片，100KB以内。</p>
                   </div>
                 </div>
-                <label class="modal-row required">
-                  <span>昵称</span>
-                  <input id="otherName" type="text" placeholder="请输入客服昵称"/>
-                </label>
-                <label class="modal-row required">
-                  <span>链接</span>
-                  <input id="otherLink" type="text" placeholder="请输入客服链接"/>
-                </label>
                 <div class="modal-row service-config-row">
-                  <span>在线时间</span>
+                  <span>配置客服</span>
                   <div class="config-editor">
                     <div class="config-table-head">
-                      <span>时间段</span>
+                      <span>昵称</span>
+                      <span>链接</span>
+                      <span>在线时间</span>
+                      <span>图标</span>
                       <span>操作</span>
                     </div>
-                    <div id="timeRows" class="config-rows"></div>
-                    <button class="btn add-line" data-add-time type="button">＋ 添加时间段</button>
-                    <p class="config-note">客服图标、昵称、链接为唯一信息；在线时间段可添加多条，每条也支持多选。</p>
+                    <div id="configRows" class="config-rows"></div>
+                    <button class="btn add-line" data-add-config type="button">＋ 添加</button>
+                    <p class="config-note">每条客服配置仅填写一个在线时间段，例如 00:00-21:00。</p>
                   </div>
                 </div>
                 <div class="modal-row switch-row">

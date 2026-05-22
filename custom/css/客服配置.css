@@ -110,16 +110,16 @@ button {
 }
 
 .online-form {
-  width: 460px;
-  padding: 26px 0 0 42px;
+  width: 520px;
+  padding: 28px 0 0 18px;
 }
 
 .form-row,
 .modal-row {
   display: grid;
-  grid-template-columns: 96px 1fr;
+  grid-template-columns: 114px 1fr;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 21px;
 }
 
 .form-row > label,
@@ -134,8 +134,8 @@ button {
 .form-row textarea,
 .modal-row input,
 .modal-row select {
-  width: 288px;
-  min-height: 32px;
+  width: 320px;
+  min-height: 34px;
   border: 1px solid #d7dde7;
   border-radius: 4px;
   background: #fff;
@@ -144,7 +144,7 @@ button {
 }
 
 .form-row textarea {
-  height: 70px;
+  height: 76px;
   resize: none;
 }
 
@@ -192,8 +192,8 @@ button {
 }
 
 .service-avatar {
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
   border: 6px solid #071523;
   background: #249bd3;
 }
@@ -205,10 +205,10 @@ button {
 
 .q-icon::before {
   position: absolute;
-  top: 10px;
-  left: 13px;
-  width: 22px;
-  height: 22px;
+  top: 12px;
+  left: 15px;
+  width: 26px;
+  height: 26px;
   border: 6px solid #fff;
   border-radius: 50%;
   content: "";
@@ -216,10 +216,10 @@ button {
 
 .q-icon::after {
   position: absolute;
-  top: 34px;
-  left: 29px;
-  width: 7px;
-  height: 13px;
+  top: 39px;
+  left: 34px;
+  width: 8px;
+  height: 14px;
   border-radius: 4px;
   background: #fff;
   transform: rotate(32deg);
@@ -230,7 +230,7 @@ button {
   display: none;
   position: absolute;
   top: -8px;
-  left: 46px;
+  left: 54px;
   width: 18px;
   height: 18px;
   border: 0;
@@ -255,7 +255,8 @@ button {
 .form-actions {
   display: flex;
   gap: 12px;
-  padding-left: 0;
+  padding-left: 16px;
+  margin-top: 10px;
 }
 
 .online-form [data-cancel-online],
@@ -372,6 +373,11 @@ button {
   line-height: 22px;
 }
 
+.config-item em {
+  color: #7b8798;
+  font-style: normal;
+}
+
 .mini-im,
 .table-im {
   display: inline-flex;
@@ -440,7 +446,7 @@ button {
 }
 
 .modal {
-  width: 836px;
+  width: 754px;
   border-radius: 4px;
   background: #fff;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .22);
@@ -450,8 +456,8 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 46px;
-  padding: 0 16px;
+  height: 45px;
+  padding: 0 10px;
   border-bottom: 1px solid #d9dee8;
 }
 
@@ -470,11 +476,11 @@ button {
 }
 
 .modal-body {
-  padding: 26px 18px 12px 58px;
+  padding: 23px 12px 10px 52px;
 }
 
 .modal-row {
-  grid-template-columns: 48px 1fr;
+  grid-template-columns: 44px 1fr;
   column-gap: 20px;
 }
 
@@ -485,8 +491,8 @@ button {
 
 .modal-row input,
 .modal-row select {
-  width: 710px;
-  height: 36px;
+  width: 646px;
+  height: 34px;
 }
 
 .upload-area {
@@ -499,8 +505,8 @@ button {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 76px;
-  height: 70px;
+  width: 66px;
+  height: 64px;
   border: 1px dashed #d7dde7;
   border-radius: 4px;
   color: #586477;
@@ -522,9 +528,9 @@ button {
 .config-table-head,
 .config-line {
   display: grid;
-  grid-template-columns: 1fr 86px;
+  grid-template-columns: 164px 164px 164px 86px 48px;
   align-items: center;
-  width: 710px;
+  width: 646px;
 }
 
 .config-table-head {
@@ -542,25 +548,40 @@ button {
 
 .config-line {
   gap: 0;
-  min-height: 40px;
+  min-height: 84px;
   border-right: 1px solid #e4e8ef;
   border-bottom: 1px solid #e4e8ef;
   border-left: 1px solid #e4e8ef;
   background: #fff;
 }
 
+.config-line input,
 .config-line select {
-  width: calc(100% - 10px);
-  margin: 5px;
+  width: calc(100% - 12px);
+  height: 34px;
+  margin: 6px;
 }
 
-.time-select {
-  min-height: 30px;
-  padding: 2px 5px;
+.time-input {
+  padding: 6px 8px;
   border: 1px solid #d7dde7;
   border-radius: 4px;
   background: #fff;
   color: #334155;
+}
+
+.line-icon {
+  justify-self: center;
+}
+
+.config-line .line-icon .mini-im {
+  width: 62px;
+  height: 62px;
+  font-size: 34px;
+}
+
+.config-line .line-icon .im-line {
+  font-size: 15px;
 }
 
 .add-line {

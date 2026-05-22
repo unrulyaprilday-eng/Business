@@ -40,6 +40,12 @@ $axure.loadDocument(
             "url": "页面设置.html"
           },
           {
+            "id": "brand_settings",
+            "pageName": "品牌设置",
+            "type": "Wireframe",
+            "url": "品牌设置.html"
+          },
+          {
             "id": "site_domain",
             "pageName": "站点域名",
             "type": "Wireframe",
@@ -68,6 +74,13 @@ $axure.loadDocument(
             "pageName": "支付通道配置",
             "type": "Wireframe",
             "url": "支付通道配置.html"
+          },
+          {
+            "id": "music_manage",
+            "pageName": "音乐管理",
+            "type": "Wireframe",
+            "url": "音乐管理.html",
+            "children": []
           }
         ]
       },
