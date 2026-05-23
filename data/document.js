@@ -76,6 +76,12 @@ $axure.loadDocument(
             "url": "支付通道配置.html"
           },
           {
+            "id": "ad_tracking_config",
+            "pageName": "广告埋点配置",
+            "type": "Wireframe",
+            "url": "广告埋点配置.html"
+          },
+          {
             "id": "music_manage",
             "pageName": "音乐管理",
             "type": "Wireframe",
@@ -101,6 +107,18 @@ $axure.loadDocument(
             "pageName": "站点维护管理",
             "type": "Wireframe",
             "url": "站点维护管理.html"
+          },
+          {
+            "id": "operation_platform_notice",
+            "pageName": "平台公告",
+            "type": "Wireframe",
+            "url": "平台公告.html"
+          },
+          {
+            "id": "operation_customer_service_center",
+            "pageName": "客服中心",
+            "type": "Wireframe",
+            "url": "客服中心.html"
           }
         ]
       },

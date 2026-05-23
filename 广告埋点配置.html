@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>广告埋点配置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/广告埋点配置/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/广告埋点配置.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/广告埋点配置/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell ad-track-shell">
+        <div class="ad-track-topbar">
+          <button class="icon-btn" type="button" aria-label="返回">‹</button>
+          <button class="icon-btn refresh" type="button" aria-label="刷新">↻</button>
+          <span>站点配置</span>
+          <i>/</i>
+          <strong>广告埋点配置</strong>
+        </div>
+
+        <main class="ad-track-card">
+          <nav class="tabs" aria-label="广告埋点配置">
+            <button class="tab active" type="button" data-tab="stats">埋点统计</button>
+            <button class="tab" type="button" data-tab="config">埋点配置</button>
+          </nav>
+
+          <section class="tab-panel active" id="statsPanel">
+            <div class="table-box stats-box">
+              <table class="stats-table">
+                <thead>
+                  <tr>
+                    <th>站点ID</th>
+                    <th>站点名称</th>
+                    <th>Facebook广告</th>
+                    <th>Google广告</th>
+                    <th>Tiktok广告</th>
+                    <th>Kwai广告</th>
+                    <th>Bigo广告</th>
+                    <th>Okspin广告</th>
+                    <th>Adjust广告</th>
+                    <th>MgskyAds广告</th>
+                    <th>3beauties</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="empty-row">
+                    <td colspan="11">暂无数据</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="pager">
+              <button type="button">|‹</button>
+              <button type="button">‹‹</button>
+              <button type="button">‹</button>
+              <input value="1"/>
+              <span>/ 1</span>
+              <button type="button">›</button>
+              <button type="button">››</button>
+              <button type="button">›|</button>
+              <select><option>20条/页</option><option>50条/页</option></select>
+              <span>共 0 条记录</span>
+            </div>
+          </section>
+
+          <section class="tab-panel" id="configPanel">
+            <div class="filter-bar">
+              <label>渠道类型:</label>
+              <select>
+                <option>请选择渠道类型</option>
+                <option>facebook</option>
+                <option>adjust</option>
+                <option>google</option>
+                <option>tiktok</option>
+              </select>
+              <button class="primary-btn" type="button">⌕ 搜索</button>
+              <button class="plain-btn" type="button">↻ 重置</button>
+              <button class="primary-btn" type="button" data-modal="add">新增</button>
+            </div>
+            <div class="table-scroll">
+              <table class="config-table">
+                <thead>
+                  <tr>
+                    <th>渠道ID</th>
+                    <th>渠道编码</th>
+                    <th>渠道名称</th>
+                    <th>渠道类型</th>
+                    <th>落地页域名</th>
+                    <th>跳转地址</th>
+                    <th>像素ID</th>
+                    <th>安装类型</th>
+                    <th>事件标识(注册)</th>
+                    <th>事件标识(首充)</th>
+                    <th>事件标识(复充)</th>
+                    <th>备注</th>
+                    <th>创建时间</th>
+                    <th class="sticky-col">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>dc96f1cb-298...</td>
+                    <td>101102</td>
+                    <td>Facebook测试</td>
+                    <td><span class="type-tag facebook">facebook</span></td>
+                    <td>tuiguanawda.jyowhit...</td>
+                    <td>tuiguanawda.jyowhit...</td>
+                    <td>111</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>测试</td>
+                    <td>2026-04-23 14:47:03</td>
+                    <td class="sticky-col actions"><button type="button" data-modal="edit-facebook">修改</button><button class="danger" type="button">删除</button></td>
+                  </tr>
+                  <tr>
+                    <td>a6f02773-b97...</td>
+                    <td>101101</td>
+                    <td>adjust测试</td>
+                    <td><span class="type-tag adjust">adjust</span></td>
+                    <td>tuiguanawda.jyowhit...</td>
+                    <td>tuiguanawda.jyowhit...</td>
+                    <td></td>
+                    <td>H5</td>
+                    <td>111</td>
+                    <td>22</td>
+                    <td>33</td>
+                    <td>cs</td>
+                    <td>2026-04-23 13:58:49</td>
+                    <td class="sticky-col actions"><button type="button" data-modal="edit-adjust">修改</button><button class="danger" type="button">删除</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="pager config-pager">
+              <button type="button">|‹</button>
+              <button type="button">‹‹</button>
+              <button type="button">‹</button>
+              <input value="1"/>
+              <span>/ 1</span>
+              <button type="button">›</button>
+              <button type="button">››</button>
+              <button type="button">›|</button>
+              <select><option>20条/页</option><option>50条/页</option></select>
+              <span>共 2 条记录</span>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <div class="modal-mask" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true">
+        <button class="modal-close" type="button" aria-label="关闭">×</button>
+        <h3 id="modalTitle">新增埋点配置</h3>
+        <div class="modal-body" id="modalBody"></div>
+        <footer class="modal-actions">
+          <button class="plain-btn" type="button" data-close>取消</button>
+          <button class="primary-btn" type="button">确定</button>
+        </footer>
+      </div>
+    </div>
+
+    <script src="custom/js/广告埋点配置.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

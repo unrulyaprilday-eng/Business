@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>客服中心</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/客服中心/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/客服中心.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/客服中心/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <main class="custom-page-shell cs-page">
+        <header class="cs-titlebar">
+          <button class="icon-btn" type="button" aria-label="返回">‹</button>
+          <button class="icon-btn" type="button" aria-label="刷新">↻</button>
+          <span>运营中心</span>
+          <b>/</b>
+          <strong>客服中心</strong>
+        </header>
+
+        <section class="cs-workspace" aria-label="在线客服工作台">
+          <aside class="cs-sidebar">
+            <div class="sidebar-head">
+              <div>
+                <h1>Conversations</h1>
+                <p>未应答客诉</p>
+              </div>
+              <span class="queue-pill">Queue: <b id="queueCount">0</b></span>
+            </div>
+
+            <label class="search-box">
+              <span aria-hidden="true">⌕</span>
+              <input id="conversationSearch" type="search" placeholder="Search name, ID, or tag..."/>
+            </label>
+
+            <div class="auto-row">
+              <span>Auto</span>
+              <button class="toggle-btn" id="autoToggle" type="button" aria-label="自动接待"><i></i></button>
+              <button class="queue-add-btn" id="queueAddBtn" type="button" aria-label="接入未应答会话">+</button>
+            </div>
+
+            <div class="conversation-list" id="conversationList"></div>
+
+            <div class="empty-list" id="emptyList" hidden>
+              <div class="empty-icon">☷</div>
+              <p>No conversations yet</p>
+            </div>
+          </aside>
+
+          <section class="chat-panel" id="chatPanel">
+            <div class="chat-empty" id="chatEmpty">
+              <div class="chat-empty-icon">☷</div>
+              <h2>Select a conversation</h2>
+              <p>Choose a user from the sidebar to start chatting</p>
+            </div>
+
+            <div class="chat-active" id="chatActive" hidden>
+              <header class="chat-head">
+                <div class="customer-card">
+                  <div>
+                    <h2 id="activeName">-</h2>
+                    <p><i></i><span id="activeStatus">Offline</span></p>
+                  </div>
+                </div>
+                <div class="chat-actions">
+                  <button class="tool-btn tag-btn" type="button" aria-label="打标签">🏷</button>
+                  <button class="lang-btn" type="button"><span>🌐</span>English</button>
+                </div>
+              </header>
+
+              <div class="messages" id="messageList"></div>
+
+              <footer class="reply-box">
+                <section class="quick-panel" id="quickPanel" hidden>
+                  <header>
+                    <strong>Quick Replies</strong>
+                    <button id="closeQuickPanel" type="button" aria-label="关闭快捷用语">×</button>
+                  </header>
+                  <div class="quick-list" id="quickList">
+                    <button data-quick-text="Hello! How can I help you today?" type="button">Hello! How can I help you today?</button>
+                    <button data-quick-text="Please wait a moment, I'm checking for you." type="button">Please wait a moment, I'm checking for you.</button>
+                    <button data-quick-text="Could you provide more details?" type="button">Could you provide more details?</button>
+                    <button data-quick-text="Your issue has been resolved. Is there anything else I can help with?" type="button">Your issue has been resolved. Is there anythi...</button>
+                    <button data-quick-text="Thank you for contacting us!" type="button">Thank you for contacting us!</button>
+                    <button data-quick-text="I'll transfer you to a specialist." type="button">I'll transfer you to a specialist.</button>
+                  </div>
+                  <div class="quick-add">
+                    <input id="quickTemplateInput" type="text" placeholder="Add new template..."/>
+                    <button id="addQuickTemplate" type="button">Add</button>
+                  </div>
+                </section>
+                <div class="composer-tools">
+                  <button type="button" aria-label="发送附件">📎</button>
+                  <button type="button" aria-label="表情">😊</button>
+                  <button class="quick-trigger" id="quickTrigger" type="button" aria-label="快捷用语">⚡</button>
+                </div>
+                <label class="composer-input">
+                  <input id="replyInput" type="text" placeholder="Type a message..."/>
+                </label>
+                <div class="reply-actions">
+                  <button class="btn primary" id="sendBtn" type="button">发送</button>
+                </div>
+              </footer>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+    <script src="custom/js/客服中心.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>
