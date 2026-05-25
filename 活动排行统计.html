@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>活动排行统计</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/活动排行统计/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/活动排行统计.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/活动排行统计/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="custom/js/活动排行统计.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell activity-rank-page">
+        <header class="rank-breadcrumb">
+          <button class="back-btn" type="button" aria-label="返回">‹</button>
+          <span>运营中心</span>
+          <strong>/ 活动排行统计</strong>
+        </header>
+
+        <main class="rank-panel">
+          <form class="filter-toolbar" id="rankFilter">
+            <div class="select-control" data-select="rankType">
+              <button class="select-trigger" type="button">
+                <span>请选择排行榜</span>
+                <i></i>
+              </button>
+              <ul class="select-menu" hidden>
+                <li data-value="有效投注">有效投注</li>
+                <li data-value="盈利额度">盈利额度</li>
+                <li data-value="充值额度">充值额度</li>
+              </ul>
+            </div>
+
+            <div class="select-control activity-select" data-select="activity">
+              <button class="select-trigger" type="button">
+                <span>请选择活动</span>
+                <i></i>
+              </button>
+              <ul class="select-menu activity-menu" hidden>
+                <li data-value="首充奖励">首充奖励</li>
+                <li data-value="充值送金">充值送金</li>
+                <li data-value="拉新返金">拉新返金</li>
+                <li data-value="救济金">救济金</li>
+                <li data-value="签到奖励">签到奖励</li>
+                <li data-value="打码返水">打码返水</li>
+                <li data-value="优惠券赠送">优惠券赠送</li>
+                <li data-value="会员礼包">会员礼包</li>
+                <li data-value="游戏排行榜">游戏排行榜</li>
+                <li data-value="充值排行榜">充值排行榜</li>
+                <li data-value="幸运转盘">幸运转盘</li>
+                <li data-value="拼多多">拼多多</li>
+              </ul>
+            </div>
+
+            <button class="btn btn-primary" type="submit">搜索</button>
+            <button class="btn btn-default" type="reset">重置</button>
+          </form>
+
+          <div class="rank-tip">查询时间为活动排行榜任务周期内时间，如任务为日排行，则只天查询；默认当天排名。</div>
+
+          <section class="table-wrap" aria-label="活动排行统计列表">
+            <table class="rank-table">
+              <thead>
+                <tr>
+                  <th>排名</th>
+                  <th>会员账号</th>
+                  <th>奖励</th>
+                </tr>
+              </thead>
+              <tbody id="rankRows"></tbody>
+            </table>
+          </section>
+
+          <footer class="pagination">
+            <span class="pager-icon muted">|‹</span>
+            <span class="pager-icon muted">‹‹</span>
+            <span class="pager-icon muted">‹</span>
+            <button class="page-number" type="button">1</button>
+            <span>/ 1</span>
+            <span class="pager-icon">›</span>
+            <span class="pager-icon">››</span>
+            <span class="pager-icon">›|</span>
+            <div class="page-size">20条/页 <i></i></div>
+            <span>共 <b id="totalRows">0</b> 条记录</span>
+          </footer>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

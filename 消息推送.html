@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>消息推送</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/消息推送/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/消息推送.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/消息推送/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell push-page">
+        <header class="push-titlebar">
+          <button class="icon-btn" type="button" aria-label="返回">‹</button>
+          <button class="icon-btn" type="button" aria-label="刷新">↻</button>
+          <span>运营中心</span>
+          <b>/</b>
+          <strong>消息推送</strong>
+        </header>
+
+        <main class="push-main">
+          <section class="filter-bar" aria-label="筛选条件">
+            <label>消息类型:
+              <select id="filterType">
+                <option value="">请选择类型</option>
+                <option>消息</option>
+                <option>公告</option>
+                <option>跑马灯</option>
+              </select>
+            </label>
+            <label>状态:
+              <select id="filterStatus">
+                <option value="">请选择状态</option>
+                <option>未开始</option>
+                <option>已发送</option>
+                <option>已结束</option>
+                <option>已撤回</option>
+              </select>
+            </label>
+            <label>标题:
+              <input id="filterTitle" type="search" placeholder="请输入标题"/>
+            </label>
+            <button class="primary-btn" id="searchBtn" type="button">搜索</button>
+            <button class="ghost-btn" id="resetBtn" type="button">重置</button>
+            <button class="primary-btn" id="openCreateBtn" type="button">新增</button>
+          </section>
+
+          <section class="table-wrap" aria-label="消息推送列表">
+            <table class="push-table">
+              <thead>
+                <tr>
+                  <th>消息编号</th>
+                  <th>标题</th>
+                  <th>消息类型</th>
+                  <th>收件人</th>
+                  <th>发送时间</th>
+                  <th>结束时间</th>
+                  <th>状态</th>
+                  <th>操作人</th>
+                  <th>操作时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="messageRows"></tbody>
+            </table>
+          </section>
+
+          <footer class="pager">
+            <button type="button">|‹</button>
+            <button type="button">‹‹</button>
+            <button type="button">‹</button>
+            <input value="1" aria-label="当前页"/>
+            <span>/ 2</span>
+            <button type="button">›</button>
+            <button type="button">››</button>
+            <button type="button">›|</button>
+            <select aria-label="每页条数">
+              <option>20条/页</option>
+              <option>50条/页</option>
+              <option>100条/页</option>
+            </select>
+            <span>共 29 条记录</span>
+          </footer>
+        </main>
+      </div>
+    </div>
+
+    <div class="modal-mask" id="createModal" hidden>
+      <section class="push-modal create-modal" role="dialog" aria-modal="true" aria-labelledby="createTitle">
+        <header class="modal-head">
+          <h3 id="createTitle">新增</h3>
+          <button class="modal-close" type="button" data-close="createModal" aria-label="关闭">×</button>
+        </header>
+        <div class="modal-body create-body">
+          <div class="form-grid">
+            <label class="field required">消息类型
+              <select id="messageType">
+                <option value="">请选择类型</option>
+                <option>消息</option>
+                <option>公告</option>
+                <option>跑马灯</option>
+              </select>
+            </label>
+            <label class="field">弹窗频次
+              <select id="popupFrequency">
+                <option>不弹窗</option>
+                <option>登录后弹一次</option>
+                <option>每次进入首页弹窗</option>
+                <option>每日一次</option>
+                <option>每小时一次</option>
+              </select>
+            </label>
+            <label class="field required">收件人
+              <select id="recipientType">
+                <option value="">请选择收件人</option>
+                <option>全体玩家</option>
+                <option>VIP玩家</option>
+                <option>R玩家</option>
+                <option>自定义玩家</option>
+              </select>
+            </label>
+            <div></div>
+          </div>
+
+          <div class="recipient-panel" id="vipPanel" hidden>
+            <span>VIP等级</span>
+            <div class="inline-actions">
+              <button type="button" data-check-group="vip" data-action="all">全选</button>
+              <button type="button" data-check-group="vip" data-action="clear">清空</button>
+            </div>
+            <div class="check-list" id="vipChecks"></div>
+          </div>
+
+          <div class="recipient-panel" id="rPanel" hidden>
+            <span>R玩家类型</span>
+            <div class="inline-actions">
+              <button type="button" data-check-group="r" data-action="all">全选</button>
+              <button type="button" data-check-group="r" data-action="clear">清空</button>
+            </div>
+            <div class="check-list compact" id="rChecks"></div>
+          </div>
+
+          <label class="id-field" id="customPlayerPanel" hidden>
+            <span>收件人ID</span>
+            <textarea id="playerIds" placeholder="多个ID请用逗号分隔"></textarea>
+          </label>
+
+          <label class="field required full">标题
+            <input id="messageTitle" type="text" placeholder="请输入标题"/>
+          </label>
+
+          <div class="editor-row required">
+            <span>显示内容</span>
+            <div class="editor-shell">
+              <div class="toolbar" aria-label="编辑器工具栏">
+                <button type="button"><b>B</b></button>
+                <button type="button"><u>U</u></button>
+                <button type="button"><i>I</i></button>
+                <button type="button"><s>S</s></button>
+                <i></i>
+                <button type="button">H</button>
+                <button type="button">x₂</button>
+                <button type="button">x²</button>
+                <button type="button">”</button>
+                <button type="button">☷</button>
+                <button type="button">☰</button>
+                <i></i>
+                <button type="button">↗</button>
+                <button type="button">▧</button>
+                <button type="button">⊞</button>
+                <i></i>
+                <button type="button">←</button>
+                <button type="button">→</button>
+                <button type="button">▣</button>
+                <span></span>
+                <button type="button">⌗</button>
+                <button type="button">◎</button>
+              </div>
+              <textarea id="messageContent" aria-label="显示内容"></textarea>
+              <div class="editor-foot">
+                <span>Character Count: <b id="charCount">0</b></span>
+                <label>Scroll Auto <input type="checkbox" checked/></label>
+              </div>
+            </div>
+            <em class="error-tip" id="contentError" hidden>请输入显示内容</em>
+          </div>
+
+          <div class="send-row">
+            <span>发送时间</span>
+            <label><input type="radio" name="sendTime" value="now" checked/> 立即发送</label>
+            <label><input type="radio" name="sendTime" value="schedule"/> 定时发送</label>
+            <input class="date-input" id="scheduleTime" type="text" placeholder="发送时间" hidden/>
+          </div>
+
+          <label class="field required end-field">结束时间
+            <input id="endTime" type="text" placeholder="结束时间"/>
+          </label>
+        </div>
+        <footer class="modal-foot">
+          <button class="ghost-btn" type="button" data-close="createModal">取消</button>
+          <button class="primary-btn" id="confirmCreateBtn" type="button">确定</button>
+        </footer>
+      </section>
+    </div>
+
+    <div class="modal-mask" id="detailModal" hidden>
+      <section class="push-modal detail-modal" role="dialog" aria-modal="true" aria-labelledby="detailTitleText">
+        <header class="modal-head">
+          <h3 id="detailTitleText">消息详情</h3>
+          <button class="modal-close" type="button" data-close="detailModal" aria-label="关闭">×</button>
+        </header>
+        <div class="modal-body detail-body">
+          <dl>
+            <div><dt>消息编号</dt><dd id="detailId"></dd></div>
+            <div><dt>状态</dt><dd id="detailStatus"></dd></div>
+            <div><dt>消息类型</dt><dd id="detailType"></dd></div>
+            <div><dt>弹窗频次</dt><dd id="detailFrequency"></dd></div>
+            <div><dt>收件人</dt><dd id="detailRecipient"></dd></div>
+            <div><dt>发送时间</dt><dd id="detailSend"></dd></div>
+            <div><dt>结束时间</dt><dd id="detailEnd"></dd></div>
+            <div><dt>标题</dt><dd id="detailMessageTitle"></dd></div>
+            <div class="content-detail"><dt>显示内容</dt><dd id="detailContent"></dd></div>
+          </dl>
+        </div>
+        <footer class="modal-foot">
+          <button class="ghost-btn" type="button" data-close="detailModal">关闭</button>
+        </footer>
+      </section>
+    </div>
+
+    <div class="modal-mask" id="recallModal" hidden>
+      <section class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="recallTitle">
+        <header class="modal-head">
+          <h3 id="recallTitle">确认撤回</h3>
+          <button class="modal-close" type="button" data-close="recallModal" aria-label="关闭">×</button>
+        </header>
+        <div class="confirm-body">
+          <span class="warning-icon">?</span>
+          <p>确认撤回消息：<b id="recallName">测试</b>?</p>
+        </div>
+        <footer class="modal-foot">
+          <button class="ghost-btn" type="button" data-close="recallModal">取消</button>
+          <button class="primary-btn" id="confirmRecallBtn" type="button">确认</button>
+        </footer>
+      </section>
+    </div>
+
+    <script src="custom/js/消息推送.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

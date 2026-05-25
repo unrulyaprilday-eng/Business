@@ -1,5 +1,4 @@
-$axure.loadDocument(
-{
+$axure.loadDocument({
   "configuration": {
     "showPageNotes": true,
     "showPageNoteNames": false,
@@ -115,10 +114,40 @@ $axure.loadDocument(
             "url": "平台公告.html"
           },
           {
+            "id": "operation_message_push",
+            "pageName": "消息推送",
+            "type": "Wireframe",
+            "url": "消息推送.html"
+          },
+          {
+            "id": "operation_promotion_manage",
+            "pageName": "宣传管理",
+            "type": "Wireframe",
+            "url": "宣传管理.html"
+          },
+          {
             "id": "operation_customer_service_center",
             "pageName": "客服中心",
             "type": "Wireframe",
             "url": "客服中心.html"
+          },
+          {
+            "id": "operation_task_center",
+            "pageName": "任务中心",
+            "type": "Wireframe",
+            "url": "任务中心.html"
+          },
+          {
+            "id": "operation_landing_page_manage",
+            "pageName": "落地页管理",
+            "type": "Wireframe",
+            "url": "落地页管理.html"
+          },
+          {
+            "id": "activity_rank_statistics",
+            "pageName": "活动排行统计",
+            "type": "Wireframe",
+            "url": "活动排行统计.html"
           }
         ]
       },
@@ -333,6 +362,12 @@ $axure.loadDocument(
             "pageName": "游戏线路费率",
             "type": "Wireframe",
             "url": "游戏线路费率.html"
+          },
+          {
+            "id": "game_type_settings",
+            "pageName": "游戏类型设置",
+            "type": "Wireframe",
+            "url": "游戏类型设置.html"
           }
         ]
       },
@@ -2608,5 +2643,4 @@ $axure.loadDocument(
       "6378b734cecb4b279bccd7e81849e2e3": "c52f4f654a374d83b62e6fb477f11f14"
     }
   }
-}
-);
+});

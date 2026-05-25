@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>宣传管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/宣传管理/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/宣传管理.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/宣传管理/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell promo-page">
+        <div class="promo-titlebar">
+          <button class="title-icon" type="button" aria-label="返回">‹</button>
+          <button class="title-icon refresh" type="button" aria-label="刷新">↻</button>
+          <span>运营中心</span>
+          <b>/</b>
+          <strong>宣传管理</strong>
+        </div>
+
+        <main class="promo-panel">
+          <section class="promo-toolbar" aria-label="宣传筛选">
+            <label class="filter-field">
+              <span>宣传类型:</span>
+              <select id="typeFilter">
+                <option value="">请选择类型</option>
+                <option value="大厅Banner">大厅Banner</option>
+                <option value="大厅小Banner">大厅小Banner</option>
+              </select>
+            </label>
+            <button class="btn primary" id="searchBtn" type="button">搜索</button>
+            <button class="btn plain" id="resetBtn" type="button">重置</button>
+            <button class="btn primary" id="addBtn" type="button">新增</button>
+          </section>
+
+          <section class="promo-table-wrap">
+            <table class="promo-table">
+              <thead>
+                <tr>
+                  <th class="col-sort">排序</th>
+                  <th class="col-type">类型</th>
+                  <th class="col-image">宣传图</th>
+                  <th>路径链接</th>
+                  <th class="col-time">创建时间</th>
+                  <th class="col-action">操作</th>
+                </tr>
+              </thead>
+              <tbody id="promoRows"></tbody>
+            </table>
+            <div class="empty-state" id="emptyState" hidden>暂无宣传数据</div>
+          </section>
+
+          <div class="pager">
+            <button type="button">|‹</button>
+            <button type="button">‹‹</button>
+            <button type="button">‹</button>
+            <input value="1" aria-label="当前页"/>
+            <span>/ 1</span>
+            <button type="button">›</button>
+            <button type="button">››</button>
+            <button type="button">›|</button>
+            <select aria-label="每页条数">
+              <option>20条/页</option>
+              <option>50条/页</option>
+              <option>100条/页</option>
+            </select>
+            <span id="totalCount">共 0 条记录</span>
+          </div>
+        </main>
+
+        <div class="modal-mask" id="promoModal" hidden>
+          <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <header class="modal-head">
+              <h3 id="modalTitle">新增</h3>
+              <button class="modal-close" type="button" data-close aria-label="关闭">×</button>
+            </header>
+            <form class="modal-body">
+              <label class="form-row required">
+                <span>宣传类型</span>
+                <select id="modalType">
+                  <option value="">请选择类型</option>
+                  <option value="大厅Banner">大厅Banner</option>
+                  <option value="大厅小Banner">大厅小Banner</option>
+                </select>
+              </label>
+              <p class="type-tip" id="typeTip" hidden>每种宣传类型的图片尺寸不同，请先选择宣传类型再上传!</p>
+              <label class="form-row required image-row">
+                <span>宣传图片</span>
+                <div>
+                  <p class="upload-tip" id="uploadTip" hidden>推荐上传 934 × 410 或等比例缩放，PNG/JPG/GIF，小于 0.5MB</p>
+                  <div class="upload-box" id="uploadBox" tabindex="0">
+                    <button class="remove-image" id="removeImage" type="button" aria-label="移除图片" hidden>×</button>
+                    <div class="preview-image" id="imagePreview" hidden></div>
+                    <div class="upload-placeholder" id="uploadPlaceholder">
+                      <strong>＋</strong>
+                      <span>点击或拖拽上传</span>
+                    </div>
+                  </div>
+                </div>
+              </label>
+              <label class="form-row required">
+                <span>跳转类型</span>
+                <select id="jumpType">
+                  <option value="无">无</option>
+                  <option value="外部链接">外部链接</option>
+                  <option value="活动">活动</option>
+                  <option value="返水">返水</option>
+                  <option value="代理">代理</option>
+                  <option value="VIP">VIP</option>
+                </select>
+              </label>
+              <label class="form-row jump-extra" id="activityRow" hidden>
+                <span>跳转活动</span>
+                <div class="activity-select">
+                  <button class="activity-trigger" id="activityTrigger" type="button">请选择活动</button>
+                  <div class="activity-menu" id="activityMenu" hidden>
+                    <label class="activity-search">
+                      <span>⌕</span>
+                      <input id="activitySearch" type="text" placeholder="搜索"/>
+                    </label>
+                    <div class="activity-options" id="activityOptions"></div>
+                  </div>
+                </div>
+              </label>
+              <label class="form-row jump-extra" id="externalRow" hidden>
+                <span>外部链接</span>
+                <input id="externalLink" type="text" placeholder="请输入外部链接"/>
+              </label>
+              <label class="form-row">
+                <span>排序</span>
+                <input id="sortInput" type="number" value="0" min="0"/>
+              </label>
+            </form>
+            <footer class="modal-actions">
+              <button class="btn plain" type="button" data-close>取消</button>
+              <button class="btn primary" id="confirmBtn" type="button">确定</button>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="custom/js/宣传管理.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>游戏类型设置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/游戏类型设置/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/游戏类型设置.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/游戏类型设置/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell game-type-page">
+        <main class="table-panel">
+          <div class="table-wrap">
+            <table class="type-table" aria-label="游戏类型设置">
+              <thead>
+                <tr>
+                  <th>排序</th>
+                  <th>游戏类型</th>
+                  <th>激活图标</th>
+                  <th>未激活图标</th>
+                  <th>是否启用</th>
+                  <th class="sortable">更新时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="typeTableBody"></tbody>
+            </table>
+          </div>
+        </main>
+
+        <div class="modal-layer" id="editModal" hidden>
+          <div class="modal-mask" data-close-modal></div>
+          <section class="edit-dialog" role="dialog" aria-modal="true" aria-labelledby="editDialogTitle">
+            <header class="dialog-head">
+              <h1 id="editDialogTitle">编辑游戏类型</h1>
+              <button class="icon-close" type="button" aria-label="关闭" data-close-modal>×</button>
+            </header>
+            <form class="dialog-body">
+              <label class="form-row">
+                <span>游戏类型</span>
+                <input id="editName" type="text" disabled/>
+              </label>
+              <label class="form-row upload-row">
+                <span>激活图标</span>
+                <div>
+                  <div class="upload-box">
+                    <button class="remove-image" type="button" aria-label="移除激活图标">×</button>
+                    <span class="icon-preview" id="editActiveIcon"></span>
+                  </div>
+                  <p>请上传100*100或等比例，PNG/JPG/GIF格式小于50KB的图片</p>
+                </div>
+              </label>
+              <label class="form-row upload-row">
+                <span>未激活图标</span>
+                <div>
+                  <div class="upload-box">
+                    <button class="remove-image" type="button" aria-label="移除未激活图标">×</button>
+                    <span class="icon-preview muted" id="editInactiveIcon"></span>
+                  </div>
+                  <p>请上传100*100或等比例，PNG/JPG/GIF格式小于50KB的图片</p>
+                </div>
+              </label>
+              <label class="form-row">
+                <span>排序</span>
+                <div class="number-field">
+                  <input id="editSort" type="number" min="0"/>
+                  <button type="button" data-step="1">+</button>
+                  <button type="button" data-step="-1">−</button>
+                </div>
+              </label>
+              <label class="form-row switch-row">
+                <span>是否启用</span>
+                <input id="editEnabled" class="switch-input" type="checkbox"/>
+                <span class="switch-ui"></span>
+              </label>
+            </form>
+            <footer class="dialog-actions">
+              <button class="btn ghost" type="button" data-close-modal>取消</button>
+              <button class="btn primary" id="saveEdit" type="button">保存</button>
+            </footer>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="custom/js/游戏类型设置.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

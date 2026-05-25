@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>落地页管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/落地页管理/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/落地页管理.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/落地页管理/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell landing-page-admin">
+        <div class="crumb-bar">
+          <button class="icon-back" type="button" aria-label="返回"></button>
+          <button class="icon-refresh" type="button" aria-label="刷新"></button>
+          <span>运营中心</span>
+          <b>/</b>
+          <strong>落地页管理</strong>
+        </div>
+
+        <main class="page-card">
+          <div class="tab-title">落地页管理</div>
+          <div class="filter-bar">
+            <label>名称:</label>
+            <input type="text" placeholder="请输入名称"/>
+            <button class="btn primary" type="button">搜索</button>
+            <button class="btn" type="button">重置</button>
+            <button class="btn primary js-open-add" type="button">新增</button>
+          </div>
+
+          <div class="table-shell">
+            <table class="landing-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>模板名称</th>
+                  <th>样式</th>
+                  <th>图标</th>
+                  <th>APP名字</th>
+                  <th>安卓下载地址</th>
+                  <th>评分</th>
+                  <th>截图</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ba9f176...</td>
+                  <td>1123</td>
+                  <td>仿谷歌落地页</td>
+                  <td><span class="app-icon">15bra.com</span></td>
+                  <td>测试</td>
+                  <td>http://localhost:3080/promotion?tab=vip</td>
+                  <td>4.5</td>
+                  <td>
+                    <div class="shot-list">
+                      <span class="shot goat"></span>
+                      <span class="shot wheel"></span>
+                      <span class="shot dark"></span>
+                    </div>
+                  </td>
+                  <td>
+                    <button class="text-link js-open-edit" type="button">编辑</button>
+                    <button class="text-link danger js-open-delete" type="button">删除</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination">
+            <button class="page-icon first" type="button" aria-label="第一页"></button>
+            <button class="page-icon prev2" type="button" aria-label="向前五页"></button>
+            <button class="page-icon prev" type="button" aria-label="上一页"></button>
+            <input type="text" value="1" aria-label="当前页"/>
+            <span>/ 1</span>
+            <button class="page-icon next" type="button" aria-label="下一页"></button>
+            <button class="page-icon next2" type="button" aria-label="向后五页"></button>
+            <button class="page-icon last" type="button" aria-label="最后一页"></button>
+            <button class="page-size" type="button">20条/页</button>
+            <span>共 1 条记录</span>
+          </div>
+        </main>
+
+        <div class="modal-mask" data-modal="add" hidden>
+          <section class="modal landing-modal" role="dialog" aria-modal="true" aria-labelledby="addTitle">
+            <header class="modal-header">
+              <strong id="addTitle">新增落地页</strong>
+              <button class="close js-close-modal" type="button" aria-label="关闭">×</button>
+            </header>
+            <div class="modal-body">
+              <div class="form-row required">
+                <label>模板样式</label>
+                <button class="select-field invalid js-template-select" type="button" aria-expanded="false"><span>请选择</span><i></i></button>
+                <button class="select-option js-template-option" type="button" hidden>仿谷歌落地页</button>
+              </div>
+              <label class="form-row required">
+                <span>模板名称</span>
+                <input class="invalid" type="text"/>
+                <em>请输入模板名称</em>
+              </label>
+              <div class="form-row required upload-row">
+                <label>APP图标</label>
+                <div>
+                  <button class="upload-box small" type="button"><b>+</b><span>点击或拖拽<br/>上传</span></button>
+                  <p>要求尺寸 64×64，支持等比例缩放，最大 300KB</p>
+                </div>
+              </div>
+              <label class="form-row required">
+                <span>APP名字</span>
+                <input class="invalid" type="text" placeholder="请输入APP名字"/>
+                <em>请输入APP名字</em>
+              </label>
+              <label class="form-row required">
+                <span>安卓下载地址</span>
+                <input class="invalid" type="text" placeholder="请输入安卓下载地址"/>
+                <em>请输入安卓下载地址</em>
+              </label>
+              <label class="form-row required">
+                <span>iOS下载地址</span>
+                <input type="text" placeholder="请输入iOS下载地址"/>
+              </label>
+              <div class="form-row required">
+                <label>APP评分</label>
+                <div class="number-field"><input type="text" placeholder="0-5分"/><div><button type="button">+</button><button type="button">−</button></div></div>
+              </div>
+              <div class="form-row required upload-row">
+                <label>截图</label>
+                <div>
+                  <p>推荐尺寸 330 × 587，最多 5 张</p>
+                  <button class="upload-box tall" type="button"><b>+</b><span>点击或拖拽<br/>上传</span></button>
+                </div>
+              </div>
+              <label class="form-row required">
+                <span>APP详细介绍</span>
+                <textarea placeholder="请输入APP详细介绍"></textarea>
+              </label>
+            </div>
+            <footer class="modal-footer">
+              <button class="btn js-close-modal" type="button">取消</button>
+              <button class="btn primary js-close-modal" type="button">确定</button>
+            </footer>
+          </section>
+        </div>
+
+        <div class="modal-mask" data-modal="edit" hidden>
+          <section class="modal landing-modal edit-modal" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+            <header class="modal-header">
+              <strong id="editTitle">编辑落地页</strong>
+              <button class="close js-close-modal" type="button" aria-label="关闭">×</button>
+            </header>
+            <div class="modal-body">
+              <div class="form-row required">
+                <label>模板样式</label>
+                <div class="select-field"><span>仿谷歌落地页</span><i></i></div>
+              </div>
+              <label class="form-row required">
+                <span>模板名称</span>
+                <input class="invalid" type="text" value="1123"/>
+                <em>请输入模板名称</em>
+              </label>
+              <div class="form-row required upload-row">
+                <label>APP图标</label>
+                <div>
+                  <div class="preview app-preview"><span class="app-icon big">15bra.com</span><button type="button">×</button></div>
+                  <p>要求尺寸 64×64，支持等比例缩放，最大 300KB</p>
+                </div>
+              </div>
+              <label class="form-row required">
+                <span>APP名字</span>
+                <input class="invalid" type="text" value="测试"/>
+                <em>请输入APP名字</em>
+              </label>
+              <label class="form-row required">
+                <span>安卓下载地址</span>
+                <input class="invalid" type="text" value="http://localhost:3080/promotion?tab=vip"/>
+                <em>请输入安卓下载地址</em>
+              </label>
+              <label class="form-row required">
+                <span>iOS下载地址</span>
+                <input type="text" value="https://apps.apple.com/app/id123456789"/>
+              </label>
+              <div class="form-row required">
+                <label>APP评分</label>
+                <div class="number-field"><input type="text" value="4.5"/><div><button type="button">+</button><button type="button">−</button></div></div>
+              </div>
+              <div class="form-row required upload-row">
+                <label>截图</label>
+                <div>
+                  <p>推荐尺寸 330 × 587，最多 5 张</p>
+                  <div class="upload-line">
+                    <div class="preview shot-preview"><span class="shot goat"></span><button type="button">×</button></div>
+                    <div class="preview shot-preview"><span class="shot wheel"></span><button type="button">×</button></div>
+                    <div class="preview shot-preview"><span class="shot dark"></span><button type="button">×</button></div>
+                    <button class="upload-box tall" type="button"><b>+</b><span>点击或拖拽<br/>上传</span></button>
+                  </div>
+                </div>
+              </div>
+              <label class="form-row required">
+                <span>APP详细介绍</span>
+                <textarea>ces</textarea>
+              </label>
+            </div>
+            <footer class="modal-footer">
+              <button class="btn js-close-modal" type="button">取消</button>
+              <button class="btn primary js-close-modal" type="button">确定</button>
+            </footer>
+          </section>
+        </div>
+
+        <div class="modal-mask" data-modal="delete" hidden>
+          <section class="modal confirm-modal" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+            <header class="modal-header">
+              <strong id="deleteTitle">系统提示</strong>
+              <button class="close js-close-modal" type="button" aria-label="关闭">×</button>
+            </header>
+            <div class="confirm-body">
+              <span class="warn-icon">?</span>
+              <p>确定删除该落地页?</p>
+            </div>
+            <footer class="modal-footer">
+              <button class="btn js-close-modal" type="button">取消</button>
+              <button class="btn primary js-close-modal" type="button">确认</button>
+            </footer>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="custom/js/落地页管理.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>
