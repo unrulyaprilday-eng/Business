@@ -368,6 +368,12 @@ $axure.loadDocument({
             "pageName": "游戏类型设置",
             "type": "Wireframe",
             "url": "游戏类型设置.html"
+          },
+          {
+            "id": "gtd09p",
+            "pageName": "游戏频道管理",
+            "type": "Wireframe",
+            "url": "游戏频道管理.html"
           }
         ]
       },

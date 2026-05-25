@@ -1,0 +1,483 @@
+{
+  "schemaVersion": 1,
+  "savedAt": "2026-05-25T02:43:32.604Z",
+  "source": "data/document.js sitemap.rootNodes",
+  "rootNodes": [
+    {
+      "id": "zaj83g",
+      "pageName": "首页",
+      "type": "Wireframe",
+      "url": "默认看板.html"
+    },
+    {
+      "id": "site_config",
+      "pageName": "站点配置",
+      "type": "Folder",
+      "url": "",
+      "children": [
+        {
+          "id": "template_manage",
+          "pageName": "模板管理",
+          "type": "Wireframe",
+          "url": "模板管理.html"
+        },
+        {
+          "id": "page_settings",
+          "pageName": "页面设置",
+          "type": "Wireframe",
+          "url": "页面设置.html"
+        },
+        {
+          "id": "brand_settings",
+          "pageName": "品牌设置",
+          "type": "Wireframe",
+          "url": "品牌设置.html"
+        },
+        {
+          "id": "site_domain",
+          "pageName": "站点域名",
+          "type": "Wireframe",
+          "url": "站点域名.html"
+        },
+        {
+          "id": "customer_service_config",
+          "pageName": "客服配置",
+          "type": "Wireframe",
+          "url": "客服配置.html"
+        },
+        {
+          "id": "share_config",
+          "pageName": "分享配置",
+          "type": "Wireframe",
+          "url": "分享配置.html"
+        },
+        {
+          "id": "third_party_login_config",
+          "pageName": "第三方登录配置",
+          "type": "Wireframe",
+          "url": "第三方登录配置.html"
+        },
+        {
+          "id": "payment_channel_config",
+          "pageName": "支付通道配置",
+          "type": "Wireframe",
+          "url": "支付通道配置.html"
+        },
+        {
+          "id": "ad_tracking_config",
+          "pageName": "广告埋点配置",
+          "type": "Wireframe",
+          "url": "广告埋点配置.html"
+        },
+        {
+          "id": "music_manage",
+          "pageName": "音乐管理",
+          "type": "Wireframe",
+          "url": "音乐管理.html",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "operation_center",
+      "pageName": "运营中心",
+      "type": "Folder",
+      "url": "",
+      "children": [
+        {
+          "id": "t88dk7",
+          "pageName": "用户分群思维导图",
+          "type": "Wireframe",
+          "url": "用户分群思维导图.html"
+        },
+        {
+          "id": "site_maintenance_manage",
+          "pageName": "站点维护管理",
+          "type": "Wireframe",
+          "url": "站点维护管理.html"
+        },
+        {
+          "id": "operation_platform_notice",
+          "pageName": "平台公告",
+          "type": "Wireframe",
+          "url": "平台公告.html"
+        },
+        {
+          "id": "operation_message_push",
+          "pageName": "消息推送",
+          "type": "Wireframe",
+          "url": "消息推送.html"
+        },
+        {
+          "id": "operation_promotion_manage",
+          "pageName": "宣传管理",
+          "type": "Wireframe",
+          "url": "宣传管理.html"
+        },
+        {
+          "id": "operation_customer_service_center",
+          "pageName": "客服中心",
+          "type": "Wireframe",
+          "url": "客服中心.html"
+        },
+        {
+          "id": "operation_task_center",
+          "pageName": "任务中心",
+          "type": "Wireframe",
+          "url": "任务中心.html"
+        },
+        {
+          "id": "operation_landing_page_manage",
+          "pageName": "落地页管理",
+          "type": "Wireframe",
+          "url": "落地页管理.html"
+        },
+        {
+          "id": "activity_rank_statistics",
+          "pageName": "活动排行统计",
+          "type": "Wireframe",
+          "url": "活动排行统计.html"
+        }
+      ]
+    },
+    {
+      "id": "promotion_activity",
+      "pageName": "优惠活动",
+      "type": "Folder",
+      "url": "",
+      "children": [
+        {
+          "id": "novs01",
+          "pageName": "新增活动",
+          "type": "Wireframe",
+          "url": "新增活动.html"
+        },
+        {
+          "id": "activity_analysis",
+          "pageName": "活动分析",
+          "type": "Wireframe",
+          "url": "活动分析.html"
+        },
+        {
+          "id": "discount_data_report",
+          "pageName": "优惠数据报表",
+          "type": "Wireframe",
+          "url": "优惠数据报表.html"
+        },
+        {
+          "id": "promotion_global_config",
+          "pageName": "全局配置",
+          "type": "Wireframe",
+          "url": "全局配置.html"
+        }
+      ]
+    },
+    {
+      "id": "finance_center",
+      "pageName": "财务中心",
+      "type": "Folder",
+      "url": "",
+      "children": [
+        {
+          "id": "member_withdraw_settings",
+          "pageName": "会员提现设置",
+          "type": "Wireframe",
+          "url": "会员提现设置.html"
+        }
+      ]
+    },
+    {
+      "id": "data_report",
+      "pageName": "数据报表",
+      "type": "Folder",
+      "url": "",
+      "children": [
+        {
+          "id": "brueg6",
+          "pageName": "付费留存率报表",
+          "type": "Wireframe",
+          "url": "付费留存率报表.html"
+        },
+        {
+          "id": "l5eg1h",
+          "pageName": "每日总表",
+          "type": "Wireframe",
+          "url": "每日总表.html"
+        },
+        {
+          "id": "29ih6x",
+          "pageName": "游戏厂商报表",
+          "type": "Wireframe",
+          "url": "游戏厂商报表.html"
+        },
+        {
+          "id": "tnx9xu",
+          "pageName": "游戏报表",
+          "type": "Wireframe",
+          "url": "游戏报表.html"
+        },
+        {
+          "id": "owiq3l",
+          "pageName": "数据排行",
+          "type": "Wireframe",
+          "url": "数据排行.html"
+        },
+        {
+          "id": "e7o3hk",
+          "pageName": "投注报表",
+          "type": "Wireframe",
+          "url": "投注报表.html",
+          "children": [
+            {
+              "id": "lypz8n",
+              "pageName": "游戏投注报表",
+              "type": "Wireframe",
+              "url": "游戏投注报表.html"
+            }
+          ]
+        },
+        {
+          "id": "pbh382",
+          "pageName": "游戏记录",
+          "type": "Wireframe",
+          "url": "游戏记录.html"
+        },
+        {
+          "id": "3e2vtw",
+          "pageName": "用户留存",
+          "type": "Wireframe",
+          "url": "用户留存.html"
+        },
+        {
+          "id": "hev2wz",
+          "pageName": "用户分析",
+          "type": "Wireframe",
+          "url": "用户分析.html"
+        },
+        {
+          "id": "spwyp6",
+          "pageName": "LTV",
+          "type": "Wireframe",
+          "url": "ltv.html"
+        },
+        {
+          "id": "7ld7lo",
+          "pageName": "活动统计报表",
+          "type": "Wireframe",
+          "url": "活动统计报表.html",
+          "children": [
+            {
+              "id": "zc6hec",
+              "pageName": "玩家活动报表",
+              "type": "Wireframe",
+              "url": "玩家活动报表.html"
+            }
+          ]
+        },
+        {
+          "id": "mazrf0",
+          "pageName": "充值分布表",
+          "type": "Wireframe",
+          "url": "充值分布表.html"
+        },
+        {
+          "id": "wdz63g",
+          "pageName": "任务统计报表",
+          "type": "Wireframe",
+          "url": "任务统计报表.html",
+          "children": [
+            {
+              "id": "bs2iea",
+              "pageName": "玩家任务报表",
+              "type": "Wireframe",
+              "url": "玩家任务报表.html"
+            }
+          ]
+        },
+        {
+          "id": "discount_data_report",
+          "pageName": "优惠数据报表",
+          "type": "Wireframe",
+          "url": "优惠数据报表.html"
+        },
+        {
+          "id": "summary_data_report",
+          "pageName": "综合数据报表",
+          "type": "Wireframe",
+          "url": "综合数据报表.html"
+        },
+        {
+          "id": "y4eabe",
+          "pageName": "用户分群查询",
+          "type": "Wireframe",
+          "url": "用户分群查询.html"
+        },
+        {
+          "id": "j3w88v",
+          "pageName": "埋点统计",
+          "type": "Wireframe",
+          "url": "埋点统计.html"
+        },
+        {
+          "id": "",
+          "pageName": "VIP数据分析",
+          "type": "Folder",
+          "url": "",
+          "children": [
+            {
+              "id": "hnwa0q",
+              "pageName": "VIP等级分布",
+              "type": "Wireframe",
+              "url": "vip等级分布.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "game_center",
+      "pageName": "游戏中心",
+      "type": "Folder",
+      "url": "",
+      "children": [
+        {
+          "id": "recommend_channel_manage",
+          "pageName": "推荐频道管理",
+          "type": "Wireframe",
+          "url": "推荐频道管理.html"
+        },
+        {
+          "id": "bqtswj",
+          "pageName": "游戏线路费率",
+          "type": "Wireframe",
+          "url": "游戏线路费率.html"
+        },
+        {
+          "id": "game_type_settings",
+          "pageName": "游戏类型设置",
+          "type": "Wireframe",
+          "url": "游戏类型设置.html"
+        },
+        {
+          "id": "gtd09p",
+          "pageName": "游戏频道管理",
+          "type": "Wireframe",
+          "url": "游戏频道管理.html"
+        }
+      ]
+    },
+    {
+      "id": "user_management",
+      "pageName": "用户管理",
+      "type": "Folder",
+      "url": "",
+      "children": [
+        {
+          "id": "3ynxdj",
+          "pageName": "账号管理",
+          "type": "Wireframe",
+          "url": "账号管理.html"
+        },
+        {
+          "id": "bvy8xd",
+          "pageName": "权限管理",
+          "type": "Wireframe",
+          "url": "权限管理.html"
+        },
+        {
+          "id": "i5t3me",
+          "pageName": "角色管理",
+          "type": "Wireframe",
+          "url": "角色管理.html"
+        }
+      ]
+    },
+    {
+      "id": "agent_center",
+      "pageName": "代理中心",
+      "type": "Folder",
+      "url": "",
+      "children": [
+        {
+          "id": "agent_center_config",
+          "pageName": "代理配置",
+          "type": "Wireframe",
+          "url": "代理中心_代理配置.html"
+        }
+      ]
+    },
+    {
+      "id": "risk_center",
+      "pageName": "风险中心",
+      "type": "Folder",
+      "url": "",
+      "children": [
+        {
+          "id": "kecrse",
+          "pageName": "白名单",
+          "type": "Wireframe",
+          "url": "白名单.html"
+        },
+        {
+          "id": "",
+          "pageName": "日志管理",
+          "type": "Folder",
+          "url": "",
+          "children": [
+            {
+              "id": "h2hprn",
+              "pageName": "管理员登录日志",
+              "type": "Wireframe",
+              "url": "管理员登录日志.html"
+            },
+            {
+              "id": "7b23z5",
+              "pageName": "管理员操作日志",
+              "type": "Wireframe",
+              "url": "管理员操作日志.html"
+            },
+            {
+              "id": "ef78ue",
+              "pageName": "系统异常日志",
+              "type": "Wireframe",
+              "url": "系统异常日志.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "merchant_center",
+      "pageName": "商户中心",
+      "type": "Folder",
+      "url": "",
+      "children": [
+        {
+          "id": "zrovx0",
+          "pageName": "商户信息",
+          "type": "Wireframe",
+          "url": "商户信息.html"
+        },
+        {
+          "id": "merchant_recharge",
+          "pageName": "商户充值",
+          "type": "Wireframe",
+          "url": "商户充值.html"
+        },
+        {
+          "id": "fvs6nu",
+          "pageName": "商户订单查询",
+          "type": "Wireframe",
+          "url": "商户订单查询.html"
+        }
+      ]
+    },
+    {
+      "id": "hr_center",
+      "pageName": "人事中心",
+      "type": "Folder",
+      "url": "",
+      "children": []
+    }
+  ]
+}
