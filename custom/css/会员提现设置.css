@@ -553,7 +553,7 @@ input[type="checkbox"] {
 }
 
 .mode-card {
-  margin-top: 12px;
+  margin-top: 8px;
   border: 1px solid #dce3ee;
   border-radius: 6px;
   background: #fbfcfe;
@@ -562,8 +562,8 @@ input[type="checkbox"] {
 .mode-card-head {
   display: flex;
   align-items: center;
-  min-height: 48px;
-  padding: 10px 14px;
+  min-height: 38px;
+  padding: 8px 14px;
   border-bottom: 1px solid #e5eaf2;
 }
 
@@ -575,16 +575,17 @@ input[type="checkbox"] {
 .mode-layout {
   display: grid;
   grid-template-columns: 176px minmax(0, 1fr);
-  min-height: 252px;
+  min-height: 218px;
+  max-height: 286px;
 }
 
 .mode-choice {
   display: flex;
   flex-direction: column;
-  padding: 16px 14px;
+  padding: 12px 14px;
   border-right: 1px solid #e5eaf2;
   background: #f5f8fc;
-  gap: 12px;
+  gap: 10px;
 }
 
 .mode-option {
@@ -611,10 +612,11 @@ input[type="checkbox"] {
 .mode-content {
   min-width: 0;
   background: #fff;
+  overflow-y: auto;
 }
 
 .mode-panel {
-  padding: 16px 18px 4px;
+  padding: 12px 18px 2px;
 }
 
 .mode-panel.is-hidden {
@@ -630,23 +632,28 @@ input[type="checkbox"] {
   min-width: 236px;
 }
 
+.mode-panel .form-row {
+  min-height: 30px;
+  margin-bottom: 8px;
+}
+
 .mode-alert {
-  margin: 0 0 14px;
-  padding: 9px 12px;
+  margin: 0 0 10px;
+  padding: 7px 12px;
   border: 1px solid #b9d9ff;
   border-radius: 4px;
   background: #f0f7ff;
   color: #285f9f;
   font-size: 12px;
-  line-height: 20px;
+  line-height: 18px;
 }
 
 .rule-title {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-height: 24px;
-  margin: 0 0 10px;
+  min-height: 22px;
+  margin: 0 0 8px;
   padding-left: 10px;
   border-left: 3px solid #3394f8;
 }
