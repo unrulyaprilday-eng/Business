@@ -60,15 +60,6 @@
         <section class="panel">
           <form class="filter-bar">
             <label>频道名称 <input type="text" placeholder="请输入"/></label>
-            <label>频道类型
-              <select>
-                <option>全部</option>
-                <option>游戏</option>
-                <option>热门</option>
-                <option>收藏</option>
-                <option>最近</option>
-              </select>
-            </label>
             <label>游戏类型
               <select>
                 <option>全部</option>
@@ -107,7 +98,6 @@
                   <th>频道名称</th>
                   <th>图标</th>
                   <th>激活图标</th>
-                  <th>频道类型</th>
                   <th>游戏类型</th>
                   <th>游戏厂商</th>
                   <th>是否开启</th>
@@ -139,35 +129,13 @@
               <form class="modal-form channel-form">
                 <fieldset>
                   <legend>基础信息</legend>
-                  <label>频道类型
-                    <select id="channelTypeInput">
-                      <option>游戏</option>
-                      <option>热门</option>
-                      <option>收藏</option>
-                      <option>最近</option>
-                    </select>
-                  </label>
+                  <label>频道名称 <input id="channelNameInput" type="text"/></label>
                   <label>是否开启
                     <span class="switch-control">
                       <input id="channelEnabledInput" type="checkbox" checked/>
                       <span aria-hidden="true"></span>
                     </span>
                   </label>
-                </fieldset>
-                <fieldset>
-                  <legend>频道名称</legend>
-                  <div class="language-block">
-                    <div class="language-tabs" role="tablist" aria-label="切换频道名称语言">
-                      <button class="active" type="button" data-lang-tab="zh">zh</button>
-                      <button type="button" data-lang-tab="en">en</button>
-                      <button type="button" data-lang-tab="pt">pt</button>
-                    </div>
-                    <div class="language-inputs">
-                      <label data-lang-panel="zh">频道名称 <input id="channelNameZhInput" type="text"/></label>
-                      <label data-lang-panel="en" hidden>频道名称 <input id="channelNameEnInput" type="text"/></label>
-                      <label data-lang-panel="pt" hidden>频道名称 <input id="channelNamePtInput" type="text"/></label>
-                    </div>
-                  </div>
                 </fieldset>
                 <fieldset>
                   <legend>图标配置</legend>
@@ -197,20 +165,42 @@
                 <fieldset id="gameScopeFieldset">
                   <legend>游戏范围</legend>
                   <label>游戏类型
-                    <select id="gameScopeTypeInput">
-                      <option>全部</option>
-                      <option>Slots</option>
-                      <option>Live Casino</option>
-                      <option>Fishing</option>
-                    </select>
+                    <div class="custom-multiselect" data-multiselect="gameScopeTypeInput">
+                      <div class="multiselect-trigger">
+                        <input type="text" class="multiselect-input" placeholder="请选择游戏类型" readonly/>
+                        <span class="multiselect-arrow">▼</span>
+                      </div>
+                      <div class="multiselect-dropdown" hidden>
+                        <div class="multiselect-select-all">
+                          <label><input type="checkbox" class="select-all-checkbox"/> 全选</label>
+                        </div>
+                        <div class="multiselect-options">
+                          <label class="multiselect-option"><input type="checkbox" value="Slots"/> Slots</label>
+                          <label class="multiselect-option"><input type="checkbox" value="Live Casino"/> Live Casino</label>
+                          <label class="multiselect-option"><input type="checkbox" value="Fishing"/> Fishing</label>
+                        </div>
+                      </div>
+                      <div class="multiselect-tags"></div>
+                    </div>
                   </label>
                   <label>游戏厂商
-                    <select id="gameScopeVendorInput">
-                      <option>全部</option>
-                      <option>PG</option>
-                      <option>JILI</option>
-                      <option>EVO</option>
-                    </select>
+                    <div class="custom-multiselect" data-multiselect="gameScopeVendorInput">
+                      <div class="multiselect-trigger">
+                        <input type="text" class="multiselect-input" placeholder="请选择游戏厂商" readonly/>
+                        <span class="multiselect-arrow">▼</span>
+                      </div>
+                      <div class="multiselect-dropdown" hidden>
+                        <div class="multiselect-select-all">
+                          <label><input type="checkbox" class="select-all-checkbox"/> 全选</label>
+                        </div>
+                        <div class="multiselect-options">
+                          <label class="multiselect-option"><input type="checkbox" value="PG"/> PG</label>
+                          <label class="multiselect-option"><input type="checkbox" value="JILI"/> JILI</label>
+                          <label class="multiselect-option"><input type="checkbox" value="EVO"/> EVO</label>
+                        </div>
+                      </div>
+                      <div class="multiselect-tags"></div>
+                    </div>
                   </label>
                   <p class="field-help">频道游戏配置中的游戏类型、游戏厂商筛选，按这里指定的范围展示。</p>
                 </fieldset>
