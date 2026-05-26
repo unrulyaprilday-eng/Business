@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>给平台提建议</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/给平台提建议/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/给平台提建议.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/给平台提建议/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell suggestion-page">
+        <div class="suggestion-titlebar">
+          <button class="title-icon" type="button" aria-label="返回">‹</button>
+          <button class="title-icon refresh" type="button" aria-label="刷新">↻</button>
+          <span>运营中心</span>
+          <b>/</b>
+          <strong>给平台提建议</strong>
+        </div>
+
+        <main class="suggestion-panel">
+          <section class="suggestion-toolbar" aria-label="建议筛选">
+            <input class="date-input" type="text" placeholder="开始时间"/>
+            <span class="range-separator">至</span>
+            <input class="date-input" type="text" placeholder="结束时间"/>
+            <label class="status-filter">
+              <span>状态:</span>
+              <select id="statusFilter">
+                <option value="">全部</option>
+                <option value="已采纳">已采纳</option>
+                <option value="待处理">待处理</option>
+                <option value="已忽略">已忽略</option>
+              </select>
+            </label>
+            <button class="primary-btn" type="button" id="searchBtn">搜索</button>
+            <button class="ghost-btn" type="button" id="resetBtn">重置</button>
+            <button class="primary-btn add-btn" type="button" id="addBtn">新增</button>
+          </section>
+
+          <section class="table-frame" aria-label="建议列表">
+            <table class="suggestion-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>状态</th>
+                  <th>提交时间</th>
+                  <th>反馈内容</th>
+                  <th>附件</th>
+                  <th>回复内容</th>
+                  <th>操作人</th>
+                  <th>操作时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="suggestionRows"></tbody>
+            </table>
+          </section>
+
+          <footer class="pagination">
+            <span class="page-arrow">|‹</span>
+            <span class="page-arrow">‹‹</span>
+            <span class="page-arrow">‹</span>
+            <span class="page-current">1</span>
+            <span>/ 1</span>
+            <span class="page-arrow">›</span>
+            <span class="page-arrow">››</span>
+            <span class="page-arrow">›|</span>
+            <select aria-label="每页条数">
+              <option>20条/页</option>
+            </select>
+            <span>共 <b id="totalCount">3</b> 条记录</span>
+          </footer>
+        </main>
+      </div>
+    </div>
+
+    <div class="modal-mask" id="createModal" hidden>
+      <div class="modal-card create-card" role="dialog" aria-modal="true" aria-labelledby="createTitle">
+        <header class="modal-head">
+          <h3 id="createTitle">创建</h3>
+          <button class="modal-close" type="button" data-close aria-label="关闭">×</button>
+        </header>
+        <div class="modal-body">
+          <label class="form-row required">
+            <span>反馈内容:</span>
+            <textarea placeholder="请输入反馈内容"></textarea>
+          </label>
+          <div class="form-row upload-row">
+            <span>上传附件:</span>
+            <div>
+              <button class="upload-box" type="button" aria-label="上传附件">+</button>
+              <p>支持图片（jpg/png/gif/webp）及视频（mp4/webm/ogg/mov）</p>
+            </div>
+          </div>
+        </div>
+        <footer class="modal-foot">
+          <button class="ghost-btn" type="button" data-close>取消</button>
+          <button class="primary-btn" type="button" data-close>提交</button>
+        </footer>
+      </div>
+    </div>
+
+    <div class="modal-mask" id="detailModal" hidden>
+      <div class="modal-card detail-card" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+        <header class="modal-head">
+          <h3 id="detailTitle">查看反馈</h3>
+          <button class="modal-close" type="button" data-close aria-label="关闭">×</button>
+        </header>
+        <div class="modal-body detail-body">
+          <label class="form-row">
+            <span>反馈内容:</span>
+            <textarea id="detailContent" readonly></textarea>
+          </label>
+          <div class="form-row">
+            <span>附件:</span>
+            <div class="attachment-view" id="detailAttachment"></div>
+          </div>
+          <label class="form-row">
+            <span>回复:</span>
+            <textarea id="detailReply" readonly placeholder="请输入回复内容"></textarea>
+          </label>
+        </div>
+        <footer class="modal-foot">
+          <button class="primary-btn" type="button" data-close>关闭</button>
+        </footer>
+      </div>
+    </div>
+
+    <script src="custom/js/给平台提建议.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

@@ -114,6 +114,18 @@ $axure.loadDocument({
             "url": "平台公告.html"
           },
           {
+            "id": "operation_platform_suggestion",
+            "pageName": "给平台提建议",
+            "type": "Wireframe",
+            "url": "给平台提建议.html"
+          },
+          {
+            "id": "operation_member_complaint_list",
+            "pageName": "会员投诉列表",
+            "type": "Wireframe",
+            "url": "会员投诉列表.html"
+          },
+          {
             "id": "operation_message_push",
             "pageName": "消息推送",
             "type": "Wireframe",
@@ -174,6 +186,12 @@ $axure.loadDocument({
             "pageName": "优惠数据报表",
             "type": "Wireframe",
             "url": "优惠数据报表.html"
+          },
+          {
+            "id": "ticket_center",
+            "pageName": "票券中心",
+            "type": "Wireframe",
+            "url": "票券中心.html"
           },
           {
             "id": "promotion_global_config",
@@ -384,22 +402,10 @@ $axure.loadDocument({
         "url": "",
         "children": [
           {
-            "id": "3ynxdj",
-            "pageName": "账号管理",
+            "id": "user_online_players",
+            "pageName": "在线玩家列表",
             "type": "Wireframe",
-            "url": "账号管理.html"
-          },
-          {
-            "id": "bvy8xd",
-            "pageName": "权限管理",
-            "type": "Wireframe",
-            "url": "权限管理.html"
-          },
-          {
-            "id": "i5t3me",
-            "pageName": "角色管理",
-            "type": "Wireframe",
-            "url": "角色管理.html"
+            "url": "在线玩家列表.html"
           }
         ]
       },
@@ -428,32 +434,6 @@ $axure.loadDocument({
             "pageName": "白名单",
             "type": "Wireframe",
             "url": "白名单.html"
-          },
-          {
-            "id": "",
-            "pageName": "日志管理",
-            "type": "Folder",
-            "url": "",
-            "children": [
-              {
-                "id": "h2hprn",
-                "pageName": "管理员登录日志",
-                "type": "Wireframe",
-                "url": "管理员登录日志.html"
-              },
-              {
-                "id": "7b23z5",
-                "pageName": "管理员操作日志",
-                "type": "Wireframe",
-                "url": "管理员操作日志.html"
-              },
-              {
-                "id": "ef78ue",
-                "pageName": "系统异常日志",
-                "type": "Wireframe",
-                "url": "系统异常日志.html"
-              }
-            ]
           }
         ]
       },
@@ -488,7 +468,52 @@ $axure.loadDocument({
         "pageName": "人事中心",
         "type": "Folder",
         "url": "",
-        "children": []
+        "children": [
+          {
+            "id": "3ynxdj",
+            "pageName": "人事列表",
+            "type": "Wireframe",
+            "url": "账号管理.html"
+          },
+          {
+            "id": "bvy8xd",
+            "pageName": "权限管理",
+            "type": "Wireframe",
+            "url": "权限管理.html"
+          },
+          {
+            "id": "i5t3me",
+            "pageName": "角色管理",
+            "type": "Wireframe",
+            "url": "角色管理.html"
+          },
+          {
+            "id": "",
+            "pageName": "日志管理",
+            "type": "Folder",
+            "url": "",
+            "children": [
+              {
+                "id": "h2hprn",
+                "pageName": "管理员登录日志",
+                "type": "Wireframe",
+                "url": "管理员登录日志.html"
+              },
+              {
+                "id": "7b23z5",
+                "pageName": "管理员操作日志",
+                "type": "Wireframe",
+                "url": "管理员操作日志.html"
+              },
+              {
+                "id": "ef78ue",
+                "pageName": "系统异常日志",
+                "type": "Wireframe",
+                "url": "系统异常日志.html"
+              }
+            ]
+          }
+        ]
       }
     ]
   },

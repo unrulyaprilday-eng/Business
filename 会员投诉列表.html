@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>会员投诉列表</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/会员投诉列表/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/会员投诉列表.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/会员投诉列表/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell complaint-page">
+        <div class="complaint-titlebar">
+          <button class="title-icon" type="button" aria-label="返回">‹</button>
+          <button class="title-icon refresh" type="button" aria-label="刷新">↻</button>
+          <span>运营中心</span>
+          <b>/</b>
+          <strong>会员投诉列表</strong>
+        </div>
+
+        <main class="complaint-panel">
+          <section class="complaint-toolbar" aria-label="投诉筛选">
+            <label class="inline-field">
+              <span>会员ID:</span>
+              <input id="memberFilter" type="text" placeholder="请输入会员ID"/>
+            </label>
+            <label class="inline-field">
+              <span>投诉时间:</span>
+              <input class="date-input" type="text" placeholder="开始时间"/>
+            </label>
+            <span class="range-separator">至</span>
+            <input class="date-input" type="text" placeholder="结束时间"/>
+            <label class="inline-field">
+              <span>状态:</span>
+              <select id="statusFilter">
+                <option value="">全部</option>
+                <option value="待处理">待处理</option>
+                <option value="已采纳">已采纳</option>
+                <option value="已忽略">已忽略</option>
+              </select>
+            </label>
+            <button class="primary-btn" type="button" id="searchBtn">搜索</button>
+            <button class="ghost-btn" type="button" id="resetBtn">重置</button>
+          </section>
+
+          <section class="table-frame" aria-label="会员投诉列表">
+            <table class="complaint-table">
+              <thead>
+                <tr>
+                  <th>投诉账号</th>
+                  <th>投诉账号ID</th>
+                  <th>状态</th>
+                  <th>投诉时间</th>
+                  <th>投诉类型</th>
+                  <th>投诉内容</th>
+                  <th>附件</th>
+                  <th>回复内容</th>
+                  <th>操作人</th>
+                  <th>操作时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="complaintRows"></tbody>
+            </table>
+          </section>
+
+          <footer class="pagination">
+            <span class="page-arrow">|‹</span>
+            <span class="page-arrow">‹‹</span>
+            <span class="page-arrow">‹</span>
+            <span class="page-current">1</span>
+            <span>/ 1</span>
+            <span class="page-arrow">›</span>
+            <span class="page-arrow">››</span>
+            <span class="page-arrow">›|</span>
+            <select aria-label="每页条数">
+              <option>20条/页</option>
+            </select>
+            <span>共 <b id="totalCount">0</b> 条记录</span>
+          </footer>
+        </main>
+      </div>
+    </div>
+
+    <div class="modal-mask" id="complaintModal" hidden>
+      <div class="modal-card complaint-modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <header class="modal-head">
+          <h3 id="modalTitle">处理投诉</h3>
+          <button class="modal-close" type="button" data-close aria-label="关闭">×</button>
+        </header>
+        <div class="modal-body">
+          <label class="form-row">
+            <span>反馈内容:</span>
+            <textarea id="modalContent" readonly></textarea>
+          </label>
+          <div class="form-row">
+            <span>附件:</span>
+            <div class="attachment-view" id="modalAttachment">无附件</div>
+          </div>
+          <label class="form-row">
+            <span>回复:</span>
+            <textarea id="modalReply" placeholder="请输入回复内容"></textarea>
+          </label>
+        </div>
+        <footer class="modal-foot" id="processActions">
+          <button class="ghost-btn" type="button" data-resolve="已忽略">忽略</button>
+          <button class="primary-btn" type="button" data-resolve="已采纳">采纳</button>
+        </footer>
+        <footer class="modal-foot" id="viewActions" hidden>
+          <button class="primary-btn" type="button" data-close>关闭</button>
+        </footer>
+      </div>
+    </div>
+
+    <script src="custom/js/会员投诉列表.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

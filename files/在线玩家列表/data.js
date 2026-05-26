@@ -1,6 +1,6 @@
 $axure.loadCurrentPage({
-  "url": "账号管理.html",
-  "generationDate": new Date(1779782400000),
+  "url": "在线玩家列表.html",
+  "generationDate": new Date(1779254400000),
   "defaultAdaptiveView": {
     "name": "",
     "cursor": 1,
@@ -24,9 +24,9 @@ $axure.loadCurrentPage({
     "HoverNum"
   ],
   "page": {
-    "packageId": "3ynxdj",
+    "packageId": "user_online_players",
     "type": "Axure:Page",
-    "name": "人事列表",
+    "name": "在线玩家列表",
     "notes": {},
     "annotations": [],
     "style": {

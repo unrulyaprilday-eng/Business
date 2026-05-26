@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>在线玩家列表</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/在线玩家列表/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/在线玩家列表.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/在线玩家列表/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell online-user-page">
+        <header class="page-header">
+          <div>
+            <p class="breadcrumb">用户管理 / 在线玩家列表</p>
+            <h1>在线玩家列表</h1>
+          </div>
+          <div class="summary-strip">
+            <span><b>8</b> 在线玩家</span>
+            <span><b>3</b> 需关注</span>
+            <span><b>42,872.10</b> 总余额</span>
+          </div>
+        </header>
+
+        <section class="table-panel">
+          <div class="panel-title">
+            <h2>在线玩家列表</h2>
+          </div>
+          <form class="filter-bar">
+            <label>
+              <span>玩家ID:</span>
+              <input type="text" placeholder="请输入会员ID"/>
+            </label>
+            <label>
+              <span>余额范围:</span>
+              <input type="text" placeholder="请输入余额"/>
+            </label>
+            <label>
+              <span>在线状态:</span>
+              <select>
+                <option>全部</option>
+                <option>网站</option>
+                <option>游戏</option>
+              </select>
+            </label>
+            <label>
+              <span>网站位置:</span>
+              <select>
+                <option>全部</option>
+                <option>首页</option>
+                <option>优惠</option>
+                <option>存款</option>
+                <option>提款</option>
+                <option>我的</option>
+              </select>
+            </label>
+            <label>
+              <span>游戏类型:</span>
+              <select>
+                <option>全部</option>
+                <option>真人</option>
+                <option>电子</option>
+                <option>棋牌</option>
+                <option>捕鱼</option>
+              </select>
+            </label>
+            <label>
+              <span>IP地址:</span>
+              <input type="text" placeholder="请输入地址"/>
+            </label>
+            <button class="btn primary" type="button">搜索</button>
+            <button class="btn" type="button">导出报表</button>
+          </form>
+
+          <div class="table-wrap">
+            <table class="online-table">
+              <thead>
+                <tr>
+                  <th>序号</th>
+                  <th>玩家ID</th>
+                  <th>余额</th>
+                  <th>所在位置</th>
+                  <th>当前充值<br/>最近充值</th>
+                  <th>历史充值<br/>历史充值</th>
+                  <th>在线时长</th>
+                  <th>玩家IP</th>
+                  <th>赎回和打码状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="group-row"><td colspan="10">存款玩家</td></tr>
+                <tr>
+                  <td>1</td>
+                  <td>VIP_100</td>
+                  <td class="danger">12,450.00</td>
+                  <td>真人-EVO Baccarat</td>
+                  <td>10,000</td>
+                  <td>10,000</td>
+                  <td>01:22:10</td>
+                  <td>112.94.22.105</td>
+                  <td><span class="status met">Met Wager<br/>(Total*10)</span></td>
+                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>VIP_103</td>
+                  <td>15,800.00</td>
+                  <td>网站-首页</td>
+                  <td>8,000</td>
+                  <td>20,000</td>
+                  <td>01:45:00</td>
+                  <td>112.94.22.108</td>
+                  <td><span class="status met">Met Wager<br/>(Total*10)</span></td>
+                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>VIP_104</td>
+                  <td class="danger">3,500.00</td>
+                  <td>网站-存款</td>
+                  <td>2,000</td>
+                  <td>5,000</td>
+                  <td>00:30:15</td>
+                  <td>112.94.22.109</td>
+                  <td><span class="status normal">不满足</span></td>
+                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>VIP_102</td>
+                  <td class="danger">6,200.00</td>
+                  <td>电子-PG Fortune Tiger</td>
+                  <td>3,000</td>
+                  <td>8,000</td>
+                  <td>00:55:20</td>
+                  <td>112.94.22.107</td>
+                  <td><span class="status wager">Wager<br/>(Deposit*3)</span></td>
+                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
+                </tr>
+                <tr class="group-row"><td colspan="10">免费玩家</td></tr>
+                <tr>
+                  <td>5</td>
+                  <td>FREE_300</td>
+                  <td>2,500.00</td>
+                  <td>棋牌-KY 斗地主</td>
+                  <td>0</td>
+                  <td>30,000</td>
+                  <td>00:30:00</td>
+                  <td>180.110.3.56</td>
+                  <td><span class="status wager">Wager<br/>(Deposit*3)</span></td>
+                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>FREE_301</td>
+                  <td>1,800.00</td>
+                  <td>网站-优惠</td>
+                  <td>0</td>
+                  <td>25,000</td>
+                  <td>00:25:00</td>
+                  <td>180.110.3.57</td>
+                  <td><span class="status wager">Wager<br/>(Deposit*3)</span></td>
+                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td>NOVICE_400</td>
+                  <td>520.00</td>
+                  <td>网站-我的</td>
+                  <td>0</td>
+                  <td>500</td>
+                  <td>00:12:00</td>
+                  <td>104.16.0.1</td>
+                  <td><span class="status met">Met Wager<br/>(Deposit*3)</span></td>
+                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td>NOVICE_401</td>
+                  <td class="danger">52.10</td>
+                  <td>捕鱼-JILI Fishing</td>
+                  <td>0</td>
+                  <td>50</td>
+                  <td>00:15:00</td>
+                  <td>104.16.0.2</td>
+                  <td><span class="status met">Met Wager<br/>(Deposit*3)</span></td>
+                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination-wrap">
+            <div class="pagination-info">
+              共 <b>8</b> 条记录，第 <b>1</b> / <b>1</b> 页
+            </div>
+            <div class="pagination-btns">
+              <button class="page-btn" disabled>首页</button>
+              <button class="page-btn" disabled>上一页</button>
+              <button class="page-btn active">1</button>
+              <button class="page-btn" disabled>下一页</button>
+              <button class="page-btn" disabled>末页</button>
+              <select class="page-size-select">
+                <option>10条/页</option>
+                <option>20条/页</option>
+                <option>50条/页</option>
+                <option>100条/页</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section class="logic-board" aria-label="在线玩家列表逻辑说明">
+          <article class="logic-card">
+            <h2>排序逻辑</h2>
+            <p>1. 存款玩家优先（按余额降序）</p>
+            <p>2. 免费玩家其次（按余额降序）</p>
+          </article>
+          <article class="logic-card alert">
+            <h2>余额标红逻辑</h2>
+            <p>余额显示红色如：</p>
+            <p>赎回打码要求满足 OR</p>
+            <p>打码要求满足（任意一项达到）</p>
+            <p>普通打码规则：打码完成显示成红色，状态显示"已完成打码"</p>
+          </article>
+          <article class="logic-card">
+            <h2>所在位置显示逻辑</h2>
+            <p>网站-首页/优惠/存款/提款/我的</p>
+            <p>游戏-游戏名称</p>
+            <p>实时追踪玩家当前位置</p>
+          </article>
+          <article class="logic-card">
+            <h2>独立打码规则</h2>
+            <p>存款玩家：最近一次非游戏余额增加是充值或充值送</p>
+            <p>免费玩家：最近一次非游戏余额增加是领取免费奖励或未存款</p>
+          </article>
+          <article class="logic-card">
+            <h2>常规打码规则</h2>
+            <p>存款玩家：有过充值</p>
+            <p>免费玩家：没有充值过</p>
+          </article>
+        </section>
+
+        <div class="modal-mask" data-action-modal hidden>
+          <div class="action-modal" role="dialog" aria-modal="true" aria-labelledby="actionModalTitle">
+            <div class="modal-head">
+              <strong id="actionModalTitle">操作</strong>
+              <button class="close-btn" data-close-action type="button" aria-label="关闭">×</button>
+            </div>
+            <div class="modal-body">
+              <label class="form-row">
+                <span><i>*</i> 操作类型:</span>
+                <select>
+                  <option>玩家启用</option>
+                  <option>玩家禁用</option>
+                </select>
+              </label>
+            </div>
+            <div class="modal-footer">
+              <button class="btn" data-close-action type="button">取消</button>
+              <button class="btn primary" data-close-action type="button">保存</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/在线玩家列表.js"></script>
+  </body>
+</html>

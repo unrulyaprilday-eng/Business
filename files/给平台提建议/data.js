@@ -1,6 +1,6 @@
 $axure.loadCurrentPage({
-  "url": "账号管理.html",
-  "generationDate": new Date(1779782400000),
+  "url": "给平台提建议.html",
+  "generationDate": new Date(1779120000000),
   "defaultAdaptiveView": {
     "name": "",
     "cursor": 1,
@@ -24,9 +24,9 @@ $axure.loadCurrentPage({
     "HoverNum"
   ],
   "page": {
-    "packageId": "3ynxdj",
+    "packageId": "operation_platform_suggestion",
     "type": "Axure:Page",
-    "name": "人事列表",
+    "name": "给平台提建议",
     "notes": {},
     "annotations": [],
     "style": {
