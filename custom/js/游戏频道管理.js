@@ -296,8 +296,9 @@
     }
     var tab = document.createElement("button");
     tab.type = "button";
+    tab.className = "language-tab";
     tab.setAttribute("data-lang-tab", lang);
-    tab.textContent = label;
+    tab.innerHTML = "<span>" + label + "</span><span class=\"language-tab-close\" data-remove-lang=\"" + lang + "\" aria-label=\"删除" + label + "\">×</span>";
     tabs.insertBefore(tab, addButton);
 
     var field = document.createElement("label");
@@ -405,6 +406,31 @@
   });
 
   document.addEventListener("click", function (e) {
+    var removeLang = e.target.closest("[data-remove-lang]");
+    if (removeLang) {
+      e.stopPropagation();
+      var removeForm = removeLang.closest(".channel-form");
+      var langToRemove = removeLang.getAttribute("data-remove-lang");
+      var removedTab = removeForm.querySelector("[data-lang-tab=\"" + langToRemove + "\"]");
+      var removedPanel = removeForm.querySelector("[data-lang-panel=\"" + langToRemove + "\"]");
+      var wasActive = removedTab && removedTab.classList.contains("active");
+      if (removedTab) {
+        removedTab.remove();
+      }
+      if (removedPanel) {
+        removedPanel.remove();
+      }
+      var addOption = removeForm.querySelector("[data-add-lang=\"" + langToRemove + "\"]");
+      if (addOption) {
+        addOption.disabled = false;
+      }
+      removeForm.querySelector(".language-add-menu").hidden = true;
+      if (wasActive) {
+        activateLanguage(removeForm, "default");
+      }
+      return;
+    }
+
     var langTab = e.target.closest("[data-lang-tab]");
     if (langTab) {
       activateLanguage(langTab.closest(".channel-form"), langTab.getAttribute("data-lang-tab"));

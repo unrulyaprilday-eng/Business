@@ -557,6 +557,7 @@ button {
 }
 
 .language-tabs button {
+  position: relative;
   min-width: 64px;
   height: 28px;
   padding: 0 10px;
@@ -566,10 +567,42 @@ button {
   color: #606a78;
 }
 
+.language-tabs .language-tab {
+  padding-right: 22px;
+}
+
+.language-tab-close {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #d9dee7;
+  border-radius: 50%;
+  background: #fff;
+  color: #8a94a6;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.language-tab-close:hover {
+  border-color: #ff7875;
+  background: #fff1f0;
+  color: #f5222d;
+}
+
 .language-tabs button.active {
   border-color: #409eff;
   background: #409eff;
   color: #fff;
+}
+
+.language-tabs button.active .language-tab-close {
+  border-color: #409eff;
+  color: #409eff;
 }
 
 .language-block.is-readonly .language-tabs,
