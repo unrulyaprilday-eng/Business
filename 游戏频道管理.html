@@ -129,7 +129,24 @@
               <form class="modal-form channel-form">
                 <fieldset>
                   <legend>基础信息</legend>
-                  <label>频道名称 <input id="channelNameInput" type="text"/></label>
+                  <div class="language-block" id="channelNameLanguages">
+                    <div class="language-label-row">
+                      <span>频道名称</span>
+                      <span>默认语言跟随该商户运营地区；其他语言未配置时，前端展示默认语言。</span>
+                    </div>
+                    <div class="language-tabs">
+                      <button class="active" type="button" data-lang-tab="default">默认语言</button>
+                      <button class="language-add-trigger" type="button" aria-label="添加语言" data-language-add>＋</button>
+                      <div class="language-add-menu" hidden>
+                        <button type="button" data-add-lang="zh" data-lang-label="简体中文">简体中文</button>
+                        <button type="button" data-add-lang="en" data-lang-label="English">English</button>
+                        <button type="button" data-add-lang="pt" data-lang-label="Português">Português</button>
+                      </div>
+                    </div>
+                    <div class="language-inputs">
+                      <label data-lang-panel="default">默认语言 <input id="channelNameInput" type="text"/></label>
+                    </div>
+                  </div>
                   <label>是否开启
                     <span class="switch-control">
                       <input id="channelEnabledInput" type="checkbox" checked/>
@@ -205,7 +222,7 @@
                   <p class="field-help">频道游戏配置中的游戏类型、游戏厂商筛选，按这里指定的范围展示。</p>
                 </fieldset>
               </form>
-              <p class="form-tip" id="systemChannelTip" hidden>收藏频道和最近频道是用户数据频道，只能设置频道名称和图标。</p>
+              <p class="form-tip" id="systemChannelTip" hidden>热门、收藏、最近为系统频道，频道名称和游戏范围不可修改。</p>
             </div>
             <footer class="modal-actions">
               <button class="ghost-btn" type="button" data-close-modal>取消</button>

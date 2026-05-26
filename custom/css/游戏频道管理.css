@@ -534,37 +534,95 @@ button {
   grid-column: span 2;
 }
 
-.language-tabs {
+.language-label-row {
   display: flex;
   align-items: center;
-  gap: 0;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  color: #303b4d;
+  font-size: 13px;
+}
+
+.language-label-row span:last-child {
+  color: #7b8798;
+  font-size: 12px;
+}
+
+.language-tabs {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   margin-bottom: 8px;
 }
 
 .language-tabs button {
-  width: 64px;
+  min-width: 64px;
   height: 28px;
-  padding: 0;
+  padding: 0 10px;
   border: 1px solid #d9dee7;
-  border-right: 0;
-  border-radius: 0;
+  border-radius: 4px;
   background: #fff;
   color: #606a78;
-}
-
-.language-tabs button:first-child {
-  border-radius: 4px 0 0 4px;
-}
-
-.language-tabs button:last-child {
-  border-right: 1px solid #d9dee7;
-  border-radius: 0 4px 4px 0;
 }
 
 .language-tabs button.active {
   border-color: #409eff;
   background: #409eff;
   color: #fff;
+}
+
+.language-block.is-readonly .language-tabs,
+.language-block.is-readonly .language-label-row span:last-child {
+  display: none;
+}
+
+.language-block.is-readonly input {
+  background: #f5f7fb;
+  color: #606a78;
+  cursor: not-allowed;
+}
+
+.language-tabs .language-add-trigger {
+  min-width: 28px;
+  width: 28px;
+  padding: 0;
+  color: #409eff;
+  font-size: 16px;
+}
+
+.language-add-menu {
+  position: absolute;
+  top: 34px;
+  left: 76px;
+  z-index: 5;
+  width: 132px;
+  padding: 4px;
+  border: 1px solid #d9dee7;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(31, 45, 61, 0.12);
+}
+
+.language-add-menu button {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 28px;
+  border: 0;
+  background: transparent;
+  color: #303b4d;
+  text-align: left;
+}
+
+.language-add-menu button:hover {
+  background: #f3f8ff;
+  color: #409eff;
+}
+
+.language-add-menu button:disabled {
+  color: #a8b0bd;
+  cursor: not-allowed;
 }
 
 .language-inputs label {

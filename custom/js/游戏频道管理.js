@@ -46,6 +46,12 @@
   var channelGamesVendorFilter = document.getElementById("channelGamesVendorFilter");
   var candidateTypeFilter = document.getElementById("candidateTypeFilter");
   var candidateVendorFilter = document.getElementById("candidateVendorFilter");
+  var languageLabels = {
+    default: "默认语言",
+    zh: "简体中文",
+    en: "English",
+    pt: "Português"
+  };
 
   function uniqueValues(items, key) {
     return items.reduce(function (result, item) {
@@ -180,7 +186,7 @@
 
   function renderChannels() {
     channelRows.innerHTML = channels.map(function (item, index) {
-      var manageAction = (item.userData || item.hot)
+      var manageAction = item.userData
         ? ""
         : "<button class=\"link-btn\" type=\"button\" data-open-modal=\"channelGamesModal\" data-index=\"" + index + "\">游戏配置</button>";
       var channelName = (item.userData || item.hot) ? item.name.zh : ("<div>zh:" + item.name.zh + "</div><div>en:" + item.name.en + "</div><div>pt:" + item.name.pt + "</div>");
@@ -256,10 +262,82 @@
   }
 
   function setChannelTypeMode(modal, type) {
-    var isSystem = type === "收藏" || type === "最近";
-    var isHot = type === "热门";
-    modal.querySelector("#gameScopeFieldset").hidden = isSystem || isHot;
-    document.getElementById("systemChannelTip").hidden = !isSystem;
+    var hasGameScope = type === "游戏";
+    modal.querySelector("#gameScopeFieldset").hidden = !hasGameScope;
+    document.getElementById("systemChannelTip").hidden = hasGameScope;
+  }
+
+  function isSystemChannel(channel) {
+    return !!channel && (channel.hot || channel.userData || channel.type === "热门" || channel.type === "收藏" || channel.type === "最近");
+  }
+
+  function getChannelDefaultName(channel) {
+    if (!channel) {
+      return "";
+    }
+    return channel.name.zh || channel.content || "";
+  }
+
+  function activateLanguage(form, lang) {
+    form.querySelectorAll("[data-lang-tab]").forEach(function (tab) {
+      tab.classList.toggle("active", tab.getAttribute("data-lang-tab") === lang);
+    });
+    form.querySelectorAll("[data-lang-panel]").forEach(function (label) {
+      label.hidden = label.getAttribute("data-lang-panel") !== lang;
+    });
+  }
+
+  function addLanguageField(form, lang, label, value) {
+    var tabs = form.querySelector(".language-tabs");
+    var inputs = form.querySelector(".language-inputs");
+    var addButton = form.querySelector("[data-language-add]");
+    if (!tabs || !inputs || form.querySelector("[data-lang-tab=\"" + lang + "\"]")) {
+      return;
+    }
+    var tab = document.createElement("button");
+    tab.type = "button";
+    tab.setAttribute("data-lang-tab", lang);
+    tab.textContent = label;
+    tabs.insertBefore(tab, addButton);
+
+    var field = document.createElement("label");
+    field.setAttribute("data-lang-panel", lang);
+    field.hidden = true;
+    field.innerHTML = label + " <input type=\"text\" value=\"" + (value || "") + "\"/>";
+    inputs.appendChild(field);
+  }
+
+  function setLanguageReadonly(form, readonly) {
+    var block = form.querySelector("#channelNameLanguages");
+    block.classList.toggle("is-readonly", readonly);
+    form.querySelector("[data-language-add]").disabled = readonly;
+    form.querySelectorAll(".language-inputs input").forEach(function (input) {
+      input.disabled = readonly;
+    });
+    if (readonly) {
+      form.querySelector(".language-add-menu").hidden = true;
+    }
+  }
+
+  function resetChannelLanguages(form, channel) {
+    var readonly = isSystemChannel(channel);
+    form.querySelectorAll("[data-lang-tab]:not([data-lang-tab=\"default\"])").forEach(function (tab) {
+      tab.remove();
+    });
+    form.querySelectorAll("[data-lang-panel]:not([data-lang-panel=\"default\"])").forEach(function (label) {
+      label.remove();
+    });
+    document.getElementById("channelNameInput").value = getChannelDefaultName(channel);
+    Object.keys(languageLabels).forEach(function (lang) {
+      if (!readonly && lang !== "default" && channel && channel.name[lang]) {
+        addLanguageField(form, lang, languageLabels[lang], channel.name[lang]);
+      }
+    });
+    form.querySelectorAll("[data-add-lang]").forEach(function (option) {
+      option.disabled = !!form.querySelector("[data-lang-tab=\"" + option.getAttribute("data-add-lang") + "\"]");
+    });
+    activateLanguage(form, "default");
+    setLanguageReadonly(form, readonly);
   }
 
   function openModal(id, trigger) {
@@ -269,16 +347,18 @@
     }
     if (id === "channelModal") {
       var mode = trigger.getAttribute("data-mode");
-      var index = Number(trigger.getAttribute("data-index"));
-      var channel = !isNaN(index) ? channels[index] : null;
+      var hasIndex = trigger.hasAttribute("data-index");
+      var index = hasIndex ? Number(trigger.getAttribute("data-index")) : NaN;
+      var channel = hasIndex && !isNaN(index) ? channels[index] : null;
+      var form = modal.querySelector(".channel-form");
       document.getElementById("channelModalTitle").textContent = mode === "edit" ? "编辑频道" : "添加频道";
-      document.getElementById("channelNameInput").value = channel ? channel.name.zh : "";
-      document.getElementById("channelNameInput").disabled = channel && (channel.userData || channel.hot);
+      resetChannelLanguages(form, channel);
       document.getElementById("channelEnabledInput").checked = channel ? channel.enabled : true;
       var gameTypes = channel && channel.gameTypes !== "-" ? channel.gameTypes.split(" / ") : [];
       var vendors = channel && channel.vendors !== "-" ? channel.vendors.split(" / ") : [];
       fillSelect(gameScopeTypeInput, allGameTypes, gameTypes);
       fillSelect(gameScopeVendorInput, allVendors, vendors);
+      setChannelTypeMode(modal, channel ? channel.type : "游戏");
     }
     if (id === "channelGamesModal") {
       var channelIndex = Number(trigger.getAttribute("data-index"));
@@ -324,18 +404,42 @@
     }
   });
 
-  document.querySelectorAll("[data-lang-tab]").forEach(function (tab) {
-    tab.addEventListener("click", function () {
-      var lang = tab.getAttribute("data-lang-tab");
-      var form = tab.closest(".channel-form");
-      form.querySelectorAll(".language-tabs button").forEach(function (t) {
-        t.classList.remove("active");
+  document.addEventListener("click", function (e) {
+    var langTab = e.target.closest("[data-lang-tab]");
+    if (langTab) {
+      activateLanguage(langTab.closest(".channel-form"), langTab.getAttribute("data-lang-tab"));
+      langTab.closest(".channel-form").querySelector(".language-add-menu").hidden = true;
+      return;
+    }
+
+    var addTrigger = e.target.closest("[data-language-add]");
+    if (addTrigger && !addTrigger.disabled) {
+      var menu = addTrigger.parentElement.querySelector(".language-add-menu");
+      document.querySelectorAll(".language-add-menu").forEach(function (otherMenu) {
+        if (otherMenu !== menu) {
+          otherMenu.hidden = true;
+        }
       });
-      tab.classList.add("active");
-      form.querySelectorAll(".language-inputs label").forEach(function (label) {
-        label.hidden = label.getAttribute("data-lang-panel") !== lang;
+      menu.hidden = !menu.hidden;
+      return;
+    }
+
+    var addLang = e.target.closest("[data-add-lang]");
+    if (addLang && !addLang.disabled) {
+      var addForm = addLang.closest(".channel-form");
+      var lang = addLang.getAttribute("data-add-lang");
+      addLanguageField(addForm, lang, addLang.getAttribute("data-lang-label"), "");
+      addLang.disabled = true;
+      addLang.closest(".language-add-menu").hidden = true;
+      activateLanguage(addForm, lang);
+      return;
+    }
+
+    if (!e.target.closest(".language-tabs")) {
+      document.querySelectorAll(".language-add-menu").forEach(function (menu) {
+        menu.hidden = true;
       });
-    });
+    }
   });
 
   function updateSelectedCount() {
