@@ -476,18 +476,6 @@ $axure.loadDocument({
             "url": "账号管理.html"
           },
           {
-            "id": "bvy8xd",
-            "pageName": "权限管理",
-            "type": "Wireframe",
-            "url": "权限管理.html"
-          },
-          {
-            "id": "i5t3me",
-            "pageName": "角色管理",
-            "type": "Wireframe",
-            "url": "角色管理.html"
-          },
-          {
             "id": "",
             "pageName": "日志管理",
             "type": "Folder",
