@@ -1,0 +1,208 @@
+.risk-review-page .orders-panel {
+  padding: 0 34px;
+}
+
+.risk-tabs {
+  margin: 0 -34px;
+  padding-left: 34px;
+}
+
+.risk-pane {
+  padding: 26px 0 0;
+}
+
+.risk-filter {
+  margin-bottom: 12px;
+}
+
+.risk-field-note {
+  margin: 0 0 18px;
+  padding: 10px 12px;
+  border: 1px solid #d7e5ff;
+  border-radius: 4px;
+  background: #f3f8ff;
+  color: #476178;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.risk-field-note.dialog-note {
+  margin: 12px 24px 0;
+}
+
+.risk-count-text {
+  color: #1677ff;
+  font-weight: 600;
+}
+
+.risk-table-wrap {
+  height: 318px;
+}
+
+.risk-table {
+  min-width: 1500px;
+}
+
+.audit-log-wrap {
+  height: 360px;
+}
+
+.audit-log-table {
+  min-width: 1420px;
+}
+
+.risk-table th:nth-child(1),
+.risk-table td:nth-child(1) {
+  width: 198px;
+  text-align: left;
+}
+
+.risk-table th:nth-child(8),
+.risk-table td:nth-child(8) {
+  width: 190px;
+}
+
+.risk-table th:last-child,
+.risk-table td:last-child {
+  width: 150px;
+}
+
+.audit-log-table th:nth-child(1),
+.audit-log-table td:nth-child(1) {
+  width: 176px;
+  text-align: left;
+}
+
+.audit-log-table th:nth-child(2),
+.audit-log-table td:nth-child(2) {
+  width: 96px;
+}
+
+.audit-log-table th:nth-child(3),
+.audit-log-table td:nth-child(3),
+.audit-log-table th:nth-child(4),
+.audit-log-table td:nth-child(4) {
+  width: 104px;
+}
+
+.audit-log-table th:nth-child(5),
+.audit-log-table td:nth-child(5),
+.audit-log-table th:nth-child(6),
+.audit-log-table td:nth-child(6),
+.audit-log-table th:nth-child(7),
+.audit-log-table td:nth-child(7) {
+  width: 82px;
+}
+
+.audit-log-table th:nth-child(8),
+.audit-log-table td:nth-child(8),
+.audit-log-table th:nth-child(9),
+.audit-log-table td:nth-child(9) {
+  width: 154px;
+}
+
+.audit-log-table th:nth-child(10),
+.audit-log-table td:nth-child(10),
+.audit-log-table th:nth-child(11),
+.audit-log-table td:nth-child(11) {
+  width: 82px;
+}
+
+.audit-log-table th:nth-child(12),
+.audit-log-table td:nth-child(12) {
+  width: 220px;
+  text-align: left;
+}
+
+.audit-log-table th:last-child,
+.audit-log-table td:last-child {
+  position: sticky;
+  right: 0;
+  z-index: 1;
+  width: 88px;
+  border-left: 1px solid #e4e8ef;
+  background: #fff;
+  box-shadow: -8px 0 12px rgba(15, 23, 42, 0.06);
+}
+
+.audit-log-table th:last-child {
+  z-index: 2;
+  background: #f7f8fa;
+}
+
+.status.success {
+  color: #00a323;
+  font-weight: 600;
+}
+
+.risk-dialog {
+  width: 826px;
+}
+
+.risk-dialog .metrics {
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.risk-dialog .metrics div {
+  min-height: 58px;
+  padding: 9px 10px;
+}
+
+.risk-dialog .metrics b {
+  margin-top: 6px;
+  font-size: 16px;
+}
+
+.dialog-tabs {
+  display: flex;
+  height: 44px;
+  padding-left: 18px;
+  border-bottom: 1px solid #dfe3ea;
+}
+
+.dialog-tab {
+  min-width: 98px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #425066;
+}
+
+.dialog-tab.is-active {
+  border-bottom-color: #1677ff;
+  color: #1677ff;
+  font-weight: 600;
+}
+
+.dialog-pane {
+  display: none;
+}
+
+.dialog-pane.is-active {
+  display: block;
+}
+
+.log-table {
+  width: calc(100% - 48px);
+  margin: 22px 24px 8px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.log-table th,
+.log-table td {
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid #e4e8ef;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.log-table th {
+  background: #f7f8fa;
+  color: #303846;
+  font-weight: 600;
+}

@@ -194,6 +194,12 @@ $axure.loadDocument({
             "url": "票券中心.html"
           },
           {
+            "id": "ticket_usage_record",
+            "pageName": "票券使用记录",
+            "type": "Wireframe",
+            "url": "优惠活动-票券使用记录.html"
+          },
+          {
             "id": "promotion_global_config",
             "pageName": "全局配置",
             "type": "Wireframe",
@@ -212,6 +218,30 @@ $axure.loadDocument({
             "pageName": "会员提现设置",
             "type": "Wireframe",
             "url": "会员提现设置.html"
+          },
+          {
+            "id": "member_recharge_config",
+            "pageName": "会员充值配置",
+            "type": "Wireframe",
+            "url": "会员充值配置.html"
+          },
+          {
+            "id": "recharge_order_list",
+            "pageName": "充值订单列表",
+            "type": "Wireframe",
+            "url": "充值订单列表.html"
+          },
+          {
+            "id": "withdraw_order_list",
+            "pageName": "提现订单列表",
+            "type": "Wireframe",
+            "url": "提现订单列表.html"
+          },
+          {
+            "id": "withdraw_risk_review",
+            "pageName": "提现风控审核",
+            "type": "Wireframe",
+            "url": "提现风控审核.html"
           }
         ]
       },

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>充值订单列表</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/充值订单列表/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/充值订单列表.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/充值订单列表/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/充值订单列表.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell recharge-orders-page">
+        <header class="page-titlebar">
+          <button class="title-icon" type="button" aria-label="返回">‹</button>
+          <button class="title-icon" type="button" aria-label="刷新">↻</button>
+          <span>财务中心</span>
+          <b>/</b>
+          <strong>充值订单列表</strong>
+        </header>
+
+        <section class="orders-panel">
+          <nav class="tabs" aria-label="充值订单类型">
+            <button class="tab is-active" type="button" data-tab="online">在线充值</button>
+            <button class="tab" type="button" data-tab="usdt">USDT充值</button>
+          </nav>
+
+          <div class="tab-pane is-active" data-pane="online">
+            <form class="filterbar">
+              <label class="field date-field"><span>创建时间:</span><input placeholder="请选择"/><i>▣</i></label>
+              <span class="range-text">至</span>
+              <label class="field date-field"><input placeholder="请选择"/><i>▣</i></label>
+              <label class="field"><span>会员ID:</span><input placeholder="请输入会员ID"/></label>
+              <label class="field select-field"><span>支付渠道:</span><select><option>全部</option><option>UsdtPay</option><option>QQPay</option><option>SuccusPay</option><option>WiwiPay</option><option>Manual Deposit</option><option>Internal Transfer</option></select></label>
+              <label class="field select-field"><span>订单状态:</span><select><option>全部</option><option>已关闭</option><option>待付款</option><option>处理中</option><option>充值成功</option></select></label>
+              <button class="btn primary" type="button">⌕ 搜索</button>
+              <button class="btn" type="button">↻ 重置</button>
+              <button class="btn primary export" type="button">⇩ 导出表格</button>
+            </form>
+
+            <div class="table-scroll">
+              <table class="orders-table">
+                <thead>
+                  <tr>
+                    <th>订单号</th><th>会员ID</th><th>订单状态</th><th>订单金额</th><th>赠送金额</th><th>实际到账金额</th><th>创建时间</th><th>支付方式</th><th>支付渠道</th><th>汇率</th><th>充值币种</th><th>第三方单号</th><th>备注</th><th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>d07fd356e9604abd9...</td><td>1010010013</td><td><span class="status success">充值成功</span></td><td class="money order">4.99</td><td class="money gift">0.5</td><td class="money actual">5.489</td><td>2026-05-27 13:08:25</td><td>apple</td><td>succuspay</td><td>0</td><td>USD</td><td>S202605262108A226063</td><td></td><td><button class="link" type="button" data-detail="online">详情</button></td></tr>
+                  <tr><td>067692b201f040219...</td><td>1010010264</td><td><span class="status success">充值成功</span></td><td class="money order">4.99</td><td class="money gift">0</td><td class="money actual">4.99</td><td>2026-05-27 10:52:01</td><td>cashapp</td><td>succuspay</td><td>0</td><td>USD</td><td>S202605261852C42923</td><td></td><td><button class="link" type="button" data-detail="online">详情</button></td></tr>
+                  <tr><td>197f50a20cb747f599...</td><td>1010010264</td><td><span class="status pending">待付款</span></td><td class="money order">4.99</td><td class="money gift">0</td><td class="money actual">0</td><td>2026-05-27 10:51:49</td><td>cashapp</td><td>succuspay</td><td>0</td><td>USD</td><td>-</td><td>等待用户支付</td><td><button class="link" type="button" data-detail="online">详情</button></td></tr>
+                  <tr><td>abdbaf9b18894efb9...</td><td>1010010264</td><td><span class="status processing">处理中</span></td><td class="money order">4.99</td><td class="money gift">0</td><td class="money actual">4.99</td><td>2026-05-27 10:47:15</td><td>cashapp</td><td>succuspay</td><td>0</td><td>USD</td><td>S202605261847CA21773</td><td>渠道回调处理中</td><td><button class="link" type="button" data-detail="online">详情</button></td></tr>
+                  <tr><td>11b11eaa53e04145a...</td><td>1010010264</td><td><span class="status closed">已关闭</span></td><td class="money order">4.99</td><td class="money gift">0</td><td class="money actual">0</td><td>2026-05-27 10:47:01</td><td>cashapp</td><td>succuspay</td><td>0</td><td>USD</td><td>-</td><td>支付超时关闭</td><td><button class="link" type="button" data-detail="online">详情</button></td></tr>
+                  <tr><td>89490e1dce6f4d5caa...</td><td>1010010264</td><td><span class="status success">充值成功</span></td><td class="money order">4.99</td><td class="money gift">0</td><td class="money actual">4.99</td><td>2026-05-27 10:46:49</td><td>cashapp</td><td>succuspay</td><td>0</td><td>USD</td><td>S202605261846A407515</td><td></td><td><button class="link" type="button" data-detail="online">详情</button></td></tr>
+                  <tr><td>63eaf9560fc146f2ab...</td><td>1010010264</td><td><span class="status success">充值成功</span></td><td class="money order">4.99</td><td class="money gift">0</td><td class="money actual">4.99</td><td>2026-05-27 10:46:33</td><td>cashapp</td><td>succuspay</td><td>0</td><td>USD</td><td>S2026052618466916646</td><td></td><td><button class="link" type="button" data-detail="online">详情</button></td></tr>
+                  <tr><td>b25ab5186e3742e3b...</td><td>1010010264</td><td><span class="status success">充值成功</span></td><td class="money order">4.99</td><td class="money gift">0</td><td class="money actual">4.99</td><td>2026-05-27 10:45:57</td><td>cashapp</td><td>succuspay</td><td>0</td><td>USD</td><td>S2026052618458541283</td><td></td><td><button class="link" type="button" data-detail="online">详情</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="pager"><span>‹</span><span>≪</span><span>‹</span><input value="1"/><span>/ 3</span><span>›</span><span>≫</span><span>›</span><button>20条/页</button><em>共 48 条记录</em></div>
+          </div>
+
+          <div class="tab-pane" data-pane="usdt">
+            <form class="filterbar compact">
+              <label class="field date-field"><span>创建时间:</span><input placeholder="请选择"/><i>▣</i></label>
+              <span class="range-text">至</span>
+              <label class="field date-field"><input placeholder="请选择"/><i>▣</i></label>
+              <label class="field"><span>会员ID:</span><input placeholder="请输入会员ID"/></label>
+              <label class="field select-field"><span>订单状态:</span><select><option>全部</option><option>已关闭</option><option>待付款</option><option>处理中</option><option>充值成功</option></select></label>
+              <button class="btn primary" type="button">⌕ 搜索</button>
+              <button class="btn" type="button">↻ 重置</button>
+              <button class="btn primary export" type="button">⇩ 导出表格</button>
+            </form>
+            <div class="table-scroll">
+              <table class="orders-table usdt-table">
+                <thead>
+                  <tr>
+                    <th>订单号</th><th>会员ID</th><th>订单状态</th><th>订单金额</th><th>赠送金额</th><th>实际到账金额</th><th>创建时间</th><th>支付方式</th><th>支付渠道</th><th>充值币种</th><th>第三方单号</th><th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>3d177edd333d4cc0a...</td><td>1010010262</td><td><span class="status closed">已关闭</span></td><td class="money order">10</td><td class="money gift">0</td><td class="money actual">10</td><td>2026-05-26 18:48:59</td><td>trc20</td><td>usdtpay</td><td>USD</td><td></td><td><button class="link" type="button" data-detail="usdt">详情</button></td></tr>
+                  <tr><td>8eb16d6c94f04c4790...</td><td>1010010134</td><td><span class="status pending">待付款</span></td><td class="money order">10</td><td class="money gift">0</td><td class="money actual">0</td><td>2026-05-23 14:54:49</td><td>trc20</td><td>usdtpay</td><td>USD</td><td>-</td><td><button class="link" type="button" data-detail="usdt">详情</button></td></tr>
+                  <tr><td>9bb1b25606a34ceba...</td><td>1010010134</td><td><span class="status processing">处理中</span></td><td class="money order">10</td><td class="money gift">0</td><td class="money actual">10</td><td>2026-05-23 14:54:27</td><td>trc20</td><td>usdtpay</td><td>USD</td><td>TX20260523145427</td><td><button class="link" type="button" data-detail="usdt">详情</button></td></tr>
+                  <tr><td>1d006b076b4144859...</td><td>1010010134</td><td><span class="status success">充值成功</span></td><td class="money order">10</td><td class="money gift">0</td><td class="money actual">10</td><td>2026-05-23 14:38:33</td><td>trc20</td><td>usdtpay</td><td>USD</td><td>TX20260523143833</td><td><button class="link" type="button" data-detail="usdt">详情</button></td></tr>
+                  <tr><td>d697c3751a2549828...</td><td>1010010139</td><td><span class="status closed">已关闭</span></td><td class="money order">10</td><td class="money gift">0</td><td class="money actual">10</td><td>2026-05-23 14:04:14</td><td>trc20</td><td>usdtpay</td><td>USD</td><td></td><td><button class="link" type="button" data-detail="usdt">详情</button></td></tr>
+                  <tr><td>b651ecb494674c38b...</td><td>1010010134</td><td><span class="status closed">已关闭</span></td><td class="money order">1000</td><td class="money gift">0</td><td class="money actual">1000</td><td>2026-05-23 13:38:12</td><td>trc20</td><td>usdtpay</td><td>USD</td><td></td><td><button class="link" type="button" data-detail="usdt">详情</button></td></tr>
+                  <tr><td>cfcc0c2eba0949f092...</td><td>1010010134</td><td><span class="status closed">已关闭</span></td><td class="money order">100</td><td class="money gift">0</td><td class="money actual">100</td><td>2026-05-23 13:37:41</td><td>trc20</td><td>usdtpay</td><td>USD</td><td></td><td><button class="link" type="button" data-detail="usdt">详情</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="pager"><span>‹</span><span>≪</span><span>‹</span><input value="1"/><span>/ 4</span><span>›</span><span>≫</span><span>›</span><button>20条/页</button><em>共 73 条记录</em></div>
+          </div>
+        </section>
+
+        <div class="modal-mask" data-dialog="online" hidden>
+          <section class="detail-dialog">
+            <header><h2>订单详情</h2><button type="button" data-close>×</button></header>
+            <div class="detail-top"><span>订单号：<b>d07fd356e9604abd98cbfd280d66577a</b></span><span>订单状态：充值成功</span><span>会员ID：<b>1010010013</b></span><span>第三方单号：<b>S202605262108A226063</b></span></div>
+            <dl class="detail-grid"><dt>订单金额</dt><dd>4.99</dd><dt>实际到账金额</dt><dd>5.489</dd><dt>赠送金额</dt><dd>0.5</dd><dt>充值币种</dt><dd>USD</dd><dt>汇率</dt><dd>0</dd><dt>手续费</dt><dd>0</dd><dt>支付方式</dt><dd>apple</dd><dt>支付渠道</dt><dd>succuspay</dd><dt>是否首充</dt><dd>否</dd><dt>备注</dt><dd>-</dd><dt>创建时间</dt><dd>2026-05-27 13:08:25</dd><dt>更新时间</dt><dd>2026-05-27 13:08:28</dd></dl>
+            <footer><button class="btn primary" type="button" data-close>关闭</button></footer>
+          </section>
+        </div>
+
+        <div class="modal-mask" data-dialog="usdt" hidden>
+          <section class="detail-dialog">
+            <header><h2>订单详情</h2><button type="button" data-close>×</button></header>
+            <div class="detail-top"><span>订单号：<b>3d177edd333d4cc0accc54af6543715c</b></span><span>订单状态：已关闭</span><span>会员ID：<b>1010010262</b></span><span>第三方单号：<b>-</b></span></div>
+            <dl class="detail-grid"><dt>订单金额</dt><dd>10</dd><dt>实际到账金额</dt><dd>10</dd><dt>赠送金额</dt><dd>0</dd><dt>充值币种</dt><dd>USD</dd><dt>汇率</dt><dd>0</dd><dt>手续费</dt><dd>0</dd><dt>支付方式</dt><dd>trc20</dd><dt>支付渠道</dt><dd>usdtpay</dd><dt>是否首充</dt><dd>否</dd><dt>备注</dt><dd>auto closed due to timeout</dd><dt>创建时间</dt><dd>2026-05-26 18:48:59</dd><dt>更新时间</dt><dd>2026-05-26 18:59:11</dd></dl>
+            <footer><button class="btn primary" type="button" data-close>关闭</button></footer>
+          </section>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

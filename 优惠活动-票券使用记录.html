@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>票券使用记录</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/优惠活动-票券使用记录/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/优惠活动-票券使用记录.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/优惠活动-票券使用记录/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell ticket-usage-page">
+        <form class="usage-toolbar">
+          <label><span>用户ID:</span><input name="userId" type="text" placeholder="请输入"/></label>
+          <label><span>票券ID:</span><input name="ticketId" type="text" placeholder="请输入"/></label>
+          <label><span>票券类型:</span><select name="ticketType"><option value="">请选择</option><option>金蛋</option><option>随机红包</option><option>充值优惠券</option></select></label>
+          <label><span>状态:</span><select name="status"><option value="">请选择</option><option>待核销</option><option>已核销</option></select></label>
+          <button class="primary-btn" type="button" id="searchUsage">搜索</button>
+          <button class="plain-btn" type="reset" id="resetUsage">重置</button>
+        </form>
+
+        <section class="table-panel">
+          <table class="usage-table">
+            <thead>
+              <tr>
+                <th>派发时间</th>
+                <th>用户ID</th>
+                <th>用户名</th>
+                <th>使用时间</th>
+                <th>票券名称</th>
+                <th>票券类型</th>
+                <th>状态</th>
+              </tr>
+            </thead>
+            <tbody id="usageRows">
+              <tr><td>2026-05-27 12:00:00</td><td>1010010024</td><td>test1</td><td>2026-05-27 12:00:00</td><td>端午砸蛋礼</td><td><span class="tag tag-gold">金蛋</span></td><td><span class="status pending">待核销</span></td></tr>
+              <tr><td>2026-05-27 12:00:00</td><td>1010010013</td><td>111222</td><td>2026-05-27 12:00:00</td><td>新人惊喜红包</td><td><span class="tag tag-random">随机红包</span></td><td><span class="status pending">待核销</span></td></tr>
+              <tr><td>2026-05-23 12:00:00</td><td>1010010113</td><td>jsudurh</td><td>2026-05-23 12:00:00</td><td>周末幸运红包</td><td><span class="tag tag-random">随机红包</span></td><td><span class="status pending">待核销</span></td></tr>
+              <tr><td>2026-05-23 12:00:00</td><td>1010010181</td><td>123fff</td><td>2026-05-23 12:00:00</td><td>充值满减券</td><td><span class="tag tag-recharge">充值优惠券</span></td><td><span class="status pending">待核销</span></td></tr>
+              <tr><td>2026-05-22 17:26:10</td><td>1010010181</td><td>123fff</td><td>2026-05-22 17:26:10</td><td>活跃任务红包</td><td><span class="tag tag-random">随机红包</span></td><td><span class="status pending">待核销</span></td></tr>
+              <tr><td>2026-05-22 17:26:10</td><td>1010010119</td><td>123kkk</td><td>2026-05-22 17:26:10</td><td>登录奖励红包</td><td><span class="tag tag-random">随机红包</span></td><td><span class="status pending">待核销</span></td></tr>
+              <tr><td>2026-05-22 12:00:00</td><td>1010010115</td><td>120uiuuu</td><td>2026-05-22 12:00:00</td><td>幸运金蛋券</td><td><span class="tag tag-gold">金蛋</span></td><td><span class="status pending">待核销</span></td></tr>
+              <tr><td>2026-05-22 12:00:00</td><td>1010010115</td><td>120uiuuu</td><td>2026-05-22 12:00:00</td><td>节日金蛋奖励</td><td><span class="tag tag-gold">金蛋</span></td><td><span class="status pending">待核销</span></td></tr>
+              <tr><td>2026-05-22 12:00:00</td><td>1010010115</td><td>120uiuuu</td><td>2026-05-22 16:37:59</td><td>充值满减券2</td><td><span class="tag tag-recharge">充值优惠券</span></td><td><span class="status done">已核销</span></td></tr>
+              <tr><td>2026-05-22 12:00:00</td><td>1010010181</td><td>123fff</td><td>2026-05-22 12:00:00</td><td>整点金蛋福利</td><td><span class="tag tag-gold">金蛋</span></td><td><span class="status pending">待核销</span></td></tr>
+              <tr><td>2026-05-22 12:00:00</td><td>1010010181</td><td>123fff</td><td>2026-05-22 12:00:00</td><td>会员金蛋礼</td><td><span class="tag tag-gold">金蛋</span></td><td><span class="status pending">待核销</span></td></tr>
+              <tr><td>2026-05-22 12:00:00</td><td>1010010115</td><td>120uiuuu</td><td>2026-05-22 12:00:00</td><td>任务金蛋券</td><td><span class="tag tag-gold">金蛋</span></td><td><span class="status pending">待核销</span></td></tr>
+            </tbody>
+          </table>
+          <div class="pager">
+            <button type="button" class="page-icon disabled">|&lt;</button>
+            <button type="button" class="page-icon disabled">&lt;&lt;</button>
+            <button type="button" class="page-icon disabled">&lt;</button>
+            <span class="page-num">1</span>
+            <span>/ 2</span>
+            <button type="button" class="page-icon">&gt;</button>
+            <button type="button" class="page-icon">&gt;&gt;</button>
+            <button type="button" class="page-icon">&gt;|</button>
+            <select><option>20条/页</option><option>50条/页</option><option>100条/页</option></select>
+            <span>共 36 条记录</span>
+          </div>
+        </section>
+      </div>
+    </div>
+    <script src="custom/js/优惠活动-票券使用记录.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

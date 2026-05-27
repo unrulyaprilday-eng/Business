@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>提现订单列表</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/提现订单列表/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/提现订单列表.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/提现订单列表/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/提现订单列表.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell withdraw-page">
+        <header class="page-titlebar">
+          <button class="title-icon" type="button" aria-label="返回">‹</button>
+          <button class="title-icon" type="button" aria-label="刷新">↻</button>
+          <span>财务中心</span><b>/</b><strong>提现订单列表</strong>
+        </header>
+        <section class="orders-panel">
+          <nav class="tabs" aria-label="提现类型">
+            <button class="tab is-active" type="button" data-tab="online">在线提现</button>
+            <button class="tab" type="button" data-tab="usdt">USDT提现</button>
+          </nav>
+          <div class="tab-pane is-active" data-pane="online">
+            <form class="filterbar">
+              <label class="field date-field"><input placeholder="请选择"/><i>▣</i></label><span class="range-text">至</span>
+              <label class="field date-field"><input placeholder="请选择"/><i>▣</i></label>
+              <label class="field"><span>会员ID:</span><input placeholder="请输入"/></label>
+              <label class="field wide"><span>订单号:</span><input placeholder="请输入"/></label>
+              <label class="field select-field"><span>订单状态:</span><select><option>请选择</option><option>支付失败</option><option>复审不通过</option><option>初审不通过</option><option>用户手动取消</option><option>待初审</option><option>初审通过</option><option>待支付</option><option>支付中</option><option>已完成</option></select></label>
+              <button class="btn primary" type="button">⌕ 搜索</button><button class="btn" type="button">重置</button>
+              <label class="field select-field refresh"><span>自动刷新:</span><select><option>不自动刷新</option><option>15s刷新</option><option>30秒刷新</option><option>60s刷新</option></select></label>
+              <button class="btn primary export" type="button">⇩ 导出表格</button>
+            </form>
+            <div class="table-scroll">
+              <table class="orders-table">
+                <thead><tr><th><span class="check"></span></th><th>订单号</th><th>订单状态</th><th>商户ID</th><th>会员ID</th><th>创建时间</th><th>更新时间</th><th>提现金额</th><th>实际金额</th><th>提现方式</th><th>操作人</th><th>备注</th><th>操作</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="check fill"></span></td><td>8d1409151ae246248396...</td><td><span class="status pending">待初审</span></td><td>101</td><td>1010010000</td><td>2026-05-27 15:12:16</td><td>2026-05-27 15:12:16</td><td class="money blue">100</td><td class="money green">85</td><td>chime</td><td>-</td><td class="remark">等待风控初审</td><td><button class="link muted" type="button" data-audit="view">详情</button></td></tr>
+                  <tr><td><span class="check"></span></td><td>91bfe7a0d6c14a6290e2...</td><td><span class="status pass">初审通过</span></td><td>101</td><td>1010010003</td><td>2026-05-27 14:46:28</td><td>2026-05-27 14:52:31</td><td class="money blue">280</td><td class="money green">266</td><td>gcash</td><td>mavis</td><td class="remark">初审通过，待复审确认</td><td><button class="link muted" type="button" data-audit="view">详情</button></td></tr>
+                  <tr><td><span class="check fill"></span></td><td>c526678f83d24ac1b09b...</td><td><span class="status danger">初审不通过</span></td><td>101</td><td>1010010012</td><td>2026-05-27 14:18:53</td><td>2026-05-27 14:25:12</td><td class="money blue">60</td><td class="money green">60</td><td>ecashapp</td><td>qitian</td><td class="remark">收款账户姓名与会员资料不一致</td><td><button class="link muted" type="button" data-audit="view">详情</button></td></tr>
+                  <tr><td><span class="check"></span></td><td>45ac2f07123d4c65a99f...</td><td><span class="status pass">待支付</span></td><td>101</td><td>1010010026</td><td>2026-05-27 13:50:05</td><td>2026-05-27 13:58:17</td><td class="money blue">420</td><td class="money green">399</td><td>bank</td><td>alex</td><td class="remark">复审通过，待提交三方代付</td><td><button class="link muted" type="button" data-audit="view">详情</button></td></tr>
+                  <tr><td><span class="check fill"></span></td><td>0deb24369d124f6da15f...</td><td><span class="status paying">支付中</span></td><td>101</td><td>1010010012</td><td>2026-05-27 13:20:05</td><td>2026-05-27 13:31:44</td><td class="money blue">60</td><td class="money green">36</td><td>ecashapp</td><td>system</td><td class="remark">三方已受理，等待回调结果</td><td><button class="link muted" type="button" data-audit="view">详情</button></td></tr>
+                  <tr><td><span class="check"></span></td><td>2b88ed5eda9b474eb91...</td><td><span class="status done">已完成</span></td><td>101</td><td>1010010038</td><td>2026-05-27 12:48:50</td><td>2026-05-27 13:02:32</td><td class="money blue">360</td><td class="money green">342</td><td>chime</td><td>qitian</td><td class="remark">三方回调成功</td><td><button class="link muted" type="button" data-audit="view">详情</button></td></tr>
+                  <tr><td><span class="check fill"></span></td><td>67c257e02a484dbf84ee...</td><td><span class="status danger">支付失败</span></td><td>101</td><td>1010010044</td><td>2026-05-27 12:15:57</td><td>2026-05-27 12:22:08</td><td class="money blue">180</td><td class="money green">171</td><td>bank</td><td>system</td><td class="remark">三方返回：余额不足，请更换代付通道</td><td class="actions"><button class="link muted" type="button" data-audit="view">详情</button><button class="link" type="button" data-confirm-pay>重新支付</button></td></tr>
+                  <tr><td><span class="check"></span></td><td>3a25fea5710c401b9a27...</td><td><span class="status danger">复审不通过</span></td><td>101</td><td>1010010051</td><td>2026-05-27 11:36:36</td><td>2026-05-27 11:48:49</td><td class="money blue">50</td><td class="money green">26</td><td>ecashapp</td><td>mavis</td><td class="remark">复审驳回：流水异常需人工核实</td><td><button class="link muted" type="button" data-audit="view">详情</button></td></tr>
+                  <tr><td><span class="check fill"></span></td><td>9fe65a3bc72043b29a10...</td><td><span class="status danger">用户手动取消</span></td><td>101</td><td>1010010067</td><td>2026-05-27 10:55:13</td><td>2026-05-27 10:56:40</td><td class="money blue">90</td><td class="money green">90</td><td>gcash</td><td>-</td><td class="remark">会员在审核前取消订单</td><td><button class="link muted" type="button" data-audit="view">详情</button></td></tr>
+                  <tr><td><span class="check"></span></td><td>5c82784f5a0d45a698c4...</td><td><span class="status done">已完成</span></td><td>101</td><td>1010010081</td><td>2026-05-27 10:12:24</td><td>2026-05-27 10:29:08</td><td class="money blue">600</td><td class="money green">570</td><td>chime</td><td>alex</td><td class="remark">银行代付成功</td><td><button class="link muted" type="button" data-audit="view">详情</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="pager"><span>‹</span><span>≪</span><span>‹</span><input value="1"/><span>/ 1</span><span>›</span><span>≫</span><span>›</span><button>20条/页</button><em>共 10 条记录</em></div>
+            <section class="table-note" aria-label="提现订单说明">
+              <strong>订单处理说明</strong>
+              <span>支付中表示订单已提交到三方代付或已回填 txid，正在等待三方回调。</span>
+              <span>在线提现支付失败后点击“重新支付”，二次确认后系统会再次调用三方代付 API，并将返回原因自动写入备注。</span>
+              <span>备注用于记录三方返回、风控驳回和人工处理等关键信息。</span>
+            </section>
+          </div>
+          <div class="tab-pane" data-pane="usdt">
+            <form class="filterbar">
+              <label class="field date-field"><input placeholder="请选择"/><i>▣</i></label><span class="range-text">至</span>
+              <label class="field date-field"><input placeholder="请选择"/><i>▣</i></label>
+              <label class="field"><span>会员ID:</span><input placeholder="请输入"/></label>
+              <label class="field wide"><span>订单号:</span><input placeholder="请输入"/></label>
+              <label class="field select-field"><span>订单状态:</span><select><option>请选择</option><option>初审通过</option><option>待支付</option><option>支付中</option><option>复审不通过</option><option>支付失败</option><option>已完成</option></select></label>
+              <button class="btn primary" type="button">⌕ 搜索</button><button class="btn" type="button">重置</button>
+              <label class="field select-field refresh"><span>自动刷新:</span><select><option>不自动刷新</option><option>15s刷新</option><option>30秒刷新</option><option>60s刷新</option></select></label>
+              <button class="btn primary export" type="button">⇩ 导出表格</button>
+            </form>
+            <div class="table-scroll">
+              <table class="orders-table">
+                <thead><tr><th><span class="check"></span></th><th>订单号</th><th>订单状态</th><th>商户ID</th><th>会员ID</th><th>创建时间</th><th>更新时间</th><th>提现金额</th><th>实际金额</th><th>提现方式</th><th>操作人</th><th>备注</th><th>操作</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="check"></span></td><td>45efd6ad817247e58cd9...</td><td><span class="status pass">待支付</span></td><td>101</td><td>1010010012</td><td>2026-05-27 11:07:55</td><td>2026-05-27 11:42:06</td><td class="money blue">200</td><td class="money green">200</td><td>trc20</td><td>qitian</td><td class="remark">等待运营扫码支付并回填 txid</td><td class="actions"><button class="link muted" type="button" data-audit="view">详情</button><button class="link" type="button" data-pay>支付</button></td></tr>
+                  <tr><td><span class="check fill"></span></td><td>107778ccd0434163b273...</td><td><span class="status danger">支付失败</span></td><td>101</td><td>1010010012</td><td>2026-05-27 11:06:08</td><td>2026-05-27 11:07:51</td><td class="money blue">100</td><td class="money green">100</td><td>trc20</td><td>qitian</td><td class="remark">链上广播失败：txid 校验未通过</td><td class="actions"><button class="link muted" type="button" data-audit="view">详情</button><button class="link" type="button" data-pay>重新支付</button></td></tr>
+                  <tr><td><span class="check"></span></td><td>17efc41742d54aba8a6c...</td><td><span class="status pass">初审通过</span></td><td>101</td><td>1010010007</td><td>2026-05-27 10:47:08</td><td>2026-05-27 10:48:15</td><td class="money blue">100</td><td class="money green">95</td><td>trc20</td><td>mavis</td><td class="remark">地址白名单校验通过</td><td><button class="link muted" type="button" data-audit="view">详情</button></td></tr>
+                  <tr><td><span class="check"></span></td><td>730b35e2a8b440a28f0c...</td><td><span class="status paying">支付中</span></td><td>101</td><td>1010010086</td><td>2026-05-27 10:28:21</td><td>2026-05-27 10:32:18</td><td class="money blue">300</td><td class="money green">300</td><td>trc20</td><td>system</td><td class="remark">已提交链上转账，等待确认数</td><td><button class="link muted" type="button" data-audit="view">详情</button></td></tr>
+                  <tr><td><span class="check fill"></span></td><td>c1f60f8af7984c228f4a...</td><td><span class="status done">已完成</span></td><td>101</td><td>1010010091</td><td>2026-05-27 10:16:09</td><td>2026-05-27 10:25:33</td><td class="money blue">120</td><td class="money green">120</td><td>trc20</td><td>qitian</td><td class="remark">链上确认成功</td><td><button class="link muted" type="button" data-audit="view">详情</button></td></tr>
+                  <tr><td><span class="check fill"></span></td><td>d815e2993e6d46f4a917...</td><td><span class="status danger">复审不通过</span></td><td>101</td><td>1010010012</td><td>2026-05-27 09:58:25</td><td>2026-05-27 10:12:02</td><td class="money blue">50</td><td class="money green">45</td><td>trc20</td><td>alex</td><td class="remark">复审驳回：地址命中风险标签</td><td><button class="link muted" type="button" data-audit="view">详情</button></td></tr>
+                  <tr><td><span class="check"></span></td><td>b9c287481c73491aa841...</td><td><span class="status pending">待初审</span></td><td>101</td><td>1010010110</td><td>2026-05-27 09:44:16</td><td>2026-05-27 09:44:16</td><td class="money blue">80</td><td class="money green">76</td><td>trc20</td><td>-</td><td class="remark">等待风控初审</td><td><button class="link muted" type="button" data-audit="view">详情</button></td></tr>
+                  <tr><td><span class="check fill"></span></td><td>fc54a02d1a0b4659bf82...</td><td><span class="status danger">初审不通过</span></td><td>101</td><td>1010010124</td><td>2026-05-27 09:30:42</td><td>2026-05-27 09:38:27</td><td class="money blue">260</td><td class="money green">247</td><td>trc20</td><td>mavis</td><td class="remark">提现地址格式异常</td><td><button class="link muted" type="button" data-audit="view">详情</button></td></tr>
+                  <tr><td><span class="check"></span></td><td>76f0dbb6d6194d27b050...</td><td><span class="status danger">用户手动取消</span></td><td>101</td><td>1010010142</td><td>2026-05-27 09:12:39</td><td>2026-05-27 09:14:02</td><td class="money blue">150</td><td class="money green">150</td><td>trc20</td><td>-</td><td class="remark">会员取消后释放冻结余额</td><td><button class="link muted" type="button" data-audit="view">详情</button></td></tr>
+                  <tr><td><span class="check fill"></span></td><td>ee9717bf4c614f3d954d...</td><td><span class="status done">已完成</span></td><td>101</td><td>1010010158</td><td>2026-05-27 08:55:51</td><td>2026-05-27 09:08:14</td><td class="money blue">500</td><td class="money green">490</td><td>trc20</td><td>alex</td><td class="remark">人工复核 txid 后完成</td><td><button class="link muted" type="button" data-audit="view">详情</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="pager"><span>‹</span><span>≪</span><span>‹</span><input value="1"/><span>/ 1</span><span>›</span><span>≫</span><span>›</span><button>20条/页</button><em>共 10 条记录</em></div>
+            <section class="table-note" aria-label="USDT提现订单说明">
+              <strong>订单处理说明</strong>
+              <span>支付中表示订单已提交链上转账或已回填 txid，正在等待确认和回调。</span>
+              <span>支付失败后可点击“重新支付”，重新发起支付流程，失败原因会同步沉淀到备注。</span>
+              <span>备注用于记录链上返回、风控驳回和人工处理等关键信息。</span>
+            </section>
+          </div>
+        </section>
+        <div class="modal-mask" data-dialog="audit" hidden>
+          <section class="audit-dialog order-detail-dialog" data-detail-only>
+            <header><h2>提现订单详情</h2><button type="button" data-close>×</button></header>
+            <div class="order-detail-head"><span>订单号：<b>8d1409151ae24624839676e44b685ee6</b></span><span>订单状态：<b data-mode-text>待初审</b></span><span>会员ID：<b>1010010000</b></span></div>
+            <dl class="order-detail-grid"><dt>商户ID</dt><dd>101</dd><dt>提现金额</dt><dd>100</dd><dt>实际金额</dt><dd>85</dd><dt>手续费</dt><dd>15</dd><dt>申请时间</dt><dd>2026-05-27T15:12:16.121841+08:00</dd><dt>操作时间</dt><dd>2026-05-27T15:12:16.121841+08:00</dd><dt>备注</dt><dd>系统自动记录三方返回原因、风控驳回说明或人工处理备注；支付失败时可据此重新调用三方代付 API。</dd></dl>
+            <footer><button class="btn primary" type="button" data-close>关闭</button></footer>
+          </section>
+        </div>
+        <div class="modal-mask" data-dialog="confirm-pay" hidden>
+          <section class="confirm-dialog">
+            <header><h2>确认重新支付</h2><button type="button" data-close>×</button></header>
+            <div class="confirm-body">
+              <strong>确认重新调用三方代付 API？</strong>
+              <p>系统会按当前订单信息重新发起在线代付请求，并将本次三方返回结果同步写入备注。</p>
+            </div>
+            <footer><button class="btn" type="button" data-close>取消</button><button class="btn primary" type="button" data-close>确定</button></footer>
+          </section>
+        </div>
+        <div class="modal-mask" data-dialog="pay" hidden>
+          <section class="pay-dialog">
+            <header><h2>USDT复审</h2><button type="button" data-close>×</button></header>
+            <div class="pay-summary">
+              <dl>
+                <dt>提现类型</dt><dd>trc20</dd>
+                <dt>提现金额</dt><dd>200</dd>
+                <dt>地址</dt><dd>TUYQouwBKNv2UBqwuo332bUMYvcpLgmBDJ</dd>
+              </dl>
+            </div>
+            <div class="qr-area">
+              <span>二维码</span>
+              <div class="qr-code" aria-label="USDT支付二维码">
+                <i></i><i></i><i></i><b></b>
+              </div>
+              <strong>扫码支付完成，输入txid，才能通过复审</strong>
+            </div>
+            <form class="pay-form">
+              <label><span>TxID:<em>*</em></span><input placeholder="请输入TxID"/></label>
+              <label><span>代付通道:<em>*</em></span><select><option>请选择代付通道</option><option>USDT-TRC20 手动代付</option><option>三方代付通道</option></select></label>
+              <label><span>备注:</span><input placeholder="请输入备注"/></label>
+            </form>
+            <footer><button class="btn" type="button" data-close>取消</button><button class="btn primary" type="button" data-close>确定</button></footer>
+          </section>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

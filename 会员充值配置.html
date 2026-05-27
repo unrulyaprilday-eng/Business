@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>会员充值配置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/会员充值配置/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/会员充值配置.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/会员充值配置/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <main class="custom-page-shell recharge-page">
+        <header class="page-titlebar">
+          <button class="title-icon" type="button" aria-label="返回">‹</button>
+          <button class="title-icon" type="button" aria-label="刷新">↻</button>
+          <span>财务中心</span>
+          <b>/</b>
+          <strong>会员充值配置</strong>
+        </header>
+
+        <section class="content-panel">
+          <nav class="tabs" aria-label="充值配置类型">
+            <button class="tab is-active" type="button" data-tab="online">在线充值配置</button>
+            <button class="tab" type="button" data-tab="usdt">USDT充值配置</button>
+          </nav>
+
+          <div class="filterbar">
+            <label class="select-field">
+              <span>支付渠道:</span>
+              <select>
+                <option>全部</option>
+                <option>cashapp</option>
+                <option>paypal</option>
+                <option>trc20</option>
+                <option>erc20</option>
+              </select>
+            </label>
+            <label class="select-field">
+              <span>状态:</span>
+              <select>
+                <option>全部</option>
+                <option>启用</option>
+                <option>未启用</option>
+              </select>
+            </label>
+            <button class="btn primary" type="button">⌕ 搜索</button>
+            <button class="btn" type="button">↻ 重置</button>
+          </div>
+
+          <button class="btn primary config-btn" type="button" data-modal="rechargeConfig">充值配置</button>
+
+          <div class="table-wrap" data-table="online">
+            <table class="config-table">
+              <thead>
+                <tr>
+                  <th>支付方式</th>
+                  <th>排序</th>
+                  <th>图标</th>
+                  <th>前台通道名称</th>
+                  <th>通道名称</th>
+                  <th>是否启用</th>
+                  <th>通道推荐金额</th>
+                  <th>最小限额</th>
+                  <th>最大限额</th>
+                  <th>前台提示</th>
+                  <th>备注</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="group-row" data-group="cashapp">
+                  <td><button class="expand is-open" type="button" aria-label="收起 cashapp"></button><b>【cashapp】</b></td>
+                  <td>102</td>
+                  <td><span class="pay-icon cash-hand">$</span></td>
+                  <td>Cashapp</td>
+                  <td></td>
+                  <td></td>
+                  <td class="muted">-</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td><button class="link" type="button" data-modal="groupOnline">修改</button></td>
+                </tr>
+                <tr class="child-row" data-parent="cashapp">
+                  <td>cashapp</td><td>0</td><td><span class="pay-icon dollar">$</span></td><td>succuspay</td><td>SuccusPay测试</td><td><span class="state on">启用</span></td><td>4.99, 9.99, 14.99, 19.99, 29.99, ...</td><td>4</td><td>99999</td><td>succuspay</td><td>succuspay</td><td><button class="link" type="button" data-modal="methodOnline">修改</button></td>
+                </tr>
+                <tr class="child-row" data-parent="cashapp">
+                  <td>cashapp</td><td>0</td><td><span class="pay-icon dollar">$</span></td><td>pay1</td><td>wiwipay正式商户</td><td><span class="state off">未启用</span></td><td>4.99, 14.99, 19.99</td><td>4</td><td>9999</td><td>1</td><td>1</td><td><button class="link" type="button" data-modal="methodOnline">修改</button></td>
+                </tr>
+                <tr class="child-row" data-parent="cashapp">
+                  <td>cashapp</td><td>0</td><td><span class="pay-icon dollar">$</span></td><td>pay2</td><td>WiwiPay测试商户</td><td><span class="state on">启用</span></td><td>4.99, 14.99, 19.99</td><td>4</td><td>9999</td><td>1</td><td>1</td><td><button class="link" type="button" data-modal="methodOnline">修改</button></td>
+                </tr>
+                <tr class="child-row" data-parent="cashapp">
+                  <td>cashapp</td><td>1</td><td><span class="pay-icon dollar">$</span></td><td>Cashapp 充值</td><td>wiwipay01</td><td><span class="state on">启用</span></td><td>4.99, 9.99, 14.99, 19.99</td><td>4</td><td>5000</td><td>请使用 Cashapp 扫码...</td><td>美区 Cashapp 通道</td><td><button class="link" type="button" data-modal="methodOnline">修改</button></td>
+                </tr>
+                <tr class="group-row" data-group="paypal">
+                  <td><button class="expand is-open" type="button" aria-label="收起 paypal"></button><b>【paypal】</b></td>
+                  <td>20</td>
+                  <td><span class="paypal-logo">PayPal</span></td>
+                  <td>Paypal</td><td></td><td></td><td class="muted">-</td><td></td><td></td><td></td><td></td>
+                  <td><button class="link" type="button" data-modal="groupOnline">修改</button></td>
+                </tr>
+                <tr class="child-row" data-parent="paypal">
+                  <td>paypal</td><td>0</td><td class="muted">-</td><td>SuccusPayPal</td><td>SuccusPay测试</td><td><span class="state on">启用</span></td><td>4.99, 9.99, 15.99, 19.99</td><td>4</td><td>500</td><td></td><td></td><td><button class="link" type="button" data-modal="methodOnline">修改</button></td>
+                </tr>
+                <tr class="child-row" data-parent="paypal">
+                  <td>paypal</td><td>0</td><td class="muted">-</td><td></td><td>wiwipay正式商户</td><td><span class="state off">未启用</span></td><td></td><td>4</td><td>99999</td><td></td><td></td><td><button class="link" type="button" data-modal="methodOnline">修改</button></td>
+                </tr>
+                <tr class="child-row" data-parent="paypal">
+                  <td>paypal</td><td>0</td><td><span class="paypal-logo small">PayPal</span></td><td>wiwipay</td><td>wiwipay01</td><td><span class="state on">启用</span></td><td>100</td><td>4</td><td>5000</td><td></td><td></td><td><button class="link" type="button" data-modal="methodOnline">修改</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-wrap" data-table="usdt" hidden>
+            <table class="config-table">
+              <thead>
+                <tr>
+                  <th>支付方式</th><th>排序</th><th>图标</th><th>前台通道名称</th><th>通道名称</th><th>是否启用</th><th>通道推荐金额</th><th>最小限额</th><th>最大限额</th><th>前台提示</th><th>备注</th><th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="group-row" data-group="trc20">
+                  <td><button class="expand is-open" type="button" aria-label="收起 trc20"></button><b>【trc20】</b></td><td>10</td><td><span class="usdt-icon">◇</span></td><td>TRC20</td><td></td><td></td><td class="muted">-</td><td></td><td></td><td></td><td></td><td><button class="link" type="button" data-modal="groupUsdt">修改</button></td>
+                </tr>
+                <tr class="child-row" data-parent="trc20">
+                  <td>trc20</td><td>1</td><td><span class="usdt-icon">◇</span></td><td>USDT TRC20</td><td>USDT收款</td><td><span class="state on">启用</span></td><td>10</td><td>10</td><td>10000</td><td>*usdt线下转账</td><td>test</td><td><button class="link" type="button" data-modal="methodUsdt">修改</button></td>
+                </tr>
+                <tr class="group-row is-collapsed" data-group="erc20">
+                  <td><button class="expand" type="button" aria-label="展开 erc20"></button><b>【erc20】</b></td><td>10</td><td><span class="image-missing"></span></td><td>ERC20</td><td></td><td></td><td class="muted">-</td><td></td><td></td><td></td><td></td><td><button class="link" type="button" data-modal="groupUsdt">修改</button></td>
+                </tr>
+                <tr class="child-row" data-parent="erc20" hidden>
+                  <td>erc20</td><td>1</td><td><span class="image-missing"></span></td><td>USDT ERC20</td><td>USDT收款</td><td><span class="state off">未启用</span></td><td>50, 100</td><td>20</td><td>20000</td><td></td><td></td><td><button class="link" type="button" data-modal="methodUsdt">修改</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+
+      <div class="modal-mask" data-dialog="rechargeConfig" hidden>
+        <section class="modal recharge-modal">
+          <header><strong>充值配置</strong><button class="modal-close" type="button" data-close>×</button></header>
+          <div class="modal-body">
+            <label class="form-row short"><span>最大可同时进行中的充值订单:</span><input class="number" value="10"/><span class="stepper">＋<small>－</small></span></label>
+            <label class="form-row editor-row"><span>充值提示语:</span><div class="editor"><div class="editor-tools">B U I S | H x₂ x² ” ≡ 1² | 🔗 ▧ ▦ | ← → ▣</div><div class="editor-grid"><pre>&lt;p data-line="0"&gt;&lt;strong&gt;Deposit
+Information&lt;/strong&gt;&lt;br&gt;
+• Most deposits are credited within 1
+minute.&lt;br&gt;
+• Coin-to-USD exchange rate: 1:1.&lt;br&gt;
+• If you encounter any issues while making
+a deposit, please use the Manual Deposit
+option or contact our support team.&lt;/p&gt;</pre><article><h3>Deposit Information</h3><p>• Most deposits are credited within 1 minute.</p><p>• Coin-to-USD exchange rate: 1:1.</p><p>• If you encounter any issues while making a deposit, please use the Manual Deposit option or contact our support team.</p></article></div><footer><span>Character Count: 270</span><span>Scroll Auto ☑</span></footer></div></label>
+          </div>
+          <footer class="modal-actions"><button class="btn" type="button" data-close>取消</button><button class="btn primary" type="button" data-close>保存</button></footer>
+        </section>
+      </div>
+
+      <div class="modal-mask" data-dialog="groupOnline" hidden>
+        <section class="modal group-modal">
+          <header><strong>编辑支付方式分组</strong><button class="modal-close" type="button" data-close>×</button></header>
+          <div class="modal-body compact">
+            <div class="form-row readonly"><span>唯一标识</span><b>cashapp</b></div>
+            <label class="form-row"><span>前台支付方式名字</span><input value="Cashapp"/></label>
+            <div class="form-row"><span>图标</span><div><span class="upload-icon cash-hand">$<button type="button">×</button></span><p>请上传100*100或等比例，PNG/JPG/GIF格式小于50KB的图片</p></div></div>
+            <label class="form-row"><span>排序</span><input class="number" value="102"/><span class="stepper">＋<small>－</small></span></label>
+          </div>
+          <footer class="modal-actions"><button class="btn" type="button" data-close>取消</button><button class="btn primary" type="button" data-close>保存</button></footer>
+        </section>
+      </div>
+
+      <div class="modal-mask" data-dialog="groupUsdt" hidden>
+        <section class="modal group-modal">
+          <header><strong>编辑支付方式分组</strong><button class="modal-close" type="button" data-close>×</button></header>
+          <div class="modal-body compact">
+            <div class="form-row readonly"><span>唯一标识</span><b>trc20</b></div>
+            <label class="form-row"><span>前台支付方式名字</span><input value="TRC20"/></label>
+            <div class="form-row"><span>图标</span><div><span class="upload-icon usdt-icon">◇<button type="button">×</button></span><p>请上传100*100或等比例，PNG/JPG/GIF格式小于50KB的图片</p></div></div>
+            <label class="form-row"><span>排序</span><input class="number" value="10"/><span class="stepper">＋<small>－</small></span></label>
+          </div>
+          <footer class="modal-actions"><button class="btn" type="button" data-close>取消</button><button class="btn primary" type="button" data-close>保存</button></footer>
+        </section>
+      </div>
+
+      <div class="modal-mask" data-dialog="methodOnline" hidden>
+        <section class="modal method-modal">
+          <header><strong>修改</strong><button class="modal-close" type="button" data-close>×</button></header>
+          <div class="modal-body method-body">
+            <div class="form-grid"><div class="form-row readonly"><span>通道名称</span><b>SuccusPay测试</b></div><div class="form-row readonly"><span>支付方式</span><b>cashapp</b></div><label class="form-row switch-row"><span>是否启用</span><i class="switch on"></i></label><label class="form-row"><span>排序</span><input value="0"/><span class="stepper">＋<small>－</small></span></label></div>
+            <label class="form-row full required"><span>前台通道名称</span><input value="succuspay"/></label>
+            <div class="form-row full"><span>推荐金额设置</span><label><input type="radio"/> 可输入任意金额</label><label><input type="radio" checked/> 仅限固定金额</label></div>
+            <div class="amount-block"><span class="side-label">推荐金额档位</span><div class="amount-table"><div class="amount-head"><b>#</b><b>推荐充值金额</b><b>赠送比例</b><b>赠送额度</b><b></b></div><div class="amount-line"><i>1</i><input value="4.99"/><input value="0"/><em>%</em><input value="0"/><button>♙</button></div><div class="amount-line"><i>2</i><input value="9.99"/><input value="0"/><em>%</em><input value="0"/><button>♙</button></div><div class="amount-line"><i>3</i><input value="14.99"/><input value="0"/><em>%</em><input value="0"/><button>♙</button></div><div class="amount-line"><i>4</i><input value="19.99"/><input value="0"/><em>%</em><input value="0"/><button>♙</button></div><div class="amount-line"><i>5</i><input value="29.99"/><input value="0"/><em>%</em><input value="0"/><button>♙</button></div><div class="amount-line"><i>6</i><input value="49.99"/><input value="0"/><em>%</em><input value="0"/><button>♙</button></div></div></div>
+            <div class="add-line"><button class="btn" type="button">＋ 添加档位</button><span>6 / 8 档位</span></div>
+            <div class="form-grid"><label class="form-row required"><span>最小充值金额</span><input value="4"/><span class="stepper">＋<small>－</small></span></label><label class="form-row required"><span>最大充值金额</span><input value="99999"/><span class="stepper">＋<small>－</small></span></label></div>
+            <div class="form-row"><span>图标</span><div><span class="upload-icon dollar">$<button type="button">×</button></span><p>请上传100*100或等比例，PNG/JPG/GIF格式小于50KB的图片</p></div></div>
+            <label class="form-row full textarea"><span>前台提示</span><textarea>succuspay</textarea><em>9/500</em></label>
+            <label class="form-row full textarea"><span>备注</span><textarea>succuspay</textarea></label>
+          </div>
+          <footer class="modal-actions"><button class="btn" type="button" data-close>取消</button><button class="btn primary" type="button" data-close>保存</button></footer>
+        </section>
+      </div>
+
+      <div class="modal-mask" data-dialog="methodUsdt" hidden>
+        <section class="modal method-modal usdt-method">
+          <header><strong>修改</strong><button class="modal-close" type="button" data-close>×</button></header>
+          <div class="modal-body method-body">
+            <div class="form-grid"><div class="form-row readonly"><span>通道名称</span><b>USDT收款</b></div><div class="form-row readonly"><span>支付方式</span><b>trc20</b></div><label class="form-row switch-row"><span>是否启用</span><i class="switch on"></i></label><label class="form-row"><span>排序</span><input value="1"/><span class="stepper">＋<small>－</small></span></label></div>
+            <label class="form-row full required"><span>前台通道名称</span><input value="USDT TRC20"/></label>
+            <div class="form-row full"><span>推荐金额设置</span><label><input type="radio" checked/> 可输入任意金额</label><label><input type="radio"/> 仅限固定金额</label></div>
+            <div class="amount-block"><span class="side-label">推荐金额档位</span><div class="amount-table short"><div class="amount-head"><b>#</b><b>推荐充值金额</b><b>赠送比例</b><b>赠送额度</b></div><div class="amount-line"><i>1</i><input value="10"/><input value="0"/><em>%</em><input value="0"/></div></div></div>
+            <div class="add-line"><button class="btn" type="button">＋ 添加档位</button><span>1 / 8 档位</span></div>
+            <div class="form-grid"><label class="form-row required"><span>最小充值金额</span><input value="10"/><span class="stepper">＋<small>－</small></span></label><label class="form-row required"><span>最大充值金额</span><input value="10000"/><span class="stepper">＋<small>－</small></span></label></div>
+            <div class="form-row"><span>图标</span><div><span class="upload-icon usdt-icon">◇<button type="button">×</button></span><p>请上传100*100或等比例，PNG/JPG/GIF格式小于50KB的图片</p></div></div>
+            <label class="form-row full textarea"><span>前台提示</span><textarea>*usdt线下转账</textarea><em>9/500</em></label>
+            <label class="form-row full textarea"><span>备注</span><textarea>test</textarea></label>
+          </div>
+          <footer class="modal-actions"><button class="btn" type="button" data-close>取消</button><button class="btn primary" type="button" data-close>保存</button></footer>
+        </section>
+      </div>
+    </div>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/会员充值配置.js"></script>
+  </body>
+</html>

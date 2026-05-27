@@ -1,0 +1,403 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #f5f7fa;
+  color: #344054;
+  font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.recharge-orders-page {
+  min-width: 1280px;
+  min-height: 100vh;
+  background: #f5f7fa;
+}
+
+.page-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 14px;
+  border-bottom: 1px solid #e8ebf0;
+  background: #fff;
+  color: #667085;
+}
+
+.page-titlebar strong {
+  color: #2f3b52;
+}
+
+.page-titlebar b {
+  color: #a4acb9;
+  font-weight: 400;
+}
+
+.title-icon {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  background: transparent;
+  color: #526070;
+  font-size: 22px;
+  line-height: 22px;
+}
+
+.orders-panel {
+  margin: 16px 6px 0;
+  min-height: 735px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.tabs {
+  display: flex;
+  height: 40px;
+  padding-left: 16px;
+  border-bottom: 1px solid #d8dee8;
+}
+
+.tab {
+  min-width: 104px;
+  height: 40px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #344054;
+}
+
+.tab.is-active {
+  border-bottom-color: #2f86ff;
+  color: #1677ff;
+}
+
+.tab-pane {
+  display: none;
+  padding: 18px 16px 10px;
+}
+
+.tab-pane.is-active {
+  display: block;
+}
+
+.filterbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  white-space: nowrap;
+}
+
+.filterbar.compact {
+  gap: 12px;
+}
+
+.field {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  color: #303846;
+}
+
+.field span {
+  margin-right: 6px;
+}
+
+.field input,
+.field select {
+  width: 180px;
+  height: 34px;
+  padding: 0 28px 0 10px;
+  border: 1px solid #d5dce8;
+  border-radius: 4px;
+  background: #fff;
+  color: #7b8799;
+}
+
+.field select {
+  width: 220px;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, #b8c0cc 50%), linear-gradient(135deg, #b8c0cc 50%, transparent 50%);
+  background-position: calc(100% - 16px) 14px, calc(100% - 10px) 14px;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.date-field input {
+  width: 180px;
+}
+
+.date-field i {
+  position: absolute;
+  right: 9px;
+  color: #aeb7c5;
+  font-style: normal;
+  font-size: 12px;
+}
+
+.range-text {
+  color: #5e6877;
+}
+
+.btn {
+  height: 34px;
+  padding: 0 16px;
+  border: 1px solid #d5dce8;
+  border-radius: 4px;
+  background: #fff;
+  color: #425066;
+}
+
+.btn.primary {
+  border-color: #3291ff;
+  background: #3291ff;
+  color: #fff;
+}
+
+.btn.export {
+  margin-left: 8px;
+}
+
+.table-scroll {
+  height: 560px;
+  border: 1px solid #e4e8ef;
+  overflow: auto;
+}
+
+.orders-table {
+  min-width: 1600px;
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.usdt-table {
+  min-width: 1450px;
+}
+
+.orders-table th,
+.orders-table td {
+  height: 48px;
+  padding: 0 12px;
+  border-right: 1px solid #e4e8ef;
+  border-bottom: 1px solid #e4e8ef;
+  text-align: center;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.orders-table th {
+  background: #f7f8fa;
+  color: #303846;
+  font-weight: 600;
+}
+
+.orders-table th:nth-child(1),
+.orders-table td:nth-child(1) {
+  width: 160px;
+}
+
+.orders-table th:nth-child(7),
+.orders-table td:nth-child(7) {
+  width: 180px;
+}
+
+.orders-table th:nth-child(12),
+.orders-table td:nth-child(12) {
+  width: 200px;
+}
+
+.orders-table th:last-child,
+.orders-table td:last-child {
+  width: 96px;
+  border-right: 0;
+}
+
+.status.success {
+  color: #00b42a;
+}
+
+.status.closed {
+  color: #ff2f2f;
+}
+
+.status.pending {
+  color: #f59f00;
+}
+
+.status.processing {
+  color: #1677ff;
+}
+
+.money {
+  font-weight: 700;
+}
+
+.money.order {
+  color: #4b00c8;
+}
+
+.money.gift {
+  color: #ff1493;
+}
+
+.money.actual {
+  color: #009a00;
+}
+
+.link {
+  border: 0;
+  background: transparent;
+  color: #1677ff;
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  height: 58px;
+  color: #334155;
+}
+
+.pager span {
+  color: #4c5b6f;
+  font-size: 20px;
+}
+
+.pager input {
+  width: 56px;
+  height: 34px;
+  border: 1px solid #d5dce8;
+  border-radius: 4px;
+  text-align: center;
+  color: #344054;
+}
+
+.pager button {
+  width: 126px;
+  height: 34px;
+  border: 1px solid #d5dce8;
+  border-radius: 4px;
+  background: #fff;
+  color: #344054;
+}
+
+.pager em {
+  font-style: normal;
+  color: #344054;
+}
+
+.modal-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 8px;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.detail-dialog {
+  width: 828px;
+  min-height: 800px;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.25);
+}
+
+.detail-dialog header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  padding: 0 16px;
+  border-bottom: 1px solid #dfe3ea;
+}
+
+.detail-dialog h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #2f3b52;
+}
+
+.detail-dialog header button {
+  border: 0;
+  background: transparent;
+  color: #4f5968;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.detail-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 20px;
+  padding: 26px 40px;
+  color: #3b4555;
+}
+
+.detail-top b {
+  font-weight: 600;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  margin: 0 14px;
+  border: 1px solid #dfe3ea;
+}
+
+.detail-grid dt,
+.detail-grid dd {
+  min-height: 48px;
+  margin: 0;
+  padding: 14px 18px;
+  border-bottom: 1px solid #dfe3ea;
+}
+
+.detail-grid dt {
+  background: #d9dde6;
+  color: #5b6573;
+}
+
+.detail-grid dd {
+  color: #313947;
+}
+
+.detail-grid dt:nth-last-child(2),
+.detail-grid dd:last-child {
+  border-bottom: 0;
+}
+
+.detail-dialog footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 28px 16px 14px;
+}
