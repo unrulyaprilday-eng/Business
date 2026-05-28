@@ -60,6 +60,14 @@
   }
 
   function basicForm(kind) {
+    if (kind.indexOf('OG 参数') !== -1) {
+      return [
+        row('og:title', '<input value="WTGAME｜一站式娱乐平台"/>', true),
+        row('og:description', '<textarea>热门游戏、优惠活动、任务中心和会员权益统一呈现。</textarea>', true),
+        row('og:image', '<input value="https://cdn.wtgame.com/assets/share-og-cover.png"/>', true),
+        row('og:url', '<input value="https://www.wtgame.com"/>', true)
+      ].join('');
+    }
     if (kind.indexOf('网站图标') !== -1) {
       return row('Logo', uploadThumb('W'), true) + row('Favicon', uploadThumb('♜'), true);
     }
@@ -86,7 +94,56 @@
     mask.hidden = true;
   }
 
+  function setPanelEditing(panel, editing) {
+    panel.classList.toggle('is-editing', editing);
+    var view = panel.querySelector('.panel-view');
+    var edit = panel.querySelector('.panel-edit');
+    if (edit) {
+      view.hidden = editing;
+      edit.hidden = !editing;
+    } else {
+      panel.querySelectorAll('input, textarea, select').forEach(function (field) {
+        field.disabled = !editing;
+      });
+    }
+    panel.querySelector('.view-actions').hidden = editing;
+    panel.querySelector('.edit-actions').hidden = !editing;
+  }
+
   document.addEventListener('click', function (event) {
+    var editButton = event.target.closest('[data-edit-panel]');
+    if (editButton) {
+      setPanelEditing(editButton.closest('.inline-config-panel'), true);
+      return;
+    }
+    var saveButton = event.target.closest('[data-save-panel]');
+    if (saveButton) {
+      setPanelEditing(saveButton.closest('.inline-config-panel'), false);
+      return;
+    }
+    var cancelButton = event.target.closest('[data-cancel-panel]');
+    if (cancelButton) {
+      setPanelEditing(cancelButton.closest('.inline-config-panel'), false);
+      return;
+    }
+    var removeButton = event.target.closest('.upload-remove');
+    if (removeButton) {
+      var removePanel = removeButton.closest('.inline-config-panel');
+      if (removePanel && !removePanel.classList.contains('is-editing')) {
+        return;
+      }
+      removeButton.closest('.upload-box').classList.remove('has-image');
+      return;
+    }
+    var uploadBox = event.target.closest('.upload-box');
+    if (uploadBox && !uploadBox.classList.contains('has-image')) {
+      var uploadPanel = uploadBox.closest('.inline-config-panel');
+      if (uploadPanel && !uploadPanel.classList.contains('is-editing')) {
+        return;
+      }
+      uploadBox.classList.add('has-image');
+      return;
+    }
     var trigger = event.target.closest('[data-modal]');
     if (trigger) {
       openModal(trigger.getAttribute('data-modal'));

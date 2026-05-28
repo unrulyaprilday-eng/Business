@@ -1,5 +1,5 @@
 $axure.loadCurrentPage({
-  "url": "页面设置.html",
+  "url": "站点配置.html",
   "generationDate": new Date(1779120000000),
   "defaultAdaptiveView": {
     "name": "",
@@ -26,7 +26,7 @@ $axure.loadCurrentPage({
   "page": {
     "packageId": "page_settings",
     "type": "Axure:Page",
-    "name": "页面设置",
+    "name": "站点配置",
     "notes": {},
     "annotations": [],
     "style": {

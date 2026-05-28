@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>页面设置</title>
+    <title>站点配置</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
     <link href="data/styles.css" type="text/css" rel="stylesheet"/>
-    <link href="files/页面设置/styles.css" type="text/css" rel="stylesheet"/>
-    <link href="custom/css/页面设置.css" type="text/css" rel="stylesheet"/>
+    <link href="files/站点配置/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/站点配置.css" type="text/css" rel="stylesheet"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
     <script src="resources/scripts/axure/axQuery.js"></script>
     <script src="resources/scripts/axure/globals.js"></script>
@@ -40,7 +40,7 @@
     <script src="resources/scripts/axure/math.js"></script>
     <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
     <script src="data/document.js"></script>
-    <script src="files/页面设置/data.js"></script>
+    <script src="files/站点配置/data.js"></script>
     <script type="text/javascript">
       $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
       $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
@@ -50,12 +50,18 @@
   <body>
     <div id="base" class="">
       <div class="page-settings-shell">
-        <section class="setting-panel">
+        <section class="setting-panel inline-config-panel">
           <div class="panel-head">
             <h2>网站图标</h2>
-            <button class="blue-btn" type="button" data-modal="编辑网站图标">编辑</button>
+            <div class="panel-actions view-actions">
+              <button class="blue-btn" type="button" data-edit-panel>编辑</button>
+            </div>
+            <div class="panel-actions edit-actions" hidden>
+              <button class="blue-btn" type="button" data-save-panel>保存</button>
+              <button class="ghost-btn" type="button" data-cancel-panel>取消</button>
+            </div>
           </div>
-          <div class="asset-grid">
+          <div class="asset-grid panel-view">
             <div class="asset-field">
               <label>Logo <em>*</em></label>
               <div class="logo-box"><span class="brand-crown">♕</span><strong>WTGAME</strong></div>
@@ -67,14 +73,40 @@
               <p>要求 32*32规格或等比例，PNG、JPG、GIF图片，20KB以内</p>
             </div>
           </div>
+          <div class="asset-grid panel-edit" hidden>
+            <div class="asset-field">
+              <label>Logo <em>*</em></label>
+              <div class="upload-box upload-logo has-image">
+                <button class="upload-remove" type="button" aria-label="删除图片">×</button>
+                <div class="logo-box"><span class="brand-crown">♕</span><strong>WTGAME</strong></div>
+                <div class="upload-empty"><span>＋</span><strong>点击或拖拽上传</strong></div>
+              </div>
+              <p>要求 200*60规格或等比例，PNG、JPG、GIF图片，500KB以内</p>
+            </div>
+            <div class="asset-field">
+              <label>Favicon <em>*</em></label>
+              <div class="upload-box upload-favicon has-image">
+                <button class="upload-remove" type="button" aria-label="删除图片">×</button>
+                <div class="favicon-box"><span>♜</span></div>
+                <div class="upload-empty"><span>＋</span><strong>点击或拖拽上传</strong></div>
+              </div>
+              <p>要求 32*32规格或等比例，PNG、JPG、GIF图片，20KB以内</p>
+            </div>
+          </div>
         </section>
 
-        <section class="setting-panel">
+        <section class="setting-panel inline-config-panel">
           <div class="panel-head">
             <h2>币种管理</h2>
-            <button class="blue-btn" type="button" data-modal="编辑币种">编辑</button>
+            <div class="panel-actions view-actions">
+              <button class="blue-btn" type="button" data-edit-panel>编辑</button>
+            </div>
+            <div class="panel-actions edit-actions" hidden>
+              <button class="blue-btn" type="button" data-save-panel>保存</button>
+              <button class="ghost-btn" type="button" data-cancel-panel>取消</button>
+            </div>
           </div>
-          <div class="asset-grid currency-grid">
+          <div class="asset-grid currency-grid panel-view">
             <div class="asset-field">
               <label>货币图标 <em>*</em></label>
               <div class="coin-icon">$</div>
@@ -82,6 +114,60 @@
             <div class="asset-field">
               <label>货币符号 <em>*</em></label>
               <div class="currency-symbol">$</div>
+            </div>
+          </div>
+          <div class="asset-grid currency-grid panel-edit" hidden>
+            <div class="asset-field">
+              <label>货币图标 <em>*</em></label>
+              <div class="upload-box upload-coin has-image">
+                <button class="upload-remove" type="button" aria-label="删除图片">×</button>
+                <div class="coin-icon">$</div>
+                <div class="upload-empty"><span>＋</span><strong>点击或拖拽上传</strong></div>
+              </div>
+              <p>仅支持 SVG 格式，小于 10KB</p>
+            </div>
+            <div class="asset-field">
+              <label>货币符号 <em>*</em></label>
+              <input class="inline-input" value="$"/>
+            </div>
+          </div>
+        </section>
+
+        <section class="setting-panel inline-config-panel">
+          <div class="panel-head">
+            <h2>分享卡片配置（Social Share / Open Graph）</h2>
+            <div class="panel-actions view-actions">
+              <button class="blue-btn" type="button" data-edit-panel>编辑</button>
+            </div>
+            <div class="panel-actions edit-actions" hidden>
+              <button class="blue-btn" type="button" data-save-panel>保存</button>
+              <button class="ghost-btn" type="button" data-cancel-panel>取消</button>
+            </div>
+          </div>
+          <div class="og-config-card og-edit-card panel-view">
+            <div class="og-form-fields">
+              <label><span>og:title <em>*</em></span><input value="WTGAME｜一站式娱乐平台" disabled/></label>
+              <label><span>og:description <em>*</em></span><textarea disabled>热门游戏、优惠活动、任务中心和会员权益统一呈现。</textarea></label>
+              <label>
+                <span>og:image <em>*</em></span>
+                <div>
+                  <div class="upload-box upload-og has-image">
+                    <button class="upload-remove" type="button" aria-label="删除图片">×</button>
+                    <div class="og-image">OG</div>
+                    <div class="upload-empty"><span>＋</span><strong>点击或拖拽上传</strong></div>
+                  </div>
+                  <p>建议 1200*630规格，PNG、JPG、GIF图片，不超过1M</p>
+                </div>
+              </label>
+              <label><span>og:url <em>*</em></span><input value="https://www.wtgame.com" disabled/></label>
+            </div>
+            <div class="og-preview">
+              <div class="og-image">OG</div>
+              <div class="og-copy">
+                <strong>WTGAME｜一站式娱乐平台</strong>
+                <p>热门游戏、优惠活动、任务中心和会员权益统一呈现。</p>
+                <span>https://www.wtgame.com</span>
+              </div>
             </div>
           </div>
         </section>
@@ -216,7 +302,7 @@
         </footer>
       </div>
     </div>
-    <script src="custom/js/页面设置.js"></script>
+    <script src="custom/js/站点配置.js"></script>
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
   </body>
