@@ -281,8 +281,8 @@ textarea {
 
 .og-config-card {
   display: grid;
-  grid-template-columns: minmax(620px, 1fr) 360px;
-  gap: 28px;
+  grid-template-columns: minmax(560px, 700px) 360px;
+  gap: 18px;
   padding: 22px 28px;
 }
 
@@ -291,6 +291,16 @@ textarea {
   border: 1px solid #dfe5ee;
   border-radius: 6px;
   background: #fff;
+}
+
+.og-preview-title {
+  height: 38px;
+  padding: 0 14px;
+  border-bottom: 1px solid #edf0f5;
+  background: #f7f9fc;
+  color: #111827;
+  font-weight: 700;
+  line-height: 38px;
 }
 
 .og-image {
