@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>刷子监控</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/刷子监控/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/刷子监控.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/刷子监控/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell brush-monitor-page">
+        <div class="breadcrumb">风险中心 / <strong>刷子监控</strong></div>
+
+        <section class="brush-panel">
+          <nav class="tabs" aria-label="刷子监控类型">
+            <button class="tab-btn active" data-tab="monitor" type="button">同关联监控</button>
+            <button class="tab-btn" data-tab="records" type="button">同关联处罚记录</button>
+          </nav>
+
+          <div class="filter-bar" id="monitorFilters">
+            <div class="date-input">请选择<span class="calendar-icon"></span></div>
+            <span class="range-text">至</span>
+            <div class="date-input">请选择<span class="calendar-icon"></span></div>
+            <label>风险类型:</label>
+            <select>
+              <option>全部</option>
+              <option>同IP</option>
+              <option>同设备号</option>
+              <option>同提现名称</option>
+            </select>
+            <label>关联标识值:</label>
+            <input type="text" placeholder="请输入"/>
+            <button class="btn primary" type="button">搜索</button>
+            <button class="btn" type="button">重置</button>
+            <button class="btn primary" id="openDefaultRules" type="button">默认自动规则</button>
+          </div>
+
+          <div class="filter-bar record-filters" id="recordFilters" hidden>
+            <div class="date-input">请选择<span class="calendar-icon"></span></div>
+            <span class="range-text">至</span>
+            <div class="date-input">请选择<span class="calendar-icon"></span></div>
+            <label>风控类型:</label>
+            <select><option>全部</option><option>同IP</option><option>同设备号</option><option>同提现名称</option></select>
+            <label>处罚类型:</label>
+            <select><option>全部</option><option>冻结账户</option><option>限制领取优惠</option><option>限制提现</option><option>禁止注册</option></select>
+            <label>触发会员ID:</label>
+            <input type="text" placeholder="请输入"/>
+            <label>被处罚会员ID:</label>
+            <input type="text" placeholder="请输入"/>
+            <button class="btn primary" type="button">搜索</button>
+            <button class="btn" type="button">重置</button>
+            <button class="btn primary" type="button">导出报表</button>
+          </div>
+
+          <div class="table-wrap">
+            <table class="monitor-table" id="monitorTable">
+              <thead>
+                <tr>
+                  <th>风险类型</th>
+                  <th>风险值</th>
+                  <th>玩家ID</th>
+                  <th>关联账号</th>
+                  <th>同关联数量</th>
+                  <th>触发方式</th>
+                  <th>创建时间</th>
+                  <th>更新时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="monitorRows"></tbody>
+            </table>
+            <table class="record-table" id="recordTable" hidden>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>触发会员</th>
+                  <th>被处罚会员ID</th>
+                  <th>被处罚会员</th>
+                  <th>风险类型</th>
+                  <th>风险值</th>
+                  <th>同关联数量</th>
+                  <th>触发方式</th>
+                  <th>处罚范围</th>
+                  <th>操作员</th>
+                  <th>备注</th>
+                  <th>创建时间</th>
+                  <th>更新时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="recordRows"></tbody>
+            </table>
+          </div>
+
+          <div class="pager">
+            <span>|&lt;</span><span>&lt;&lt;</span><span>&lt;</span>
+            <input value="1" readonly/>
+            <span>/1</span><span>&gt;</span><span>&gt;&gt;</span><span>&gt;|</span>
+            <select><option>20条/页</option></select>
+            <span>共 11 条记录</span>
+          </div>
+        </section>
+
+        <div class="account-popover" id="accountPopover" hidden></div>
+
+        <div class="modal-mask" id="ruleModal" hidden>
+          <div class="rule-modal" role="dialog" aria-modal="true" aria-labelledby="ruleModalTitle">
+            <header>
+              <h2 id="ruleModalTitle">默认自动规则</h2>
+              <button class="icon-close" data-close-modal type="button" aria-label="关闭">×</button>
+            </header>
+            <div class="rule-body">
+              <table class="rule-table">
+                <thead>
+                  <tr>
+                    <th>关联类型</th>
+                    <th>处罚触发值</th>
+                    <th>限制人数</th>
+                    <th>处罚范围</th>
+                    <th>处罚方式</th>
+                  </tr>
+                </thead>
+                <tbody id="ruleRows"></tbody>
+              </table>
+            </div>
+            <footer>
+              <button class="btn" data-close-modal type="button">取消</button>
+              <button class="btn primary" data-close-modal type="button">提交</button>
+            </footer>
+          </div>
+        </div>
+
+        <div class="modal-mask" id="manualModal" hidden>
+          <div class="manual-modal" role="dialog" aria-modal="true" aria-labelledby="manualModalTitle">
+            <header>
+              <h2 id="manualModalTitle">手动风控处罚</h2>
+              <button class="icon-close" data-close-manual type="button" aria-label="关闭">×</button>
+            </header>
+            <div class="manual-form">
+              <label>
+                <span><em>*</em>处罚范围:</span>
+                <select id="manualScope">
+                  <option>只处罚超出范围的账号</option>
+                  <option>全部处罚</option>
+                </select>
+              </label>
+              <label>
+                <span><em>*</em>处罚类型:</span>
+                <select id="manualMethod">
+                  <option>正常</option>
+                  <option>冻结账户</option>
+                  <option>限制领取优惠</option>
+                  <option>限制提现</option>
+                  <option>禁止注册</option>
+                </select>
+              </label>
+              <label class="textarea-row">
+                <span>备注:</span>
+                <textarea placeholder="请输入备注"></textarea>
+              </label>
+            </div>
+            <footer>
+              <button class="btn" data-close-manual type="button">取消</button>
+              <button class="btn primary" data-close-manual type="button">提交</button>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="custom/js/刷子监控.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

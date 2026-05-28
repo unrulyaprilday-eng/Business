@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-05-27T11:27:54.280Z",
+  "savedAt": "2026-05-28T07:12:47.242Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -459,12 +459,18 @@
       "pageName": "风险中心",
       "type": "Folder",
       "url": "",
-      "children": [
+    "children": [
         {
-          "id": "kecrse",
-          "pageName": "白名单",
+          "id": "risk_blacklist",
+          "pageName": "黑名单",
           "type": "Wireframe",
-          "url": "白名单.html"
+          "url": "黑名单.html"
+        },
+        {
+          "id": "brush_monitor",
+          "pageName": "刷子监控",
+          "type": "Wireframe",
+          "url": "刷子监控.html"
         }
       ]
     },
@@ -505,6 +511,12 @@
           "pageName": "人事列表",
           "type": "Wireframe",
           "url": "账号管理.html"
+        },
+        {
+          "id": "kecrse",
+          "pageName": "白名单",
+          "type": "Wireframe",
+          "url": "白名单.html"
         },
         {
           "id": "",

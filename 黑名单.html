@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>黑名单</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/黑名单/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/黑名单.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/黑名单/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="custom/js/黑名单.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell blacklist-page">
+        <section class="blacklist-panel">
+          <nav class="tabs" aria-label="黑名单类型">
+            <button class="tab-btn active" data-tab="member" type="button">会员黑名单</button>
+            <button class="tab-btn" data-tab="device" type="button">IP/设备黑名单</button>
+          </nav>
+
+          <div class="tab-view" data-view="member">
+            <div class="filter-bar">
+              <label>会员ID:</label>
+              <input class="member-input" type="text" placeholder="请输入"/>
+              <label>限制类型:</label>
+              <select>
+                <option>全部</option>
+                <option>冻结</option>
+                <option>禁止领取优惠</option>
+                <option>禁止提现</option>
+              </select>
+              <button class="btn primary" type="button">搜索</button>
+              <button class="btn" type="button">重置</button>
+              <button class="btn primary" type="button">导出报表</button>
+              <button class="btn primary" data-open-modal="member" type="button">新增</button>
+              <button class="btn primary muted batch-remove" type="button" disabled>批量移除黑名单</button>
+            </div>
+
+            <div class="table-wrap member-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="check"><input type="checkbox"/></th>
+                    <th>会员ID</th>
+                    <th>用户名</th>
+                    <th>充提差额</th>
+                    <th>总余额</th>
+                    <th>限制类型</th>
+                    <th>最后登录IP</th>
+                    <th>操作人</th>
+                    <th>手机号</th>
+                    <th>备注</th>
+                    <th>操作时间</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><input type="checkbox"/></td><td>1010010309</td><td>123ppp</td><td>150</td><td>33810</td><td class="danger">禁止领取优惠</td><td>50.7.250.106</td><td>system</td><td></td><td>bot spy auto</td><td>2026-05-28 14:37:34</td><td><a>修改</a><a class="danger-link">移除黑名单</a></td></tr>
+                  <tr><td><input type="checkbox"/></td><td>1010010337</td><td>aaa147</td><td>0</td><td>10</td><td class="danger">禁止提现、禁止领取优惠</td><td>50.7.250.50</td><td>system</td><td></td><td>bot spy auto</td><td>2026-05-28 13:40:57</td><td><a>修改</a><a class="danger-link">移除黑名单</a></td></tr>
+                  <tr><td><input type="checkbox"/></td><td>1010010307</td><td>123ooo</td><td>30000</td><td>4010</td><td class="danger">禁止提现、禁止领取优惠</td><td>50.7.250.106</td><td>system</td><td></td><td>bot spy auto</td><td>2026-05-27 18:58:50</td><td><a>修改</a><a class="danger-link">移除黑名单</a></td></tr>
+                  <tr><td><input type="checkbox"/></td><td>1010010186</td><td>123jjj</td><td>120000</td><td>49810</td><td class="danger">禁止领取优惠、禁止提现</td><td>45.149.92.7</td><td>system</td><td></td><td>bot spy auto</td><td>2026-05-27 17:54:40</td><td><a>修改</a><a class="danger-link">移除黑名单</a></td></tr>
+                  <tr><td><input type="checkbox"/></td><td>1010010300</td><td>c@b.co</td><td>9.98</td><td>205.0798</td><td class="danger">禁止提现、禁止领取优惠</td><td>45.149.92.7</td><td>system</td><td></td><td>bot spy auto</td><td>2026-05-27 16:21:43</td><td><a>修改</a><a class="danger-link">移除黑名单</a></td></tr>
+                  <tr><td><input type="checkbox"/></td><td>1010010283</td><td>abcd@test.com</td><td>0</td><td>10</td><td class="danger">禁止领取优惠</td><td>50.7.158.235</td><td>system</td><td></td><td>bot spy auto</td><td>2026-05-27 15:59:08</td><td><a>修改</a><a class="danger-link">移除黑名单</a></td></tr>
+                  <tr><td><input type="checkbox"/></td><td>1010010266</td><td>jacky15</td><td>0</td><td>16</td><td class="danger">禁止提现</td><td>154.12.53.157</td><td>system</td><td></td><td>bot spy auto</td><td>2026-05-27 13:22:02</td><td><a>修改</a><a class="danger-link">移除黑名单</a></td></tr>
+                  <tr><td><input type="checkbox"/></td><td>1010010264</td><td>123nnn</td><td>30000054.89</td><td>10600156.888</td><td class="danger">禁止提现</td><td>45.149.92.7</td><td>system</td><td></td><td>bot spy auto</td><td>2026-05-27 10:26:43</td><td><a>修改</a><a class="danger-link">移除黑名单</a></td></tr>
+                  <tr><td><input type="checkbox"/></td><td>1010010255</td><td>zk613@qq.com</td><td>0</td><td>1</td><td class="danger">禁止领取优惠</td><td>57.181.37.232</td><td>system</td><td></td><td>bot spy auto</td><td>2026-05-26 16:50:35</td><td><a>修改</a><a class="danger-link">移除黑名单</a></td></tr>
+                  <tr><td><input type="checkbox"/></td><td>1010010009</td><td>white</td><td>0</td><td>5</td><td class="danger">禁止提现</td><td>154.12.53.157</td><td>system</td><td></td><td>bot spy auto</td><td>2026-05-26 14:30:03</td><td><a>修改</a><a class="danger-link">移除黑名单</a></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="pager"><span class="disabled">|&lt;</span><span class="disabled">&lt;&lt;</span><span class="disabled">&lt;</span><span class="page-no">1</span><span>/ 2</span><span>&gt;</span><span>&gt;&gt;</span><span>&gt;|</span><select><option>20条/页</option></select><span>共 25 条记录</span></div>
+          </div>
+
+          <div class="tab-view" data-view="device" hidden>
+            <div class="filter-bar simple-actions">
+              <button class="btn primary" type="button">导出报表</button>
+              <button class="btn primary" data-open-modal="device" type="button">新增</button>
+              <button class="btn primary muted batch-remove" type="button" disabled>批量移除黑名单</button>
+            </div>
+            <div class="table-wrap device-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="check"><input type="checkbox"/></th>
+                    <th>ID</th>
+                    <th>IP/设备黑名单</th>
+                    <th>限制地址</th>
+                    <th>限制类型</th>
+                    <th>备注</th>
+                    <th>操作人</th>
+                    <th>操作时间</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><input type="checkbox"/></td><td>f3827459-227c-4dd2-bbb...</td><td class="device-kind">设备</td><td>a12312312</td><td class="danger">冻结</td><td></td><td>josez</td><td>2026-05-28 15:43:56</td><td><a>修改</a><a class="danger-link">移除黑名单</a></td></tr>
+                  <tr><td><input type="checkbox"/></td><td>02b5132c-6aa4-45d1-9c7...</td><td class="ip-kind">IP</td><td>1.1.1.1</td><td class="danger">冻结禁止注册</td><td></td><td>josez</td><td>2026-05-28 15:43:43</td><td><a>修改</a><a class="danger-link">移除黑名单</a></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="pager"><span class="disabled">|&lt;</span><span class="disabled">&lt;&lt;</span><span class="disabled">&lt;</span><span class="page-no">1</span><span>/ 1</span><span>&gt;</span><span>&gt;&gt;</span><span>&gt;|</span><select><option>20条/页</option></select><span>共 6 条记录</span></div>
+          </div>
+        </section>
+
+        <div class="modal-mask" data-modal="member" hidden>
+          <div class="modal member-modal" role="dialog" aria-modal="true" aria-labelledby="memberModalTitle">
+            <header><strong id="memberModalTitle">新增黑名单</strong><button class="close-btn" data-close-modal type="button">×</button></header>
+            <form>
+              <div class="form-row"><label>会员ID</label><input type="text" placeholder="请输入会员ID"/></div>
+              <div class="form-row checks"><label>限制类型</label><div class="check-list"><label><input type="checkbox"/>全部</label><label><input type="checkbox"/>冻结</label><label><input type="checkbox"/>禁止领取优惠</label><label><input type="checkbox"/>禁止提现</label></div></div>
+              <div class="form-row"><label>备注</label><div class="textarea-wrap"><textarea maxlength="255" placeholder="请输入备注"></textarea><span>0/255</span></div></div>
+            </form>
+            <footer><button class="btn" data-close-modal type="button">取消</button><button class="btn primary" data-close-modal type="button">确定</button></footer>
+          </div>
+        </div>
+
+        <div class="modal-mask" data-modal="memberEdit" hidden>
+          <div class="modal member-modal" role="dialog" aria-modal="true" aria-labelledby="memberEditModalTitle">
+            <header><strong id="memberEditModalTitle">修改黑名单</strong><button class="close-btn" data-close-modal type="button">×</button></header>
+            <form>
+              <div class="form-row"><label>会员ID</label><input class="disabled-input" type="text" value="1010010309" disabled/></div>
+              <div class="form-row checks"><label>限制类型</label><div class="check-list"><label><input type="checkbox" checked/>全部</label><label><input type="checkbox"/>冻结</label><label><input type="checkbox" checked/>禁止领取优惠</label><label><input type="checkbox"/>禁止提现</label></div></div>
+              <div class="form-row"><label>备注</label><div class="textarea-wrap"><textarea maxlength="255">bot spy auto</textarea><span>12/255</span></div></div>
+            </form>
+            <footer><button class="btn" data-close-modal type="button">取消</button><button class="btn primary" data-close-modal type="button">确定</button></footer>
+          </div>
+        </div>
+
+        <div class="modal-mask" data-modal="removeConfirm" hidden>
+          <div class="modal confirm-modal" role="dialog" aria-modal="true" aria-labelledby="removeModalTitle">
+            <header><strong id="removeModalTitle">移除黑名单</strong><button class="close-btn" data-close-modal type="button">×</button></header>
+            <div class="confirm-body"><span class="question-icon">?</span><span>确认将该会员移除黑名单?</span></div>
+            <footer><button class="btn" data-close-modal type="button">取消</button><button class="btn primary" data-close-modal type="button">确认</button></footer>
+          </div>
+        </div>
+
+        <div class="modal-mask" data-modal="device" hidden>
+          <div class="modal device-modal" role="dialog" aria-modal="true" aria-labelledby="deviceModalTitle">
+            <header><strong id="deviceModalTitle">新增黑名单</strong><button class="close-btn" data-close-modal type="button">×</button></header>
+            <form>
+              <div class="form-row radio-row"><label>添加类型</label><div class="check-list"><label><input type="radio" name="blackType" checked/>IP</label><label><input type="radio" name="blackType"/>设备</label></div></div>
+              <div class="form-row"><label>黑名单值</label><input type="text" placeholder="请输入黑名单值"/></div>
+              <div class="form-row checks"><label>限制类型</label><div class="check-list two-line"><label><input type="checkbox"/>全部</label><label><input type="checkbox"/>冻结</label><label><input type="checkbox"/>禁止注册</label></div></div>
+              <div class="form-row"><label>备注</label><div class="textarea-wrap"><textarea maxlength="255" placeholder="请输入备注"></textarea><span>0/255</span></div></div>
+            </form>
+            <footer><button class="btn" data-close-modal type="button">取消</button><button class="btn primary" data-close-modal type="button">确定</button></footer>
+          </div>
+        </div>
+
+        <div class="modal-mask" data-modal="deviceIpEdit" hidden>
+          <div class="modal device-modal" role="dialog" aria-modal="true" aria-labelledby="deviceIpEditTitle">
+            <header><strong id="deviceIpEditTitle">修改黑名单</strong><button class="close-btn" data-close-modal type="button">×</button></header>
+            <form>
+              <div class="form-row radio-row"><label>添加类型</label><div class="check-list disabled-options"><label><input type="radio" name="editIpType" checked disabled/>IP</label><label><input type="radio" name="editIpType" disabled/>设备</label></div></div>
+              <div class="form-row"><label>黑名单值</label><input class="disabled-input" type="text" value="1.1.1.1" disabled/></div>
+              <div class="form-row checks"><label>限制类型</label><div class="check-list two-line"><label><input type="checkbox" checked/>全部</label><label><input type="checkbox" checked/>冻结</label><label><input type="checkbox" checked/>禁止注册</label></div></div>
+              <div class="form-row"><label>备注</label><div class="textarea-wrap"><textarea maxlength="255" placeholder="请输入备注"></textarea><span>0/255</span></div></div>
+            </form>
+            <footer><button class="btn" data-close-modal type="button">取消</button><button class="btn primary" data-close-modal type="button">确定</button></footer>
+          </div>
+        </div>
+
+        <div class="modal-mask" data-modal="deviceDeviceEdit" hidden>
+          <div class="modal device-modal" role="dialog" aria-modal="true" aria-labelledby="deviceDeviceEditTitle">
+            <header><strong id="deviceDeviceEditTitle">修改黑名单</strong><button class="close-btn" data-close-modal type="button">×</button></header>
+            <form>
+              <div class="form-row radio-row"><label>添加类型</label><div class="check-list disabled-options"><label><input type="radio" name="editDeviceType" disabled/>IP</label><label><input type="radio" name="editDeviceType" checked disabled/>设备</label></div></div>
+              <div class="form-row"><label>黑名单值</label><input class="disabled-input" type="text" value="a12312312" disabled/></div>
+              <div class="form-row checks"><label>限制类型</label><div class="check-list two-line"><label><input type="checkbox" checked/>全部</label><label><input type="checkbox" checked/>冻结</label><label><input type="checkbox"/>禁止注册</label></div></div>
+              <div class="form-row"><label>备注</label><div class="textarea-wrap"><textarea maxlength="255" placeholder="请输入备注"></textarea><span>0/255</span></div></div>
+            </form>
+            <footer><button class="btn" data-close-modal type="button">取消</button><button class="btn primary" data-close-modal type="button">确定</button></footer>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

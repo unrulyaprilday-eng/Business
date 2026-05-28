@@ -472,10 +472,16 @@ $axure.loadDocument({
         "url": "",
         "children": [
           {
-            "id": "kecrse",
-            "pageName": "白名单",
+            "id": "risk_blacklist",
+            "pageName": "黑名单",
             "type": "Wireframe",
-            "url": "白名单.html"
+            "url": "黑名单.html"
+          },
+          {
+            "id": "brush_monitor",
+            "pageName": "刷子监控",
+            "type": "Wireframe",
+            "url": "刷子监控.html"
           }
         ]
       },
@@ -516,6 +522,12 @@ $axure.loadDocument({
             "pageName": "人事列表",
             "type": "Wireframe",
             "url": "账号管理.html"
+          },
+          {
+            "id": "kecrse",
+            "pageName": "白名单",
+            "type": "Wireframe",
+            "url": "白名单.html"
           },
           {
             "id": "",
