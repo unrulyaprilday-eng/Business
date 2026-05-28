@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>支付通道数据</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/支付通道数据/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/支付通道数据.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/支付通道数据/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell payment-channel-data-page">
+        <header class="page-titlebar">
+          <button class="title-icon" type="button" aria-label="返回">‹</button>
+          <button class="title-icon refresh" type="button" aria-label="刷新">↻</button>
+          <span>财务中心</span>
+          <b>/</b>
+          <strong>支付通道数据</strong>
+        </header>
+
+        <section class="data-panel">
+          <form class="filterbar">
+            <label class="field date-field">
+              <input placeholder="开始时间"/>
+              <i>▣</i>
+            </label>
+            <span class="range-text">至</span>
+            <label class="field date-field">
+              <input placeholder="结束时间"/>
+              <i>▣</i>
+            </label>
+            <label class="field select-field">
+              <span>通道类型:</span>
+              <select>
+                <option>充值</option>
+                <option>提现</option>
+              </select>
+            </label>
+            <button class="btn primary" type="button">⌕ 搜索</button>
+            <button class="btn" type="button">↻ 重置</button>
+            <button class="btn primary export" type="button">⇩ 导出报表</button>
+          </form>
+
+          <div class="table-wrap">
+            <table class="channel-table">
+              <thead>
+                <tr>
+                  <th>通道名称</th>
+                  <th>总人数</th>
+                  <th>成功人数</th>
+                  <th>总订单数</th>
+                  <th>成功订单数</th>
+                  <th>成功总金额</th>
+                  <th>失败总金额</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ozpay</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>3</td>
+                  <td>0</td>
+                  <td class="amount success">0.00</td>
+                  <td class="amount danger">0.00</td>
+                </tr>
+                <tr>
+                  <td>SuccusPay测试</td>
+                  <td>10</td>
+                  <td>9</td>
+                  <td>39</td>
+                  <td>30</td>
+                  <td class="amount success">169.70</td>
+                  <td class="amount danger">29.94</td>
+                </tr>
+                <tr>
+                  <td>USDT收款</td>
+                  <td>14</td>
+                  <td>0</td>
+                  <td>73</td>
+                  <td>0</td>
+                  <td class="amount success">0.00</td>
+                  <td class="amount danger">21,890.59</td>
+                </tr>
+                <tr>
+                  <td>wiwipay01</td>
+                  <td>2</td>
+                  <td>0</td>
+                  <td>4</td>
+                  <td>0</td>
+                  <td class="amount success">0.00</td>
+                  <td class="amount danger">134.97</td>
+                </tr>
+                <tr>
+                  <td>WiwiPay测试商户</td>
+                  <td>3</td>
+                  <td>0</td>
+                  <td>5</td>
+                  <td>0</td>
+                  <td class="amount success">0.00</td>
+                  <td class="amount danger">49.95</td>
+                </tr>
+                <tr>
+                  <td>测02</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>2</td>
+                  <td>0</td>
+                  <td class="amount success">0.00</td>
+                  <td class="amount danger">4.99</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>

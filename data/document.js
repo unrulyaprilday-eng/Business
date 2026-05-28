@@ -242,6 +242,18 @@ $axure.loadDocument({
             "pageName": "提现风控审核",
             "type": "Wireframe",
             "url": "提现风控审核.html"
+          },
+          {
+            "id": "payment_channel_data",
+            "pageName": "支付通道数据",
+            "type": "Wireframe",
+            "url": "支付通道数据.html"
+          },
+          {
+            "id": "manual_balance_adjustment",
+            "pageName": "人工加扣款",
+            "type": "Wireframe",
+            "url": "人工加扣款.html"
           }
         ]
       },

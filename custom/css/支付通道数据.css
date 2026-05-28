@@ -1,0 +1,222 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #f5f7fa;
+  color: #344054;
+  font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.payment-channel-data-page {
+  min-width: 1280px;
+  min-height: 100vh;
+  background: #f5f7fa;
+}
+
+.page-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 8px;
+  border-bottom: 1px solid #e8ebf0;
+  background: #fff;
+  color: #6b778c;
+  font-size: 14px;
+}
+
+.page-titlebar strong {
+  color: #2f3b52;
+}
+
+.page-titlebar b {
+  color: #a4acb9;
+  font-weight: 400;
+}
+
+.title-icon {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #526070;
+  font-size: 22px;
+  line-height: 20px;
+}
+
+.title-icon.refresh {
+  font-size: 18px;
+}
+
+.data-panel {
+  margin-top: 14px;
+  min-height: 454px;
+  background: #fff;
+}
+
+.filterbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 58px;
+  padding: 12px 22px 6px;
+  white-space: nowrap;
+}
+
+.field {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #344054;
+}
+
+.field input,
+.field select {
+  height: 31px;
+  border: 1px solid #d7dde8;
+  border-radius: 3px;
+  background: #fff;
+  color: #334155;
+  outline: none;
+}
+
+.field input {
+  width: 162px;
+  padding: 0 28px 0 8px;
+}
+
+.field input::placeholder {
+  color: #b4bfd0;
+}
+
+.date-field {
+  position: relative;
+}
+
+.date-field i {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #b7c0cf;
+  font-size: 12px;
+  font-style: normal;
+}
+
+.range-text {
+  color: #5f6b7a;
+}
+
+.select-field select {
+  width: 144px;
+  padding: 0 30px 0 10px;
+  appearance: none;
+  background:
+    linear-gradient(45deg, transparent 50%, #a9b4c3 50%) calc(100% - 14px) 12px / 7px 7px no-repeat,
+    linear-gradient(135deg, #a9b4c3 50%, transparent 50%) calc(100% - 9px) 12px / 7px 7px no-repeat,
+    #fff;
+}
+
+.btn {
+  height: 31px;
+  padding: 0 15px;
+  border: 1px solid #d7dde8;
+  border-radius: 3px;
+  background: #fff;
+  color: #3d4b5f;
+}
+
+.btn.primary {
+  border-color: #2f8ff6;
+  background: #2f8ff6;
+  color: #fff;
+}
+
+.btn.export {
+  margin-left: 4px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.channel-table {
+  width: 100%;
+  min-width: 1280px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  color: #344054;
+}
+
+.channel-table th,
+.channel-table td {
+  height: 43px;
+  padding: 0 14px;
+  border: 1px solid #e5e9f0;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.channel-table th {
+  height: 44px;
+  background: #f7f7f9;
+  color: #303847;
+  font-weight: 600;
+}
+
+.channel-table th:first-child,
+.channel-table td:first-child {
+  width: 430px;
+}
+
+.channel-table th:nth-child(2),
+.channel-table th:nth-child(3),
+.channel-table th:nth-child(4),
+.channel-table th:nth-child(5) {
+  width: 90px;
+}
+
+.channel-table th:nth-child(6),
+.channel-table th:nth-child(7) {
+  width: 422px;
+}
+
+.channel-table tbody tr:nth-child(even) {
+  background: #fbfcfe;
+}
+
+.amount {
+  font-weight: 600;
+}
+
+.amount.success {
+  color: #0ea000;
+}
+
+.amount.danger {
+  color: #ff0b16;
+}

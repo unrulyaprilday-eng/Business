@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-05-27T08:16:52.275Z",
+  "savedAt": "2026-05-27T11:27:54.280Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -231,6 +231,18 @@
           "pageName": "提现风控审核",
           "type": "Wireframe",
           "url": "提现风控审核.html"
+        },
+        {
+          "id": "payment_channel_data",
+          "pageName": "支付通道数据",
+          "type": "Wireframe",
+          "url": "支付通道数据.html"
+        },
+        {
+          "id": "manual_balance_adjustment",
+          "pageName": "人工加扣款",
+          "type": "Wireframe",
+          "url": "人工加扣款.html"
         }
       ]
     },
