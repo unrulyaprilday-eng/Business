@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-05-28T07:12:47.242Z",
+  "savedAt": "2026-05-28T10:49:09.817Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -459,7 +459,7 @@
       "pageName": "风险中心",
       "type": "Folder",
       "url": "",
-    "children": [
+      "children": [
         {
           "id": "risk_blacklist",
           "pageName": "黑名单",
@@ -471,6 +471,12 @@
           "pageName": "刷子监控",
           "type": "Wireframe",
           "url": "刷子监控.html"
+        },
+        {
+          "id": "game_profit_monitor",
+          "pageName": "游戏获利监控",
+          "type": "Wireframe",
+          "url": "游戏获利监控.html"
         }
       ]
     },

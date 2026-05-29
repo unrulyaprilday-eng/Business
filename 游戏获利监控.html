@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>游戏获利监控</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/游戏获利监控/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/游戏获利监控.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/游戏获利监控/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell profit-monitor-page">
+        <div class="topbar">
+          <span class="nav-icon">‹</span>
+          <span class="nav-icon refresh">↻</span>
+          <span class="breadcrumb">风险中心 / <strong>游戏获利监控</strong></span>
+        </div>
+
+        <main class="page-panel">
+          <section class="filter-bar" aria-label="筛选条件">
+            <div class="date-input">请选择<span class="calendar-icon"></span></div>
+            <span class="range-text">至</span>
+            <div class="date-input">请选择<span class="calendar-icon"></span></div>
+            <label>会员ID:</label>
+            <input type="text" placeholder="请输入"/>
+            <label>监控类型:</label>
+            <select><option>请选择</option><option>大额中奖</option><option>高倍爆奖</option><option>获利比</option></select>
+            <label>状态:</label>
+            <select><option>请选择</option><option>待处理</option><option>已忽略</option><option>已冻结</option><option>禁止领取优惠</option></select>
+            <button class="btn primary" type="button">搜索</button>
+            <button class="btn" type="button">重置</button>
+            <button class="btn primary" id="openParams" type="button">监控参数</button>
+            <button class="btn primary wide" type="button">导出会员账号</button>
+          </section>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>触发会员ID</th>
+                  <th>触发会员账号</th>
+                  <th>状态</th>
+                  <th>监控类型</th>
+                  <th>操作人</th>
+                  <th>实际参数</th>
+                  <th>备注</th>
+                  <th>更新时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="profitRows"></tbody>
+            </table>
+          </div>
+
+          <footer class="pagination">
+            <button type="button" class="page-arrow muted">|‹</button>
+            <button type="button" class="page-arrow muted">‹‹</button>
+            <button type="button" class="page-arrow muted">‹</button>
+            <span class="page-input">1</span>
+            <span>/ 29</span>
+            <button type="button" class="page-arrow">›</button>
+            <button type="button" class="page-arrow">››</button>
+            <button type="button" class="page-arrow">›|</button>
+            <select><option>20条/页</option><option>50条/页</option></select>
+            <span>共 572 条记录</span>
+          </footer>
+        </main>
+
+        <div class="modal-mask" id="paramsModal" hidden>
+          <div class="param-modal" role="dialog" aria-modal="true" aria-labelledby="paramsTitle">
+            <header>
+              <h2 id="paramsTitle">监控参数</h2>
+              <button class="icon-close" data-close-modal type="button" aria-label="关闭">×</button>
+            </header>
+            <div class="param-form">
+              <div class="form-row full">
+                <span>高倍爆奖开关:</span>
+                <label><input type="radio" name="burstSwitch" value="on" checked/> 开启</label>
+                <label><input type="radio" name="burstSwitch" value="off"/> 关闭</label>
+              </div>
+              <label class="form-row linked burst-linked required">
+                <span>高倍爆奖倍数:</span>
+                <span class="number-stepper"><input value="100"/><span><button type="button">＋</button><button type="button">－</button></span></span>
+              </label>
+              <label class="form-row linked burst-linked required">
+                <span>高倍爆奖中奖金额:</span>
+                <span class="number-stepper"><input value="2"/><span><button type="button">＋</button><button type="button">－</button></span></span>
+              </label>
+              <label class="form-row">
+                <span>大额中奖:</span>
+                <span class="number-stepper"><input value="500"/><span><button type="button">＋</button><button type="button">－</button></span></span>
+              </label>
+              <div></div>
+              <div class="form-row full">
+                <span>获利比开关:</span>
+                <label><input type="radio" name="profitSwitch" value="on" checked/> 开启</label>
+                <label><input type="radio" name="profitSwitch" value="off"/> 关闭</label>
+              </div>
+              <label class="form-row linked profit-linked required">
+                <span>当日会员获利比:</span>
+                <span class="number-stepper"><input value="80"/><span><button type="button">＋</button><button type="button">－</button></span></span>
+              </label>
+              <label class="form-row linked profit-linked required">
+                <span>当日获利比触发额度值:</span>
+                <span class="number-stepper"><input value="300"/><span><button type="button">＋</button><button type="button">－</button></span></span>
+              </label>
+              <div class="form-row full">
+                <span>风控提醒开关:</span>
+                <label><input type="radio" name="remindSwitch" value="on" checked/> 开启</label>
+                <label><input type="radio" name="remindSwitch" value="off"/> 关闭</label>
+              </div>
+              <label class="form-row linked remind-linked required">
+                <span>风控提醒间隔时间(S):</span>
+                <span class="number-stepper"><input value="360"/><span><button type="button">＋</button><button type="button">－</button></span></span>
+              </label>
+            </div>
+            <footer>
+              <button class="btn" data-close-modal type="button">取消</button>
+              <button class="btn primary" data-close-modal type="button">提交</button>
+            </footer>
+          </div>
+        </div>
+
+        <div class="modal-mask" id="detailModal" hidden>
+          <div class="detail-modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+            <header>
+              <h2 id="detailTitle">实际参数</h2>
+              <button class="icon-close" data-close-detail type="button" aria-label="关闭">×</button>
+            </header>
+            <dl class="detail-list">
+              <dt>下注金额:</dt><dd>2800</dd>
+              <dt>游戏编码:</dt><dd>jilifish_289_fish15</dd>
+              <dt>游戏类型:</dt><dd>捕鱼</dd>
+              <dt>供应商:</dt><dd>HG-USD</dd>
+              <dt>记录ID:</dt><dd>d8bu6k8hf4tspe7l5rpg</dd>
+              <dt>中奖金额:</dt><dd>500</dd>
+            </dl>
+          </div>
+        </div>
+
+        <div class="modal-mask" id="auditModal" hidden>
+          <div class="audit-modal" role="dialog" aria-modal="true" aria-labelledby="auditTitle">
+            <header>
+              <h2 id="auditTitle">审核</h2>
+              <button class="icon-close" data-close-audit type="button" aria-label="关闭">×</button>
+            </header>
+            <div class="audit-form">
+              <label class="audit-row required">
+                <span>状态:</span>
+                <button class="fake-select" id="auditSelect" type="button">请选择<span></span></button>
+                <div class="select-menu" id="auditMenu" hidden>
+                  <button type="button">已忽略</button>
+                  <button type="button">已冻结</button>
+                  <button type="button">禁止领取优惠</button>
+                </div>
+              </label>
+              <label class="audit-row">
+                <span>备注:</span>
+                <textarea placeholder="请输入"></textarea>
+              </label>
+            </div>
+            <footer>
+              <button class="btn" data-close-audit type="button">取消</button>
+              <button class="btn primary" data-close-audit type="button">提交</button>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="custom/js/游戏获利监控.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

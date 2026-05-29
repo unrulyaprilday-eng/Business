@@ -525,6 +525,24 @@ input[type="checkbox"] {
   color: #526072;
 }
 
+.password-switch-row {
+  align-items: center;
+}
+
+.password-switch-content {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  min-width: 0;
+}
+
+.password-switch-content em {
+  max-width: 590px;
+  color: #667386;
+  font-size: 12px;
+  line-height: 18px;
+}
+
 .inline-rules span {
   flex-basis: 155px;
 }

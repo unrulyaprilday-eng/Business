@@ -482,6 +482,12 @@ $axure.loadDocument({
             "pageName": "刷子监控",
             "type": "Wireframe",
             "url": "刷子监控.html"
+          },
+          {
+            "id": "game_profit_monitor",
+            "pageName": "游戏获利监控",
+            "type": "Wireframe",
+            "url": "游戏获利监控.html"
           }
         ]
       },
