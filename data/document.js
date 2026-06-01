@@ -170,6 +170,18 @@ $axure.loadDocument({
         "url": "",
         "children": [
           {
+            "id": "promotion_activity_list",
+            "pageName": "优惠活动列表",
+            "type": "Wireframe",
+            "url": "优惠活动列表.html"
+          },
+          {
+            "id": "lucky_wheel_config",
+            "pageName": "幸运转盘配置",
+            "type": "Wireframe",
+            "url": "幸运转盘配置.html"
+          },
+          {
             "id": "novs01",
             "pageName": "新增活动",
             "type": "Wireframe",
@@ -254,6 +266,25 @@ $axure.loadDocument({
             "pageName": "人工加扣款",
             "type": "Wireframe",
             "url": "人工加扣款.html"
+          },
+          {
+            "id": "fund_account_change_record",
+            "pageName": "账变记录",
+            "type": "Wireframe",
+            "url": "账变记录.html"
+          },
+          {
+            "id": "fund_account_change_type",
+            "pageName": "资金账变类型",
+            "type": "Wireframe",
+            "url": "资金账变类型.html"
+          },
+          {
+            "id": "risk_coding_management",
+            "type": "Wireframe",
+            "pageName": "打码管理",
+            "url": "打码管理.html",
+            "children": []
           }
         ]
       },
@@ -265,27 +296,9 @@ $axure.loadDocument({
         "children": [
           {
             "id": "brueg6",
-            "pageName": "付费留存率报表",
+            "pageName": "充值留存报表",
             "type": "Wireframe",
             "url": "付费留存率报表.html"
-          },
-          {
-            "id": "l5eg1h",
-            "pageName": "每日总表",
-            "type": "Wireframe",
-            "url": "每日总表.html"
-          },
-          {
-            "id": "29ih6x",
-            "pageName": "游戏厂商报表",
-            "type": "Wireframe",
-            "url": "游戏厂商报表.html"
-          },
-          {
-            "id": "tnx9xu",
-            "pageName": "游戏报表",
-            "type": "Wireframe",
-            "url": "游戏报表.html"
           },
           {
             "id": "owiq3l",
@@ -366,16 +379,28 @@ $axure.loadDocument({
             ]
           },
           {
+            "id": "summary_data_report",
+            "pageName": "综合数据报表",
+            "type": "Wireframe",
+            "url": "综合数据报表.html"
+          },
+          {
+            "id": "game_player_count_report",
+            "pageName": "游戏人数报表",
+            "type": "Wireframe",
+            "url": "游戏人数报表.html"
+          },
+          {
             "id": "discount_data_report",
             "pageName": "优惠数据报表",
             "type": "Wireframe",
             "url": "优惠数据报表.html"
           },
           {
-            "id": "summary_data_report",
-            "pageName": "综合数据报表",
+            "id": "agent_settlement_detail",
+            "pageName": "代理结算明细",
             "type": "Wireframe",
-            "url": "综合数据报表.html"
+            "url": "代理结算明细.html"
           },
           {
             "id": "y4eabe",
@@ -384,24 +409,10 @@ $axure.loadDocument({
             "url": "用户分群查询.html"
           },
           {
-            "id": "j3w88v",
-            "pageName": "埋点统计",
+            "id": "vip_data_statistics",
+            "pageName": "VIP数据统计",
             "type": "Wireframe",
-            "url": "埋点统计.html"
-          },
-          {
-            "id": "",
-            "pageName": "VIP数据分析",
-            "type": "Folder",
-            "url": "",
-            "children": [
-              {
-                "id": "hnwa0q",
-                "pageName": "VIP等级分布",
-                "type": "Wireframe",
-                "url": "vip等级分布.html"
-              }
-            ]
+            "url": "VIP数据统计.html"
           }
         ]
       },
@@ -418,12 +429,6 @@ $axure.loadDocument({
             "url": "推荐频道管理.html"
           },
           {
-            "id": "bqtswj",
-            "pageName": "游戏线路费率",
-            "type": "Wireframe",
-            "url": "游戏线路费率.html"
-          },
-          {
             "id": "game_type_settings",
             "pageName": "游戏类型设置",
             "type": "Wireframe",
@@ -434,6 +439,24 @@ $axure.loadDocument({
             "pageName": "游戏频道管理",
             "type": "Wireframe",
             "url": "游戏频道管理.html"
+          },
+          {
+            "id": "sub_game_list",
+            "pageName": "子游戏列表",
+            "type": "Wireframe",
+            "url": "子游戏列表.html"
+          },
+          {
+            "id": "game_statistics",
+            "pageName": "游戏统计",
+            "type": "Wireframe",
+            "url": "游戏统计.html"
+          },
+          {
+            "id": "29ih6x",
+            "pageName": "游戏厂商统计",
+            "type": "Wireframe",
+            "url": "游戏厂商报表.html"
           }
         ]
       },
@@ -448,6 +471,12 @@ $axure.loadDocument({
             "pageName": "在线玩家列表",
             "type": "Wireframe",
             "url": "在线玩家列表.html"
+          },
+          {
+            "id": "user_all_members",
+            "pageName": "所有会员",
+            "type": "Wireframe",
+            "url": "所有会员.html"
           }
         ]
       },

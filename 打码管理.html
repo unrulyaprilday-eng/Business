@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>打码管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/打码管理/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/打码管理.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/打码管理/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/打码管理.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell coding-page">
+        <section class="coding-panel">
+          <div class="filter-bar">
+            <label>交易时间:</label>
+            <input type="text" placeholder="请选择"/>
+            <span class="range-separator">至</span>
+            <input type="text" placeholder="请选择"/>
+            <label>会员ID:</label>
+            <input type="text" placeholder="请输入"/>
+            <label>状态:</label>
+            <select>
+              <option>请选择</option>
+              <option>未开始</option>
+              <option>已完成</option>
+              <option>手动解除</option>
+            </select>
+            <button class="btn primary" type="button">搜索</button>
+            <button class="btn" type="button">重置</button>
+            <button class="btn danger batch-action" type="button" disabled>批量解除打码</button>
+            <button class="btn primary" data-open-modal="playerRemove" type="button">解除玩家打码</button>
+            <button class="btn warning" data-open-modal="autoLimit" type="button">打码自动解除额度</button>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th class="check"><input type="checkbox"/></th>
+                  <th>会员ID</th>
+                  <th>活动名称</th>
+                  <th>变更金额</th>
+                  <th>打码倍数</th>
+                  <th>需打码总金额</th>
+                  <th>未打码</th>
+                  <th>状态</th>
+                  <th>来源</th>
+                  <th>操作人</th>
+                  <th>创建时间</th>
+                  <th>操作时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><input type="checkbox" disabled/></td><td>1010010007</td><td>活动首充奖励</td><td class="blue">50</td><td class="purple">1</td><td class="green">50</td><td class="red">0</td><td class="red">手动解除</td><td>MANUAL</td><td>qitian</td><td>2026-05-29 11:13:37</td><td>2026-05-29 11:13:43</td><td>-</td></tr>
+                <tr><td><input type="checkbox" disabled/></td><td>1010010007</td><td>活动首充奖励</td><td class="blue">0.02</td><td class="purple">10</td><td class="green">112.2</td><td class="red">0</td><td class="red">手动解除</td><td>MANUAL</td><td>qitian</td><td>2026-05-29 10:12:10</td><td>2026-05-29 10:13:11</td><td>-</td></tr>
+                <tr><td><input type="checkbox" disabled/></td><td>1010010007</td><td>人工充值</td><td class="blue">1</td><td class="purple">10</td><td class="green">112</td><td class="red">0</td><td class="green">已完成</td><td>qitian</td><td></td><td>2026-05-29 10:12:10</td><td>2026-05-29 10:12:10</td><td>-</td></tr>
+                <tr><td><input type="checkbox" disabled/></td><td>1010010007</td><td>活动首充奖励</td><td class="blue">0.2</td><td class="purple">10</td><td class="green">102</td><td class="red">0</td><td class="green">已完成</td><td>MANUAL</td><td></td><td>2026-05-29 10:11:08</td><td>2026-05-29 10:12:10</td><td>-</td></tr>
+                <tr><td><input type="checkbox"/></td><td>1010123470</td><td>任务奖励</td><td class="blue">10</td><td class="purple">3</td><td class="green">30</td><td class="red">30</td><td class="muted">未开始</td><td>ef43f564-9adc-4...</td><td></td><td>2026-05-29 03:55:58</td><td>2026-05-29 03:55:58</td><td><a class="danger-link" data-open-modal="singleRemove">解除打码</a></td></tr>
+                <tr><td><input type="checkbox"/></td><td>1010123469</td><td>任务奖励</td><td class="blue">10</td><td class="purple">3</td><td class="green">30</td><td class="red">30</td><td class="muted">未开始</td><td>1dfbb1e9-2acb-...</td><td></td><td>2026-05-28 20:03:42</td><td>2026-05-28 20:03:42</td><td><a class="danger-link" data-open-modal="singleRemove">解除打码</a></td></tr>
+                <tr><td><input type="checkbox"/></td><td>1010123467</td><td>活动充值奖励</td><td class="blue">200</td><td class="purple">10</td><td class="green">254821.796</td><td class="red">254821.796</td><td class="muted">未开始</td><td>MANUAL</td><td></td><td>2026-05-28 18:16:45</td><td>2026-05-28 18:16:45</td><td><a class="danger-link" data-open-modal="singleRemove">解除打码</a></td></tr>
+                <tr><td><input type="checkbox" disabled/></td><td>1010123467</td><td>人工充值</td><td class="blue">10000</td><td class="purple">10</td><td class="green">252821.796</td><td class="red">0</td><td class="green">已完成</td><td>qitian</td><td></td><td>2026-05-28 18:16:45</td><td>2026-05-28 18:16:45</td><td>-</td></tr>
+                <tr><td><input type="checkbox" disabled/></td><td>1010123467</td><td>人工赠金</td><td class="blue">1000</td><td class="purple">3</td><td class="green">45846.5388</td><td class="red">0</td><td class="green">已完成</td><td>qitian</td><td></td><td>2026-05-28 18:15:59</td><td>2026-05-28 18:16:45</td><td>-</td></tr>
+                <tr><td><input type="checkbox"/></td><td>1010123467</td><td>活动充值奖励</td><td class="blue">20</td><td class="purple">10</td><td class="green">142821.796</td><td class="red">20</td><td class="muted">未开始</td><td>MANUAL</td><td></td><td>2026-05-28 18:15:32</td><td>2026-05-28 18:15:59</td><td><a class="danger-link" data-open-modal="singleRemove">解除打码</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pager"><span class="disabled">|&lt;</span><span class="disabled">&lt;&lt;</span><span class="disabled">&lt;</span><span class="page-no">1</span><span>/20</span><span>&gt;</span><span>&gt;&gt;</span><span>&gt;|</span><select><option>20条/页</option></select><span>共 382 条记录</span></div>
+        </section>
+
+        <div class="modal-mask" data-modal="playerRemove" hidden>
+          <div class="modal player-modal" role="dialog" aria-modal="true">
+            <header><strong>解除玩家打码</strong><button class="close-btn" data-close-modal type="button">×</button></header>
+            <form>
+              <div class="search-row"><label><span>*</span> 会员ID:</label><input class="uid-input" type="text" placeholder="请输入会员ID"/><button class="btn primary search-member" type="button">搜索</button></div>
+              <div class="info-grid">
+                <div>用户名: <strong class="user-name">-</strong></div>
+                <div>商户ID: <strong class="merchant-id">-</strong></div>
+                <div>余额: <strong class="balance">-</strong></div>
+                <div>打码量: <strong class="coding-amount">-</strong></div>
+              </div>
+              <div class="form-row amount-row"><label><span>*</span> 解除打码金额:</label><input type="number" placeholder="请输入解除打码金额"/></div>
+              <p class="note">说明：用于减少玩家的打码量</p>
+            </form>
+            <footer><button class="btn" data-close-modal type="button">取消</button><button class="btn primary" data-close-modal type="button">提交</button></footer>
+          </div>
+        </div>
+
+        <div class="modal-mask" data-modal="singleRemove" hidden>
+          <div class="modal player-modal" role="dialog" aria-modal="true">
+            <header><strong>解除打码</strong><button class="close-btn" data-close-modal type="button">×</button></header>
+            <form>
+              <div class="info-grid single-info">
+                <div>会员ID: <strong>1010123470</strong></div>
+                <div>用户名: <strong>dzh222</strong></div>
+                <div>余额: <strong class="green">1011.37</strong></div>
+                <div>打码量: <strong class="blue">30</strong></div>
+              </div>
+              <div class="form-row amount-row"><label><span>*</span> 解除打码金额:</label><input type="number" placeholder="请输入解除打码金额"/></div>
+              <p class="note">说明：用于减少玩家的打码量</p>
+            </form>
+            <footer><button class="btn" data-close-modal type="button">取消</button><button class="btn primary" data-close-modal type="button">提交</button></footer>
+          </div>
+        </div>
+
+        <div class="modal-mask" data-modal="autoLimit" hidden>
+          <div class="modal auto-modal" role="dialog" aria-modal="true">
+            <header><strong>打码自动解除额度</strong><button class="close-btn" data-close-modal type="button">×</button></header>
+            <form>
+              <div class="limit-row"><label>当玩家总余额低于:</label><input type="number" value="12"/></div>
+              <div class="hint-box">打码自动解除额度：当玩家总余额低于以上金额时(包含存钱宝)，该玩家被视为亏光，在下次上分大于等于此金额时，系统将自动解除任务里解除金额不为零的稽核任务。设置为0则关闭自动解除，建议解除金额小于游戏准入金额，防止被恶意套利。</div>
+            </form>
+            <footer><button class="btn" data-close-modal type="button">取消</button><button class="btn primary" data-close-modal type="button">提交</button></footer>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

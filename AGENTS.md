@@ -171,7 +171,7 @@ Axure 重新导出后，执行一条命令恢复菜单：
 生成新页面时：
 
 1. 查看现有目录、`data/document.js` 和菜单快照。
-2. 确认页面挂载的菜单父节点。
+2. 确认页面挂载的菜单父节点；如果用户提供截图，优先根据截图左上角的菜单/面包屑文字判断新页面应挂载的位置，再结合现有 `sitemap.rootNodes` 校验父级是否存在。
 3. 新增根目录 HTML、`files/页面名/data.js`、`files/页面名/styles.css`。
 4. 新增 `custom/css/页面名.css`，如有交互再新增 `custom/js/页面名.js`。
 5. 修改 `data/document.js` sitemap，保证 `id / packageId / url` 一致。

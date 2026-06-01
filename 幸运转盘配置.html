@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>幸运转盘配置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/幸运转盘配置/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/幸运转盘配置.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/幸运转盘配置/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/幸运转盘配置.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell wheel-page">
+        <main class="wheel-panel">
+          <div class="filter-bar">
+            <label>转盘名称 <input type="text" placeholder="请输入转盘名称"/></label>
+            <label>是否启用
+              <select>
+                <option>请选择</option>
+                <option>启用</option>
+                <option>停用</option>
+              </select>
+            </label>
+            <button class="btn primary" type="button">搜索</button>
+            <button class="btn" type="button">重置</button>
+            <button class="btn primary" type="button" data-open-modal="edit">新增</button>
+          </div>
+
+          <div class="table-box">
+            <table class="config-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>转盘名称</th>
+                  <th>是否启用</th>
+                  <th>奖项数量</th>
+                  <th>描述</th>
+                  <th>创建时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="ellipsis">e7664329-9bc6-4de0-b608-dfad784a...</td>
+                  <td>VIP抽奖</td>
+                  <td><span class="status enabled">启用</span></td>
+                  <td>6</td>
+                  <td>VIP专属抽奖活动</td>
+                  <td>2026-03-26 16:32:48</td>
+                  <td class="actions">
+                    <a data-open-modal="detail">详情</a>
+                    <a data-open-modal="edit">编辑</a>
+                    <a class="danger">删除</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination">
+            <span class="page-muted">|&lt;</span><span class="page-muted">&lt;&lt;</span><span class="page-muted">&lt;</span>
+            <input value="1" aria-label="当前页"/>
+            <span>/ 1</span><span class="page-muted">&gt;</span><span class="page-muted">&gt;&gt;</span><span class="page-muted">&gt;|</span>
+            <select aria-label="每页条数"><option>20条/页</option></select>
+            <span>共 1 条记录</span>
+          </div>
+        </main>
+
+        <div class="modal-mask" data-modal="edit" hidden>
+          <section class="modal edit-modal">
+            <header><strong>新增幸运转盘配置</strong><button class="icon-close" type="button" data-close-modal>×</button></header>
+            <div class="modal-body">
+              <div class="form-row"><label>转盘名称</label><input class="wide" type="text" placeholder="请输入转盘名称"/></div>
+              <div class="form-row"><label>是否启用</label><span class="switch on" role="switch" aria-checked="true"></span></div>
+              <div class="form-row prize-row">
+                <label>奖项配置</label>
+                <div class="prize-table">
+                  <div class="prize-head"><span>#</span><span>奖项名称</span><span>奖项标识</span><span>奖项类型</span><span>奖项数值</span><span>中奖概率</span><span>奖项图标</span><span>操作</span></div>
+                  <p class="upload-tip">奖项图标建议 80×80，支持等比例缩放，最大 1MB</p>
+                  <p class="field-tip">奖项标识为转盘上显示的文字</p>
+                  <div class="prize-list" data-prize-list="edit"></div>
+                </div>
+                <button class="btn add-prize" type="button" data-add-prize>＋ 添加奖项</button>
+                <span class="prize-count">2 个奖项</span>
+              </div>
+              <div class="form-row"><label>描述</label><input class="wide" type="text" placeholder="请输入描述"/></div>
+            </div>
+            <footer><button class="btn" type="button" data-close-modal>取消</button><button class="btn primary" type="button" data-close-modal>确定</button></footer>
+          </section>
+        </div>
+
+        <div class="modal-mask" data-modal="detail" hidden>
+          <section class="modal detail-modal">
+            <header><strong>幸运转盘详情</strong><button class="icon-close" type="button" data-close-modal>×</button></header>
+            <div class="modal-body">
+              <div class="form-row"><label>转盘名称</label><input class="wide" type="text" value="VIP抽奖" disabled/></div>
+              <div class="form-row"><label>是否启用</label><span class="switch on disabled" role="switch" aria-checked="true"></span></div>
+              <div class="form-row prize-row">
+                <label>奖项配置</label>
+                <div class="prize-table">
+                  <div class="prize-head"><span>#</span><span>奖项名称</span><span>奖项标识</span><span>奖项类型</span><span>奖项数值</span><span>中奖概率</span><span>奖项图标</span></div>
+                  <p class="upload-tip">奖项图标建议 80×80，支持等比例缩放，最大 1MB</p>
+                  <div class="prize-list" data-prize-list="detail">
+                    <div class="prize-item"><b>1</b><input value="一等奖" disabled/><input value="GoldCoin" disabled/><select disabled><option>送金币</option></select><input value="1000" disabled/><input value="0.2" disabled/><div class="icon-cell"><span class="coin gold">★</span><button>×</button><small>请上传64*64规格或等比例，PNG、JPG、GIF图片，50KB以内。</small></div></div>
+                    <div class="prize-item"><b>2</b><input value="二等奖" disabled/><input value="SilverCoin" disabled/><select disabled><option>送金币</option></select><input value="500" disabled/><input value="0.2" disabled/><div class="icon-cell"><span class="coin violet">₿</span><button>×</button><small>请上传64*64规格或等比例，PNG、JPG、GIF图片，50KB以内。</small></div></div>
+                    <div class="prize-item"><b>3</b><input value="三等奖" disabled/><input value="BronzeCoin" disabled/><select disabled><option>送金币</option></select><input value="200" disabled/><input value="0.1" disabled/><div class="icon-cell"><span class="gem bronze"></span><button>×</button><small>请上传64*64规格或等比例，PNG、JPG、GIF图片，50KB以内。</small></div></div>
+                    <div class="prize-item"><b>4</b><input value="四等奖" disabled/><input value="DiamondPack" disabled/><select disabled><option>优惠券</option></select><input value="随机红包" disabled/><input value="0.1" disabled/><div class="icon-cell"><span class="gem orange"></span><button>×</button><small>请上传64*64规格或等比例，PNG、JPG、GIF图片，50KB以内。</small></div></div>
+                    <div class="prize-item"><b>5</b><input value="五等奖" disabled/><input value="DiamondPack" disabled/><select disabled><option>再来一次</option></select><input value="—" disabled/><input value="0.3" disabled/><div class="icon-cell"><span class="gem orange"></span><button>×</button><small>请上传64*64规格或等比例，PNG、JPG、GIF图片，50KB以内。</small></div></div>
+                    <div class="prize-item"><b>6</b><input value="六等奖" disabled/><input value="DiamondPack" disabled/><select disabled><option>未中奖</option></select><input value="—" disabled/><input value="0.1" disabled/><div class="icon-cell"><span class="gem orange"></span><button>×</button><small>请上传64*64规格或等比例，PNG、JPG、GIF图片，50KB以内。</small></div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row"><label>描述</label><input class="wide" type="text" value="VIP专属抽奖活动" disabled/></div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>代理结算明细</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/代理结算明细/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/代理结算明细.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/代理结算明细/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell agent-settlement-detail-page">
+        <div class="filter-card">
+          <form class="filter-bar">
+            <label class="date-input">
+              <input type="text" placeholder="请选择" aria-label="开始日期"/>
+              <span class="calendar-icon" aria-hidden="true"></span>
+            </label>
+            <span class="range-separator">至</span>
+            <label class="date-input">
+              <input type="text" placeholder="请选择" aria-label="结束日期"/>
+              <span class="calendar-icon" aria-hidden="true"></span>
+            </label>
+            <label class="site-field">
+              <span>站点</span>
+              <select aria-label="站点">
+                <option>测试站点</option>
+                <option>全部站点</option>
+              </select>
+            </label>
+            <button class="primary-btn" type="button">搜索</button>
+            <button class="plain-btn" type="reset">重置</button>
+          </form>
+
+          <section class="table-shell">
+            <table class="settlement-table">
+              <thead>
+                <tr>
+                  <th>结算时间</th>
+                  <th>站点名称</th>
+                  <th>佣金</th>
+                  <th>投注金额</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="total-row">
+                  <td>合计</td>
+                  <td></td>
+                  <td>150.71</td>
+                  <td>939815</td>
+                </tr>
+                <tr>
+                  <td>2026-05-28</td>
+                  <td>测试站点</td>
+                  <td>2.59</td>
+                  <td>25909</td>
+                </tr>
+                <tr>
+                  <td>2026-05-27</td>
+                  <td>测试站点</td>
+                  <td>148.12</td>
+                  <td>913906</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <div class="pagination">
+            <button class="page-icon disabled" type="button" aria-label="首页">|&lt;</button>
+            <button class="page-icon disabled" type="button" aria-label="上一组">&lt;&lt;</button>
+            <button class="page-icon disabled" type="button" aria-label="上一页">&lt;</button>
+            <span class="page-current">1</span>
+            <span class="page-total">/ 1</span>
+            <button class="page-icon" type="button" aria-label="下一页">&gt;</button>
+            <button class="page-icon" type="button" aria-label="下一组">&gt;&gt;</button>
+            <button class="page-icon" type="button" aria-label="末页">&gt;|</button>
+            <select class="page-size" aria-label="每页条数">
+              <option>10条/页</option>
+              <option>20条/页</option>
+              <option>50条/页</option>
+            </select>
+            <span class="record-count">共 3 条记录</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

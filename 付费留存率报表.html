@@ -1,12 +1,13 @@
 ﻿<!DOCTYPE html>
 <html>
   <head>
-    <title>付费留存率报表</title>
+    <title>充值留存报表</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
     <link href="data/styles.css" type="text/css" rel="stylesheet"/>
     <link href="files/付费留存率报表/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/付费留存率报表.css" type="text/css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
@@ -56,7 +57,7 @@
       <div id="u8558" class="ax_default _默认样式 transition notrs">
         <div id="u8558_div" class=""></div>
         <div id="u8558_text" class="text ">
-          <p><span>付费留存率报表</span></p>
+          <p><span>充值留存报表</span></p>
         </div>
       </div>
 
@@ -16144,6 +16145,98 @@
         </div>
       </div>
     </div>
+      <div class="recharge-retention-page">
+        <div class="report-topbar">
+          <button class="icon-btn" type="button" aria-label="返回">‹</button>
+          <button class="icon-btn refresh" type="button" aria-label="刷新">↻</button>
+          <span>数据报表</span>
+          <span class="slash">/</span>
+          <strong>充值留存报表</strong>
+        </div>
+        <main class="report-workbench">
+          <section class="report-panel">
+            <div class="filter-toolbar">
+              <label class="date-field">
+                <input type="text" placeholder="请选择" readonly>
+                <span class="calendar">▣</span>
+              </label>
+              <span class="date-separator">至</span>
+              <label class="date-field">
+                <input type="text" placeholder="请选择" readonly>
+                <span class="calendar">▣</span>
+              </label>
+              <button class="primary-btn" type="button">搜索</button>
+              <button class="plain-btn" type="button">重置</button>
+              <button class="primary-btn export-btn" type="button">导出表格</button>
+            </div>
+            <div class="table-frame">
+              <table class="retention-table">
+                <thead>
+                  <tr>
+                    <th rowspan="2">统计日期</th>
+                    <th rowspan="2">投注金额</th>
+                    <th rowspan="2">首充人数</th>
+                    <th rowspan="2">首充金额</th>
+                    <th rowspan="2">再次充值人数</th>
+                    <th rowspan="2">再次充值金额</th>
+                    <th rowspan="2">注册人数</th>
+                    <th rowspan="2">提现人数</th>
+                    <th rowspan="2">提现金额</th>
+                    <th colspan="3">3日</th>
+                    <th colspan="3">5日</th>
+                    <th colspan="3">7日</th>
+                    <th colspan="3">15日</th>
+                    <th colspan="3">30日</th>
+                  </tr>
+                  <tr>
+                    <th>充值人数</th>
+                    <th>充值金额</th>
+                    <th>留存率</th>
+                    <th>充值人数</th>
+                    <th>充值金额</th>
+                    <th>留存率</th>
+                    <th>充值人数</th>
+                    <th>充值金额</th>
+                    <th>留存率</th>
+                    <th>充值人数</th>
+                    <th>充值金额</th>
+                    <th>留存率</th>
+                    <th>充值人数</th>
+                    <th>充值金额</th>
+                    <th>留存率</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>2026-05-31</td><td>53678101</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                  <tr><td>2026-05-30</td><td>2</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                  <tr><td>2026-05-29</td><td>6036696</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>-10</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                  <tr><td>2026-05-28</td><td>20383</td><td>2</td><td>9.98</td><td>8</td><td>13114.97</td><td>2</td><td>0</td><td>-50</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                  <tr><td>2026-05-27</td><td>784022.2</td><td>3</td><td>26.968</td><td>4</td><td>31.958</td><td>3</td><td>2</td><td>200</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                  <tr><td>2026-05-26</td><td>20000125.6</td><td>1</td><td>4.99</td><td>12</td><td>30000054.89</td><td>1</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                  <tr><td>2026-05-25</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                  <tr><td>2026-05-24</td><td>29003.2</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                  <tr><td>2026-05-23</td><td>55592.7</td><td>1</td><td>4.99</td><td>4</td><td>20009.98</td><td>1</td><td>3</td><td>-90</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                  <tr><td>2026-05-22</td><td>32763545</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>50</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="pagination">
+              <span class="pager muted">|‹</span>
+              <span class="pager muted">‹‹</span>
+              <span class="pager muted">‹</span>
+              <span class="page-input">1</span>
+              <span>/5</span>
+              <span class="pager">›</span>
+              <span class="pager">››</span>
+              <span class="pager">›|</span>
+              <button class="page-size" type="button">10条/页 <span>▾</span></button>
+              <span>共 44 条记录</span>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script src="custom/js/付费留存率报表.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
   </body>
 </html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>游戏人数报表</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/游戏人数报表/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/游戏人数报表.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/游戏人数报表/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="custom/js/游戏人数报表.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell player-count-page">
+        <nav class="page-crumb"><span>数据报表</span><b>/</b><strong>游戏人数报表</strong></nav>
+
+        <section class="filter-panel" aria-label="筛选条件">
+          <div class="date-group">
+            <label><span>开始日期</span><input type="date" value="2026-05-01"/></label>
+            <em>至</em>
+            <label><span>结束日期</span><input type="date" value="2026-05-30"/></label>
+          </div>
+          <div class="quick-range" aria-label="快捷日期">
+            <button class="quick-btn" type="button">今日</button>
+            <button class="quick-btn" type="button">昨日</button>
+            <button class="quick-btn active" type="button">近7日</button>
+            <button class="quick-btn" type="button">近30日</button>
+          </div>
+          <div class="toolbar-actions">
+            <button class="primary-btn" type="button">搜索</button>
+            <button class="plain-btn" type="reset">重置</button>
+            <button class="export-btn" type="button">导出表格</button>
+          </div>
+        </section>
+
+        <section class="metric-grid" aria-label="统计概览">
+          <article class="metric-card">
+            <span>累计游戏人数</span>
+            <strong>523</strong>
+            <p>较上周期 +8.6%</p>
+          </article>
+          <article class="metric-card">
+            <span>最高单日</span>
+            <strong>22</strong>
+            <p>2026-05-22</p>
+          </article>
+          <article class="metric-card">
+            <span>日均人数</span>
+            <strong>11.4</strong>
+            <p>按 46 条记录计算</p>
+          </article>
+          <article class="metric-card">
+            <span>统计天数</span>
+            <strong>46</strong>
+            <p>当前筛选范围</p>
+          </article>
+        </section>
+
+        <main class="report-layout">
+          <section class="table-panel" aria-label="游戏人数列表">
+            <div class="panel-head">
+              <h2>明细数据</h2>
+              <span>按日期倒序展示</span>
+            </div>
+            <table class="count-table">
+              <thead>
+                <tr>
+                  <th>日期</th>
+                  <th>游戏人数统计</th>
+                  <th>环比</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>2026-05-30</td><td>1</td><td><span class="tag down">-90.0%</span></td></tr>
+                <tr><td>2026-05-29</td><td>10</td><td><span class="tag up">+25.0%</span></td></tr>
+                <tr><td>2026-05-28</td><td>8</td><td><span class="tag down">-55.6%</span></td></tr>
+                <tr><td>2026-05-27</td><td>18</td><td><span class="tag up">+50.0%</span></td></tr>
+                <tr><td>2026-05-26</td><td>12</td><td><span class="tag up">+9.1%</span></td></tr>
+                <tr><td>2026-05-25</td><td>11</td><td><span class="tag up">+1000%</span></td></tr>
+                <tr><td>2026-05-24</td><td>1</td><td><span class="tag down">-87.5%</span></td></tr>
+                <tr><td>2026-05-23</td><td>8</td><td><span class="tag down">-63.6%</span></td></tr>
+                <tr><td>2026-05-22</td><td>22</td><td><span class="tag up">+633%</span></td></tr>
+                <tr><td>2026-05-21</td><td>3</td><td><span class="tag flat">0.0%</span></td></tr>
+                <tr><td>2026-05-20</td><td>3</td><td><span class="tag up">+200%</span></td></tr>
+                <tr><td>2026-05-19</td><td>1</td><td><span class="tag down">-80.0%</span></td></tr>
+              </tbody>
+            </table>
+            <div class="pagination">
+              <button type="button">‹</button>
+              <button class="current" type="button">1</button>
+              <span>/ 3</span>
+              <button type="button">›</button>
+              <select aria-label="每页条数">
+                <option>20条/页</option>
+                <option>50条/页</option>
+              </select>
+              <strong>共 46 条记录</strong>
+            </div>
+          </section>
+
+          <aside class="trend-panel" aria-label="趋势概览">
+            <div class="panel-head">
+              <h2>近7日趋势</h2>
+              <span>人数波动</span>
+            </div>
+            <div class="bar-chart">
+              <div style="--h:18%"><i></i><span>05-24</span></div>
+              <div style="--h:50%"><i></i><span>05-25</span></div>
+              <div style="--h:54%"><i></i><span>05-26</span></div>
+              <div style="--h:82%"><i></i><span>05-27</span></div>
+              <div style="--h:36%"><i></i><span>05-28</span></div>
+              <div style="--h:45%"><i></i><span>05-29</span></div>
+              <div style="--h:12%"><i></i><span>05-30</span></div>
+            </div>
+            <div class="insight-list">
+              <p><b>峰值日期</b><span>2026-05-27，18 人</span></p>
+              <p><b>低谷日期</b><span>2026-05-30，1 人</span></p>
+              <p><b>观察结论</b><span>人数波动较大，建议结合活动、渠道和游戏类型继续下钻。</span></p>
+            </div>
+          </aside>
+        </main>
+      </div>
+    </div>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

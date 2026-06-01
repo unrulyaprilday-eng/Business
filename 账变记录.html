@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>账变记录</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/账变记录/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/账变记录.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/账变记录/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <main class="custom-page-shell account-ledger-page">
+        <header class="page-titlebar">
+          <button class="title-icon" type="button" aria-label="返回">‹</button>
+          <button class="title-icon" type="button" aria-label="刷新">↻</button>
+          <span>财务中心</span>
+          <b>/</b>
+          <strong>账变记录</strong>
+        </header>
+
+        <section class="content-panel">
+          <form class="filter-bar">
+            <label class="date-field"><input type="text" value="" placeholder="开始时间"/><span>▦</span></label>
+            <span class="range-text">至</span>
+            <label class="date-field"><input type="text" value="" placeholder="结束时间"/><span>▦</span></label>
+            <label class="select-field"><span>账变类型:</span><select><option>请选择账变类型</option><option>提现</option><option>活动首充奖励</option><option>人工充值</option><option>游戏下注</option></select></label>
+            <label class="member-field"><span>会员ID:</span><input type="text" placeholder="请输入会员ID"/></label>
+            <button class="btn primary" type="button">搜索</button>
+            <button class="btn" type="reset">重置</button>
+            <button class="btn primary export" type="button">导出报表</button>
+          </form>
+
+          <div class="notice-bar">数据更新时间：隔天</div>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>单号</th>
+                  <th>交易时间</th>
+                  <th>用户名</th>
+                  <th>会员ID</th>
+                  <th>类型</th>
+                  <th>变动前余额</th>
+                  <th>变动金额</th>
+                  <th>变动后余额</th>
+                  <th>来源</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td title="73d345d5-34d5-44de-a25d-bb08a2271f7c">73d345d5-34d5-44de-a25d-bb08a...</td><td>2026-05-29 11:14:03</td><td>dzh222</td><td>1010010007</td><td>提现</td><td class="num blue">1061.37</td><td class="num red">-50</td><td class="num purple">1011.37</td><td title="3bd922f748b248d3abb1a160f3a76b90">3bd922f748b248d3abb1a160f3...</td></tr>
+                <tr><td title="b707090d-7531-4d19-a050-51b8cc9e4d1b">b707090d-7531-4d19-a050-51b8c...</td><td>2026-05-29 11:13:37</td><td>dzh222</td><td>1010010007</td><td>活动首充奖励</td><td class="num blue">1011.37</td><td class="num green">50</td><td class="num purple">1061.37</td><td>MANUAL</td></tr>
+                <tr><td title="d49615b9-93c0-4376-80c4-2c6ad91b0c52">d49615b9-93c0-4376-80c4-2c6ad...</td><td>2026-05-29 11:13:37</td><td>dzh222</td><td>1010010007</td><td>人工充值</td><td class="num blue">11.37</td><td class="num green">1000</td><td class="num purple">1011.37</td><td>qitian</td></tr>
+                <tr><td>a4cad9fc-6b0a-4c67-95fc-e7f2b66...</td><td>2026-05-29 10:27:12</td><td>aaa123</td><td>1010010315</td><td>游戏下注并结算</td><td class="num blue">620.2</td><td class="num green">20</td><td class="num purple">640.2</td><td>d8cfj00hf4tt7kfo0ivg</td></tr>
+                <tr><td>1f2a0288-00f6-4123-8b2c-4e9a88...</td><td>2026-05-29 10:27:12</td><td>aaa123</td><td>1010010315</td><td>游戏下注</td><td class="num blue">621.2</td><td class="num red">-1</td><td class="num purple">620.2</td><td>d8cfj00hf4tt7kfo0iv0</td></tr>
+                <tr><td>b7162772-d221-41ce-902a-8039a...</td><td>2026-05-29 10:27:11</td><td>aaa123</td><td>1010010315</td><td>游戏下注</td><td class="num blue">622.2</td><td class="num red">-1</td><td class="num purple">621.2</td><td>d8cfjyohf4tt7kfo0itg</td></tr>
+                <tr><td>72505caa-ed40-4f43-a0cb-b31d98...</td><td>2026-05-29 10:27:10</td><td>aaa123</td><td>1010010315</td><td>游戏下注</td><td class="num blue">623.2</td><td class="num red">-1</td><td class="num purple">622.2</td><td>d8cfjvghf4tt7kfo0is0</td></tr>
+                <tr><td>10939b11-5417-4edb-b8fb-509f49...</td><td>2026-05-29 10:27:09</td><td>aaa123</td><td>1010010315</td><td>游戏下注</td><td class="num blue">624.2</td><td class="num red">-1</td><td class="num purple">623.2</td><td>d8cfiv8hf4tt7kfo0icg</td></tr>
+                <tr><td>f2fb7a46-6192-4126-afbb-49d1ce...</td><td>2026-05-29 10:27:08</td><td>aaa123</td><td>1010010315</td><td>游戏下注</td><td class="num blue">625.2</td><td class="num red">-1</td><td class="num purple">624.2</td><td>d8cfjv0hf4tt7kfo0ip0</td></tr>
+                <tr><td>f336eb52-d9bd-4b35-a130-54828...</td><td>2026-05-29 10:27:07</td><td>aaa123</td><td>1010010315</td><td>游戏下注</td><td class="num blue">626.2</td><td class="num red">-1</td><td class="num purple">625.2</td><td>d8cfiuohf4tt7kfo0ing</td></tr>
+                <tr><td>5f9cd3b7-128c-44eb-b148-caa3e9...</td><td>2026-05-29 10:27:05</td><td>aaa123</td><td>1010010315</td><td>游戏下注并结算</td><td class="num blue">625.7</td><td class="num green">0.5</td><td class="num purple">626.2</td><td>d8cfiu8hf4tt7kfo0img</td></tr>
+                <tr><td>aca0a6ff-7c7a-412d-8c0f-ac422ef8...</td><td>2026-05-29 10:27:05</td><td>aaa123</td><td>1010010315</td><td>游戏下注</td><td class="num blue">626.7</td><td class="num red">-1</td><td class="num purple">625.7</td><td>d8cfiu8hf4tt7kfo0im0</td></tr>
+                <tr><td>0749d33e-6e04-4672-8142-47534...</td><td>2026-05-29 10:27:04</td><td>aaa123</td><td>1010010315</td><td>游戏下注</td><td class="num blue">627.7</td><td class="num red">-1</td><td class="num purple">626.7</td><td>d8cfiu0hf4tt7kfo0ikg</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <footer class="pager">
+            <button type="button" disabled>|‹</button>
+            <button type="button" disabled>‹‹</button>
+            <button type="button" disabled>‹</button>
+            <input value="1" aria-label="当前页"/>
+            <span>/ 1254</span>
+            <button type="button">›</button>
+            <button type="button">››</button>
+            <button type="button">›|</button>
+            <select aria-label="每页条数"><option>20条/页</option><option>50条/页</option><option>100条/页</option></select>
+            <span>共 25062 条记录</span>
+          </footer>
+        </section>
+      </main>
+    </div>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/账变记录.js"></script>
+  </body>
+</html>

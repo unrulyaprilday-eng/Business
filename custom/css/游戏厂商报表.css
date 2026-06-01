@@ -1,0 +1,264 @@
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  color: #34465f;
+  background: #f4f6f9;
+  font-family: "Inter", "Microsoft YaHei", Arial, sans-serif;
+  font-size: 12px;
+}
+
+#base {
+  left: auto !important;
+  width: auto !important;
+}
+
+.vendor-stat-page {
+  min-height: 100vh;
+  background: #fff;
+}
+
+.vendor-stat-page * {
+  box-sizing: border-box;
+}
+
+.page-crumb {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  color: #60738d;
+  border-bottom: 1px solid #e8edf3;
+}
+
+.page-crumb strong {
+  color: #26364d;
+  font-weight: 600;
+}
+
+.page-crumb b {
+  color: #bac4d2;
+  font-weight: 400;
+}
+
+.crumb-icon,
+.refresh-icon {
+  color: #5c6f87;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.refresh-icon {
+  font-size: 17px;
+  margin-right: 8px;
+}
+
+.stat-workbench {
+  padding: 35px 16px 0;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 9px;
+}
+
+.filter-bar label {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.inline-label {
+  gap: 6px;
+}
+
+.vendor-stat-page input,
+.vendor-stat-page select,
+.vendor-stat-page button {
+  height: 31px;
+  border-radius: 3px;
+  font: inherit;
+}
+
+.vendor-stat-page input,
+.vendor-stat-page select {
+  border: 1px solid #d8dee8;
+  background: #fff;
+  color: #34465f;
+  padding: 0 10px;
+}
+
+.vendor-stat-page input[type="date"] {
+  width: 162px;
+}
+
+.inline-label select {
+  width: 150px;
+  color: #6b7d93;
+}
+
+.inline-label input {
+  width: 164px;
+}
+
+.date-separator {
+  color: #6d7e93;
+}
+
+.primary-btn,
+.plain-btn {
+  min-width: 51px;
+  padding: 0 13px;
+  cursor: pointer;
+}
+
+.primary-btn {
+  border: 1px solid #2f8cff;
+  background: #2f8cff;
+  color: #fff;
+}
+
+.plain-btn {
+  border: 1px solid #d8dee8;
+  background: #fff;
+  color: #3f536d;
+}
+
+.notice-bar {
+  height: 37px;
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  margin-bottom: 15px;
+  color: #00569a;
+  background: #eaf6ff;
+  border: 1px solid #2f8cff;
+  font-weight: 600;
+}
+
+.table-frame {
+  border: 1px solid #e3e8ef;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.table-scroll {
+  height: 594px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-color: #888 #f1f1f1;
+  scrollbar-width: auto;
+}
+
+.stat-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  background: #fff;
+}
+
+.stat-table th,
+.stat-table td {
+  height: 42px;
+  padding: 0 12px;
+  border-right: 1px solid #e6ebf1;
+  border-bottom: 1px solid #e6ebf1;
+  text-align: center;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stat-table th {
+  height: 41px;
+  background: #fafafa;
+  color: #3f4e63;
+  font-weight: 600;
+}
+
+.stat-table th:nth-child(1) { width: 10%; }
+.stat-table th:nth-child(2) { width: 11%; }
+.stat-table th:nth-child(3) { width: 10%; }
+.stat-table th:nth-child(4) { width: 11%; }
+.stat-table th:nth-child(5) { width: 10%; }
+.stat-table th:nth-child(6) { width: 10%; }
+.stat-table th:nth-child(7) { width: 12%; }
+.stat-table th:nth-child(8) { width: 12%; }
+.stat-table th:nth-child(9) { width: 14%; }
+
+.stat-table tr:nth-child(even) td {
+  background: #fcfcfd;
+}
+
+.stat-table tbody tr.is-selected td {
+  background: #eef6ff;
+}
+
+.money {
+  font-weight: 600;
+}
+
+.money.plus {
+  color: #35b800;
+}
+
+.money.minus {
+  color: #ff1212;
+}
+
+.pagination-bar {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  color: #2f3f55;
+}
+
+.page-link {
+  width: 24px;
+  min-width: 24px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #647894;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.page-link.disabled {
+  color: #c8d0db;
+  cursor: default;
+}
+
+.page-input {
+  width: 52px;
+  height: 30px;
+  text-align: center;
+}
+
+.page-size {
+  width: 113px;
+  height: 30px;
+  color: #34465f;
+}
+
+@media (max-width: 900px) {
+  .stat-workbench {
+    padding: 20px 10px 0;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+  }
+
+  .stat-table {
+    min-width: 1180px;
+  }
+}
