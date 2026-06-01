@@ -18,7 +18,8 @@ $axure.loadDocument({
         "id": "zaj83g",
         "pageName": "首页",
         "type": "Wireframe",
-        "url": "默认看板.html"
+        "url": "默认看板.html",
+        "children": []
       },
       {
         "id": "site_config",
@@ -30,55 +31,64 @@ $axure.loadDocument({
             "id": "template_manage",
             "pageName": "模板管理",
             "type": "Wireframe",
-            "url": "模板管理.html"
+            "url": "模板管理.html",
+            "children": []
           },
           {
             "id": "page_settings",
             "pageName": "站点配置",
             "type": "Wireframe",
-            "url": "站点配置.html"
+            "url": "站点配置.html",
+            "children": []
           },
           {
             "id": "brand_settings",
             "pageName": "品牌设置",
             "type": "Wireframe",
-            "url": "品牌设置.html"
+            "url": "品牌设置.html",
+            "children": []
           },
           {
             "id": "site_domain",
             "pageName": "站点域名",
             "type": "Wireframe",
-            "url": "站点域名.html"
+            "url": "站点域名.html",
+            "children": []
           },
           {
             "id": "customer_service_config",
             "pageName": "客服配置",
             "type": "Wireframe",
-            "url": "客服配置.html"
+            "url": "客服配置.html",
+            "children": []
           },
           {
             "id": "share_config",
             "pageName": "分享配置",
             "type": "Wireframe",
-            "url": "分享配置.html"
+            "url": "分享配置.html",
+            "children": []
           },
           {
             "id": "third_party_login_config",
             "pageName": "第三方登录配置",
             "type": "Wireframe",
-            "url": "第三方登录配置.html"
+            "url": "第三方登录配置.html",
+            "children": []
           },
           {
             "id": "payment_channel_config",
             "pageName": "支付通道配置",
             "type": "Wireframe",
-            "url": "支付通道配置.html"
+            "url": "支付通道配置.html",
+            "children": []
           },
           {
             "id": "ad_tracking_config",
             "pageName": "广告埋点配置",
             "type": "Wireframe",
-            "url": "广告埋点配置.html"
+            "url": "广告埋点配置.html",
+            "children": []
           },
           {
             "id": "music_manage",
@@ -99,67 +109,78 @@ $axure.loadDocument({
             "id": "t88dk7",
             "pageName": "用户分群思维导图",
             "type": "Wireframe",
-            "url": "用户分群思维导图.html"
+            "url": "用户分群思维导图.html",
+            "children": []
           },
           {
             "id": "site_maintenance_manage",
             "pageName": "站点维护管理",
             "type": "Wireframe",
-            "url": "站点维护管理.html"
+            "url": "站点维护管理.html",
+            "children": []
           },
           {
             "id": "operation_platform_notice",
             "pageName": "平台公告",
             "type": "Wireframe",
-            "url": "平台公告.html"
+            "url": "平台公告.html",
+            "children": []
           },
           {
             "id": "operation_platform_suggestion",
             "pageName": "给平台提建议",
             "type": "Wireframe",
-            "url": "给平台提建议.html"
+            "url": "给平台提建议.html",
+            "children": []
           },
           {
             "id": "operation_member_complaint_list",
             "pageName": "会员投诉列表",
             "type": "Wireframe",
-            "url": "会员投诉列表.html"
+            "url": "会员投诉列表.html",
+            "children": []
           },
           {
             "id": "operation_message_push",
             "pageName": "消息推送",
             "type": "Wireframe",
-            "url": "消息推送.html"
+            "url": "消息推送.html",
+            "children": []
           },
           {
             "id": "operation_promotion_manage",
             "pageName": "宣传管理",
             "type": "Wireframe",
-            "url": "宣传管理.html"
+            "url": "宣传管理.html",
+            "children": []
           },
           {
             "id": "operation_customer_service_center",
             "pageName": "客服中心",
             "type": "Wireframe",
-            "url": "客服中心.html"
+            "url": "客服中心.html",
+            "children": []
           },
           {
             "id": "operation_task_center",
             "pageName": "任务中心",
             "type": "Wireframe",
-            "url": "任务中心.html"
+            "url": "任务中心.html",
+            "children": []
           },
           {
             "id": "operation_landing_page_manage",
             "pageName": "落地页管理",
             "type": "Wireframe",
-            "url": "落地页管理.html"
+            "url": "落地页管理.html",
+            "children": []
           },
           {
             "id": "activity_rank_statistics",
             "pageName": "活动排行统计",
             "type": "Wireframe",
-            "url": "活动排行统计.html"
+            "url": "活动排行统计.html",
+            "children": []
           }
         ]
       },
@@ -173,49 +194,57 @@ $axure.loadDocument({
             "id": "promotion_activity_list",
             "pageName": "优惠活动列表",
             "type": "Wireframe",
-            "url": "优惠活动列表.html"
+            "url": "优惠活动列表.html",
+            "children": []
           },
           {
             "id": "lucky_wheel_config",
             "pageName": "幸运转盘配置",
             "type": "Wireframe",
-            "url": "幸运转盘配置.html"
+            "url": "幸运转盘配置.html",
+            "children": []
           },
           {
             "id": "novs01",
             "pageName": "新增活动",
             "type": "Wireframe",
-            "url": "新增活动.html"
+            "url": "新增活动.html",
+            "children": []
           },
           {
             "id": "activity_analysis",
             "pageName": "活动分析",
             "type": "Wireframe",
-            "url": "活动分析.html"
+            "url": "活动分析.html",
+            "children": []
           },
           {
             "id": "discount_data_report",
             "pageName": "优惠数据报表",
             "type": "Wireframe",
-            "url": "优惠数据报表.html"
+            "url": "优惠数据报表.html",
+            "children": []
           },
           {
             "id": "ticket_center",
             "pageName": "票券中心",
             "type": "Wireframe",
-            "url": "票券中心.html"
+            "url": "票券中心.html",
+            "children": []
           },
           {
             "id": "ticket_usage_record",
             "pageName": "票券使用记录",
             "type": "Wireframe",
-            "url": "优惠活动-票券使用记录.html"
+            "url": "优惠活动-票券使用记录.html",
+            "children": []
           },
           {
             "id": "promotion_global_config",
             "pageName": "全局配置",
             "type": "Wireframe",
-            "url": "全局配置.html"
+            "url": "全局配置.html",
+            "children": []
           }
         ]
       },
@@ -229,55 +258,64 @@ $axure.loadDocument({
             "id": "member_withdraw_settings",
             "pageName": "会员提现设置",
             "type": "Wireframe",
-            "url": "会员提现设置.html"
+            "url": "会员提现设置.html",
+            "children": []
           },
           {
             "id": "member_recharge_config",
             "pageName": "会员充值配置",
             "type": "Wireframe",
-            "url": "会员充值配置.html"
+            "url": "会员充值配置.html",
+            "children": []
           },
           {
             "id": "recharge_order_list",
             "pageName": "充值订单列表",
             "type": "Wireframe",
-            "url": "充值订单列表.html"
+            "url": "充值订单列表.html",
+            "children": []
           },
           {
             "id": "withdraw_order_list",
             "pageName": "提现订单列表",
             "type": "Wireframe",
-            "url": "提现订单列表.html"
+            "url": "提现订单列表.html",
+            "children": []
           },
           {
             "id": "withdraw_risk_review",
             "pageName": "提现风控审核",
             "type": "Wireframe",
-            "url": "提现风控审核.html"
+            "url": "提现风控审核.html",
+            "children": []
           },
           {
             "id": "payment_channel_data",
             "pageName": "支付通道数据",
             "type": "Wireframe",
-            "url": "支付通道数据.html"
+            "url": "支付通道数据.html",
+            "children": []
           },
           {
             "id": "manual_balance_adjustment",
             "pageName": "人工加扣款",
             "type": "Wireframe",
-            "url": "人工加扣款.html"
+            "url": "人工加扣款.html",
+            "children": []
           },
           {
             "id": "fund_account_change_record",
             "pageName": "账变记录",
             "type": "Wireframe",
-            "url": "账变记录.html"
+            "url": "账变记录.html",
+            "children": []
           },
           {
             "id": "fund_account_change_type",
             "pageName": "资金账变类型",
             "type": "Wireframe",
-            "url": "资金账变类型.html"
+            "url": "资金账变类型.html",
+            "children": []
           },
           {
             "id": "risk_coding_management",
@@ -295,54 +333,81 @@ $axure.loadDocument({
         "url": "",
         "children": [
           {
+            "id": "summary_data_report",
+            "pageName": "综合数据报表",
+            "type": "Wireframe",
+            "url": "综合数据报表.html",
+            "children": []
+          },
+          {
+            "id": "game_player_count_report",
+            "pageName": "游戏人数据表",
+            "type": "Wireframe",
+            "url": "游戏人数报表.html",
+            "children": []
+          },
+          {
+            "id": "discount_data_report",
+            "pageName": "优惠数据报表",
+            "type": "Wireframe",
+            "url": "优惠数据报表.html",
+            "children": []
+          },
+          {
             "id": "brueg6",
             "pageName": "充值留存报表",
             "type": "Wireframe",
-            "url": "付费留存率报表.html"
+            "url": "付费留存率报表.html",
+            "children": []
+          },
+          {
+            "id": "agent_settlement_detail",
+            "pageName": "代理结算明细",
+            "type": "Wireframe",
+            "url": "代理结算明细.html",
+            "children": []
+          },
+          {
+            "id": "vip_data_statistics",
+            "pageName": "VIP数据统计",
+            "type": "Wireframe",
+            "url": "VIP数据统计.html",
+            "children": []
           },
           {
             "id": "owiq3l",
             "pageName": "数据排行",
             "type": "Wireframe",
-            "url": "数据排行.html"
-          },
-          {
-            "id": "e7o3hk",
-            "pageName": "投注报表",
-            "type": "Wireframe",
-            "url": "投注报表.html",
-            "children": [
-              {
-                "id": "lypz8n",
-                "pageName": "游戏投注报表",
-                "type": "Wireframe",
-                "url": "游戏投注报表.html"
-              }
-            ]
+            "url": "数据排行.html",
+            "children": []
           },
           {
             "id": "pbh382",
             "pageName": "游戏记录",
             "type": "Wireframe",
-            "url": "游戏记录.html"
+            "url": "游戏记录.html",
+            "children": []
           },
           {
             "id": "3e2vtw",
             "pageName": "用户留存",
             "type": "Wireframe",
-            "url": "用户留存.html"
+            "url": "用户留存.html",
+            "children": []
           },
           {
             "id": "hev2wz",
             "pageName": "用户分析",
             "type": "Wireframe",
-            "url": "用户分析.html"
+            "url": "用户分析.html",
+            "children": []
           },
           {
             "id": "spwyp6",
             "pageName": "LTV",
             "type": "Wireframe",
-            "url": "ltv.html"
+            "url": "ltv.html",
+            "children": []
           },
           {
             "id": "7ld7lo",
@@ -354,7 +419,8 @@ $axure.loadDocument({
                 "id": "zc6hec",
                 "pageName": "玩家活动报表",
                 "type": "Wireframe",
-                "url": "玩家活动报表.html"
+                "url": "玩家活动报表.html",
+                "children": []
               }
             ]
           },
@@ -362,7 +428,8 @@ $axure.loadDocument({
             "id": "mazrf0",
             "pageName": "充值分布表",
             "type": "Wireframe",
-            "url": "充值分布表.html"
+            "url": "充值分布表.html",
+            "children": []
           },
           {
             "id": "wdz63g",
@@ -374,45 +441,17 @@ $axure.loadDocument({
                 "id": "bs2iea",
                 "pageName": "玩家任务报表",
                 "type": "Wireframe",
-                "url": "玩家任务报表.html"
+                "url": "玩家任务报表.html",
+                "children": []
               }
             ]
-          },
-          {
-            "id": "summary_data_report",
-            "pageName": "综合数据报表",
-            "type": "Wireframe",
-            "url": "综合数据报表.html"
-          },
-          {
-            "id": "game_player_count_report",
-            "pageName": "游戏人数报表",
-            "type": "Wireframe",
-            "url": "游戏人数报表.html"
-          },
-          {
-            "id": "discount_data_report",
-            "pageName": "优惠数据报表",
-            "type": "Wireframe",
-            "url": "优惠数据报表.html"
-          },
-          {
-            "id": "agent_settlement_detail",
-            "pageName": "代理结算明细",
-            "type": "Wireframe",
-            "url": "代理结算明细.html"
           },
           {
             "id": "y4eabe",
             "pageName": "用户分群查询",
             "type": "Wireframe",
-            "url": "用户分群查询.html"
-          },
-          {
-            "id": "vip_data_statistics",
-            "pageName": "VIP数据统计",
-            "type": "Wireframe",
-            "url": "VIP数据统计.html"
+            "url": "用户分群查询.html",
+            "children": []
           }
         ]
       },
@@ -426,37 +465,43 @@ $axure.loadDocument({
             "id": "recommend_channel_manage",
             "pageName": "推荐频道管理",
             "type": "Wireframe",
-            "url": "推荐频道管理.html"
+            "url": "推荐频道管理.html",
+            "children": []
           },
           {
             "id": "game_type_settings",
             "pageName": "游戏类型设置",
             "type": "Wireframe",
-            "url": "游戏类型设置.html"
+            "url": "游戏类型设置.html",
+            "children": []
           },
           {
             "id": "gtd09p",
             "pageName": "游戏频道管理",
             "type": "Wireframe",
-            "url": "游戏频道管理.html"
+            "url": "游戏频道管理.html",
+            "children": []
           },
           {
             "id": "sub_game_list",
             "pageName": "子游戏列表",
             "type": "Wireframe",
-            "url": "子游戏列表.html"
+            "url": "子游戏列表.html",
+            "children": []
           },
           {
             "id": "game_statistics",
             "pageName": "游戏统计",
             "type": "Wireframe",
-            "url": "游戏统计.html"
+            "url": "游戏统计.html",
+            "children": []
           },
           {
             "id": "29ih6x",
             "pageName": "游戏厂商统计",
             "type": "Wireframe",
-            "url": "游戏厂商报表.html"
+            "url": "游戏厂商报表.html",
+            "children": []
           }
         ]
       },
@@ -470,13 +515,15 @@ $axure.loadDocument({
             "id": "user_online_players",
             "pageName": "在线玩家列表",
             "type": "Wireframe",
-            "url": "在线玩家列表.html"
+            "url": "在线玩家列表.html",
+            "children": []
           },
           {
             "id": "user_all_members",
             "pageName": "所有会员",
             "type": "Wireframe",
-            "url": "所有会员.html"
+            "url": "所有会员.html",
+            "children": []
           }
         ]
       },
@@ -490,7 +537,8 @@ $axure.loadDocument({
             "id": "agent_center_config",
             "pageName": "代理配置",
             "type": "Wireframe",
-            "url": "代理中心_代理配置.html"
+            "url": "代理中心_代理配置.html",
+            "children": []
           }
         ]
       },
@@ -504,19 +552,22 @@ $axure.loadDocument({
             "id": "risk_blacklist",
             "pageName": "黑名单",
             "type": "Wireframe",
-            "url": "黑名单.html"
+            "url": "黑名单.html",
+            "children": []
           },
           {
             "id": "brush_monitor",
             "pageName": "刷子监控",
             "type": "Wireframe",
-            "url": "刷子监控.html"
+            "url": "刷子监控.html",
+            "children": []
           },
           {
             "id": "game_profit_monitor",
             "pageName": "游戏获利监控",
             "type": "Wireframe",
-            "url": "游戏获利监控.html"
+            "url": "游戏获利监控.html",
+            "children": []
           }
         ]
       },
@@ -530,21 +581,31 @@ $axure.loadDocument({
             "id": "zrovx0",
             "pageName": "商户信息",
             "type": "Wireframe",
-            "url": "商户信息.html"
+            "url": "商户信息.html",
+            "children": []
           },
           {
             "id": "merchant_recharge",
             "pageName": "商户充值",
             "type": "Wireframe",
-            "url": "商户充值.html"
+            "url": "商户充值.html",
+            "children": []
           },
           {
             "id": "fvs6nu",
             "pageName": "商户订单查询",
             "type": "Wireframe",
-            "url": "商户订单查询.html"
+            "url": "商户订单查询.html",
+            "children": []
           }
         ]
+      },
+      {
+        "id": "tracking_config",
+        "pageName": "埋点配置",
+        "type": "Folder",
+        "url": "",
+        "children": []
       },
       {
         "id": "hr_center",
@@ -556,13 +617,15 @@ $axure.loadDocument({
             "id": "3ynxdj",
             "pageName": "人事列表",
             "type": "Wireframe",
-            "url": "账号管理.html"
+            "url": "账号管理.html",
+            "children": []
           },
           {
             "id": "kecrse",
             "pageName": "白名单",
             "type": "Wireframe",
-            "url": "白名单.html"
+            "url": "白名单.html",
+            "children": []
           },
           {
             "id": "",
@@ -574,19 +637,22 @@ $axure.loadDocument({
                 "id": "h2hprn",
                 "pageName": "管理员登录日志",
                 "type": "Wireframe",
-                "url": "管理员登录日志.html"
+                "url": "管理员登录日志.html",
+                "children": []
               },
               {
                 "id": "7b23z5",
                 "pageName": "管理员操作日志",
                 "type": "Wireframe",
-                "url": "管理员操作日志.html"
+                "url": "管理员操作日志.html",
+                "children": []
               },
               {
                 "id": "ef78ue",
                 "pageName": "系统异常日志",
                 "type": "Wireframe",
-                "url": "系统异常日志.html"
+                "url": "系统异常日志.html",
+                "children": []
               }
             ]
           }

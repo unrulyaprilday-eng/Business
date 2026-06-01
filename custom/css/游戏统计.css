@@ -176,15 +176,16 @@ input[type="date"] {
   font-weight: 600;
 }
 
-.stat-table th:nth-child(1) { width: 11%; }
-.stat-table th:nth-child(2) { width: 10%; }
-.stat-table th:nth-child(3) { width: 12.5%; }
-.stat-table th:nth-child(4) { width: 12.5%; }
-.stat-table th:nth-child(5) { width: 11%; }
-.stat-table th:nth-child(6) { width: 10%; }
-.stat-table th:nth-child(7) { width: 11%; }
-.stat-table th:nth-child(8) { width: 11%; }
-.stat-table th:nth-child(9) { width: 10%; }
+.stat-table th:nth-child(1) { width: 10%; }
+.stat-table th:nth-child(2) { width: 9%; }
+.stat-table th:nth-child(3) { width: 12%; }
+.stat-table th:nth-child(4) { width: 12%; }
+.stat-table th:nth-child(5) { width: 10%; }
+.stat-table th:nth-child(6) { width: 9%; }
+.stat-table th:nth-child(7) { width: 10%; }
+.stat-table th:nth-child(8) { width: 10%; }
+.stat-table th:nth-child(9) { width: 9%; }
+.stat-table th:nth-child(10) { width: 9%; }
 
 .stat-table tr:nth-child(even) td {
   background: #fcfcfd;
