@@ -627,17 +627,17 @@ $axure.loadDocument({
             "children": []
           },
           {
-            "id": "fvs6nu",
-            "pageName": "商户订单查询",
-            "type": "Wireframe",
-            "url": "商户订单查询.html",
-            "children": []
-          },
-          {
             "id": "recharge_record",
             "pageName": "充值记录",
             "type": "Wireframe",
             "url": "充值记录.html",
+            "children": []
+          },
+          {
+            "id": "merchant_ledger_record",
+            "type": "Wireframe",
+            "pageName": "账变记录",
+            "url": "账变记录.html",
             "children": []
           }
         ]
