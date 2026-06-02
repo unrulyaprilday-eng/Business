@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>代理数据查询</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/代理数据查询/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/代理数据查询.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/代理数据查询/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/代理数据查询.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell agent-data-page">
+        <div class="page-crumb">
+          <span class="crumb-icon">‹</span>
+          <span class="crumb-icon">↻</span>
+          <span>代理中心</span>
+          <span>/</span>
+          <strong>代理数据查询</strong>
+        </div>
+
+        <main class="page-panel">
+          <section class="filter-bar" aria-label="查询条件">
+            <input class="date-input" type="text" value="2026-06-01" aria-label="开始日期"/>
+            <span class="range-split">至</span>
+            <input class="date-input" type="text" value="2026-06-01" aria-label="结束日期"/>
+            <label>代理编码:<input type="text" placeholder="请输入"/></label>
+            <label>代理账号:<input type="text" placeholder="请输入"/></label>
+            <button class="btn primary" type="button" data-action="search">搜索</button>
+            <button class="btn" type="button" data-action="reset">重置</button>
+            <button class="btn primary" type="button" data-action="export">导出报表</button>
+          </section>
+
+          <div class="refresh-tip">数据更新时间：5分钟</div>
+
+          <section class="table-frame" aria-label="代理数据列表">
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>代理编码</th>
+                    <th>代理账号</th>
+                    <th>上级代理账号</th>
+                    <th>上级代理编码</th>
+                    <th>新增直属人数</th>
+                    <th>直属充值金额</th>
+                    <th>累计直属人数</th>
+                    <th>当日下级首充人数/金额 <span class="help">?</span></th>
+                    <th>直属充值人数</th>
+                    <th>直属投注人数</th>
+                    <th>直属输赢</th>
+                    <th>个人充值金额</th>
+                    <th>个人提现金额</th>
+                    <th>个人输赢</th>
+                    <th>投注金额</th>
+                    <th>有效投注</th>
+                    <th>预估贡献值</th>
+                    <th>佣金</th>
+                    <th>累计总下级人数</th>
+                    <th>累计佣金</th>
+                    <th>下级累计投注</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>123527</td><td>qqq345</td><td></td><td>0</td><td>2</td><td>120000</td><td>2</td><td><a href="#">0 / 0</a></td><td>4</td><td>2</td><td>-50493.4</td><td>0</td><td>0</td><td>0</td><td>91288</td><td>0</td><td>0</td><td>52.9288</td><td>6</td><td>341.7864</td><td><a class="purple" href="#">91288</a></td></tr>
+                  <tr><td>123528</td><td>www345</td><td>qqq345</td><td>123527</td><td>2</td><td>138000</td><td>2</td><td><a href="#">0 / 0</a></td><td>2</td><td>2</td><td>-90000</td><td>20000</td><td>0</td><td>-17600</td><td>90000</td><td>20000</td><td>52.8</td><td>39</td><td>4</td><td>117</td><td><a class="purple" href="#">90000</a></td></tr>
+                  <tr><td>123522</td><td>Amputkrnw3je4</td><td>agent</td><td>10004</td><td>0</td><td>0</td><td>0</td><td><a href="#">0 / 0</a></td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>-9.4</td><td>0</td><td>9.6</td><td>0</td><td>0</td><td>0</td><td>0</td><td><a class="purple" href="#">0</a></td></tr>
+                  <tr><td>10004</td><td>agent</td><td></td><td>0</td><td>1</td><td>0</td><td>1</td><td><a href="#">0 / 0</a></td><td>0</td><td>1</td><td>-9.4</td><td>0</td><td>0</td><td>-865.8</td><td>9.6</td><td>4562</td><td>0</td><td>0</td><td>1</td><td>0</td><td><a class="purple" href="#">9.6</a></td></tr>
+                  <tr><td>123532</td><td>ttt123</td><td>www345</td><td>123528</td><td>0</td><td>0</td><td>0</td><td><a href="#">0 / 0</a></td><td>0</td><td>0</td><td>0</td><td>50000</td><td>0</td><td>-50000</td><td>0</td><td>50000</td><td>25</td><td>0</td><td>0</td><td>0</td><td><a class="purple" href="#">0</a></td></tr>
+                  <tr><td>123530</td><td>rrr345</td><td>www345</td><td>123528</td><td>0</td><td>0</td><td>2</td><td><a href="#">0 / 0</a></td><td>0</td><td>0</td><td>0</td><td>88000</td><td>0</td><td>-40000</td><td>0</td><td>40000</td><td>14</td><td>0</td><td>2</td><td>0</td><td><a class="purple" href="#">0</a></td></tr>
+                  <tr><td>123491</td><td>vvv123</td><td></td><td>0</td><td>1</td><td>20000</td><td>1</td><td><a href="#">0 / 0</a></td><td>1</td><td>1</td><td>-3100</td><td>0</td><td>0</td><td>0</td><td>2100</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td><a class="purple" href="#">2100</a></td></tr>
+                  <tr><td>123529</td><td>eee345</td><td>qqq345</td><td>123527</td><td>0</td><td>0</td><td>0</td><td><a href="#">0 / 0</a></td><td>0</td><td>0</td><td>0</td><td>100000</td><td>0</td><td>-32893.4</td><td>0</td><td>71288</td><td>35.1288</td><td>0</td><td>0</td><td>0</td><td><a class="purple" href="#">0</a></td></tr>
+                  <tr><td>123525</td><td>mmm123</td><td>nnn123</td><td>123524</td><td>0</td><td>0</td><td>0</td><td><a href="#">0 / 0</a></td><td>0</td><td>0</td><td>0</td><td>20000</td><td>0</td><td>-13905</td><td>0</td><td>22000</td><td>0</td><td>0</td><td>0</td><td>0</td><td><a class="purple" href="#">0</a></td></tr>
+                  <tr><td>123524</td><td>nnn123</td><td></td><td>0</td><td>1</td><td>20000</td><td>1</td><td><a href="#">0 / 0</a></td><td>1</td><td>1</td><td>-13905</td><td>0</td><td>0</td><td>0</td><td>22000</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td><a class="purple" href="#">22000</a></td></tr>
+                  <tr><td>10000</td><td>jacky</td><td></td><td>0</td><td>0</td><td>0</td><td>0</td><td><a href="#">0 / 0</a></td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>-18202</td><td>0</td><td>30102</td><td>0</td><td>0</td><td>0</td><td>0</td><td><a class="purple" href="#">0</a></td></tr>
+                  <tr><td>123520</td><td>Ampusy0fqbmy5</td><td></td><td>0</td><td>0</td><td>0</td><td>0</td><td><a href="#">0 / 0</a></td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>-6</td><td>0</td><td>10</td><td>0</td><td>0</td><td>0</td><td>0</td><td><a class="purple" href="#">0</a></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <footer class="pagination-bar">
+            <button type="button" disabled>‹|</button>
+            <button type="button" disabled>‹‹</button>
+            <button type="button" disabled>‹</button>
+            <input type="text" value="1" aria-label="当前页"/>
+            <span>/ 1</span>
+            <button type="button" disabled>›</button>
+            <button type="button" disabled>››</button>
+            <button type="button" disabled>|›</button>
+            <select aria-label="每页条数"><option>20条/页</option><option>50条/页</option><option>100条/页</option></select>
+            <span>共 16 条记录</span>
+          </footer>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

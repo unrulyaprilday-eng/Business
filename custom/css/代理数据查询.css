@@ -1,0 +1,222 @@
+[hidden] {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  background: #f5f7fa;
+  color: #2f3b4a;
+  font-family: "Microsoft YaHei", Arial, sans-serif;
+  font-size: 12px;
+}
+
+.agent-data-page {
+  min-height: 100vh;
+  background: #f5f7fa;
+}
+
+.page-crumb {
+  height: 38px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  color: #687789;
+  background: #fff;
+  border-bottom: 1px solid #e6ebf1;
+  box-sizing: border-box;
+}
+
+.page-crumb strong {
+  color: #1f2d3d;
+  font-weight: 600;
+}
+
+.crumb-icon {
+  color: #506579;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.page-panel {
+  margin: 16px 6px 0;
+  padding: 16px 16px 10px;
+  background: #fff;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filter-bar label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #2f3b4a;
+}
+
+.filter-bar input,
+.pagination-bar input,
+.pagination-bar select {
+  height: 31px;
+  border: 1px solid #d6dde6;
+  border-radius: 3px;
+  color: #2f3b4a;
+  background: #fff;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.filter-bar input {
+  width: 162px;
+  padding: 0 9px;
+}
+
+.filter-bar input::placeholder {
+  color: #aeb8c4;
+}
+
+.date-input {
+  background-image: linear-gradient(transparent, transparent), url("../assets/calendar-dot.svg");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}
+
+.range-split {
+  color: #606f80;
+}
+
+.btn {
+  height: 31px;
+  padding: 0 14px;
+  border: 1px solid #d6dde6;
+  border-radius: 3px;
+  background: #fff;
+  color: #2f3b4a;
+  cursor: pointer;
+}
+
+.btn.primary {
+  border-color: #2f90eb;
+  background: #2f90eb;
+  color: #fff;
+}
+
+.refresh-tip {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  margin: 9px 0 15px;
+  padding: 0 16px;
+  color: #003b6f;
+  background: #eaf7ff;
+  border: 1px solid #2f90eb;
+  box-sizing: border-box;
+}
+
+.table-frame {
+  border: 1px solid #e1e6ec;
+  background: #fff;
+}
+
+.table-scroll {
+  overflow: auto;
+  max-height: 595px;
+}
+
+.data-table {
+  width: 2540px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  background: #fff;
+}
+
+.data-table th,
+.data-table td {
+  height: 42px;
+  padding: 0 10px;
+  border-right: 1px solid #e6eaef;
+  border-bottom: 1px solid #e6eaef;
+  text-align: center;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.data-table th {
+  height: 43px;
+  background: #f8f8f9;
+  color: #2f3b4a;
+  font-weight: 600;
+}
+
+.data-table td {
+  color: #334457;
+}
+
+.data-table tr:nth-child(even) td {
+  background: #fcfcfd;
+}
+
+.data-table a {
+  color: #006dff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.data-table a.purple {
+  color: #711cff;
+}
+
+.help {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #aeb8c4;
+  color: #fff;
+  font-size: 10px;
+}
+
+.pagination-bar {
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  color: #35445a;
+}
+
+.pagination-bar button {
+  border: 0;
+  background: transparent;
+  color: #b9c4d0;
+  font-size: 18px;
+}
+
+.pagination-bar input {
+  width: 52px;
+  text-align: center;
+}
+
+.pagination-bar select {
+  width: 112px;
+  padding: 0 12px;
+}
+
+@media (max-width: 900px) {
+  .page-panel {
+    margin: 10px 4px 0;
+    padding: 12px;
+  }
+
+  .filter-bar {
+    align-items: flex-start;
+  }
+}

@@ -1,0 +1,270 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #f5f7fa;
+  color: #344054;
+  font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.recharge-record-page {
+  min-width: 1280px;
+  min-height: 100vh;
+  background: #f5f7fa;
+}
+
+.page-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 6px;
+  border-bottom: 1px solid #e8ebf0;
+  background: #fff;
+  color: #667085;
+}
+
+.page-titlebar strong {
+  color: #2f3b52;
+}
+
+.page-titlebar b {
+  color: #a4acb9;
+  font-weight: 400;
+}
+
+.title-icon {
+  width: 22px;
+  height: 24px;
+  border: 0;
+  background: transparent;
+  color: #526070;
+  font-size: 24px;
+  line-height: 22px;
+}
+
+.title-icon.refresh {
+  font-size: 17px;
+}
+
+.record-panel {
+  margin-top: 16px;
+  min-height: 768px;
+  padding: 20px 12px 12px;
+  background: #fff;
+}
+
+.filterbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  white-space: nowrap;
+}
+
+.field {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  color: #303846;
+}
+
+.field span {
+  margin-right: 6px;
+}
+
+.field input,
+.field select {
+  width: 180px;
+  height: 34px;
+  padding: 0 28px 0 10px;
+  border: 1px solid #d5dce8;
+  border-radius: 4px;
+  outline: 0;
+  background: #fff;
+  color: #7b8799;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: #2f86ff;
+  box-shadow: 0 0 0 2px rgba(47, 134, 255, 0.12);
+}
+
+.date-field input {
+  width: 162px;
+}
+
+.order-field input {
+  width: 180px;
+}
+
+.select-field select {
+  width: 144px;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, #b8c0cc 50%), linear-gradient(135deg, #b8c0cc 50%, transparent 50%);
+  background-position: calc(100% - 15px) 14px, calc(100% - 9px) 14px;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.date-field i {
+  position: absolute;
+  right: 9px;
+  color: #aeb7c5;
+  font-style: normal;
+  font-size: 13px;
+}
+
+.range-text {
+  color: #5e6877;
+}
+
+.btn {
+  height: 34px;
+  padding: 0 16px;
+  border: 1px solid #d5dce8;
+  border-radius: 4px;
+  background: #fff;
+  color: #425066;
+}
+
+.btn.primary {
+  border-color: #3291ff;
+  background: #3291ff;
+  color: #fff;
+}
+
+.btn.export {
+  margin-left: 6px;
+}
+
+.table-scroll {
+  height: 650px;
+  border: 1px solid #e4e8ef;
+  overflow: auto;
+}
+
+.record-table {
+  min-width: 1550px;
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.record-table th,
+.record-table td {
+  height: 43px;
+  padding: 0 12px;
+  border-right: 1px solid #e4e8ef;
+  border-bottom: 1px solid #e4e8ef;
+  text-align: center;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.record-table th {
+  height: 43px;
+  background: #f7f8fa;
+  color: #303846;
+  font-weight: 600;
+}
+
+.record-table th:nth-child(1) {
+  width: 220px;
+}
+
+.record-table th:nth-child(2) {
+  width: 130px;
+}
+
+.record-table th:nth-child(3),
+.record-table th:nth-child(4),
+.record-table th:nth-child(8),
+.record-table th:nth-child(10),
+.record-table th:nth-child(11) {
+  width: 110px;
+}
+
+.record-table th:nth-child(5),
+.record-table th:nth-child(6) {
+  width: 205px;
+}
+
+.record-table th:nth-child(7),
+.record-table th:nth-child(9) {
+  width: 185px;
+}
+
+.amount {
+  color: #3b00b9;
+  font-weight: 700;
+}
+
+.status.processing {
+  color: #1683ff;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  color: #344054;
+}
+
+.pagination button {
+  min-width: 18px;
+  height: 28px;
+  border: 0;
+  background: transparent;
+  color: #b9c2cf;
+  font-size: 17px;
+}
+
+.pagination input,
+.pagination select {
+  height: 32px;
+  border: 1px solid #d5dce8;
+  border-radius: 4px;
+  outline: 0;
+  background: #fff;
+  color: #425066;
+  text-align: center;
+}
+
+.pagination input {
+  width: 52px;
+}
+
+.pagination select {
+  width: 114px;
+  padding-left: 16px;
+  text-align: left;
+}

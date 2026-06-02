@@ -56,6 +56,14 @@ custom/js/页面名.js
 - `resources/scripts/axure/ios.js`
 - 如有独立交互 JS，再引用 `custom/js/页面名.js`
 
+如页面依赖自定义 JS 渲染表格、Tab、弹窗或编辑态：
+
+- HTML 中先放可展示的首屏静态内容或兜底空态，不能只留空容器等待 JS 渲染。
+- 自定义 JS 必须等 DOM 就绪后再查询元素和绑定事件，可使用 `DOMContentLoaded` 或项目已有 ready 工具。
+- JS 初始化前要做关键 DOM 空值保护，避免一个元素没取到导致整页交互失效。
+- 多 Tab 页面必须为每个 Tab 准备完整展示态数据；用户截图有顺序时，按截图顺序和选中态实现。
+- 编辑态如果由点击主表单元格触发，展示态和编辑态都要可用；保存、取消、确认弹窗要能回到正确状态。
+
 `#base` 必须保持 Axure 标准空容器：
 
 ```html
@@ -130,6 +138,14 @@ Axure 重新导出后，执行一条命令恢复菜单：
 - 写回时保留 `$axure.loadDocument(...)` 外壳，可以写成格式化 JSON，便于后续维护。
 - 重排后检查顶层顺序、关键子级归属、页面 `url` 和文件是否存在。
 
+菜单挂载快速规则：
+
+- 已知父级中文名时，优先按截图/面包屑推断父级，再用一次 `data/document.js` 解析确认；不要反复全局搜索和打印大段菜单。
+- 父级节点优先用稳定 `id` 查找；如本项目常见父级：`用户管理` 对应 `user_management`。
+- 新增节点只做“查父级、查是否已有同 id/pageName/url、插入或覆盖该节点”三步，不重建同级节点。
+- 打印菜单校验时只输出目标父级的 `id/pageName/url` 三列，避免输出完整 `document.js` 或整棵 sitemap。
+- 写入后立即校验：菜单节点 `id`、页面 `data.js` 的 `page.packageId`、页面 `url`、页面 `name` 四项必须一致。
+
 ## B 端 SaaS 页面风格
 
 优先使用：
@@ -166,18 +182,36 @@ Axure 重新导出后，执行一条命令恢复菜单：
 - 需要写中文内容时，优先使用 `apply_patch`；脚本写入时使用 Unicode 转义字符串生成 UTF-8。
 - 不假设系统一定存在 `git` 命令；需要恢复文件时优先用可用 Git 工具，必要时再从 `.git` 对象库读取。
 
+Windows 中文文件名与脚本省 token 规则：
+
+- 不用 PowerShell here-string 向 Node 传递包含中文文件名、中文正则、中文菜单名的脚本；这类脚本可能在进入 Node 前已变成 `????`。
+- 需要用脚本处理中文路径时，在脚本内部用 Unicode 码点或 `\uXXXX` 拼出中文字符串，例如 `String.fromCharCode(...)`，不要在命令文本里直接写中文。
+- 需要校验中文时，也不要在验证脚本里直接写中文正则；用 Unicode 转义生成目标词，再检查 `includes` 和码点。
+- 如果控制台输出 `????`，不要继续保存快照；先做码点验证。若目标字符串码点包含 `3f`，先修复文件，再执行 `.\restore-ai-menu.cmd save`。
+- 创建中文命名页面文件本身优先用 `apply_patch`，不要用 PowerShell/Node 脚本批量写中文文件名。
+- `.\restore-ai-menu.cmd save` 只能在菜单中文码点确认正常后执行；如果误保存了 `????` 快照，修复 `data/document.js` 后必须重新 save。
+- 与中文无关的语法检查继续用 `node -c`；涉及中文路径的存在性检查用脚本内部生成路径，避免命令行字面中文被转码。
+
+新增页面少绕路基线：
+
+- 如项目已有相似 AI 静态页面，优先复用其 HTML Axure 壳、`data.js` 最小结构、CSS/JS 引用顺序，不再从零探索 Axure 运行时结构。
+- 常规新增菜单页只需要读取：目标父级菜单片段、一个相似页面 HTML、一个相似页面 `files/页面名/data.js`；除非报错，不做全项目结构深挖。
+- 默认不做浏览器预览，不启动服务；只做静态验证和交互源码连通检查。
+- 如果验证脚本本身因中文转码失败，立即改为 Unicode 转义脚本，不要反复重跑同一类失败命令。
+
 ## 默认执行流程
 
 生成新页面时：
 
-1. 查看现有目录、`data/document.js` 和菜单快照。
+1. 读取目标父级菜单片段和一个相似页面作为模板；不要默认全量扫描项目结构。
 2. 确认页面挂载的菜单父节点；如果用户提供截图，优先根据截图左上角的菜单/面包屑文字判断新页面应挂载的位置，再结合现有 `sitemap.rootNodes` 校验父级是否存在。
 3. 新增根目录 HTML、`files/页面名/data.js`、`files/页面名/styles.css`。
 4. 新增 `custom/css/页面名.css`，如有交互再新增 `custom/js/页面名.js`。
 5. 修改 `data/document.js` sitemap，保证 `id / packageId / url` 一致。
 6. 检查 `#base class=""`、ready 脚本、ios 脚本和相对路径。
-7. 执行 `.\restore-ai-menu.cmd save`，把确认后的菜单写入快照。
-8. 做静态验证。
+7. 对 Tab、按钮、弹窗、编辑态等交互做简单连通检查：确认入口元素存在、默认数据不为空、事件脚本在 DOM 就绪后初始化。
+8. 先做中文码点和 sitemap 对齐校验，确认没有 `0x3f` 后再执行 `.\restore-ai-menu.cmd save`。
+9. 做静态验证。
 
 Axure 重新导出后：
 
@@ -194,9 +228,14 @@ Axure 重新导出后：
 
 - `node -c data/document.js`
 - `node -c scripts/restore-ai-menu.js`
+- `node -c custom/js/页面名.js`，仅当本次新增或修改了独立交互 JS。
 - 用一次 Node 读取 `$axure.loadDocument`，输出必要的菜单子树。
 - 检查本次新增或修改的文件是否存在。
 - 检查本次涉及的中文菜单名码点是否正常。
+- 对新页面做简单源码检查：Tab 数量、首屏表格行数、关键按钮/弹窗节点、`DOMContentLoaded` 或等价 ready 初始化是否存在。
+- 验证脚本涉及中文词、中文路径时，使用 Unicode 转义或 `String.fromCharCode` 生成字符串，不直接在命令里写中文。
+
+检查保持简单，不要求每次都做完整浏览器预览；但如果页面靠 JS 才能显示数据或切换 Tab，至少要确认 HTML 有兜底内容，JS 不会在 DOM 未生成时提前绑定失败。
 
 避免重复打印完整 `data/document.js` 或做无关的全项目扫描。
 

@@ -154,6 +154,23 @@
   font-size: 16px;
 }
 
+.risk-dialog .risk-pay-channel {
+  display: grid;
+  grid-template-columns: 72px 260px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.risk-dialog .risk-pay-channel select {
+  height: 34px;
+  padding: 0 32px 0 10px;
+  border: 1px solid #d7dce5;
+  border-radius: 4px;
+  background: #fff;
+  color: #303846;
+}
+
 .dialog-tabs {
   display: flex;
   height: 44px;

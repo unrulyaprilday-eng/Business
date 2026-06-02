@@ -524,6 +524,20 @@ $axure.loadDocument({
             "type": "Wireframe",
             "url": "所有会员.html",
             "children": []
+          },
+          {
+            "id": "vip_settings",
+            "pageName": "VIP设置",
+            "type": "Wireframe",
+            "url": "VIP设置.html",
+            "children": []
+          },
+          {
+            "id": "user_reward_feedback",
+            "pageName": "有奖反馈",
+            "type": "Wireframe",
+            "url": "有奖反馈.html",
+            "children": []
           }
         ]
       },
@@ -534,10 +548,31 @@ $axure.loadDocument({
         "url": "",
         "children": [
           {
+            "id": "agent_center_list",
+            "pageName": "代理列表",
+            "type": "Wireframe",
+            "url": "代理列表.html",
+            "children": []
+          },
+          {
             "id": "agent_center_config",
             "pageName": "代理配置",
             "type": "Wireframe",
             "url": "代理中心_代理配置.html",
+            "children": []
+          },
+          {
+            "id": "agent_claim_record",
+            "pageName": "代理领取记录",
+            "type": "Wireframe",
+            "url": "代理领取记录.html",
+            "children": []
+          },
+          {
+            "id": "agent_data_query",
+            "type": "Wireframe",
+            "pageName": "代理数据查询",
+            "url": "代理数据查询.html",
             "children": []
           }
         ]
@@ -596,6 +631,13 @@ $axure.loadDocument({
             "pageName": "商户订单查询",
             "type": "Wireframe",
             "url": "商户订单查询.html",
+            "children": []
+          },
+          {
+            "id": "recharge_record",
+            "pageName": "充值记录",
+            "type": "Wireframe",
+            "url": "充值记录.html",
             "children": []
           }
         ]

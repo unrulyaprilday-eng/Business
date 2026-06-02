@@ -123,7 +123,10 @@
               </div>
               <dl class="detail-grid"><dt>提现金额</dt><dd>100</dd><dt>实际金额</dt><dd>95</dd><dt>手续费</dt><dd>5</dd><dt>提现方式</dt><dd>trc20</dd><dt>收款账号</dt><dd>TPz5T4R9a8...kH21</dd><dt>申请时间</dt><dd>2026-05-13 15:47:08</dd><dt>操作时间</dt><dd>2026-05-13 15:48:15</dd></dl>
               <p class="risk-field-note dialog-note">说明：刷子监控页、游戏获利监控页暂未接入，当前仅展示风险命中数量；页面接入后按会员ID带入搜索。</p>
-              <div class="audit-form"><label>审核备注<textarea placeholder="请输入审核意见"></textarea></label></div>
+              <div class="audit-form">
+                <label class="risk-pay-channel" data-second-only hidden>代付通道<select><option>请选择代付通道</option><option>ecashapp</option><option>TRC20 手动代付</option><option>三方代付通道</option></select></label>
+                <label>审核备注<textarea placeholder="请输入审核意见"></textarea></label>
+              </div>
             </div>
             <footer><button class="btn" type="button" data-close data-risk-cancel>取消</button><button class="btn danger" type="button" data-close data-risk-reject>不通过</button><button class="btn primary" type="button" data-close data-approve>通过</button></footer>
           </section>

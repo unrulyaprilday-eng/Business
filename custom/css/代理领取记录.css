@@ -1,0 +1,290 @@
+html,
+body {
+  margin: 0;
+  background: #f3f4f6;
+  color: #344054;
+  font-family: "Microsoft YaHei", Arial, sans-serif;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.agent-claim-page {
+  min-width: 1280px;
+  min-height: 100vh;
+  background: #f3f4f6;
+  box-sizing: border-box;
+}
+
+.page-crumb {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 32px;
+  padding: 0 9px;
+  color: #667085;
+  background: #fff;
+  border-bottom: 1px solid #edf0f5;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.page-crumb strong {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.nav-icon {
+  color: #5294f7;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.slash {
+  color: #9aa4b2;
+}
+
+.content-panel {
+  min-height: calc(100vh - 32px);
+  margin-top: 14px;
+  padding: 20px 16px 0;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  margin-bottom: 10px;
+}
+
+.date-field,
+.keyword-field {
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+}
+
+.date-field {
+  position: relative;
+}
+
+.date-field input,
+.keyword-field input,
+.pager select {
+  height: 30px;
+  border: 1px solid #d6deea;
+  border-radius: 4px;
+  background: #fff;
+  color: #344054;
+  font: 13px "Microsoft YaHei", Arial, sans-serif;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.date-field input {
+  width: 162px;
+  padding: 0 30px 0 8px;
+}
+
+.date-separator,
+.keyword-field span {
+  color: #475467;
+  font-size: 13px;
+}
+
+.keyword-field input {
+  width: 162px;
+  margin-left: 6px;
+  padding: 0 8px;
+}
+
+.date-field input::placeholder,
+.keyword-field input::placeholder {
+  color: #a8b3c2;
+}
+
+.calendar-icon {
+  position: absolute;
+  right: 9px;
+  top: 7px;
+  width: 13px;
+  height: 13px;
+  border: 1px solid #aeb8c6;
+  border-radius: 2px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.calendar-icon::before,
+.calendar-icon::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  height: 1px;
+  background: #aeb8c6;
+}
+
+.calendar-icon::before {
+  top: 3px;
+}
+
+.calendar-icon::after {
+  top: 6px;
+}
+
+.primary-btn,
+.plain-btn {
+  height: 31px;
+  min-width: 52px;
+  padding: 0 14px;
+  border-radius: 4px;
+  font: 13px "Microsoft YaHei", Arial, sans-serif;
+  cursor: default;
+  box-sizing: border-box;
+}
+
+.primary-btn {
+  border: 1px solid #2f8df0;
+  background: #2f8df0;
+  color: #fff;
+}
+
+.plain-btn {
+  border: 1px solid #d6deea;
+  background: #fff;
+  color: #344054;
+}
+
+.export-btn {
+  min-width: 78px;
+}
+
+.notice-bar {
+  height: 38px;
+  margin-bottom: 14px;
+  padding: 0 18px;
+  border: 1px solid #2f8df0;
+  background: #e8f7ff;
+  color: #0b3d78;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 36px;
+  box-sizing: border-box;
+}
+
+.table-frame {
+  height: calc(100vh - 240px);
+  min-height: 420px;
+  border: 1px solid #e3e7ee;
+  border-radius: 3px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.claim-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  color: #344054;
+  font-size: 12px;
+}
+
+.claim-table th,
+.claim-table td {
+  height: 42px;
+  padding: 0 14px;
+  border-right: 1px solid #e5e9ef;
+  border-bottom: 1px solid #e5e9ef;
+  text-align: center;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.claim-table th:last-child,
+.claim-table td:last-child {
+  border-right: 0;
+}
+
+.claim-table th {
+  height: 43px;
+  background: #f7f7f8;
+  color: #344054;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.claim-table tbody tr:nth-child(even) {
+  background: #fcfcfd;
+}
+
+.claim-table th:nth-child(1),
+.claim-table td:nth-child(1) {
+  width: 330px;
+}
+
+.claim-table th:nth-child(2),
+.claim-table td:nth-child(2) {
+  width: 315px;
+}
+
+.claim-table th:nth-child(3),
+.claim-table td:nth-child(3) {
+  width: 300px;
+}
+
+.claim-table th:nth-child(4),
+.claim-table td:nth-child(4) {
+  width: 300px;
+}
+
+.amount {
+  color: #159000;
+  font-weight: 700;
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  height: 42px;
+  color: #344054;
+  font-size: 13px;
+}
+
+.pager button {
+  min-width: 18px;
+  height: 28px;
+  border: 0;
+  background: transparent;
+  color: #9aa7b6;
+  font-size: 16px;
+  cursor: default;
+}
+
+.pager strong {
+  min-width: 48px;
+  height: 30px;
+  border: 1px solid #d6deea;
+  border-radius: 4px;
+  color: #344054;
+  font-weight: 400;
+  line-height: 28px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.pager select {
+  width: 112px;
+  padding: 0 26px 0 12px;
+  color: #344054;
+}
+
+.pager b {
+  font-weight: 400;
+}

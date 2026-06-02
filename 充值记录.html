@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>充值记录</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/充值记录/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/充值记录.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/充值记录/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/充值记录.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell recharge-record-page">
+        <header class="page-titlebar">
+          <button class="title-icon" type="button" aria-label="返回">‹</button>
+          <button class="title-icon refresh" type="button" aria-label="刷新">↻</button>
+          <span>商户中心</span>
+          <b>/</b>
+          <strong>充值记录</strong>
+        </header>
+
+        <section class="record-panel">
+          <form class="filterbar">
+            <label class="field date-field"><span>创建时间:</span><input placeholder="请选择" type="text"/><i>▦</i></label>
+            <span class="range-text">至</span>
+            <label class="field date-field"><input placeholder="请选择" type="text"/><i>▦</i></label>
+            <label class="field order-field"><span>订单号:</span><input placeholder="请输入订单号" type="text"/></label>
+            <label class="field select-field"><span>订单状态:</span><select><option>全部</option><option>待处理</option><option>处理中</option><option>充值成功</option><option>已失败</option><option>已关闭</option></select></label>
+            <button class="btn primary" id="searchButton" type="button">⌕ 搜索</button>
+            <button class="btn" id="resetButton" type="button">↻ 重置</button>
+            <button class="btn primary export" id="exportButton" type="button">⇩ 导出表格</button>
+          </form>
+
+          <div class="table-scroll">
+            <table class="record-table">
+              <thead>
+                <tr>
+                  <th>订单号</th>
+                  <th>充值金额</th>
+                  <th>赠送金额</th>
+                  <th>实际到账</th>
+                  <th>收款地址</th>
+                  <th>链上TxID</th>
+                  <th>创建时间</th>
+                  <th>操作人</th>
+                  <th>到账时间</th>
+                  <th>订单状态</th>
+                  <th>备注</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>e22de0a0b5cc496c860e8d2a5abf...</td><td class="amount">10000</td><td>300</td><td>-</td><td>TKcrUighHgdszs9CXjnjouzmh...</td><td></td><td>2026-05-12 17:43:39</td><td>qitian</td><td>2026-05-12 17:43:39</td><td><span class="status processing">处理中</span></td><td></td></tr>
+                <tr><td>50a388ee95bb4b60a643dba56f9f...</td><td class="amount">10000</td><td>300</td><td>-</td><td>TKcrUighHgdszs9CXjnjouzmh...</td><td></td><td>2026-05-12 17:43:26</td><td>qitian</td><td>2026-05-12 17:43:26</td><td><span class="status processing">处理中</span></td><td></td></tr>
+                <tr><td>d4894fea16e541a994d09359e3d9...</td><td class="amount">50000</td><td>1500</td><td>-</td><td>TKcrUighHgdszs9CXjnjouzmh...</td><td></td><td>2026-05-20 17:44:22</td><td>qitian</td><td>2026-05-20 17:44:22</td><td><span class="status processing">处理中</span></td><td></td></tr>
+                <tr><td>10434da14808437da90c37fca366...</td><td class="amount">1000</td><td>30</td><td>-</td><td>TKcrUighHgdszs9CXjnjouzmh...</td><td></td><td>2026-05-12 16:23:28</td><td>qitian</td><td>2026-05-12 16:23:28</td><td><span class="status processing">处理中</span></td><td></td></tr>
+                <tr><td>d2dd0db901f245a48c9dc1bf6054...</td><td class="amount">1000</td><td>30</td><td>-</td><td>TKcrUighHgdszs9CXjnjouzmh...</td><td></td><td>2026-05-11 11:15:19</td><td>josez</td><td>2026-05-11 11:15:19</td><td><span class="status processing">处理中</span></td><td></td></tr>
+                <tr><td>35c28bd2e33349d5a22cd7a85fa3...</td><td class="amount">50000</td><td>1500</td><td>-</td><td>TKcrUighHgdszs9CXjnjouzmh...</td><td></td><td>2026-05-20 17:44:14</td><td>qitian</td><td>2026-05-20 17:44:14</td><td><span class="status processing">处理中</span></td><td></td></tr>
+                <tr><td>1354c3e7e53949dcbcbf7bab2905...</td><td class="amount">1000</td><td>30</td><td>-</td><td>TKcrUighHgdszs9CXjnjouzmh...</td><td></td><td>2026-05-09 16:37:34</td><td>white</td><td>2026-05-09 16:37:34</td><td><span class="status processing">处理中</span></td><td>测试</td></tr>
+                <tr><td>1b7550a40ede42ae9bd662cb375...</td><td class="amount">1000</td><td>30</td><td>-</td><td>TKcrUighHgdszs9CXjnjouzmh...</td><td></td><td>2026-05-11 11:14:13</td><td>josez</td><td>2026-05-11 11:14:13</td><td><span class="status processing">处理中</span></td><td></td></tr>
+                <tr><td>6cd3259f214440529a4ac2df2c60...</td><td class="amount">50000</td><td>1500</td><td>-</td><td>TKcrUighHgdszs9CXjnjouzmh...</td><td></td><td>2026-05-20 17:44:18</td><td>qitian</td><td>2026-05-20 17:44:18</td><td><span class="status processing">处理中</span></td><td></td></tr>
+                <tr><td>45611820d03341d3a81498be902...</td><td class="amount">100</td><td>1</td><td>-</td><td>TKcrUighHgdszs9CXjnjouzmh...</td><td></td><td>2026-05-11 10:29:20</td><td>qitian</td><td>2026-05-11 10:29:20</td><td><span class="status processing">处理中</span></td><td></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <footer class="pagination">
+            <button type="button">|‹</button>
+            <button type="button">‹‹</button>
+            <button type="button">‹</button>
+            <input value="1" aria-label="当前页"/>
+            <span>/ 1</span>
+            <button type="button">›</button>
+            <button type="button">››</button>
+            <button type="button">›|</button>
+            <select aria-label="每页条数"><option>20条/页</option></select>
+            <span>共 10 条记录</span>
+          </footer>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>

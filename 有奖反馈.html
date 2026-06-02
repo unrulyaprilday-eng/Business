@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>有奖反馈</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/有奖反馈/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/有奖反馈.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/有奖反馈/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell reward-feedback-page">
+        <div class="reward-titlebar">
+          <button class="title-icon" type="button" aria-label="返回">‹</button>
+          <button class="title-icon refresh" type="button" aria-label="刷新">↻</button>
+          <span>用户管理</span>
+          <b>/</b>
+          <strong>有奖反馈</strong>
+        </div>
+
+        <main class="reward-panel">
+          <nav class="reward-tabs" aria-label="反馈状态">
+            <button class="tab active" type="button" data-tab="待处理">待处理</button>
+            <button class="tab" type="button" data-tab="全部反馈">全部反馈</button>
+          </nav>
+
+          <section class="filter-bar" aria-label="筛选条件">
+            <label>会员ID:<input id="memberFilter" type="text" placeholder="请输入会员ID"/></label>
+            <label>反馈时间:<input type="text" placeholder="开始时间"/></label>
+            <span>至</span>
+            <input type="text" placeholder="结束时间"/>
+            <label class="status-field">状态:<select id="statusFilter">
+              <option value="">全部</option>
+              <option value="待处理">待处理</option>
+              <option value="已采纳">已采纳</option>
+              <option value="已忽略">已忽略</option>
+              <option value="待领取">待领取</option>
+              <option value="已领取">已领取</option>
+            </select></label>
+            <button class="primary-btn" type="button" id="searchBtn">搜索</button>
+            <button class="ghost-btn" type="button" id="resetBtn">重置</button>
+          </section>
+
+          <section class="table-frame" aria-label="有奖反馈列表">
+            <table>
+              <thead>
+                <tr>
+                  <th>反馈账号</th>
+                  <th>反馈账号ID</th>
+                  <th data-all-only>状态</th>
+                  <th>反馈时间</th>
+                  <th>反馈类型</th>
+                  <th>反馈内容</th>
+                  <th>附件</th>
+                  <th>回复内容</th>
+                  <th>采纳奖金</th>
+                  <th>操作人</th>
+                  <th>操作时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="feedbackRows">
+                <tr>
+                  <td>dzh222</td>
+                  <td>101001007</td>
+                  <td><span class="status-tag pending">待处理</span></td>
+                  <td>2026-05-20 17:25:47</td>
+                  <td>优化建议</td>
+                  <td>122sasasasaqwqwqwqw</td>
+                  <td>-</td>
+                  <td></td>
+                  <td>0</td>
+                  <td></td>
+                  <td>2026-05-20 17:25:47</td>
+                  <td><button class="row-btn primary" type="button">处理</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <footer class="pager">
+            <button type="button">|‹</button><button type="button">‹‹</button><button type="button">‹</button>
+            <input type="text" value="1" aria-label="当前页"/><span>/ 1</span>
+            <button type="button">›</button><button type="button">››</button><button type="button">›|</button>
+            <select><option>20条/页</option></select>
+            <span>共 <b id="totalCount">1</b> 条记录</span>
+          </footer>
+        </main>
+      </div>
+    </div>
+
+    <div class="modal-mask" id="feedbackModal" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <header class="modal-head">
+          <h3 id="modalTitle">处理反馈</h3>
+          <button class="modal-close" type="button" data-close aria-label="关闭">×</button>
+        </header>
+        <div class="modal-body">
+          <label class="form-row"><span>反馈内容:</span><textarea id="modalContent" readonly></textarea></label>
+          <label class="form-row"><span>附件:</span><input id="modalAttachment" type="text" readonly value="无附件"/></label>
+          <div class="form-row reward-row">
+            <span>奖励:</span>
+            <select id="modalType"><option>优化建议</option><option>其他建议</option></select>
+            <span>采纳，赠送金额</span>
+            <input id="modalBonus" type="number" value="0"/>
+          </div>
+          <label class="form-row"><span>回复:</span><textarea id="modalReply" placeholder="请输入回复内容"></textarea></label>
+        </div>
+        <footer class="modal-foot" id="modalFoot"></footer>
+      </div>
+    </div>
+
+    <script src="custom/js/有奖反馈.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

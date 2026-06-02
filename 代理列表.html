@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>代理中心 - 代理列表</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/代理列表/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/代理列表.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/代理列表/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/代理列表.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell agent-list-page">
+        <header class="page-crumb">
+          <span class="nav-icon" aria-hidden="true">&#8592;</span>
+          <span class="nav-icon" aria-hidden="true">&#8635;</span>
+          <span>代理中心</span>
+          <span class="slash">/</span>
+          <strong>代理列表</strong>
+        </header>
+        <main class="content-panel">
+          <form class="filter-bar" id="agentFilter">
+            <label class="select-field">
+              <select aria-label="筛选字段">
+                <option>代理账号</option>
+                <option>代理ID</option>
+                <option>代理编码</option>
+                <option>上级代理账号</option>
+              </select>
+            </label>
+            <label class="keyword-field">
+              <input id="agentKeyword" type="text" placeholder="请输入代理账号" aria-label="请输入代理账号"/>
+            </label>
+            <button class="primary-btn" type="submit">
+              <span class="search-icon" aria-hidden="true"></span>
+              搜索
+            </button>
+            <button class="plain-btn" type="reset">
+              <span class="reset-icon" aria-hidden="true"></span>
+              重置
+            </button>
+          </form>
+          <section class="table-frame" aria-label="代理列表">
+            <table class="agent-table">
+              <thead>
+                <tr>
+                  <th>代理ID</th>
+                  <th>代理编码</th>
+                  <th>代理账号</th>
+                  <th>上级代理账号</th>
+                  <th>标签</th>
+                  <th>直属成员数</th>
+                  <th>直属充值总额</th>
+                  <th>其他成员数</th>
+                  <th>历史累计佣金</th>
+                  <th>已领取佣金</th>
+                  <th>未领取佣金</th>
+                  <th>钱包余额</th>
+                </tr>
+              </thead>
+              <tbody id="agentRows">
+                <tr>
+                  <td>1010123536</td><td>123536</td><td class="ellipsis">abcdabcdabcdabcdabcdab...</td><td>rrr345</td><td>未标记</td><td>0</td><td class="blue">0.00</td><td>0</td><td class="green">0.00</td><td class="cyan">0.00</td><td class="orange">0.00</td><td class="purple">0.00</td>
+                </tr>
+                <tr>
+                  <td>1010123534</td><td>123534</td><td class="ellipsis">yyy345345345@34534534...</td><td>rrr345</td><td>未标记</td><td>0</td><td class="blue">0.00</td><td>0</td><td class="green">0.00</td><td class="cyan">0.00</td><td class="orange">0.00</td><td class="purple">0.00</td>
+                </tr>
+                <tr>
+                  <td>1010123532</td><td>123532</td><td>ttt123</td><td>www345</td><td>未标记</td><td>0</td><td class="blue">0.00</td><td>0</td><td class="green">0.00</td><td class="cyan">0.00</td><td class="orange">0.00</td><td class="purple">0.00</td>
+                </tr>
+                <tr>
+                  <td>1010123530</td><td>123530</td><td>rrr345</td><td>www345</td><td>未标记</td><td>2</td><td class="blue">0.00</td><td>0</td><td class="green">0.00</td><td class="cyan">0.00</td><td class="orange">0.00</td><td class="purple">0.00</td>
+                </tr>
+                <tr>
+                  <td>1010123529</td><td>123529</td><td>eee345</td><td>qqq345</td><td>未标记</td><td>0</td><td class="blue">0.00</td><td>0</td><td class="green">0.00</td><td class="cyan">0.00</td><td class="orange">0.00</td><td class="purple">0.00</td>
+                </tr>
+                <tr>
+                  <td>1010123528</td><td>123528</td><td>www345</td><td>qqq345</td><td>未标记</td><td>2</td><td class="blue">138000.00</td><td>2</td><td class="green">78.00</td><td class="cyan">78.00</td><td class="orange">0.00</td><td class="purple">0.00</td>
+                </tr>
+                <tr>
+                  <td>1010123527</td><td>123527</td><td>qqq345</td><td>-</td><td>未标记</td><td>2</td><td class="blue">120000.00</td><td>4</td><td class="green">253.86</td><td class="cyan">253.86</td><td class="orange">0.00</td><td class="purple">0.00</td>
+                </tr>
+                <tr>
+                  <td>1010123525</td><td>123525</td><td>mmm123</td><td>nnn123</td><td>未标记</td><td>0</td><td class="blue">0.00</td><td>0</td><td class="green">0.00</td><td class="cyan">0.00</td><td class="orange">0.00</td><td class="purple">0.00</td>
+                </tr>
+                <tr>
+                  <td>1010123524</td><td>123524</td><td>nnn123</td><td>-</td><td>未标记</td><td>1</td><td class="blue">20000.00</td><td>0</td><td class="green">0.00</td><td class="cyan">0.00</td><td class="orange">0.00</td><td class="purple">0.00</td>
+                </tr>
+                <tr>
+                  <td>1010123522</td><td>123522</td><td>Amputkrnw3je4</td><td>agent</td><td>未标记</td><td>0</td><td class="blue">0.00</td><td>0</td><td class="green">0.00</td><td class="cyan">0.00</td><td class="orange">0.00</td><td class="purple">0.00</td>
+                </tr>
+                <tr>
+                  <td>1010010004</td><td>10004</td><td>agent</td><td>-</td><td>未标记</td><td>1</td><td class="blue">0.00</td><td>0</td><td class="green">0.00</td><td class="cyan">0.00</td><td class="orange">0.00</td><td class="purple">0.00</td>
+                </tr>
+                <tr>
+                  <td>1010123512</td><td>123512</td><td>bbb123</td><td>vvv123</td><td>未标记</td><td>0</td><td class="blue">0.00</td><td>0</td><td class="green">0.00</td><td class="cyan">0.00</td><td class="orange">0.00</td><td class="purple">0.00</td>
+                </tr>
+                <tr>
+                  <td>1010123491</td><td>123491</td><td>vvv123</td><td>-</td><td>未标记</td><td>1</td><td class="blue">20000.00</td><td>0</td><td class="green">0.00</td><td class="cyan">0.00</td><td class="orange">0.00</td><td class="purple">0.00</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="empty-state" id="emptyState" hidden>暂无匹配数据</div>
+          </section>
+          <footer class="pager">
+            <button type="button" aria-label="第一页" disabled>|&lt;</button>
+            <button type="button" aria-label="上一组" disabled>&lt;&lt;</button>
+            <button type="button" aria-label="上一页" disabled>&lt;</button>
+            <strong>1</strong>
+            <span>/ 1</span>
+            <button type="button" aria-label="下一页" disabled>&gt;</button>
+            <button type="button" aria-label="下一组" disabled>&gt;&gt;</button>
+            <button type="button" aria-label="最后一页" disabled>&gt;|</button>
+            <select aria-label="每页条数">
+              <option>20条/页</option>
+              <option>50条/页</option>
+              <option>100条/页</option>
+            </select>
+            <span>共 <b id="totalCount">13</b> 条记录</span>
+          </footer>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

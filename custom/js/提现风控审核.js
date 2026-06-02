@@ -8,10 +8,12 @@
     var cancelButton = dialog.querySelector("[data-risk-cancel]");
     var rejectButton = dialog.querySelector("[data-risk-reject]");
     var approveButton = dialog.querySelector("[data-approve]");
+    var secondOnly = dialog.querySelector("[data-second-only]");
     var isView = mode === "view";
     if (cancelButton) cancelButton.hidden = isView;
     if (rejectButton) rejectButton.hidden = isView;
     if (approveButton) approveButton.textContent = isView ? "确定" : mode === "second" ? "复审通过" : "初审通过";
+    if (secondOnly) secondOnly.hidden = mode !== "second";
   }
 
   document.addEventListener("click", function (event) {

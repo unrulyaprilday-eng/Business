@@ -1,0 +1,277 @@
+html,
+body {
+  margin: 0;
+  background: #f3f4f6;
+  color: #344054;
+  font-family: "Microsoft YaHei", Arial, sans-serif;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.agent-list-page {
+  min-width: 1280px;
+  min-height: 100vh;
+  background: #f3f4f6;
+  box-sizing: border-box;
+}
+
+.page-crumb {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 32px;
+  padding: 0 9px;
+  color: #667085;
+  background: #fff;
+  border-bottom: 1px solid #edf0f5;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.page-crumb strong {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.nav-icon {
+  color: #52657a;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.slash {
+  color: #9aa4b2;
+}
+
+.content-panel {
+  min-height: calc(100vh - 32px);
+  margin-top: 14px;
+  padding: 34px 36px 0;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  margin-bottom: 6px;
+}
+
+.select-field,
+.keyword-field {
+  display: inline-flex;
+  height: 30px;
+}
+
+.select-field select,
+.keyword-field input,
+.pager select {
+  height: 30px;
+  border: 1px solid #d6deea;
+  border-radius: 4px;
+  background: #fff;
+  color: #344054;
+  font: 13px "Microsoft YaHei", Arial, sans-serif;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.select-field select {
+  width: 136px;
+  padding: 0 30px 0 9px;
+}
+
+.keyword-field input {
+  width: 180px;
+  padding: 0 10px;
+}
+
+.keyword-field input::placeholder {
+  color: #b8c2d0;
+}
+
+button {
+  height: 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  font: 13px "Microsoft YaHei", Arial, sans-serif;
+}
+
+.primary-btn,
+.plain-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0 14px;
+}
+
+.primary-btn {
+  border: 1px solid #409eff;
+  background: #409eff;
+  color: #fff;
+}
+
+.plain-btn {
+  border: 1px solid #d6deea;
+  background: #fff;
+  color: #344054;
+}
+
+.search-icon {
+  width: 12px;
+  height: 12px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.search-icon::after {
+  content: "";
+  position: absolute;
+  right: -5px;
+  bottom: -4px;
+  width: 6px;
+  height: 2px;
+  background: currentColor;
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+
+.reset-icon {
+  width: 13px;
+  height: 13px;
+  border: 1.8px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.reset-icon::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  right: -2px;
+  border-left: 4px solid currentColor;
+  border-top: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  transform: rotate(-20deg);
+}
+
+.table-frame {
+  position: relative;
+  border: 1px solid #e1e5ec;
+  border-radius: 3px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.agent-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 12px;
+}
+
+.agent-table th,
+.agent-table td {
+  height: 42px;
+  padding: 0 10px;
+  border-right: 1px solid #e5e9f0;
+  border-bottom: 1px solid #e5e9f0;
+  text-align: center;
+  vertical-align: middle;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+.agent-table th {
+  height: 41px;
+  background: #f7f7f9;
+  color: #344054;
+  font-weight: 600;
+}
+
+.agent-table tr:nth-child(even) td {
+  background: #fbfbfc;
+}
+
+.agent-table th:last-child,
+.agent-table td:last-child {
+  border-right: 0;
+}
+
+.agent-table .ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.blue {
+  color: #005cff;
+}
+
+.green {
+  color: #18b600;
+}
+
+.cyan {
+  color: #00a8be;
+}
+
+.orange {
+  color: #ff5d13;
+}
+
+.purple {
+  color: #6f1dff;
+}
+
+.empty-state {
+  height: 160px;
+  display: grid;
+  place-items: center;
+  color: #8a96a8;
+  font-size: 13px;
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 13px;
+  height: 52px;
+  color: #344054;
+  font-size: 13px;
+}
+
+.pager button {
+  min-width: 14px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #aeb8c6;
+}
+
+.pager strong {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 30px;
+  border: 1px solid #d6deea;
+  border-radius: 4px;
+  color: #409eff;
+  font-weight: 400;
+  box-sizing: border-box;
+}
+
+.pager select {
+  width: 114px;
+  padding: 0 10px;
+}

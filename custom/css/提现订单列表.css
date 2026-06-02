@@ -261,7 +261,7 @@ button {
   position: sticky;
   right: 0;
   z-index: 2;
-  width: 180px;
+  width: 250px;
   border-right: 0;
   background: #fff;
   box-shadow: -8px 0 12px rgba(15, 23, 42, 0.06);
@@ -341,6 +341,10 @@ button {
 .link.muted {
   color: #344054;
   font-weight: 400;
+}
+
+.link.danger-link {
+  color: #ff4d4f;
 }
 
 .orders-table td.actions .link + .link {
@@ -611,6 +615,10 @@ button {
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.25);
 }
 
+.repay-dialog {
+  width: 432px;
+}
+
 .confirm-dialog header {
   display: flex;
   align-items: center;
@@ -656,6 +664,106 @@ button {
   justify-content: flex-end;
   gap: 10px;
   padding: 0 24px 22px;
+}
+
+.repay-body {
+  padding: 14px 8px 18px;
+}
+
+.repay-warning {
+  margin: 0 0 14px;
+  padding: 14px 16px 14px 16px;
+  border: 1px solid #ffd666;
+  border-radius: 6px;
+  background: #fffbe6;
+  color: #8a5a00;
+}
+
+.repay-warning strong {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #d48806;
+  font-size: 14px;
+}
+
+.repay-warning i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fa8c16;
+  color: #fff;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.repay-warning p {
+  margin: 8px 0 0 28px;
+  color: #8a5a00;
+  line-height: 20px;
+}
+
+.repay-summary {
+  display: grid;
+  grid-template-columns: 82px 1fr;
+  margin: 0 0 18px;
+  border: 1px solid #dfe3ea;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.repay-summary dt,
+.repay-summary dd {
+  min-height: 38px;
+  margin: 0;
+  padding: 10px 12px;
+  border-bottom: 1px solid #dfe3ea;
+}
+
+.repay-summary dt {
+  background: #eef2f7;
+  color: #5f6b7a;
+}
+
+.repay-summary dd {
+  color: #344054;
+  overflow-wrap: anywhere;
+}
+
+.repay-summary dt:last-of-type,
+.repay-summary dd:last-of-type {
+  border-bottom: 0;
+}
+
+.repay-field {
+  display: grid;
+  grid-template-columns: 82px 1fr;
+  align-items: center;
+  gap: 8px;
+  color: #344054;
+}
+
+.repay-field em {
+  color: #ff4d4f;
+  font-style: normal;
+}
+
+.repay-field select {
+  height: 36px;
+  border: 1px solid #d5dce8;
+  border-radius: 4px;
+  background: linear-gradient(45deg, transparent 50%, #b7c0ce 50%) right 12px center / 8px 8px no-repeat, #fff;
+  appearance: none;
+  color: #98a2b3;
+  padding: 0 30px 0 10px;
+}
+
+.repay-dialog footer {
+  padding: 0 8px 18px;
 }
 
 .pay-dialog header {
