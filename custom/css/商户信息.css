@@ -128,16 +128,6 @@ button {
   color: #ff4d4f;
 }
 
-.tag.locked {
-  background: #edf2f7;
-  color: #65758b;
-}
-
-.tag.self {
-  background: #e6f4ff;
-  color: #1677ff;
-}
-
 .tab-nav {
   display: flex;
   align-items: center;
@@ -170,6 +160,18 @@ button {
   display: block;
 }
 
+.account-panel {
+  padding-top: 18px;
+}
+
+.info-block {
+  margin-bottom: 18px;
+}
+
+.info-block:last-child {
+  margin-bottom: 0;
+}
+
 h2 {
   height: 28px;
   margin: 0;
@@ -187,6 +189,14 @@ h2 {
 
 .detail-grid.compact {
   margin-bottom: 12px;
+}
+
+.detail-grid.single-left {
+  grid-template-columns: minmax(360px, 1fr) minmax(360px, 1fr);
+}
+
+.detail-grid.single-left > div {
+  grid-column: 1;
 }
 
 .detail-grid > div {
@@ -234,6 +244,16 @@ h2 {
   justify-content: space-between;
   gap: 16px;
   min-height: 36px;
+}
+
+.whitelist-actions {
+  justify-content: space-between;
+  min-height: 36px;
+  border-bottom: 0;
+}
+
+.whitelist-actions h2 {
+  flex: 1;
 }
 
 .filter-bar {
@@ -312,6 +332,16 @@ h2 {
 
 .data-table tbody tr:hover {
   background: #f2f5f9;
+}
+
+.whitelist-table th:nth-child(1),
+.whitelist-table td:nth-child(1) {
+  width: 220px;
+}
+
+.whitelist-table th:nth-child(3),
+.whitelist-table td:nth-child(3) {
+  width: 220px;
 }
 
 .whitelist-table th:last-child,

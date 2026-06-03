@@ -115,7 +115,7 @@
         } else {
           var row = document.createElement("tr");
           row.setAttribute("data-source", "merchant");
-          row.innerHTML = "<td></td><td></td><td><span class=\"tag self\">商户添加</span></td><td>2026-06-03 12:00:00</td><td><button class=\"link-btn\" type=\"button\" data-edit-whitelist>编辑</button><button class=\"link-btn danger\" type=\"button\" data-delete-whitelist>删除</button></td>";
+          row.innerHTML = "<td></td><td></td><td>2026-06-03 12:00:00</td><td><button class=\"link-btn\" type=\"button\" data-edit-whitelist>编辑</button><button class=\"link-btn danger\" type=\"button\" data-delete-whitelist>删除</button></td>";
           row.children[0].textContent = ip;
           row.children[1].textContent = remark || "-";
           tableBody.appendChild(row);

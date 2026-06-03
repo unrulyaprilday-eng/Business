@@ -692,13 +692,6 @@ $axure.loadDocument({
             "children": []
           },
           {
-            "id": "kecrse",
-            "pageName": "白名单",
-            "type": "Wireframe",
-            "url": "白名单.html",
-            "children": []
-          },
-          {
             "id": "",
             "pageName": "日志管理",
             "type": "Folder",

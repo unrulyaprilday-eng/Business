@@ -118,42 +118,46 @@
             </div>
           </section>
 
-          <section class="tab-panel" data-panel="account">
-            <h2>账号信息</h2>
-            <div class="detail-grid compact">
-              <div><span>后台IP白名单</span><strong>-</strong></div>
-              <div><span>允许子站点数</span><strong>1</strong></div>
-            </div>
+          <section class="tab-panel account-panel" data-panel="account">
+            <section class="info-block">
+              <h2>账号信息</h2>
+              <div class="detail-grid compact single-left">
+                <div><span>允许子站点数</span><strong>1</strong></div>
+              </div>
+            </section>
 
-            <div class="section-head">
-              <h2>后台IP白名单</h2>
-              <button class="btn primary" type="button" data-open-whitelist>添加白名单</button>
-            </div>
-            <div class="table-wrap">
-              <table class="data-table whitelist-table">
-                <thead>
-                  <tr>
-                    <th>IP地址</th>
-                    <th>备注</th>
-                    <th>来源</th>
-                    <th>创建时间</th>
-                    <th>操作</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr data-source="platform"><td>203.0.113.18</td><td>A端统一风控入口</td><td><span class="tag locked">A端设置</span></td><td>2026-05-20 10:30:00</td><td><span class="muted">不可修改</span></td></tr>
-                  <tr data-source="merchant"><td>198.51.100.21</td><td>商户运营后台</td><td><span class="tag self">商户添加</span></td><td>2026-05-27 14:12:22</td><td><button class="link-btn" type="button" data-edit-whitelist>编辑</button><button class="link-btn danger" type="button" data-delete-whitelist>删除</button></td></tr>
-                  <tr data-source="merchant"><td>192.0.2.66</td><td>财务办公网络</td><td><span class="tag self">商户添加</span></td><td>2026-05-29 09:18:36</td><td><button class="link-btn" type="button" data-edit-whitelist>编辑</button><button class="link-btn danger" type="button" data-delete-whitelist>删除</button></td></tr>
-                </tbody>
-              </table>
-            </div>
+            <section class="info-block">
+              <div class="section-head whitelist-actions">
+                <h2>后台IP白名单</h2>
+                <button class="btn primary" type="button" data-open-whitelist>添加白名单</button>
+              </div>
+              <div class="table-wrap">
+                <table class="data-table whitelist-table">
+                  <thead>
+                    <tr>
+                      <th>IP地址</th>
+                      <th>备注</th>
+                      <th>创建时间</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr data-source="platform"><td>203.0.113.18</td><td>A端统一风控入口</td><td>2026-05-20 10:30:00</td><td><span class="muted">不可修改</span></td></tr>
+                    <tr data-source="merchant"><td>198.51.100.21</td><td>商户运营后台</td><td>2026-05-27 14:12:22</td><td><button class="link-btn" type="button" data-edit-whitelist>编辑</button><button class="link-btn danger" type="button" data-delete-whitelist>删除</button></td></tr>
+                    <tr data-source="merchant"><td>192.0.2.66</td><td>财务办公网络</td><td>2026-05-29 09:18:36</td><td><button class="link-btn" type="button" data-edit-whitelist>编辑</button><button class="link-btn danger" type="button" data-delete-whitelist>删除</button></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
 
-            <h2>联系信息</h2>
-            <div class="detail-grid compact">
-              <div><span>商务 TG 昵称</span><strong>-</strong></div>
-              <div><span>商务 TG 联系</span><strong>-</strong></div>
-              <div><span>商户 TG 联系</span><strong>-</strong></div>
-            </div>
+            <section class="info-block">
+              <h2>联系信息</h2>
+              <div class="detail-grid compact">
+                <div><span>商务 TG 昵称</span><strong>-</strong></div>
+                <div><span>商务 TG 联系</span><strong>-</strong></div>
+                <div><span>商户 TG 联系</span><strong>-</strong></div>
+              </div>
+            </section>
           </section>
 
           <section class="tab-panel" data-panel="site">
