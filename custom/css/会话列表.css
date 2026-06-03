@@ -1,0 +1,285 @@
+html,
+body {
+  margin: 0;
+  background: #f4f6f9;
+  color: #2f3a4a;
+  font-family: "Microsoft YaHei", Arial, sans-serif;
+  font-size: 14px;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.session-list-shell {
+  min-width: 1360px;
+  min-height: 100vh;
+  background: #f4f6f9;
+}
+
+.session-topbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 8px;
+  border-bottom: 1px solid #e8edf4;
+  background: #fff;
+  color: #7b8797;
+  box-sizing: border-box;
+}
+
+.session-topbar strong {
+  color: #2d3748;
+}
+
+.session-topbar i {
+  color: #a6b0bf;
+  font-style: normal;
+}
+
+.icon-btn {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #43546b;
+  font-size: 24px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.icon-btn.refresh {
+  font-size: 18px;
+}
+
+.session-main {
+  margin-top: 28px;
+  background: #fff;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 58px;
+  padding: 0 18px;
+  background: #fff;
+  border-bottom: 1px solid #e7ebf0;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+.filter-bar label,
+.range-separator {
+  color: #344054;
+}
+
+.filter-bar input,
+.filter-bar select {
+  height: 32px;
+  border: 1px solid #d9e1ec;
+  border-radius: 3px;
+  background: #fff;
+  color: #344054;
+  box-sizing: border-box;
+}
+
+.filter-bar input {
+  width: 142px;
+  padding: 0 10px;
+}
+
+.filter-bar select {
+  min-width: 104px;
+  padding: 0 28px 0 10px;
+}
+
+.filter-bar select:first-of-type {
+  min-width: 148px;
+}
+
+.date-input::placeholder {
+  color: #b7c0ce;
+}
+
+.primary-btn,
+.plain-btn {
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.primary-btn {
+  border: 1px solid #2f80ed;
+  background: #2f80ed;
+  color: #fff;
+}
+
+.plain-btn {
+  border: 1px solid #d9e1ec;
+  background: #fff;
+  color: #3b4655;
+}
+
+.table-wrap {
+  margin: 0 18px;
+  border: 1px solid #e6ebf1;
+  border-top: 0;
+  overflow-x: auto;
+}
+
+.session-table {
+  width: 100%;
+  min-width: 1540px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  background: #fff;
+}
+
+.session-table th,
+.session-table td {
+  height: 42px;
+  padding: 0 8px;
+  border-right: 1px solid #e6ebf1;
+  border-bottom: 1px solid #e6ebf1;
+  color: #344054;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.session-table th {
+  height: 44px;
+  background: #f7f8fa;
+  color: #2f3a4a;
+  font-weight: 600;
+}
+
+.session-table th:nth-child(1),
+.session-table td:nth-child(1) {
+  width: 220px;
+  text-align: left;
+}
+
+.session-table th:nth-child(2),
+.session-table td:nth-child(2) {
+  width: 150px;
+}
+
+.session-table th:nth-child(3),
+.session-table td:nth-child(3) {
+  width: 120px;
+}
+
+.session-table th:nth-child(4),
+.session-table td:nth-child(4),
+.session-table th:nth-child(5),
+.session-table td:nth-child(5) {
+  width: 170px;
+}
+
+.session-table th:nth-child(6),
+.session-table td:nth-child(6),
+.session-table th:nth-child(7),
+.session-table td:nth-child(7),
+.session-table th:nth-child(9),
+.session-table td:nth-child(9),
+.session-table th:nth-child(10),
+.session-table td:nth-child(10) {
+  width: 92px;
+}
+
+.session-table th:nth-child(8),
+.session-table td:nth-child(8) {
+  width: 120px;
+  text-align: right;
+}
+
+.session-table th:nth-child(11),
+.session-table td:nth-child(11) {
+  width: 176px;
+}
+
+.session-table th:nth-child(12),
+.session-table td:nth-child(12) {
+  width: 110px;
+}
+
+.session-table tbody tr:nth-child(even) {
+  background: #fbfcfe;
+}
+
+.status {
+  font-weight: 600;
+}
+
+.status.ok {
+  color: #10b100;
+}
+
+.status.danger {
+  color: #f5222d;
+}
+
+.status.muted {
+  color: #667085;
+  font-weight: 400;
+}
+
+.link-btn {
+  color: #2f80ed;
+  text-decoration: none;
+}
+
+.link-btn:hover {
+  text-decoration: underline;
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  height: 48px;
+  padding: 0 18px;
+  background: #fff;
+  color: #344054;
+  box-sizing: border-box;
+}
+
+.pager button {
+  min-width: 18px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #5d718a;
+  cursor: pointer;
+}
+
+.pager input,
+.pager select {
+  height: 32px;
+  border: 1px solid #d9e1ec;
+  border-radius: 4px;
+  background: #fff;
+  color: #344054;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.pager input {
+  width: 52px;
+}
+
+.pager select {
+  width: 112px;
+}

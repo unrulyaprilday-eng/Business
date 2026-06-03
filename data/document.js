@@ -634,10 +634,17 @@ $axure.loadDocument({
             "children": []
           },
           {
-            "id": "merchant_ledger_record",
+            "id": "merchant_account_change_record",
+            "pageName": "商户账变记录",
             "type": "Wireframe",
-            "pageName": "账变记录",
-            "url": "账变记录.html",
+            "url": "商户账变记录.html",
+            "children": []
+          },
+          {
+            "id": "merchant_bill",
+            "pageName": "商户账单",
+            "type": "Wireframe",
+            "url": "商户账单.html",
             "children": []
           }
         ]
@@ -647,7 +654,29 @@ $axure.loadDocument({
         "pageName": "埋点配置",
         "type": "Folder",
         "url": "",
-        "children": []
+        "children": [
+          {
+            "id": "tracking_stats",
+            "pageName": "埋点统计",
+            "type": "Wireframe",
+            "url": "埋点统计.html",
+            "children": []
+          },
+          {
+            "id": "session_list",
+            "pageName": "会话列表",
+            "type": "Wireframe",
+            "url": "会话列表.html",
+            "children": []
+          },
+          {
+            "id": "event_flow",
+            "pageName": "事件流水",
+            "type": "Wireframe",
+            "url": "事件流水.html",
+            "children": []
+          }
+        ]
       },
       {
         "id": "hr_center",

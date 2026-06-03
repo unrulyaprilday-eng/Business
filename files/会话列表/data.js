@@ -1,6 +1,6 @@
 $axure.loadCurrentPage({
-  "url": "商户信息.html",
-  "generationDate": new Date(1780502400000),
+  "url": "会话列表.html",
+  "generationDate": new Date(1779120000000),
   "defaultAdaptiveView": {
     "name": "",
     "cursor": 1,
@@ -24,9 +24,9 @@ $axure.loadCurrentPage({
     "HoverNum"
   ],
   "page": {
-    "packageId": "47c3ab8264a9407e946e2caac6910d93",
+    "packageId": "session_list",
     "type": "Axure:Page",
-    "name": "商户信息",
+    "name": "会话列表",
     "notes": {},
     "annotations": [],
     "style": {
@@ -59,20 +59,22 @@ $axure.loadCurrentPage({
         "offsetX": 5,
         "offsetY": 5,
         "blurRadius": 5,
-        "color": 0x33000000
+        "spread": 0,
+        "color": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 0.34901960784313724
+        }
       },
-      "innerShadow": {
-        "on": false,
-        "offsetX": 5,
-        "offsetY": 5,
-        "blurRadius": 5,
-        "color": 0x33000000
-      }
+      "pageCursor": "touch"
     },
+    "adaptiveStyles": {},
+    "interactionMap": {},
     "diagram": {
       "objects": []
-    }
-  },
-  "masters": {},
-  "objectPaths": {}
+    },
+    "masters": {},
+    "objectPaths": {}
+  }
 });

@@ -1,0 +1,270 @@
+html,
+body {
+  margin: 0;
+  background: #f4f6f9;
+  color: #2f3a4a;
+  font-family: "Microsoft YaHei", Arial, sans-serif;
+  font-size: 14px;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.event-flow-shell {
+  min-width: 1360px;
+  min-height: 100vh;
+  background: #f4f6f9;
+}
+
+.event-flow-topbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 8px;
+  border-bottom: 1px solid #e8edf4;
+  background: #fff;
+  color: #7b8797;
+  box-sizing: border-box;
+}
+
+.event-flow-topbar strong {
+  color: #2d3748;
+}
+
+.event-flow-topbar i {
+  color: #a6b0bf;
+  font-style: normal;
+}
+
+.icon-btn {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #43546b;
+  font-size: 24px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.icon-btn.refresh {
+  font-size: 18px;
+}
+
+.event-flow-main {
+  margin-top: 28px;
+  background: #fff;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 52px;
+  padding: 0 20px;
+  background: #f3f6fa;
+  box-sizing: border-box;
+}
+
+.filter-bar label,
+.filter-bar span {
+  color: #374151;
+  white-space: nowrap;
+}
+
+.filter-bar input {
+  width: 342px;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid #d4dbe6;
+  border-radius: 4px;
+  color: #344054;
+  box-sizing: border-box;
+}
+
+.primary-btn,
+.plain-btn {
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.primary-btn {
+  border: 1px solid #2f8ff0;
+  background: #2f8ff0;
+  color: #fff;
+}
+
+.plain-btn {
+  border: 1px solid #d4dbe6;
+  background: #fff;
+  color: #344054;
+}
+
+.table-wrap {
+  overflow: auto;
+  max-height: calc(100vh - 154px);
+  border-top: 1px solid #e5e8ee;
+  border-bottom: 1px solid #e5e8ee;
+}
+
+.event-table {
+  width: 100%;
+  min-width: 1510px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.event-table th,
+.event-table td {
+  height: 42px;
+  padding: 0 10px;
+  border-right: 1px solid #e5e8ee;
+  border-bottom: 1px solid #e5e8ee;
+  color: #334155;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.event-table th {
+  background: #fafafa;
+  color: #303846;
+  font-weight: 600;
+}
+
+.event-table tr:nth-child(even) td {
+  background: #fcfcfd;
+}
+
+.event-table th:nth-child(1) { width: 54px; }
+.event-table th:nth-child(2) { width: 220px; }
+.event-table th:nth-child(3) { width: 260px; }
+.event-table th:nth-child(4) { width: 194px; }
+.event-table th:nth-child(5) { width: 220px; }
+.event-table th:nth-child(6) { width: 185px; }
+.event-table th:nth-child(7) { width: 176px; }
+.event-table th:nth-child(8) { width: 252px; }
+
+.link-btn {
+  border: 0;
+  background: transparent;
+  color: #2586f5;
+  cursor: pointer;
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  height: 46px;
+  padding: 0 20px;
+  color: #344054;
+  box-sizing: border-box;
+}
+
+.pager button {
+  min-width: 20px;
+  height: 28px;
+  border: 0;
+  background: transparent;
+  color: #6f8aa6;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.pager input {
+  width: 50px;
+  height: 30px;
+  border: 1px solid #d5dce8;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.pager select {
+  width: 112px;
+  height: 30px;
+  border: 1px solid #d5dce8;
+  border-radius: 4px;
+  color: #344054;
+}
+
+.modal-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 18px 0 0 17px;
+  background: rgba(0, 0, 0, 0.48);
+  box-sizing: border-box;
+}
+
+.modal-card {
+  width: 540px;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.24);
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 38px;
+  padding: 0 12px;
+  border-bottom: 1px solid #dce2ea;
+  box-sizing: border-box;
+}
+
+.modal-head h2 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.modal-close {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  background: transparent;
+  color: #667085;
+  font-size: 26px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 12px 10px 14px;
+}
+
+.modal-body pre {
+  min-height: 38px;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid #d7dce4;
+  border-radius: 3px;
+  background: #f7f7f7;
+  color: #374151;
+  font-family: Consolas, "Microsoft YaHei", monospace;
+  white-space: pre-wrap;
+  box-sizing: border-box;
+}
+
+.modal-foot {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 14px 14px;
+}

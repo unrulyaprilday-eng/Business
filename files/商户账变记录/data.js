@@ -1,5 +1,5 @@
 $axure.loadCurrentPage({
-  "url": "商户信息.html",
+  "url": "商户账变记录.html",
   "generationDate": new Date(1780502400000),
   "defaultAdaptiveView": {
     "name": "",
@@ -24,9 +24,9 @@ $axure.loadCurrentPage({
     "HoverNum"
   ],
   "page": {
-    "packageId": "47c3ab8264a9407e946e2caac6910d93",
+    "packageId": "merchant_account_change_record",
     "type": "Axure:Page",
-    "name": "商户信息",
+    "name": "商户账变记录",
     "notes": {},
     "annotations": [],
     "style": {

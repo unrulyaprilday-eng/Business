@@ -1,0 +1,283 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #f4f6f9;
+  color: #2f3b52;
+  font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.merchant-ledger-page {
+  min-width: 1280px;
+  min-height: 100vh;
+  background: #f4f6f9;
+}
+
+.page-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 10px;
+  border-bottom: 1px solid #e8edf4;
+  background: #fff;
+  color: #6b778a;
+}
+
+.page-titlebar strong {
+  color: #2f3b52;
+}
+
+.page-titlebar b {
+  color: #a4adba;
+  font-weight: 400;
+}
+
+.title-icon {
+  width: 22px;
+  height: 22px;
+  border: 0;
+  background: transparent;
+  color: #526070;
+  font-size: 22px;
+  line-height: 20px;
+}
+
+.content-panel {
+  margin-top: 16px;
+  padding: 20px 16px 0;
+  min-height: calc(100vh - 50px);
+  background: #fff;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  white-space: nowrap;
+}
+
+.filter-bar label {
+  display: inline-flex;
+  align-items: center;
+}
+
+.filter-bar input,
+.filter-bar select {
+  height: 31px;
+  border: 1px solid #d5dbe5;
+  border-radius: 3px;
+  background: #fff;
+  color: #516072;
+  outline: none;
+}
+
+.filter-bar input::placeholder {
+  color: #b2bdcc;
+}
+
+.date-field {
+  position: relative;
+  width: 162px;
+}
+
+.date-field input {
+  width: 100%;
+  padding: 0 28px 0 7px;
+}
+
+.date-field span {
+  position: absolute;
+  right: 8px;
+  color: #b0bac7;
+  font-size: 12px;
+}
+
+.range-text,
+.select-field span {
+  color: #34465d;
+}
+
+.select-field {
+  gap: 4px;
+}
+
+.select-field select {
+  width: 162px;
+  padding: 0 26px 0 8px;
+  color: #a5afbd;
+}
+
+.btn {
+  height: 31px;
+  padding: 0 14px;
+  border: 1px solid #d5dbe5;
+  border-radius: 3px;
+  background: #fff;
+  color: #34465d;
+}
+
+.btn.primary {
+  border-color: #2f8fe8;
+  background: #3494eb;
+  color: #fff;
+}
+
+.btn.export {
+  padding: 0 16px;
+}
+
+.notice-bar {
+  display: flex;
+  align-items: center;
+  height: 38px;
+  margin-top: 0;
+  padding: 0 17px;
+  border: 1px solid #3d9bff;
+  background: #e8f7ff;
+  color: #003f7f;
+  font-size: 13px;
+}
+
+.table-wrap {
+  margin-top: 15px;
+  overflow-x: auto;
+  border: 1px solid #e5e9ef;
+  border-bottom: 0;
+  border-radius: 3px 3px 0 0;
+}
+
+.data-table {
+  width: 100%;
+  min-width: 1180px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.data-table th,
+.data-table td {
+  height: 43px;
+  padding: 0 8px;
+  border-right: 1px solid #e5e9ef;
+  border-bottom: 1px solid #e5e9ef;
+  color: #33445c;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.data-table th {
+  background: #f7f8fa;
+  color: #2e3645;
+  font-weight: 600;
+}
+
+.data-table tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.data-table th:nth-child(1),
+.data-table td:nth-child(1) {
+  width: 210px;
+}
+
+.data-table th:nth-child(2),
+.data-table td:nth-child(2) {
+  width: 198px;
+}
+
+.data-table th:nth-child(6),
+.data-table td:nth-child(6) {
+  width: 250px;
+}
+
+.num {
+  font-weight: 600;
+}
+
+.blue {
+  color: #006cff !important;
+}
+
+.red {
+  color: #ff4b5c !important;
+}
+
+.green {
+  color: #1aa51f !important;
+}
+
+.purple {
+  color: #6d20e8 !important;
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  height: 41px;
+  padding: 0 8px;
+  border: 1px solid #e5e9ef;
+  border-top: 0;
+  border-radius: 0 0 3px 3px;
+  color: #34465d;
+}
+
+.pager button {
+  min-width: 18px;
+  height: 24px;
+  border: 0;
+  background: transparent;
+  color: #9ba8ba;
+  font-size: 20px;
+  line-height: 20px;
+}
+
+.pager button:disabled {
+  color: #c6cfdb;
+  cursor: default;
+}
+
+.pager input {
+  width: 51px;
+  height: 30px;
+  border: 1px solid #d5dbe5;
+  border-radius: 3px;
+  color: #34465d;
+  text-align: center;
+}
+
+.pager select {
+  width: 113px;
+  height: 30px;
+  border: 1px solid #d5dbe5;
+  border-radius: 3px;
+  color: #34465d;
+}

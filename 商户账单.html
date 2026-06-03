@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <title>商户账单</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet" />
+    <link href="data/styles.css" type="text/css" rel="stylesheet" />
+    <link href="files/商户账单/styles.css" type="text/css" rel="stylesheet" />
+    <link href="custom/css/merchant-bill.css" type="text/css" rel="stylesheet" />
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/商户账单/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body data-axure-page-id="merchant_bill">
+    <div id="base">
+      <main class="page-shell">
+        <section class="toolbar-panel" aria-label="筛选条件">
+          <div class="filter-row">
+            <div class="field inline-field">
+              <label for="filterMonth">账期:</label>
+              <input id="filterMonth" type="month" />
+            </div>
+            <div class="field inline-field">
+              <label for="filterStatus">状态:</label>
+              <select id="filterStatus">
+                <option value="">全部</option>
+                <option value="pending">待稽核</option>
+                <option value="audited">已稽核</option>
+              </select>
+            </div>
+            <button class="btn" id="searchBtn" type="button">搜索</button>
+            <button class="btn secondary" id="resetBtn" type="button">重置</button>
+            <button class="btn secondary" id="batchAuditBtn" type="button">批量稽核</button>
+            <button class="btn export" id="exportBtn" type="button">导出表格</button>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th class="check-col"><input id="checkAll" type="checkbox" /></th>
+                  <th>账期</th>
+                  <th>开版费</th>
+                  <th>服务器费用</th>
+                  <th>人工加款</th>
+                  <th>人工扣款</th>
+                  <th>游戏厂商费用</th>
+                  <th>商户充值优惠</th>
+                  <th>其他减免</th>
+                  <th>结算金额</th>
+                  <th>状态</th>
+                  <th>创建时间</th>
+                  <th>稽核时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="billBody">
+                <tr>
+                  <td class="check-col"><input type="checkbox" /></td>
+                  <td>2026-05</td>
+                  <td>0.00</td>
+                  <td>0.00</td>
+                  <td>0.00</td>
+                  <td>0.00</td>
+                  <td>128,270.34</td>
+                  <td>0.00</td>
+                  <td>0.00</td>
+                  <td class="money negative">-128,270.34</td>
+                  <td><span class="status audited">已稽核</span></td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td><div class="row-actions"><button class="link-btn" type="button">详情</button><button class="link-btn" type="button" disabled>稽核</button></div></td>
+                </tr>
+                <tr>
+                  <td class="check-col"><input type="checkbox" /></td>
+                  <td>2026-04</td>
+                  <td>0.00</td>
+                  <td>0.00</td>
+                  <td>0.00</td>
+                  <td>0.00</td>
+                  <td>802.62</td>
+                  <td>0.00</td>
+                  <td>0.00</td>
+                  <td class="money negative">-802.62</td>
+                  <td><span class="status pending">待稽核</span></td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td><div class="row-actions"><button class="link-btn" type="button">详情</button><button class="link-btn" type="button">稽核</button></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="detail-panel is-hidden" id="detailPanel" aria-label="账单详情">
+          <div class="modal-mask" id="modalMask"></div>
+          <div class="modal-card">
+            <div class="detail-header">
+              <strong id="detailTitle">游戏厂商费用明细</strong>
+              <button class="link-btn" id="closeDetailBtn" type="button">关闭</button>
+            </div>
+            <div class="modal-body">
+              <div class="detail-filter-row">
+                <div class="field inline-field">
+                  <label for="detailSupplier">供应商:</label>
+                  <select id="detailSupplier">
+                    <option value="">全部供应商</option>
+                  </select>
+                </div>
+                <div class="field inline-field">
+                  <label for="detailVendor">厂商:</label>
+                  <select id="detailVendor">
+                    <option value="">全部厂商</option>
+                  </select>
+                </div>
+                <div class="field inline-field">
+                  <label for="detailType">游戏类型:</label>
+                  <select id="detailType">
+                    <option value="">全部游戏类型</option>
+                  </select>
+                </div>
+              </div>
+              <table class="vendor-table">
+                <thead>
+                  <tr>
+                    <th>供应商</th>
+                    <th>游戏厂商</th>
+                    <th>游戏类型</th>
+                    <th>商户费率</th>
+                    <th>投注人数</th>
+                    <th>投注次数</th>
+                    <th>有效投注</th>
+                    <th>线路盈利</th>
+                    <th>应付费用</th>
+                  </tr>
+                </thead>
+                <tbody id="vendorDetailBody"></tbody>
+              </table>
+              <div class="detail-pagination">
+                <div id="detailPaginationInfo">共 0 条明细</div>
+                <div class="pager-actions" id="detailPaginationActions"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="custom/js/merchant-bill.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

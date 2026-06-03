@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>埋点统计</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/埋点统计/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/埋点统计.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/埋点统计/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell tracking-stats-shell">
+        <header class="tracking-topbar">
+          <button class="icon-btn" type="button" aria-label="返回">‹</button>
+          <button class="icon-btn refresh" type="button" aria-label="刷新">↻</button>
+          <span>埋点配置</span>
+          <i>/</i>
+          <strong>埋点统计</strong>
+        </header>
+
+        <main class="tracking-card">
+          <section class="filter-bar" aria-label="埋点统计筛选">
+            <label>日期:</label>
+            <input class="date-input" placeholder="请选择"/>
+            <span class="range-separator">至</span>
+            <input class="date-input" placeholder="请选择"/>
+            <label>渠道:</label>
+            <select>
+              <option>请选择渠道</option>
+              <option>Facebook Ads</option>
+              <option>Google Ads</option>
+              <option>TikTok Ads</option>
+              <option>Kwai</option>
+              <option>Adjust</option>
+              <option>自然流量</option>
+            </select>
+            <button class="primary-btn" type="button">搜索</button>
+            <button class="plain-btn" type="button">重置</button>
+          </section>
+
+          <section class="table-wrap" aria-label="埋点统计列表">
+            <table class="stats-table">
+              <thead>
+                <tr>
+                  <th>日期</th>
+                  <th>渠道</th>
+                  <th>PV</th>
+                  <th>UV</th>
+                  <th>总会话</th>
+                  <th>新会话</th>
+                  <th>跳失会话</th>
+                  <th>跳失率</th>
+                  <th>转化会话</th>
+                  <th>转化率</th>
+                  <th>平均时长</th>
+                  <th>人均页面</th>
+                  <th>注册数</th>
+                  <th>充值数</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2026-06-02T00:00...</td>
+                  <td>Facebook Ads</td>
+                  <td>702</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>100.00%</td>
+                  <td>0</td>
+                  <td>0.00%</td>
+                  <td>0s</td>
+                  <td>1</td>
+                  <td>4</td>
+                  <td>0</td>
+                  <td><a class="link-btn" href="会话列表.html">查看会话</a></td>
+                </tr>
+                <tr>
+                  <td>2026-06-01T00:00...</td>
+                  <td>Google Ads</td>
+                  <td>1109</td>
+                  <td>11</td>
+                  <td>11</td>
+                  <td>11</td>
+                  <td>1</td>
+                  <td>9.09%</td>
+                  <td>1</td>
+                  <td>9.09%</td>
+                  <td>58m 24s</td>
+                  <td>18.090909090...</td>
+                  <td>12</td>
+                  <td>0</td>
+                  <td><a class="link-btn" href="会话列表.html">查看会话</a></td>
+                </tr>
+                <tr>
+                  <td>2026-05-31T00:00...</td>
+                  <td>TikTok Ads</td>
+                  <td>385</td>
+                  <td>13</td>
+                  <td>13</td>
+                  <td>13</td>
+                  <td>0</td>
+                  <td>0.00%</td>
+                  <td>0</td>
+                  <td>0.00%</td>
+                  <td>6m 29s</td>
+                  <td>10.846153846...</td>
+                  <td>2</td>
+                  <td>0</td>
+                  <td><a class="link-btn" href="会话列表.html">查看会话</a></td>
+                </tr>
+                <tr>
+                  <td>2026-05-29T00:00...</td>
+                  <td>Kwai</td>
+                  <td>731</td>
+                  <td>5</td>
+                  <td>5</td>
+                  <td>5</td>
+                  <td>2</td>
+                  <td>40.00%</td>
+                  <td>0</td>
+                  <td>0.00%</td>
+                  <td>21m 47s</td>
+                  <td>5</td>
+                  <td>2</td>
+                  <td>0</td>
+                  <td><a class="link-btn" href="会话列表.html">查看会话</a></td>
+                </tr>
+                <tr>
+                  <td>2026-05-28T00:00...</td>
+                  <td>Adjust</td>
+                  <td>889</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>100.00%</td>
+                  <td>0</td>
+                  <td>0.00%</td>
+                  <td>0s</td>
+                  <td>1</td>
+                  <td>9</td>
+                  <td>0</td>
+                  <td><a class="link-btn" href="会话列表.html">查看会话</a></td>
+                </tr>
+                <tr>
+                  <td>2026-05-27T00:00...</td>
+                  <td>自然流量</td>
+                  <td>1452</td>
+                  <td>18</td>
+                  <td>18</td>
+                  <td>18</td>
+                  <td>1</td>
+                  <td>5.56%</td>
+                  <td>5</td>
+                  <td>27.78%</td>
+                  <td>8h 8m 15s</td>
+                  <td>48.888888888...</td>
+                  <td>43</td>
+                  <td>0</td>
+                  <td><a class="link-btn" href="会话列表.html">查看会话</a></td>
+                </tr>
+                <tr>
+                  <td>2026-05-26T00:00...</td>
+                  <td>Google Ads</td>
+                  <td>69</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>0.00%</td>
+                  <td>1</td>
+                  <td>100.00%</td>
+                  <td>30m 18s</td>
+                  <td>68</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td><a class="link-btn" href="会话列表.html">查看会话</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <footer class="pager">
+            <button type="button" disabled>|‹</button>
+            <button type="button" disabled>‹‹</button>
+            <button type="button" disabled>‹</button>
+            <input value="1"/>
+            <span>/ 1</span>
+            <button type="button" disabled>›</button>
+            <button type="button" disabled>››</button>
+            <button type="button" disabled>›|</button>
+            <select>
+              <option>20条/页</option>
+              <option>50条/页</option>
+            </select>
+            <span>共 7 条记录</span>
+          </footer>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

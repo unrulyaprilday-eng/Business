@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>会话列表</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/会话列表/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/会话列表.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/会话列表/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell session-list-shell">
+        <header class="session-topbar">
+          <button class="icon-btn" type="button" aria-label="返回">‹</button>
+          <button class="icon-btn refresh" type="button" aria-label="刷新">↻</button>
+          <span>埋点配置</span>
+          <i>/</i>
+          <strong>会话列表</strong>
+        </header>
+
+        <main class="session-main">
+          <section class="filter-bar" aria-label="会话列表筛选">
+            <label>日期:</label>
+            <input class="date-input" placeholder="请选择"/>
+            <span class="range-separator">至</span>
+            <input class="date-input" placeholder="请选择"/>
+            <label>渠道:</label>
+            <select>
+              <option>全部渠道</option>
+              <option>Facebook Ads</option>
+              <option>Google Ads</option>
+              <option>TikTok Ads</option>
+              <option>Kwai</option>
+              <option>自然流量</option>
+            </select>
+            <label>跳失:</label>
+            <select>
+              <option>全部</option>
+              <option>是</option>
+              <option>否</option>
+            </select>
+            <label>已转化:</label>
+            <select>
+              <option>全部</option>
+              <option>是</option>
+              <option>否</option>
+            </select>
+            <button class="primary-btn" type="button">⌕ 搜索</button>
+            <button class="plain-btn" type="button">↻ 重置</button>
+          </section>
+
+          <section class="table-wrap">
+            <table class="session-table">
+              <thead>
+                <tr>
+                  <th>会话ID</th>
+                  <th>会员ID</th>
+                  <th>渠道</th>
+                  <th>入口页</th>
+                  <th>离开页</th>
+                  <th>浏览页数</th>
+                  <th>事件数</th>
+                  <th>时长</th>
+                  <th>跳失</th>
+                  <th>已转化</th>
+                  <th>开始时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>68db79f0-0971-4ff9-ba7d-d4a884...</td>
+                  <td>-</td>
+                  <td>Facebook Ads</td>
+                  <td>/login</td>
+                  <td>/game</td>
+                  <td>38</td>
+                  <td>45</td>
+                  <td>24m 23s</td>
+                  <td><span class="status ok">否</span></td>
+                  <td><span class="status ok">是</span></td>
+                  <td>2026/6/3 13:11:30</td>
+                  <td><a class="link-btn" href="事件流水.html">事件流水</a></td>
+                </tr>
+                <tr>
+                  <td>66c64f5a-280f-434e-9ff9-cb6eb51...</td>
+                  <td>1010010072</td>
+                  <td>Google Ads</td>
+                  <td>/</td>
+                  <td>/me</td>
+                  <td>9</td>
+                  <td>9</td>
+                  <td>20h 22m 56s</td>
+                  <td><span class="status ok">否</span></td>
+                  <td><span class="status muted">否</span></td>
+                  <td>2026/6/2 16:44:16</td>
+                  <td><a class="link-btn" href="事件流水.html">事件流水</a></td>
+                </tr>
+                <tr>
+                  <td>383df728-53f8-47a2-ade9-ded51a...</td>
+                  <td>-</td>
+                  <td>TikTok Ads</td>
+                  <td>/login</td>
+                  <td>/</td>
+                  <td>53</td>
+                  <td>59</td>
+                  <td>8h 47m 0s</td>
+                  <td><span class="status ok">否</span></td>
+                  <td><span class="status ok">是</span></td>
+                  <td>2026/6/1 14:26:29</td>
+                  <td><a class="link-btn" href="事件流水.html">事件流水</a></td>
+                </tr>
+                <tr>
+                  <td>9b3d10a5-880c-4cd5-837a-4ad14...</td>
+                  <td>-</td>
+                  <td>Kwai</td>
+                  <td>/</td>
+                  <td>/login</td>
+                  <td>62</td>
+                  <td>86</td>
+                  <td>23m 34s</td>
+                  <td><span class="status ok">否</span></td>
+                  <td><span class="status muted">否</span></td>
+                  <td>2026/6/1 14:02:48</td>
+                  <td><a class="link-btn" href="事件流水.html">事件流水</a></td>
+                </tr>
+                <tr>
+                  <td>22d0b9d0-fead-4b3d-852d-20525...</td>
+                  <td>-</td>
+                  <td>自然流量</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>0s</td>
+                  <td><span class="status danger">是</span></td>
+                  <td><span class="status muted">否</span></td>
+                  <td>2026/6/1 12:42:16</td>
+                  <td><a class="link-btn" href="事件流水.html">事件流水</a></td>
+                </tr>
+                <tr>
+                  <td>e3afcef9-277f-47ed-b18c-b887d40...</td>
+                  <td>-</td>
+                  <td>Adjust</td>
+                  <td>/</td>
+                  <td>/game</td>
+                  <td>10</td>
+                  <td>19</td>
+                  <td>3m 39s</td>
+                  <td><span class="status ok">否</span></td>
+                  <td><span class="status muted">否</span></td>
+                  <td>2026/6/1 12:03:41</td>
+                  <td><a class="link-btn" href="事件流水.html">事件流水</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <footer class="pager">
+            <button type="button">|‹</button>
+            <button type="button">‹‹</button>
+            <button type="button">‹</button>
+            <input value="1"/>
+            <span>/ 3</span>
+            <button type="button">›</button>
+            <button type="button">››</button>
+            <button type="button">›|</button>
+            <select>
+              <option>20条/页</option>
+              <option>50条/页</option>
+            </select>
+            <span>共 53 条记录</span>
+          </footer>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
