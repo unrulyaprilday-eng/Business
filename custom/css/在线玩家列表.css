@@ -210,6 +210,31 @@ body {
   font-weight: 700;
 }
 
+.type-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 64px;
+  height: 24px;
+  border-radius: 4px;
+  padding: 0 8px;
+  box-sizing: border-box;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.type-tag.deposit {
+  border: 1px solid #b9d7ff;
+  background: #edf6ff;
+  color: #145a9f;
+}
+
+.type-tag.free {
+  border: 1px solid #c9dfd4;
+  background: #f0faf4;
+  color: #237047;
+}
+
 .status {
   display: inline-block;
   line-height: 1.25;

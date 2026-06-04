@@ -13,19 +13,25 @@
     if (modal) modal.hidden = true;
   }
 
-  function filterByLocation(locationType, websitePosition, gameType) {
+  function filterTable(playerType, locationType, websitePosition, gameType) {
     var tbody = document.querySelector(".online-table tbody");
     if (!tbody) return;
     
-    var rows = tbody.querySelectorAll("tr:not(.group-row)");
-    var groupRows = tbody.querySelectorAll("tr.group-row");
+    var rows = tbody.querySelectorAll("tr");
     
     rows.forEach(function(row) {
-      var locationCell = row.cells[3];
-      if (!locationCell) return;
+      var typeCell = row.cells[2];
+      var locationCell = row.cells[4];
+      if (!typeCell || !locationCell) return;
       
+      var typeText = typeCell.textContent.trim();
       var locationText = locationCell.textContent.trim();
       var shouldShow = false;
+
+      if (playerType && playerType !== "全部" && typeText !== playerType) {
+        row.style.display = "none";
+        return;
+      }
       
       // 所在位置筛选
       if (locationType === "全部") {
@@ -52,42 +58,21 @@
       row.style.display = shouldShow ? "" : "none";
     });
     
-    updateGroupVisibility();
     updateSummary();
-  }
-  
-  function updateGroupVisibility() {
-    var tbody = document.querySelector(".online-table tbody");
-    if (!tbody) return;
-    
-    var groupRows = tbody.querySelectorAll("tr.group-row");
-    
-    groupRows.forEach(function(groupRow) {
-      var nextRow = groupRow.nextElementSibling;
-      var hasVisibleData = false;
-      
-      while (nextRow && !nextRow.classList.contains("group-row")) {
-        if (nextRow.style.display !== "none") {
-          hasVisibleData = true;
-          break;
-        }
-        nextRow = nextRow.nextElementSibling;
-      }
-      
-      groupRow.style.display = hasVisibleData ? "" : "none";
-    });
   }
   
   function updateSummary() {
     var tbody = document.querySelector(".online-table tbody");
     if (!tbody) return;
     
-    var visibleRows = tbody.querySelectorAll("tr:not(.group-row):not([style*='display: none'])");
+    var visibleRows = Array.prototype.slice.call(tbody.querySelectorAll("tr")).filter(function(row) {
+      return row.style.display !== "none";
+    });
     var totalCount = visibleRows.length;
     
     var needAttentionCount = 0;
     visibleRows.forEach(function(row) {
-      var balanceCell = row.cells[2];
+      var balanceCell = row.cells[3];
       if (balanceCell && balanceCell.classList.contains("danger")) {
         needAttentionCount++;
       }
@@ -95,7 +80,7 @@
     
     var totalBalance = 0;
     visibleRows.forEach(function(row) {
-      var balanceCell = row.cells[2];
+      var balanceCell = row.cells[3];
       if (balanceCell) {
         var balanceText = balanceCell.textContent.replace(/,/g, "").trim();
         var balance = parseFloat(balanceText);
@@ -132,36 +117,35 @@
       });
     }
     
-    var locationSelect = document.querySelector(".filter-bar select");
-    var websitePositionSelect = document.querySelectorAll(".filter-bar select")[1];
-    var gameTypeSelect = document.querySelectorAll(".filter-bar select")[2];
-    
-    if (locationSelect) {
-      locationSelect.addEventListener("change", function() {
-        var websitePosition = websitePositionSelect ? websitePositionSelect.value : "全部";
-        var gameType = gameTypeSelect ? gameTypeSelect.value : "全部";
-        filterByLocation(this.value, websitePosition, gameType);
-      });
-      
+    var playerTypeSelect = document.querySelector("[data-player-type-filter]");
+    var locationSelect = document.querySelectorAll(".filter-bar select")[1];
+    var websitePositionSelect = document.querySelectorAll(".filter-bar select")[2];
+    var gameTypeSelect = document.querySelectorAll(".filter-bar select")[3];
+
+    function applyFilters() {
+      var playerType = playerTypeSelect ? playerTypeSelect.value : "全部";
+      var locationType = locationSelect ? locationSelect.value : "全部";
       var websitePosition = websitePositionSelect ? websitePositionSelect.value : "全部";
       var gameType = gameTypeSelect ? gameTypeSelect.value : "全部";
-      filterByLocation(locationSelect.value, websitePosition, gameType);
+      filterTable(playerType, locationType, websitePosition, gameType);
+    }
+
+    if (playerTypeSelect) {
+      playerTypeSelect.addEventListener("change", applyFilters);
+    }
+    
+    if (locationSelect) {
+      locationSelect.addEventListener("change", applyFilters);
     }
     
     if (websitePositionSelect) {
-      websitePositionSelect.addEventListener("change", function() {
-        var locationType = locationSelect ? locationSelect.value : "全部";
-        var gameType = gameTypeSelect ? gameTypeSelect.value : "全部";
-        filterByLocation(locationType, this.value, gameType);
-      });
+      websitePositionSelect.addEventListener("change", applyFilters);
     }
     
     if (gameTypeSelect) {
-      gameTypeSelect.addEventListener("change", function() {
-        var locationType = locationSelect ? locationSelect.value : "全部";
-        var websitePosition = websitePositionSelect ? websitePositionSelect.value : "全部";
-        filterByLocation(locationType, websitePosition, this.value);
-      });
+      gameTypeSelect.addEventListener("change", applyFilters);
     }
+
+    applyFilters();
   });
 })();

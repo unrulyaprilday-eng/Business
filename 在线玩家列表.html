@@ -76,6 +76,14 @@
               <input type="text" placeholder="请输入余额"/>
             </label>
             <label>
+              <span>玩家类型:</span>
+              <select data-player-type-filter>
+                <option>全部</option>
+                <option>存款玩家</option>
+                <option>免费玩家</option>
+              </select>
+            </label>
+            <label>
               <span>在线状态:</span>
               <select>
                 <option>全部</option>
@@ -118,6 +126,7 @@
                 <tr>
                   <th>序号</th>
                   <th>玩家ID</th>
+                  <th>玩家类型</th>
                   <th>余额</th>
                   <th>所在位置</th>
                   <th>当前充值<br/>最近充值</th>
@@ -129,22 +138,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr class="group-row"><td colspan="10">存款玩家</td></tr>
                 <tr>
                   <td>1</td>
-                  <td>VIP_100</td>
-                  <td class="danger">12,450.00</td>
-                  <td>真人-EVO Baccarat</td>
-                  <td>10,000</td>
-                  <td>10,000</td>
-                  <td>01:22:10</td>
-                  <td>112.94.22.105</td>
-                  <td><span class="status met">Met Wager<br/>(Total*10)</span></td>
-                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
-                </tr>
-                <tr>
-                  <td>2</td>
                   <td>VIP_103</td>
+                  <td><span class="type-tag deposit">存款玩家</span></td>
                   <td>15,800.00</td>
                   <td>网站-首页</td>
                   <td>8,000</td>
@@ -155,8 +152,35 @@
                   <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
                 </tr>
                 <tr>
+                  <td>2</td>
+                  <td>VIP_100</td>
+                  <td><span class="type-tag deposit">存款玩家</span></td>
+                  <td class="danger">12,450.00</td>
+                  <td>真人-EVO Baccarat</td>
+                  <td>10,000</td>
+                  <td>10,000</td>
+                  <td>01:22:10</td>
+                  <td>112.94.22.105</td>
+                  <td><span class="status met">Met Wager<br/>(Total*10)</span></td>
+                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
+                </tr>
+                <tr>
                   <td>3</td>
+                  <td>VIP_102</td>
+                  <td><span class="type-tag deposit">存款玩家</span></td>
+                  <td class="danger">6,200.00</td>
+                  <td>电子-PG Fortune Tiger</td>
+                  <td>3,000</td>
+                  <td>8,000</td>
+                  <td>00:55:20</td>
+                  <td>112.94.22.107</td>
+                  <td><span class="status wager">Met Wager<br/>(Deposit*3)</span></td>
+                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
+                </tr>
+                <tr>
+                  <td>4</td>
                   <td>VIP_104</td>
+                  <td><span class="type-tag deposit">存款玩家</span></td>
                   <td class="danger">3,500.00</td>
                   <td>网站-存款</td>
                   <td>2,000</td>
@@ -167,21 +191,9 @@
                   <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
                 </tr>
                 <tr>
-                  <td>4</td>
-                  <td>VIP_102</td>
-                  <td class="danger">6,200.00</td>
-                  <td>电子-PG Fortune Tiger</td>
-                  <td>3,000</td>
-                  <td>8,000</td>
-                  <td>00:55:20</td>
-                  <td>112.94.22.107</td>
-                  <td><span class="status wager">Met Wager<br/>(Deposit*3)</span></td>
-                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
-                </tr>
-                <tr class="group-row"><td colspan="10">免费玩家</td></tr>
-                <tr>
                   <td>5</td>
                   <td>FREE_300</td>
+                  <td><span class="type-tag free">免费玩家</span></td>
                   <td>2,500.00</td>
                   <td>棋牌-KY 斗地主</td>
                   <td>0</td>
@@ -194,6 +206,7 @@
                 <tr>
                   <td>6</td>
                   <td>FREE_301</td>
+                  <td><span class="type-tag free">免费玩家</span></td>
                   <td>1,800.00</td>
                   <td>网站-优惠</td>
                   <td>0</td>
@@ -206,6 +219,7 @@
                 <tr>
                   <td>7</td>
                   <td>NOVICE_400</td>
+                  <td><span class="type-tag free">免费玩家</span></td>
                   <td>520.00</td>
                   <td>网站-我的</td>
                   <td>0</td>
@@ -218,6 +232,7 @@
                 <tr>
                   <td>8</td>
                   <td>NOVICE_401</td>
+                  <td><span class="type-tag free">免费玩家</span></td>
                   <td class="danger">52.10</td>
                   <td>捕鱼-JILI Fishing</td>
                   <td>0</td>
@@ -254,8 +269,8 @@
         <section class="logic-board" aria-label="在线玩家列表逻辑说明">
           <article class="logic-card">
             <h2>排序逻辑</h2>
-            <p>1. 存款玩家优先（按余额降序）</p>
-            <p>2. 免费玩家其次（按余额降序）</p>
+            <p>全部玩家合并展示，按余额倒序排列</p>
+            <p>可通过玩家类型筛选全部、存款玩家、免费玩家</p>
           </article>
           <article class="logic-card alert">
             <h2>余额标红逻辑</h2>
@@ -290,7 +305,6 @@
               <label class="form-row">
                 <span><i>*</i> 操作类型:</span>
                 <select>
-                  <option>玩家启用</option>
                   <option>玩家禁用</option>
                 </select>
               </label>
