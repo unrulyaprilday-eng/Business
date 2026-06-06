@@ -58,87 +58,125 @@
           <strong>分享配置</strong>
         </header>
 
-        <section class="share-panel">
-          <div class="share-toolbar">
-            <button class="btn primary" data-open-add type="button">＋新增</button>
+        <section class="share-shell">
+          <div class="share-heading">
+            <div>
+              <h1>分享配置</h1>
+              <p>固定社媒分享渠道，分享链接由前端根据当前页面自动拼接，点击后拉起用户自己的账号完成分享。</p>
+            </div>
           </div>
 
-          <table class="share-table">
-            <thead>
-              <tr>
-                <th>排序</th>
-                <th>名称</th>
-                <th>图标</th>
-                <th>唤醒H5地址</th>
-                <th>展示开关</th>
-                <th>操作</th>
-              </tr>
-            </thead>
-            <tbody id="shareRows"></tbody>
-          </table>
+          <section class="table-card">
+            <div class="table-toolbar">
+              <div>
+                <strong>社媒渠道</strong>
+                <span>Telegram、WhatsApp、Facebook、X / Twitter、Line</span>
+              </div>
+            </div>
+
+            <table class="share-table">
+              <thead>
+                <tr>
+                  <th>排序</th>
+                  <th>渠道</th>
+                  <th>图标</th>
+                  <th>渠道标识</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="shareRows">
+                <tr>
+                  <td>1</td>
+                  <td><strong>Telegram</strong></td>
+                  <td><img class="channel-icon" src="custom/assets/share-config/telegram.svg" alt="Telegram"/></td>
+                  <td><code>telegram</code></td>
+                  <td><button class="switch is-on" data-row-toggle="telegram" type="button" aria-label="启用状态"></button></td>
+                  <td><button class="link-btn" type="button">编辑</button></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td><strong>WhatsApp</strong></td>
+                  <td><img class="channel-icon" src="custom/assets/share-config/whatsapp.svg" alt="WhatsApp"/></td>
+                  <td><code>whatsapp</code></td>
+                  <td><button class="switch is-on" data-row-toggle="whatsapp" type="button" aria-label="启用状态"></button></td>
+                  <td><button class="link-btn" type="button">编辑</button></td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td><strong>Facebook</strong></td>
+                  <td><img class="channel-icon" src="custom/assets/share-config/facebook.svg" alt="Facebook"/></td>
+                  <td><code>facebook</code></td>
+                  <td><button class="switch is-on" data-row-toggle="facebook" type="button" aria-label="启用状态"></button></td>
+                  <td><button class="link-btn" type="button">编辑</button></td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td><strong>X / Twitter</strong></td>
+                  <td><img class="channel-icon" src="custom/assets/share-config/x.svg" alt="X / Twitter"/></td>
+                  <td><code>x_twitter</code></td>
+                  <td><button class="switch" data-row-toggle="x_twitter" type="button" aria-label="启用状态"></button></td>
+                  <td><button class="link-btn" type="button">编辑</button></td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td><strong>Line</strong></td>
+                  <td><img class="channel-icon" src="custom/assets/share-config/line.svg" alt="Line"/></td>
+                  <td><code>line</code></td>
+                  <td><button class="switch is-on" data-row-toggle="line" type="button" aria-label="启用状态"></button></td>
+                  <td><button class="link-btn" type="button">编辑</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
         </section>
 
-        <div class="modal-mask is-hidden" data-modal="form">
-          <div class="modal form-modal">
+        <div class="modal-mask" data-modal="edit" hidden>
+          <div class="modal edit-modal">
             <div class="modal-head">
-              <strong id="formTitle">新增</strong>
-              <button class="close-btn" data-close type="button">×</button>
+              <strong id="modalTitle">编辑分享渠道</strong>
+              <button class="close-btn" data-close type="button" aria-label="关闭">×</button>
             </div>
             <div class="modal-body">
-              <label class="field upload-row required">
+              <label class="field">
+                <span>渠道名称</span>
+                <input id="channelName" type="text" readonly/>
+              </label>
+              <label class="field">
+                <span>渠道标识</span>
+                <input id="channelKey" type="text" readonly/>
+              </label>
+              <label class="field">
                 <span>图标</span>
-                <div class="upload-control" id="uploadControl">
-                  <div class="upload-empty">
-                    <i>＋</i>
-                    <em>点击或拖<br/>拽上传</em>
-                  </div>
-                  <div class="upload-preview is-hidden" id="uploadPreview">
-                    <span class="share-icon tg"></span>
-                    <button class="remove-icon" type="button" aria-label="移除">×</button>
-                  </div>
+                <div class="icon-picker">
+                  <img id="channelIconPreview" src="custom/assets/share-config/telegram.svg" alt="渠道图标"/>
+                  <button class="btn" id="replaceIcon" type="button">更换图标</button>
+                  <em>原型示意：选择后更新预览</em>
                 </div>
               </label>
-              <p class="upload-hint">请上传64*64规格或等比例，PNG、JPG、GIF图片，200KB以内。</p>
-              <label class="field required">
-                <span>名称</span>
-                <input id="shareName" placeholder="请输入名称" type="text"/>
-              </label>
-              <label class="field required">
-                <span>唤醒H5</span>
-                <input id="shareUrl" placeholder="请输入唤醒H5地址" type="text"/>
-              </label>
-              <label class="field required">
+              <label class="field">
                 <span>排序</span>
-                <input id="shareSort" min="1" type="number" value="1"/>
+                <input id="channelSort" min="1" max="99" type="number"/>
               </label>
+              <label class="field switch-field">
+                <span>启用状态</span>
+                <button class="switch is-on" id="channelEnabled" type="button" aria-label="启用状态"></button>
+              </label>
+              <div class="readonly-rule">
+                <strong>链接地址</strong>
+                <span>不可编辑，由前端按渠道标识和当前页面 URL 自动拼接。</span>
+              </div>
             </div>
             <div class="modal-footer">
               <button class="btn" data-close type="button">取消</button>
-              <button class="btn primary" id="submitShare" type="button">提交</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="modal-mask is-hidden" data-modal="delete">
-          <div class="modal delete-modal">
-            <div class="modal-head">
-              <strong>系统提示</strong>
-              <button class="close-btn" data-close type="button">×</button>
-            </div>
-            <div class="modal-body delete-body">
-              <span class="warn-dot">!</span>
-              <span>确定要删除「<em id="deleteName">TG</em>」吗?</span>
-            </div>
-            <div class="modal-footer">
-              <button class="btn" data-close type="button">取消</button>
-              <button class="btn primary" id="confirmDelete" type="button">确认</button>
+              <button class="btn primary" id="saveChannel" type="button">确定</button>
             </div>
           </div>
         </div>
       </main>
     </div>
-    <script src="custom/js/分享配置.js"></script>
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/分享配置.js"></script>
   </body>
 </html>

@@ -1,10 +1,50 @@
 (function () {
-  var editingIndex = null;
-  var deletingIndex = null;
-  var rows = [
-    { sort: 1, name: "TG", icon: "tg", url: "http://tg.com", enabled: true },
-    { sort: 1, name: "facebook", icon: "fb", url: "http://facebook.com", enabled: true }
+  var iconRoot = "custom/assets/share-config/";
+  var editingKey = null;
+  var iconCycleIndex = 0;
+  var defaultRows = [
+    {
+      sort: 1,
+      name: "Telegram",
+      key: "telegram",
+      icon: "telegram.svg",
+      enabled: true
+    },
+    {
+      sort: 2,
+      name: "WhatsApp",
+      key: "whatsapp",
+      icon: "whatsapp.svg",
+      enabled: true
+    },
+    {
+      sort: 3,
+      name: "Facebook",
+      key: "facebook",
+      icon: "facebook.svg",
+      enabled: true
+    },
+    {
+      sort: 4,
+      name: "X / Twitter",
+      key: "x_twitter",
+      icon: "x.svg",
+      enabled: false
+    },
+    {
+      sort: 5,
+      name: "Line",
+      key: "line",
+      icon: "line.svg",
+      enabled: true
+    }
   ];
+  var rows = defaultRows.map(function (row) {
+    return Object.assign({}, row);
+  });
+  var iconOptions = defaultRows.map(function (row) {
+    return row.icon;
+  });
 
   function escapeHtml(value) {
     return String(value || "")
@@ -14,107 +54,125 @@
       .replace(/"/g, "&quot;");
   }
 
+  function findRow(key) {
+    return rows.find(function (row) {
+      return row.key === key;
+    });
+  }
+
+  function sortedRows() {
+    return rows.slice().sort(function (a, b) {
+      return a.sort - b.sort;
+    });
+  }
+
   function renderRows() {
     var tbody = document.getElementById("shareRows");
-    tbody.innerHTML = rows.map(function (row, index) {
-      var switchClass = row.enabled ? "switch" : "switch off";
+    if (!tbody) return;
+
+    tbody.innerHTML = sortedRows().map(function (row) {
+      var switchClass = row.enabled ? "switch is-on" : "switch";
       return "<tr>"
         + "<td>" + row.sort + "</td>"
-        + "<td>" + escapeHtml(row.name) + "</td>"
-        + "<td><span class=\"share-icon " + row.icon + "\"></span></td>"
-        + "<td>" + escapeHtml(row.url) + "</td>"
-        + "<td><button class=\"" + switchClass + "\" data-toggle=\"" + index + "\" type=\"button\" aria-label=\"展示开关\"></button></td>"
-        + "<td><button class=\"share-link\" data-edit=\"" + index + "\" type=\"button\">修改</button>"
-        + "<button class=\"share-link danger\" data-delete=\"" + index + "\" type=\"button\">删除</button></td>"
+        + "<td><strong>" + escapeHtml(row.name) + "</strong></td>"
+        + "<td><img class=\"channel-icon\" src=\"" + iconRoot + row.icon + "\" alt=\"" + escapeHtml(row.name) + "\"/></td>"
+        + "<td><code>" + escapeHtml(row.key) + "</code></td>"
+        + "<td><button class=\"" + switchClass + "\" data-row-toggle=\"" + escapeHtml(row.key) + "\" type=\"button\" aria-label=\"启用状态\"></button></td>"
+        + "<td><button class=\"link-btn\" data-edit=\"" + escapeHtml(row.key) + "\" type=\"button\">编辑</button></td>"
         + "</tr>";
     }).join("");
   }
 
-  function openModal(name) {
-    document.querySelector("[data-modal='" + name + "']").classList.remove("is-hidden");
+  function getModal() {
+    return document.querySelector("[data-modal='edit']");
   }
 
-  function closeModals() {
-    Array.prototype.forEach.call(document.querySelectorAll(".modal-mask"), function (modal) {
-      modal.classList.add("is-hidden");
+  function closeModal() {
+    var modal = getModal();
+    if (modal) modal.hidden = true;
+  }
+
+  function openEdit(key) {
+    var row = findRow(key);
+    var modal = getModal();
+    if (!row || !modal) return;
+
+    editingKey = key;
+    document.getElementById("modalTitle").textContent = "编辑分享渠道 - " + row.name;
+    document.getElementById("channelName").value = row.name;
+    document.getElementById("channelKey").value = row.key;
+    document.getElementById("channelIconPreview").src = iconRoot + row.icon;
+    document.getElementById("channelSort").value = row.sort;
+    document.getElementById("channelEnabled").classList.toggle("is-on", row.enabled);
+    iconCycleIndex = iconOptions.indexOf(row.icon);
+    modal.hidden = false;
+  }
+
+  function saveChannel() {
+    var row = findRow(editingKey);
+    if (!row) return;
+
+    var sortInput = document.getElementById("channelSort");
+    var preview = document.getElementById("channelIconPreview");
+    var enabledButton = document.getElementById("channelEnabled");
+    row.sort = Math.max(1, Number(sortInput.value || row.sort));
+    row.icon = preview.getAttribute("src").replace(iconRoot, "");
+    row.enabled = enabledButton.classList.contains("is-on");
+    renderRows();
+    closeModal();
+  }
+
+  function replaceIcon() {
+    var preview = document.getElementById("channelIconPreview");
+    if (!preview) return;
+    iconCycleIndex = (iconCycleIndex + 1) % iconOptions.length;
+    preview.src = iconRoot + iconOptions[iconCycleIndex];
+  }
+
+  function init() {
+    renderRows();
+
+    document.addEventListener("click", function (event) {
+      var editButton = event.target.closest("[data-edit]");
+      if (editButton) {
+        openEdit(editButton.getAttribute("data-edit"));
+        return;
+      }
+
+      if (event.target.closest("[data-close]")) {
+        closeModal();
+        return;
+      }
+
+      if (event.target.closest("#saveChannel")) {
+        saveChannel();
+        return;
+      }
+
+      if (event.target.closest("#channelEnabled")) {
+        event.target.closest("#channelEnabled").classList.toggle("is-on");
+        return;
+      }
+
+      var rowToggle = event.target.closest("[data-row-toggle]");
+      if (rowToggle) {
+        var row = findRow(rowToggle.getAttribute("data-row-toggle"));
+        if (row) {
+          row.enabled = !row.enabled;
+          renderRows();
+        }
+        return;
+      }
+
+      if (event.target.closest("#replaceIcon")) {
+        replaceIcon();
+      }
     });
   }
 
-  function setPreview(visible) {
-    document.querySelector(".upload-empty").classList.toggle("is-hidden", visible);
-    document.getElementById("uploadPreview").classList.toggle("is-hidden", !visible);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
   }
-
-  function openAdd() {
-    editingIndex = null;
-    document.getElementById("formTitle").textContent = "新增";
-    document.getElementById("shareName").value = "";
-    document.getElementById("shareUrl").value = "";
-    document.getElementById("shareSort").value = "1";
-    setPreview(false);
-    openModal("form");
-  }
-
-  function openEdit(index) {
-    var row = rows[index];
-    editingIndex = index;
-    document.getElementById("formTitle").textContent = "编辑分享配置";
-    document.getElementById("shareName").value = row.name;
-    document.getElementById("shareUrl").value = row.url;
-    document.getElementById("shareSort").value = row.sort;
-    setPreview(true);
-    openModal("form");
-  }
-
-  function submitForm() {
-    var name = document.getElementById("shareName").value || "TG";
-    var url = document.getElementById("shareUrl").value || "http://tg.com";
-    var sort = Number(document.getElementById("shareSort").value || 1);
-    if (editingIndex === null) {
-      rows.push({ sort: sort, name: name, icon: "tg", url: url, enabled: true });
-    } else {
-      rows[editingIndex].sort = sort;
-      rows[editingIndex].name = name;
-      rows[editingIndex].url = url;
-    }
-    renderRows();
-    closeModals();
-  }
-
-  function openDelete(index) {
-    deletingIndex = index;
-    document.getElementById("deleteName").textContent = rows[index].name;
-    openModal("delete");
-  }
-
-  function confirmDelete() {
-    if (deletingIndex !== null) {
-      rows.splice(deletingIndex, 1);
-      deletingIndex = null;
-      renderRows();
-    }
-    closeModals();
-  }
-
-  document.addEventListener("click", function (event) {
-    var target = event.target;
-    if (target.matches("[data-open-add]")) openAdd();
-    if (target.matches("[data-close]")) closeModals();
-    if (target.matches("[data-edit]")) openEdit(Number(target.getAttribute("data-edit")));
-    if (target.matches("[data-delete]")) openDelete(Number(target.getAttribute("data-delete")));
-    if (target.matches("[data-toggle]")) {
-      var toggleIndex = Number(target.getAttribute("data-toggle"));
-      rows[toggleIndex].enabled = !rows[toggleIndex].enabled;
-      renderRows();
-    }
-    if (target.matches("#submitShare")) submitForm();
-    if (target.matches("#confirmDelete")) confirmDelete();
-    if (target.closest("#uploadControl")) setPreview(true);
-    if (target.matches(".remove-icon")) {
-      event.stopPropagation();
-      setPreview(false);
-    }
-  });
-
-  renderRows();
 })();

@@ -361,18 +361,6 @@ select[disabled] {
   border-top: 0;
 }
 
-.fake-scrollbar {
-  height: 33px;
-  padding: 12px 10px;
-}
-
-.fake-scrollbar span {
-  display: block;
-  height: 10px;
-  border-radius: 6px;
-  background: #8b8f96;
-}
-
 .pager {
   display: flex;
   align-items: center;
@@ -523,23 +511,4 @@ select[disabled] {
   margin: 8px 0 32px 96px;
   color: #ff7a00;
   font-size: 12px;
-}
-
-.fee-note {
-  margin-left: 0;
-  padding: 18px 24px;
-  border-left: 2px solid #409eff;
-  border-radius: 5px;
-  background: #f6f8fb;
-  line-height: 28px;
-}
-
-.fee-note strong {
-  display: block;
-  margin-bottom: 8px;
-  color: #202734;
-}
-
-.fee-note p {
-  margin: 0;
 }

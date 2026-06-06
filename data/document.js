@@ -96,6 +96,13 @@ $axure.loadDocument({
             "type": "Wireframe",
             "url": "音乐管理.html",
             "children": []
+          },
+          {
+            "id": "subsite_management",
+            "pageName": "子站点管理",
+            "type": "Wireframe",
+            "url": "子站点管理.html",
+            "children": []
           }
         ]
       },

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-06-03T06:56:16.795Z",
+  "savedAt": "2026-06-05T07:34:54.732Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -84,6 +84,13 @@
           "pageName": "音乐管理",
           "type": "Wireframe",
           "url": "音乐管理.html",
+          "children": []
+        },
+        {
+          "id": "subsite_management",
+          "pageName": "子站点管理",
+          "type": "Wireframe",
+          "url": "子站点管理.html",
           "children": []
         }
       ]
