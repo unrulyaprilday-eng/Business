@@ -1,7 +1,4 @@
 (function () {
-  var tabs = document.querySelectorAll(".tab");
-  var statsPanel = document.getElementById("statsPanel");
-  var configPanel = document.getElementById("configPanel");
   var mask = document.querySelector(".modal-mask");
   var card = document.querySelector(".modal-card");
   var title = document.getElementById("modalTitle");
@@ -119,17 +116,6 @@
     renderForm(modalData(mode));
     mask.hidden = false;
   }
-
-  Array.prototype.forEach.call(tabs, function (tab) {
-    tab.addEventListener("click", function () {
-      Array.prototype.forEach.call(tabs, function (item) {
-        item.classList.remove("active");
-      });
-      tab.classList.add("active");
-      statsPanel.classList.toggle("active", tab.dataset.tab === "stats");
-      configPanel.classList.toggle("active", tab.dataset.tab === "config");
-    });
-  });
 
   document.addEventListener("click", function (event) {
     var modalButton = event.target.closest("[data-modal]");

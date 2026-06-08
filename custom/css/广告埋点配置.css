@@ -64,49 +64,10 @@ textarea {
 .ad-track-card {
   margin: 16px;
   min-height: calc(100vh - 70px);
+  padding: 14px 16px 0;
   border-radius: 6px;
   background: #fff;
   box-sizing: border-box;
-}
-
-.tabs {
-  display: flex;
-  height: 54px;
-  margin: 0 16px;
-  border-bottom: 1px solid #d8dee8;
-}
-
-.tab {
-  position: relative;
-  min-width: 88px;
-  border: 0;
-  background: transparent;
-  color: #344256;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.tab.active {
-  color: #2388ff;
-}
-
-.tab.active::after {
-  position: absolute;
-  right: 16px;
-  bottom: -1px;
-  left: 16px;
-  height: 2px;
-  background: #2388ff;
-  content: "";
-}
-
-.tab-panel {
-  display: none;
-  padding: 14px 16px 0;
-}
-
-.tab-panel.active {
-  display: block;
 }
 
 .filter-bar {
@@ -163,14 +124,9 @@ select {
   color: #4b5563;
 }
 
-.table-box,
 .table-scroll {
   border: 1px solid #e2e7ef;
   background: #fff;
-}
-
-.stats-box {
-  min-height: 570px;
 }
 
 .table-scroll {
@@ -185,12 +141,10 @@ table {
   width: 100%;
 }
 
-.stats-table,
 .config-table {
   table-layout: fixed;
 }
 
-.stats-table th,
 .config-table th,
 .config-table td {
   height: 40px;
@@ -202,22 +156,10 @@ table {
   white-space: nowrap;
 }
 
-.stats-table th,
 .config-table th {
   background: #f7f8fa;
   color: #3d4756;
   font-weight: 700;
-}
-
-.stats-table th {
-  height: 46px;
-}
-
-.stats-table .empty-row td {
-  height: 520px;
-  border-right: 0;
-  color: #b0bac8;
-  text-align: center;
 }
 
 .config-table {
