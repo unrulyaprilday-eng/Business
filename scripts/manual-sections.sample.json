@@ -1,0 +1,41 @@
+{
+  "backup_tag": "manual-sections",
+  "sections": [
+    {
+      "title": "会员提现设置",
+      "keep_existing_media": true,
+      "blocks": [
+        {
+          "type": "bullet",
+          "label": "页面说明",
+          "text": "会员提现设置用于维护会员提现规则、出款限制与审核相关参数。"
+        },
+        {
+          "type": "bullet",
+          "label": "图1主表",
+          "text": "图1通常用于查看当前提现规则、限额区间、手续费和状态。"
+        },
+        {
+          "type": "bullet",
+          "label": "图2修改弹窗",
+          "text": "图2通常用于维护提现金额范围、次数限制、手续费规则和状态开关。"
+        }
+      ]
+    },
+    {
+      "title": "会员充值配置",
+      "blocks": [
+        {
+          "type": "bullet",
+          "label": "页面说明",
+          "text": "会员充值配置用于维护会员充值入口、金额档位和前台展示规则。"
+        },
+        {
+          "type": "bullet",
+          "label": "图2修改弹窗",
+          "text": "修改弹窗用于维护充值金额范围、快捷金额、提示文案和状态。"
+        }
+      ]
+    }
+  ]
+}

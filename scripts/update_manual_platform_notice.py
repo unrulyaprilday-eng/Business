@@ -29,70 +29,22 @@ NOTICES = [
 ]
 
 
-SECTIONS = [
-    (
-        "页面说明",
-        {
-            "path": ASSET_DIR / "platform-notice-list.png",
-            "caption": "图：平台公告列表，用于查看平台、商户相关通知和站内消息。",
-            "width": 6.5,
-        },
-        [
-            "平台公告用于查看平台、系统和商户相关消息。商户可从顶部导航栏右侧的消息入口进入该页面，进入后按类型、标题和阅读状态筛选消息，并通过“查看”打开消息详情。",
-            "页面消息类型包含平台公告、通知、风控预警、站内信和短信。列表同时展示消息标题、发送时间、阅读状态和操作入口，便于商户快速处理重要公告、维护通知、资金预警和运营提醒。",
-        ],
-    ),
-    (
-        "筛选条件",
-        None,
-        [
-            "类型：用于按消息来源或业务类型筛选。可选择全部类型、平台公告、通知、短信、风控预警或站内信。排查某类消息时先选择类型，再结合状态缩小范围。",
-            "标题：支持输入标题关键字查询，例如结算规则、钱包服务、余额不足、短信签名等。输入后点击“搜索”，也可按回车触发查询。",
-            "状态：用于按未读或已读筛选。处理待办消息时建议选择“未读”，核对历史公告时可切换为“已读”或全部状态。",
-            "搜索：按当前筛选条件刷新列表。筛选无结果时，先检查标题关键字是否过窄，再重置条件重新查询。",
-            "重置：清空类型、标题和状态筛选，恢复展示全部消息列表。",
-            "全部已读：将当前消息标记为已读。点击前应确认未读公告已经查看，避免遗漏维护通知、资金预警或审核结果等重要内容。",
-        ],
-    ),
-    (
-        "列表字段",
-        None,
-        [
-            "类型：显示消息分类，例如平台公告、通知、风控预警、站内信、短信。类型可帮助商户判断消息优先级和处理责任。",
-            "标题：显示消息主题。未读消息在列表中以更醒目的文字展示，建议优先处理与结算、钱包维护、风控预警和审核结果相关的标题。",
-            "时间：显示消息发送时间，用于判断公告生效日期、维护窗口和消息处理时效。",
-            "状态：显示未读或已读。查看消息详情后，未读消息会转为已读；也可通过“全部已读”批量处理。",
-            "操作：点击“查看”打开消息详情，查看标题、类型和完整内容。查看后返回列表时，应根据消息内容继续到对应业务页面处理，例如结算中心、充值提现、权限管理或消息配置等。",
-        ],
-    ),
-    (
-        "查看详情",
-        None,
-        [
-            "查看单条消息：在目标消息行点击“查看”，系统打开公告详情弹窗，弹窗中展示消息标题、类型和正文内容。",
-            "阅读状态变化：未读消息打开详情后会自动标记为已读。若列表当前筛选为未读，查看后该消息可能从当前筛选结果中消失，这是正常的状态刷新结果。",
-            "关闭详情：阅读完成后点击弹窗右上角关闭按钮或遮罩区域返回列表。若消息涉及维护时间、资金预警、短信签名审核或后台版本发布，应在关闭前确认后续处理动作。",
-        ],
-    ),
-    (
-        "注意事项",
-        None,
-        [
-            "平台公告页是商户接收平台和系统消息的重要入口，尤其是钱包维护、结算规则调整、余额不足预警、权限菜单调整和短信审核结果，建议运营或管理员每日查看未读消息。",
-            "“全部已读”只改变阅读状态，不代表业务已处理。批量标记前应先筛选重要类型并逐条查看，避免把需要执行的任务误认为已完成。",
-            "若顶部导航栏右侧有未读消息提示，但进入页面后看不到记录，优先点击“重置”，再检查类型、标题和状态筛选是否限制了列表。",
-            "如果公告内容要求进入其他模块处理，应按公告中的业务方向跳转到对应页面操作，并在处理完成后回到平台公告页确认相关消息状态。",
-        ],
-    ),
-    (
-        "常见问题",
-        None,
-        [
-            "为什么点击“查看”后未读数量减少：打开详情会将该条消息标记为已读，未读数量随之减少；如果当前筛选条件为未读，列表也会同步移除该条消息。",
-            "为什么搜索不到某条公告：先点击“重置”恢复全部列表，再只输入标题中的短关键字查询；如果仍无结果，确认消息类型和状态是否选错。",
-            "收到风控预警后怎么处理：先查看详情确认预警原因，例如商户余额不足，再进入相关资金、提现或风控页面处理，处理完成后持续关注后续公告或站内信。",
-        ],
-    ),
+IMAGE_SECTION = {
+    "path": ASSET_DIR / "platform-notice-list.png",
+    "caption": "图：平台公告列表，用于查看平台、商户相关通知和站内消息。",
+    "width": 6.5,
+}
+
+INTRO = "平台公告用于查看平台发布的公告、通知、风控预警和站内消息，是后台接收重要提醒的统一入口。"
+
+SUMMARY_ITEMS = [
+    "类型：按平台公告、通知、短信、风控预警、站内信等分类筛选消息。",
+    "标题：输入标题关键字快速查询目标公告或通知。",
+    "状态：按未读、已读筛选消息，便于优先处理待查看内容。",
+    "搜索/重置：搜索按条件刷新列表，重置恢复全部消息。",
+    "全部已读：批量将当前消息标记为已读，建议先查看重要消息后再执行。",
+    "列表：展示类型、标题、时间、状态和操作入口，可快速判断消息优先级。",
+    "查看：打开消息详情查看完整内容；如消息要求进入其他页面处理，按提示到对应模块完成操作。",
 ]
 
 
@@ -301,23 +253,22 @@ def update_platform_notice_section():
         delete_paragraph(paragraph)
 
     current = anchor
-    for heading, image, bullets in SECTIONS:
-        current = insert_paragraph_after(current, style="Heading 4")
-        current.add_run(heading)
-        set_heading_style(current)
+    current = insert_paragraph_after(current, style="Normal")
+    current.add_run(INTRO)
+    for run in current.runs:
+        set_body_run_style(run)
 
-        if image:
-            if not image["path"].exists():
-                raise FileNotFoundError(image["path"])
-            current = insert_paragraph_after(current, style="Normal")
-            current.alignment = 1
-            current.add_run().add_picture(str(image["path"]), width=Inches(image["width"]))
-            current = insert_paragraph_after(current, image["caption"], style="Caption")
-            set_caption_style(current)
+    if not IMAGE_SECTION["path"].exists():
+        raise FileNotFoundError(IMAGE_SECTION["path"])
+    current = insert_paragraph_after(current, style="Normal")
+    current.alignment = 1
+    current.add_run().add_picture(str(IMAGE_SECTION["path"]), width=Inches(IMAGE_SECTION["width"]))
+    current = insert_paragraph_after(current, IMAGE_SECTION["caption"], style="Caption")
+    set_caption_style(current)
 
-        for bullet in bullets:
-            current = insert_paragraph_after(current, style="List Bullet")
-            add_label_text(current, bullet)
+    for bullet in SUMMARY_ITEMS:
+        current = insert_paragraph_after(current, style="List Bullet")
+        add_label_text(current, bullet)
 
     try:
         document.save(DOCX_PATH)
