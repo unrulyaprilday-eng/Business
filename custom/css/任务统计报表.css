@@ -1,0 +1,39 @@
+.task-report-page .report-table th:nth-child(2),
+.task-report-page .report-table td:nth-child(2) {
+  width: 168px;
+}
+
+.task-report-page .report-table th:nth-child(3),
+.task-report-page .report-table td:nth-child(3) {
+  width: 100px;
+}
+
+.task-report-page .report-table th:nth-child(4),
+.task-report-page .report-table td:nth-child(4) {
+  width: 152px;
+}
+
+.task-report-page .report-table th:nth-child(5),
+.task-report-page .report-table td:nth-child(5),
+.task-report-page .report-table th:nth-child(6),
+.task-report-page .report-table td:nth-child(6),
+.task-report-page .report-table th:nth-child(7),
+.task-report-page .report-table td:nth-child(7),
+.task-report-page .report-table th:nth-child(8),
+.task-report-page .report-table td:nth-child(8) {
+  width: 96px;
+}
+
+.task-report-page .report-table th:nth-child(9),
+.task-report-page .report-table td:nth-child(9) {
+  width: 92px;
+}
+
+.task-report-page .report-table th:nth-child(10),
+.task-report-page .report-table td:nth-child(10) {
+  width: 96px;
+}
+
+#taskStatNote {
+  color: #98a2b3;
+}

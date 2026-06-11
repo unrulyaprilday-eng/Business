@@ -389,27 +389,6 @@ $axure.loadDocument({
             "children": []
           },
           {
-            "id": "3e2vtw",
-            "pageName": "用户留存",
-            "type": "Wireframe",
-            "url": "用户留存.html",
-            "children": []
-          },
-          {
-            "id": "hev2wz",
-            "pageName": "用户分析",
-            "type": "Wireframe",
-            "url": "用户分析.html",
-            "children": []
-          },
-          {
-            "id": "spwyp6",
-            "pageName": "LTV",
-            "type": "Wireframe",
-            "url": "ltv.html",
-            "children": []
-          },
-          {
             "id": "7ld7lo",
             "pageName": "活动统计报表",
             "type": "Wireframe",
@@ -573,6 +552,21 @@ $axure.loadDocument({
             "type": "Wireframe",
             "pageName": "代理数据查询",
             "url": "代理数据查询.html",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "agent_placement_management",
+        "pageName": "投放管理",
+        "type": "Folder",
+        "url": "",
+        "children": [
+          {
+            "id": "ad_spend_data",
+            "pageName": "广告消耗数据",
+            "type": "Wireframe",
+            "url": "广告消耗数据.html",
             "children": []
           }
         ]

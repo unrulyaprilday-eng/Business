@@ -1,0 +1,63 @@
+.task-player-page .report-table th:nth-child(1),
+.task-player-page .report-table td:nth-child(1) {
+  width: 96px;
+}
+
+.task-player-page .report-table th:nth-child(2),
+.task-player-page .report-table td:nth-child(2) {
+  width: 156px;
+}
+
+.task-player-page .report-table th:nth-child(3),
+.task-player-page .report-table td:nth-child(3) {
+  width: 104px;
+}
+
+.task-player-page .report-table th:nth-child(4),
+.task-player-page .report-table td:nth-child(4) {
+  width: 100px;
+}
+
+.task-player-page .report-table th:nth-child(5),
+.task-player-page .report-table td:nth-child(5),
+.task-player-page .report-table th:nth-child(6),
+.task-player-page .report-table td:nth-child(6),
+.task-player-page .report-table th:nth-child(7),
+.task-player-page .report-table td:nth-child(7),
+.task-player-page .report-table th:nth-child(8),
+.task-player-page .report-table td:nth-child(8) {
+  width: 92px;
+}
+
+.task-player-page .report-table th:nth-child(9),
+.task-player-page .report-table td:nth-child(9) {
+  width: 148px;
+}
+
+.task-player-page .report-table th:nth-child(10),
+.task-player-page .report-table td:nth-child(10) {
+  width: 172px;
+}
+
+.task-member-dialog {
+  width: 760px;
+}
+
+.task-member-dialog .detail-grid dl {
+  grid-template-columns: 108px 1fr;
+}
+
+.task-member-dialog .detail-summary .summary-chip {
+  min-width: 128px;
+}
+
+.task-reward-dialog {
+  width: 820px;
+}
+
+.task-reward-dialog .claim-detail-table th:nth-child(2),
+.task-reward-dialog .claim-detail-table td:nth-child(2),
+.task-reward-dialog .claim-detail-table th:nth-child(3),
+.task-reward-dialog .claim-detail-table td:nth-child(3) {
+  width: 140px;
+}
