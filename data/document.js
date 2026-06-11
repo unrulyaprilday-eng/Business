@@ -226,13 +226,6 @@ $axure.loadDocument({
             "children": []
           },
           {
-            "id": "discount_data_report",
-            "pageName": "优惠数据报表",
-            "type": "Wireframe",
-            "url": "优惠数据报表.html",
-            "children": []
-          },
-          {
             "id": "ticket_center",
             "pageName": "票券中心",
             "type": "Wireframe",
