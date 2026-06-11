@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-06-11T09:25:19.996Z",
+  "savedAt": "2026-06-11T09:44:08.677Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -326,6 +326,13 @@
           "pageName": "综合数据报表",
           "type": "Wireframe",
           "url": "综合数据报表.html",
+          "children": []
+        },
+        {
+          "id": "placement_data_report",
+          "pageName": "投放数据报表",
+          "type": "Wireframe",
+          "url": "投放数据报表.html",
           "children": []
         },
         {

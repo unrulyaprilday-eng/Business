@@ -340,6 +340,13 @@ $axure.loadDocument({
             "children": []
           },
           {
+            "id": "placement_data_report",
+            "pageName": "投放数据报表",
+            "type": "Wireframe",
+            "url": "投放数据报表.html",
+            "children": []
+          },
+          {
             "id": "game_player_count_report",
             "pageName": "游戏人数据表",
             "type": "Wireframe",

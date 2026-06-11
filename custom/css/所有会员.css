@@ -1,3 +1,8 @@
+html,
+body {
+  background: #f3f5f7;
+}
+
 [hidden] { display: none !important; }
 body { margin: 0; color: #344054; font: 12px/1.45 "Microsoft YaHei", Arial, sans-serif; background: #f3f5f7; }
 button, input, select { font: inherit; }
@@ -41,7 +46,7 @@ thead .sticky-action { background: #f7f7f9; z-index: 3; }
 .operate-modal, .create-modal, .detail-modal { background: #fff; border: 1px solid #cfd5df; border-radius: 3px; box-shadow: 0 2px 10px rgba(0,0,0,.18); }
 .operate-modal { width: 360px; }
 .create-modal { width: 430px; }
-.operate-modal header, .create-modal header, .detail-modal > header { height: 38px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; border-bottom: 1px solid #d8dde5; color: #1f2d3d; }
+.operate-modal header, .create-modal header, .detail-modal > header { min-height: 38px; display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-bottom: 1px solid #d8dde5; color: #1f2d3d; box-sizing: border-box; }
 .operate-modal header button, .create-modal header button, .detail-modal > header button { border: 0; background: transparent; color: #5f6670; font-size: 25px; cursor: pointer; }
 .operate-form { position: relative; padding: 28px 36px 24px; }
 .operate-form label { display: flex; align-items: center; gap: 6px; }
@@ -60,10 +65,17 @@ thead .sticky-action { background: #f7f7f9; z-index: 3; }
 .create-form .required::first-letter { color: #ff4d4f; }
 .create-form input, .create-form select { width: 100%; height: 30px; }
 .form-tip { height: 28px; display: flex; align-items: center; padding: 0 12px; margin: 0 0 13px; border: 1px solid #f5d9ad; border-radius: 3px; background: #fff7eb; color: #fa8c16; }
+.form-tip.error { border-color: #f3b8bf; background: #fff2f3; color: #e5484d; }
 .password-field { position: relative; }
 .password-field input { padding-right: 34px; }
 .password-field i { position: absolute; right: 9px; top: 8px; width: 14px; height: 14px; border-radius: 50%; background: #b8c0cc; }
 .password-field i::before { content: ""; position: absolute; left: 4px; top: 4px; width: 6px; height: 6px; border-radius: 50%; background: #fff; }
+.create-result { padding: 34px 30px 28px; }
+.result-card { border: 1px solid #dce6f2; border-radius: 6px; background: #f8fbff; overflow: hidden; }
+.result-row { display: flex; align-items: center; justify-content: space-between; min-height: 52px; padding: 0 18px; border-bottom: 1px solid #e5edf7; gap: 18px; }
+.result-row:last-child { border-bottom: 0; }
+.result-row span { color: #667085; }
+.result-row strong { color: #101828; font-size: 14px; font-weight: 600; word-break: break-all; text-align: right; }
 .detail-modal { width: calc(100vw - 32px); height: calc(100vh - 28px); display: flex; flex-direction: column; align-self: flex-start; margin-top: 6px; }
 .detail-tabs { display: flex; gap: 24px; height: 49px; align-items: flex-end; padding: 0 16px; border-bottom: 1px solid #d8dde5; }
 .detail-tabs button { height: 36px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: #29394a; cursor: pointer; }

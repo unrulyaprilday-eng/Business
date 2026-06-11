@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>投放数据报表</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/投放数据报表/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/投放数据报表.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/投放数据报表/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return "resources/images/transparent.gif"; };
+      $axure.utils.getOtherPath = function() { return "resources/Other.html"; };
+      $axure.utils.getReloadPath = function() { return "resources/reload.html"; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell placement-report-page">
+        <form class="report-toolbar" id="reportToolbar">
+          <label class="date-range">
+            <span class="calendar-icon">▣</span>
+            <input type="text" value="2026-06-05" aria-label="开始日期"/>
+            <span>-</span>
+            <input type="text" value="2026-06-11" aria-label="结束日期"/>
+          </label>
+          <button class="primary-btn" type="button" id="searchBtn">搜索</button>
+          <button class="plain-btn" type="reset" id="resetBtn">重置</button>
+          <button class="primary-btn wide-btn" type="button" id="exportBtn">导出表格</button>
+        </form>
+
+        <div class="update-tip">
+          数据更新时间：实时；总计数据为下面查询数据总和，不做去重；未达到对应回收周期的 ROI 字段不展示数值，显示 --。
+        </div>
+
+        <section class="report-table-card">
+          <div class="table-scroll">
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th class="date-col">日期</th>
+                  <th class="money-col">
+                    <div class="th-label">
+                      <span>消耗金额<br/>(本地币)</span>
+                      <button class="tip-trigger" type="button" data-tip="根据录入的美金成本 USDT，按本地币汇率换算后展示。">?</button>
+                    </div>
+                  </th>
+                  <th>注册人数</th>
+                  <th>
+                    <div class="th-label">
+                      <span>当日注册充值人数</span>
+                      <button class="tip-trigger" type="button" data-tip="首充人数，非必须当日注册。比如 A 用户昨天注册、今天首次充值，则今天计入 1 人。">?</button>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-label">
+                      <span>新增充值人数</span>
+                      <button class="tip-trigger" type="button" data-tip="截止到当前时间的首充人数汇总。">?</button>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-label">
+                      <span>注册成本</span>
+                      <button class="tip-trigger" type="button" data-tip="消耗金额 / 当日注册人数。">?</button>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-label">
+                      <span>充值成本</span>
+                      <button class="tip-trigger" type="button" data-tip="消耗金额 / 新增充值人数。">?</button>
+                    </div>
+                  </th>
+                  <th>累计充值金额</th>
+                  <th>累计提现金额</th>
+                  <th>
+                    <div class="th-label">
+                      <span>当日ROI</span>
+                      <button class="tip-trigger" type="button" data-tip="当日ROI = （投放当日累计充值金额 - 投放当日累计提现金额）/ 消耗金额">?</button>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-label">
+                      <span>3日ROI</span>
+                      <button class="tip-trigger" type="button" data-tip="3日ROI = （投放后3日内累计充值金额 - 投放后3日内累计提现金额）/ 消耗金额">?</button>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-label">
+                      <span>7日ROI</span>
+                      <button class="tip-trigger" type="button" data-tip="7日ROI = （投放后7日内累计充值金额 - 投放后7日内累计提现金额）/ 消耗金额">?</button>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-label">
+                      <span>15日ROI</span>
+                      <button class="tip-trigger" type="button" data-tip="15日ROI = （投放后15日内累计充值金额 - 投放后15日内累计提现金额）/ 消耗金额">?</button>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-label">
+                      <span>30日ROI</span>
+                      <button class="tip-trigger" type="button" data-tip="30日ROI = （投放后30日内累计充值金额 - 投放后30日内累计提现金额）/ 消耗金额">?</button>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-label">
+                      <span>60日ROI</span>
+                      <button class="tip-trigger" type="button" data-tip="60日ROI = （投放后60日内累计充值金额 - 投放后60日内累计提现金额）/ 消耗金额">?</button>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-label">
+                      <span>90日ROI</span>
+                      <button class="tip-trigger" type="button" data-tip="90日ROI = （投放后90日内累计充值金额 - 投放后90日内累计提现金额）/ 消耗金额">?</button>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2026-06-11</td>
+                  <td>24,860.00</td>
+                  <td>426</td>
+                  <td>58</td>
+                  <td>81</td>
+                  <td>58.36</td>
+                  <td>306.91</td>
+                  <td>18,720.00</td>
+                  <td>6,340.00</td>
+                  <td class="negative">-49.56%</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                </tr>
+                <tr>
+                  <td>2026-06-10</td>
+                  <td>22,430.00</td>
+                  <td>398</td>
+                  <td>64</td>
+                  <td>92</td>
+                  <td>56.36</td>
+                  <td>243.80</td>
+                  <td>25,610.00</td>
+                  <td>8,930.00</td>
+                  <td>74.37%</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                </tr>
+                <tr>
+                  <td>2026-06-09</td>
+                  <td>20,780.00</td>
+                  <td>372</td>
+                  <td>51</td>
+                  <td>76</td>
+                  <td>55.86</td>
+                  <td>273.42</td>
+                  <td>21,480.00</td>
+                  <td>6,120.00</td>
+                  <td>73.92%</td>
+                  <td>124.35%</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                </tr>
+                <tr>
+                  <td>2026-06-08</td>
+                  <td>18,960.00</td>
+                  <td>351</td>
+                  <td>47</td>
+                  <td>69</td>
+                  <td>54.02</td>
+                  <td>274.78</td>
+                  <td>17,360.00</td>
+                  <td>5,540.00</td>
+                  <td>62.34%</td>
+                  <td>108.97%</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                </tr>
+                <tr>
+                  <td>2026-06-07</td>
+                  <td>17,440.00</td>
+                  <td>336</td>
+                  <td>44</td>
+                  <td>63</td>
+                  <td>51.90</td>
+                  <td>276.83</td>
+                  <td>15,830.00</td>
+                  <td>4,210.00</td>
+                  <td>66.17%</td>
+                  <td>112.58%</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                </tr>
+                <tr>
+                  <td>2026-06-06</td>
+                  <td>16,520.00</td>
+                  <td>318</td>
+                  <td>39</td>
+                  <td>59</td>
+                  <td>51.95</td>
+                  <td>280.00</td>
+                  <td>13,920.00</td>
+                  <td>3,940.00</td>
+                  <td>60.41%</td>
+                  <td>102.18%</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                </tr>
+                <tr>
+                  <td>2026-06-05</td>
+                  <td>15,680.00</td>
+                  <td>301</td>
+                  <td>36</td>
+                  <td>54</td>
+                  <td>52.09</td>
+                  <td>290.37</td>
+                  <td>12,840.00</td>
+                  <td>3,780.00</td>
+                  <td>57.78%</td>
+                  <td>96.54%</td>
+                  <td>142.17%</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                </tr>
+                <tr class="summary-row">
+                  <td>合计</td>
+                  <td>136,670.00</td>
+                  <td>2,502</td>
+                  <td>339</td>
+                  <td>494</td>
+                  <td>54.62</td>
+                  <td>276.66</td>
+                  <td>125,760.00</td>
+                  <td>38,860.00</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                  <td class="placeholder">--</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+    <script src="custom/js/投放数据报表.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

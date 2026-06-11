@@ -41,9 +41,6 @@
     <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
     <script src="data/document.js"></script>
     <script src="files/所有会员/data.js"></script>
-    <script src="custom/js/axure-custom-page-ready.js"></script>
-    <script src="resources/scripts/axure/ios.js"></script>
-    <script src="custom/js/所有会员.js"></script>
     <script type="text/javascript">
       $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
       $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
@@ -52,7 +49,7 @@
   </head>
   <body>
     <div id="base" class="">
-      <main class="custom-page-shell member-page">
+      <div class="custom-page-shell member-page">
         <header class="page-titlebar">
           <button class="title-icon" type="button">‹</button>
           <button class="title-icon" type="button">↻</button>
@@ -110,15 +107,22 @@
 
         <div class="modal-mask" data-modal="create" hidden>
           <div class="create-modal">
-            <header><strong>创建玩家</strong><button type="button" data-close>×</button></header>
-            <div class="create-form">
+            <header><strong data-create-title>创建玩家</strong><button type="button" data-close>×</button></header>
+            <div class="create-form" data-create-view="form">
               <div class="form-tip">用户名和手机号至少填写一项</div>
-              <label><span>用户名:</span><input placeholder="请输入用户名"></label>
-              <label><span>手机号:</span><input placeholder="请输入手机号"></label>
-              <label><span class="required">*密码:</span><div class="password-field"><input type="password" value="123456"><i></i></div></label>
-              <label><span>渠道:</span><select><option>请选择渠道</option></select></label>
+              <label><span>用户名:</span><input data-create-username placeholder="请输入用户名"></label>
+              <label><span>手机号:</span><input data-create-mobile placeholder="请输入手机号"></label>
+              <label><span class="required">*密码:</span><div class="password-field"><input data-create-password type="password" value="123456"><i></i></div></label>
+              <label><span>渠道:</span><select data-create-channel><option>请选择渠道</option></select></label>
             </div>
-            <footer><button class="btn" data-close type="button">取消</button><button class="btn primary" data-close type="button">提交</button></footer>
+            <div class="create-result" data-create-view="result" hidden>
+              <div class="result-card">
+                <div class="result-row"><span>账号</span><strong data-result-username>-</strong></div>
+                <div class="result-row"><span>密码</span><strong data-result-password>-</strong></div>
+              </div>
+            </div>
+            <footer data-create-footer="form"><button class="btn" data-close type="button">取消</button><button class="btn primary" data-create-submit type="button">提交</button></footer>
+            <footer data-create-footer="result" hidden><button class="btn primary" data-copy-account type="button">复制账号密码</button><button class="btn" data-close type="button">关闭</button></footer>
           </div>
         </div>
 
@@ -150,7 +154,10 @@
             <footer><button class="btn primary" data-close type="button">关闭</button></footer>
           </div>
         </div>
-      </main>
+      </div>
     </div>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/所有会员.js"></script>
   </body>
 </html>

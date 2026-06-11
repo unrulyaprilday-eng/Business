@@ -1,6 +1,6 @@
 $axure.loadCurrentPage({
-  "url": "所有会员.html",
-  "generationDate": new Date(1767225600000),
+  "url": "投放数据报表.html",
+  "generationDate": new Date(1779120000000),
   "defaultAdaptiveView": {
     "name": "",
     "cursor": 1,
@@ -13,7 +13,6 @@ $axure.loadCurrentPage({
   "sketchKeys": {
     "": "s0"
   },
-  "isCanvasEnabled": false,
   "variables": [
     "Login",
     "Skin",
@@ -25,9 +24,9 @@ $axure.loadCurrentPage({
     "HoverNum"
   ],
   "page": {
-    "packageId": "user_all_members",
+    "packageId": "placement_data_report",
     "type": "Axure:Page",
-    "name": "所有会员",
+    "name": "投放数据报表",
     "notes": {},
     "annotations": [],
     "style": {
@@ -77,7 +76,5 @@ $axure.loadCurrentPage({
     },
     "masters": {},
     "objectPaths": {}
-  },
-  "masters": {},
-  "objectPaths": {}
+  }
 });
