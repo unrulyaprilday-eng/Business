@@ -340,13 +340,6 @@ $axure.loadDocument({
             "children": []
           },
           {
-            "id": "placement_data_report",
-            "pageName": "投放数据报表",
-            "type": "Wireframe",
-            "url": "投放数据报表.html",
-            "children": []
-          },
-          {
             "id": "game_player_count_report",
             "pageName": "游戏人数据表",
             "type": "Wireframe",
@@ -574,6 +567,20 @@ $axure.loadDocument({
             "pageName": "广告消耗数据",
             "type": "Wireframe",
             "url": "广告消耗数据.html",
+            "children": []
+          },
+          {
+            "id": "placement_data_report",
+            "pageName": "投放数据报表",
+            "type": "Wireframe",
+            "url": "投放数据报表.html",
+            "children": []
+          },
+          {
+            "id": "channel_report",
+            "pageName": "渠道报表",
+            "type": "Wireframe",
+            "url": "渠道报表.html",
             "children": []
           }
         ]
