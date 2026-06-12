@@ -11,6 +11,7 @@
 - 用户消息如果以“操作手册”开头，默认表示本次任务只需要修改操作手册相关内容。
 - 除非用户在同一条需求里明确要求同步原型页面、菜单或静态资源，否则不要改 HTML、`data/document.js`、页面 CSS/JS 或其他原型文件。
 - 这类请求优先按操作手册流程执行：定位目标章节、更新 `B端后台操作手册.docx`、保留或新增所需手册图片资产，并做最小校验。
+- 用户如果明确说“按小节重建处理”，或表达“新增图片后更新文档内容”这类意思，固定按整节重建执行：图片先落盘到 `custom/assets/manual-*/`，`scripts/manual-*.json` 显式写 `module/image/caption/bullet` 顺序，`keep_existing_media` 视为 `false`，不要继续做保留原位补字。
 - 如果用户在聊天里直接发了截图，默认把该截图视为手册配图第一来源；不要先生成示意图、不要先截图 HTML、不要先讨论替代图源。
 - 手册配图固定优先级：当前会话原图 > 当前线程历史原图 > 本机 Codex 日志中的原图 > 用户重新上传/提供路径；只有用户没有提供聊天原图时，才考虑旧 Word 截图、本地 HTML 截图或 Pillow 示意图。
 - 对“使用聊天中的原图”这类需求，固定动作是：读取线程或日志中的 `data:image` -> 落盘到 `custom/assets/manual-模块名/` 或 `custom/assets/manual-模块名-original/` -> 核对图片内容 -> 让手册脚本引用该原图；不要每次临时换方案。
@@ -201,6 +202,7 @@ Windows 中文文件名与脚本省 token 规则：
 - 不用 PowerShell here-string 向 Node 传递包含中文文件名、中文正则、中文菜单名的脚本；这类脚本可能在进入 Node 前已变成 `????`。
 - 需要用脚本处理中文路径时，在脚本内部用 Unicode 码点或 `\uXXXX` 拼出中文字符串，例如 `String.fromCharCode(...)`，不要在命令文本里直接写中文。
 - 需要校验中文时，也不要在验证脚本里直接写中文正则；用 Unicode 转义生成目标词，再检查 `includes` 和码点。
+- 手册任务里如果只是定位 Word、章节或目标页面，固定优先用“最后一次成功方案”：脚本内部通过 `next(Path('.').glob('*.docx'))` 找 docx，并在 Python 内用 Unicode 码点/`chr(...)` 生成中文章节名；不要先用 shell 命令里的字面中文路径和标题试错。
 - 如果控制台输出 `????`，不要继续保存快照；先做码点验证。若目标字符串码点包含 `3f`，先修复文件，再执行 `.\restore-ai-menu.cmd save`。
 - 创建中文命名页面文件本身优先用 `apply_patch`，不要用 PowerShell/Node 脚本批量写中文文件名。
 - `.\restore-ai-menu.cmd save` 只能在菜单中文码点确认正常后执行；如果误保存了 `????` 快照，修复 `data/document.js` 后必须重新 save。
