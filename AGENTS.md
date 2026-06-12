@@ -108,6 +108,7 @@ files/页面名/styles.css
 - `page.name` 是页面名称。
 - 保留 Axure 常用 `variables`。
 - `diagram.objects` 至少为空数组。
+- 若页面需要通过 `index.html?id=...` 进入，不要把 `files/页面名/data.js` 写成过薄的极简壳；应直接对齐项目内稳定页面的完整最小结构，至少补齐 `defaultAdaptiveView`、`adaptiveViews`、`sketchKeys`、完整 `variables`、`page.annotations`、`page.style`、顶层 `masters/objectPaths`。
 
 ## 菜单与快照
 
