@@ -1,5 +1,42 @@
 (function () {
   function initVipSettings() {
+  var tabMeta = {
+    level: {
+      switchLabel: "",
+      enabled: true,
+      offHint: ""
+    },
+    keep: {
+      switchLabel: "VIP降级配置",
+      enabled: true,
+      onHint: "开启后，当前设置生效。",
+      offHint: "关闭后，VIP降级配置不生效。"
+    },
+    daily: {
+      switchLabel: "日俸禄",
+      enabled: true,
+      onHint: "开启后，当前设置生效。",
+      offHint: "关闭后，日俸禄设置不生效。"
+    },
+    weekly: {
+      switchLabel: "周俸禄",
+      enabled: true,
+      onHint: "开启后，当前设置生效。",
+      offHint: "关闭后，周俸禄设置不生效。"
+    },
+    monthly: {
+      switchLabel: "月俸禄",
+      enabled: true,
+      onHint: "开启后，当前设置生效。",
+      offHint: "关闭后，月俸禄设置不生效。"
+    },
+    whale: {
+      switchLabel: "",
+      enabled: true,
+      offHint: ""
+    }
+  };
+
   var tabs = {
     level: {
       headers: ["VIP等级", "累计充值", "打码条件", "奖励金额"],
@@ -125,8 +162,13 @@
   var saveBtn = document.querySelector('[data-action="save"]');
   var cancelBtn = document.querySelector('[data-action="cancel"]');
   var modal = document.querySelector('[data-dialog="cancel"]');
+  var toggleTitle = document.querySelector(".vip-toggle-title");
+  var toggleHint = document.querySelector(".vip-toggle-hint");
+  var toggleBtn = document.querySelector('[data-action="toggle-setting"]');
+  var toggleText = toggleBtn ? toggleBtn.querySelector(".feature-switch-text") : null;
+  var tablePanel = document.querySelector(".vip-table-panel");
 
-  if (!table || !editBtn || !saveBtn || !cancelBtn || !modal) {
+  if (!table || !editBtn || !saveBtn || !cancelBtn || !modal || !toggleTitle || !toggleHint || !toggleBtn || !toggleText || !tablePanel) {
     return;
   }
 
@@ -150,6 +192,23 @@
     });
 
     table.innerHTML = html + "</tbody>";
+    renderToggleBar();
+    tablePanel.classList.toggle("is-disabled", isSwitchableTab(activeTab) && !tabMeta[activeTab].enabled);
+  }
+
+  function renderToggleBar() {
+    if (!isSwitchableTab(activeTab)) {
+      toggleBtn.parentElement.hidden = true;
+      return;
+    }
+
+    var meta = tabMeta[activeTab];
+    toggleBtn.parentElement.hidden = false;
+    toggleTitle.textContent = meta.switchLabel;
+    toggleHint.textContent = meta.enabled ? (meta.onHint || "开启后，当前设置生效。") : meta.offHint;
+    toggleBtn.classList.toggle("is-on", meta.enabled);
+    toggleBtn.setAttribute("aria-checked", meta.enabled ? "true" : "false");
+    toggleText.textContent = meta.enabled ? "已开启" : "已关闭";
   }
 
   function getEditableIndexes(data) {
@@ -161,6 +220,10 @@
 
   function isNumeric(value) {
     return typeof value === "number" || /^\d+$/.test(String(value));
+  }
+
+  function isSwitchableTab(tabKey) {
+    return !!tabMeta[tabKey] && !!tabMeta[tabKey].switchLabel;
   }
 
   function setEditing(next) {
@@ -227,6 +290,15 @@
 
   editBtn.addEventListener("click", function () {
     setEditing(true);
+  });
+
+  toggleBtn.addEventListener("click", function () {
+    if (!isSwitchableTab(activeTab)) {
+      return;
+    }
+    tabMeta[activeTab].enabled = !tabMeta[activeTab].enabled;
+    renderToggleBar();
+    tablePanel.classList.toggle("is-disabled", !tabMeta[activeTab].enabled);
   });
 
   saveBtn.addEventListener("click", function () {

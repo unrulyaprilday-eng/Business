@@ -62,6 +62,16 @@
         </nav>
         <div class="vip-actionbar">
           <button class="btn btn-primary" type="button" data-action="edit">✎ 编辑</button>
+          <div class="vip-inline-toggle" aria-label="当前配置状态" hidden>
+            <span class="vip-toggle-title">配置开关</span>
+            <button class="feature-switch is-on" type="button" role="switch" aria-checked="true" data-action="toggle-setting" aria-label="切换当前配置状态">
+              <span class="feature-switch-track">
+                <span class="feature-switch-thumb"></span>
+              </span>
+              <span class="feature-switch-text">已开启</span>
+            </button>
+            <span class="vip-toggle-hint">开启后，当前设置生效。</span>
+          </div>
           <button class="btn btn-primary" type="button" data-action="save" hidden>▣ 保存</button>
           <button class="btn btn-default" type="button" data-action="cancel" hidden>× 取消</button>
         </div>

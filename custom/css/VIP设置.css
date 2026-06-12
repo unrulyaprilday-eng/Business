@@ -12,6 +12,8 @@ body {
 }
 
 .vip-settings-page {
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   min-height: 100vh;
   padding: 0 8px 8px;
@@ -28,6 +30,71 @@ body {
   border-bottom: 1px solid #d7dee9;
   box-sizing: border-box;
   overflow-x: auto;
+}
+
+.vip-toggle-title {
+  color: #1f2f44;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.vip-toggle-hint {
+  color: #728196;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.feature-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 92px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #2f3c4f;
+  font-size: 12px;
+  cursor: default;
+  flex: 0 0 auto;
+}
+
+.feature-switch-track {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  background: #c9d3e1;
+  transition: background 0.2s ease;
+}
+
+.feature-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(31, 47, 68, 0.22);
+  transition: transform 0.2s ease;
+}
+
+.feature-switch.is-on .feature-switch-track {
+  background: #2f8ff0;
+}
+
+.feature-switch.is-on .feature-switch-thumb {
+  transform: translateX(18px);
+}
+
+.feature-switch-text {
+  color: #5a6a7f;
+  white-space: nowrap;
+}
+
+.feature-switch.is-on .feature-switch-text {
+  color: #1787ff;
 }
 
 .tab-btn {
@@ -60,10 +127,18 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
   min-height: 46px;
   padding: 8px 12px;
   background: #fff;
   box-sizing: border-box;
+}
+
+.vip-inline-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 30px;
 }
 
 .btn {
@@ -94,13 +169,19 @@ body {
 }
 
 .vip-table-panel {
-  height: calc(100vh - 96px);
+  flex: 1 1 auto;
+  height: auto;
   min-height: 420px;
   overflow-y: scroll;
   overflow-x: hidden;
   background: #fff;
   border: 1px solid #e2e7ef;
   box-sizing: border-box;
+  transition: opacity 0.2s ease;
+}
+
+.vip-table-panel.is-disabled {
+  opacity: 0.58;
 }
 
 .vip-table {
@@ -278,6 +359,10 @@ body {
   .vip-tabs {
     gap: 16px;
     padding: 0 12px;
+  }
+
+  .vip-inline-toggle {
+    flex-wrap: wrap;
   }
 
   .vip-table th,

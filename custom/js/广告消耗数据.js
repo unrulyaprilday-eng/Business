@@ -152,8 +152,7 @@
       row.querySelector(".remark-cell").textContent = payload.remark || "--";
       row.querySelector(".user-cell").textContent = payload.user;
       row.querySelector(".time-cell").textContent = payload.time;
-      row.querySelector("td:nth-child(10)").innerHTML = '<button class="link-btn" type="button" data-history="' + row.getAttribute("data-row-id") + '">查看记录</button>';
-      row.querySelector("td:nth-child(11)").innerHTML = '<button class="link-btn" type="button" data-entry-action="edit" data-row-id="' + row.getAttribute("data-row-id") + '">修改金额</button>';
+      row.querySelector("td:nth-child(10)").innerHTML = '<button class="link-btn" type="button" data-entry-action="edit" data-row-id="' + row.getAttribute("data-row-id") + '">修改金额</button>';
     }
 
     function rowMarkup(rowId, payload) {
@@ -183,7 +182,6 @@
         '<td class="remark-cell">' + (payload.remark || "--") + "</td>",
         '<td class="user-cell">' + payload.user + "</td>",
         '<td class="time-cell">' + payload.time + "</td>",
-        '<td><button class="link-btn" type="button" data-history="' + rowId + '">查看记录</button></td>',
         '<td><button class="link-btn" type="button" data-entry-action="edit" data-row-id="' + rowId + '">修改金额</button></td>',
         "</tr>"
       ].join("");
