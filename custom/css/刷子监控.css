@@ -18,7 +18,8 @@ body {
 
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
 }
 
@@ -163,6 +164,14 @@ button {
   table-layout: fixed;
 }
 
+.monitor-table {
+  min-width: 1380px;
+}
+
+.record-table {
+  min-width: 1560px;
+}
+
 .monitor-table th,
 .monitor-table td,
 .record-table th,
@@ -184,18 +193,13 @@ button {
 }
 
 .monitor-table th:nth-child(1) { width: 7%; }
-.monitor-table th:nth-child(2) { width: 16%; }
-.monitor-table th:nth-child(3) { width: 8%; }
-.monitor-table th:nth-child(4) { width: 17%; }
-.monitor-table th:nth-child(5) { width: 7%; }
-.monitor-table th:nth-child(6) { width: 9%; }
+.monitor-table th:nth-child(2) { width: 17%; }
+.monitor-table th:nth-child(3) { width: 10%; }
+.monitor-table th:nth-child(4) { width: 21%; }
+.monitor-table th:nth-child(5) { width: 8%; }
+.monitor-table th:nth-child(6) { width: 12%; }
 .monitor-table th:nth-child(7) { width: 12%; }
-.monitor-table th:nth-child(8) { width: 12%; }
-.monitor-table th:nth-child(9) { width: 12%; }
-
-.record-table {
-  min-width: 1560px;
-}
+.monitor-table th:nth-child(8) { width: 13%; }
 
 .record-table th:nth-child(1) { width: 28px; }
 .record-table th:nth-child(2) { width: 8%; }
@@ -211,6 +215,15 @@ button {
 .record-table th:nth-child(12) { width: 11%; }
 .record-table th:nth-child(13) { width: 11%; }
 .record-table th:nth-child(14) { width: 8%; }
+
+.monitor-table td.account-column,
+.monitor-table td:last-child {
+  white-space: normal;
+}
+
+.monitor-table td.account-column {
+  padding: 8px 10px;
+}
 
 .tag {
   display: inline-flex;
@@ -231,11 +244,30 @@ button {
 }
 
 .account-cell {
-  display: inline-flex;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.account-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 56px);
+  grid-template-rows: repeat(2, 18px);
+  gap: 4px 8px;
   align-items: center;
-  justify-content: center;
-  gap: 4px;
-  max-width: 100%;
+  justify-content: start;
+  max-width: 184px;
+}
+
+.account-id,
+.more-accounts {
+  width: 56px;
+  height: 18px;
+  line-height: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
 }
 
 .account-id {
@@ -249,16 +281,25 @@ button {
   padding: 0;
 }
 
+.action-group {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 68px;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+}
+
 .danger-link {
   border: 0;
   background: transparent;
   color: #ff4d4f;
   padding: 0;
   white-space: nowrap;
-}
-
-.more-accounts {
-  margin-left: 2px;
+  width: 68px;
+  text-align: center;
+  line-height: 18px;
 }
 
 .pager {
@@ -292,7 +333,7 @@ button {
 .account-popover {
   position: fixed;
   z-index: 20;
-  width: 280px;
+  width: 300px;
   max-height: 260px;
   padding: 10px;
   overflow: auto;
@@ -333,11 +374,15 @@ button {
 }
 
 .rule-modal,
-.manual-modal {
-  width: 710px;
+.manual-modal,
+.blacklist-modal {
   border-radius: 3px;
   background: #fff;
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+}
+
+.rule-modal {
+  width: 710px;
 }
 
 .manual-modal {
@@ -345,8 +390,14 @@ button {
   max-width: calc(100vw - 48px);
 }
 
+.blacklist-modal {
+  width: 480px;
+  max-width: calc(100vw - 48px);
+}
+
 .rule-modal header,
-.manual-modal header {
+.manual-modal header,
+.blacklist-modal header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -356,7 +407,8 @@ button {
 }
 
 .rule-modal h2,
-.manual-modal h2 {
+.manual-modal h2,
+.blacklist-modal h2 {
   margin: 0;
   font-size: 14px;
   font-weight: 600;
@@ -448,37 +500,45 @@ button {
 }
 
 .rule-modal footer,
-.manual-modal footer {
+.manual-modal footer,
+.blacklist-modal footer {
   display: flex;
   justify-content: flex-end;
   gap: 16px;
   padding: 0 14px 12px;
 }
 
-.manual-form {
+.manual-form,
+.blacklist-form {
   padding: 24px 30px 14px 40px;
 }
 
-.manual-form label {
+.manual-form label,
+.blacklist-form label {
   display: grid;
-  grid-template-columns: 70px minmax(0, 1fr);
+  grid-template-columns: 86px minmax(0, 1fr);
   align-items: center;
   margin-bottom: 14px;
 }
 
-.manual-form span {
+.manual-form span,
+.blacklist-form span {
   color: #4e5d70;
   text-align: right;
   padding-right: 8px;
 }
 
-.manual-form em {
+.manual-form em,
+.blacklist-form em {
   color: #ff4d4f;
   font-style: normal;
 }
 
 .manual-form select,
-.manual-form textarea {
+.manual-form textarea,
+.blacklist-form select,
+.blacklist-form input,
+.blacklist-form textarea {
   width: 100%;
   border: 1px solid #d8dee8;
   border-radius: 4px;
@@ -486,21 +546,50 @@ button {
   background: #fff;
 }
 
-.manual-form select {
+.manual-form select,
+.blacklist-form select,
+.blacklist-form input {
   height: 31px;
   padding: 0 8px;
 }
 
-.manual-form textarea {
+.manual-form textarea,
+.blacklist-form textarea {
   height: 69px;
   padding: 8px;
   resize: none;
 }
 
-.manual-form .textarea-row {
+.manual-form .textarea-row,
+.blacklist-form .textarea-row,
+.blacklist-form .checks-row {
   align-items: start;
 }
 
-.manual-form .textarea-row span {
+.manual-form .textarea-row span,
+.blacklist-form .textarea-row span,
+.blacklist-form .checks-row span {
   padding-top: 8px;
+}
+
+.check-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  padding-top: 6px;
+}
+
+.check-list label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  color: #4e5d70;
+}
+
+.check-list input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: #409eff;
 }

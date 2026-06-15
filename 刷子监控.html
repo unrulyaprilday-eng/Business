@@ -101,9 +101,8 @@
                   <th>风险类型</th>
                   <th>风险值</th>
                   <th>玩家ID</th>
-                  <th>关联账号</th>
+                  <th>账号</th>
                   <th>同关联数量</th>
-                  <th>触发方式</th>
                   <th>创建时间</th>
                   <th>更新时间</th>
                   <th>操作</th>
@@ -139,7 +138,7 @@
             <input value="1" readonly/>
             <span>/1</span><span>&gt;</span><span>&gt;&gt;</span><span>&gt;|</span>
             <select><option>20条/页</option></select>
-            <span>共 11 条记录</span>
+            <span id="tableSummary">共 11 条记录</span>
           </div>
         </section>
 
@@ -172,9 +171,9 @@
           </div>
         </div>
 
-        <div class="modal-mask" id="manualModal" hidden>
-          <div class="manual-modal" role="dialog" aria-modal="true" aria-labelledby="manualModalTitle">
-            <header>
+          <div class="modal-mask" id="manualModal" hidden>
+            <div class="manual-modal" role="dialog" aria-modal="true" aria-labelledby="manualModalTitle">
+              <header>
               <h2 id="manualModalTitle">手动风控处罚</h2>
               <button class="icon-close" data-close-manual type="button" aria-label="关闭">×</button>
             </header>
@@ -182,7 +181,7 @@
               <label>
                 <span><em>*</em>处罚范围:</span>
                 <select id="manualScope">
-                  <option>只处罚超出范围的账号</option>
+                  <option>只处罚超出范围账号</option>
                   <option>全部处罚</option>
                 </select>
               </label>
@@ -204,6 +203,45 @@
             <footer>
               <button class="btn" data-close-manual type="button">取消</button>
               <button class="btn primary" data-close-manual type="button">提交</button>
+            </footer>
+          </div>
+        </div>
+
+        <div class="modal-mask" id="blacklistModal" hidden>
+          <div class="blacklist-modal" role="dialog" aria-modal="true" aria-labelledby="blacklistModalTitle">
+            <header>
+              <h2 id="blacklistModalTitle">IP拉黑</h2>
+              <button class="icon-close" data-close-blacklist type="button" aria-label="关闭">×</button>
+            </header>
+            <div class="blacklist-form">
+              <label>
+                <span><em>*</em>拉黑类型:</span>
+                <select id="blacklistKind">
+                  <option value="ip">IP</option>
+                  <option value="device">设备号</option>
+                </select>
+              </label>
+              <label>
+                <span><em>*</em>黑名单值:</span>
+                <input id="blacklistValue" type="text" placeholder="请输入黑名单值"/>
+              </label>
+              <label class="checks-row">
+                <span>限制类型:</span>
+                <div class="check-list">
+                  <label><input type="checkbox" checked/>冻结</label>
+                  <label><input type="checkbox"/>限制领取优惠</label>
+                  <label><input type="checkbox"/>限制提现</label>
+                  <label><input type="checkbox"/>禁止注册</label>
+                </div>
+              </label>
+              <label class="textarea-row">
+                <span>备注:</span>
+                <textarea placeholder="请输入备注"></textarea>
+              </label>
+            </div>
+            <footer>
+              <button class="btn" data-close-blacklist type="button">取消</button>
+              <button class="btn primary" data-close-blacklist type="button">提交</button>
             </footer>
           </div>
         </div>

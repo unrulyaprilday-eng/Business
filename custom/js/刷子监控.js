@@ -13,27 +13,53 @@
     { type: "设备", kind: "device", value: "25770014-3731-452f-ac0b-d187c517b175", playerId: "P112509", accounts: ["P112509"], count: 1, action: "限制领取优惠", created: "2026-04-24 17:51:52", updated: "2026-04-24 17:51:52" }
   ];
 
-  var defaultRules = [
-    { type: "同IP", trigger: 4, limit: 100, scope: "只处罚超出范围的账号", method: "限制提现" },
-    { type: "同设备号", trigger: 4, limit: 100, scope: "只处罚超出范围的账号", method: "限制领取优惠" },
-    { type: "同提现名称", trigger: 2, limit: "", scope: "只处罚超出范围的账号", method: "冻结账户" }
+  var ipFallbacks = ["50.7.250.50", "50.7.250.106", "50.7.250.50", "45.149.92.7", "57.181.37.232", "50.7.158.235", "154.12.53.157", "56.155.114.134", "66.90.99.234", "66.90.99.210", "154.12.53.157"];
+  var deviceFallbacks = [
+    "4a3bb409-dc95-4d9d-ad8a-4a8fdbfe24e9",
+    "b78cca14-053c-4a9d-8c97-fd6b2afbcecf",
+    "ddbce991-f5f3-4be2-b5cf-a4d0a6e32190",
+    "f3827459-227c-4dd2-bbb8-d91ed8c1ab56",
+    "450c7802536c619d24fa9af872154145",
+    "8330e27a-ad18-4b39-b511-4ca49c09a920",
+    "02b5132c-6aa4-45d1-9c75-5818ae226a31",
+    "d221fd4a-a2dc-4601-a96f-b8091b4c9834",
+    "a4435916-c5aa-4c9f-b2d7-b3a4c0e92a19",
+    "bb942f3f-636c-4d05-a5f4-12ce1a2789d5",
+    "25770014-3731-452f-ac0b-d187c517b175"
   ];
 
-  var scopeOptions = ["只处罚超出范围的账号", "全部处罚"];
+  rows = rows.map(function (row, index) {
+    return Object.assign({}, row, {
+      ipValue: row.kind === "ip" ? row.value : ipFallbacks[index],
+      deviceValue: row.kind === "device" ? row.value : deviceFallbacks[index]
+    });
+  });
+
+  var defaultRules = [
+    { type: "同IP", trigger: 4, limit: 100, scope: "只处罚超出范围账号", method: "限制提现" },
+    { type: "同设备号", trigger: 4, limit: 100, scope: "只处罚超出范围账号", method: "限制领取优惠" },
+    { type: "同提现名称", trigger: 2, limit: "", scope: "只处罚超出范围账号", method: "冻结账户" }
+  ];
+
+  var scopeOptions = ["只处罚超出范围账号", "全部处罚"];
   var methodOptions = ["正常", "冻结账户", "限制领取优惠", "限制提现", "禁止注册"];
   var records = [
-    { triggerUser: "123ooo", punishId: "1010010307", punishUser: "123ooo", type: "设备", kind: "device", value: "4a3bb409-dc95-4d9...", count: 15, action: "限制领取优惠", scope: "只处罚超出范围的...", operator: "system", remark: "bot spy auto", created: "2026-05-28 15:13:31", updated: "2026-05-28 15:13:31" },
-    { triggerUser: "123ooo", punishId: "1010010307", punishUser: "123ooo", type: "IP", kind: "ip", value: "50.7.250.106", count: 5, action: "限制提现", scope: "只处罚超出范围的...", operator: "system", remark: "bot spy auto", created: "2026-05-28 15:13:31", updated: "2026-05-28 15:13:31" },
-    { triggerUser: "123hhh", punishId: "1010010185", punishUser: "123hhh", type: "设备", kind: "device", value: "4a3bb409-dc95-4d9...", count: 14, action: "限制领取优惠", scope: "只处罚超出范围的...", operator: "system", remark: "bot spy auto", created: "2026-05-28 15:07:05", updated: "2026-05-28 15:07:05" },
-    { triggerUser: "123hhh", punishId: "1010010185", punishUser: "123hhh", type: "IP", kind: "ip", value: "50.7.250.106", count: 4, action: "限制提现", scope: "只处罚超出范围的...", operator: "system", remark: "bot spy auto", created: "2026-05-28 15:07:05", updated: "2026-05-28 15:07:05" },
-    { triggerUser: "123ppp", punishId: "1010010309", punishUser: "123ppp", type: "设备", kind: "device", value: "4a3bb409-dc95-4d9...", count: 13, action: "限制领取优惠", scope: "只处罚超出范围的...", operator: "system", remark: "bot spy auto", created: "2026-05-28 14:37:34", updated: "2026-05-28 14:37:34" },
-    { triggerUser: "123fff", punishId: "1010010181", punishUser: "123fff", type: "设备", kind: "device", value: "b78cca14-053c-4a9d...", count: 7, action: "限制领取优惠", scope: "只处罚超出范围的...", operator: "system", remark: "bot spy auto", created: "2026-05-28 14:31:34", updated: "2026-05-28 14:31:34" },
-    { triggerUser: "aaa147", punishId: "1010010337", punishUser: "aaa147", type: "设备", kind: "device", value: "4a3bb409-dc95-4d9...", count: 12, action: "限制领取优惠", scope: "只处罚超出范围的...", operator: "system", remark: "bot spy auto", created: "2026-05-28 13:40:57", updated: "2026-05-28 13:40:57" },
-    { triggerUser: "aaa147", punishId: "1010010337", punishUser: "aaa147", type: "IP", kind: "ip", value: "50.7.250.50", count: 5, action: "限制提现", scope: "只处罚超出范围的...", operator: "system", remark: "bot spy auto", created: "2026-05-28 13:40:57", updated: "2026-05-28 13:40:57" },
-    { triggerUser: "123ooo", punishId: "1010010307", punishUser: "123ooo", type: "IP", kind: "ip", value: "45.149.92.7", count: 15, action: "限制提现", scope: "只处罚超出范围的...", operator: "system", remark: "bot spy auto", created: "2026-05-27 18:58:50", updated: "2026-05-27 18:58:50" },
-    { triggerUser: "123jjj", punishId: "1010010186", punishUser: "123jjj", type: "设备", kind: "device", value: "4a3bb409-dc95-4d9...", count: 11, action: "限制领取优惠", scope: "只处罚超出范围的...", operator: "system", remark: "bot spy auto", created: "2026-05-27 17:58:17", updated: "2026-05-27 17:58:17" },
-    { triggerUser: "123jjj", punishId: "1010010186", punishUser: "123jjj", type: "IP", kind: "ip", value: "45.149.92.7", count: 14, action: "限制提现", scope: "只处罚超出范围的...", operator: "system", remark: "bot spy auto", created: "2026-05-27 17:54:40", updated: "2026-05-27 17:54:40" }
+    { triggerUser: "123ooo", punishId: "1010010307", punishUser: "123ooo", type: "设备", kind: "device", value: "4a3bb409-dc95-4d9...", count: 15, action: "限制领取优惠", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-28 15:13:31", updated: "2026-05-28 15:13:31" },
+    { triggerUser: "123ooo", punishId: "1010010307", punishUser: "123ooo", type: "IP", kind: "ip", value: "50.7.250.106", count: 5, action: "限制提现", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-28 15:13:31", updated: "2026-05-28 15:13:31" },
+    { triggerUser: "123hhh", punishId: "1010010185", punishUser: "123hhh", type: "设备", kind: "device", value: "4a3bb409-dc95-4d9...", count: 14, action: "限制领取优惠", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-28 15:07:05", updated: "2026-05-28 15:07:05" },
+    { triggerUser: "123hhh", punishId: "1010010185", punishUser: "123hhh", type: "IP", kind: "ip", value: "50.7.250.106", count: 4, action: "限制提现", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-28 15:07:05", updated: "2026-05-28 15:07:05" },
+    { triggerUser: "123ppp", punishId: "1010010309", punishUser: "123ppp", type: "设备", kind: "device", value: "4a3bb409-dc95-4d9...", count: 13, action: "限制领取优惠", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-28 14:37:34", updated: "2026-05-28 14:37:34" },
+    { triggerUser: "123fff", punishId: "1010010181", punishUser: "123fff", type: "设备", kind: "device", value: "b78cca14-053c-4a9d...", count: 7, action: "限制领取优惠", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-28 14:31:34", updated: "2026-05-28 14:31:34" },
+    { triggerUser: "aaa147", punishId: "1010010337", punishUser: "aaa147", type: "设备", kind: "device", value: "4a3bb409-dc95-4d9...", count: 12, action: "限制领取优惠", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-28 13:40:57", updated: "2026-05-28 13:40:57" },
+    { triggerUser: "aaa147", punishId: "1010010337", punishUser: "aaa147", type: "IP", kind: "ip", value: "50.7.250.50", count: 5, action: "限制提现", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-28 13:40:57", updated: "2026-05-28 13:40:57" },
+    { triggerUser: "123ooo", punishId: "1010010307", punishUser: "123ooo", type: "IP", kind: "ip", value: "45.149.92.7", count: 15, action: "限制提现", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-27 18:58:50", updated: "2026-05-27 18:58:50" },
+    { triggerUser: "123jjj", punishId: "1010010186", punishUser: "123jjj", type: "设备", kind: "device", value: "4a3bb409-dc95-4d9...", count: 11, action: "限制领取优惠", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-27 17:58:17", updated: "2026-05-27 17:58:17" },
+    { triggerUser: "123jjj", punishId: "1010010186", punishUser: "123jjj", type: "IP", kind: "ip", value: "45.149.92.7", count: 14, action: "限制提现", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-27 17:54:40", updated: "2026-05-27 17:54:40" }
   ];
+
+  var monitorRows = rows.filter(function (row) {
+    return row.accounts.length > 1;
+  });
 
   function $(selector, root) {
     return (root || document).querySelector(selector);
@@ -50,29 +76,44 @@
   }
 
   function renderAccounts(row, index) {
-    var firstTen = row.accounts.slice(0, 10);
-    var content = firstTen.map(function (id) {
-      return '<span class="account-id">' + escapeHtml(id) + "</span>";
-    }).join("<span>,</span>");
-    if (row.accounts.length > 10) {
-      content += '<button class="more-accounts" data-accounts="' + index + '" type="button">+' + (row.accounts.length - 10) + "</button>";
-    }
-    return '<div class="account-cell">' + content + "</div>";
+    var visibleAccounts = row.accounts.slice(0, 5);
+    return [
+      '<div class="account-cell">',
+      '<div class="account-grid">',
+      visibleAccounts.map(function (account) {
+        return '<span class="account-id">' + escapeHtml(account) + "</span>";
+      }).join(""),
+      row.accounts.length > 5
+        ? '<button class="more-accounts" data-accounts="' + index + '" type="button">...</button>'
+        : "",
+      "</div>",
+      "</div>"
+    ].join("");
+  }
+
+  function renderMonitorActions(row, index) {
+    var blacklistLabel = row.kind === "ip" ? "IP拉黑" : "设备拉黑";
+    var blacklistKind = row.kind === "ip" ? "ip" : "device";
+    return [
+      '<div class="action-group">',
+      '<button class="danger-link" data-blacklist="' + blacklistKind + '" data-blacklist-row="' + index + '" type="button">' + blacklistLabel + "</button>",
+      '<button class="danger-link" data-account-action="' + index + '" type="button">手动风控处罚</button>',
+      "</div>"
+    ].join("");
   }
 
   function renderRows() {
-    $("#monitorRows").innerHTML = rows.map(function (row, index) {
+    $("#monitorRows").innerHTML = monitorRows.map(function (row, index) {
       return [
         "<tr>",
         '<td><span class="tag ' + row.kind + '">' + row.type + "</span></td>",
         "<td>" + escapeHtml(row.value) + "</td>",
-        "<td>" + row.playerId + "</td>",
-        "<td>" + renderAccounts(row, index) + "</td>",
-        "<td>" + row.count + "</td>",
-        "<td>" + row.action + "</td>",
+        "<td>" + escapeHtml(row.playerId) + "</td>",
+        '<td class="account-column">' + renderAccounts(row, index) + "</td>",
+        "<td>" + row.accounts.length + "</td>",
         "<td>" + row.created + "</td>",
         "<td>" + row.updated + "</td>",
-        '<td><button class="danger-link" data-manual-punish="' + index + '" type="button">手动风控处罚</button></td>',
+        "<td>" + renderMonitorActions(row, index) + "</td>",
         "</tr>"
       ].join("");
     }).join("");
@@ -101,6 +142,14 @@
     }).join("");
   }
 
+  function updateSummary(tab) {
+    var summary = $("#tableSummary");
+    if (!summary) return;
+    summary.textContent = tab === "records"
+      ? "共 " + records.length + " 条记录"
+      : "共 " + monitorRows.length + " 条记录";
+  }
+
   function switchTab(tab) {
     $all(".tab-btn").forEach(function (button) {
       button.classList.toggle("active", button.getAttribute("data-tab") === tab);
@@ -110,6 +159,7 @@
     $("#monitorTable").hidden = isRecords;
     $("#recordFilters").hidden = !isRecords;
     $("#recordTable").hidden = !isRecords;
+    updateSummary(tab);
   }
 
   function numberStepper(value) {
@@ -151,6 +201,10 @@
     $("#manualModal").hidden = true;
   }
 
+  function closeBlacklistModal() {
+    $("#blacklistModal").hidden = true;
+  }
+
   function defaultMethodFor(row) {
     var ruleType = row.kind === "ip" ? "同IP" : row.type === "设备" ? "同设备号" : "同提现名称";
     var rule = defaultRules.find(function (item) {
@@ -159,20 +213,33 @@
     return rule ? rule.method : row.action;
   }
 
-  function openManualModal(row) {
-    $("#manualScope").value = row.count > 1 ? "只处罚超出范围的账号" : "全部处罚";
+  function openAccountModal(title, row) {
+    $("#manualModalTitle").textContent = title;
+    $("#manualScope").value = row.count > 1 ? "只处罚超出范围账号" : "全部处罚";
     $("#manualMethod").value = defaultMethodFor(row);
     $("#manualModal").hidden = false;
   }
 
+  function openBlacklistModal(row, kind) {
+    $("#blacklistModalTitle").textContent = kind === "ip" ? "IP拉黑" : "设备拉黑";
+    $("#blacklistKind").value = kind;
+    $("#blacklistKind").disabled = true;
+    $("#blacklistValue").value = kind === "ip" ? row.ipValue : row.deviceValue;
+    $("#blacklistModal textarea").value = "";
+    $all("#blacklistModal input[type='checkbox']").forEach(function (checkbox, index) {
+      checkbox.checked = index === 0;
+    });
+    $("#blacklistModal").hidden = false;
+  }
+
   function showAccounts(button) {
-    var row = rows[Number(button.getAttribute("data-accounts"))];
+    var row = monitorRows[Number(button.getAttribute("data-accounts"))];
     var rect = button.getBoundingClientRect();
     var popover = $("#accountPopover");
-    popover.innerHTML = '<h3>关联账号</h3><div class="account-list">' + row.accounts.map(function (id) {
+    popover.innerHTML = '<h3>账号列表</h3><div class="account-list">' + row.accounts.map(function (id) {
       return "<span>" + escapeHtml(id) + "</span>";
     }).join("") + "</div>";
-    popover.style.left = Math.min(rect.left, window.innerWidth - 300) + "px";
+    popover.style.left = Math.min(rect.left, window.innerWidth - 320) + "px";
     popover.style.top = rect.bottom + 8 + "px";
     popover.hidden = false;
   }
@@ -196,6 +263,10 @@
       button.addEventListener("click", closeManualModal);
     });
 
+    $all("[data-close-blacklist]").forEach(function (button) {
+      button.addEventListener("click", closeBlacklistModal);
+    });
+
     $("#ruleModal").addEventListener("click", function (event) {
       if (event.target === $("#ruleModal")) closeRuleModal();
     });
@@ -204,24 +275,49 @@
       if (event.target === $("#manualModal")) closeManualModal();
     });
 
+    $("#blacklistModal").addEventListener("click", function (event) {
+      if (event.target === $("#blacklistModal")) closeBlacklistModal();
+    });
+
     document.addEventListener("click", function (event) {
       var moreButton = event.target.closest("[data-accounts]");
-      var manualButton = event.target.closest("[data-manual-punish]");
-      var manualRecordButton = event.target.closest("[data-manual-record]");
+      var accountActionButton = event.target.closest("[data-account-action]");
+      var recordActionButton = event.target.closest("[data-manual-record]");
+      var blacklistButton = event.target.closest("[data-blacklist-row]");
+
       if (moreButton) {
         showAccounts(moreButton);
         event.stopPropagation();
         return;
       }
-      if (manualButton) {
-        openManualModal(rows[Number(manualButton.getAttribute("data-manual-punish"))]);
+
+      if (blacklistButton) {
+        openBlacklistModal(
+          monitorRows[Number(blacklistButton.getAttribute("data-blacklist-row"))],
+          blacklistButton.getAttribute("data-blacklist")
+        );
         return;
       }
-      if (manualRecordButton) {
-        var record = records[Number(manualRecordButton.getAttribute("data-manual-record"))];
-        openManualModal({ kind: record.kind, type: record.type, count: record.count, action: record.action });
+
+      if (accountActionButton) {
+        openAccountModal(
+          "手动风控处罚",
+          monitorRows[Number(accountActionButton.getAttribute("data-account-action"))]
+        );
         return;
       }
+
+      if (recordActionButton) {
+        var record = records[Number(recordActionButton.getAttribute("data-manual-record"))];
+        openAccountModal("手动风控处罚", {
+          kind: record.kind,
+          type: record.type,
+          count: record.count,
+          action: record.action
+        });
+        return;
+      }
+
       if (!event.target.closest("#accountPopover")) {
         $("#accountPopover").hidden = true;
       }
@@ -232,5 +328,6 @@
     renderRows();
     renderRecords();
     bindEvents();
+    switchTab("monitor");
   });
 })();
