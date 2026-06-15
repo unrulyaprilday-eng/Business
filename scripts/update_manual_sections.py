@@ -24,6 +24,12 @@ BACKUP_DIR = ROOT / "backups"
 FONT_NAME = "Microsoft YaHei"
 BLUE = RGBColor(47, 85, 151)
 CAPTION_GRAY = RGBColor(112, 126, 146)
+HEADING_SIZES = {
+    "Heading 1": 14,
+    "Heading 2": 12.5,
+    "Heading 3": 10.5,
+    "Heading 4": 10.5,
+}
 
 
 def parse_args() -> argparse.Namespace:
@@ -92,7 +98,12 @@ def paragraph_is_media(paragraph) -> bool:
     return text.startswith(("图：", "圖："))
 
 
-def find_section_range(document: Document, title: str, heading_style: str = "Heading 3") -> tuple[int, int]:
+def find_section_range(
+    document: Document,
+    title: str,
+    heading_style: str = "Heading 3",
+    stop_styles: list[str] | None = None,
+) -> tuple[int, int]:
     start = None
     for index, paragraph in enumerate(document.paragraphs):
         if paragraph.style.name == heading_style and paragraph.text.strip() == title:
@@ -101,24 +112,39 @@ def find_section_range(document: Document, title: str, heading_style: str = "Hea
     if start is None:
         raise RuntimeError(f"section not found: {title}")
 
+    stop_style_set = set(stop_styles or {"Heading 1", "Heading 2", "Heading 3"})
     end = len(document.paragraphs)
     for index in range(start + 1, len(document.paragraphs)):
-        if document.paragraphs[index].style.name in {"Heading 1", "Heading 2", "Heading 3"}:
+        if document.paragraphs[index].style.name in stop_style_set:
             end = index
             break
     return start, end
 
 
-def reset_section(document: Document, title: str, keep_existing_media: bool, heading_style: str = "Heading 3"):
-    start, end = find_section_range(document, title=title, heading_style=heading_style)
+def style_size(style: str, default: float = 10) -> float:
+    return float(HEADING_SIZES.get(style, default))
+
+
+def format_heading_paragraph(paragraph, style: str) -> None:
+    for run in paragraph.runs:
+        set_run(run, size=style_size(style), bold=True, color=BLUE)
+
+
+def reset_section(
+    document: Document,
+    title: str,
+    keep_existing_media: bool,
+    heading_style: str = "Heading 3",
+    stop_styles: list[str] | None = None,
+):
+    start, end = find_section_range(document, title=title, heading_style=heading_style, stop_styles=stop_styles)
     for paragraph in list(document.paragraphs[start + 1 : end]):
         if keep_existing_media and paragraph_is_media(paragraph):
             continue
         delete_paragraph(paragraph)
 
     anchor = document.paragraphs[start]
-    for run in anchor.runs:
-        set_run(run, size=12.5, bold=True, color=BLUE)
+    format_heading_paragraph(anchor, heading_style)
     return anchor
 
 
@@ -144,6 +170,15 @@ def add_submodule_title_after(anchor, text: str):
     run = paragraph.add_run(text)
     set_run(run, size=10.5, bold=True, color=BLUE)
     run.font.italic = True
+    paragraph.paragraph_format.space_after = Pt(3)
+    paragraph.paragraph_format.line_spacing = 1.15
+    return paragraph
+
+
+def add_heading_after(anchor, text: str, style: str):
+    paragraph = insert_after(anchor, style=style)
+    run = paragraph.add_run(text)
+    set_run(run, size=style_size(style), bold=True, color=BLUE)
     paragraph.paragraph_format.space_after = Pt(3)
     paragraph.paragraph_format.line_spacing = 1.15
     return paragraph
@@ -241,6 +276,9 @@ def apply_blocks(anchor, blocks: list[dict[str, Any]], config_dir: Path):
         if block_type == "submodule_title":
             last = add_submodule_title_after(last, block["text"])
             continue
+        if block_type == "heading":
+            last = add_heading_after(last, block["text"], style=block.get("style", "Heading 3"))
+            continue
         if block_type == "bullet":
             last = add_bullet_after(last, block.get("label"), block["text"])
             continue
@@ -312,6 +350,7 @@ def main() -> None:
             title=section["title"],
             keep_existing_media=resolve_keep_existing_media(config, section),
             heading_style=section.get("heading_style", "Heading 3"),
+            stop_styles=section.get("stop_styles"),
         )
         apply_blocks(anchor, section.get("blocks", []), config_dir=config_dir)
 
