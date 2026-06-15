@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-06-12T05:41:50.182Z",
+  "savedAt": "2026-06-15T07:26:30.020Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -570,6 +570,13 @@
           "pageName": "渠道报表",
           "type": "Wireframe",
           "url": "渠道报表.html",
+          "children": []
+        },
+        {
+          "id": "channel_report_detail",
+          "pageName": "渠道报表明细",
+          "type": "Wireframe",
+          "url": "渠道报表明细.html",
           "children": []
         }
       ]

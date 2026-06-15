@@ -215,7 +215,6 @@
 
   function openAccountModal(title, row) {
     $("#manualModalTitle").textContent = title;
-    $("#manualScope").value = row.count > 1 ? "只处罚超出范围账号" : "全部处罚";
     $("#manualMethod").value = defaultMethodFor(row);
     $("#manualModal").hidden = false;
   }

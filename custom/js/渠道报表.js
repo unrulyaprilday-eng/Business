@@ -3,6 +3,9 @@
     var searchBtn = document.getElementById('searchBtn');
     var exportBtn = document.getElementById('exportBtn');
     var detailContext = document.getElementById('detailContext');
+    var channelSelect = document.querySelector('select[aria-label="渠道"]');
+    var mediaSelect = document.querySelector('select[aria-label="媒体"]');
+    var linkSelect = document.querySelector('select[aria-label="广告链接"]');
     var tipButtons = Array.prototype.slice.call(document.querySelectorAll('.tip-trigger'));
     var tooltip = document.createElement('div');
     var activeTip = null;
@@ -93,6 +96,8 @@
       var params;
       var channel;
       var meta;
+      var media;
+      var link;
 
       if (!detailContext || !window.URLSearchParams) {
         return;
@@ -100,12 +105,26 @@
 
       params = new window.URLSearchParams(window.location.search);
       channel = params.get('channel') || 'AAAA';
+      media = params.get('media');
+      link = params.get('link');
       meta = channelMetaMap[channel] || {
         media: '全部媒体',
         link: '全部广告链接'
       };
 
-      detailContext.innerHTML = '<strong>渠道来源：</strong>' + channel + '&nbsp;&nbsp;&nbsp;<strong>媒体来源：</strong>' + meta.media + '&nbsp;&nbsp;&nbsp;<strong>广告链接：</strong>' + meta.link + '&nbsp;&nbsp;&nbsp;<strong>日期范围：</strong>2026-06-07 - 2026-06-14';
+      if (channelSelect) {
+        channelSelect.value = channel;
+      }
+
+      if (mediaSelect && media) {
+        mediaSelect.value = media;
+      }
+
+      if (linkSelect && link) {
+        linkSelect.value = link;
+      }
+
+      detailContext.innerHTML = '<strong>渠道来源：</strong>' + channel + '&nbsp;&nbsp;&nbsp;<strong>媒体来源：</strong>' + (media || meta.media) + '&nbsp;&nbsp;&nbsp;<strong>广告链接：</strong>' + (link || meta.link) + '&nbsp;&nbsp;&nbsp;<strong>日期范围：</strong>2026-06-07 - 2026-06-14';
     }
 
     if (searchBtn) {
