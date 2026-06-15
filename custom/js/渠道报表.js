@@ -1,18 +1,26 @@
-﻿(function () {
+(function () {
   function initChannelReport() {
     var searchBtn = document.getElementById('searchBtn');
     var exportBtn = document.getElementById('exportBtn');
-    var summaryTab = document.getElementById('summaryTab');
-    var detailTab = document.getElementById('detailTab');
-    var summaryView = document.getElementById('summaryView');
-    var detailView = document.getElementById('detailView');
-    var backToSummaryBtn = document.getElementById('backToSummaryBtn');
-    var drillButtons = Array.prototype.slice.call(document.querySelectorAll('[data-drill-channel]'));
     var detailContext = document.getElementById('detailContext');
     var tipButtons = Array.prototype.slice.call(document.querySelectorAll('.tip-trigger'));
     var tooltip = document.createElement('div');
     var activeTip = null;
     var pinnedTip = null;
+    var channelMetaMap = {
+      'AAAA': {
+        media: 'Facebook/TikTok',
+        link: 'homepageads 等'
+      },
+      'CCCC': {
+        media: 'Facebook',
+        link: 'feed-video-01 等'
+      },
+      'DDDD': {
+        media: 'Google',
+        link: 'search-brand-03 等'
+      }
+    };
 
     tooltip.className = 'floating-tip';
     document.body.appendChild(tooltip);
@@ -81,24 +89,23 @@
       positionTooltip(button);
     }
 
-    function switchView(viewName) {
-      var isDetail = viewName === 'detail';
+    function updateDetailContextByQuery() {
+      var params;
+      var channel;
+      var meta;
 
-      summaryTab.classList.toggle('active', !isDetail);
-      detailTab.classList.toggle('active', isDetail);
-      summaryView.hidden = isDetail;
-      detailView.hidden = !isDetail;
-      closeTips();
-
-      if (window.parent && window.parent.$axure && window.parent.$axure.player) {
-        window.parent.$axure.player.resizeContent(true);
+      if (!detailContext || !window.URLSearchParams) {
+        return;
       }
-    }
 
-    function updateDetailContext(channel, media, link) {
-      if (detailContext) {
-        detailContext.innerHTML = '<strong>渠道来源：</strong>' + channel + '&nbsp;&nbsp;&nbsp;<strong>媒体来源：</strong>' + media + '&nbsp;&nbsp;&nbsp;<strong>广告链接：</strong>' + link + '&nbsp;&nbsp;&nbsp;<strong>日期范围：</strong>2026-06-07 - 2026-06-14';
-      }
+      params = new window.URLSearchParams(window.location.search);
+      channel = params.get('channel') || 'AAAA';
+      meta = channelMetaMap[channel] || {
+        media: '全部媒体',
+        link: '全部广告链接'
+      };
+
+      detailContext.innerHTML = '<strong>渠道来源：</strong>' + channel + '&nbsp;&nbsp;&nbsp;<strong>媒体来源：</strong>' + meta.media + '&nbsp;&nbsp;&nbsp;<strong>广告链接：</strong>' + meta.link + '&nbsp;&nbsp;&nbsp;<strong>日期范围：</strong>2026-06-07 - 2026-06-14';
     }
 
     if (searchBtn) {
@@ -118,35 +125,6 @@
         }, 700);
       });
     }
-
-    if (summaryTab) {
-      summaryTab.addEventListener('click', function () {
-        switchView('summary');
-      });
-    }
-
-    if (detailTab) {
-      detailTab.addEventListener('click', function () {
-        switchView('detail');
-      });
-    }
-
-    if (backToSummaryBtn) {
-      backToSummaryBtn.addEventListener('click', function () {
-        switchView('summary');
-      });
-    }
-
-    drillButtons.forEach(function (button) {
-      button.addEventListener('click', function () {
-        updateDetailContext(
-          button.getAttribute('data-drill-channel') || '-',
-          button.getAttribute('data-drill-media') || '-',
-          button.getAttribute('data-drill-link') || '-'
-        );
-        switchView('detail');
-      });
-    });
 
     tipButtons.forEach(function (button) {
       button.addEventListener('click', function (event) {
@@ -194,6 +172,8 @@
         positionTooltip(activeTip);
       }
     }, true);
+
+    updateDetailContextByQuery();
   }
 
   if (document.readyState === 'loading') {

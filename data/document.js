@@ -582,6 +582,13 @@ $axure.loadDocument({
             "type": "Wireframe",
             "url": "渠道报表.html",
             "children": []
+          },
+          {
+            "id": "channel_report_detail",
+            "pageName": "渠道报表明细",
+            "type": "Wireframe",
+            "url": "渠道报表明细.html",
+            "children": []
           }
         ]
       },

@@ -111,30 +111,6 @@ button {
   box-sizing: border-box;
 }
 
-.view-switcher {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.view-tab {
-  padding: 8px 16px;
-  border: 1px solid #d7dde8;
-  border-radius: 4px;
-  background: #fff;
-  color: #5c6677;
-  font-size: 14px;
-  font-weight: 400;
-  cursor: pointer;
-}
-
-.view-tab.active {
-  background: #409eff;
-  border-color: #409eff;
-  color: #fff;
-  font-weight: 700;
-}
-
 .detail-context {
   padding: 10px 18px;
   margin-bottom: 10px;
@@ -323,6 +299,23 @@ button {
 
 .action-btn:hover {
   background: #ecf5ff;
+}
+
+.action-link,
+.nav-link-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.nav-link-btn {
+  height: 32px;
+  min-width: 88px;
+  padding: 0 18px;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .field-explanation {

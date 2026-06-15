@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>渠道报表</title>
@@ -81,15 +81,10 @@
         </form>
 
         <div class="update-tip">
-          数据更新时间：实时；主表默认按渠道汇总展示，支持下钻查看渠道明细。次日、3日、7日复充占比按首充用户在对应周期内产生再次充值的人数占比计算。
+          数据更新时间：实时；当前页面按渠道汇总展示，点击操作列可进入独立明细页查看按日期拆分的数据表现。次日、3日、7日复充占比按首充用户在对应周期内产生再次充值的人数占比计算。
         </div>
 
-        <div class="view-switcher">
-          <button class="view-tab active" type="button" id="summaryTab">渠道汇总</button>
-          <button class="view-tab" type="button" id="detailTab">渠道明细</button>
-        </div>
-
-        <section id="summaryView">
+        <section>
           <div class="report-table-card">
             <div class="table-scroll">
               <table class="report-table">
@@ -178,7 +173,7 @@
                     <td>8,624</td>
                     <td>6,912</td>
                     <td>592,360.00</td>
-                    <td><button class="action-btn" type="button" data-drill-channel="AAAA" data-drill-media="Facebook/TikTok" data-drill-link="homepageads 等">查看明细</button></td>
+                    <td><a class="action-btn action-link" href="渠道报表明细.html?channel=AAAA">查看明细</a></td>
                   </tr>
                   <tr>
                     <td>CCCC</td>
@@ -205,7 +200,7 @@
                     <td>6,324</td>
                     <td>5,188</td>
                     <td>438,920.00</td>
-                    <td><button class="action-btn" type="button" data-drill-channel="CCCC" data-drill-media="Facebook" data-drill-link="feed-video-01 等">查看明细</button></td>
+                    <td><a class="action-btn action-link" href="渠道报表明细.html?channel=CCCC">查看明细</a></td>
                   </tr>
                   <tr>
                     <td>DDDD</td>
@@ -232,7 +227,7 @@
                     <td>5,286</td>
                     <td>4,265</td>
                     <td>329,540.00</td>
-                    <td><button class="action-btn" type="button" data-drill-channel="DDDD" data-drill-media="Google" data-drill-link="search-brand-03 等">查看明细</button></td>
+                    <td><a class="action-btn action-link" href="渠道报表明细.html?channel=DDDD">查看明细</a></td>
                   </tr>
                   <tr class="summary-row">
                     <td>汇总</td>
@@ -264,265 +259,6 @@
                 </tbody>
               </table>
             </div>
-          </div>
-        </section>
-
-        <section id="detailView" hidden>
-          <div class="detail-context" id="detailContext">
-            <strong>渠道来源：</strong>AAAA&nbsp;&nbsp;&nbsp;<strong>媒体来源：</strong>Facebook/TikTok&nbsp;&nbsp;&nbsp;<strong>广告链接：</strong>homepageads 等&nbsp;&nbsp;&nbsp;<strong>日期范围：</strong>2026-06-07 - 2026-06-14
-          </div>
-          <div class="report-table-card">
-            <div class="table-scroll">
-              <table class="report-table">
-                <thead>
-                  <tr>
-                    <th class="name-col">日期</th>
-                    <th class="number-col">访问人数</th>
-                    <th class="number-col">新增</th>
-                    <th class="number-col">累计注册</th>
-                    <th class="rate-col">注册转化率</th>
-                    <th class="number-col">PWA安装数</th>
-                    <th class="number-col">首充人数</th>
-                    <th class="money-col">首充金额</th>
-                    <th class="rate-col">访问-首充转化率</th>
-                    <th class="rate-col">注册-首充转化率</th>
-                    <th class="rate-col">次日复充占比</th>
-                    <th class="rate-col">3日复充占比</th>
-                    <th class="rate-col">7日复充占比</th>
-                    <th class="number-col">充值人数</th>
-                    <th class="money-col">充值金额</th>
-                    <th class="number-col">充值次数</th>
-                    <th class="money-col">人均充值</th>
-                    <th class="money-col">提现金额</th>
-                    <th class="money-col">充提差</th>
-                    <th class="number-col">注单数</th>
-                    <th class="number-col">有效注单数</th>
-                    <th class="money-col">有效投注额</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>2026-06-14</td>
-                    <td>612</td>
-                    <td>181</td>
-                    <td>1,262</td>
-                    <td>29.58%</td>
-                    <td>136</td>
-                    <td>26</td>
-                    <td>15,320.00</td>
-                    <td>4.25%</td>
-                    <td>14.36%</td>
-                    <td>28.00%</td>
-                    <td class="placeholder">--</td>
-                    <td class="placeholder">--</td>
-                    <td>82</td>
-                    <td>41,620.00</td>
-                    <td>198</td>
-                    <td>507.56</td>
-                    <td>20,440.00</td>
-                    <td class="positive">21,180.00</td>
-                    <td>1,392</td>
-                    <td>1,112</td>
-                    <td>98,240.00</td>
-                  </tr>
-                  <tr>
-                    <td>2026-06-13</td>
-                    <td>588</td>
-                    <td>174</td>
-                    <td>1,081</td>
-                    <td>29.59%</td>
-                    <td>128</td>
-                    <td>24</td>
-                    <td>13,860.00</td>
-                    <td>4.08%</td>
-                    <td>13.79%</td>
-                    <td>26.09%</td>
-                    <td>40.00%</td>
-                    <td class="placeholder">--</td>
-                    <td>77</td>
-                    <td>39,240.00</td>
-                    <td>184</td>
-                    <td>509.61</td>
-                    <td>18,930.00</td>
-                    <td class="positive">20,310.00</td>
-                    <td>1,284</td>
-                    <td>1,031</td>
-                    <td>92,540.00</td>
-                  </tr>
-                  <tr>
-                    <td>2026-06-12</td>
-                    <td>564</td>
-                    <td>168</td>
-                    <td>907</td>
-                    <td>29.79%</td>
-                    <td>121</td>
-                    <td>22</td>
-                    <td>12,680.00</td>
-                    <td>3.90%</td>
-                    <td>13.10%</td>
-                    <td>24.50%</td>
-                    <td>39.30%</td>
-                    <td class="placeholder">--</td>
-                    <td>72</td>
-                    <td>35,820.00</td>
-                    <td>171</td>
-                    <td>497.50</td>
-                    <td>17,360.00</td>
-                    <td class="positive">18,460.00</td>
-                    <td>1,198</td>
-                    <td>962</td>
-                    <td>85,720.00</td>
-                  </tr>
-                  <tr>
-                    <td>2026-06-11</td>
-                    <td>541</td>
-                    <td>157</td>
-                    <td>739</td>
-                    <td>29.02%</td>
-                    <td>114</td>
-                    <td>21</td>
-                    <td>11,920.00</td>
-                    <td>3.88%</td>
-                    <td>13.38%</td>
-                    <td>23.81%</td>
-                    <td>37.50%</td>
-                    <td>53.30%</td>
-                    <td>69</td>
-                    <td>34,260.00</td>
-                    <td>165</td>
-                    <td>496.52</td>
-                    <td>16,280.00</td>
-                    <td class="positive">17,980.00</td>
-                    <td>1,152</td>
-                    <td>924</td>
-                    <td>80,160.00</td>
-                  </tr>
-                  <tr>
-                    <td>2026-06-10</td>
-                    <td>520</td>
-                    <td>149</td>
-                    <td>582</td>
-                    <td>28.65%</td>
-                    <td>108</td>
-                    <td>19</td>
-                    <td>10,840.00</td>
-                    <td>3.65%</td>
-                    <td>12.75%</td>
-                    <td>22.20%</td>
-                    <td>35.80%</td>
-                    <td>51.10%</td>
-                    <td>64</td>
-                    <td>32,180.00</td>
-                    <td>153</td>
-                    <td>502.81</td>
-                    <td>15,030.00</td>
-                    <td class="positive">17,150.00</td>
-                    <td>1,081</td>
-                    <td>868</td>
-                    <td>75,520.00</td>
-                  </tr>
-                  <tr>
-                    <td>2026-06-09</td>
-                    <td>509</td>
-                    <td>145</td>
-                    <td>433</td>
-                    <td>28.49%</td>
-                    <td>102</td>
-                    <td>18</td>
-                    <td>9,920.00</td>
-                    <td>3.54%</td>
-                    <td>12.41%</td>
-                    <td>20.40%</td>
-                    <td>34.10%</td>
-                    <td>49.80%</td>
-                    <td>58</td>
-                    <td>29,860.00</td>
-                    <td>141</td>
-                    <td>514.83</td>
-                    <td>13,980.00</td>
-                    <td class="positive">15,880.00</td>
-                    <td>1,006</td>
-                    <td>807</td>
-                    <td>69,960.00</td>
-                  </tr>
-                  <tr>
-                    <td>2026-06-08</td>
-                    <td>492</td>
-                    <td>138</td>
-                    <td>288</td>
-                    <td>28.05%</td>
-                    <td>92</td>
-                    <td>15</td>
-                    <td>8,240.00</td>
-                    <td>3.05%</td>
-                    <td>10.87%</td>
-                    <td>18.70%</td>
-                    <td>31.60%</td>
-                    <td>47.20%</td>
-                    <td>43</td>
-                    <td>24,620.00</td>
-                    <td>118</td>
-                    <td>572.56</td>
-                    <td>11,840.00</td>
-                    <td class="positive">12,780.00</td>
-                    <td>862</td>
-                    <td>689</td>
-                    <td>58,340.00</td>
-                  </tr>
-                  <tr>
-                    <td>2026-06-07</td>
-                    <td>434</td>
-                    <td>114</td>
-                    <td>150</td>
-                    <td>26.27%</td>
-                    <td>63</td>
-                    <td>13</td>
-                    <td>9,650.00</td>
-                    <td>3.00%</td>
-                    <td>11.40%</td>
-                    <td>17.30%</td>
-                    <td>29.10%</td>
-                    <td>43.80%</td>
-                    <td>37</td>
-                    <td>23,620.00</td>
-                    <td>114</td>
-                    <td>638.38</td>
-                    <td>10,000.00</td>
-                    <td class="positive">13,620.00</td>
-                    <td>649</td>
-                    <td>519</td>
-                    <td>31,880.00</td>
-                  </tr>
-                  <tr class="summary-row">
-                    <td>汇总</td>
-                    <td>4,260</td>
-                    <td>1,226</td>
-                    <td>5,442</td>
-                    <td>28.78%</td>
-                    <td>864</td>
-                    <td>158</td>
-                    <td>92,430.00</td>
-                    <td>3.71%</td>
-                    <td>12.89%</td>
-                    <td>22.63%</td>
-                    <td>35.74%</td>
-                    <td>49.04%</td>
-                    <td>502</td>
-                    <td>261,220.00</td>
-                    <td>1,244</td>
-                    <td>520.36</td>
-                    <td>123,860.00</td>
-                    <td class="positive">137,360.00</td>
-                    <td>8,624</td>
-                    <td>6,912</td>
-                    <td>592,360.00</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div style="margin-top: 10px;">
-            <button class="plain-btn" type="button" id="backToSummaryBtn">返回汇总</button>
           </div>
         </section>
 
