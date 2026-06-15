@@ -26,7 +26,7 @@
     row: null,
     page: 1,
     pageSize: 4,
-    filters: { supplier: "", vendor: "", type: "" }
+    filters: { vendor: "", type: "" }
   };
 
   function money(value) {
@@ -152,7 +152,7 @@
     if (!row || !els.detailPanel) return;
     detailState.row = row;
     detailState.page = 1;
-    detailState.filters = { supplier: "", vendor: "", type: "" };
+    detailState.filters = { vendor: "", type: "" };
     els.detailTitle.textContent = row.month + " 游戏厂商费用明细";
     els.detailPanel.classList.remove("is-hidden");
     renderDetail();
@@ -167,23 +167,18 @@
 
   function filteredDetailRows() {
     return baseDetailRows().filter(function (item) {
-      return (!detailState.filters.supplier || item.supplier === detailState.filters.supplier)
-        && (!detailState.filters.vendor || item.vendor === detailState.filters.vendor)
+      return (!detailState.filters.vendor || item.vendor === detailState.filters.vendor)
         && (!detailState.filters.type || item.type === detailState.filters.type);
     });
   }
 
   function syncDetailOptions() {
     var base = baseDetailRows();
-    var vendorRows = base.filter(function (item) {
-      return !detailState.filters.supplier || item.supplier === detailState.filters.supplier;
-    });
-    var typeRows = vendorRows.filter(function (item) {
+    var typeRows = base.filter(function (item) {
       return !detailState.filters.vendor || item.vendor === detailState.filters.vendor;
     });
 
-    setOptions(els.detailSupplier, optionList(base, "supplier"), "全部供应商", detailState.filters.supplier);
-    setOptions(els.detailVendor, optionList(vendorRows, "vendor"), "全部厂商", detailState.filters.vendor);
+    setOptions(els.detailVendor, optionList(base, "vendor"), "全部厂商", detailState.filters.vendor);
     setOptions(els.detailType, optionList(typeRows, "type"), "全部游戏类型", detailState.filters.type);
   }
 
@@ -211,7 +206,6 @@
 
     els.vendorDetailBody.innerHTML = pageRows.map(function (item) {
       return "<tr>"
-        + "<td>" + item.supplier + "</td>"
         + "<td>" + item.vendor + "</td>"
         + "<td>" + item.type + "</td>"
         + "<td>" + percent(item.merchantRate) + "</td>"
@@ -221,7 +215,7 @@
         + "<td class=\"" + (item.profit < 0 ? "negative" : "") + "\">" + money(item.profit) + "</td>"
         + "<td class=\"money\">" + money(item.fee) + "</td>"
         + "</tr>";
-    }).join("") || "<tr><td colspan=\"9\" class=\"empty-cell\">暂无厂商费用明细</td></tr>";
+    }).join("") || "<tr><td colspan=\"8\" class=\"empty-cell\">暂无厂商费用明细</td></tr>";
     renderDetailPagination(list.length);
   }
 
@@ -246,14 +240,6 @@
     els.exportBtn.addEventListener("click", exportCsv);
     els.closeDetailBtn.addEventListener("click", function () {
       els.detailPanel.classList.add("is-hidden");
-    });
-
-    els.detailSupplier.addEventListener("change", function () {
-      detailState.filters.supplier = els.detailSupplier.value;
-      detailState.filters.vendor = "";
-      detailState.filters.type = "";
-      detailState.page = 1;
-      renderDetail();
     });
 
     els.detailVendor.addEventListener("change", function () {
@@ -320,7 +306,6 @@
       billBody: document.getElementById("billBody"),
       detailPanel: document.getElementById("detailPanel"),
       detailTitle: document.getElementById("detailTitle"),
-      detailSupplier: document.getElementById("detailSupplier"),
       detailVendor: document.getElementById("detailVendor"),
       detailType: document.getElementById("detailType"),
       vendorDetailBody: document.getElementById("vendorDetailBody"),
