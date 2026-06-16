@@ -64,15 +64,6 @@
               <input type="date" value="2026-06-11"/>
             </label>
             <label class="inline-field">
-              <span>站点:</span>
-              <select>
-                <option>全部站点</option>
-                <option>TTTT（ID：14）</option>
-                <option>WIN88（ID：18）</option>
-                <option>HG-USD（ID：25）</option>
-              </select>
-            </label>
-            <label class="inline-field">
               <span>渠道:</span>
               <select>
                 <option>请选择渠道</option>
@@ -93,8 +84,6 @@
                 <thead>
                   <tr>
                     <th>消耗日期</th>
-                    <th>站点名称</th>
-                    <th>站点ID</th>
                     <th>渠道ID</th>
                     <th>渠道名称</th>
                     <th>消耗金额<br/>(USDT)</th>
@@ -107,8 +96,6 @@
                 <tbody>
                   <tr data-row-id="row-1" data-site="TTTT（ID：14）" data-site-id="14" data-channel="Facebook-AEO" data-channel-id="CH10021" data-date="2026-06-10" data-amount="1280.00" data-remark="首次补录 06-10 费用" data-user="陈菲" data-time="2026-06-10 16:23:18" data-history='[{"amount":"1280.00","remark":"首次补录 06-10 费用","user":"陈菲","time":"2026-06-10 16:23:18"}]'>
                     <td>2026-06-10</td>
-                    <td>TTTT</td>
-                    <td>14</td>
                     <td>CH10021</td>
                     <td>Facebook-AEO</td>
                     <td class="amount-cell">1,280.00</td>
@@ -119,8 +106,6 @@
                   </tr>
                   <tr data-row-id="row-2" data-site="TTTT（ID：14）" data-site-id="14" data-channel="Google-UAC" data-channel-id="CH10035" data-date="2026-06-10" data-amount="820.50" data-remark="归因口径调整后重录" data-user="王敏" data-time="2026-06-11 10:12:09" data-history='[{"amount":"798.00","remark":"首次录入","user":"王敏","time":"2026-06-10 19:40:26"},{"amount":"820.50","remark":"归因口径调整后重录","user":"王敏","time":"2026-06-11 10:12:09"}]'>
                     <td>2026-06-10</td>
-                    <td>TTTT</td>
-                    <td>14</td>
                     <td>CH10035</td>
                     <td>Google-UAC</td>
                     <td class="amount-cell">820.50</td>
@@ -131,8 +116,6 @@
                   </tr>
                   <tr data-row-id="row-3" data-site="WIN88（ID：18）" data-site-id="18" data-channel="TikTok-Slot" data-channel-id="CH10052" data-date="2026-06-09" data-amount="2450.00" data-remark="晚间加投已补入" data-user="赵琳" data-time="2026-06-10 09:28:44" data-history='[{"amount":"2450.00","remark":"晚间加投已补入","user":"赵琳","time":"2026-06-10 09:28:44"}]'>
                     <td>2026-06-09</td>
-                    <td>WIN88</td>
-                    <td>18</td>
                     <td>CH10052</td>
                     <td>TikTok-Slot</td>
                     <td class="amount-cell">2,450.00</td>
@@ -171,11 +154,7 @@
               <div class="form-grid">
                 <label class="form-row" id="entrySiteRow">
                   <span><em>*</em> 站点:</span>
-                  <select id="entrySite">
-                    <option>TTTT（ID：14）</option>
-                    <option>WIN88（ID：18）</option>
-                    <option>HG-USD（ID：25）</option>
-                  </select>
+                  <div class="text-display" id="entrySite">TTTT（ID：14）</div>
                 </label>
                 <label class="form-row" id="entryChannelRow">
                   <span><em>*</em> 选择渠道:</span>

@@ -150,7 +150,7 @@ select {
 
 .data-table {
   width: 100%;
-  min-width: 1500px;
+  min-width: 1260px;
   border-collapse: separate;
   border-spacing: 0;
   table-layout: fixed;
@@ -193,39 +193,32 @@ select {
 .data-table th:nth-child(3),
 .data-table td:nth-child(3),
 .data-table th:nth-child(4),
-.data-table td:nth-child(4),
+.data-table td:nth-child(4) {
+  width: 108px;
+}
+
 .data-table th:nth-child(5),
 .data-table td:nth-child(5) {
-  width: 108px;
+  width: 114px;
 }
 
 .data-table th:nth-child(6),
 .data-table td:nth-child(6) {
-  width: 114px;
+  width: 180px;
 }
 
 .data-table th:nth-child(7),
 .data-table td:nth-child(7) {
-  width: 180px;
+  width: 104px;
 }
 
 .data-table th:nth-child(8),
 .data-table td:nth-child(8) {
-  width: 104px;
+  width: 146px;
 }
 
 .data-table th:nth-child(9),
 .data-table td:nth-child(9) {
-  width: 146px;
-}
-
-.data-table th:nth-child(10),
-.data-table td:nth-child(10) {
-  width: 116px;
-}
-
-.data-table th:nth-child(11),
-.data-table td:nth-child(11) {
   width: 116px;
 }
 
@@ -379,6 +372,18 @@ select {
 .form-row select,
 .form-row input {
   width: 200px;
+}
+
+.text-display {
+  display: inline-flex;
+  align-items: center;
+  width: 200px;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid #d5ddea;
+  border-radius: 4px;
+  background: #f5f7fb;
+  color: #475569;
 }
 
 .textarea-row {

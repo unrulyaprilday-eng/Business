@@ -79,7 +79,6 @@
     }
 
     function toggleEditFields(isEdit) {
-      siteField.disabled = isEdit;
       channelField.disabled = isEdit;
       dateField.disabled = isEdit;
       amountField.disabled = false;
@@ -96,7 +95,7 @@
       state.rowId = row ? row.getAttribute("data-row-id") : "";
       entryTitle.textContent = mode === "edit" ? "渠道消耗金额修改" : "新增广告消耗";
       toggleEditFields(mode === "edit");
-      siteField.value = row ? (row.getAttribute("data-site") || "TTTT（ID：14）") : "TTTT（ID：14）";
+      siteField.textContent = row ? (row.getAttribute("data-site") || "TTTT（ID：14）") : "TTTT（ID：14）";
       channelField.value = row ? (row.getAttribute("data-channel") || "Facebook-AEO") : "Facebook-AEO";
       amountField.value = row ? (row.getAttribute("data-amount") || "") : "";
       dateField.value = row ? (row.getAttribute("data-date") || "2026-06-11") : "2026-06-11";
@@ -143,16 +142,14 @@
       row.setAttribute("data-status", payload.status);
       row.setAttribute("data-history", JSON.stringify(history));
       row.querySelector("td:nth-child(1)").textContent = payload.date;
-      row.querySelector("td:nth-child(2)").textContent = payload.siteName;
-      row.querySelector("td:nth-child(3)").textContent = payload.siteId;
-      row.querySelector("td:nth-child(4)").textContent = payload.channelId;
-      row.querySelector("td:nth-child(5)").textContent = payload.channel;
+      row.querySelector("td:nth-child(2)").textContent = payload.channelId;
+      row.querySelector("td:nth-child(3)").textContent = payload.channel;
       row.querySelector(".amount-cell").textContent = formatAmount(payload.amount);
       row.querySelector(".amount-cell").classList.remove("amount-empty");
       row.querySelector(".remark-cell").textContent = payload.remark || "--";
       row.querySelector(".user-cell").textContent = payload.user;
       row.querySelector(".time-cell").textContent = payload.time;
-      row.querySelector("td:nth-child(10)").innerHTML = '<button class="link-btn" type="button" data-entry-action="edit" data-row-id="' + row.getAttribute("data-row-id") + '">修改金额</button>';
+      row.querySelector("td:nth-child(8)").innerHTML = '<button class="link-btn" type="button" data-entry-action="edit" data-row-id="' + row.getAttribute("data-row-id") + '">修改金额</button>';
     }
 
     function rowMarkup(rowId, payload) {
@@ -174,8 +171,6 @@
           time: payload.time
         }]).replace(/'/g, "&apos;") + "'>",
         "<td>" + payload.date + "</td>",
-        "<td>" + payload.siteName + "</td>",
-        "<td>" + payload.siteId + "</td>",
         "<td>" + payload.channelId + "</td>",
         "<td>" + payload.channel + "</td>",
         '<td class="amount-cell">' + formatAmount(payload.amount) + "</td>",
@@ -200,7 +195,7 @@
 
     function submitEntry() {
       var amount = amountField.value.trim();
-      var site = parseSite(siteField.value);
+      var site = parseSite(siteField.textContent || "");
       if (!amount || isNaN(Number(amount))) {
         amountField.focus();
         return;
