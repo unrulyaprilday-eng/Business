@@ -205,7 +205,7 @@
         return;
       }
       var payload = {
-        site: siteField.value,
+        site: siteField.textContent || "",
         siteName: site.name,
         siteId: site.id,
         channel: channelField.value,
