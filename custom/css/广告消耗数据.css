@@ -191,34 +191,32 @@ select {
 .data-table th:nth-child(2),
 .data-table td:nth-child(2),
 .data-table th:nth-child(3),
-.data-table td:nth-child(3),
+.data-table td:nth-child(3) {
+  width: 108px;
+}
+
 .data-table th:nth-child(4),
 .data-table td:nth-child(4) {
-  width: 108px;
+  width: 114px;
 }
 
 .data-table th:nth-child(5),
 .data-table td:nth-child(5) {
-  width: 114px;
+  width: 180px;
 }
 
 .data-table th:nth-child(6),
 .data-table td:nth-child(6) {
-  width: 180px;
+  width: 104px;
 }
 
 .data-table th:nth-child(7),
 .data-table td:nth-child(7) {
-  width: 104px;
+  width: 146px;
 }
 
 .data-table th:nth-child(8),
 .data-table td:nth-child(8) {
-  width: 146px;
-}
-
-.data-table th:nth-child(9),
-.data-table td:nth-child(9) {
   width: 116px;
 }
 
