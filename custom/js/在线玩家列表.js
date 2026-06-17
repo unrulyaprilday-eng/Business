@@ -1,6 +1,10 @@
 (function () {
-  function $(selector) {
-    return document.querySelector(selector);
+  function $(selector, root) {
+    return (root || document).querySelector(selector);
+  }
+
+  function $all(selector, root) {
+    return Array.prototype.slice.call((root || document).querySelectorAll(selector));
   }
 
   function openActionModal() {
@@ -11,6 +15,144 @@
   function closeActionModal() {
     var modal = $("[data-action-modal]");
     if (modal) modal.hidden = true;
+  }
+
+  function getText(cell) {
+    return cell ? cell.textContent.replace(/\s+/g, " ").trim() : "";
+  }
+
+  function getManualBalanceModal() {
+    return $("[data-manual-balance-modal]");
+  }
+
+  function getMemberFromRow(row) {
+    if (!row || !row.cells) {
+      return {
+        memberId: "",
+        memberName: "-",
+        merchantId: "-",
+        balance: "-"
+      };
+    }
+
+    var memberId = getText(row.cells[1]);
+    return {
+      memberId: memberId,
+      memberName: memberId || "-",
+      merchantId: "101",
+      balance: getText(row.cells[3]) || "-"
+    };
+  }
+
+  function findMemberById(memberId) {
+    var matchedRow = null;
+
+    $all(".online-table tbody tr").some(function (row) {
+      var currentMemberId = row.cells[1] ? getText(row.cells[1]) : "";
+      if (currentMemberId === memberId) {
+        matchedRow = row;
+        return true;
+      }
+      return false;
+    });
+
+    if (matchedRow) {
+      return getMemberFromRow(matchedRow);
+    }
+
+    return {
+      memberId: memberId,
+      memberName: memberId || "-",
+      merchantId: "101",
+      balance: "-"
+    };
+  }
+
+  function fillManualBalanceInfo(member) {
+    var modal = getManualBalanceModal();
+    if (!modal) return;
+
+    var memberIdInput = $("[data-balance-member-id]", modal);
+    var memberNameNode = $("[data-balance-member-name]", modal);
+    var merchantIdNode = $("[data-balance-merchant-id]", modal);
+    var balanceNode = $("[data-balance-member-balance]", modal);
+
+    if (memberIdInput) {
+      memberIdInput.value = member.memberId || "";
+    }
+    if (memberNameNode) {
+      memberNameNode.textContent = member.memberName || "-";
+    }
+    if (merchantIdNode) {
+      merchantIdNode.textContent = member.merchantId || "-";
+    }
+    if (balanceNode) {
+      balanceNode.textContent = member.balance || "-";
+    }
+  }
+
+  function setManualBalanceAction(action) {
+    var modal = getManualBalanceModal();
+    if (!modal) return;
+
+    modal.classList.toggle("is-minus", action === "minus");
+    $all('input[name="onlineBalanceAction"]', modal).forEach(function (input) {
+      input.checked = input.value === action;
+    });
+  }
+
+  function resetManualBalanceFields() {
+    var modal = getManualBalanceModal();
+    if (!modal) return;
+
+    var amountInput = $("[data-balance-amount]", modal);
+    var multipleInput = $("[data-balance-multiple]", modal);
+    var remarkInput = $("[data-balance-remark]", modal);
+    var addType = $("[data-balance-add-type]", modal);
+    var minusType = $("[data-balance-minus-type]", modal);
+
+    if (amountInput) amountInput.value = "";
+    if (multipleInput) multipleInput.value = "";
+    if (remarkInput) remarkInput.value = "";
+    if (addType) addType.selectedIndex = 0;
+    if (minusType) minusType.selectedIndex = 0;
+
+    setManualBalanceAction("add");
+  }
+
+  function seedManualBalance(trigger) {
+    var modal = getManualBalanceModal();
+    if (!modal) return;
+
+    var member = getMemberFromRow(trigger ? trigger.closest("tr") : null);
+    modal.dataset.memberId = member.memberId || "";
+    modal.dataset.memberName = member.memberName || "-";
+    modal.dataset.merchantId = member.merchantId || "-";
+    modal.dataset.memberBalance = member.balance || "-";
+
+    resetManualBalanceFields();
+    fillManualBalanceInfo(member);
+  }
+
+  function openManualBalanceModal(trigger) {
+    var modal = getManualBalanceModal();
+    if (!modal) return;
+
+    seedManualBalance(trigger);
+    modal.hidden = false;
+  }
+
+  function closeManualBalanceModal() {
+    var modal = getManualBalanceModal();
+    if (modal) modal.hidden = true;
+  }
+
+  function searchManualBalanceMember() {
+    var modal = getManualBalanceModal();
+    if (!modal) return;
+
+    var input = $("[data-balance-member-id]", modal);
+    fillManualBalanceInfo(findMemberById(input ? input.value.trim() : ""));
   }
 
   function filterTable(playerType, locationType, websitePosition, gameType) {
@@ -102,13 +244,30 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    Array.prototype.slice.call(document.querySelectorAll("[data-open-action]")).forEach(function (button) {
+    $all("[data-open-action]").forEach(function (button) {
       button.addEventListener("click", openActionModal);
     });
 
-    Array.prototype.slice.call(document.querySelectorAll("[data-close-action]")).forEach(function (button) {
+    $all("[data-close-action]").forEach(function (button) {
       button.addEventListener("click", closeActionModal);
     });
+
+    $all("[data-open-manual-balance]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        openManualBalanceModal(button);
+      });
+    });
+
+    $all("[data-close-manual-balance]").forEach(function (button) {
+      button.addEventListener("click", closeManualBalanceModal);
+    });
+
+    var manualModal = getManualBalanceModal();
+    if (manualModal) {
+      manualModal.addEventListener("click", function (event) {
+        if (event.target === manualModal) closeManualBalanceModal();
+      });
+    }
 
     var modal = $("[data-action-modal]");
     if (modal) {
@@ -116,6 +275,17 @@
         if (event.target === modal) closeActionModal();
       });
     }
+
+    var searchButton = $("[data-search-manual-balance]");
+    if (searchButton) {
+      searchButton.addEventListener("click", searchManualBalanceMember);
+    }
+
+    document.addEventListener("change", function (event) {
+      if (event.target.matches('input[name="onlineBalanceAction"]')) {
+        setManualBalanceAction(event.target.value);
+      }
+    });
     
     var playerTypeSelect = document.querySelector("[data-player-type-filter]");
     var locationSelect = document.querySelectorAll(".filter-bar select")[1];

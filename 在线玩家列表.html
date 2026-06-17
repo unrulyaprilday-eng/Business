@@ -134,7 +134,7 @@
                   <th>在线时长</th>
                   <th>玩家IP</th>
                   <th>赎回和打码状态</th>
-                  <th>操作</th>
+                  <th class="action-col">操作</th>
                 </tr>
               </thead>
               <tbody>
@@ -149,7 +149,7 @@
                   <td>01:45:00</td>
                   <td>112.94.22.108</td>
                   <td><span class="status met">Met Wager<br/>(Total*10)</span></td>
-                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link" data-open-action type="button">操作</button></td>
                 </tr>
                 <tr>
                   <td>2</td>
@@ -162,7 +162,7 @@
                   <td>01:22:10</td>
                   <td>112.94.22.105</td>
                   <td><span class="status met">Met Wager<br/>(Total*10)</span></td>
-                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link" data-open-action type="button">操作</button></td>
                 </tr>
                 <tr>
                   <td>3</td>
@@ -175,7 +175,7 @@
                   <td>00:55:20</td>
                   <td>112.94.22.107</td>
                   <td><span class="status wager">Met Wager<br/>(Deposit*3)</span></td>
-                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link" data-open-action type="button">操作</button></td>
                 </tr>
                 <tr>
                   <td>4</td>
@@ -188,7 +188,7 @@
                   <td>00:30:15</td>
                   <td>112.94.22.109</td>
                   <td><span class="status normal">不满足</span></td>
-                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link" data-open-action type="button">操作</button></td>
                 </tr>
                 <tr>
                   <td>5</td>
@@ -201,7 +201,7 @@
                   <td>00:30:00</td>
                   <td>180.110.3.56</td>
                   <td><span class="status wager">Met Wager<br/>(Deposit*3)</span></td>
-                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link" data-open-action type="button">操作</button></td>
                 </tr>
                 <tr>
                   <td>6</td>
@@ -214,7 +214,7 @@
                   <td>00:25:00</td>
                   <td>180.110.3.57</td>
                   <td><span class="status wager">Met Wager<br/>(Deposit*3)</span></td>
-                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link" data-open-action type="button">操作</button></td>
                 </tr>
                 <tr>
                   <td>7</td>
@@ -227,7 +227,7 @@
                   <td>00:12:00</td>
                   <td>104.16.0.1</td>
                   <td><span class="status met">Met Wager<br/>(Deposit*3)</span></td>
-                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link" data-open-action type="button">操作</button></td>
                 </tr>
                 <tr>
                   <td>8</td>
@@ -240,7 +240,7 @@
                   <td>00:15:00</td>
                   <td>104.16.0.2</td>
                   <td><span class="status met">Met Wager<br/>(Deposit*3)</span></td>
-                  <td><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-action type="button">操作</button></td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link" data-open-action type="button">操作</button></td>
                 </tr>
               </tbody>
             </table>
@@ -314,6 +314,68 @@
               <button class="btn primary" data-close-action type="button">保存</button>
             </div>
           </div>
+        </div>
+
+        <div class="modal-mask manual-balance-mask" data-manual-balance-modal hidden>
+          <section class="manual-balance-modal" role="dialog" aria-modal="true" aria-labelledby="manualBalanceTitle">
+            <div class="modal-head">
+              <strong id="manualBalanceTitle">新增人工加扣款</strong>
+              <button class="close-btn" data-close-manual-balance type="button" aria-label="关闭">×</button>
+            </div>
+            <div class="manual-balance-body">
+              <div class="balance-form-row required">
+                <label>会员ID:</label>
+                <div class="balance-search-group">
+                  <input data-balance-member-id value=""/>
+                  <button class="btn primary" data-search-manual-balance type="button">搜索</button>
+                </div>
+              </div>
+              <div class="balance-member-info">
+                <div><span>用户名:</span><b data-balance-member-name>-</b></div>
+                <div><span>商户ID:</span><b data-balance-merchant-id>-</b></div>
+                <div><span>余额:</span><b data-balance-member-balance>-</b></div>
+              </div>
+              <div class="balance-form-row required">
+                <label>操作:</label>
+                <div class="balance-radio-group">
+                  <label><input type="radio" name="onlineBalanceAction" value="add" checked/> 人工加款</label>
+                  <label><input type="radio" name="onlineBalanceAction" value="minus"/> 人工扣款</label>
+                </div>
+              </div>
+              <div class="balance-form-row required add-only">
+                <label>加款类型:</label>
+                <select data-balance-add-type>
+                  <option>人工赠金</option>
+                  <option>人工充值</option>
+                </select>
+              </div>
+              <div class="balance-form-row required minus-only">
+                <label>扣款类型:</label>
+                <select data-balance-minus-type>
+                  <option>人工扣款</option>
+                </select>
+              </div>
+              <div class="balance-form-row required">
+                <label>金额:</label>
+                <input class="number-input" data-balance-amount placeholder="请输入金额" type="number"/>
+              </div>
+              <div class="balance-form-row required add-only">
+                <label>打码倍数:</label>
+                <div class="balance-stack">
+                  <input class="number-input" data-balance-multiple placeholder="请输入打码倍数" type="number"/>
+                  <p>当打码倍数填0，取默认打码倍数1.5。当打码倍数填-1，则不需要打码</p>
+                </div>
+              </div>
+              <div class="balance-form-row textarea-row">
+                <label>备注:</label>
+                <textarea data-balance-remark placeholder="请输入备注"></textarea>
+              </div>
+            </div>
+            <div class="modal-footer manual-balance-footer">
+              <button class="btn" data-close-manual-balance type="button">取消</button>
+              <button class="btn primary" data-close-manual-balance type="button">提交</button>
+            </div>
+          </section>
         </div>
       </div>
     </div>

@@ -7,6 +7,14 @@
     }
   }
 
+  function $(selector, root) {
+    return (root || document).querySelector(selector);
+  }
+
+  function $all(selector, root) {
+    return Array.prototype.slice.call((root || document).querySelectorAll(selector));
+  }
+
   function notifyPlayer() {
     try {
       if (window.parent && window.parent !== window && window.parent.$axure && window.parent.$axure.player) {
@@ -33,6 +41,7 @@
 
   function initMemberPage() {
     var createModal = document.querySelector('[data-modal="create"]');
+    var manualModal = document.querySelector('[data-modal="manual-balance"]');
     var createViews = createModal ? createModal.querySelectorAll("[data-create-view]") : [];
     var createFooters = createModal ? createModal.querySelectorAll("[data-create-footer]") : [];
     var createUsername = createModal ? createModal.querySelector("[data-create-username]") : null;
@@ -85,6 +94,119 @@
       if (createPassword) createPassword.value = "123456";
       if (createChannel) createChannel.selectedIndex = 0;
       setCreateMode("form");
+    }
+
+    function getMemberFromRow(row) {
+      if (!row || !row.cells) {
+        return {
+          memberId: "",
+          memberName: "-",
+          merchantId: "101",
+          balance: "-"
+        };
+      }
+
+      return {
+        memberId: row.cells[1] ? row.cells[1].textContent.trim() : "",
+        memberName: row.cells[2] ? row.cells[2].textContent.trim() || "-" : "-",
+        merchantId: row.cells[0] ? row.cells[0].textContent.trim() || "101" : "101",
+        balance: row.cells[12] ? row.cells[12].textContent.trim() || "-" : "-"
+      };
+    }
+
+    function fillManualMember(member) {
+      if (!manualModal) return;
+
+      var memberIdInput = $("[data-balance-member-id]", manualModal);
+      var memberNameNode = $("[data-balance-member-name]", manualModal);
+      var merchantIdNode = $("[data-balance-merchant-id]", manualModal);
+      var balanceNode = $("[data-balance-member-balance]", manualModal);
+
+      manualModal.dataset.memberId = member.memberId || "";
+      manualModal.dataset.memberName = member.memberName || "-";
+      manualModal.dataset.merchantId = member.merchantId || "101";
+      manualModal.dataset.memberBalance = member.balance || "-";
+
+      if (memberIdInput) {
+        memberIdInput.value = member.memberId || "";
+      }
+      if (memberNameNode) {
+        memberNameNode.textContent = member.memberName || "-";
+      }
+      if (merchantIdNode) {
+        merchantIdNode.textContent = member.merchantId || "101";
+      }
+      if (balanceNode) {
+        balanceNode.textContent = member.balance || "-";
+      }
+    }
+
+    function setBalanceMode(mode) {
+      if (!manualModal) return;
+
+      manualModal.classList.toggle("is-minus", mode === "minus");
+      $all('input[name="memberBalanceAction"]', manualModal).forEach(function (input) {
+        input.checked = input.value === mode;
+      });
+      schedulePlayerRefresh();
+    }
+
+    function resetBalanceForm() {
+      if (!manualModal) return;
+
+      var amountInput = $("[data-balance-amount]", manualModal);
+      var multipleInput = $("[data-balance-multiple]", manualModal);
+      var remarkInput = $("[data-balance-remark]", manualModal);
+      var addType = $("[data-balance-add-type]", manualModal);
+      var minusType = $("[data-balance-minus-type]", manualModal);
+
+      if (amountInput) amountInput.value = "";
+      if (multipleInput) multipleInput.value = "";
+      if (remarkInput) remarkInput.value = "";
+      if (addType) addType.selectedIndex = 0;
+      if (minusType) minusType.selectedIndex = 0;
+
+      setBalanceMode("add");
+    }
+
+    function findMemberById(memberId) {
+      var matchedRow = null;
+      $all(".member-table tbody tr").some(function (row) {
+        var currentId = row.cells[1] ? row.cells[1].textContent.trim() : "";
+        if (currentId === memberId) {
+          matchedRow = row;
+          return true;
+        }
+        return false;
+      });
+
+      if (matchedRow) {
+        return getMemberFromRow(matchedRow);
+      }
+
+      return {
+        memberId: memberId,
+        memberName: memberId || "-",
+        merchantId: manualModal ? manualModal.dataset.merchantId || "101" : "101",
+        balance: "-"
+      };
+    }
+
+    function openManualBalance(trigger) {
+      if (!manualModal) return;
+
+      fillManualMember(getMemberFromRow(trigger ? trigger.closest("tr") : null));
+      resetBalanceForm();
+      manualModal.hidden = false;
+      schedulePlayerRefresh();
+    }
+
+    function searchManualBalance() {
+      if (!manualModal) return;
+
+      var memberIdInput = $("[data-balance-member-id]", manualModal);
+      fillManualMember(findMemberById(memberIdInput ? memberIdInput.value.trim() : ""));
+      schedulePlayerRefresh();
     }
 
     function buildCopyText(username, password) {
@@ -162,6 +284,11 @@
     }
 
     document.addEventListener("click", function (event) {
+      var manualButton = event.target.closest("[data-manual-balance]");
+      if (manualButton) {
+        openManualBalance(manualButton);
+        return;
+      }
       if (event.target.closest("[data-operate]")) {
         openModal("operate");
         return;
@@ -202,6 +329,10 @@
         });
         return;
       }
+      if (event.target.closest("[data-balance-search]")) {
+        searchManualBalance();
+        return;
+      }
       if (event.target.matches("[data-close]")) {
         closeModal(event.target);
         return;
@@ -229,6 +360,12 @@
           panel.classList.toggle("active", panel.dataset.panel === name);
         });
         schedulePlayerRefresh();
+      }
+    });
+
+    document.addEventListener("change", function (event) {
+      if (event.target.matches('input[name="memberBalanceAction"]')) {
+        setBalanceMode(event.target.value);
       }
     });
 
