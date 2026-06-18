@@ -1,0 +1,228 @@
+{
+  "backup_tag": "manual-risk-center-20260617",
+  "keep_existing_media": false,
+  "sections": [
+    {
+      "title": "黑名单",
+      "heading_style": "Heading 2",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "黑名单用于管理受限制的玩家或风险对象，页面分为会员黑名单和 IP/设备黑名单两类，适合按登录、领取优惠和提现限制分别维护。"
+        },
+        {
+          "type": "module",
+          "title": "会员黑名单列表",
+          "intro": "会员黑名单列表用于查看已加入黑名单的会员及其限制类型，便于按会员 ID 快速查询、补充备注和移除限制。",
+          "path": "../custom/assets/manual-risk-center/blacklist-member-list.png",
+          "caption": "图：会员黑名单列表，用于查看会员限制类型、备注和操作记录。",
+          "blocks": [
+            {
+              "type": "bullet",
+              "label": "筛选条件",
+              "text": "页面可按会员 ID 和限制类型筛选，搜索用于定位目标会员，重置可清空条件，导出报表可留存当前名单。"
+            },
+            {
+              "type": "bullet",
+              "label": "列表字段",
+              "text": "表格展示会员 ID、用户名、充提差额、总余额、限制类型、最后登录 IP、操作人、手机号、备注和操作时间，便于核对命中依据。"
+            },
+            {
+              "type": "bullet",
+              "label": "操作入口",
+              "text": "每行支持修改和移除黑名单，顶部支持新增与批量移除黑名单；批量操作前需要先勾选记录。"
+            }
+          ]
+        },
+        {
+          "type": "module",
+          "title": "新增黑名单弹窗",
+          "intro": "新增黑名单弹窗用于录入会员限制信息，提交后会把会员加入黑名单并按选中的限制类型生效。",
+          "path": "../custom/assets/manual-risk-center/blacklist-member-add-modal.png",
+          "caption": "图：新增黑名单弹窗，用于填写会员 ID、限制类型和备注。",
+          "blocks": [
+            {
+              "type": "bullet",
+              "label": "填写内容",
+              "text": "弹窗需要填写会员 ID、勾选限制类型并补充备注，限制类型可同时选择冻结、禁止领取优惠和禁止提现。"
+            },
+            {
+              "type": "bullet",
+              "label": "备注规则",
+              "text": "备注最多 255 字，建议写明限制原因、处理人和生效背景，方便后续复核或解除。"
+            },
+            {
+              "type": "bullet",
+              "label": "保存操作",
+              "text": "取消可放弃本次录入，确定用于提交新增黑名单；保存前应确认会员 ID 和限制范围没有填错。"
+            }
+          ]
+        },
+        {
+          "type": "module",
+          "title": "IP/设备黑名单列表",
+          "intro": "IP/设备黑名单列表用于按地址或设备查看限制对象，适合处理同设备、同 IP 关联风险。",
+          "path": "../custom/assets/manual-risk-center/blacklist-device-list.png",
+          "caption": "图：IP/设备黑名单列表，用于查看限制地址、限制类型和操作记录。",
+          "blocks": [
+            {
+              "type": "bullet",
+              "label": "页面结构",
+              "text": "顶部保留导出报表、新增和批量移除黑名单按钮，列表支持勾选后批量处理。"
+            },
+            {
+              "type": "bullet",
+              "label": "列表字段",
+              "text": "表格展示 ID、黑名单类型、限制地址、限制类型、备注、操作人、操作时间和操作入口，便于按地址追踪限制结果。"
+            },
+            {
+              "type": "bullet",
+              "label": "处理方式",
+              "text": "已命中的 IP 或设备可通过修改调整限制类型，或直接移除黑名单恢复访问。"
+            }
+          ]
+        },
+        {
+          "type": "module",
+          "title": "新增 IP/设备黑名单弹窗",
+          "intro": "新增 IP/设备黑名单弹窗用于按 IP 或设备号新增限制对象，并选择对应的处罚范围。",
+          "path": "../custom/assets/manual-risk-center/blacklist-device-add-modal.png",
+          "caption": "图：新增 IP/设备黑名单弹窗，用于录入黑名单值和限制类型。",
+          "blocks": [
+            {
+              "type": "bullet",
+              "label": "添加类型",
+              "text": "弹窗可在 IP 和设备之间切换，黑名单值会随所选类型一起保存。"
+            },
+            {
+              "type": "bullet",
+              "label": "限制类型",
+              "text": "限制类型支持勾选全部、冻结和禁止注册，提交前应确认与当前风控策略一致。"
+            },
+            {
+              "type": "bullet",
+              "label": "备注与提交",
+              "text": "备注最多 255 字，建议记录命中原因、关联账号和处理依据；点击确定后提交新增记录。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "刷子监控",
+      "heading_style": "Heading 2",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "刷子监控用于识别同关联账号、同 IP、同设备等异常批量行为，页面分为同关联监控和同关联处罚记录两部分，适合风控按风险对象持续跟踪。"
+        },
+        {
+          "type": "module",
+          "title": "同关联监控",
+          "intro": "同关联监控用于查看命中风险规则的关联对象，页面支持按时间、风险类型和关联标识值筛选，并可继续做拉黑或处罚处理。",
+          "path": "../custom/assets/manual-risk-center/brush-monitor-association-list.png",
+          "caption": "图：同关联监控列表，用于查看风险类型、风险值和同关联数量。",
+          "blocks": [
+            {
+              "type": "bullet",
+              "label": "筛选条件",
+              "text": "页面可按时间范围、风险类型和关联标识值查询，点击搜索刷新列表，重置恢复默认条件。"
+            },
+            {
+              "type": "bullet",
+              "label": "监控按钮",
+              "text": "默认自动规则可查看同 IP、同设备号和同提现名称的处罚阈值与限制人数，便于统一风控口径。"
+            },
+            {
+              "type": "bullet",
+              "label": "列表说明",
+              "text": "表格展示风险类型、风险值、同关联数量、触发方式、创建时间和更新时间，用于快速判断关联规模和命中来源。"
+            }
+          ]
+        },
+        {
+          "type": "module",
+          "title": "同关联处罚记录",
+          "intro": "同关联处罚记录用于查看已经执行过的处罚结果，适合回溯触发会员、被处罚会员和处罚范围。",
+          "path": "../custom/assets/manual-risk-center/brush-monitor-punishment-records.png",
+          "caption": "图：同关联处罚记录列表，用于查看处罚结果、触发方式和备注。",
+          "blocks": [
+            {
+              "type": "bullet",
+              "label": "筛选条件",
+              "text": "页面支持按时间范围、风控类型、处罚类型、触发会员 ID 和被处罚会员 ID 查询，便于按案件回溯处理结果。"
+            },
+            {
+              "type": "bullet",
+              "label": "列表字段",
+              "text": "表格展示商户 ID、触发会员 ID、触发会员、被处罚会员 ID、被处罚会员、风险类型、风险值、同关联数量、触发方式、处罚范围、操作员、备注、创建时间和操作。"
+            },
+            {
+              "type": "bullet",
+              "label": "操作入口",
+              "text": "每行可继续发起手动风控处罚，适合对新增异常对象补充人工处理结论。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "游戏获利监控",
+      "heading_style": "Heading 2",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "游戏获利监控用于查看玩家中奖、获利比和风控提醒的命中情况，适合对大额中奖、高倍爆奖等异常获利行为做持续核查。"
+        },
+        {
+          "type": "module",
+          "title": "监控列表",
+          "intro": "监控列表用于查看当前命中的玩家记录，页面可直接进入审核，也可点击查看数据确认实际参数。",
+          "path": "../custom/assets/manual-risk-center/profit-monitor-list.png",
+          "caption": "图：游戏获利监控列表，用于查看监控状态、监控类型和操作入口。",
+          "blocks": [
+            {
+              "type": "bullet",
+              "label": "筛选条件",
+              "text": "页面支持按时间范围、会员 ID、监控类型和状态筛选，搜索可定位待处理记录，重置恢复默认条件。"
+            },
+            {
+              "type": "bullet",
+              "label": "列表字段",
+              "text": "表格展示触发会员 ID、触发会员账号、状态、监控类型、操作人、实际参数、备注、更新时间和操作，适合直接查看命中结果。"
+            },
+            {
+              "type": "bullet",
+              "label": "页面操作",
+              "text": "列表提供监控参数、导出会员账号和审核入口；实际参数可进一步核对下注金额、游戏编码、游戏类型和中奖金额。"
+            }
+          ]
+        },
+        {
+          "type": "module",
+          "title": "监控参数弹窗",
+          "intro": "监控参数弹窗用于维护高倍爆奖、获利比和风控提醒阈值，修改后会影响后续命中规则。",
+          "path": "../custom/assets/manual-risk-center/profit-monitor-params-modal.png",
+          "caption": "图：监控参数弹窗，用于配置高倍爆奖、获利比和提醒间隔。",
+          "blocks": [
+            {
+              "type": "bullet",
+              "label": "高倍爆奖",
+              "text": "可设置高倍爆奖开关、爆奖倍数和中奖金额；开启后会按阈值识别异常中奖记录。"
+            },
+            {
+              "type": "bullet",
+              "label": "获利比",
+              "text": "获利比开关开启后，可维护当日会员获利比和触发额度值，用于控制高收益玩家的监控强度。"
+            },
+            {
+              "type": "bullet",
+              "label": "风控提醒",
+              "text": "风控提醒开关与提醒间隔时间共同决定通知频率，提交前应确认与当前风控策略一致。"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

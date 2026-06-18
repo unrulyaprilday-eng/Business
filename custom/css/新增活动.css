@@ -15,7 +15,11 @@
 .relief-template-active #u2699,
 .relief-template-active #u2700,
 .relief-template-active #u1166,
-.relief-template-active #u1167 {
+.relief-template-active #u1167,
+.share-template-active #u2699,
+.share-template-active #u2700,
+.share-template-active #u1166,
+.share-template-active #u1167 {
   display: none !important;
 }
 
@@ -31,18 +35,29 @@ body.relief-template-active #u1695_state4 {
   display: block !important;
 }
 
-.custom-relief-form {
+.custom-relief-form,
+.custom-share-form {
   box-sizing: border-box;
   width: 1120px;
-  min-height: 1100px;
   padding: 28px 72px 80px 48px;
-  font-family: "微软雅黑", sans-serif;
+  font-family: "Microsoft YaHei", sans-serif;
   font-size: 13px;
   color: #303133;
   background: #fff;
 }
 
-#u6_state2_content {
+.custom-relief-form {
+  min-height: 1100px;
+}
+
+.custom-share-form {
+  min-height: 1173px;
+  padding-right: 48px;
+  padding-bottom: 40px;
+}
+
+#u6_state2_content,
+#u6_state3_content {
   position: absolute !important;
   left: 0 !important;
   top: 0 !important;
@@ -50,12 +65,32 @@ body.relief-template-active #u1695_state4 {
   height: auto !important;
 }
 
-#u6_state2 {
+#u6_state2,
+#u6_state3 {
   overflow-y: auto !important;
 }
 
+#u6_state3 {
+  border-width: 0 !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+  width: 1441px !important;
+  height: 1173px !important;
+  overflow: auto !important;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-x: hidden;
+  overflow-x: hidden !important;
+  background-color: rgba(255, 255, 255, 1) !important;
+  background-image: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
 .custom-relief-grid,
-.custom-relief-media {
+.custom-relief-media,
+.custom-share-grid,
+.custom-share-media {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   column-gap: 44px;
@@ -87,24 +122,47 @@ body.relief-template-active #u1695_state4 {
 }
 
 .custom-field input,
-.custom-relief-table input {
+.custom-relief-table input,
+.custom-share-table input,
+.custom-share-table textarea,
+.custom-editor textarea {
   min-width: 0;
   box-sizing: border-box;
   width: 100%;
-  height: 32px;
   padding: 4px 10px;
   border: 1px solid #dcdfe6;
   border-radius: 4px;
-  font-family: "微软雅黑", sans-serif;
+  font-family: "Microsoft YaHei", sans-serif;
   font-size: 13px;
   color: #303133;
 }
 
+.custom-field input,
+.custom-relief-table input,
+.custom-share-table input {
+  height: 32px;
+}
+
+.custom-share-table textarea,
+.custom-editor textarea {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  line-height: 1.6;
+  resize: none;
+}
+
 .custom-field input:focus,
 .custom-relief-table input:focus,
+.custom-share-table input:focus,
+.custom-share-table textarea:focus,
 .custom-editor textarea:focus {
   border-color: #409eff;
   outline: none;
+}
+
+.custom-field input[readonly] {
+  background: #f5f7fa;
+  color: #909399;
 }
 
 .custom-field em {
@@ -117,22 +175,31 @@ body.relief-template-active #u1695_state4 {
   grid-template-columns: 96px 1fr 18px 1fr;
 }
 
-.custom-radio-group {
+.custom-field-wide .custom-static-note-list,
+.custom-field-wide .custom-checkbox-group {
+  grid-column: 2 / -1;
+}
+
+.custom-radio-group,
+.custom-checkbox-group {
   display: flex;
   align-items: center;
   gap: 14px;
   min-height: 32px;
   color: #303133;
+  flex-wrap: wrap;
 }
 
-.custom-radio-group label {
+.custom-radio-group label,
+.custom-checkbox-group label {
   display: inline-flex;
   align-items: center;
   gap: 5px;
   white-space: nowrap;
 }
 
-.custom-radio-group input {
+.custom-radio-group input,
+.custom-checkbox-group input {
   width: auto;
   height: auto;
   margin: 0;
@@ -190,14 +257,25 @@ body.relief-template-active #u1695_state4 {
   background: #ff4d4f;
 }
 
-.custom-tier {
+.custom-tier,
+.custom-share-index {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 28px;
+  min-height: 28px;
   border-radius: 4px;
+  font-weight: 600;
+}
+
+.custom-tier {
   color: #fff;
   background: #409eff;
+}
+
+.custom-share-index {
+  height: 32px;
+  color: #3b6fdc;
+  background: #ecf5ff;
 }
 
 .custom-vip-cell {
@@ -239,13 +317,24 @@ body.relief-template-active #u1695_state4 {
   border: 0;
   color: #909399;
   background: transparent;
-  font-family: "微软雅黑", sans-serif;
+  font-family: "Microsoft YaHei", sans-serif;
   font-size: 12px;
   cursor: pointer;
 }
 
 .custom-row-delete:hover {
   color: #f56c6c;
+}
+
+.custom-row-delete:disabled,
+.custom-row-delete.is-disabled {
+  color: #c0c4cc;
+  cursor: not-allowed;
+}
+
+.custom-row-delete:disabled:hover,
+.custom-row-delete.is-disabled:hover {
+  color: #c0c4cc;
 }
 
 .custom-upload {
@@ -297,11 +386,169 @@ body.relief-template-active #u1695_state4 {
 
 .custom-editor textarea {
   grid-column: 2;
-  box-sizing: border-box;
   width: 100%;
   height: 320px;
   margin-top: -10px;
-  border: 1px solid #dcdfe6;
   border-radius: 0 0 4px 4px;
-  resize: none;
+}
+
+.custom-share-add {
+  min-width: 116px;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid #409eff;
+  border-radius: 4px;
+  background: #ecf5ff;
+  color: #409eff;
+  font-family: "Microsoft YaHei", sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.custom-share-add:disabled {
+  border-color: #e4e7ed;
+  color: #c0c4cc;
+  background: #f5f7fa;
+  cursor: not-allowed;
+}
+
+.custom-share-channel-display {
+  display: grid;
+  gap: 8px;
+  min-height: 32px;
+  align-content: center;
+}
+
+.custom-share-channel-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.custom-share-channel-icons img {
+  width: 28px;
+  height: 28px;
+  padding: 5px;
+  border: 1px solid #dfe5ef;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.custom-share-channel-display p {
+  margin: 0;
+  color: #909399;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.custom-share-table {
+  border: 1px solid #ebeef5;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.custom-share-table-head,
+.custom-share-row {
+  display: grid;
+  grid-template-columns: 64px minmax(170px, 1fr) minmax(240px, 1.1fr) 170px minmax(210px, 1fr) 44px;
+  gap: 12px;
+  align-items: start;
+  padding: 10px 12px;
+  box-sizing: border-box;
+}
+
+.custom-share-table-head {
+  background: #f5f7fa;
+  color: #303133;
+  font-weight: 600;
+}
+
+.custom-share-row {
+  border-top: 1px solid #ebeef5;
+}
+
+.custom-share-desc-input {
+  height: 72px;
+}
+
+.custom-share-upload {
+  min-height: 72px;
+  padding: 10px 12px;
+  border: 1px dashed #d8e0eb;
+  border-radius: 4px;
+  color: #2f3f53;
+  background: #fff;
+  font-family: "Microsoft YaHei", sans-serif;
+  text-align: left;
+  cursor: pointer;
+}
+
+.custom-share-upload-name {
+  display: block;
+  margin-bottom: 8px;
+  color: #303133;
+  font-weight: 600;
+}
+
+.custom-share-upload small {
+  display: block;
+  color: #909399;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.custom-share-table-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+  border-top: 1px solid #ebeef5;
+  background: #fafbfd;
+  color: #909399;
+  font-size: 12px;
+}
+
+.custom-share-foot-note {
+  color: #606266;
+  text-align: right;
+}
+
+.custom-share-section {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid #ebeef5;
+}
+
+.custom-share-section:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.custom-share-section > h3 {
+  margin: 0 0 16px;
+  color: #303133;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.custom-share-section-head h3 {
+  margin: 0;
+  color: #303133;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.custom-share-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.custom-share-note-editor textarea {
+  height: 240px;
 }
