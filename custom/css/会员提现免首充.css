@@ -1,0 +1,269 @@
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: #ffffff;
+}
+
+body {
+  color: #344054;
+  font: 12px/1.5 Arial, "Microsoft YaHei", sans-serif;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.withdraw-exempt-page {
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+.page-panel {
+  padding: 22px 19px 0;
+  box-sizing: border-box;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  color: #3d4856;
+}
+
+.filter-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-field span {
+  font-size: 12px;
+  font-weight: 600;
+  color: #3c4653;
+}
+
+.filter-field input {
+  width: 176px;
+  height: 30px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  border: 1px solid #d7dde6;
+  border-radius: 3px;
+  color: #344054;
+  background: #ffffff;
+}
+
+.filter-field input::placeholder,
+.form-row textarea::placeholder {
+  color: #b1bac6;
+}
+
+.btn {
+  min-width: 58px;
+  height: 30px;
+  padding: 0 18px;
+  border: 1px solid #d7dde6;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #475467;
+  cursor: pointer;
+}
+
+.btn.btn-primary {
+  border-color: #4096f4;
+  background: #4096f4;
+  color: #ffffff;
+}
+
+.notice-bar {
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 16px;
+  margin-bottom: 10px;
+  border: 1px solid #4ea2ff;
+  background: #eef6ff;
+  color: #0f4e96;
+  box-sizing: border-box;
+}
+
+.table-panel {
+  border: 1px solid #e5e7eb;
+  border-bottom: 0;
+  background: #ffffff;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.data-table th,
+.data-table td {
+  height: 36px;
+  padding: 0 12px;
+  border-right: 1px solid #eceff3;
+  border-bottom: 1px solid #eceff3;
+  text-align: center;
+  color: #475467;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.data-table th {
+  background: #f6f7fb;
+  color: #697586;
+  font-weight: 600;
+}
+
+.data-table th:nth-child(1),
+.data-table td:nth-child(1) {
+  width: 16%;
+}
+
+.data-table th:nth-child(2),
+.data-table td:nth-child(2) {
+  width: 19%;
+}
+
+.data-table th:nth-child(3),
+.data-table td:nth-child(3) {
+  width: 23%;
+}
+
+.data-table th:nth-child(4),
+.data-table td:nth-child(4) {
+  width: 16%;
+}
+
+.data-table th:nth-child(5),
+.data-table td:nth-child(5) {
+  width: 20%;
+}
+
+.data-table th:nth-child(6),
+.data-table td:nth-child(6) {
+  width: 6%;
+}
+
+.empty-row td {
+  height: 460px;
+  vertical-align: top;
+  padding-top: 18px;
+  color: #98a2b3;
+  background: #ffffff;
+}
+
+.action-link {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #4096f4;
+  cursor: pointer;
+}
+
+.modal-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 35px;
+  background: rgba(0, 0, 0, 0.28);
+  box-sizing: border-box;
+}
+
+.modal-card {
+  width: 460px;
+  border-radius: 2px;
+  background: #ffffff;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.16);
+}
+
+.modal-head {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  border-bottom: 1px solid #e5e7eb;
+  box-sizing: border-box;
+}
+
+.modal-head h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.modal-close {
+  border: 0;
+  background: transparent;
+  color: #98a2b3;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 18px 22px 12px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  align-items: start;
+  column-gap: 10px;
+  margin-bottom: 18px;
+}
+
+.form-row span {
+  padding-top: 8px;
+  text-align: right;
+  color: #475467;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.form-row.is-required span::before {
+  content: "*";
+  margin-right: 4px;
+  color: #ff4d4f;
+}
+
+.form-row textarea {
+  width: 100%;
+  min-height: 84px;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  border: 1px solid #d7dde6;
+  border-radius: 3px;
+  color: #344054;
+  resize: none;
+  outline: none;
+}
+
+#remarkInput {
+  min-height: 82px;
+}
+
+.modal-foot {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  padding: 18px 0 20px;
+  border-top: 1px solid #e5e7eb;
+}

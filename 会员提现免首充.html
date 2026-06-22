@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>会员提现免首充</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/会员提现免首充/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/会员提现免首充.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/会员提现免首充/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return "resources/images/transparent.gif"; };
+      $axure.utils.getOtherPath = function() { return "resources/Other.html"; };
+      $axure.utils.getReloadPath = function() { return "resources/reload.html"; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell withdraw-exempt-page">
+        <main class="page-panel">
+          <section class="filter-bar" aria-label="会员提现免首充筛选">
+            <label class="filter-field">
+              <span>会员ID:</span>
+              <input id="memberIdFilter" type="text" placeholder="请输入会员ID"/>
+            </label>
+            <label class="filter-field">
+              <span>会员账号:</span>
+              <input id="memberAccountFilter" type="text" placeholder="请输入会员账号"/>
+            </label>
+            <button class="btn btn-primary" id="searchBtn" type="button">搜索</button>
+            <button class="btn" id="resetBtn" type="button">重置</button>
+            <button class="btn btn-primary" id="createBtn" type="button">新增</button>
+          </section>
+
+          <section class="notice-bar" aria-label="页面说明">
+            <span>注：添加进这个列表的用户提现不受提款参数设置首次提款要求累计充值金额达到多少的限制。</span>
+          </section>
+
+          <section class="table-panel" aria-label="会员提现免首充列表">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>会员ID</th>
+                  <th>会员账号</th>
+                  <th>备注</th>
+                  <th>操作人</th>
+                  <th>操作时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody">
+                <tr class="empty-row">
+                  <td colspan="6">暂无数据</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </main>
+
+        <div class="modal-mask" id="formModal" hidden>
+          <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <header class="modal-head">
+              <h3 id="modalTitle">新增</h3>
+              <button class="modal-close" id="closeModalBtn" type="button" aria-label="关闭">×</button>
+            </header>
+            <div class="modal-body">
+              <label class="form-row is-required">
+                <span>会员ID:</span>
+                <textarea id="memberIdsInput" placeholder="请输入会员ID，多个请用英文逗号隔开"></textarea>
+              </label>
+              <label class="form-row">
+                <span>备注:</span>
+                <textarea id="remarkInput" placeholder="请输入备注"></textarea>
+              </label>
+            </div>
+            <footer class="modal-foot">
+              <button class="btn" id="cancelBtn" type="button">取消</button>
+              <button class="btn btn-primary" id="submitBtn" type="button">提交</button>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/会员提现免首充.js"></script>
+  </body>
+</html>

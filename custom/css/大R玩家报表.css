@@ -1,0 +1,142 @@
+html,
+body {
+  margin: 0;
+  background: #f5f7fb;
+  color: #303846;
+  font-family: "Microsoft YaHei", Arial, sans-serif;
+}
+
+.big-r-report-page {
+  min-width: 1280px;
+  min-height: 100vh;
+  padding: 18px 10px 0;
+  box-sizing: border-box;
+  background: #f5f7fb;
+}
+
+.report-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 32px;
+  margin-bottom: 14px;
+}
+
+.date-range {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: 214px;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid #d6dde8;
+  border-radius: 4px;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.date-range input {
+  width: 78px;
+  border: 0;
+  outline: 0;
+  color: #3c4656;
+  font: 14px/1 "Microsoft YaHei", Arial, sans-serif;
+  background: transparent;
+}
+
+.calendar-icon,
+.date-separator {
+  color: #97a3b6;
+  font-size: 13px;
+}
+
+button {
+  height: 32px;
+  padding: 0 18px;
+  border-radius: 4px;
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.primary-btn {
+  color: #fff;
+  background: #409eff;
+}
+
+.plain-btn {
+  color: #4b5565;
+  border: 1px solid #d8dee8;
+  background: #fff;
+}
+
+.wide-btn {
+  min-width: 88px;
+}
+
+.update-tip {
+  height: 38px;
+  line-height: 38px;
+  padding: 0 16px;
+  margin-bottom: 10px;
+  border: 1px solid #4da3ff;
+  background: #eaf5ff;
+  color: #124e8c;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.table-panel {
+  border: 1px solid #e3e8f0;
+  background: #fff;
+  overflow-x: auto;
+}
+
+.report-table {
+  width: 100%;
+  min-width: 1380px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 13px;
+}
+
+.report-table th,
+.report-table td {
+  height: 38px;
+  padding: 0 8px;
+  border-right: 1px solid #e7ebf2;
+  border-bottom: 1px solid #edf0f5;
+  text-align: center;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.report-table th {
+  color: #7a8492;
+  background: #f4f6f9;
+  font-weight: 700;
+}
+
+.report-table .group-head th {
+  height: 34px;
+  color: #657386;
+}
+
+.report-table .date-col {
+  width: 136px;
+}
+
+.report-table th:last-child,
+.report-table td:last-child {
+  border-right: 0;
+}
+
+.empty-row td {
+  height: 290px;
+  color: #8b95a7;
+  background: #fff;
+  vertical-align: top;
+  padding-top: 16px;
+}

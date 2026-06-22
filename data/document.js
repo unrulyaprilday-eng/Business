@@ -354,6 +354,13 @@ $axure.loadDocument({
             "children": []
           },
           {
+            "id": "big_r_player_report",
+            "pageName": "大R玩家报表",
+            "type": "Wireframe",
+            "url": "大R玩家报表.html",
+            "children": []
+          },
+          {
             "id": "brueg6",
             "pageName": "充值留存报表",
             "type": "Wireframe",
@@ -502,6 +509,13 @@ $axure.loadDocument({
             "pageName": "所有会员",
             "type": "Wireframe",
             "url": "所有会员.html",
+            "children": []
+          },
+          {
+            "id": "member_withdraw_exempt_first_recharge",
+            "pageName": "会员提现免首充",
+            "type": "Wireframe",
+            "url": "会员提现免首充.html",
             "children": []
           },
           {
