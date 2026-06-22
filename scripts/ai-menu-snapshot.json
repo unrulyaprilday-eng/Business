@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-06-22T08:37:32.509Z",
+  "savedAt": "2026-06-22T09:21:05.416Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -666,10 +666,10 @@
           "children": []
         },
         {
-          "id": "merchant_site_warning_desc",
-          "pageName": "站点预警说明",
+          "id": "merchant_status_update",
+          "pageName": "修改商户状态",
           "type": "Wireframe",
-          "url": "站点预警说明.html",
+          "url": "修改商户状态.html",
           "children": []
         }
       ]

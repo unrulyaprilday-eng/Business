@@ -677,10 +677,10 @@ $axure.loadDocument({
             "children": []
           },
           {
-            "id": "merchant_site_warning_desc",
-            "pageName": "站点预警说明",
+            "id": "merchant_status_update",
+            "pageName": "修改商户状态",
             "type": "Wireframe",
-            "url": "站点预警说明.html",
+            "url": "修改商户状态.html",
             "children": []
           }
         ]

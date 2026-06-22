@@ -1,5 +1,5 @@
 $axure.loadCurrentPage({
-  "url": "站点预警说明.html",
+  "url": "修改商户状态.html",
   "generationDate": new Date(2026, 5, 22),
   "defaultAdaptiveView": {
     "name": "",
@@ -24,9 +24,9 @@ $axure.loadCurrentPage({
     "HoverNum"
   ],
   "page": {
-    "packageId": "merchant_site_warning_desc",
+    "packageId": "merchant_status_update",
     "type": "Axure:Page",
-    "name": "站点预警说明",
+    "name": "修改商户状态",
     "notes": {},
     "annotations": [],
     "style": {
