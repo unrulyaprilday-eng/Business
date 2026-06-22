@@ -1,0 +1,158 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+  color: #2f3a4c;
+  font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.warning-page-shell {
+  min-height: 100vh;
+  padding: 12px 14px 24px;
+  background: #ffffff;
+}
+
+.warning-card {
+  min-width: 1220px;
+}
+
+.merchant-meta {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 10px;
+  color: #5d6778;
+}
+
+.meta-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.meta-label {
+  color: #5d6778;
+}
+
+.meta-value {
+  color: #303744;
+  font-weight: 500;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.warning-table {
+  width: 100%;
+  min-width: 1220px;
+  border-collapse: collapse;
+  border: 1px solid #e5eaf1;
+  table-layout: fixed;
+}
+
+.warning-table th,
+.warning-table td {
+  padding: 13px 12px;
+  border-right: 1px solid #e5eaf1;
+  border-bottom: 1px solid #e5eaf1;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 1.55;
+}
+
+.warning-table th:last-child,
+.warning-table td:last-child {
+  border-right: 0;
+}
+
+.warning-table th {
+  background: #f7f8fb;
+  color: #616b7e;
+  font-weight: 600;
+}
+
+.warning-table td {
+  color: #334155;
+}
+
+.warning-table .col-id {
+  width: 76px;
+}
+
+.warning-table .col-type {
+  width: 150px;
+}
+
+.warning-table .col-value {
+  width: 128px;
+}
+
+.warning-table .col-color {
+  width: 126px;
+}
+
+.color-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 70px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 3px;
+  color: #ffffff;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.chip-red {
+  background: #f42a2a;
+}
+
+.chip-blue {
+  background: #1100ff;
+}
+
+.chip-cyan {
+  background: #14fffb;
+}
+
+.chip-green {
+  background: #00f000;
+}
+
+.chip-yellow {
+  background: #aeff00;
+  color: #ffffff;
+}
+
+.desc-lines {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+}
+
+.desc-lines p {
+  margin: 0;
+}
+
+@media (max-width: 1280px) {
+  .warning-card {
+    min-width: 0;
+  }
+}

@@ -675,6 +675,13 @@ $axure.loadDocument({
             "type": "Wireframe",
             "url": "商户账单.html",
             "children": []
+          },
+          {
+            "id": "merchant_site_warning_desc",
+            "pageName": "站点预警说明",
+            "type": "Wireframe",
+            "url": "站点预警说明.html",
+            "children": []
           }
         ]
       },

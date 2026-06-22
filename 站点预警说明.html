@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <title>站点预警说明</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet" />
+    <link href="data/styles.css" type="text/css" rel="stylesheet" />
+    <link href="files/站点预警说明/styles.css" type="text/css" rel="stylesheet" />
+    <link href="custom/css/站点预警说明.css" type="text/css" rel="stylesheet" />
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/站点预警说明/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return "resources/images/transparent.gif"; };
+      $axure.utils.getOtherPath = function() { return "resources/Other.html"; };
+      $axure.utils.getReloadPath = function() { return "resources/reload.html"; };
+    </script>
+  </head>
+  <body data-axure-page-id="merchant_site_warning_desc">
+    <div id="base" class="">
+      <div class="warning-page-shell">
+        <section class="warning-card" aria-label="站点预警说明">
+          <div class="merchant-meta">
+            <div class="meta-item">
+              <span class="meta-label">商户名称：</span>
+              <strong class="meta-value">ACE直营站</strong>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">商户等级：</span>
+              <strong class="meta-value">1级</strong>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="warning-table">
+              <thead>
+                <tr>
+                  <th class="col-id">ID</th>
+                  <th class="col-type">类型</th>
+                  <th class="col-value">设定值</th>
+                  <th class="col-color">预警颜色</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>0</td>
+                  <td>站点余额</td>
+                  <td>8</td>
+                  <td><span class="color-chip chip-red">#f42a2a</span></td>
+                  <td>小于8则对商户发送预警通知</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>正常</td>
+                  <td>50</td>
+                  <td><span class="color-chip chip-blue">#1100ff</span></td>
+                  <td>
+                    <div class="desc-lines">
+                      <p>额度已使用比例 ≤ 50%</p>
+                      <p>额度已使用比例 = (未结账单 + 未出账单) / (商户余额 + 授信额度) * 100%</p>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>预警</td>
+                  <td>50</td>
+                  <td><span class="color-chip chip-cyan">#14fffb</span></td>
+                  <td>额度已使用比例 &gt; 50% 时，站点状态为预警</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>限制</td>
+                  <td>100</td>
+                  <td><span class="color-chip chip-green">#00f000</span></td>
+                  <td>额度已使用比例 &gt; 100% 时，站点状态为后台限制，将无法导出会员资料和无法提现审核（会暂停自动出款）</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>禁止</td>
+                  <td>150</td>
+                  <td><span class="color-chip chip-yellow">#aeff00</span></td>
+                  <td>额度已使用比例 &gt; 150% 时，站点状态为禁止游戏，前台所有会员都无法进入三方游戏。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>
