@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>中奖动态配置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/中奖动态配置/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/中奖动态配置.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/中奖动态配置/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/中奖动态配置.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body data-axure-page-id="operation_live_feed_config">
+    <div id="base" class="">
+      <div class="custom-page-shell live-config-page">
+        <div class="topbar">
+          <span class="nav-icon">‹</span>
+          <span class="nav-icon refresh">↻</span>
+          <span class="breadcrumb">运营中心 / <strong>中奖动态配置</strong></span>
+        </div>
+
+        <main class="page-panel">
+          <section class="intro-bar">
+            <div class="intro-copy">
+              <h1>中奖动态配置</h1>
+            </div>
+          </section>
+
+          <section class="config-section">
+            <div class="section-headline">
+              <h2>来源配置</h2>
+            </div>
+
+            <section class="rule-card">
+              <div class="card-head">
+                <h2>来源与条件</h2>
+              </div>
+              <div class="rule-body">
+                <div class="source-list">
+                  <section class="source-item source-item-game" id="gameSourceCard">
+                    <div class="source-top">
+                      <label class="source-main-line"><input type="checkbox" id="sourceGame" checked/> 游戏中奖</label>
+                    </div>
+                    <div class="source-detail">
+                      <div class="group-caption">
+                        <strong>来源范围</strong>
+                      </div>
+
+                      <div class="game-scope-grid">
+                        <label class="field">
+                          <span>游戏类型</span>
+                          <div class="custom-multiselect" data-multiselect="feedGameType">
+                            <div class="multiselect-trigger">
+                              <input type="text" class="multiselect-input" placeholder="请选择游戏类型" readonly/>
+                              <span class="multiselect-arrow">▼</span>
+                            </div>
+                            <div class="multiselect-dropdown" hidden>
+                              <div class="multiselect-select-all">
+                                <label><input type="checkbox" class="select-all-checkbox"/> 全选</label>
+                              </div>
+                              <div class="multiselect-options">
+                                <label class="multiselect-option"><input type="checkbox" value="电子" checked/> 电子</label>
+                                <label class="multiselect-option"><input type="checkbox" value="彩票"/> 彩票</label>
+                                <label class="multiselect-option"><input type="checkbox" value="棋牌"/> 棋牌</label>
+                                <label class="multiselect-option"><input type="checkbox" value="捕鱼" checked/> 捕鱼</label>
+                                <label class="multiselect-option"><input type="checkbox" value="体育"/> 体育</label>
+                              </div>
+                            </div>
+                            <div class="multiselect-tags"></div>
+                          </div>
+                        </label>
+
+                        <label class="field">
+                          <span>游戏厂商</span>
+                          <div class="custom-multiselect" data-multiselect="feedVendor">
+                            <div class="multiselect-trigger">
+                              <input type="text" class="multiselect-input" placeholder="请选择游戏厂商" readonly/>
+                              <span class="multiselect-arrow">▼</span>
+                            </div>
+                            <div class="multiselect-dropdown" hidden>
+                              <div class="multiselect-select-all">
+                                <label><input type="checkbox" class="select-all-checkbox"/> 全选</label>
+                              </div>
+                              <div class="multiselect-options">
+                                <label class="multiselect-option"><input type="checkbox" value="PG" checked/> PG</label>
+                                <label class="multiselect-option"><input type="checkbox" value="JILI" checked/> JILI</label>
+                                <label class="multiselect-option"><input type="checkbox" value="EVO"/> EVO</label>
+                                <label class="multiselect-option"><input type="checkbox" value="CQ9"/> CQ9</label>
+                                <label class="multiselect-option"><input type="checkbox" value="SPRIBE"/> SPRIBE</label>
+                              </div>
+                            </div>
+                            <div class="multiselect-tags"></div>
+                          </div>
+                        </label>
+
+                        <label class="field">
+                          <span>游戏选择</span>
+                          <div class="custom-multiselect" data-multiselect="feedGame">
+                            <div class="multiselect-trigger">
+                              <input type="text" class="multiselect-input" placeholder="请选择游戏" readonly/>
+                              <span class="multiselect-arrow">▼</span>
+                            </div>
+                            <div class="multiselect-dropdown" hidden>
+                              <div class="multiselect-search">
+                                <input type="text" class="multiselect-search-input" placeholder="搜索游戏名称"/>
+                              </div>
+                              <div class="multiselect-select-all">
+                                <label><input type="checkbox" class="select-all-checkbox"/> 全选</label>
+                              </div>
+                              <div class="multiselect-options">
+                                <label class="multiselect-option"><input type="checkbox" value="Fortune Ox" checked/> Fortune Ox</label>
+                                <label class="multiselect-option"><input type="checkbox" value="Gates of Olympus" checked/> Gates of Olympus</label>
+                                <label class="multiselect-option"><input type="checkbox" value="Crazy Hunter"/> Crazy Hunter</label>
+                                <label class="multiselect-option"><input type="checkbox" value="Dream Catcher"/> Dream Catcher</label>
+                                <label class="multiselect-option"><input type="checkbox" value="Crash Touchdown"/> Crash Touchdown</label>
+                              </div>
+                            </div>
+                            <div class="multiselect-tags"></div>
+                          </div>
+                        </label>
+                      </div>
+
+                      <div class="condition-panel">
+                        <div class="group-caption">
+                          <strong>触发条件</strong>
+                        </div>
+                        <div class="threshold-grid">
+                          <label class="field single-threshold-field" id="amountField">
+                            <span>最低中奖金额</span>
+                            <div class="number-input">
+                              <input type="text" value="500"/>
+                              <em>元以上</em>
+                            </div>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="source-item source-item-event">
+                    <div class="source-top">
+                      <div class="source-main-line source-title-only">系统奖励</div>
+                    </div>
+                    <div class="source-detail compact-detail">
+                      <div class="event-source-grid">
+                        <label><input type="checkbox" checked/> VIP升级奖励</label>
+                        <label><input type="checkbox" checked/> VIP日俸禄</label>
+                        <label><input type="checkbox" checked/> VIP周俸禄</label>
+                        <label><input type="checkbox" checked/> VIP月俸禄</label>
+                        <label><input type="checkbox" checked/> 活动领奖</label>
+                        <label><input type="checkbox" checked/> 代理返佣</label>
+                        <label><input type="checkbox" checked/> 任务达成</label>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <section class="config-section">
+            <div class="section-headline">
+              <h2>机器人补量配置</h2>
+            </div>
+
+            <section class="rule-card">
+              <div class="card-head">
+                <h2>机器人配置</h2>
+              </div>
+              <div class="rule-body">
+                <div class="robot-switch-row">
+                  <div class="field inline">
+                    <span>机器人开关</span>
+                    <button class="switch on" id="robotToggle" type="button" data-on="true" aria-label="机器人开关"></button>
+                  </div>
+                </div>
+
+                <div class="robot-panel-grid" id="robotConfigBody">
+                  <div class="robot-panel-column robot-panel-column-left">
+                    <section class="robot-panel-group">
+                      <div class="group-caption">
+                        <strong>节奏控制</strong>
+                      </div>
+                      <div class="group-form-grid">
+                        <label class="field">
+                          <span>补充频率</span>
+                          <div class="number-input">
+                            <input type="text" value="3"/>
+                            <em>分钟补 1 条</em>
+                          </div>
+                        </label>
+                      </div>
+                    </section>
+
+                    <section class="robot-panel-group">
+                      <div class="group-caption">
+                        <strong>名称规则</strong>
+                      </div>
+                      <div class="field">
+                        <span>机器人名称样式</span>
+                        <div class="segmented simple-group" id="nameModeGroup">
+                          <button class="segment active" type="button" data-name-mode="digit">数字</button>
+                          <button class="segment" type="button" data-name-mode="letter">字母</button>
+                          <button class="segment" type="button" data-name-mode="letterDigit">字母数字</button>
+                          <button class="segment" type="button" data-name-mode="digitLetter">数字字母</button>
+                        </div>
+                      </div>
+                      <div class="name-rule-grid">
+                        <label class="field compact-field">
+                          <span>自定义开头</span>
+                          <input id="namePrefixInput" type="text" placeholder="请输入机器人ID开头"/>
+                        </label>
+                      </div>
+                      <div class="helper-text preview-label">预览</div>
+                      <div class="helper-text name-preview" id="nameModeHint">示例：12***8 / 66***3 / 90***5</div>
+                    </section>
+                  </div>
+
+                  <div class="robot-panel-column robot-panel-column-right">
+                    <section class="robot-panel-group">
+                      <div class="source-config-list">
+                        <div class="source-config-row">
+                          <div class="source-config-main">
+                            <label><input type="checkbox" checked/> 游戏中奖</label>
+                          </div>
+                          <div class="source-config-fields">
+                            <label class="inline-config-field inline-weight-field">
+                              <span>权重占比</span>
+                              <div class="number-input">
+                                <input type="text" value="55"/>
+                                <em>%</em>
+                              </div>
+                            </label>
+                            <label class="inline-config-field">
+                              <span>奖励范围</span>
+                              <div class="range-input compact-range">
+                                <input type="text" value="100"/>
+                                <em>~</em>
+                                <input type="text" value="5000"/>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                        <div class="source-config-row">
+                          <div class="source-config-main">
+                            <label><input type="checkbox" checked/> VIP升级奖励</label>
+                          </div>
+                          <div class="source-config-fields">
+                            <label class="inline-config-field inline-weight-field">
+                              <span>权重占比</span>
+                              <div class="number-input">
+                                <input type="text" value="6"/>
+                                <em>%</em>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                        <div class="source-config-row">
+                          <div class="source-config-main">
+                            <label><input type="checkbox" checked/> VIP日俸禄</label>
+                          </div>
+                          <div class="source-config-fields">
+                            <label class="inline-config-field inline-weight-field">
+                              <span>权重占比</span>
+                              <div class="number-input">
+                                <input type="text" value="8"/>
+                                <em>%</em>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                        <div class="source-config-row">
+                          <div class="source-config-main">
+                            <label><input type="checkbox" checked/> VIP周俸禄</label>
+                          </div>
+                          <div class="source-config-fields">
+                            <label class="inline-config-field inline-weight-field">
+                              <span>权重占比</span>
+                              <div class="number-input">
+                                <input type="text" value="6"/>
+                                <em>%</em>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                        <div class="source-config-row">
+                          <div class="source-config-main">
+                            <label><input type="checkbox"/> VIP月俸禄</label>
+                          </div>
+                          <div class="source-config-fields">
+                            <label class="inline-config-field inline-weight-field">
+                              <span>权重占比</span>
+                              <div class="number-input">
+                                <input type="text" value="5"/>
+                                <em>%</em>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                        <div class="source-config-row">
+                          <div class="source-config-main">
+                            <label><input type="checkbox" checked/> 活动领奖</label>
+                          </div>
+                          <div class="source-config-fields">
+                            <label class="inline-config-field inline-weight-field">
+                              <span>权重占比</span>
+                              <div class="number-input">
+                                <input type="text" value="10"/>
+                                <em>%</em>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                        <div class="source-config-row">
+                          <div class="source-config-main">
+                            <label><input type="checkbox" checked/> 代理返佣</label>
+                          </div>
+                          <div class="source-config-fields">
+                            <label class="inline-config-field inline-weight-field">
+                              <span>权重占比</span>
+                              <div class="number-input">
+                                <input type="text" value="10"/>
+                                <em>%</em>
+                              </div>
+                            </label>
+                            <label class="inline-config-field">
+                              <span>奖励范围</span>
+                              <div class="range-input compact-range">
+                                <input type="text" value="200"/>
+                                <em>~</em>
+                                <input type="text" value="3000"/>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                        <div class="source-config-row">
+                          <div class="source-config-main">
+                            <label><input type="checkbox" checked/> 任务达成</label>
+                          </div>
+                          <div class="source-config-fields">
+                            <label class="inline-config-field inline-weight-field">
+                              <span>权重占比</span>
+                              <div class="number-input">
+                                <input type="text" value="5"/>
+                                <em>%</em>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <div class="form-actions">
+            <button class="btn primary wide" type="button" data-action="edit">修改</button>
+            <button class="btn" type="button" data-action="cancel" hidden>取消</button>
+            <button class="btn primary wide" type="button" data-action="save" hidden>保存</button>
+          </div>
+
+          <section class="bottom-note-section">
+            <div class="section-headline">
+              <h2>组件展示文本说明</h2>
+            </div>
+            <section class="rule-card">
+              <div class="rule-body">
+                <div class="display-text-table">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>来源</th>
+                        <th>中文展示文本</th>
+                        <th>英文展示文本</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>游戏中奖</td>
+                        <td>恭喜 {name} 在 {gameName} 中获得 {reward}</td>
+                        <td>Congrats {name} won {reward} in {gameName}</td>
+                      </tr>
+                      <tr>
+                        <td>VIP升级奖励</td>
+                        <td>{name} 升至 VIP {level}，获 {reward}</td>
+                        <td>{name} received Level Up Bonus {reward} at VIP {level}</td>
+                      </tr>
+                      <tr>
+                        <td>VIP日俸禄</td>
+                        <td>{name} 领取 VIP {level} 日俸禄 {reward}</td>
+                        <td>{name} received VIP {level} Daily Bonus {reward}</td>
+                      </tr>
+                      <tr>
+                        <td>VIP周俸禄</td>
+                        <td>{name} 领取 VIP {level} 周俸禄 {reward}</td>
+                        <td>{name} received VIP {level} Weekly Bonus {reward}</td>
+                      </tr>
+                      <tr>
+                        <td>VIP月俸禄</td>
+                        <td>{name} 领取 VIP {level} 月俸禄 {reward}</td>
+                        <td>{name} received VIP {level} Monthly Bonus {reward}</td>
+                      </tr>
+                      <tr>
+                        <td>活动领奖</td>
+                        <td>{name} 领取 {rewardName}奖励 {reward}</td>
+                        <td>{name} claimed {rewardName} reward {reward}</td>
+                      </tr>
+                      <tr>
+                        <td>代理返佣</td>
+                        <td>{name} 获得代理返佣 {reward}</td>
+                        <td>{name} received agent commission {reward}</td>
+                      </tr>
+                      <tr>
+                        <td>任务达成</td>
+                        <td>{name} 完成任务 {taskName} 获得 {reward}</td>
+                        <td>{name} completed task {taskName} and received {reward}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <section class="bottom-note-section">
+            <div class="section-headline">
+              <h2>机器人假数据生成规则</h2>
+            </div>
+            <section class="rule-card">
+              <div class="rule-body">
+                <div class="rule-info-table">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>来源</th>
+                        <th>生成规则</th>
+                        <th>联动限制</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>VIP升级奖励</td>
+                        <td>跟随 VIP 设定与升级奖励</td>
+                        <td>按 VIP 当前已开启等级配置生成</td>
+                      </tr>
+                      <tr>
+                        <td>VIP日俸禄</td>
+                        <td>跟随 VIP 设定</td>
+                        <td>若 VIP 未开启此奖励，则不可选择</td>
+                      </tr>
+                      <tr>
+                        <td>VIP周俸禄</td>
+                        <td>跟随 VIP 设定</td>
+                        <td>若 VIP 未开启此奖励，则不可选择</td>
+                      </tr>
+                      <tr>
+                        <td>VIP月俸禄</td>
+                        <td>跟随 VIP 设定</td>
+                        <td>若 VIP 未开启此奖励，则不可选择</td>
+                      </tr>
+                      <tr>
+                        <td>活动领奖</td>
+                        <td>跟随已开启的活动奖励配置</td>
+                        <td>仅引用已启用活动的奖励内容</td>
+                      </tr>
+                      <tr>
+                        <td>代理返佣</td>
+                        <td>金额范围需要配置</td>
+                        <td>单独读取代理返佣金额范围</td>
+                      </tr>
+                      <tr>
+                        <td>任务达成</td>
+                        <td>跟随任务设定</td>
+                        <td>仅使用已启用任务与奖励</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+          </section>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
