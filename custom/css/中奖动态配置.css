@@ -676,6 +676,11 @@ button {
   color: #667085;
 }
 
+input.auto-weight-input {
+  background: #f7f9fc;
+  color: #667085;
+}
+
 .live-config-page.is-readonly .tag,
 .live-config-page.is-readonly .segment {
   opacity: 0.92;
@@ -698,6 +703,16 @@ button {
 
 .bottom-note-section {
   margin-top: 18px;
+}
+
+.page-note-block {
+  padding: 12px 14px;
+  border: 1px solid #e7ebf2;
+  border-radius: 6px;
+  background: #fafbfd;
+  color: #475467;
+  font-size: 12px;
+  line-height: 1.7;
 }
 
 @media (max-width: 1480px) {

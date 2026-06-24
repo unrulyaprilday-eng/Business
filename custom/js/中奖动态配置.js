@@ -145,6 +145,47 @@
     });
   }
 
+  function syncWeightInputs() {
+    var rows = document.querySelectorAll(".robot-panel-column-right .source-config-row");
+    var checkedRows = [];
+
+    Array.prototype.forEach.call(rows, function (row) {
+      var checkbox = row.querySelector('.source-config-main input[type="checkbox"]');
+      var weightInput = row.querySelector(".inline-weight-field input");
+      if (!weightInput) return;
+
+      weightInput.readOnly = false;
+      weightInput.classList.remove("auto-weight-input");
+
+      if (checkbox && checkbox.checked) {
+        checkedRows.push(row);
+      }
+    });
+
+    if (!checkedRows.length) {
+      return;
+    }
+
+    var lastRow = checkedRows[checkedRows.length - 1];
+    var totalBeforeLast = 0;
+
+    Array.prototype.forEach.call(checkedRows, function (row) {
+      if (row === lastRow) return;
+      var weightInput = row.querySelector(".inline-weight-field input");
+      var value = weightInput ? parseFloat(weightInput.value) : NaN;
+      if (!isNaN(value)) {
+        totalBeforeLast += value;
+      }
+    });
+
+    var lastWeightInput = lastRow.querySelector(".inline-weight-field input");
+    if (!lastWeightInput) return;
+
+    lastWeightInput.value = Math.max(0, 100 - totalBeforeLast);
+    lastWeightInput.readOnly = true;
+    lastWeightInput.classList.add("auto-weight-input");
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     var pageRoot = document.querySelector(".live-config-page");
     var robotToggle = document.getElementById("robotToggle");
@@ -168,6 +209,7 @@
 
     updateNameHint("digit");
     updateSourcePanels();
+    syncWeightInputs();
     setEditing(false);
 
     if (robotToggle) {
@@ -197,6 +239,20 @@
     if (sourceGame) {
       sourceGame.addEventListener("change", updateSourcePanels);
     }
+
+    Array.prototype.forEach.call(document.querySelectorAll(".robot-panel-column-right .source-config-row"), function (row) {
+      var checkbox = row.querySelector('.source-config-main input[type="checkbox"]');
+      var weightInput = row.querySelector(".inline-weight-field input");
+
+      if (checkbox) {
+        checkbox.addEventListener("change", syncWeightInputs);
+      }
+
+      if (weightInput) {
+        weightInput.addEventListener("input", syncWeightInputs);
+        weightInput.addEventListener("change", syncWeightInputs);
+      }
+    });
 
     Array.prototype.forEach.call(document.querySelectorAll(".tag-row"), function (group) {
       setupTagRow(group);
