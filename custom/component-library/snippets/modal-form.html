@@ -1,0 +1,34 @@
+<button class="cl-btn cl-btn-primary" type="button" data-cl-modal-open="demoModal">打开弹窗</button>
+
+<div class="cl-modal-layer" data-cl-modal="demoModal" hidden>
+  <div class="cl-modal-mask"></div>
+  <section class="cl-modal" role="dialog" aria-modal="true" aria-labelledby="demoModalTitle">
+    <header class="cl-modal-head">
+      <strong id="demoModalTitle">新增配置</strong>
+      <button class="cl-close-btn" type="button" data-cl-modal-close="demoModal" aria-label="关闭">×</button>
+    </header>
+    <div class="cl-modal-body">
+      <div class="cl-form-grid">
+        <div class="cl-form-field">
+          <label for="modalName"><span class="cl-required">*</span>配置名称</label>
+          <input class="cl-input" id="modalName" type="text" placeholder="请输入配置名称">
+        </div>
+        <div class="cl-form-field">
+          <label for="modalStatus">状态</label>
+          <select class="cl-select" id="modalStatus">
+            <option>启用</option>
+            <option>停用</option>
+          </select>
+        </div>
+        <div class="cl-form-field is-wide">
+          <label for="modalRemark">说明</label>
+          <textarea class="cl-textarea" id="modalRemark" placeholder="请输入说明"></textarea>
+        </div>
+      </div>
+    </div>
+    <footer class="cl-modal-foot">
+      <button class="cl-btn" type="button" data-cl-modal-close="demoModal">取消</button>
+      <button class="cl-btn cl-btn-primary" type="button" data-cl-modal-close="demoModal">确定</button>
+    </footer>
+  </section>
+</div>

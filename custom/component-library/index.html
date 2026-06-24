@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>B端后台组件库</title>
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/components.css">
+  </head>
+  <body class="cl-library-page">
+    <main class="cl-preview-shell">
+      <header class="cl-preview-header">
+        <div>
+          <h1>B端后台静态原型组件库</h1>
+          <p>独立预览页，不挂 Axure 菜单。新建页面时复制 snippets 片段并引用公共 CSS/JS。</p>
+        </div>
+        <button class="cl-btn cl-btn-primary" type="button" data-cl-modal-open="demoModal">预览弹窗</button>
+      </header>
+
+      <div class="cl-preview-grid">
+        <section class="cl-panel">
+          <div class="cl-panel-head">
+            <div class="cl-panel-title">
+              <strong>筛选区</strong>
+              <span>来源模式：代理数据查询、商户账单、任务统计报表</span>
+            </div>
+          </div>
+          <div class="cl-panel-body">
+            <form class="cl-filter-bar" id="demoFilterBar">
+              <div class="cl-filter-field">
+                <label for="filterDateStart">日期范围</label>
+                <div class="cl-date-range">
+                  <input class="cl-input" id="filterDateStart" type="date" value="2026-06-01">
+                  <span class="cl-range-separator">至</span>
+                  <input class="cl-input" id="filterDateEnd" type="date" value="2026-06-24">
+                </div>
+              </div>
+              <div class="cl-filter-field">
+                <label for="filterAccount">账号</label>
+                <input class="cl-input" id="filterAccount" type="text" placeholder="请输入账号">
+              </div>
+              <div class="cl-filter-field">
+                <label for="filterStatus">状态</label>
+                <select class="cl-select" id="filterStatus">
+                  <option value="">全部状态</option>
+                  <option value="enabled">启用</option>
+                  <option value="disabled">停用</option>
+                  <option value="pending">待处理</option>
+                </select>
+              </div>
+              <div class="cl-filter-actions">
+                <button class="cl-btn cl-btn-primary" type="button">查询</button>
+                <button class="cl-btn" type="button" data-cl-reset="#demoFilterBar">重置</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <section class="cl-panel">
+          <div class="cl-panel-head">
+            <div class="cl-panel-title">
+              <strong>工具栏、Tabs、统计卡片</strong>
+              <span>来源模式：会员提现设置、优惠活动列表、VIP数据统计</span>
+            </div>
+          </div>
+          <div class="cl-panel-body">
+            <div class="cl-tabs" role="tablist">
+              <button class="cl-tab is-active" type="button" data-cl-tab-group="previewTabs" data-cl-tab="overview">概览</button>
+              <button class="cl-tab" type="button" data-cl-tab-group="previewTabs" data-cl-tab="config">配置</button>
+              <button class="cl-tab" type="button" data-cl-tab-group="previewTabs" data-cl-tab="records">记录</button>
+            </div>
+            <section class="cl-tab-panel" data-cl-tab-group="previewTabs" data-cl-tab-panel="overview">
+              <div class="cl-stat-grid">
+                <div class="cl-stat-card"><span>今日新增</span><strong>1,286</strong><em>较昨日 +12.4%</em></div>
+                <div class="cl-stat-card"><span>充值金额</span><strong>326,900</strong><em>较昨日 +8.1%</em></div>
+                <div class="cl-stat-card"><span>提现金额</span><strong>218,430</strong><em>较昨日 +3.6%</em></div>
+                <div class="cl-stat-card"><span>待处理</span><strong>42</strong><em>需关注</em></div>
+              </div>
+            </section>
+            <section class="cl-tab-panel" data-cl-tab-group="previewTabs" data-cl-tab-panel="config" hidden>
+              <div class="cl-toolbar">
+                <div class="cl-toolbar-left">
+                  <button class="cl-btn cl-btn-primary" type="button">新增</button>
+                  <button class="cl-btn" type="button">批量启用</button>
+                  <button class="cl-btn" type="button">批量停用</button>
+                </div>
+                <div class="cl-toolbar-right">
+                  <button class="cl-btn cl-btn-ghost" type="button">刷新</button>
+                  <button class="cl-btn cl-btn-primary" type="button">导出表格</button>
+                </div>
+              </div>
+            </section>
+            <section class="cl-tab-panel" data-cl-tab-group="previewTabs" data-cl-tab-panel="records" hidden>
+              <div class="cl-empty-state">
+                <span class="cl-empty-icon">!</span>
+                <strong>暂无记录</strong>
+                <p>当前筛选条件下没有匹配记录。</p>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="cl-panel">
+          <div class="cl-panel-head">
+            <div class="cl-panel-title">
+              <strong>表格、状态、分页、批量栏</strong>
+              <span>来源模式：商户账单、优惠活动列表、任务统计报表</span>
+            </div>
+          </div>
+          <div class="cl-panel-body">
+            <div class="cl-batch-bar" id="demoBatchBar" hidden>
+              <span>已选择 <strong data-cl-selected-count>0</strong> 条记录</span>
+              <div class="cl-action-group">
+                <button class="cl-btn" type="button">批量启用</button>
+                <button class="cl-btn" type="button">批量停用</button>
+                <button class="cl-btn cl-btn-danger" type="button">批量删除</button>
+              </div>
+            </div>
+            <div style="height: 12px;"></div>
+            <div class="cl-table-wrap">
+              <table class="cl-table">
+                <thead>
+                  <tr>
+                    <th class="cl-check-col"><input type="checkbox" data-cl-check-all=".demo-row-check" data-cl-batch-target="#demoBatchBar"></th>
+                    <th>业务名称</th>
+                    <th>所属类型</th>
+                    <th class="cl-num">金额</th>
+                    <th>状态</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="cl-check-col"><input class="demo-row-check" type="checkbox"></td>
+                    <td class="cl-ellipsis">示例业务 A</td>
+                    <td>活动配置</td>
+                    <td class="cl-num">12,800.00</td>
+                    <td><span class="cl-status cl-status-success">启用</span></td>
+                    <td>2026-06-24 10:30:00</td>
+                    <td><span class="cl-row-actions"><button class="cl-link" type="button">查看</button><button class="cl-link" type="button">编辑</button><button class="cl-link cl-link-danger" type="button">删除</button></span></td>
+                  </tr>
+                  <tr>
+                    <td class="cl-check-col"><input class="demo-row-check" type="checkbox"></td>
+                    <td class="cl-ellipsis">示例业务 B</td>
+                    <td>报表数据</td>
+                    <td class="cl-num">3,260.50</td>
+                    <td><span class="cl-status cl-status-warning">待处理</span></td>
+                    <td>2026-06-23 18:05:00</td>
+                    <td><span class="cl-row-actions"><button class="cl-link" type="button">查看</button><button class="cl-link" type="button">处理</button></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <footer class="cl-pagination">
+              <button class="cl-btn cl-page-btn is-disabled" type="button" disabled>|&lt;</button>
+              <button class="cl-btn cl-page-btn is-disabled" type="button" disabled>&lt;</button>
+              <input class="cl-input cl-page-input" type="text" value="1" aria-label="当前页">
+              <span>/ 5</span>
+              <button class="cl-btn cl-page-btn" type="button">&gt;</button>
+              <button class="cl-btn cl-page-btn" type="button">&gt;|</button>
+              <select class="cl-select" aria-label="每页条数">
+                <option>20条/页</option>
+                <option>50条/页</option>
+                <option>100条/页</option>
+              </select>
+              <span>共 86 条记录</span>
+            </footer>
+          </div>
+        </section>
+
+        <section class="cl-panel">
+          <div class="cl-panel-head">
+            <div class="cl-panel-title">
+              <strong>表单网格和状态标签</strong>
+              <span>来源模式：会员提现设置、站点配置、充值订单列表</span>
+            </div>
+          </div>
+          <div class="cl-panel-body">
+            <div class="cl-form-grid">
+              <div class="cl-form-field">
+                <label for="formName"><span class="cl-required">*</span>名称</label>
+                <input class="cl-input" id="formName" type="text" placeholder="请输入名称">
+              </div>
+              <div class="cl-form-field">
+                <label for="formType">类型</label>
+                <select class="cl-select" id="formType">
+                  <option>默认类型</option>
+                  <option>活动类型</option>
+                  <option>报表类型</option>
+                </select>
+              </div>
+              <div class="cl-form-field is-wide">
+                <label for="formRemark">备注</label>
+                <textarea class="cl-textarea" id="formRemark" placeholder="请输入备注"></textarea>
+              </div>
+            </div>
+            <div style="height: 14px;"></div>
+            <div class="cl-action-group">
+              <span class="cl-status cl-status-success">启用</span>
+              <span class="cl-status cl-status-warning">待处理</span>
+              <span class="cl-status cl-status-danger">失败</span>
+              <span class="cl-status cl-status-info">进行中</span>
+              <span class="cl-status cl-status-muted">已关闭</span>
+              <span class="cl-switch is-on" aria-label="已开启"></span>
+              <span class="cl-switch" aria-label="已关闭"></span>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <div class="cl-modal-layer" data-cl-modal="demoModal" hidden>
+      <div class="cl-modal-mask"></div>
+      <section class="cl-modal" role="dialog" aria-modal="true" aria-labelledby="demoModalTitle">
+        <header class="cl-modal-head">
+          <strong id="demoModalTitle">新增配置</strong>
+          <button class="cl-close-btn" type="button" data-cl-modal-close="demoModal" aria-label="关闭">×</button>
+        </header>
+        <div class="cl-modal-body">
+          <div class="cl-form-grid">
+            <div class="cl-form-field">
+              <label for="modalName"><span class="cl-required">*</span>配置名称</label>
+              <input class="cl-input" id="modalName" type="text" placeholder="请输入配置名称">
+            </div>
+            <div class="cl-form-field">
+              <label for="modalStatus">状态</label>
+              <select class="cl-select" id="modalStatus">
+                <option>启用</option>
+                <option>停用</option>
+              </select>
+            </div>
+            <div class="cl-form-field is-wide">
+              <label for="modalRemark">说明</label>
+              <textarea class="cl-textarea" id="modalRemark" placeholder="请输入说明"></textarea>
+            </div>
+          </div>
+        </div>
+        <footer class="cl-modal-foot">
+          <button class="cl-btn" type="button" data-cl-modal-close="demoModal">取消</button>
+          <button class="cl-btn cl-btn-primary" type="button" data-cl-modal-close="demoModal">确定</button>
+        </footer>
+      </section>
+    </div>
+
+    <script src="js/components.js"></script>
+  </body>
+</html>

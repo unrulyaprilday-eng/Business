@@ -90,6 +90,24 @@ custom/js/页面名.js
 
 自定义布局、背景、grid/flex、`min-height: 100vh` 等样式放在 `#base` 内部容器上，不直接作用于 `#base`。
 
+## 组件库优先规则
+
+组件库独立存放在：
+
+```text
+custom/component-library/
+```
+
+每次新建页面或修改页面前，先根据本次需求判断需要哪些后台组件，并优先从组件库调用：
+
+- 先查看 `custom/component-library/component-map.json`，按需求匹配筛选区、工具栏、表格、分页、Tabs、状态标签、表单、弹窗、统计卡片、空态、批量操作栏等组件。
+- 再读取对应 `custom/component-library/snippets/*.html`，复制片段到目标页面并替换业务字段、列名、按钮文案和默认数据。
+- 新页面如使用组件库样式，默认引用 `custom/component-library/css/tokens.css` 和 `custom/component-library/css/components.css`。
+- 只有使用 Tabs、弹窗、筛选重置、批量选择等交互组件时，才引用 `custom/component-library/js/components.js`。
+- 组件库类名统一使用 `cl-` 前缀，交互属性统一使用 `data-cl-*`；新增页面不要把组件库类名改成旧页面的 `.btn`、`.toolbar`、`.modal` 等通用类名，避免样式冲突。
+- 如果组件库没有匹配组件，先在目标页面按现有风格实现；确认可复用后，再把通用部分补回组件库。
+- 不因为调用组件库而改动无关旧页面，也不自动迁移旧页面。
+
 ## 页面 data.js
 
 每个菜单页面必须有：
@@ -219,7 +237,7 @@ Windows 中文文件名与脚本省 token 规则：
 
 生成新页面时：
 
-1. 读取目标父级菜单片段和一个相似页面作为模板；不要默认全量扫描项目结构。
+1. 先按需求查看 `custom/component-library/component-map.json` 并读取需要的 `snippets/*.html`；再读取目标父级菜单片段和一个相似页面作为 Axure 壳模板，不要默认全量扫描项目结构。
 2. 确认页面挂载的菜单父节点；如果用户提供截图，优先根据截图左上角的菜单/面包屑文字判断新页面应挂载的位置，再结合现有 `sitemap.rootNodes` 校验父级是否存在。
 3. 新增根目录 HTML、`files/页面名/data.js`、`files/页面名/styles.css`。
 4. 新增 `custom/css/页面名.css`，如有交互再新增 `custom/js/页面名.js`。

@@ -155,6 +155,13 @@ $axure.loadDocument({
             "children": []
           },
           {
+            "id": "operation_notification_center",
+            "pageName": "通知中心",
+            "type": "Wireframe",
+            "url": "通知中心.html",
+            "children": []
+          },
+          {
             "id": "operation_live_feed_config",
             "pageName": "中奖动态配置",
             "type": "Wireframe",

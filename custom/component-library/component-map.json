@@ -1,0 +1,129 @@
+{
+  "version": "1.0.0",
+  "scope": "static-axure-prototype",
+  "location": "custom/component-library/",
+  "rules": {
+    "doNotModifyExistingPagesByDefault": true,
+    "menuMount": false,
+    "classPrefix": "cl-",
+    "interactionPrefix": "data-cl-*",
+    "copySnippetsInsteadOfRuntimeFetching": true
+  },
+  "audit": {
+    "rootHtmlPages": 127,
+    "featurePageCounts": {
+      "table": 88,
+      "filter": 125,
+      "toolbar": 74,
+      "modal": 54,
+      "tabs": 92,
+      "pagination": 63,
+      "status": 67,
+      "statCards": 34,
+      "emptyState": 37,
+      "formControls": 119
+    },
+    "representativeSources": [
+      "商户账单.html",
+      "会员提现设置.html",
+      "优惠活动列表.html",
+      "任务统计报表.html",
+      "代理数据查询.html"
+    ]
+  },
+  "styles": [
+    "css/tokens.css",
+    "css/components.css"
+  ],
+  "script": "js/components.js",
+  "components": [
+    {
+      "id": "filter-bar",
+      "name": "筛选区",
+      "snippet": "snippets/filter-bar.html",
+      "needsScript": false,
+      "sources": ["商户账单.html", "任务统计报表.html", "代理数据查询.html"],
+      "useWhen": "列表、报表、配置页顶部需要日期、账号、状态等查询条件。"
+    },
+    {
+      "id": "toolbar",
+      "name": "操作工具栏",
+      "snippet": "snippets/toolbar.html",
+      "needsScript": false,
+      "sources": ["会员提现设置.html", "优惠活动列表.html", "任务中心.html"],
+      "useWhen": "页面需要新增、导出、刷新、批量处理等全局操作。"
+    },
+    {
+      "id": "data-table",
+      "name": "数据表格",
+      "snippet": "snippets/data-table.html",
+      "needsScript": false,
+      "sources": ["商户账单.html", "优惠活动列表.html", "任务统计报表.html", "代理数据查询.html"],
+      "useWhen": "承载后台主要数据列表，支持勾选列、数值列、状态和行内操作。"
+    },
+    {
+      "id": "pagination",
+      "name": "分页条",
+      "snippet": "snippets/pagination.html",
+      "needsScript": false,
+      "sources": ["优惠活动列表.html", "任务统计报表.html", "代理数据查询.html"],
+      "useWhen": "表格底部展示页码、每页条数和总记录数。"
+    },
+    {
+      "id": "tabs",
+      "name": "页签",
+      "snippet": "snippets/tabs.html",
+      "needsScript": true,
+      "sources": ["会员提现设置.html", "优惠活动列表.html", "VIP设置.html"],
+      "useWhen": "同一页面内有多个同级视图，需要在不跳转页面的情况下切换。"
+    },
+    {
+      "id": "status-tags",
+      "name": "状态标签",
+      "snippet": "snippets/status-tags.html",
+      "needsScript": false,
+      "sources": ["商户账单.html", "任务统计报表.html", "充值订单列表.html", "消息推送.html"],
+      "useWhen": "展示启用、停用、待处理、成功、失败、风险等短状态。"
+    },
+    {
+      "id": "form-grid",
+      "name": "表单网格",
+      "snippet": "snippets/form-grid.html",
+      "needsScript": false,
+      "sources": ["会员提现设置.html", "会员充值配置.html", "站点配置.html"],
+      "useWhen": "弹窗或配置页里展示成组输入项。"
+    },
+    {
+      "id": "modal-form",
+      "name": "表单弹窗",
+      "snippet": "snippets/modal-form.html",
+      "needsScript": true,
+      "sources": ["会员提现设置.html", "人工加扣款.html", "票券中心.html", "资金账变类型.html"],
+      "useWhen": "新增、编辑、确认类操作需要遮罩弹窗承载。"
+    },
+    {
+      "id": "stat-cards",
+      "name": "统计卡片",
+      "snippet": "snippets/stat-cards.html",
+      "needsScript": false,
+      "sources": ["任务统计报表.html", "VIP数据统计.html", "综合数据报表.html"],
+      "useWhen": "报表顶部需要展示关键指标、趋势或汇总值。"
+    },
+    {
+      "id": "empty-state",
+      "name": "空态",
+      "snippet": "snippets/empty-state.html",
+      "needsScript": false,
+      "sources": ["代理列表.html", "会员提现设置.html", "游戏记录.html"],
+      "useWhen": "列表无数据、筛选无结果、配置项缺失时展示提示。"
+    },
+    {
+      "id": "batch-bar",
+      "name": "批量操作栏",
+      "snippet": "snippets/batch-bar.html",
+      "needsScript": true,
+      "sources": ["商户账单.html", "黑名单.html", "任务中心.html"],
+      "useWhen": "表格勾选多行后需要显示已选数量和批量动作。"
+    }
+  ]
+}

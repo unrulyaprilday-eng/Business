@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>通知中心</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/通知中心/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/通知中心.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/通知中心/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell notification-page">
+        <header class="page-head">
+          <div>
+            <h1>通知中心</h1>
+            <p>统一管理自动触达、手动通知和发送效果记录。</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn primary global-action" id="rateLimitButton" type="button">频率限制</button>
+          </div>
+        </header>
+
+        <nav class="tab-bar" aria-label="通知中心模块">
+          <button class="tab-button is-active" type="button" data-tab="autoReach">自动触达</button>
+          <button class="tab-button" type="button" data-tab="manualSend">通知发送</button>
+          <button class="tab-button" type="button" data-tab="sendRecords">发送记录</button>
+        </nav>
+
+        <section class="tab-panel is-active" id="autoReach" data-panel="autoReach">
+          <div class="section-head">
+            <div>
+              <h2>自动触达场景</h2>
+              <p>固定场景按行维护，仅允许启用、停用和编辑基础通知内容。</p>
+            </div>
+          </div>
+          <div class="table-panel">
+            <table class="data-table auto-table" aria-label="自动触达场景">
+              <thead>
+                <tr>
+                  <th>场景</th>
+                  <th>标题</th>
+                  <th>跳转页面</th>
+                  <th>发送时间</th>
+                  <th>最近发送</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-scene="每日签到提醒" data-title="今日签到奖励待领取" data-content="完成每日签到即可领取奖励，连续签到可获得更高权益。" data-page="/activity" data-time="每日 10:00">
+                  <td>每日签到提醒</td>
+                  <td class="auto-title">今日签到奖励待领取</td>
+                  <td class="auto-page">/activity</td>
+                  <td class="auto-time">每日 10:00</td>
+                  <td>2026-06-24 10:00</td>
+                  <td>
+                    <button class="switch is-on" type="button" role="switch" aria-checked="true"><span>启用</span></button>
+                  </td>
+                  <td><button class="link-button" type="button" data-edit-auto>编辑</button></td>
+                </tr>
+                <tr data-scene="新注册未开始游戏" data-title="欢迎进入游戏大厅" data-content="你已完成注册，进入大厅即可选择喜欢的游戏开始体验。" data-page="/activity" data-time="注册后 30 分钟">
+                  <td>新注册未开始游戏</td>
+                  <td class="auto-title">欢迎进入游戏大厅</td>
+                  <td class="auto-page">/activity</td>
+                  <td class="auto-time">注册后 30 分钟</td>
+                  <td>2026-06-24 09:30</td>
+                  <td>
+                    <button class="switch is-on" type="button" role="switch" aria-checked="true"><span>启用</span></button>
+                  </td>
+                  <td><button class="link-button" type="button" data-edit-auto>编辑</button></td>
+                </tr>
+                <tr data-scene="3天未登录提醒" data-title="你的账户奖励仍可领取" data-content="已有 3 天未登录，回到大厅查看可领取奖励和最新活动。" data-page="/activity" data-time="每日 18:00">
+                  <td>3天未登录提醒</td>
+                  <td class="auto-title">你的账户奖励仍可领取</td>
+                  <td class="auto-page">/activity</td>
+                  <td class="auto-time">每日 18:00</td>
+                  <td>2026-06-23 18:00</td>
+                  <td>
+                    <button class="switch" type="button" role="switch" aria-checked="false"><span>停用</span></button>
+                  </td>
+                  <td><button class="link-button" type="button" data-edit-auto>编辑</button></td>
+                </tr>
+                <tr data-scene="有游戏余额但未登录" data-title="游戏余额待使用" data-content="你的游戏余额仍在账户中，登录后可继续进入对应游戏。" data-page="/rebate" data-time="每日 20:00">
+                  <td>有游戏余额但未登录</td>
+                  <td class="auto-title">游戏余额待使用</td>
+                  <td class="auto-page">/rebate</td>
+                  <td class="auto-time">每日 20:00</td>
+                  <td>2026-06-23 20:00</td>
+                  <td>
+                    <button class="switch is-on" type="button" role="switch" aria-checked="true"><span>启用</span></button>
+                  </td>
+                  <td><button class="link-button" type="button" data-edit-auto>编辑</button></td>
+                </tr>
+                <tr data-scene="首充未完成" data-title="首充权益即将失效" data-content="完成首充后可解锁新人权益，前往大厅查看详情。" data-page="/vip" data-time="注册后次日 11:00">
+                  <td>首充未完成</td>
+                  <td class="auto-title">首充权益即将失效</td>
+                  <td class="auto-page">/vip</td>
+                  <td class="auto-time">注册后次日 11:00</td>
+                  <td>2026-06-24 11:00</td>
+                  <td>
+                    <button class="switch is-on" type="button" role="switch" aria-checked="true"><span>启用</span></button>
+                  </td>
+                  <td><button class="link-button" type="button" data-edit-auto>编辑</button></td>
+                </tr>
+                <tr data-scene="最近活跃用户" data-title="为你推荐近期玩法" data-content="根据你的近期偏好，已为你准备新的游戏推荐。" data-page="/activity" data-time="每周五 19:00">
+                  <td>最近活跃用户</td>
+                  <td class="auto-title">为你推荐近期玩法</td>
+                  <td class="auto-page">/activity</td>
+                  <td class="auto-time">每周五 19:00</td>
+                  <td>2026-06-19 19:00</td>
+                  <td>
+                    <button class="switch" type="button" role="switch" aria-checked="false"><span>停用</span></button>
+                  </td>
+                  <td><button class="link-button" type="button" data-edit-auto>编辑</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="tab-panel" id="manualSend" data-panel="manualSend" hidden>
+          <div class="section-head">
+            <div>
+              <h2>通知发送</h2>
+              <p>面向玩家的手动通知，不承载公告或站内信内容。</p>
+            </div>
+          </div>
+          <div class="send-layout">
+            <form class="send-form" aria-label="通知发送表单">
+              <label class="form-row">
+                <span>标题</span>
+                <input id="noticeTitle" type="text" value="本周新游戏上线提醒"/>
+              </label>
+              <label class="form-row textarea-row">
+                <span>内容</span>
+                <textarea id="noticeContent" rows="4">你关注的游戏类型已更新内容，进入大厅即可查看。</textarea>
+              </label>
+              <div class="form-row link-picker-row">
+                <span>跳转页面</span>
+                <div class="link-picker" data-link-picker>
+                  <select class="link-select" data-link-select aria-label="固定内链">
+                    <option value="/activity" selected>活动 /activity</option>
+                    <option value="/rebate">返水 /rebate</option>
+                    <option value="/agent">代理 /agent</option>
+                    <option value="/vip">VIP /vip</option>
+                    <option value="">自定义内链</option>
+                  </select>
+                  <input id="noticePage" data-link-input type="text" value="/activity" placeholder="请输入站内路径，如 /activity"/>
+                  <p class="field-tip">选择固定模块后自动填入内链，下方也可以手动输入站内路径。</p>
+                </div>
+              </div>
+              <div class="form-row">
+                <span>发送时间</span>
+                <div class="inline-options">
+                  <label><input type="radio" name="sendTimeType" value="立即" checked/> 立即</label>
+                  <label><input type="radio" name="sendTimeType" value="定时"/> 定时</label>
+                  <input id="scheduleTime" type="datetime-local" value="2026-06-24T20:00"/>
+                </div>
+              </div>
+              <div class="form-row target-row">
+                <span>发送对象</span>
+                <div class="target-options">
+                  <label><input type="radio" name="sendTarget" value="players" checked/> 玩家ID</label>
+                  <label><input type="radio" name="sendTarget" value="group"/> 指定玩家群体</label>
+                  <label><input type="radio" name="sendTarget" value="all"/> 全部玩家</label>
+                </div>
+              </div>
+
+              <div class="target-panel" data-target-panel="players">
+                <label class="form-row textarea-row">
+                  <span>玩家ID</span>
+                  <textarea id="playerIds" rows="5">10023871
+10024518
+10026003</textarea>
+                </label>
+              </div>
+
+              <div class="target-panel" data-target-panel="group" hidden>
+                <label class="form-row">
+                  <span>场景</span>
+                  <select id="groupScene">
+                    <option value="">不限场景</option>
+                    <option>每日签到提醒</option>
+                    <option>新注册未开始游戏</option>
+                    <option>3天未登录</option>
+                    <option>有游戏余额但未登录</option>
+                    <option>首充未完成</option>
+                    <option selected>最近活跃用户</option>
+                  </select>
+                </label>
+                <div class="form-row">
+                  <span>游戏偏好</span>
+                  <div class="multi-select" id="gamePreferenceSelect">
+                    <button class="multi-trigger" type="button" aria-expanded="false">电子、棋牌</button>
+                    <div class="multi-menu" hidden>
+                      <label><input type="checkbox" value="" data-any-game/> 不限游戏偏好</label>
+                      <label><input type="checkbox" value="区块链"/> 区块链</label>
+                      <label><input type="checkbox" value="彩票"/> 彩票</label>
+                      <label><input type="checkbox" value="电子" checked/> 电子</label>
+                      <label><input type="checkbox" value="棋牌" checked/> 棋牌</label>
+                      <label><input type="checkbox" value="捕鱼"/> 捕鱼</label>
+                      <label><input type="checkbox" value="视讯"/> 视讯</label>
+                      <label><input type="checkbox" value="体育"/> 体育</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="target-panel" data-target-panel="all" hidden>
+                <div class="all-target-note">
+                  当前将发送给全部可触达玩家，请确认通知内容和跳转页面无误。
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="btn primary" id="sendNoticeButton" type="button">发送通知</button>
+              </div>
+            </form>
+            <aside class="send-preview" aria-label="通知预览">
+              <div class="preview-phone">
+                <div class="preview-top"></div>
+                <div class="preview-card">
+                  <strong id="previewTitle">本周新游戏上线提醒</strong>
+                  <p id="previewContent">你关注的游戏类型已更新内容，进入大厅即可查看。</p>
+                  <span id="previewPage">/activity</span>
+                </div>
+              </div>
+              <dl class="preview-meta">
+                <div>
+                  <dt>发送对象</dt>
+                  <dd id="previewTarget">玩家ID：3人</dd>
+                </div>
+              </dl>
+            </aside>
+          </div>
+          <div class="page-rule-note" id="groupTargetRuleNote">
+            <p>发送对象说明：指定玩家群体中，场景和游戏偏好都可以选择不限，但不能同时不限；如需全量发送，请选择“全部玩家”。</p>
+          </div>
+        </section>
+
+        <section class="tab-panel" id="sendRecords" data-panel="sendRecords" hidden>
+          <div class="section-head">
+            <div>
+              <h2>发送记录</h2>
+              <p>展示自动触达和通知发送的执行结果，可查看详情。</p>
+            </div>
+          </div>
+          <div class="table-panel">
+            <table class="data-table record-table" aria-label="发送记录">
+              <thead>
+                <tr>
+                  <th>通知标题</th>
+                  <th>来源类型</th>
+                  <th>发送对象</th>
+                  <th>发送时间</th>
+                  <th>发送人数</th>
+                  <th>成功数</th>
+                  <th>失败数</th>
+                  <th>点击人数</th>
+                  <th>点击率</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="recordTableBody">
+                <tr data-detail="每日签到提醒|自动触达|每日签到人群|2026-06-24 10:00|18520|18190|330|4260|23.42%|发送完成|完成每日签到即可领取奖励，连续签到可获得更高权益。|/activity">
+                  <td>今日签到奖励待领取</td>
+                  <td>自动触达</td>
+                  <td>每日签到人群</td>
+                  <td>2026-06-24 10:00</td>
+                  <td>18,520</td>
+                  <td>18,190</td>
+                  <td>330</td>
+                  <td>4,260</td>
+                  <td>23.42%</td>
+                  <td><span class="status success">发送完成</span></td>
+                  <td><button class="link-button" type="button" data-view-detail>详情</button></td>
+                </tr>
+                <tr data-detail="欢迎进入游戏大厅|自动触达|新注册未开始游戏|2026-06-24 09:30|2360|2308|52|318|13.78%|发送完成|你已完成注册，进入大厅即可选择喜欢的游戏开始体验。|/activity">
+                  <td>欢迎进入游戏大厅</td>
+                  <td>自动触达</td>
+                  <td>新注册未开始游戏</td>
+                  <td>2026-06-24 09:30</td>
+                  <td>2,360</td>
+                  <td>2,308</td>
+                  <td>52</td>
+                  <td>318</td>
+                  <td>13.78%</td>
+                  <td><span class="status success">发送完成</span></td>
+                  <td><button class="link-button" type="button" data-view-detail>详情</button></td>
+                </tr>
+                <tr data-detail="本周新游戏上线提醒|通知发送|最近活跃用户 / 电子、棋牌|2026-06-23 20:00|8420|8296|124|1560|18.80%|发送完成|你关注的游戏类型已更新内容，进入大厅即可查看。|/activity">
+                  <td>本周新游戏上线提醒</td>
+                  <td>通知发送</td>
+                  <td>最近活跃用户 / 电子、棋牌</td>
+                  <td>2026-06-23 20:00</td>
+                  <td>8,420</td>
+                  <td>8,296</td>
+                  <td>124</td>
+                  <td>1,560</td>
+                  <td>18.80%</td>
+                  <td><span class="status success">发送完成</span></td>
+                  <td><button class="link-button" type="button" data-view-detail>详情</button></td>
+                </tr>
+                <tr data-detail="首充权益即将失效|自动触达|首充未完成|2026-06-24 11:00|980|0|0|0|0.00%|等待发送|完成首充后可解锁新人权益，前往大厅查看详情。|/vip">
+                  <td>首充权益即将失效</td>
+                  <td>自动触达</td>
+                  <td>首充未完成</td>
+                  <td>2026-06-24 11:00</td>
+                  <td>980</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0.00%</td>
+                  <td><span class="status pending">等待发送</span></td>
+                  <td><button class="link-button" type="button" data-view-detail>详情</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="modal-layer" id="rateLimitModal" hidden>
+          <div class="modal-mask" data-close-modal></div>
+          <section class="edit-dialog rate-dialog" role="dialog" aria-modal="true" aria-labelledby="rateLimitTitle">
+            <header class="dialog-head">
+              <h2 id="rateLimitTitle">频率限制</h2>
+              <button class="icon-close" type="button" aria-label="关闭" data-close-modal>×</button>
+            </header>
+            <form class="dialog-body">
+              <label class="form-row">
+                <span>每日上限</span>
+                <div class="limit-field">
+                  <input id="rateLimitCount" type="number" min="1" value="1"/>
+                  <em>条 / 用户</em>
+                </div>
+              </label>
+              <label class="form-row">
+                <span>发送时段</span>
+                <div class="time-range">
+                  <input id="rateStartTime" type="time" value="10:00"/>
+                  <span>至</span>
+                  <input id="rateEndTime" type="time" value="21:00"/>
+                </div>
+              </label>
+              <p class="dialog-tip">发送时段按用户所在时区的当地时间判断。</p>
+            </form>
+            <footer class="dialog-actions">
+              <button class="btn ghost" type="button" data-close-modal>取消</button>
+              <button class="btn primary" id="saveRateLimit" type="button">确定</button>
+            </footer>
+          </section>
+        </div>
+
+        <div class="modal-layer" id="autoEditModal" hidden>
+          <div class="modal-mask" data-close-modal></div>
+          <section class="edit-dialog" role="dialog" aria-modal="true" aria-labelledby="autoEditTitle">
+            <header class="dialog-head">
+              <h2 id="autoEditTitle">编辑自动触达</h2>
+              <button class="icon-close" type="button" aria-label="关闭" data-close-modal>×</button>
+            </header>
+            <form class="dialog-body">
+              <label class="form-row">
+                <span>标题</span>
+                <input id="autoTitleInput" type="text"/>
+              </label>
+              <label class="form-row textarea-row">
+                <span>内容</span>
+                <textarea id="autoContentInput" rows="4"></textarea>
+              </label>
+              <div class="form-row link-picker-row">
+                <span>跳转页面</span>
+                <div class="link-picker compact" data-link-picker>
+                  <select class="link-select" data-link-select aria-label="固定内链">
+                    <option value="/activity">活动 /activity</option>
+                    <option value="/rebate">返水 /rebate</option>
+                    <option value="/agent">代理 /agent</option>
+                    <option value="/vip">VIP /vip</option>
+                    <option value="">自定义内链</option>
+                  </select>
+                  <input id="autoPageInput" data-link-input type="text" placeholder="请输入站内路径，如 /activity"/>
+                  <p class="field-tip">选择固定模块后自动填入内链，下方也可以手动输入站内路径。</p>
+                </div>
+              </div>
+              <label class="form-row">
+                <span>发送时间</span>
+                <input id="autoTimeInput" type="text"/>
+              </label>
+            </form>
+            <footer class="dialog-actions">
+              <button class="btn ghost" type="button" data-close-modal>取消</button>
+              <button class="btn primary" id="saveAutoEdit" type="button">确定</button>
+            </footer>
+          </section>
+        </div>
+
+        <div class="modal-layer" id="recordDetailModal" hidden>
+          <div class="modal-mask" data-close-modal></div>
+          <section class="detail-dialog" role="dialog" aria-modal="true" aria-labelledby="recordDetailTitle">
+            <header class="dialog-head">
+              <h2 id="recordDetailTitle">发送详情</h2>
+              <button class="icon-close" type="button" aria-label="关闭" data-close-modal>×</button>
+            </header>
+            <dl class="detail-list" id="recordDetailList"></dl>
+            <footer class="dialog-actions">
+              <button class="btn primary" type="button" data-close-modal>关闭</button>
+            </footer>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="custom/js/通知中心.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

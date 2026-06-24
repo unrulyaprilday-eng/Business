@@ -1,0 +1,27 @@
+<form class="cl-filter-bar" id="demoFilterBar">
+  <div class="cl-filter-field">
+    <label for="filterDateStart">日期范围</label>
+    <div class="cl-date-range">
+      <input class="cl-input" id="filterDateStart" type="date" value="2026-06-01">
+      <span class="cl-range-separator">至</span>
+      <input class="cl-input" id="filterDateEnd" type="date" value="2026-06-24">
+    </div>
+  </div>
+  <div class="cl-filter-field">
+    <label for="filterAccount">账号</label>
+    <input class="cl-input" id="filterAccount" type="text" placeholder="请输入账号">
+  </div>
+  <div class="cl-filter-field">
+    <label for="filterStatus">状态</label>
+    <select class="cl-select" id="filterStatus">
+      <option value="">全部状态</option>
+      <option value="enabled">启用</option>
+      <option value="disabled">停用</option>
+      <option value="pending">待处理</option>
+    </select>
+  </div>
+  <div class="cl-filter-actions">
+    <button class="cl-btn cl-btn-primary" type="button">查询</button>
+    <button class="cl-btn" type="button" data-cl-reset="#demoFilterBar">重置</button>
+  </div>
+</form>
