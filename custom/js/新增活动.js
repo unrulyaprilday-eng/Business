@@ -46,6 +46,7 @@
       target: "/activity/social-reward"
     }
   ];
+  var panelStateCache = {};
 
   function ready(callback) {
     if (document.readyState === "loading") {
@@ -72,33 +73,29 @@
   }
 
   function getPanelStates(panel) {
-    return Array.prototype.filter.call(panel.children, function (child) {
+    if (panel.id && panelStateCache[panel.id]) {
+      return panelStateCache[panel.id];
+    }
+
+    var states = Array.prototype.filter.call(panel.children, function (child) {
       return child && child.classList && child.classList.contains("panel_state");
     });
+
+    if (panel.id) {
+      panelStateCache[panel.id] = states;
+    }
+
+    return states;
   }
 
-  function getVisibleStateIndex(states) {
-    var visibleIndex = -1;
-
-    states.forEach(function (state, index) {
-      var computedStyle = window.getComputedStyle ? window.getComputedStyle(state) : null;
-      var isVisible = computedStyle
-        ? computedStyle.display !== "none" && computedStyle.visibility !== "hidden"
-        : state.style.display !== "none" && state.style.visibility !== "hidden";
-
-      if (visibleIndex === -1 && isVisible) {
-        visibleIndex = index;
-      }
-    });
-
-    return visibleIndex;
+  function isStateVisible(state) {
+    return Boolean(state) && state.style.display !== "none" && state.style.visibility !== "hidden";
   }
 
   function showPanelState(panelId, stateIndex) {
     var panel = document.getElementById(panelId);
     var states;
     var activeState;
-    var visibleStateIndex;
 
     if (!panel) {
       return;
@@ -106,24 +103,41 @@
 
     states = getPanelStates(panel);
     activeState = panel.getAttribute("data-active-state");
-    visibleStateIndex = getVisibleStateIndex(states);
 
     if (!states.length) {
       return;
     }
 
-    if (activeState === String(stateIndex) && visibleStateIndex === stateIndex) {
+    if (activeState === String(stateIndex) && isStateVisible(states[stateIndex])) {
       return;
     }
 
     states.forEach(function (state, index) {
       var isActive = index === stateIndex;
-      state.style.visibility = isActive ? "visible" : "hidden";
-      state.style.display = isActive ? "block" : "none";
-      state.setAttribute("aria-hidden", isActive ? "false" : "true");
+      var nextVisibility = isActive ? "visible" : "hidden";
+      var nextDisplay = isActive ? "block" : "none";
+      var nextAriaHidden = isActive ? "false" : "true";
+
+      if (state.style.visibility !== nextVisibility) {
+        state.style.visibility = nextVisibility;
+      }
+      if (state.style.display !== nextDisplay) {
+        state.style.display = nextDisplay;
+      }
+      if (state.getAttribute("aria-hidden") !== nextAriaHidden) {
+        state.setAttribute("aria-hidden", nextAriaHidden);
+      }
     });
 
     panel.setAttribute("data-active-state", String(stateIndex));
+  }
+
+  function scheduleTemplateApply(apply) {
+    if (window.requestAnimationFrame) {
+      window.requestAnimationFrame(apply);
+      return;
+    }
+    window.setTimeout(apply, 0);
   }
 
   function setTemplateState(template) {
@@ -150,15 +164,10 @@
     select.addEventListener("input", apply);
 
     apply();
-    if (window.requestAnimationFrame) {
-      window.requestAnimationFrame(apply);
-    } else {
-      window.setTimeout(apply, 0);
+    scheduleTemplateApply(apply);
+    if (document.readyState !== "complete") {
+      window.addEventListener("load", apply, { once: true });
     }
-    window.addEventListener("load", apply, { once: true });
-    window.setTimeout(apply, 80);
-    window.setTimeout(apply, 260);
-    window.setTimeout(apply, 900);
   }
 
   function nextReliefTierLabel(table) {

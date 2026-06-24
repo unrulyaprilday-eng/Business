@@ -133,7 +133,8 @@
         </header>
         <div class="modal-body create-body">
           <div class="form-grid">
-            <label class="field required">消息类型
+            <label class="field required">
+              <span class="field-label"><span class="required-mark">*</span>消息类型</span>
               <select id="messageType">
                 <option value="">请选择类型</option>
                 <option>消息</option>
@@ -141,7 +142,8 @@
                 <option>跑马灯</option>
               </select>
             </label>
-            <label class="field">弹窗频次
+            <label class="field">
+              <span class="field-label">弹窗频次</span>
               <select id="popupFrequency">
                 <option>不弹窗</option>
                 <option>登录后弹一次</option>
@@ -150,7 +152,8 @@
                 <option>每小时一次</option>
               </select>
             </label>
-            <label class="field required">收件人
+            <label class="field required">
+              <span class="field-label"><span class="required-mark">*</span>收件人</span>
               <select id="recipientType">
                 <option value="">请选择收件人</option>
                 <option>全体玩家</option>
@@ -185,12 +188,13 @@
             <textarea id="playerIds" placeholder="多个ID请用逗号分隔"></textarea>
           </label>
 
-          <label class="field required full">标题
+          <label class="field required full">
+            <span class="field-label"><span class="required-mark">*</span>标题</span>
             <input id="messageTitle" type="text" placeholder="请输入标题"/>
           </label>
 
           <div class="editor-row required">
-            <span>显示内容</span>
+            <span class="field-label"><span class="required-mark">*</span>显示内容</span>
             <div class="editor-shell">
               <div class="toolbar" aria-label="编辑器工具栏">
                 <button type="button"><b>B</b></button>
@@ -219,7 +223,7 @@
               <textarea id="messageContent" aria-label="显示内容"></textarea>
               <div class="editor-foot">
                 <span>Character Count: <b id="charCount">0</b></span>
-                <label>Scroll Auto <input type="checkbox" checked/></label>
+                <label>Scroll Auto <input id="scrollAuto" type="checkbox" checked/></label>
               </div>
             </div>
             <em class="error-tip" id="contentError" hidden>请输入显示内容</em>
@@ -232,7 +236,8 @@
             <input class="date-input" id="scheduleTime" type="text" placeholder="发送时间" hidden/>
           </div>
 
-          <label class="field required end-field">结束时间
+          <label class="field required end-field">
+            <span class="field-label"><span class="required-mark">*</span>结束时间</span>
             <input id="endTime" type="text" placeholder="结束时间"/>
           </label>
         </div>

@@ -140,12 +140,14 @@
     $("#messageTitle").value = "";
     $("#messageContent").value = "";
     $("#playerIds").value = "";
+    $("#scheduleTime").value = "";
     $("#endTime").value = "";
     $("#contentError").hidden = true;
     $("#charCount").textContent = "0";
-    $all("input[type='checkbox']").forEach(function (input) {
+    $all("input[name='vip'], input[name='r']").forEach(function (input) {
       input.checked = false;
     });
+    $("#scrollAuto").checked = true;
     document.querySelector("input[name='sendTime'][value='now']").checked = true;
     updateRecipientPanel();
     updateScheduleInput();

@@ -8,10 +8,7 @@
     <link href="data/styles.css" type="text/css" rel="stylesheet"/>
     <link href="files/新增活动/styles.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/新增活动.css" type="text/css" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com" rel="preconnect"/>
-    <link href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
-    <link href="https://demo.axureux.com/fontawesome/5.7.2/pro/css/all.min.css" type="text/css" rel="stylesheet"/>
+    <link href="https://demo.axureux.com/fontawesome/5.7.2/pro/css/all.min.css" type="text/css" rel="stylesheet" media="print" onload="this.media='all'"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
     <script src="resources/scripts/axure/axQuery.js"></script>
     <script src="resources/scripts/axure/globals.js"></script>
@@ -50,7 +47,7 @@
       $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
     </script>
   </head>
-  <body>
+  <body class="relief-template-active">
     <div id="base" class="">
 
       <!-- Unnamed (矩形) -->
@@ -98,8 +95,8 @@
       </div>
 
       <!-- 内容容器 (动态面板) -->
-      <div id="u6" class="ax_default" data-label="内容容器">
-        <div id="u6_state0" class="panel_state" data-label="打码" style="">
+      <div id="u6" class="ax_default" data-label="内容容器" data-active-state="2">
+        <div id="u6_state0" class="panel_state" data-label="打码" style="visibility: hidden; display: none;" aria-hidden="true">
           <div id="u6_state0_content" class="panel_state_content">
 
             <!-- Unnamed (矩形) -->
@@ -12797,7 +12794,7 @@
             </div>
           </div>
         </div>
-        <div id="u6_state1" class="panel_state" data-label="拼多多" style="visibility: hidden;">
+        <div id="u6_state1" class="panel_state" data-label="拼多多" style="visibility: hidden; display: none;" aria-hidden="true">
           <div id="u6_state1_content" class="panel_state_content">
 
             <!-- Unnamed (矩形) -->
@@ -24900,7 +24897,7 @@
             </div>
           </div>
         </div>
-        <div id="u6_state2" class="panel_state" data-label="救济金" style="visibility: hidden;">
+        <div id="u6_state2" class="panel_state" data-label="救济金" style="visibility: visible; display: block;" aria-hidden="false">
           <div id="u6_state2_content" class="panel_state_content">
             <div class="custom-relief-form">
               <div class="custom-relief-grid">
@@ -25033,7 +25030,7 @@
             </div>
           </div>
         </div>
-        <div id="u6_state3" class="panel_state" data-label="分享活动" style="visibility: hidden;">
+        <div id="u6_state3" class="panel_state" data-label="分享活动" style="visibility: hidden; display: none;" aria-hidden="true">
           <div id="u6_state3_content" class="panel_state_content">
             <div class="custom-share-form">
               <div class="custom-share-section">

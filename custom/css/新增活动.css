@@ -12,6 +12,11 @@
   color: #333 !important;
 }
 
+#u6 > .panel_state[aria-hidden="true"] {
+  display: none !important;
+  visibility: hidden !important;
+}
+
 .relief-template-active #u2699,
 .relief-template-active #u2700,
 .relief-template-active #u1166,
