@@ -66,7 +66,7 @@
             <label class="field date-field"><input placeholder="开始时间"/><i>▣</i></label>
             <span class="range-text">至</span>
             <label class="field date-field"><input placeholder="结束时间"/><i>▣</i></label>
-            <label class="field select-field"><span>类型:</span><select><option>请选择类型</option><option>人工赠金</option><option>人工充值</option><option>人工扣款</option></select></label>
+            <label class="field select-field"><span>类型:</span><select><option>请选择类型</option><option>人工赠金</option><option>人工充值</option><option>人工扣款</option><option>人工提现</option></select></label>
             <label class="field"><span>会员ID:</span><input placeholder="请输入会员ID"/></label>
             <button class="btn primary" type="button">搜索</button>
             <button class="btn" type="button">重置</button>
@@ -96,7 +96,7 @@
                 <tr><td><span class="type add">人工充值</span></td><td>1010010311</td><td>qitian</td><td class="amount plus">100</td><td>1</td><td>10</td><td>110</td><td>2026-05-27 18:29:11</td><td></td></tr>
                 <tr><td><span class="type add">人工赠金</span></td><td>1010010309</td><td>qitian</td><td class="amount plus">40000</td><td>1</td><td>10</td><td>40010</td><td>2026-05-27 18:10:47</td><td>活动补发</td></tr>
                 <tr><td><span class="type add">人工充值</span></td><td>1010010307</td><td>qitian</td><td class="amount plus">30000</td><td>1</td><td>10</td><td>30010</td><td>2026-05-27 18:03:11</td><td></td></tr>
-                <tr><td><span class="type minus">人工扣款</span></td><td>1010010000</td><td>white</td><td class="amount minus">-500</td><td>0</td><td>119080.04</td><td>118580.04</td><td>2026-05-27 18:02:57</td><td>异常余额修正</td></tr>
+                <tr><td><span class="type minus">人工提现</span></td><td>1010010000</td><td>white</td><td class="amount minus">-500</td><td>0</td><td>119080.04</td><td>118580.04</td><td>2026-05-27 18:02:57</td><td>人工提现出款</td></tr>
                 <tr><td><span class="type minus">人工扣款</span></td><td>1010010308</td><td>white</td><td class="amount minus">-1200</td><td>0</td><td>8600</td><td>7400</td><td>2026-05-27 18:02:45</td><td>余额调整扣款</td></tr>
                 <tr><td><span class="type add">人工赠金</span></td><td>1010010186</td><td>qitian</td><td class="amount plus">10000</td><td>1</td><td>6000</td><td>16000</td><td>2026-05-27 18:02:33</td><td></td></tr>
                 <tr><td><span class="type add">人工充值</span></td><td>1010010185</td><td>qitian</td><td class="amount plus">40000</td><td>1</td><td>2800</td><td>42800</td><td>2026-05-27 18:02:09</td><td></td></tr>
@@ -146,6 +146,7 @@
                 <label>扣款类型:</label>
                 <select>
                   <option>人工扣款</option>
+                  <option>人工提现</option>
                 </select>
               </div>
               <div class="form-row required">

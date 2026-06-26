@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-06-22T09:21:05.416Z",
+  "savedAt": "2026-06-26T06:54:04.879Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -144,6 +144,20 @@
           "children": []
         },
         {
+          "id": "operation_notification_center",
+          "pageName": "通知中心",
+          "type": "Wireframe",
+          "url": "通知中心.html",
+          "children": []
+        },
+        {
+          "id": "operation_live_feed_config",
+          "pageName": "中奖动态配置",
+          "type": "Wireframe",
+          "url": "中奖动态配置.html",
+          "children": []
+        },
+        {
           "id": "operation_promotion_manage",
           "pageName": "宣传管理",
           "type": "Wireframe",
@@ -191,6 +205,13 @@
           "pageName": "优惠活动列表",
           "type": "Wireframe",
           "url": "优惠活动列表.html",
+          "children": []
+        },
+        {
+          "id": "redeem_code_manage",
+          "pageName": "兑换码管理",
+          "type": "Wireframe",
+          "url": "兑换码管理.html",
           "children": []
         },
         {

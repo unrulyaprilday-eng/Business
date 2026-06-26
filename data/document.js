@@ -219,6 +219,13 @@ $axure.loadDocument({
             "children": []
           },
           {
+            "id": "redeem_code_manage",
+            "pageName": "兑换码管理",
+            "type": "Wireframe",
+            "url": "兑换码管理.html",
+            "children": []
+          },
+          {
             "id": "lucky_wheel_config",
             "pageName": "幸运转盘配置",
             "type": "Wireframe",

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>兑换码管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/兑换码管理/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/兑换码管理.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/兑换码管理/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/兑换码管理.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell redeem-code-page">
+        <main class="redeem-panel">
+          <section class="page-head">
+            <h1>兑换码管理</h1>
+            <div class="filters">
+              <input class="search-input" type="text" placeholder="输入兑换码名称"/>
+              <input class="date-input" type="text" value="□  过期时间"/>
+              <button class="btn primary" type="button">查询</button>
+              <button class="btn" type="button">重置</button>
+            </div>
+            <div class="head-actions">
+              <button class="add-btn" id="openCreateModal" type="button">添加</button>
+            </div>
+          </section>
+
+          <section class="table-wrap">
+            <table class="redeem-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>兑换码名</th>
+                  <th>使用对象</th>
+                  <th>兑换码类型</th>
+                  <th>兑换码</th>
+                  <th>奖励金额</th>
+                  <th>已使用/可使用次数</th>
+                  <th>要求洗码量倍数</th>
+                  <th>过期时间</th>
+                  <th>兑换码状态</th>
+                  <th>操作</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="redeemRows">
+                <tr data-type="reuse" data-status="enabled">
+                  <td>1</td>
+                  <td>新人福利1</td>
+                  <td>全体玩家</td>
+                  <td>复用兑换码</td>
+                  <td>AAAAA</td>
+                  <td>100</td>
+                  <td>100<br/>1000</td>
+                  <td>20</td>
+                  <td>2020-11-25</td>
+                  <td><span class="switch on"></span></td>
+                  <td class="action-cell"><button class="link-btn view-btn" type="button">查看</button></td>
+                  <td class="action-cell"><button class="link-btn danger delete-btn" type="button">删除</button></td>
+                </tr>
+                <tr data-type="one-time" data-status="enabled">
+                  <td>2</td>
+                  <td>新人福利2</td>
+                  <td>渠道玩家</td>
+                  <td>一次性兑换码</td>
+                  <td>AAAAA</td>
+                  <td>100</td>
+                  <td>100<br/>1000</td>
+                  <td>20</td>
+                  <td>2020-11-25</td>
+                  <td><span class="switch on"></span></td>
+                  <td class="action-cell"><button class="link-btn view-btn" type="button">查看</button></td>
+                  <td class="action-cell"><button class="link-btn danger delete-btn" type="button">删除</button></td>
+                </tr>
+                <tr data-type="reuse" data-status="enabled">
+                  <td>3</td>
+                  <td>节日庆典</td>
+                  <td>渠道玩家</td>
+                  <td>复用兑换码</td>
+                  <td>AAAAA</td>
+                  <td>100</td>
+                  <td>100<br/>1000</td>
+                  <td>20</td>
+                  <td>2020-11-25<span class="expired">（已过期）</span></td>
+                  <td><span class="switch on"></span></td>
+                  <td class="action-cell"><button class="link-btn view-btn" type="button">查看</button></td>
+                  <td class="action-cell"><button class="link-btn danger delete-btn" type="button">删除</button></td>
+                </tr>
+                <tr data-type="one-time" data-status="enabled">
+                  <td>4</td>
+                  <td>节日庆典</td>
+                  <td>全体玩家</td>
+                  <td>一次性兑换码</td>
+                  <td>AAAAA</td>
+                  <td>100</td>
+                  <td>100<br/>1000</td>
+                  <td>20</td>
+                  <td>2020-11-25</td>
+                  <td><span class="switch on"></span></td>
+                  <td class="action-cell"><button class="link-btn view-btn" type="button">查看</button></td>
+                  <td class="action-cell"><button class="link-btn danger delete-btn" type="button">删除</button></td>
+                </tr>
+                <tr data-type="reuse" data-status="enabled">
+                  <td>5</td>
+                  <td>节日庆典</td>
+                  <td>全体玩家</td>
+                  <td>复用兑换码</td>
+                  <td>AAAAA</td>
+                  <td>100</td>
+                  <td>100<br/>1000</td>
+                  <td>20</td>
+                  <td>2020-11-25<span class="expired">（已过期）</span></td>
+                  <td><span class="switch on"></span></td>
+                  <td class="action-cell"><button class="link-btn view-btn" type="button">查看</button></td>
+                  <td class="action-cell"><button class="link-btn danger delete-btn" type="button">删除</button></td>
+                </tr>
+                <tr data-type="one-time" data-status="enabled">
+                  <td>6</td>
+                  <td>节日庆典</td>
+                  <td>指定玩家</td>
+                  <td>一次性兑换码</td>
+                  <td>AAAAA</td>
+                  <td>100</td>
+                  <td>100<br/>1000</td>
+                  <td>20</td>
+                  <td>2020-11-25</td>
+                  <td><span class="switch on"></span></td>
+                  <td class="action-cell"><button class="link-btn view-btn" type="button">查看</button></td>
+                  <td class="action-cell"><button class="link-btn danger delete-btn" type="button">删除</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <footer class="table-foot">
+            <div class="foot-tip">已过期的标注已过期</div>
+            <div class="foot-tip">点击查看详情</div>
+            <div class="foot-tip">删除需要二次确认</div>
+          </footer>
+        </main>
+
+        <div class="modal-mask" id="createModal" hidden>
+          <section class="modal-panel create-modal" role="dialog" aria-modal="true" aria-labelledby="createModalTitle">
+            <header class="modal-head">
+              <h2 id="createModalTitle">新增兑换码</h2>
+              <button class="close-btn" type="button" data-close="createModal" aria-label="关闭">×</button>
+            </header>
+            <div class="modal-body">
+              <div class="form-grid">
+                <label class="field field-wide">
+                  <span>兑换码名</span>
+                  <input type="text" value=""/>
+                </label>
+                <label class="field">
+                  <span>奖励金额</span>
+                  <input type="text" value="10"/>
+                </label>
+                <label class="field">
+                  <span>要求洗码量倍数</span>
+                  <input type="text" value="20"/>
+                </label>
+              </div>
+
+              <div class="radio-row">
+                <label><input type="radio" name="userScope" value="all" checked/> 全体玩家</label>
+                <label><input type="radio" name="userScope" value="channel"/> 渠道玩家</label>
+                <label><input type="radio" name="userScope" value="specified"/> 指定玩家</label>
+              </div>
+
+              <div class="scope-panel" data-scope-panel="channel">
+                <div class="scope-head">
+                  <label class="scope-inline-label" for="channelSearchInput">选择渠道</label>
+                  <div class="scope-picker" data-channel-picker>
+                    <button class="scope-picker-trigger" id="channelPickerTrigger" type="button" aria-expanded="false">
+                      <span class="scope-picker-text" id="channelPickerText">渠道1</span>
+                      <span class="scope-picker-arrow">▼</span>
+                    </button>
+                    <div class="scope-dropdown" id="channelDropdown" hidden>
+                      <input class="scope-search-input" id="channelSearchInput" type="text" placeholder="搜索渠道"/>
+                      <label class="scope-option" data-channel-option="渠道1"><input type="checkbox" value="渠道1" checked/> <span>渠道1</span></label>
+                      <label class="scope-option" data-channel-option="渠道A"><input type="checkbox" value="渠道A"/> <span>渠道A</span></label>
+                      <label class="scope-option" data-channel-option="渠道B"><input type="checkbox" value="渠道B"/> <span>渠道B</span></label>
+                      <label class="scope-option" data-channel-option="渠道C"><input type="checkbox" value="渠道C"/> <span>渠道C</span></label>
+                    </div>
+                  </div>
+                  <div class="scope-list">
+                    <div class="scope-select" id="selectedChannelList" tabindex="0">
+                      <div>渠道1</div>
+                    </div>
+                    <div class="scope-notes">
+                      <p>带搜索下拉，可多选</p>
+                      <p>选中的渠道在列表中列出</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="scope-panel" data-scope-panel="specified" hidden>
+                <label class="field field-wide">
+                  <span>指定玩家ID</span>
+                  <input type="text" placeholder="输入玩家ID，多个玩家ID逗号、空格或回车分隔"/>
+                </label>
+              </div>
+
+              <div class="type-tabs">
+                <label class="type-tab"><input type="radio" name="codeType" value="reuse" checked/> 复用兑换码</label>
+                <label class="type-tab"><input type="radio" name="codeType" value="one-time"/> 一次性兑换码</label>
+              </div>
+
+              <section class="type-panel" data-code-panel="reuse">
+                <div class="panel-row">
+                  <label class="field">
+                    <span>兑换码使用次数</span>
+                    <input type="text" value="100"/>
+                  </label>
+                </div>
+                <div class="panel-row code-row">
+                  <label class="field field-wide">
+                    <span>兑换码</span>
+                    <input type="text" value=""/>
+                  </label>
+                  <button class="primary-mini" type="button">生成兑换码</button>
+                </div>
+                <div class="note-line">复用兑换码可以自定义兑换码</div>
+                <div class="note-line">兑换码每个玩家只能使用一次，这里的使用次数是有效期内，不同玩家总的可使用次数</div>
+              </section>
+
+              <section class="type-panel" data-code-panel="one-time" hidden>
+                <div class="panel-row">
+                  <label class="field">
+                    <span>兑换码个数</span>
+                    <input type="text" value="100"/>
+                  </label>
+                  <button class="primary-mini" type="button">生成兑换码</button>
+                </div>
+                <div class="multi-code-box">
+                  <textarea readonly>AAAAAABBBBBB
+CCCCCCCDDDDDD
+AAAAAAABBBBBB
+CCCCCCCDDDDDD
+AAAAAABBBBBB
+CCCCCCCCDDDDD</textarea>
+                </div>
+                <div class="note-line right">一个兑换码任何人使用一次之后即失效，生成数量为兑换码使用次数</div>
+              </section>
+            </div>
+            <footer class="modal-foot create-foot">
+              <button class="primary-btn" type="button">确定</button>
+            </footer>
+          </section>
+        </div>
+
+        <div class="modal-mask" id="detailModal" hidden>
+          <section class="modal-panel detail-modal" role="dialog" aria-modal="true" aria-labelledby="detailModalTitle">
+            <header class="modal-head">
+              <h2 id="detailModalTitle">兑换码详情</h2>
+              <button class="close-btn" type="button" data-close="detailModal" aria-label="关闭">×</button>
+            </header>
+            <div class="modal-body detail-body">
+              <section class="detail-view" data-detail-view="reuse">
+                <div class="detail-top-row">
+                  <div class="detail-item detail-item-currency">
+                    <span class="detail-label">奖励币种</span>
+                    <span class="detail-box detail-box-muted">BRL</span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="detail-label">奖励金额</span>
+                    <span class="detail-box">10</span>
+                  </div>
+                  <div class="detail-item detail-item-wide">
+                    <span class="detail-label">要求洗码量倍数</span>
+                    <span class="detail-box">20</span>
+                  </div>
+                </div>
+                <div class="detail-line-row">
+                  <div class="detail-line"><span class="detail-label-inline">过期时间:</span><span>2024/08/08 12:00:00</span><em class="expired">（已过期）</em></div>
+                  <div class="detail-line"><span class="detail-label-inline">兑换码状态:</span><span>开启</span></div>
+                </div>
+                <div class="detail-line"><span class="detail-label-inline">使用对象:</span><span>全体玩家</span></div>
+                <div class="detail-line"><span class="detail-label-inline">兑换码类型:</span><span>复用兑换码</span></div>
+                <div class="detail-line"><span class="detail-label-inline">兑换码:</span><span>abcabc123123abc</span></div>
+                <div class="detail-line"><span class="detail-label-inline">兑换码可使用次数:</span><span>100</span></div>
+                <div class="detail-line"><span class="detail-label-inline">兑换码已使用次数:</span><span>5</span></div>
+
+                <div class="usage-panel">
+                  <div class="usage-head">
+                    <span>使用详情</span>
+                    <button class="export-btn" type="button">导出CSV</button>
+                    <span class="detail-hint">点击导出按钮导出兑换码使用详情为CSV文件</span>
+                  </div>
+                  <div class="usage-table-wrap">
+                    <table class="usage-table usage-table-reuse">
+                      <thead>
+                        <tr>
+                          <th>玩家ID</th>
+                          <th>使用时间</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>AAA</td><td>2024/08/08 12:00:00</td></tr>
+                        <tr><td>BBB</td><td>2024/08/08 12:00:00</td></tr>
+                        <tr><td>AAA</td><td>2024/08/08 12:00:00</td></tr>
+                        <tr><td>BBB</td><td>2024/08/08 12:00:00</td></tr>
+                        <tr><td>AAA</td><td>2024/08/08 12:00:00</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+
+              <section class="detail-view" data-detail-view="one-time" hidden>
+                <div class="detail-top-row">
+                  <div class="detail-item detail-item-currency">
+                    <span class="detail-label">奖励币种</span>
+                    <span class="detail-box detail-box-muted">BRL</span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="detail-label">奖励金额</span>
+                    <span class="detail-box">10</span>
+                  </div>
+                  <div class="detail-item detail-item-wide">
+                    <span class="detail-label">要求洗码量倍数</span>
+                    <span class="detail-box">20</span>
+                  </div>
+                </div>
+                <div class="detail-line-row">
+                  <div class="detail-line"><span class="detail-label-inline">过期时间:</span><span>2024/08/08 12:00:00</span><em class="expired">（已过期）</em></div>
+                  <div class="detail-line"><span class="detail-label-inline">兑换码状态:</span><span>开启</span></div>
+                </div>
+                <div class="detail-line with-note">
+                  <span class="detail-label-inline">使用对象:</span>
+                  <span>渠道玩家，渠道1，渠道2</span>
+                  <span class="yellow-note">如果是指定玩家如上展示</span>
+                </div>
+                <div class="detail-line"><span class="detail-label-inline">兑换码类型:</span><span>一次性兑换码</span></div>
+                <div class="detail-line"><span class="detail-label-inline">兑换码个数:</span><span>10</span></div>
+                <div class="detail-line"><span class="detail-label-inline">兑换码已使用个数:</span><span>5</span></div>
+
+                <div class="usage-panel">
+                  <div class="usage-head">
+                    <span>使用详情</span>
+                    <button class="export-btn" type="button">导出CSV</button>
+                    <span class="detail-hint">点击导出按钮导出兑换码详情为CSV文件</span>
+                  </div>
+                  <div class="usage-table-wrap">
+                    <table class="usage-table usage-table-once">
+                      <thead>
+                        <tr>
+                          <th>兑换码</th>
+                          <th>使用者玩家ID</th>
+                          <th>使用时间</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>abcabc123123abc</td><td>AAA</td><td>2024/08/08 12:00:00</td></tr>
+                        <tr><td>abcabc123123abc</td><td>BBB</td><td>2024/08/08 12:00:00</td></tr>
+                        <tr><td>abcabc123123abc</td><td>AAA</td><td>2024/08/08 12:00:00</td></tr>
+                        <tr><td>abcabc123123abc</td><td>BBB</td><td>2024/08/08 12:00:00</td></tr>
+                        <tr><td>abcabc123123abc</td><td>-</td><td>-</td></tr>
+                        <tr><td>abcabc123123abc</td><td>-</td><td>-</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+            </div>
+            <footer class="modal-foot detail-foot">
+              <button class="primary-btn" type="button" data-close="detailModal">确定</button>
+            </footer>
+          </section>
+        </div>
+
+        <div class="modal-mask confirm-mask" id="confirmModal" hidden>
+          <section class="modal-panel confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+            <header class="modal-head">
+              <h2 id="confirmTitle">删除确认</h2>
+              <button class="close-btn" type="button" data-close="confirmModal" aria-label="关闭">×</button>
+            </header>
+            <div class="confirm-body">
+              确认删除这条兑换码吗？删除后不可恢复。
+            </div>
+            <footer class="modal-foot">
+              <button class="plain-btn" type="button" data-close="confirmModal">取消</button>
+              <button class="primary-btn" type="button" data-close="confirmModal">确定</button>
+            </footer>
+          </section>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
