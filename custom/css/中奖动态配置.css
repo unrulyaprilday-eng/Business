@@ -610,6 +610,33 @@ button {
   gap: 12px;
 }
 
+.name-rule-static {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  min-height: 31px;
+}
+
+.name-rule-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 4px;
+  background: #eaf3ff;
+  color: #1f6fe5;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.name-rule-note,
+.range-note {
+  color: #667085;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
 .preview-label {
   margin-top: 2px;
   color: #475467;

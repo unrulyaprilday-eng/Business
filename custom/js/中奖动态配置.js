@@ -5,12 +5,6 @@
     }
   }
 
-  function setActive(group, target, selector) {
-    Array.prototype.forEach.call(group.querySelectorAll(selector), function (node) {
-      node.classList.toggle("active", node === target);
-    });
-  }
-
   function toggleSwitch(button) {
     var next = button.getAttribute("data-on") !== "true";
     button.setAttribute("data-on", next ? "true" : "false");
@@ -18,26 +12,17 @@
     return next;
   }
 
-  function updateNameHint(mode) {
+  function updateNameHint() {
     var hint = document.getElementById("nameModeHint");
     var prefixInput = document.getElementById("namePrefixInput");
     var customPrefix = prefixInput ? prefixInput.value.trim() : "";
 
-    function withPrefix(defaultPrefix, samples) {
-      if (!customPrefix) return samples;
-      return "示例：" + customPrefix + "***8 / " + customPrefix + "***3 / " + customPrefix + "***5";
-    }
-
     if (!hint) return;
-    if (mode === "letter") {
-      hint.textContent = withPrefix("JA", "示例：JA***3 / RO***8 / MI***6");
-    } else if (mode === "letterDigit") {
-      hint.textContent = withPrefix("A8", "示例：A8***2 / M7***9 / K3***1");
-    } else if (mode === "digitLetter") {
-      hint.textContent = withPrefix("8A", "示例：8A***2 / 7M***9 / 3K***1");
-    } else {
-      hint.textContent = withPrefix("12", "示例：12***8 / 66***3 / 90***5");
+    if (customPrefix) {
+      hint.textContent = "示例：" + customPrefix + "***8 / " + customPrefix + "***3 / " + customPrefix + "***5";
+      return;
     }
+    hint.textContent = "示例：12***8 / 66***3 / 90***5";
   }
 
   function updateSourcePanels() {
@@ -189,7 +174,6 @@
   document.addEventListener("DOMContentLoaded", function () {
     var pageRoot = document.querySelector(".live-config-page");
     var robotToggle = document.getElementById("robotToggle");
-    var nameModeGroup = document.getElementById("nameModeGroup");
     var sourceGame = document.getElementById("sourceGame");
     var prefixInput = document.getElementById("namePrefixInput");
     var editBtn = document.querySelector('[data-action="edit"]');
@@ -207,7 +191,7 @@
       toggleHidden(saveBtn, !editing);
     }
 
-    updateNameHint("digit");
+    updateNameHint();
     updateSourcePanels();
     syncWeightInputs();
     setEditing(false);
@@ -219,20 +203,9 @@
       });
     }
 
-    if (nameModeGroup) {
-      nameModeGroup.addEventListener("click", function (event) {
-        if (!editing) return;
-        var button = event.target.closest(".segment");
-        if (!button) return;
-        setActive(nameModeGroup, button, ".segment");
-        updateNameHint(button.getAttribute("data-name-mode"));
-      });
-    }
-
     if (prefixInput) {
       prefixInput.addEventListener("input", function () {
-        var active = nameModeGroup ? nameModeGroup.querySelector(".segment.active") : null;
-        updateNameHint(active ? active.getAttribute("data-name-mode") : "digit");
+        updateNameHint();
       });
     }
 
