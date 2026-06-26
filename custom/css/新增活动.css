@@ -17,6 +17,22 @@
   visibility: hidden !important;
 }
 
+body.relief-template-active #u6 > #u6_state0,
+body.relief-template-active #u6 > #u6_state1,
+body.relief-template-active #u6 > #u6_state3,
+body.share-template-active #u6 > #u6_state0,
+body.share-template-active #u6 > #u6_state1,
+body.share-template-active #u6 > #u6_state2 {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+body.relief-template-active #u6 > #u6_state2,
+body.share-template-active #u6 > #u6_state3 {
+  display: block !important;
+  visibility: visible !important;
+}
+
 .relief-template-active #u2699,
 .relief-template-active #u2700,
 .relief-template-active #u1166,
@@ -43,8 +59,10 @@ body.relief-template-active #u1695_state4 {
 .custom-relief-form,
 .custom-share-form {
   box-sizing: border-box;
-  width: 1120px;
-  padding: 28px 72px 80px 48px;
+  width: 1160px;
+  max-width: calc(100% - 96px);
+  margin-left: 40px;
+  padding: 28px 40px 80px;
   font-family: "Microsoft YaHei", sans-serif;
   font-size: 13px;
   color: #303133;
@@ -57,7 +75,6 @@ body.relief-template-active #u1695_state4 {
 
 .custom-share-form {
   min-height: 1173px;
-  padding-right: 48px;
   padding-bottom: 40px;
 }
 
@@ -98,7 +115,7 @@ body.relief-template-active #u1695_state4 {
 .custom-share-media {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  column-gap: 44px;
+  column-gap: 36px;
   row-gap: 20px;
   align-items: start;
 }
@@ -107,7 +124,7 @@ body.relief-template-active #u1695_state4 {
 .custom-upload,
 .custom-editor {
   display: grid;
-  grid-template-columns: 96px minmax(0, 1fr);
+  grid-template-columns: 104px minmax(0, 1fr);
   align-items: center;
   gap: 10px;
 }
@@ -177,7 +194,7 @@ body.relief-template-active #u1695_state4 {
 
 .custom-field-wide {
   grid-column: 1 / -1;
-  grid-template-columns: 96px 1fr 18px 1fr;
+  grid-template-columns: 104px 1fr 18px 1fr;
 }
 
 .custom-field-wide .custom-static-note-list,
@@ -212,12 +229,13 @@ body.relief-template-active #u1695_state4 {
 }
 
 .custom-relief-table {
-  margin: 20px 0 26px 96px;
-  width: calc(100% - 96px);
+  margin: 20px 0 26px 104px;
+  width: calc(100% - 104px);
   box-sizing: border-box;
   border: 1px solid #ebeef5;
   border-radius: 4px;
   overflow: hidden;
+  background: #fff;
 }
 
 .custom-relief-table-head,
@@ -353,9 +371,15 @@ body.relief-template-active #u1695_state4 {
   border: 1px dashed #d8e0eb;
   border-radius: 4px;
   color: #274060;
-  background: #fff;
+  background: #fbfdff;
   font-size: 28px;
   cursor: pointer;
+}
+
+.custom-upload button:hover,
+.custom-share-upload:hover {
+  border-color: #8cc5ff;
+  background: #f7fbff;
 }
 
 .custom-upload button small {
@@ -385,8 +409,8 @@ body.relief-template-active #u1695_state4 {
   border-bottom: 0;
   border-radius: 4px 4px 0 0;
   color: #2f3f53;
-  background: #fff;
-  letter-spacing: 6px;
+  background: #f8fafc;
+  letter-spacing: 0;
 }
 
 .custom-editor textarea {
@@ -522,14 +546,16 @@ body.relief-template-active #u1695_state4 {
 
 .custom-share-section {
   margin-top: 20px;
-  padding-top: 18px;
-  border-top: 1px solid #ebeef5;
+  padding: 18px 20px 20px;
+  border: 1px solid #ebeef5;
+  border-radius: 6px;
+  background: #fff;
 }
 
 .custom-share-section:first-child {
   margin-top: 0;
-  padding-top: 0;
-  border-top: 0;
+  padding-top: 18px;
+  border-top: 1px solid #ebeef5;
 }
 
 .custom-share-section > h3 {

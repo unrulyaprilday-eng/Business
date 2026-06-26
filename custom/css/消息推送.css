@@ -267,7 +267,7 @@ textarea:focus {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding-top: 14px;
+  padding-top: 0;
   background: rgba(0, 0, 0, 0.48);
 }
 
@@ -280,8 +280,11 @@ textarea:focus {
 }
 
 .create-modal {
+  display: flex;
+  flex-direction: column;
   width: 1044px;
-  max-height: calc(100vh - 28px);
+  height: 682px;
+  max-height: calc(100vh - 2px);
 }
 
 .detail-modal {
@@ -325,7 +328,8 @@ textarea:focus {
 }
 
 .create-body {
-  max-height: calc(100vh - 122px);
+  flex: 1;
+  min-height: 0;
   overflow: auto;
   padding: 20px 16px 10px 30px;
 }

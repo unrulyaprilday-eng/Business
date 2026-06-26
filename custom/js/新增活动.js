@@ -133,11 +133,30 @@
   }
 
   function scheduleTemplateApply(apply) {
-    if (window.requestAnimationFrame) {
-      window.requestAnimationFrame(apply);
+    var runInFrame = function () {
+      if (window.requestAnimationFrame) {
+        window.requestAnimationFrame(apply);
+        return;
+      }
+      window.setTimeout(apply, 0);
+    };
+
+    runInFrame();
+    window.setTimeout(apply, 120);
+  }
+
+  function bindTemplatePostLoad(apply) {
+    var applyAfterLoad = function () {
+      apply();
+      scheduleTemplateApply(apply);
+    };
+
+    if (document.readyState === "complete") {
+      applyAfterLoad();
       return;
     }
-    window.setTimeout(apply, 0);
+
+    window.addEventListener("load", applyAfterLoad, { once: true });
   }
 
   function setTemplateState(template) {
@@ -165,9 +184,7 @@
 
     apply();
     scheduleTemplateApply(apply);
-    if (document.readyState !== "complete") {
-      window.addEventListener("load", apply, { once: true });
-    }
+    bindTemplatePostLoad(apply);
   }
 
   function nextReliefTierLabel(table) {
