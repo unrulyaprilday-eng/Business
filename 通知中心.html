@@ -87,7 +87,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr data-scene="每日签到提醒" data-title="今日签到奖励待领取" data-content="完成每日签到即可领取奖励，连续签到可获得更高权益。" data-page="/activity" data-time="每日 10:00">
+                <tr data-scene="每日签到提醒" data-title="今日签到奖励待领取" data-content="完成每日签到即可领取奖励，连续签到可获得更高权益。" data-page="/activity" data-time="每日 10:00" data-schedule-kind="time" data-time-prefix="每日 " data-clock="10:00">
                   <td>每日签到提醒</td>
                   <td class="auto-title">今日签到奖励待领取</td>
                   <td class="auto-page">/activity</td>
@@ -98,7 +98,7 @@
                   </td>
                   <td><button class="link-button" type="button" data-edit-auto>编辑</button></td>
                 </tr>
-                <tr data-scene="新注册未开始游戏" data-title="欢迎进入游戏大厅" data-content="你已完成注册，进入大厅即可选择喜欢的游戏开始体验。" data-page="/activity" data-time="注册后 30 分钟">
+                <tr data-scene="新注册未开始游戏" data-title="欢迎进入游戏大厅" data-content="你已完成注册，进入大厅即可选择喜欢的游戏开始体验。" data-page="/activity" data-time="注册后 30 分钟" data-schedule-kind="duration" data-duration-prefix="注册后 " data-duration="30">
                   <td>新注册未开始游戏</td>
                   <td class="auto-title">欢迎进入游戏大厅</td>
                   <td class="auto-page">/activity</td>
@@ -109,7 +109,7 @@
                   </td>
                   <td><button class="link-button" type="button" data-edit-auto>编辑</button></td>
                 </tr>
-                <tr data-scene="3天未登录提醒" data-title="你的账户奖励仍可领取" data-content="已有 3 天未登录，回到大厅查看可领取奖励和最新活动。" data-page="/activity" data-time="每日 19:00">
+                <tr data-scene="3天未登录提醒" data-title="你的账户奖励仍可领取" data-content="已有 3 天未登录，回到大厅查看可领取奖励和最新活动。" data-page="/activity" data-time="每日 19:00" data-schedule-kind="time" data-time-prefix="每日 " data-clock="19:00">
                   <td>3天未登录提醒</td>
                   <td class="auto-title">你的账户奖励仍可领取</td>
                   <td class="auto-page">/activity</td>
@@ -120,7 +120,7 @@
                   </td>
                   <td><button class="link-button" type="button" data-edit-auto>编辑</button></td>
                 </tr>
-                <tr data-scene="有游戏余额但未登录" data-title="游戏余额待使用" data-content="你的游戏余额仍在账户中，登录后可继续进入对应游戏。" data-page="/rebate" data-time="每日 20:00">
+                <tr data-scene="有游戏余额但未登录" data-title="游戏余额待使用" data-content="你的游戏余额仍在账户中，登录后可继续进入对应游戏。" data-page="/rebate" data-time="每日 20:00" data-schedule-kind="time" data-time-prefix="每日 " data-clock="20:00">
                   <td>有游戏余额但未登录</td>
                   <td class="auto-title">游戏余额待使用</td>
                   <td class="auto-page">/rebate</td>
@@ -131,7 +131,7 @@
                   </td>
                   <td><button class="link-button" type="button" data-edit-auto>编辑</button></td>
                 </tr>
-                <tr data-scene="首充未完成" data-title="首充权益即将失效" data-content="完成首充后可解锁新人权益，前往大厅查看详情。" data-page="/vip" data-time="注册后次日 12:00">
+                <tr data-scene="首充未完成" data-title="首充权益即将失效" data-content="完成首充后可解锁新人权益，前往大厅查看详情。" data-page="/vip" data-time="注册后次日 12:00" data-schedule-kind="time" data-time-prefix="注册后次日 " data-clock="12:00">
                   <td>首充未完成</td>
                   <td class="auto-title">首充权益即将失效</td>
                   <td class="auto-page">/vip</td>
@@ -409,13 +409,32 @@
                   <p class="field-tip">选择固定模块后自动填入内链，下方也可以手动输入站内路径。</p>
                 </div>
               </div>
-              <label class="form-row form-row-top">
+              <div class="form-row form-row-top">
                 <span>发送时间</span>
-                <div class="readonly-field-group">
-                  <input id="autoTimeInput" class="is-readonly" type="text" readonly disabled/>
-                  <p class="field-tip">自动触达场景的发送时间为固定规则，不支持修改。</p>
+                <div class="schedule-field-group">
+                  <div class="schedule-inline" id="autoTimeGroup">
+                    <div class="schedule-control" data-schedule-control="time">
+                      <span class="schedule-prefix" id="autoSchedulePrefix" hidden></span>
+                      <div class="time-select-group">
+                        <select id="autoHourSelect" class="time-select" aria-label="小时"></select>
+                        <span class="time-separator">:</span>
+                        <select id="autoMinuteSelect" class="time-select" aria-label="分钟"></select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="schedule-inline" id="autoDurationGroup" hidden>
+                    <div class="schedule-control" data-schedule-control="duration">
+                      <select id="autoDurationInput" aria-label="触达时长">
+                        <option value="15">15分钟</option>
+                        <option value="30">30分钟</option>
+                        <option value="60">60分钟</option>
+                        <option value="120">120分钟</option>
+                        <option value="180">180分钟</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
-              </label>
+              </div>
             </form>
             <footer class="dialog-actions">
               <button class="btn ghost" type="button" data-close-modal>取消</button>

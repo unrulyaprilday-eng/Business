@@ -332,9 +332,112 @@ body {
   line-height: 1.5;
 }
 
-.readonly-field-group {
+.readonly-field-group,
+.schedule-field-group {
   display: grid;
   gap: 6px;
+}
+
+.schedule-inline {
+  display: grid;
+  gap: 6px;
+}
+
+.schedule-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid #d5dde8;
+  border-radius: 4px;
+  background: #fff;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.schedule-control:focus-within {
+  border-color: #2f80ed;
+  box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.12);
+}
+
+.schedule-control[data-schedule-control="time"] {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: default;
+}
+
+.schedule-control[data-schedule-control="time"]:focus-within {
+  box-shadow: none;
+}
+
+.schedule-prefix {
+  flex: 0 0 auto;
+  color: #52647a;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.time-select-group {
+  display: grid;
+  grid-template-columns: 96px auto 96px;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  width: auto;
+}
+
+.time-separator {
+  color: #52647a;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.schedule-control select,
+.time-select {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.schedule-control .time-select {
+  flex: 0 0 auto;
+  width: 96px;
+  min-width: 96px;
+  max-width: 96px;
+  height: 38px;
+  min-height: 38px;
+  padding: 0 28px 0 10px;
+  border: 1px solid #d5dde8;
+  border-radius: 4px;
+  background:
+    linear-gradient(45deg, transparent 50%, #7a8798 50%) calc(100% - 16px) calc(50% - 1px) / 6px 6px no-repeat,
+    linear-gradient(135deg, #7a8798 50%, transparent 50%) calc(100% - 11px) calc(50% - 1px) / 6px 6px no-repeat,
+    #fff;
+  box-shadow: none;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.schedule-control select:not(.time-select) {
+  height: 38px;
+  min-height: 38px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.schedule-control select:not(.time-select) {
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+.time-select:focus,
+.schedule-control select:focus {
+  outline: 0;
 }
 
 .textarea-row {

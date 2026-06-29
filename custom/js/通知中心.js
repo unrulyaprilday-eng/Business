@@ -25,7 +25,12 @@
     var autoTitleInput = document.getElementById("autoTitleInput");
     var autoContentInput = document.getElementById("autoContentInput");
     var autoPageInput = document.getElementById("autoPageInput");
-    var autoTimeInput = document.getElementById("autoTimeInput");
+    var autoHourSelect = document.getElementById("autoHourSelect");
+    var autoMinuteSelect = document.getElementById("autoMinuteSelect");
+    var autoDurationInput = document.getElementById("autoDurationInput");
+    var autoTimeGroup = document.getElementById("autoTimeGroup");
+    var autoDurationGroup = document.getElementById("autoDurationGroup");
+    var autoSchedulePrefix = document.getElementById("autoSchedulePrefix");
     var saveAutoEdit = document.getElementById("saveAutoEdit");
     var rateLimitButton = document.getElementById("rateLimitButton");
     var rateLimitCount = document.getElementById("rateLimitCount");
@@ -116,6 +121,114 @@
       linkPickers.forEach(syncLinkPicker);
     }
 
+    function fillSelectOptions(select, start, end) {
+      if (!select) {
+        return;
+      }
+      var options = [];
+      var index = start;
+      while (index <= end) {
+        var value = index < 10 ? "0" + index : String(index);
+        options.push("<option value=\"" + value + "\">" + value + "</option>");
+        index += 1;
+      }
+      select.innerHTML = options.join("");
+    }
+
+    function normalizeAutoDuration(value) {
+      var allowed = [15, 30, 60, 120, 180];
+      var duration = Number(value);
+      if (!duration) {
+        return "15";
+      }
+      var closest = allowed[0];
+      allowed.forEach(function (item) {
+        if (Math.abs(item - duration) < Math.abs(closest - duration)) {
+          closest = item;
+        }
+      });
+      if (allowed.indexOf(duration) > -1) {
+        closest = duration;
+      }
+      return String(closest);
+    }
+
+    function normalizeAutoClock(value) {
+      return value && /^\d{2}:\d{2}$/.test(value) ? value : "10:00";
+    }
+
+    function formatAutoTime(prefix, clock) {
+      return String(prefix || "") + normalizeAutoClock(clock);
+    }
+
+    function formatAutoDuration(prefix, duration) {
+      return String(prefix || "") + normalizeAutoDuration(duration) + " 分钟";
+    }
+
+    function updateAutoSchedulePrefix(row) {
+      if (!autoSchedulePrefix) {
+        return;
+      }
+      if (!row) {
+        autoSchedulePrefix.hidden = true;
+        autoSchedulePrefix.textContent = "";
+        return;
+      }
+      var prefix = row.getAttribute("data-time-prefix") || "";
+      var visiblePrefix = prefix.indexOf("次日") > -1 ? "次日" : "";
+      autoSchedulePrefix.hidden = !visiblePrefix;
+      autoSchedulePrefix.textContent = visiblePrefix;
+    }
+
+    function setAutoClockValue(clock) {
+      var normalized = normalizeAutoClock(clock).split(":");
+      if (autoHourSelect) {
+        autoHourSelect.value = normalized[0];
+      }
+      if (autoMinuteSelect) {
+        autoMinuteSelect.value = normalized[1];
+      }
+    }
+
+    function getAutoClockValue() {
+      var hour = autoHourSelect && autoHourSelect.value ? autoHourSelect.value : "10";
+      var minute = autoMinuteSelect && autoMinuteSelect.value ? autoMinuteSelect.value : "00";
+      return normalizeAutoClock(hour + ":" + minute);
+    }
+
+    function updateAutoScheduleFields(row) {
+      if (!row || !autoTimeGroup || !autoDurationGroup || !autoHourSelect || !autoMinuteSelect || !autoDurationInput) {
+        return;
+      }
+      var kind = row.getAttribute("data-schedule-kind") || "time";
+      autoTimeGroup.hidden = kind !== "time";
+      autoDurationGroup.hidden = kind !== "duration";
+      updateAutoSchedulePrefix(kind === "time" ? row : null);
+      if (kind === "duration") {
+        autoDurationInput.value = normalizeAutoDuration(row.getAttribute("data-duration") || "30");
+      } else {
+        setAutoClockValue(row.getAttribute("data-clock") || "");
+      }
+    }
+
+    fillSelectOptions(autoHourSelect, 0, 23);
+    fillSelectOptions(autoMinuteSelect, 0, 59);
+    setAutoClockValue("10:00");
+
+    Array.prototype.slice.call(document.querySelectorAll("[data-schedule-control]")).forEach(function (control) {
+      control.addEventListener("click", function (event) {
+        if (event.target.closest("input, select, button")) {
+          return;
+        }
+        var field = control.querySelector(".time-select, select");
+        if (!field) {
+          return;
+        }
+        field.focus();
+        field.click();
+      });
+    });
+
     linkPickers.forEach(function (picker) {
       var select = picker.querySelector("[data-link-select]");
       var input = picker.querySelector("[data-link-input]");
@@ -177,13 +290,13 @@
         return;
       }
       editingRow = editButton.closest("tr");
-      if (!editingRow || !autoTitleInput || !autoContentInput || !autoPageInput || !autoTimeInput) {
+      if (!editingRow || !autoTitleInput || !autoContentInput || !autoPageInput || !autoHourSelect || !autoMinuteSelect || !autoDurationInput) {
         return;
       }
       autoTitleInput.value = editingRow.getAttribute("data-title") || "";
       autoContentInput.value = editingRow.getAttribute("data-content") || "";
       autoPageInput.value = editingRow.getAttribute("data-page") || "/activity";
-      autoTimeInput.value = editingRow.getAttribute("data-time") || "";
+      updateAutoScheduleFields(editingRow);
       syncAllLinkPickers();
       autoModal.hidden = false;
     });
@@ -196,16 +309,32 @@
         var title = autoTitleInput ? autoTitleInput.value : "";
         var content = autoContentInput ? autoContentInput.value : "";
         var page = autoPageInput ? autoPageInput.value : "";
+        var kind = editingRow.getAttribute("data-schedule-kind") || "time";
+        var clock = getAutoClockValue();
+        var duration = autoDurationInput ? normalizeAutoDuration(autoDurationInput.value) : "30";
+        var timePrefix = editingRow.getAttribute("data-time-prefix") || "";
+        var durationPrefix = editingRow.getAttribute("data-duration-prefix") || "";
+        var timeText = kind === "duration" ? formatAutoDuration(durationPrefix, duration) : formatAutoTime(timePrefix, clock);
         editingRow.setAttribute("data-title", title);
         editingRow.setAttribute("data-content", content);
         editingRow.setAttribute("data-page", page);
+        editingRow.setAttribute("data-time", timeText);
+        if (kind === "duration") {
+          editingRow.setAttribute("data-duration", duration);
+        } else {
+          editingRow.setAttribute("data-clock", clock);
+        }
         var titleCell = editingRow.querySelector(".auto-title");
         var pageCell = editingRow.querySelector(".auto-page");
+        var timeCell = editingRow.querySelector(".auto-time");
         if (titleCell) {
           titleCell.textContent = title;
         }
         if (pageCell) {
           pageCell.textContent = page;
+        }
+        if (timeCell) {
+          timeCell.textContent = timeText;
         }
         closeModal(autoModal);
       });
