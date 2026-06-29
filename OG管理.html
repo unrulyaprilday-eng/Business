@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OG管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/OG管理/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/OG管理.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/OG管理/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return "resources/images/transparent.gif"; };
+      $axure.utils.getOtherPath = function() { return "resources/Other.html"; };
+      $axure.utils.getReloadPath = function() { return "resources/reload.html"; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell og-manage-page">
+        <header class="page-head">
+          <div class="page-head-main">
+            <h1>OG管理</h1>
+            <div class="page-summary">
+              <span class="summary-chip"><strong id="summaryCountTotal">11</strong> 个配置项</span>
+              <span class="summary-chip is-success"><strong id="summaryCountEnabled">9</strong> 个启用中</span>
+              <span class="summary-chip is-warning"><strong id="summaryCountActivity">5</strong> 个活动分享方案</span>
+            </div>
+          </div>
+        </header>
+
+        <section class="panel">
+          <form class="filter-bar og-filter-bar" id="ogFilterForm">
+            <label>类型
+              <select id="ogTypeFilter">
+                <option>全部</option>
+                <option>站点OG</option>
+                <option>页面OG</option>
+                <option>自定义链接</option>
+              </select>
+            </label>
+            <label>状态
+              <select id="ogStatusFilter">
+                <option>全部</option>
+                <option>启用</option>
+                <option>关闭</option>
+              </select>
+            </label>
+            <label>关键字
+              <input id="ogKeywordFilter" type="text" placeholder="名称 / 链接地址 / OG标题"/>
+            </label>
+            <div class="filter-actions">
+              <button class="primary-btn" id="ogFilterSubmit" type="button">查询</button>
+              <button class="gray-btn" type="reset">重置</button>
+            </div>
+          </form>
+
+          <div class="table-tools main-table-tools">
+            <button class="primary-btn" id="addCustomOgButton" type="button" data-open-modal="ogModal" data-mode="custom-add">添加自定义</button>
+          </div>
+
+          <div class="table-frame">
+            <table class="data-table og-table">
+              <thead>
+                <tr>
+                  <th>类型</th>
+                  <th>名称</th>
+                  <th>实际跳转地址</th>
+                  <th>OG标题</th>
+                  <th>OG描述</th>
+                  <th>OG图片</th>
+                  <th>状态</th>
+                  <th>更新时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="ogRows"></tbody>
+            </table>
+          </div>
+
+          <div class="pager">
+            <button type="button">‹</button>
+            <button class="active" type="button">1</button>
+            <button type="button">2</button>
+            <button type="button">3</button>
+            <button type="button">›</button>
+          </div>
+        </section>
+
+        <div class="modal-layer" id="ogModal" hidden>
+          <div class="modal-mask" data-close-modal></div>
+          <section class="wide-modal-dialog og-dialog" role="dialog" aria-modal="true" aria-labelledby="ogModalTitle">
+            <header class="modal-head">
+              <h2 id="ogModalTitle">编辑OG配置</h2>
+              <button class="icon-btn" type="button" aria-label="关闭" data-close-modal>x</button>
+            </header>
+            <div class="modal-body">
+              <div class="dialog-grid">
+                <form class="modal-form og-form" id="ogForm">
+                  <fieldset>
+                    <legend>基础信息</legend>
+                    <label>
+                      <span>配置类型</span>
+                      <input id="ogTypeText" type="text" value="页面OG" disabled/>
+                    </label>
+                    <label>
+                      <span>名称</span>
+                      <input id="ogName" type="text" value="INVITE 模块"/>
+                    </label>
+                    <label>
+                      <span>实际跳转地址</span>
+                      <input id="ogUrl" type="text" value="/invite"/>
+                    </label>
+                    <label class="status-row" id="statusRow">
+                      <span>启用状态</span>
+                      <span class="switch-control">
+                        <input id="ogEnabledInput" type="checkbox" checked/>
+                        <span aria-hidden="true"></span>
+                      </span>
+                    </label>
+                    <label class="status-row" id="inheritRow">
+                      <span>继承站点OG</span>
+                      <span class="switch-control">
+                        <input id="ogInheritedInput" type="checkbox"/>
+                        <span aria-hidden="true"></span>
+                      </span>
+                    </label>
+                  </fieldset>
+
+                  <fieldset>
+                    <legend>分享内容</legend>
+                    <label class="is-wide">
+                      <span>OG标题</span>
+                      <input id="ogTitleInput" type="text" value="邀请好友享首充礼遇，注册即参与"/>
+                    </label>
+                    <label class="is-wide">
+                      <span>OG描述</span>
+                      <textarea id="ogDescriptionInput">用于页面级模块分享配置标题、描述与封面图；具体活动分享方案请在分享活动内选择。</textarea>
+                    </label>
+                    <label>
+                      <span>OG图片</span>
+                      <div class="upload-card">
+                        <div class="upload-thumb thumb-og">OG</div>
+                        <div class="upload-meta">
+                          <button class="link-btn" type="button">更换图片</button>
+                          <p>建议尺寸 1200 x 630，PNG / JPG</p>
+                        </div>
+                      </div>
+                    </label>
+                    <label>
+                      <span>更新时间</span>
+                      <input id="ogUpdatedAt" type="text" value="2026-06-29 14:20:00" disabled/>
+                    </label>
+                  </fieldset>
+                </form>
+
+                <aside class="preview-panel">
+                  <div class="preview-head">
+                    <strong>分享卡片预览</strong>
+                    <span id="previewTag">页面OG</span>
+                  </div>
+                  <div class="preview-card">
+                    <div class="preview-image" id="previewImage">OG</div>
+                    <div class="preview-copy">
+                      <strong id="previewTitle">邀请好友享首充礼遇，注册即参与</strong>
+                      <p id="previewDescription">用于页面级模块分享配置标题、描述与封面图；具体活动分享方案请在分享活动内选择。</p>
+                      <span id="previewUrl">/invite</span>
+                    </div>
+                  </div>
+                  <dl class="preview-meta">
+                    <div>
+                      <dt>状态</dt>
+                      <dd id="previewStatus">启用中</dd>
+                    </div>
+                  </dl>
+                </aside>
+              </div>
+            </div>
+            <footer class="modal-actions">
+              <button class="ghost-btn" id="ogCancelButton" type="button" data-close-modal>取消</button>
+              <button class="primary-btn" id="ogConfirmButton" type="button" data-close-modal>确定</button>
+            </footer>
+          </section>
+        </div>
+
+        <div class="modal-layer" id="deleteModal" hidden>
+          <div class="modal-mask" data-close-modal></div>
+          <section class="modal-dialog delete-dialog" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+            <header class="modal-head">
+              <h2 id="deleteModalTitle">删除自定义OG</h2>
+              <button class="icon-btn" type="button" aria-label="关闭" data-close-modal>x</button>
+            </header>
+            <div class="modal-body">
+              <p class="dialog-tip">删除后将不再保留当前链接的自定义分享配置，页面将按站点OG或模块默认配置展示。</p>
+            </div>
+            <footer class="modal-actions">
+              <button class="ghost-btn" type="button" data-close-modal>取消</button>
+              <button class="danger-btn" id="deleteConfirmButton" type="button" data-close-modal>删除</button>
+            </footer>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="custom/js/og-shared-data.js"></script>
+    <script src="custom/js/OG管理.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

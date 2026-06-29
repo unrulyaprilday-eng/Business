@@ -109,12 +109,12 @@
                   </td>
                   <td><button class="link-button" type="button" data-edit-auto>编辑</button></td>
                 </tr>
-                <tr data-scene="3天未登录提醒" data-title="你的账户奖励仍可领取" data-content="已有 3 天未登录，回到大厅查看可领取奖励和最新活动。" data-page="/activity" data-time="每日 18:00">
+                <tr data-scene="3天未登录提醒" data-title="你的账户奖励仍可领取" data-content="已有 3 天未登录，回到大厅查看可领取奖励和最新活动。" data-page="/activity" data-time="每日 19:00">
                   <td>3天未登录提醒</td>
                   <td class="auto-title">你的账户奖励仍可领取</td>
                   <td class="auto-page">/activity</td>
-                  <td class="auto-time">每日 18:00</td>
-                  <td>2026-06-23 18:00</td>
+                  <td class="auto-time">每日 19:00</td>
+                  <td>2026-06-23 19:00</td>
                   <td>
                     <button class="switch" type="button" role="switch" aria-checked="false"><span>停用</span></button>
                   </td>
@@ -131,25 +131,14 @@
                   </td>
                   <td><button class="link-button" type="button" data-edit-auto>编辑</button></td>
                 </tr>
-                <tr data-scene="首充未完成" data-title="首充权益即将失效" data-content="完成首充后可解锁新人权益，前往大厅查看详情。" data-page="/vip" data-time="注册后次日 11:00">
+                <tr data-scene="首充未完成" data-title="首充权益即将失效" data-content="完成首充后可解锁新人权益，前往大厅查看详情。" data-page="/vip" data-time="注册后次日 12:00">
                   <td>首充未完成</td>
                   <td class="auto-title">首充权益即将失效</td>
                   <td class="auto-page">/vip</td>
-                  <td class="auto-time">注册后次日 11:00</td>
-                  <td>2026-06-24 11:00</td>
+                  <td class="auto-time">注册后次日 12:00</td>
+                  <td>2026-06-24 12:00</td>
                   <td>
                     <button class="switch is-on" type="button" role="switch" aria-checked="true"><span>启用</span></button>
-                  </td>
-                  <td><button class="link-button" type="button" data-edit-auto>编辑</button></td>
-                </tr>
-                <tr data-scene="最近活跃用户" data-title="为你推荐近期玩法" data-content="根据你的近期偏好，已为你准备新的游戏推荐。" data-page="/activity" data-time="每周五 19:00">
-                  <td>最近活跃用户</td>
-                  <td class="auto-title">为你推荐近期玩法</td>
-                  <td class="auto-page">/activity</td>
-                  <td class="auto-time">每周五 19:00</td>
-                  <td>2026-06-19 19:00</td>
-                  <td>
-                    <button class="switch" type="button" role="switch" aria-checked="false"><span>停用</span></button>
                   </td>
                   <td><button class="link-button" type="button" data-edit-auto>编辑</button></td>
                 </tr>
@@ -194,7 +183,7 @@
                 <div class="inline-options">
                   <label><input type="radio" name="sendTimeType" value="立即" checked/> 立即</label>
                   <label><input type="radio" name="sendTimeType" value="定时"/> 定时</label>
-                  <input id="scheduleTime" type="datetime-local" value="2026-06-24T20:00"/>
+                  <input id="scheduleTime" type="datetime-local" value="2026-06-29T19:30"/>
                 </div>
               </div>
               <div class="form-row target-row">
@@ -225,7 +214,6 @@
                     <option>3天未登录</option>
                     <option>有游戏余额但未登录</option>
                     <option>首充未完成</option>
-                    <option selected>最近活跃用户</option>
                   </select>
                 </label>
                 <div class="form-row">
@@ -423,7 +411,10 @@
               </div>
               <label class="form-row">
                 <span>发送时间</span>
-                <input id="autoTimeInput" type="text"/>
+                <div>
+                  <input id="autoTimeInput" type="text" readonly/>
+                  <p class="field-tip">自动触达场景的发送时间为固定规则，不支持修改。</p>
+                </div>
               </label>
             </form>
             <footer class="dialog-actions">

@@ -196,22 +196,16 @@
         var title = autoTitleInput ? autoTitleInput.value : "";
         var content = autoContentInput ? autoContentInput.value : "";
         var page = autoPageInput ? autoPageInput.value : "";
-        var time = autoTimeInput ? autoTimeInput.value : "";
         editingRow.setAttribute("data-title", title);
         editingRow.setAttribute("data-content", content);
         editingRow.setAttribute("data-page", page);
-        editingRow.setAttribute("data-time", time);
         var titleCell = editingRow.querySelector(".auto-title");
         var pageCell = editingRow.querySelector(".auto-page");
-        var timeCell = editingRow.querySelector(".auto-time");
         if (titleCell) {
           titleCell.textContent = title;
         }
         if (pageCell) {
           pageCell.textContent = page;
-        }
-        if (timeCell) {
-          timeCell.textContent = time;
         }
         closeModal(autoModal);
       });

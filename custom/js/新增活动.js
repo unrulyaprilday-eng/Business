@@ -1,51 +1,11 @@
 (function () {
   var TEMPLATE_TO_STATE = {
-    "打码返水": 0,
-    "拼多多": 1,
-    "救济金": 2,
-    "分享活动": 3
+    "\u6253\u7801\u8fd4\u6c34": 0,
+    "\u62fc\u591a\u591a": 1,
+    "\u6551\u6d4e\u91d1": 2,
+    "\u5206\u4eab\u6d3b\u52a8": 3
   };
 
-  var SHARE_IMAGE_POOL = [
-    "bonus_banner_01.jpg",
-    "promo_banner_02.jpg",
-    "jackpot_banner.jpg",
-    "freeplay_bonus_03.jpg",
-    "social_reward_04.jpg"
-  ];
-
-  var SHARE_ROW_PRESETS = [
-    {
-      title: "🎁 Claim Your Bonus",
-      description: "Get your free reward now",
-      image: "bonus_banner_01.jpg",
-      target: "/activity/welcome-bonus"
-    },
-    {
-      title: "🔥 Limited Time Offer",
-      description: "Don't miss today's reward",
-      image: "promo_banner_02.jpg",
-      target: "/activity/welcome-bonus"
-    },
-    {
-      title: "🏆 Big Win Today",
-      description: "Can you beat this jackpot?",
-      image: "jackpot_banner.jpg",
-      target: "/activity/winner-board"
-    },
-    {
-      title: "💎 Ready For Another Reward",
-      description: "Share now and unlock your next FreePlay gift",
-      image: "freeplay_bonus_03.jpg",
-      target: "/activity/freeplay-daily"
-    },
-    {
-      title: "🎉 Bonus Drop Is Live",
-      description: "Tap to share and claim your social reward",
-      image: "social_reward_04.jpg",
-      target: "/activity/social-reward"
-    }
-  ];
   var panelStateCache = {};
 
   function ready(callback) {
@@ -132,37 +92,10 @@
     panel.setAttribute("data-active-state", String(stateIndex));
   }
 
-  function scheduleTemplateApply(apply) {
-    var runInFrame = function () {
-      if (window.requestAnimationFrame) {
-        window.requestAnimationFrame(apply);
-        return;
-      }
-      window.setTimeout(apply, 0);
-    };
-
-    runInFrame();
-    window.setTimeout(apply, 120);
-  }
-
-  function bindTemplatePostLoad(apply) {
-    var applyAfterLoad = function () {
-      apply();
-      scheduleTemplateApply(apply);
-    };
-
-    if (document.readyState === "complete") {
-      applyAfterLoad();
-      return;
-    }
-
-    window.addEventListener("load", applyAfterLoad, { once: true });
-  }
-
   function setTemplateState(template) {
     var state = Object.prototype.hasOwnProperty.call(TEMPLATE_TO_STATE, template) ? TEMPLATE_TO_STATE[template] : 0;
-    var isRelief = template === "救济金";
-    var isShare = template === "分享活动";
+    var isRelief = template === "\u6551\u6d4e\u91d1";
+    var isShare = template === "\u5206\u4eab\u6d3b\u52a8";
 
     document.body.classList.toggle("relief-template-active", isRelief);
     document.body.classList.toggle("share-template-active", isShare);
@@ -180,11 +113,7 @@
 
     select.setAttribute("data-template-bound", "true");
     select.addEventListener("change", apply);
-    select.addEventListener("input", apply);
-
     apply();
-    scheduleTemplateApply(apply);
-    bindTemplatePostLoad(apply);
   }
 
   function nextReliefTierLabel(table) {
@@ -201,11 +130,11 @@
     row.innerHTML = [
       '<span class="custom-tier">' + nextReliefTierLabel(table) + "</span>",
       '<div class="custom-vip-cell">',
-      '<input class="custom-vip-end" type="number" placeholder="请输入 VIP 等级">',
+      '<input class="custom-vip-end" type="number" placeholder="\u8bf7\u8f93\u5165VIP\u7b49\u7ea7">',
       "<small></small>",
       "</div>",
-      '<input class="custom-reward-input" type="number" placeholder="请输入充值百分比">',
-      '<button type="button" class="custom-row-delete" aria-label="删除">删除</button>'
+      '<input class="custom-reward-input" type="number" placeholder="\u8bf7\u8f93\u5165\u5145\u503c\u767e\u5206\u6bd4">',
+      '<button type="button" class="custom-row-delete" aria-label="\u5220\u9664">\u5220\u9664</button>'
     ].join("");
     return row;
   }
@@ -253,11 +182,11 @@
           end = expectedStart;
           input.value = String(end);
         } else if (end < expectedStart) {
-          message = "必须大于上一档";
+          message = "\u5fc5\u987b\u5927\u4e8e\u4e0a\u4e00\u6863";
         } else if (end >= 15) {
           end = 14;
           input.value = "14";
-          message = "最后一档自动补到 15";
+          message = "\u6700\u540e\u4e00\u6863\u81ea\u52a8\u8865\u523015";
         }
       }
 
@@ -308,135 +237,284 @@
     });
   }
 
-  function setShareUploadContent(button, imageName) {
-    var currentIndex = SHARE_IMAGE_POOL.indexOf(imageName);
-    button.dataset.imageName = imageName;
-    button.dataset.imageIndex = String(currentIndex === -1 ? 0 : currentIndex);
-    button.innerHTML = [
-      '<span class="custom-share-upload-name">' + escapeHtml(imageName) + "</span>",
-      "<small>点击更换 OG 图片</small>"
-    ].join("");
+  function getOgLibrary() {
+    return window.OG_SHARED_LIBRARY || null;
   }
 
-  function rotateShareUpload(button) {
-    var currentIndex = Number(button.dataset.imageIndex || 0);
-    var nextIndex = (currentIndex + 1) % SHARE_IMAGE_POOL.length;
-    setShareUploadContent(button, SHARE_IMAGE_POOL[nextIndex]);
-  }
+  function getActivityOgRecord(value) {
+    var ogLibrary = getOgLibrary();
+    var options = ogLibrary && ogLibrary.activityOptions ? ogLibrary.activityOptions : [];
+    var option = null;
+    var record = null;
+    var index;
 
-  function nextSharePreset(rowCount) {
-    var presetIndex = Math.min(rowCount, SHARE_ROW_PRESETS.length - 1);
-    var preset = SHARE_ROW_PRESETS[presetIndex];
+    for (index = 0; index < options.length; index += 1) {
+      if (options[index].value === value) {
+        option = options[index];
+        break;
+      }
+    }
+
+    if (!option || !ogLibrary || typeof ogLibrary.findByKey !== "function") {
+      return null;
+    }
+
+    record = ogLibrary.findByKey(option.key);
+
+    if (!record) {
+      return null;
+    }
+
     return {
-      title: preset.title,
-      description: preset.description,
-      image: preset.image,
-      target: preset.target
+      value: option.value,
+      key: option.key,
+      label: option.label,
+      typeLabel: option.value === "follow-default" ? "\u7ad9\u70b9OG" : record.typeLabel,
+      bizType: record.bizType,
+      path: record.path,
+      title: record.title,
+      description: record.description,
+      image: record.image,
+      status: record.status
     };
   }
 
-  function createShareRow(data) {
-    var row = document.createElement("div");
-    row.className = "custom-share-row";
-    row.innerHTML = [
-      '<span class="custom-share-index"></span>',
-      '<input type="text" class="custom-share-title-input" value="' + escapeHtml(data.title) + '" placeholder="请输入分享标题">',
-      '<textarea class="custom-share-desc-input" placeholder="请输入分享描述">' + escapeHtml(data.description) + "</textarea>",
-      '<button type="button" class="custom-share-upload"></button>',
-      '<input type="text" class="custom-share-target-input" value="' + escapeHtml(data.target) + '" placeholder="请输入 target_url">',
-      '<button type="button" class="custom-row-delete custom-share-row-delete" aria-label="删除">删除</button>'
-    ].join("");
+  function getEnabledActivityOgOptions() {
+    var ogLibrary = getOgLibrary();
+    var options = ogLibrary && ogLibrary.activityOptions ? ogLibrary.activityOptions : [];
 
-    setShareUploadContent(row.querySelector(".custom-share-upload"), data.image);
-    return row;
-  }
-
-  function syncShareTable(table) {
-    var body = table.querySelector(".custom-share-table-body");
-    var rows = body ? Array.prototype.slice.call(body.querySelectorAll(".custom-share-row")) : [];
-    var section = table.closest(".custom-share-section");
-    var addButton = section ? section.querySelector(".custom-share-add") : null;
-    var countTip = table.querySelector(".custom-share-count-tip");
-    var canDelete = rows.length > 3;
-    var canAdd = rows.length < 5;
-
-    rows.forEach(function (row, index) {
-      var indexNode = row.querySelector(".custom-share-index");
-      var deleteButton = row.querySelector(".custom-share-row-delete");
-      if (indexNode) {
-        indexNode.textContent = String(index + 1).padStart(2, "0");
-      }
-      if (deleteButton) {
-        deleteButton.disabled = !canDelete;
-        deleteButton.classList.toggle("is-disabled", !canDelete);
-      }
+    return options.map(function (option) {
+      return getActivityOgRecord(option.value);
+    }).filter(function (record) {
+      return record && record.status === "on";
     });
-
-    if (addButton) {
-      addButton.disabled = !canAdd;
-    }
-
-    if (countTip) {
-      countTip.textContent = "当前 " + rows.length + " / 5 套分享素材，至少保留 3 套；点击 Share Now 时随机抽取 1 套。";
-    }
   }
 
-  function bindShareTable(table) {
-    if (!table || table.getAttribute("data-share-bound") === "true") {
+  function normalizeSearchText(value) {
+    return String(value || "").toLowerCase().replace(/\s+/g, "");
+  }
+
+  function matchActivityOgRecord(record, keyword) {
+    var haystack;
+
+    if (!keyword) {
+      return true;
+    }
+
+    haystack = normalizeSearchText([
+      record.label,
+      record.title,
+      record.path,
+      record.bizType,
+      record.typeLabel
+    ].join(" "));
+
+    return haystack.indexOf(keyword) !== -1;
+  }
+
+  function renderActivityOgSelectionCards(values, listNode, emptyNode) {
+    var records = values.map(function (value) {
+      return getActivityOgRecord(value);
+    }).filter(Boolean);
+
+    if (!records.length) {
+      listNode.innerHTML = "";
+      emptyNode.hidden = false;
       return;
     }
 
-    var section = table.closest(".custom-share-section");
-    var addButton = section ? section.querySelector(".custom-share-add") : null;
-    var body = table.querySelector(".custom-share-table-body");
+    emptyNode.hidden = true;
+    listNode.innerHTML = records.map(function (record) {
+      return [
+        '<div class="custom-og-selection-card" data-og-value="' + escapeHtml(record.value) + '">',
+        '<strong class="custom-og-name">' + escapeHtml(record.label) + "</strong>",
+        '<div class="custom-og-preview">',
+        '<span class="custom-og-preview-label">\u9884\u89c8</span>',
+        '<div class="custom-og-preview-image">' + escapeHtml(record.image || "OG") + "</div>",
+        "<p>" + escapeHtml(record.title) + "</p>",
+        "</div>",
+        '<button type="button" class="custom-og-remove-button" data-og-remove="' + escapeHtml(record.value) + '">\u5220\u9664</button>',
+        "</div>"
+      ].join("");
+    }).join("");
+  }
 
-    table.setAttribute("data-share-bound", "true");
+  function renderActivityOgDropdown(records, dropdownNode, activeValue) {
+    if (!records.length) {
+      dropdownNode.innerHTML = '<div class="custom-og-empty-option">\u672a\u627e\u5230\u53ef\u6dfb\u52a0\u7684OG\u914d\u7f6e</div>';
+      return;
+    }
 
-    if (addButton) {
-      addButton.addEventListener("click", function () {
-        var rowCount = body ? body.querySelectorAll(".custom-share-row").length : 0;
-        if (!body || rowCount >= 5) {
-          return;
-        }
-        body.appendChild(createShareRow(nextSharePreset(rowCount)));
-        syncShareTable(table);
+    dropdownNode.innerHTML = records.map(function (record) {
+      var isActive = record.value === activeValue;
+
+      return [
+        '<button type="button" class="custom-og-option' + (isActive ? " is-active" : "") + '" data-og-option="' + escapeHtml(record.value) + '">',
+        "<strong>" + escapeHtml(record.label) + "</strong>",
+        "</button>"
+      ].join("");
+    }).join("");
+  }
+
+  function bindActivityOgSelection() {
+    var input = document.getElementById("activityOgSearch");
+    var addButton = document.getElementById("activityOgAdd");
+    var dropdownNode = document.getElementById("activityOgDropdown");
+    var countNode = document.getElementById("activityOgCount");
+    var listNode = document.getElementById("activityOgSelectionList");
+    var emptyNode = document.getElementById("activityOgEmpty");
+    var selectedValues = [];
+    var activeOptionValue = "";
+    var dropdownVisible = false;
+    var MAX_SELECTION = 5;
+
+    function getAvailableRecords() {
+      var keyword = normalizeSearchText(input.value);
+
+      return getEnabledActivityOgOptions().filter(function (record) {
+        return selectedValues.indexOf(record.value) === -1 && matchActivityOgRecord(record, keyword);
       });
     }
 
-    table.addEventListener("click", function (event) {
-      var deleteButton = event.target.closest(".custom-share-row-delete");
-      if (deleteButton) {
-        if (deleteButton.disabled) {
-          return;
-        }
-        var row = deleteButton.closest(".custom-share-row");
-        if (body && row) {
-          body.removeChild(row);
-          syncShareTable(table);
-        }
+    function syncCount() {
+      countNode.textContent = "\u5df2\u6dfb\u52a0 " + selectedValues.length + " / " + MAX_SELECTION;
+    }
+
+    function setDropdownVisible(visible) {
+      dropdownVisible = visible;
+      dropdownNode.hidden = !visible;
+    }
+
+    function resetPicker() {
+      activeOptionValue = "";
+      input.value = "";
+      input.removeAttribute("data-selected-value");
+      addButton.disabled = true;
+    }
+
+    function refreshPicker(openDropdown) {
+      var records = getAvailableRecords();
+
+      renderActivityOgSelectionCards(selectedValues, listNode, emptyNode);
+      renderActivityOgDropdown(records, dropdownNode, activeOptionValue);
+      syncCount();
+
+      if (selectedValues.length >= MAX_SELECTION) {
+        addButton.disabled = true;
+        input.disabled = true;
+        setDropdownVisible(false);
         return;
       }
 
-      var uploadButton = event.target.closest(".custom-share-upload");
-      if (uploadButton) {
-        rotateShareUpload(uploadButton);
+      input.disabled = false;
+      addButton.disabled = !activeOptionValue;
+
+      if (openDropdown && records.length) {
+        setDropdownVisible(true);
+        return;
+      }
+
+      if (!dropdownVisible || !records.length) {
+        setDropdownVisible(false);
+      }
+    }
+
+    if (!input || !addButton || !dropdownNode || !countNode || !listNode || !emptyNode) {
+      return;
+    }
+
+    Array.prototype.forEach.call(listNode.querySelectorAll("[data-og-value]"), function (node) {
+      var value = node.getAttribute("data-og-value");
+      if (value) {
+        selectedValues.push(value);
       }
     });
 
-    syncShareTable(table);
+    input.addEventListener("focus", function () {
+      refreshPicker(true);
+    });
+
+    input.addEventListener("click", function () {
+      refreshPicker(true);
+    });
+
+    input.addEventListener("input", function () {
+      activeOptionValue = "";
+      input.removeAttribute("data-selected-value");
+      addButton.disabled = true;
+      refreshPicker(true);
+    });
+
+    input.addEventListener("blur", function () {
+      window.setTimeout(function () {
+        setDropdownVisible(false);
+      }, 120);
+    });
+
+    dropdownNode.addEventListener("click", function (event) {
+      var optionButton = event.target.closest("[data-og-option]");
+      var record;
+
+      if (!optionButton) {
+        return;
+      }
+
+      activeOptionValue = optionButton.getAttribute("data-og-option");
+      record = getActivityOgRecord(activeOptionValue);
+
+      if (!record) {
+        return;
+      }
+
+      input.value = record.label;
+      input.setAttribute("data-selected-value", activeOptionValue);
+      addButton.disabled = false;
+      setDropdownVisible(false);
+    });
+
+    addButton.addEventListener("click", function () {
+      if (!activeOptionValue || selectedValues.length >= MAX_SELECTION) {
+        return;
+      }
+
+      if (selectedValues.indexOf(activeOptionValue) !== -1) {
+        return;
+      }
+
+      selectedValues.push(activeOptionValue);
+      resetPicker();
+      refreshPicker(false);
+    });
+
+    listNode.addEventListener("click", function (event) {
+      var removeButton = event.target.closest("[data-og-remove]");
+      var value;
+
+      if (!removeButton) {
+        return;
+      }
+
+      value = removeButton.getAttribute("data-og-remove");
+      selectedValues = selectedValues.filter(function (item) {
+        return item !== value;
+      });
+      refreshPicker(false);
+    });
+
+    refreshPicker(false);
   }
 
   ready(function () {
     var select = document.getElementById("u3012_input");
 
-    setText("u3011", "活动模板");
+    setText("u3011", "\u6d3b\u52a8\u6a21\u677f");
     Array.prototype.forEach.call(document.querySelectorAll(".custom-relief-table"), bindReliefRewardTable);
-    Array.prototype.forEach.call(document.querySelectorAll("[data-share-table]"), bindShareTable);
+    bindActivityOgSelection();
 
     if (select) {
-      select.setAttribute("aria-label", "活动模板");
+      select.setAttribute("aria-label", "\u6d3b\u52a8\u6a21\u677f");
       if (!select.value) {
-        select.value = "救济金";
+        select.value = "\u5206\u4eab\u6d3b\u52a8";
       }
       bindTemplateSelect(select);
     }

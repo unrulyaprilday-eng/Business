@@ -70,6 +70,13 @@ $axure.loadDocument({
             "children": []
           },
           {
+            "id": "og_management",
+            "pageName": "OG管理",
+            "type": "Wireframe",
+            "url": "OG管理.html",
+            "children": []
+          },
+          {
             "id": "third_party_login_config",
             "pageName": "第三方登录配置",
             "type": "Wireframe",

@@ -25089,61 +25089,41 @@
                 </div>
               </div>
 
-              <div class="custom-share-section">
-                <div class="custom-share-section-head">
-                  <h3>分享内容配置</h3>
-                  <button type="button" class="custom-share-add">+ 添加分享内容</button>
-                </div>
-                <div class="custom-share-table" data-share-table>
-                  <div class="custom-share-table-head">
-                    <span>序号</span>
-                    <span>分享标题</span>
-                    <span>分享描述</span>
-                    <span>OG 图片</span>
-                    <span>Target URL</span>
-                    <span>操作</span>
-                  </div>
-                  <div class="custom-share-table-body">
-                    <div class="custom-share-row">
-                      <span class="custom-share-index">01</span>
-                      <input type="text" class="custom-share-title-input" value="🎁 Claim Your Bonus" placeholder="请输入分享标题">
-                      <textarea class="custom-share-desc-input" placeholder="请输入分享描述">Get your free reward now</textarea>
-                      <button type="button" class="custom-share-upload" data-image-name="bonus_banner_01.jpg">
-                        <span class="custom-share-upload-name">bonus_banner_01.jpg</span>
-                        <small>点击更换 OG 图片</small>
-                      </button>
-                      <input type="text" class="custom-share-target-input" value="/activity/welcome-bonus" placeholder="请输入 target_url">
-                      <button type="button" class="custom-row-delete custom-share-row-delete" aria-label="删除">删除</button>
-                    </div>
-                    <div class="custom-share-row">
-                      <span class="custom-share-index">02</span>
-                      <input type="text" class="custom-share-title-input" value="🔥 Limited Time Offer" placeholder="请输入分享标题">
-                      <textarea class="custom-share-desc-input" placeholder="请输入分享描述">Don&#39;t miss today&#39;s reward</textarea>
-                      <button type="button" class="custom-share-upload" data-image-name="promo_banner_02.jpg">
-                        <span class="custom-share-upload-name">promo_banner_02.jpg</span>
-                        <small>点击更换 OG 图片</small>
-                      </button>
-                      <input type="text" class="custom-share-target-input" value="/activity/welcome-bonus" placeholder="请输入 target_url">
-                      <button type="button" class="custom-row-delete custom-share-row-delete" aria-label="删除">删除</button>
-                    </div>
-                    <div class="custom-share-row">
-                      <span class="custom-share-index">03</span>
-                      <input type="text" class="custom-share-title-input" value="🏆 Big Win Today" placeholder="请输入分享标题">
-                      <textarea class="custom-share-desc-input" placeholder="请输入分享描述">Can you beat this jackpot?</textarea>
-                      <button type="button" class="custom-share-upload" data-image-name="jackpot_banner.jpg">
-                        <span class="custom-share-upload-name">jackpot_banner.jpg</span>
-                        <small>点击更换 OG 图片</small>
-                      </button>
-                      <input type="text" class="custom-share-target-input" value="/activity/winner-board" placeholder="请输入 target_url">
-                      <button type="button" class="custom-row-delete custom-share-row-delete" aria-label="删除">删除</button>
-                    </div>
-                  </div>
-                  <div class="custom-share-table-foot">
-                    <span class="custom-share-count-tip">当前 3 / 5 套分享素材，至少保留 3 套；点击 Share Now 时随机抽取 1 套。</span>
-                    <span class="custom-share-foot-note">Share Page 会根据所选素材输出 OG 预览并跳转到对应 target_url。</span>
-                  </div>
-                </div>
-              </div>
+               <div class="custom-share-section">
+                 <div class="custom-share-section-head">
+                   <h3>分享OG配置</h3>
+                 </div>
+                 <div class="custom-og-config">
+                   <div class="custom-og-picker">
+                     <label class="custom-field required custom-og-combobox-field">
+                       <span>添加分享OG</span>
+                       <div class="custom-og-combobox">
+                         <div class="custom-og-input-row">
+                           <input id="activityOgSearch" type="text" placeholder="搜索已启用的OG配置">
+                           <button id="activityOgAdd" class="custom-og-add-button" type="button">添加</button>
+                         </div>
+                         <div id="activityOgDropdown" class="custom-og-dropdown" hidden></div>
+                       </div>
+                     </label>
+                     <div class="custom-og-toolbar">
+                       <p>从已启用的OG配置中选择，最多添加5条分享活动链接。会员分享时随机选择一个</p>
+                       <span id="activityOgCount" class="custom-og-count">已添加 1 / 5</span>
+                     </div>
+                     <div id="activityOgSelectionList" class="custom-og-selection-list">
+                       <div class="custom-og-selection-card" data-og-value="game-share-1">
+                         <strong class="custom-og-name">游戏分享1</strong>
+                         <div class="custom-og-preview">
+                           <span class="custom-og-preview-label">预览</span>
+                           <div class="custom-og-preview-image">G1</div>
+                           <p>今日游戏分享奖励已上线</p>
+                         </div>
+                         <button type="button" class="custom-og-remove-button" data-og-remove="game-share-1">删除</button>
+                       </div>
+                     </div>
+                     <div id="activityOgEmpty" class="custom-og-empty" hidden>暂未添加分享OG，请先从已启用配置中选择。</div>
+                   </div>
+                 </div>
+               </div>
 
               <div class="custom-share-section">
                 <h3>奖励配置</h3>
@@ -25178,10 +25158,9 @@
                 <div class="custom-editor custom-share-note-editor">
                   <span>活动说明</span>
                   <div class="custom-toolbar">B U I S H x₂ x² “ ” · 1 2 🔗 ▣ ↶ ↷ 💾</div>
-                  <textarea>FreePlay 是一个轻量级“分享领奖”活动。
-用户点击 Share Now 后，系统从活动配置中随机选择一条分享内容生成分享页。
-Share Page 展示 og:title、og:description 和 og:image，用户点击后跳转到目标活动页。
-活动仅记录点击分享动作，不校验真实发布内容。
+                  <textarea>FreePlay 是一个轻量级分享领奖活动。
+用户点击 Share Now 后，分享页使用当前活动选择的 OG 方案。
+OG 标题、描述、图片与内链在 OG管理 中统一维护。
 支持渠道跟随分享配置。
 奖励为固定奖金配置，仅配置奖励金额与奖励币种。
 领取限制支持同 IP 只能领取 1 次、同设备只能领取 1 次、同提现账号只能领取 1 次。</textarea>
@@ -25208,19 +25187,20 @@ Share Page 展示 og:title、og:description 和 og:image，用户点击后跳转
           <option class="u3012_input_option" value="首充奖励">首充奖励</option>
           <option class="u3012_input_option" value="充值送金">充值送金</option>
           <option class="u3012_input_option" value="拉新返金">拉新返金</option>
-          <option class="u3012_input_option" selected value="救济金">救济金</option>
+          <option class="u3012_input_option" value="救济金">救济金</option>
           <option class="u3012_input_option" value="签到奖励">签到奖励</option>
           <option class="u3012_input_option" value="打码返水">打码返水</option>
           <option class="u3012_input_option" value="优惠券赠送">优惠券赠送</option>
           <option class="u3012_input_option" value="会员礼包">会员礼包</option>
           <option class="u3012_input_option" value="游戏排行榜">游戏排行榜</option>
           <option class="u3012_input_option" value="充值排行榜">充值排行榜</option>
-          <option class="u3012_input_option" value="分享活动">分享活动</option>
+          <option class="u3012_input_option" selected value="分享活动">分享活动</option>
           <option class="u3012_input_option" value="幸运转盘">幸运转盘</option>
           <option class="u3012_input_option" value="拼多多">拼多多</option>
         </select>
       </div>
     </div>
+    <script src="custom/js/og-shared-data.js"></script>
     <script src="custom/js/新增活动.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
   </body>
