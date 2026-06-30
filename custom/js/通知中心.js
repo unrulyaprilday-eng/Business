@@ -20,6 +20,7 @@
     var tabButtons = Array.prototype.slice.call(document.querySelectorAll(".tab-button"));
     var panels = Array.prototype.slice.call(document.querySelectorAll("[data-panel]"));
     var autoModal = document.getElementById("autoEditModal");
+    var manualModal = document.getElementById("manualNoticeModal");
     var detailModal = document.getElementById("recordDetailModal");
     var rateLimitModal = document.getElementById("rateLimitModal");
     var autoTitleInput = document.getElementById("autoTitleInput");
@@ -37,8 +38,12 @@
     var rateStartTime = document.getElementById("rateStartTime");
     var rateEndTime = document.getElementById("rateEndTime");
     var saveRateLimit = document.getElementById("saveRateLimit");
+    var addManualNoticeButton = document.getElementById("addManualNoticeButton");
+    var saveManualNoticeButton = document.getElementById("saveManualNoticeButton");
     var linkPickers = Array.prototype.slice.call(document.querySelectorAll("[data-link-picker]"));
     var editingRow = null;
+    var editingPendingRow = null;
+    var manualDefaultState = null;
     var detailFields = [
       { label: "通知标题", index: 0 },
       { label: "文本内容", index: 10 },
@@ -50,8 +55,7 @@
       { label: "成功数", index: 5 },
       { label: "失败数", index: 6 },
       { label: "点击人数", index: 7 },
-      { label: "点击率", index: 8 },
-      { label: "状态", index: 9 }
+      { label: "点击率", index: 8 }
     ];
 
     function activateTab(name) {
@@ -89,6 +93,9 @@
         modal.hidden = true;
       }
       editingRow = null;
+      if (modal === manualModal) {
+        editingPendingRow = null;
+      }
     }
 
     function bindClose(modal) {
@@ -254,6 +261,7 @@
     });
 
     bindClose(autoModal);
+    bindClose(manualModal);
     bindClose(detailModal);
     bindClose(rateLimitModal);
 
@@ -347,14 +355,28 @@
     var noticePage = document.getElementById("noticePage");
     var playerIds = document.getElementById("playerIds");
     var groupScene = document.getElementById("groupScene");
-    var previewTitle = document.getElementById("previewTitle");
-    var previewContent = document.getElementById("previewContent");
-    var previewPage = document.getElementById("previewPage");
-    var previewTarget = document.getElementById("previewTarget");
     var multiSelect = document.getElementById("gamePreferenceSelect");
-    var sendNoticeButton = document.getElementById("sendNoticeButton");
+    var pendingTableBody = document.getElementById("pendingTableBody");
     var recordTableBody = document.getElementById("recordTableBody");
     var groupTargetRuleNote = document.getElementById("groupTargetRuleNote");
+    var scheduleTime = document.getElementById("scheduleTime");
+
+    function selectedSendTimeType() {
+      var selected = document.querySelector("input[name='sendTimeType']:checked");
+      return selected ? selected.value : "立即";
+    }
+
+    function setSelectedTarget(value) {
+      targetRadios.forEach(function (radio) {
+        radio.checked = radio.value === value;
+      });
+    }
+
+    function setSelectedSendTimeType(value) {
+      Array.prototype.slice.call(document.querySelectorAll("input[name='sendTimeType']")).forEach(function (radio) {
+        radio.checked = radio.value === value;
+      });
+    }
 
     function selectedTarget() {
       var selected = targetRadios.find(function (radio) {
@@ -378,6 +400,25 @@
       }
       var anyGame = multiSelect.querySelector("[data-any-game]");
       return Boolean(anyGame && anyGame.checked) || selectedGames().length === 0;
+    }
+
+    function setGamePreference(values) {
+      if (!multiSelect) {
+        return;
+      }
+      var list = values || [];
+      var anyGame = multiSelect.querySelector("[data-any-game]");
+      Array.prototype.slice.call(multiSelect.querySelectorAll("input[type='checkbox']")).forEach(function (input) {
+        if (input.hasAttribute("data-any-game")) {
+          input.checked = list.length === 0;
+        } else {
+          input.checked = list.indexOf(input.value) > -1;
+        }
+      });
+      if (anyGame && list.length === 0) {
+        anyGame.checked = true;
+      }
+      normalizeGamePreference(anyGame);
     }
 
     function normalizeGamePreference(changedInput) {
@@ -414,15 +455,147 @@
       trigger.textContent = isGamePreferenceUnlimited() ? "不限游戏偏好" : games.join("、");
     }
 
+    function createPendingTargetText(target, scene, games, playerValue) {
+      if (target === "players") {
+        var count = String(playerValue || "").split(/[\s,，;；]+/).filter(Boolean).length;
+        return "玩家ID：" + count + "人";
+      }
+      if (target === "group") {
+        var gameText = games && games.length ? games.join("、") : "不限游戏偏好";
+        return (scene || "不限场景") + " / " + gameText;
+      }
+      return "全部玩家";
+    }
+
+    function currentSendTimeValue() {
+      if (selectedSendTimeType() === "定时") {
+        return scheduleTime && scheduleTime.value ? scheduleTime.value : "";
+      }
+      return scheduleTime && scheduleTime.value ? scheduleTime.value : "";
+    }
+
+    function currentSendTimeText() {
+      var value = currentSendTimeValue();
+      return value ? value.replace("T", " ") : "待设定";
+    }
+
+    function openManualModal(mode, row) {
+      if (!manualModal) {
+        return;
+      }
+      editingPendingRow = row || null;
+      var title = document.getElementById("manualNoticeTitle");
+      if (title) {
+        title.textContent = mode === "edit" ? "编辑通知" : "新增通知";
+      }
+      if (saveManualNoticeButton) {
+        saveManualNoticeButton.textContent = mode === "edit" ? "保存修改" : "保存通知";
+      }
+
+      if (row) {
+        noticeTitle.value = row.getAttribute("data-title") || "";
+        noticeContent.value = row.getAttribute("data-content") || "";
+        noticePage.value = row.getAttribute("data-page") || "";
+        setSelectedSendTimeType(row.getAttribute("data-send-time-type") === "scheduled" ? "定时" : "立即");
+        if (scheduleTime) {
+          scheduleTime.value = row.getAttribute("data-schedule-time") || "";
+        }
+        setSelectedTarget(row.getAttribute("data-target") || "players");
+        playerIds.value = (row.getAttribute("data-player-ids") || "").replace(/&#10;/g, "\n");
+        groupScene.value = row.getAttribute("data-group-scene") || "";
+        setGamePreference((row.getAttribute("data-games") || "").split(",").filter(Boolean));
+      } else if (manualDefaultState) {
+        noticeTitle.value = manualDefaultState.title;
+        noticeContent.value = manualDefaultState.content;
+        noticePage.value = manualDefaultState.page;
+        setSelectedSendTimeType(manualDefaultState.sendTimeType);
+        if (scheduleTime) {
+          scheduleTime.value = manualDefaultState.scheduleTime;
+        }
+        setSelectedTarget(manualDefaultState.target);
+        playerIds.value = manualDefaultState.playerIds;
+        groupScene.value = manualDefaultState.groupScene;
+        setGamePreference(manualDefaultState.games);
+      }
+
+      syncAllLinkPickers();
+      updateMultiLabel();
+      updateTargetPanels();
+      updatePreview();
+      manualModal.hidden = false;
+    }
+
+    function serializePlayerIds(value) {
+      return String(value || "").replace(/\r\n/g, "\n").replace(/\n/g, "&#10;");
+    }
+
+    function createPendingRowHtml(data) {
+      return [
+        "<td>" + escapeHtml(data.title) + "</td>",
+        "<td>" + escapeHtml(data.targetText) + "</td>",
+        "<td>" + escapeHtml(data.sendTimeText) + "</td>",
+        "<td>" + escapeHtml(data.page) + "</td>",
+        "<td>" + escapeHtml(data.createdAt) + "</td>",
+        "<td><button class=\"link-button\" type=\"button\" data-edit-pending>编辑</button> <button class=\"link-button danger\" type=\"button\" data-delete-pending>删除</button></td>"
+      ].join("");
+    }
+
+    function savePendingNotice() {
+      if (!pendingTableBody || !noticeTitle || !noticeContent || !noticePage) {
+        return;
+      }
+      if (isGroupTargetInvalid()) {
+        updateSendAvailability();
+        return;
+      }
+
+      var games = isGamePreferenceUnlimited() ? [] : selectedGames();
+      var target = selectedTarget();
+      var data = {
+        title: noticeTitle.value || "未命名通知",
+        content: noticeContent.value || "",
+        page: noticePage.value || "",
+        sendTimeType: selectedSendTimeType() === "定时" ? "scheduled" : "immediate",
+        scheduleTime: currentSendTimeValue(),
+        target: target,
+        playerIds: playerIds ? playerIds.value : "",
+        groupScene: groupScene ? groupScene.value : "",
+        games: games,
+        targetText: createPendingTargetText(target, groupScene ? groupScene.value : "", games, playerIds ? playerIds.value : ""),
+        sendTimeText: currentSendTimeText(),
+        createdAt: editingPendingRow ? (editingPendingRow.getAttribute("data-created-at") || "") : "2026-06-30 19:05"
+      };
+
+      var row = editingPendingRow || document.createElement("tr");
+      row.setAttribute("data-title", data.title);
+      row.setAttribute("data-content", data.content);
+      row.setAttribute("data-page", data.page);
+      row.setAttribute("data-send-time-type", data.sendTimeType);
+      row.setAttribute("data-schedule-time", data.scheduleTime);
+      row.setAttribute("data-target", data.target);
+      row.setAttribute("data-player-ids", serializePlayerIds(data.playerIds));
+      row.setAttribute("data-group-scene", data.groupScene);
+      row.setAttribute("data-games", data.games.join(","));
+      row.setAttribute("data-created-at", data.createdAt);
+      row.innerHTML = createPendingRowHtml(data);
+
+      if (!editingPendingRow) {
+        pendingTableBody.insertBefore(row, pendingTableBody.firstChild);
+      }
+
+      closeModal(manualModal);
+      activateTab("manualSend");
+    }
+
     function isGroupTargetInvalid() {
       return selectedTarget() === "group" && groupScene && !groupScene.value && isGamePreferenceUnlimited();
     }
 
     function updateSendAvailability() {
       var invalid = isGroupTargetInvalid();
-      if (sendNoticeButton) {
-        sendNoticeButton.disabled = invalid;
-        sendNoticeButton.title = invalid ? "场景和游戏偏好不能同时不限；如需全量发送，请选择全部玩家。" : "";
+      if (saveManualNoticeButton) {
+        saveManualNoticeButton.disabled = invalid;
+        saveManualNoticeButton.title = invalid ? "场景和游戏偏好不能同时不限；如需全量发送，请选择全部玩家。" : "";
       }
       if (groupTargetRuleNote) {
         groupTargetRuleNote.classList.toggle("is-warning", invalid);
@@ -466,18 +639,6 @@
     }
 
     function updatePreview() {
-      if (previewTitle && noticeTitle) {
-        previewTitle.textContent = noticeTitle.value || "未填写标题";
-      }
-      if (previewContent && noticeContent) {
-        previewContent.textContent = noticeContent.value || "未填写内容";
-      }
-      if (previewPage && noticePage) {
-        previewPage.textContent = noticePage.value;
-      }
-      if (previewTarget) {
-        previewTarget.textContent = targetText();
-      }
       updateSendAvailability();
     }
 
@@ -515,49 +676,32 @@
       }
     }
 
-    function currentSendTimeText() {
-      var selected = document.querySelector("input[name='sendTimeType']:checked");
-      if (selected && selected.value === "定时") {
-        var scheduleTime = document.getElementById("scheduleTime");
-        return scheduleTime && scheduleTime.value ? scheduleTime.value.replace("T", " ") : "定时";
-      }
-      return "立即";
-    }
-
-    if (sendNoticeButton && recordTableBody) {
-      sendNoticeButton.addEventListener("click", function () {
-        if (isGroupTargetInvalid()) {
-          updateSendAvailability();
-          return;
-        }
-        var title = noticeTitle && noticeTitle.value ? noticeTitle.value : "未命名通知";
-        var content = noticeContent && noticeContent.value ? noticeContent.value : "";
-        var link = noticePage && noticePage.value ? noticePage.value : "";
-        var target = targetText();
-        var total = selectedTarget() === "players" ? countPlayerIds() : selectedTarget() === "group" ? 8420 : 36580;
-        var timeText = currentSendTimeText();
-        var detail = [title, "通知发送", target, timeText, total, 0, 0, 0, "0.00%", "等待发送", content, link].join("|");
-        var row = document.createElement("tr");
-        row.setAttribute("data-detail", detail);
-        row.innerHTML = [
-          "<td>" + escapeHtml(title) + "</td>",
-          "<td>通知发送</td>",
-          "<td>" + escapeHtml(target) + "</td>",
-          "<td>" + escapeHtml(timeText) + "</td>",
-          "<td>" + total.toLocaleString() + "</td>",
-          "<td>0</td>",
-          "<td>0</td>",
-          "<td>0</td>",
-          "<td>0.00%</td>",
-          "<td><span class=\"status pending\">等待发送</span></td>",
-          "<td><button class=\"link-button\" type=\"button\" data-view-detail>详情</button></td>"
-        ].join("");
-        recordTableBody.insertBefore(row, recordTableBody.firstChild);
-        activateTab("sendRecords");
+    if (addManualNoticeButton) {
+      addManualNoticeButton.addEventListener("click", function () {
+        openManualModal("create");
       });
     }
 
+    if (saveManualNoticeButton) {
+      saveManualNoticeButton.addEventListener("click", savePendingNotice);
+    }
+
     document.addEventListener("click", function (event) {
+      var pendingEditButton = event.target.closest("[data-edit-pending]");
+      if (pendingEditButton) {
+        openManualModal("edit", pendingEditButton.closest("tr"));
+        return;
+      }
+
+      var pendingDeleteButton = event.target.closest("[data-delete-pending]");
+      if (pendingDeleteButton) {
+        var pendingRow = pendingDeleteButton.closest("tr");
+        if (pendingRow) {
+          pendingRow.remove();
+        }
+        return;
+      }
+
       var detailButton = event.target.closest("[data-view-detail]");
       if (!detailButton || !detailModal) {
         return;
@@ -575,6 +719,17 @@
     });
 
     updateRateLimitSummary();
+    manualDefaultState = {
+      title: noticeTitle ? noticeTitle.value : "",
+      content: noticeContent ? noticeContent.value : "",
+      page: noticePage ? noticePage.value : "",
+      sendTimeType: selectedSendTimeType(),
+      scheduleTime: scheduleTime ? scheduleTime.value : "",
+      target: selectedTarget(),
+      playerIds: playerIds ? playerIds.value : "",
+      groupScene: groupScene ? groupScene.value : "",
+      games: selectedGames()
+    };
     updateMultiLabel();
     updateTargetPanels();
     updatePreview();
