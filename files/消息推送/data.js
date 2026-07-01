@@ -26,7 +26,7 @@ $axure.loadCurrentPage({
   "page": {
     "packageId": "operation_message_push",
     "type": "Axure:Page",
-    "name": "消息推送",
+    "name": "消息公告",
     "notes": {},
     "annotations": [],
     "style": {
