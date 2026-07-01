@@ -362,6 +362,45 @@
   left: 18px;
 }
 
+.cl-switch-button {
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #d1d5db;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.cl-switch-button::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.18);
+  transition: left 0.18s ease;
+}
+
+.cl-switch-button.is-on {
+  background: #6ab6ff;
+}
+
+.cl-switch-button.is-on::after {
+  left: 21px;
+}
+
+.cl-switch-button:focus-visible {
+  outline: 2px solid rgba(47, 141, 246, 0.28);
+  outline-offset: 2px;
+}
+
 .cl-pagination {
   display: flex;
   flex-wrap: wrap;

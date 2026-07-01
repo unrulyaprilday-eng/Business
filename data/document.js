@@ -183,6 +183,13 @@ $axure.loadDocument({
             "children": []
           },
           {
+            "id": "operation_popup_manage",
+            "pageName": "弹窗管理",
+            "type": "Wireframe",
+            "url": "弹窗管理.html",
+            "children": []
+          },
+          {
             "id": "operation_customer_service_center",
             "pageName": "客服中心",
             "type": "Wireframe",

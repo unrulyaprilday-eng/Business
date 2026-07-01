@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>弹窗管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/弹窗管理/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/tokens.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/components.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/弹窗管理.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/弹窗管理/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return "resources/images/transparent.gif"; };
+      $axure.utils.getOtherPath = function() { return "resources/Other.html"; };
+      $axure.utils.getReloadPath = function() { return "resources/reload.html"; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell popup-page">
+        <div class="popup-titlebar">
+          <button class="title-icon" type="button" aria-label="返回">‹</button>
+          <button class="title-icon refresh" type="button" aria-label="刷新">↻</button>
+          <span>运营中心</span>
+          <b>/</b>
+          <strong>弹窗管理</strong>
+        </div>
+
+        <main class="popup-panel">
+          <section class="cl-filter-bar popup-filter" aria-label="弹窗筛选">
+            <div class="cl-filter-field">
+              <label for="popupKeyword">弹窗名称</label>
+              <input class="cl-input" id="popupKeyword" type="text" placeholder="请输入弹窗名称">
+            </div>
+            <div class="cl-filter-field">
+              <label for="popupTrigger">触发弹窗</label>
+              <select class="cl-select" id="popupTrigger">
+                <option value="">全部触发场景</option>
+                <option value="注册成功">注册成功</option>
+                <option value="登录成功">登录成功</option>
+                <option value="游客访问">游客访问</option>
+                <option value="每日首次登录">每日首次登录</option>
+                <option value="余额不足">余额不足</option>
+                <option value="提现成功">提现成功</option>
+                <option value="非首次充值成功">非首次充值成功</option>
+                <option value="进入游戏前">进入游戏前</option>
+                <option value="返回大厅">返回大厅</option>
+                <option value="关闭注册">关闭注册</option>
+                <option value="首充成功">首充成功</option>
+              </select>
+            </div>
+            <div class="cl-filter-field">
+              <label for="popupTerminal">弹窗平台</label>
+              <select class="cl-select" id="popupTerminal">
+                <option value="">全部平台</option>
+                <option value="app">APP</option>
+                <option value="h5">H5</option>
+              </select>
+            </div>
+            <div class="cl-filter-field">
+              <label for="popupStatus">状态</label>
+              <select class="cl-select" id="popupStatus">
+                <option value="">全部状态</option>
+                <option value="开启">开启</option>
+                <option value="关闭">关闭</option>
+              </select>
+            </div>
+            <div class="cl-filter-actions">
+              <button class="cl-btn cl-btn-primary" id="searchBtn" type="button">查询</button>
+              <button class="cl-btn" id="resetBtn" type="button">重置</button>
+            </div>
+          </section>
+
+          <div class="popup-table-toolbar">
+            <button class="cl-btn cl-btn-primary" id="addBtn" type="button">添加弹窗</button>
+          </div>
+
+          <section class="popup-table-wrap">
+            <table class="popup-table">
+              <thead>
+                <tr>
+                  <th class="col-id">弹窗ID</th>
+                  <th class="col-name">弹窗名称</th>
+                  <th class="col-sort">排序</th>
+                  <th class="col-image">图片</th>
+                  <th class="col-platform">弹窗平台</th>
+                  <th class="col-trigger">触发弹窗</th>
+                  <th class="col-jump">跳转类型</th>
+                  <th class="col-link">跳转地址</th>
+                  <th class="col-language">语言</th>
+                  <th class="col-status">状态</th>
+                  <th class="col-time">开始时间</th>
+                  <th class="col-time">结束时间</th>
+                  <th class="col-time">创建时间</th>
+                  <th class="col-action">操作</th>
+                </tr>
+              </thead>
+              <tbody id="popupRows"></tbody>
+            </table>
+            <div class="empty-state" id="emptyState" hidden>暂无符合条件的弹窗配置</div>
+          </section>
+
+          <div class="pager">
+            <button type="button">|‹</button>
+            <button type="button">‹‹</button>
+            <button type="button">‹</button>
+            <input value="1" aria-label="当前页"/>
+            <span>/ 1</span>
+            <button type="button">›</button>
+            <button type="button">››</button>
+            <button type="button">›|</button>
+            <select aria-label="每页条数">
+              <option>20条/页</option>
+              <option>50条/页</option>
+              <option>100条/页</option>
+            </select>
+            <span id="totalCount">共 0 条记录</span>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <div class="modal-mask" id="popupModal" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="popupModalTitle">
+        <header class="modal-head">
+          <h3 id="popupModalTitle">添加弹窗</h3>
+          <button class="modal-close" type="button" data-close aria-label="关闭">×</button>
+        </header>
+
+        <div class="modal-body">
+          <section class="form-section base-section">
+            <div class="form-grid two-column name-row">
+              <label class="form-field">
+                <span>弹窗名称</span>
+                <input id="formName" type="text" placeholder="输入弹窗名称">
+              </label>
+            </div>
+
+            <div class="form-grid trigger-grid">
+              <label class="form-field">
+                <span>弹窗触发</span>
+                <select id="formTrigger">
+                  <option value="注册成功">注册成功</option>
+                  <option value="登录成功">登录成功</option>
+                  <option value="游客访问">游客访问</option>
+                  <option value="每日首次登录">每日首次登录</option>
+                  <option value="余额不足">余额不足</option>
+                  <option value="提现成功">提现成功</option>
+                  <option value="非首次充值成功">非首次充值成功</option>
+                  <option value="进入游戏前">进入游戏前</option>
+                  <option value="返回大厅">返回大厅</option>
+                  <option value="关闭注册">关闭注册</option>
+                  <option value="首充成功">首充成功</option>
+                </select>
+              </label>
+              <div class="tips-box">
+                <p id="triggerTipPrimary">注册成功后首次进入大厅展示，适合引导绑卡或下载。</p>
+                <p id="triggerTipSecondary">同一种触发弹窗下，多个弹窗按排序从小到大依次弹出；前一个窗口关闭后再展示下一个。</p>
+              </div>
+            </div>
+
+            <div class="terminal-row">
+              <span class="row-label">弹窗平台</span>
+              <label><input type="checkbox" name="terminal" value="APP" checked>APP</label>
+              <label><input type="checkbox" name="terminal" value="H5">H5</label>
+            </div>
+
+            <div class="channel-limit-row">
+              <div class="channel-limit-head">
+                <label class="form-field compact">
+                  <span>渠道限制</span>
+                  <select id="channelVisibility">
+                    <option value="不限制">不限制</option>
+                    <option value="仅渠道可见">仅渠道可见</option>
+                    <option value="仅渠道不可见">仅渠道不可见</option>
+                  </select>
+                </label>
+                <p class="field-note" id="channelNote">游客访问、玩法限制等场景建议开放全部渠道。</p>
+              </div>
+              <div class="channel-target-box" id="channelTargetRow" hidden>
+                <label class="form-field compact channel-target">
+                  <span>指定渠道</span>
+                  <input id="channelNames" type="text" placeholder="请输入渠道，多个用逗号分隔">
+                </label>
+              </div>
+            </div>
+
+            <div class="form-grid multi-grid">
+              <label class="form-field compact field-block--narrow">
+                <span>排序</span>
+                <input id="formSort" type="number" value="1" min="1">
+              </label>
+              <div class="option-block">
+                <span class="option-block-title">是否显示不再提示选择</span>
+                <div class="radio-field">
+                  <label><input type="radio" name="skipTip" value="是" checked>是</label>
+                  <label><input type="radio" name="skipTip" value="否">否</label>
+                </div>
+                <em class="option-help">勾选后，本地自然日内不再出现该弹窗</em>
+              </div>
+              <div class="option-block">
+                <span class="option-block-title">是否显示弹窗底板</span>
+                <div class="radio-field">
+                  <label><input type="radio" name="popupBackdrop" value="显示" checked>显示</label>
+                  <label><input type="radio" name="popupBackdrop" value="隐藏">隐藏</label>
+                </div>
+                <em class="option-help">隐藏后适用于透明背景异形 PNG，按素材原始轮廓直接展示。</em>
+              </div>
+            </div>
+
+              <div class="option-block mode-inline-block">
+                <span class="option-block-title">内容模式</span>
+                <div class="mode-inline-group">
+                  <div class="radio-field">
+                    <label><input type="radio" name="contentMode" value="配置弹窗" checked>默认配置弹窗</label>
+                    <label><input type="radio" name="contentMode" value="功能弹窗">功能弹窗</label>
+                  </div>
+                </div>
+              </div>
+
+          </section>
+
+          <section class="form-section content-section">
+            <div class="section-title-group">
+              <strong>配置弹窗内容</strong>
+            </div>
+
+            <div class="form-grid align-top content-head-grid">
+              <label class="form-field">
+                <span>弹窗标题</span>
+                <input id="popupTitle" type="text" placeholder="输入弹窗标题">
+              </label>
+              <div class="option-block button-option-block button-option-block-stacked">
+                <span class="option-block-title">弹窗按钮</span>
+                <div class="option-inline-row">
+                  <div class="radio-field">
+                    <label><input type="radio" name="hasButton" value="有" checked>有</label>
+                    <label><input type="radio" name="hasButton" value="无">无</label>
+                  </div>
+                  <label class="form-field compact inline-input-field" id="buttonTextField">
+                    <input id="buttonText" type="text" placeholder="请输入内容">
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-block">
+              <div class="content-block-head">
+                <span>弹窗图片</span>
+              </div>
+              <div class="image-list" id="imageList"></div>
+              <button class="add-image-btn" id="addImageBtn" type="button">
+                <span>＋</span>
+                <strong>添加多图片</strong>
+              </button>
+            </div>
+
+            <label class="form-field textarea-field">
+              <span>弹窗文本</span>
+              <div class="rich-editor" id="popupTextEditor">
+                <div class="editor-toolbar">
+                  <div class="toolbar-group">
+                    <button class="tool-btn tool-btn-strong" type="button">B</button>
+                    <button class="tool-btn tool-btn-italic" type="button">I</button>
+                    <button class="tool-btn tool-btn-underline" type="button">U</button>
+                    <button class="tool-btn tool-btn-accent" type="button">A</button>
+                  </div>
+                  <span class="toolbar-divider" aria-hidden="true"></span>
+                  <div class="toolbar-group toolbar-group--text">
+                    <button class="tool-btn" type="button">链接</button>
+                    <button class="tool-btn" type="button">图片</button>
+                    <button class="tool-btn" type="button">表情</button>
+                    <button class="tool-btn" type="button">对齐</button>
+                    <button class="tool-btn" type="button">列表</button>
+                  </div>
+                </div>
+                <textarea id="popupText" rows="6" placeholder="请输入弹窗文案内容">尊敬的会员，当前场景已命中对应弹窗。可用于公告、活动引导或风险提醒。</textarea>
+              </div>
+            </label>
+          </section>
+
+          <section class="form-section trigger-conditions" id="triggerConditionSection">
+            <div class="condition-card" data-condition="余额不足 返回大厅">
+              <h4 id="conditionCardTitle">设置余额不足</h4>
+              <div class="condition-grid">
+                <label class="form-field compact amount-field">
+                  <span>余额不足</span>
+                  <div class="inline-amount">
+                    <span class="symbol">≤</span>
+                    <input id="balanceCurrency" type="text" value="EvUSD" readonly>
+                    <input id="balanceAmount" type="number" value="1.00" min="0" step="0.01">
+                  </div>
+                </label>
+              </div>
+              <div class="radio-field inline-radio">
+                <span>余额不足弹窗子类型</span>
+                <label><input type="radio" name="balanceSubType" value="首充未完成" checked>首充未完成</label>
+                <label><input type="radio" name="balanceSubType" value="二充未完成">二充未完成</label>
+                <label><input type="radio" name="balanceSubType" value="三充未完成">三充未完成</label>
+                <label><input type="radio" name="balanceSubType" value="其他">其他</label>
+              </div>
+            </div>
+
+            <div class="condition-card" data-condition="进入游戏前">
+              <h4>设置进入游戏前</h4>
+              <div class="condition-grid game-grid">
+                <label class="form-field compact">
+                  <span>充值次数</span>
+                  <div class="inline-amount">
+                    <select id="gameChargeCountMode">
+                      <option value="不限制">不限制</option>
+                      <option value="累计充值次数">累计充值次数</option>
+                    </select>
+                    <input id="gameChargeCount" type="number" value="1" min="1">
+                  </div>
+                </label>
+                <label class="form-field compact">
+                  <span>充值金额</span>
+                  <div class="inline-amount">
+                    <select id="gameChargeAmountMode">
+                      <option value="不限制">不限制</option>
+                      <option value="累计充值金额">累计充值金额</option>
+                    </select>
+                    <input type="text" value="EvUSD" readonly>
+                    <input id="gameChargeAmount" type="number" value="1.00" min="0" step="0.01">
+                  </div>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section footer-section">
+            <div class="week-panel">
+              <div class="week-panel-head">
+                <span class="row-label">展示星期</span>
+                <em>默认全选</em>
+              </div>
+              <div class="week-options">
+                <label><input type="checkbox" name="weekday" value="周一" checked>周一</label>
+                <label><input type="checkbox" name="weekday" value="周二" checked>周二</label>
+                <label><input type="checkbox" name="weekday" value="周三" checked>周三</label>
+                <label><input type="checkbox" name="weekday" value="周四" checked>周四</label>
+                <label><input type="checkbox" name="weekday" value="周五" checked>周五</label>
+                <label><input type="checkbox" name="weekday" value="周六" checked>周六</label>
+                <label><input type="checkbox" name="weekday" value="周日" checked>周日</label>
+              </div>
+            </div>
+
+            <div class="form-grid footer-detail-grid">
+              <label class="form-field">
+                <span>开始时间</span>
+                <input id="startTime" type="text" value="2026-06-30 00:00:00">
+              </label>
+              <label class="form-field">
+                <span>结束时间</span>
+                <input id="endTime" type="text" value="2026-12-31 23:59:59">
+              </label>
+              <label class="inline-check-inline long-term-inline">
+                <input id="longTerm" type="checkbox">
+                <span>长期有效</span>
+              </label>
+              <div class="info-panel info-panel--status">
+                <span class="panel-label">状态</span>
+                <div class="switch-line">
+                  <button class="switch on" id="statusSwitch" type="button" aria-pressed="true"><span></span></button>
+                  <span>启用</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <footer class="modal-actions">
+          <button class="btn plain" type="button" data-close>取消</button>
+          <button class="btn primary" id="saveBtn" type="button">保存</button>
+        </footer>
+      </div>
+    </div>
+
+    <div class="modal-mask confirm-mask" id="statusConfirmModal" hidden>
+      <div class="modal-card confirm-card" role="dialog" aria-modal="true" aria-labelledby="statusConfirmTitle">
+        <header class="modal-head">
+          <h3 id="statusConfirmTitle">状态确认</h3>
+          <button class="modal-close" type="button" id="statusConfirmClose" aria-label="关闭">×</button>
+        </header>
+        <div class="confirm-body">
+          <p id="statusConfirmText">确认关闭该弹窗吗？</p>
+        </div>
+        <footer class="modal-actions">
+          <button class="btn plain" id="statusConfirmCancel" type="button">取消</button>
+          <button class="btn primary" id="statusConfirmSubmit" type="button">确定</button>
+        </footer>
+      </div>
+    </div>
+
+    <script src="custom/js/弹窗管理.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>
