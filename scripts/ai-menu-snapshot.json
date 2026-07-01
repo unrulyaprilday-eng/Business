@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-06-26T06:54:04.879Z",
+  "savedAt": "2026-07-01T07:12:59.423Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -8,6 +8,13 @@
       "pageName": "首页",
       "type": "Wireframe",
       "url": "默认看板.html",
+      "children": []
+    },
+    {
+      "id": "home_dashboard_old",
+      "pageName": "首页（旧版）",
+      "type": "Wireframe",
+      "url": "home_dashboard_old.html",
       "children": []
     },
     {
@@ -56,6 +63,13 @@
           "pageName": "分享配置",
           "type": "Wireframe",
           "url": "分享配置.html",
+          "children": []
+        },
+        {
+          "id": "og_management",
+          "pageName": "OG管理",
+          "type": "Wireframe",
+          "url": "OG管理.html",
           "children": []
         },
         {
@@ -162,6 +176,13 @@
           "pageName": "宣传管理",
           "type": "Wireframe",
           "url": "宣传管理.html",
+          "children": []
+        },
+        {
+          "id": "operation_popup_manage",
+          "pageName": "弹窗管理",
+          "type": "Wireframe",
+          "url": "弹窗管理.html",
           "children": []
         },
         {

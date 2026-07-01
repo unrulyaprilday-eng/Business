@@ -22,6 +22,13 @@ $axure.loadDocument({
         "children": []
       },
       {
+        "id": "home_dashboard_old",
+        "pageName": "首页（旧版）",
+        "type": "Wireframe",
+        "url": "home_dashboard_old.html",
+        "children": []
+      },
+      {
         "id": "site_config",
         "pageName": "站点配置",
         "type": "Folder",

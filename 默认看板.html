@@ -5,9 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="color-scheme" content="light"/>
     <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
     <link href="data/styles.css" type="text/css" rel="stylesheet"/>
     <link href="files/默认看板/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/tokens.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/components.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/默认看板.css" type="text/css" rel="stylesheet"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
     <script src="resources/scripts/axure/axQuery.js"></script>
@@ -51,297 +54,260 @@
   <body>
     <div id="base" class="">
       <div class="custom-page-shell dashboard-page">
-        <section class="board-card stats-section">
-          <div class="section-head">
-            <h2>数据统计</h2>
-            <span>数据更新时间：每5分钟</span>
+        <section class="board-card control-bar">
+          <div class="control-left">
+            <span>时间范围：</span>
+            <div class="period-tabs" aria-label="全局查看周期">
+              <button class="is-active" type="button">今日</button>
+              <button type="button">昨日</button>
+              <button type="button">本周</button>
+              <button type="button">本月</button>
+            </div>
+            <button class="light-btn" type="button">刷新</button>
           </div>
-          <form class="filter-bar">
-            <label class="date-input"><input type="text" value="2026-05-18"/><span>▣</span></label>
-            <span class="range-sep">至</span>
-            <label class="date-input"><input type="text" value="2026-05-18"/><span>▣</span></label>
-            <button class="btn primary" type="button">搜索</button>
-            <button class="btn plain" type="reset">刷新</button>
-          </form>
-          <div class="metric-grid">
-            <article class="metric-card">
-              <div class="metric-icon blue">♙</div>
-              <div><span>注册人数</span><strong>1</strong></div>
-            </article>
-            <article class="metric-card">
-              <div class="metric-icon green">↓</div>
-              <div><span>首充金额</span><strong>0.00</strong></div>
-            </article>
-            <article class="metric-card metric-list">
-              <div class="metric-icon violet">✎</div>
-              <dl>
-                <dt>投注人数</dt><dd>1</dd>
-                <dt>投注金额</dt><dd>0.10</dd>
-                <dt>游戏输赢</dt><dd>0.10</dd>
-              </dl>
-            </article>
-            <article class="metric-card metric-list">
-              <div class="metric-icon cyan">♟</div>
-              <dl>
-                <dt>充值次数</dt><dd>6</dd>
-                <dt>提现次数</dt><dd>1</dd>
-              </dl>
-            </article>
-            <article class="metric-card metric-list">
-              <div class="metric-icon orange">$</div>
-              <dl>
-                <dt>充值</dt><dd>1,000,082.00</dd>
-                <dt>提现</dt><dd>100.00</dd>
-                <dt>充提差</dt><dd>999,982.00</dd>
-              </dl>
-            </article>
-            <article class="metric-card">
-              <div class="metric-icon teal">↻</div>
-              <div><span>返水</span><strong>0.00</strong></div>
-            </article>
-            <article class="metric-card">
-              <div class="metric-icon pink">⌂</div>
-              <div><span>代理佣金</span><strong>0.00</strong></div>
-            </article>
-          </div>
-          <div class="summary-panels">
-            <article class="info-panel">
-              <h3><span>◎</span>站点数据</h3>
-              <dl class="line-list">
-                <dt>今日登录人数</dt><dd>0</dd>
-                <dt>当前在线人数</dt><dd>0</dd>
-                <dt>今日新增会员</dt><dd>0</dd>
-                <dt>今日注册人数</dt><dd>0</dd>
-                <dt>今日活跃会员</dt><dd>0</dd>
-              </dl>
-            </article>
-            <article class="info-panel bet-panel">
-              <h3><span>▤</span>投注数据</h3>
-              <dl class="line-list bet-total">
-                <dt>有效投注</dt><dd>3,403,121.60</dd>
-                <dt>投注人数</dt><dd>118</dd>
-                <dt>投注次数</dt><dd>7,035</dd>
-                <dt>游戏输赢</dt><dd>-1,422,062.10</dd>
-              </dl>
-            </article>
-            <article class="info-panel">
-              <h3><span>▦</span>充值 / 提现数据</h3>
-              <dl class="line-list">
-                <dt>首次次数</dt><dd>0</dd>
-                <dt>首充金额</dt><dd>0.00</dd>
-                <dt>充值次数</dt><dd>4</dd>
-                <dt>充值金额</dt><dd>1,000,082.00</dd>
-                <dt>提现次数</dt><dd>1</dd>
-                <dt>提现金额</dt><dd>100.00</dd>
-                <dt>人工加款金额</dt><dd>0.00</dd>
-              </dl>
-            </article>
+          <div class="control-right">
+            <span>刷新时间：</span>
+            <span class="refresh-pill">每 5 分钟</span>
           </div>
         </section>
 
-        <section class="board-card table-section">
-          <div class="section-head compact"><h2>平台费用详情</h2></div>
-          <form class="filter-bar">
-            <label class="date-input"><input type="text" value="2026-05-18"/><span>▣</span></label>
-            <span class="range-sep">至</span>
-            <label class="date-input"><input type="text" value="2026-05-18"/><span>▣</span></label>
-            <button class="btn primary" type="button">搜索</button>
-          </form>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>日期</th>
-                  <th>账单费用（本地币）</th>
-                  <th>产生站点</th>
-                  <th>充值金额/人工（本地币）</th>
-                  <th>账户余额（USDT）</th>
-                  <th>游戏抽成（本地币）</th>
-                  <th>赠送额度（USDT）</th>
-                  <th>返水金额（USDT）</th>
-                  <th>CDN费用（USDT）</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="total-row"><td>汇总</td><td>327,885.00</td><td>—</td><td>160,660.00</td><td>86,079.00</td><td>51,605.00</td><td>26,353.00</td><td>16,447.00</td><td>11,757.00</td></tr>
-                <tr><td>2026-05-19</td><td>41,624.00</td><td>站点1</td><td>7,782.00</td><td>19,905.00</td><td>3,743.00</td><td>3,410.00</td><td>1,121.00</td><td>883.00</td></tr>
-                <tr><td>2026-05-18</td><td>56,989.00</td><td>站点2</td><td>13,302.00</td><td>10,990.00</td><td>4,483.00</td><td>1,086.00</td><td>2,828.00</td><td>1,258.00</td></tr>
-                <tr><td>2026-05-17</td><td>29,972.00</td><td>站点3</td><td>21,295.00</td><td>19,080.00</td><td>8,649.00</td><td>449.00</td><td>1,980.00</td><td>401.00</td></tr>
-                <tr><td>2026-05-16</td><td>10,882.00</td><td>站点1</td><td>26,599.00</td><td>4,821.00</td><td>5,996.00</td><td>4,708.00</td><td>430.00</td><td>1,863.00</td></tr>
-                <tr><td>2026-05-15</td><td>58,124.00</td><td>站点2</td><td>19,995.00</td><td>1,696.00</td><td>3,448.00</td><td>3,671.00</td><td>2,990.00</td><td>560.00</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="table-foot"><span>最多显示10条</span></div>
+        <section class="domain-overview" aria-label="今日运营分组">
+          <article class="domain-card domain-game">
+            <div class="domain-card-head">
+              <span class="summary-icon blue" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5"/><path d="M12 16V8"/><path d="M16 16v-8"/><path d="M20 16v-3"/></svg>
+              </span>
+              <div><span>游戏经营</span><strong>12,864,300.00</strong></div>
+            </div>
+            <div class="domain-card-body metric-only">
+              <dl class="domain-metrics">
+                <div><dt>注单数</dt><dd>32,845</dd></div>
+                <div><dt>游戏盈亏</dt><dd class="positive">952,660.00</dd></div>
+                <div><dt>派奖金额</dt><dd>11,911,640.00</dd></div>
+                <div><dt>投注会员</dt><dd>4,286</dd></div>
+              </dl>
+            </div>
+          </article>
+          <article class="domain-card domain-member">
+            <div class="domain-card-head">
+              <span class="summary-icon cyan" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M16 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 20v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </span>
+              <div><span>注册与活跃</span><strong>10,312</strong></div>
+            </div>
+            <div class="domain-card-body metric-only">
+              <dl class="domain-metrics">
+                <div><dt>新增注册</dt><dd>1,186</dd></div>
+                <div><dt>当前在线</dt><dd>1,286</dd></div>
+                <div><dt>首充人数</dt><dd>386</dd></div>
+                <div><dt>累计注册</dt><dd>486,920</dd></div>
+              </dl>
+            </div>
+          </article>
+          <article class="domain-card domain-fund">
+            <div class="domain-card-head">
+              <span class="summary-icon green" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 7h15a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><path d="M16 7V5a2 2 0 0 0-2-2H5a3 3 0 0 0-3 3v1"/><path d="M12 11v6"/><path d="M9 14l3 3 3-3"/></svg>
+              </span>
+              <div><span>充提资金</span><strong>1,084,600.00</strong></div>
+            </div>
+            <div class="domain-card-body metric-only">
+              <dl class="domain-metrics">
+                <div><dt>充值金额</dt><dd>3,268,900.00</dd></div>
+                <div><dt>提现金额</dt><dd>2,184,300.00</dd></div>
+                <div><dt>待审提现</dt><dd class="warning">18 笔</dd></div>
+                <div><dt>充值成功率</dt><dd>86.4%</dd></div>
+              </dl>
+            </div>
+          </article>
+          <article class="domain-card domain-risk">
+            <div class="domain-card-head">
+              <span class="summary-icon red" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3.2 8.4-7 10-3.8-1.6-7-5-7-10V6z"/><path d="M12 8v5"/><path d="M12 17h.01"/></svg>
+              </span>
+              <div><span>风险与待办</span><strong>7 项待处理</strong></div>
+            </div>
+            <div class="domain-card-body metric-only">
+              <dl class="domain-metrics">
+                <div><dt>大额盈利</dt><dd class="negative">3 人</dd></div>
+                <div><dt>刷子预警</dt><dd class="warning">7 人</dd></div>
+                <div><dt>提现复核</dt><dd class="warning">18 笔</dd></div>
+                <div><dt>会员投诉</dt><dd>5 件</dd></div>
+              </dl>
+            </div>
+          </article>
         </section>
 
-        <section class="board-card table-section">
-          <div class="section-head compact"><h2>新增数据详情</h2></div>
-          <form class="filter-bar">
-            <label class="date-input"><input type="text" value="2026-05-18"/><span>▣</span></label>
-            <span class="range-sep">至</span>
-            <label class="date-input"><input type="text" value="2026-05-18"/><span>▣</span></label>
-            <button class="btn primary" type="button">搜索</button>
-          </form>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>日期</th>
-                  <th>新增注册</th>
-                  <th>首充会员</th>
-                  <th>投注人数</th>
-                  <th>充值金额</th>
-                  <th>首充金额</th>
-                  <th>广告投入（USDT）</th>
-                  <th>充提差</th>
-                  <th>提现金额</th>
-                  <th>毛利营收（USDT）</th>
-                  <th>佣金派送</th>
-                  <th>站点新增</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="total-row"><td>汇总</td><td>1,118</td><td>706</td><td>2,619</td><td>589,507.00</td><td>117,549.00</td><td>29,195.00</td><td>260,064.00</td><td>329,443.00</td><td>97,571.00</td><td>46,847.00</td><td>23</td></tr>
-                <tr><td>2026-05-19</td><td>134</td><td>79</td><td>76</td><td>66,103.00</td><td>16,521.00</td><td>733.00</td><td class="negative">-5,436.00</td><td>71,539.00</td><td class="positive">21,523.00</td><td>1,678.00</td><td>3</td></tr>
-                <tr><td>2026-05-18</td><td>32</td><td>56</td><td>544</td><td>27,455.00</td><td>5,429.00</td><td>610.00</td><td class="negative">-934.00</td><td>28,389.00</td><td class="positive">21,240.00</td><td>3,611.00</td><td>4</td></tr>
-                <tr><td>2026-05-17</td><td>124</td><td>93</td><td>40</td><td>27,351.00</td><td>11,265.00</td><td>4,553.00</td><td class="negative">-7,857.00</td><td>35,208.00</td><td class="positive">7,489.00</td><td>1,562.00</td><td>2</td></tr>
-                <tr><td>2026-05-16</td><td>71</td><td>91</td><td>576</td><td>66,083.00</td><td>6,460.00</td><td>2,878.00</td><td class="positive">28,820.00</td><td>37,263.00</td><td class="positive">8,257.00</td><td>6,288.00</td><td>1</td></tr>
-                <tr><td>2026-05-15</td><td>138</td><td>33</td><td>68</td><td>113,617.00</td><td>11,373.00</td><td>985.00</td><td class="positive">90,054.00</td><td>23,563.00</td><td class="negative">-11,040.00</td><td>4,536.00</td><td>2</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="table-foot details-foot">
-            <button class="more-toggle" type="button" aria-expanded="false" aria-controls="moreDashboard">查看更多</button>
-            <span>最多显示10条</span>
-          </div>
-        </section>
-
-        <div id="moreDashboard" class="more-dashboard" hidden>
-          <section class="board-card chart-section">
-            <div class="section-head compact"><h2>在线用户统计 <em>● 实时</em></h2></div>
-            <form class="filter-bar"><label class="date-input placeholder"><input type="text" placeholder="请选择"/><span>▣</span></label><button class="btn primary" type="button">搜索</button><button class="btn plain" type="reset">重置</button></form>
-            <div class="line-chart green-line">
-              <svg viewBox="0 0 1200 210" preserveAspectRatio="none" aria-label="在线用户折线图">
-                <path class="area" d="M30 70 L430 70 L820 70 L1170 50 L1170 190 L30 190 Z"/>
-                <polyline points="30,70 430,70 820,70 1170,50"/>
-                <g><circle cx="30" cy="70" r="3"/><circle cx="430" cy="70" r="3"/><circle cx="820" cy="70" r="3"/><circle cx="1170" cy="50" r="3"/></g>
+        <div class="dashboard-grid analysis-grid">
+          <section class="board-card trend-board">
+            <div class="module-head">
+              <div class="module-title">
+                <h2>经营趋势</h2>
+                <div class="period-tabs" aria-label="经营趋势周期">
+                  <button class="is-active" type="button">今日</button>
+                  <button type="button">昨日</button>
+                  <button type="button">本周</button>
+                  <button type="button">本月</button>
+                </div>
+              </div>
+              <div class="metric-switch" aria-label="趋势指标">
+                <button class="is-active" type="button" data-trend-metric="bet">投注额</button>
+                <button type="button" data-trend-metric="active">活跃</button>
+                <button type="button" data-trend-metric="recharge">充值</button>
+                <button type="button" data-trend-metric="profit">游戏盈亏</button>
+              </div>
+            </div>
+            <div class="trend-summary">
+              <span><b>当前投注额</b> 12,864,300.00</span>
+              <span><b>昨日同段</b> 11,402,800.00</span>
+              <span><b>峰值时段</b> 20:00 - 22:00</span>
+            </div>
+            <div class="trend-chart" aria-label="今日经营趋势图">
+              <div class="trend-y-labels" aria-hidden="true">
+                <span>14M</span><span>11M</span><span>8M</span><span>5M</span><span>2M</span>
+              </div>
+              <svg viewBox="0 0 960 280" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="trendArea" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#2f6fed" stop-opacity="0.24"/>
+                    <stop offset="100%" stop-color="#2f6fed" stop-opacity="0.02"/>
+                  </linearGradient>
+                </defs>
+                <g class="grid-lines">
+                  <line x1="20" y1="40" x2="940" y2="40"/>
+                  <line x1="20" y1="95" x2="940" y2="95"/>
+                  <line x1="20" y1="150" x2="940" y2="150"/>
+                  <line x1="20" y1="205" x2="940" y2="205"/>
+                  <line x1="20" y1="260" x2="940" y2="260"/>
+                </g>
+                <path class="trend-area" d="M20 218 C95 198 108 180 168 188 C220 196 238 148 296 152 C358 156 366 108 430 118 C500 130 502 96 568 102 C634 108 642 78 704 86 C766 94 780 56 842 68 C890 78 908 92 940 82 L940 260 L20 260 Z"/>
+                <path class="trend-line" d="M20 218 C95 198 108 180 168 188 C220 196 238 148 296 152 C358 156 366 108 430 118 C500 130 502 96 568 102 C634 108 642 78 704 86 C766 94 780 56 842 68 C890 78 908 92 940 82"/>
+                <path class="compare-line" d="M20 230 C105 212 128 204 188 198 C262 190 292 170 346 172 C420 174 438 142 500 150 C582 162 618 132 680 136 C752 140 804 118 862 122 C900 124 916 130 940 126"/>
+                <g class="trend-dots">
+                  <circle cx="20" cy="218" r="4"/><circle cx="296" cy="152" r="4"/><circle cx="430" cy="118" r="4"/><circle cx="568" cy="102" r="4"/><circle cx="704" cy="86" r="4"/><circle cx="842" cy="68" r="4"/><circle cx="940" cy="82" r="4"/>
+                </g>
               </svg>
-              <div class="axis-labels"><span>01:00</span><span>02:00</span><span>03:00</span><span>04:00</span></div>
+              <div class="axis-labels"><span>00:00</span><span>04:00</span><span>08:00</span><span>12:00</span><span>16:00</span><span>20:00</span><span>当前</span></div>
+              <div class="trend-legend" aria-hidden="true"><span class="legend-current">今日</span><span class="legend-compare">昨日同段</span></div>
+            </div>
+            <div class="trend-detail" aria-label="经营趋势明细">
+              <div class="trend-detail-panel" data-trend-panel="bet">
+                <table class="cl-table dashboard-table trend-table">
+                  <thead><tr><th>时段</th><th class="cl-num">投注额</th><th class="cl-num">注单数</th><th class="cl-num">投注会员</th><th class="cl-num">较昨日</th></tr></thead>
+                  <tbody>
+                    <tr><td>00:00 - 04:00</td><td class="cl-num">1,426,800.00</td><td class="cl-num">3,862</td><td class="cl-num">618</td><td class="cl-num positive">+6.8%</td></tr>
+                    <tr><td>04:00 - 08:00</td><td class="cl-num">1,684,300.00</td><td class="cl-num">4,116</td><td class="cl-num">705</td><td class="cl-num positive">+8.2%</td></tr>
+                    <tr><td>08:00 - 12:00</td><td class="cl-num">2,138,900.00</td><td class="cl-num">5,420</td><td class="cl-num">836</td><td class="cl-num positive">+10.4%</td></tr>
+                    <tr><td>12:00 - 16:00</td><td class="cl-num">2,486,700.00</td><td class="cl-num">6,308</td><td class="cl-num">928</td><td class="cl-num positive">+12.1%</td></tr>
+                    <tr><td>16:00 - 20:00</td><td class="cl-num">2,742,600.00</td><td class="cl-num">6,982</td><td class="cl-num">1,046</td><td class="cl-num positive">+14.6%</td></tr>
+                    <tr><td>20:00 - 当前</td><td class="cl-num">2,385,000.00</td><td class="cl-num">6,157</td><td class="cl-num">912</td><td class="cl-num positive">+13.5%</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="trend-detail-panel" data-trend-panel="active" hidden>
+                <table class="cl-table dashboard-table trend-table">
+                  <thead><tr><th>时段</th><th class="cl-num">活跃会员</th><th class="cl-num">新增注册</th><th class="cl-num">在线峰值</th><th class="cl-num">首充人数</th></tr></thead>
+                  <tbody>
+                    <tr><td>00:00 - 04:00</td><td class="cl-num">1,486</td><td class="cl-num">132</td><td class="cl-num">386</td><td class="cl-num">42</td></tr>
+                    <tr><td>04:00 - 08:00</td><td class="cl-num">1,694</td><td class="cl-num">146</td><td class="cl-num">421</td><td class="cl-num">48</td></tr>
+                    <tr><td>08:00 - 12:00</td><td class="cl-num">2,108</td><td class="cl-num">236</td><td class="cl-num">618</td><td class="cl-num">76</td></tr>
+                    <tr><td>12:00 - 16:00</td><td class="cl-num">2,436</td><td class="cl-num">284</td><td class="cl-num">736</td><td class="cl-num">93</td></tr>
+                    <tr><td>16:00 - 20:00</td><td class="cl-num">2,714</td><td class="cl-num">258</td><td class="cl-num">1,286</td><td class="cl-num">82</td></tr>
+                    <tr><td>20:00 - 当前</td><td class="cl-num">1,874</td><td class="cl-num">130</td><td class="cl-num">1,064</td><td class="cl-num">45</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="trend-detail-panel" data-trend-panel="recharge" hidden>
+                <table class="cl-table dashboard-table trend-table">
+                  <thead><tr><th>时段</th><th class="cl-num">充值金额</th><th class="cl-num">充值订单</th><th class="cl-num">成功率</th><th class="cl-num">首充金额</th></tr></thead>
+                  <tbody>
+                    <tr><td>00:00 - 04:00</td><td class="cl-num">386,400.00</td><td class="cl-num">428</td><td class="cl-num">84.6%</td><td class="cl-num">42,800.00</td></tr>
+                    <tr><td>04:00 - 08:00</td><td class="cl-num">428,600.00</td><td class="cl-num">476</td><td class="cl-num">85.1%</td><td class="cl-num">48,300.00</td></tr>
+                    <tr><td>08:00 - 12:00</td><td class="cl-num">612,800.00</td><td class="cl-num">642</td><td class="cl-num">86.0%</td><td class="cl-num">78,600.00</td></tr>
+                    <tr><td>12:00 - 16:00</td><td class="cl-num">736,900.00</td><td class="cl-num">708</td><td class="cl-num">86.8%</td><td class="cl-num">96,400.00</td></tr>
+                    <tr><td>16:00 - 20:00</td><td class="cl-num">684,300.00</td><td class="cl-num">692</td><td class="cl-num">87.2%</td><td class="cl-num">88,200.00</td></tr>
+                    <tr><td>20:00 - 当前</td><td class="cl-num">419,900.00</td><td class="cl-num">436</td><td class="cl-num">85.9%</td><td class="cl-num">74,300.00</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="trend-detail-panel" data-trend-panel="profit" hidden>
+                <table class="cl-table dashboard-table trend-table">
+                  <thead><tr><th>时段</th><th class="cl-num">游戏盈亏</th><th class="cl-num">派奖金额</th><th class="cl-num">投注额</th><th class="cl-num">盈亏率</th></tr></thead>
+                  <tbody>
+                    <tr><td>00:00 - 04:00</td><td class="cl-num positive">92,600.00</td><td class="cl-num">1,334,200.00</td><td class="cl-num">1,426,800.00</td><td class="cl-num positive">6.5%</td></tr>
+                    <tr><td>04:00 - 08:00</td><td class="cl-num positive">116,300.00</td><td class="cl-num">1,568,000.00</td><td class="cl-num">1,684,300.00</td><td class="cl-num positive">6.9%</td></tr>
+                    <tr><td>08:00 - 12:00</td><td class="cl-num positive">158,900.00</td><td class="cl-num">1,980,000.00</td><td class="cl-num">2,138,900.00</td><td class="cl-num positive">7.4%</td></tr>
+                    <tr><td>12:00 - 16:00</td><td class="cl-num positive">186,700.00</td><td class="cl-num">2,300,000.00</td><td class="cl-num">2,486,700.00</td><td class="cl-num positive">7.5%</td></tr>
+                    <tr><td>16:00 - 20:00</td><td class="cl-num positive">224,600.00</td><td class="cl-num">2,518,000.00</td><td class="cl-num">2,742,600.00</td><td class="cl-num positive">8.2%</td></tr>
+                    <tr><td>20:00 - 当前</td><td class="cl-num positive">173,560.00</td><td class="cl-num">2,211,440.00</td><td class="cl-num">2,385,000.00</td><td class="cl-num positive">7.3%</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </section>
 
-          <section class="board-card chart-section">
-            <div class="section-head compact"><h2>投注人数统计</h2></div>
-            <form class="filter-bar"><label class="date-input placeholder"><input type="text" placeholder="请选择"/><span>▣</span></label><span class="range-sep">至</span><label class="date-input placeholder"><input type="text" placeholder="请选择"/><span>▣</span></label><button class="btn primary" type="button">搜索</button><button class="btn plain" type="reset">重置</button></form>
-            <div class="line-chart blue-line">
-              <svg viewBox="0 0 1200 230" preserveAspectRatio="none" aria-label="投注人数折线图">
-                <path class="area" d="M30 120 C70 80 90 30 120 45 C160 70 120 205 160 210 C210 210 195 130 235 150 C270 170 250 180 310 180 C360 180 330 120 390 145 C450 180 470 170 520 170 C570 170 570 130 615 140 C660 150 620 205 690 200 C770 195 820 210 850 205 C930 195 880 40 930 60 C980 80 940 215 1010 180 C1060 155 1075 180 1115 180 C1160 180 1140 130 1170 165"/>
-                <polyline points="30,120 85,55 120,45 160,210 235,150 310,180 390,145 470,170 520,170 615,140 690,200 850,205 930,60 1010,180 1115,180 1170,165"/>
-              </svg>
-              <div class="axis-labels dense"><span>04-09</span><span>04-12</span><span>04-17</span><span>04-24</span><span>05-01</span><span>05-09</span><span>05-18</span></div>
+          <section class="board-card rank-board">
+            <div class="module-head">
+              <div class="module-title">
+                <h2>排行洞察</h2>
+                <div class="period-tabs" aria-label="排行洞察周期">
+                  <button class="is-active" type="button">今日</button>
+                  <button type="button">昨日</button>
+                  <button type="button">本周</button>
+                  <button type="button">本月</button>
+                </div>
+              </div>
             </div>
-          </section>
-
-          <section class="board-card table-section">
-            <div class="section-head compact"><h2>首充留存统计</h2></div>
-            <form class="filter-bar"><label class="date-input placeholder"><input type="text" placeholder="请选择"/><span>▣</span></label><span class="range-sep">至</span><label class="date-input placeholder"><input type="text" placeholder="请选择"/><span>▣</span></label><button class="btn primary" type="button">搜索</button><button class="btn plain" type="reset">重置</button></form>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>日期</th><th>首充人数</th><th>3日留存</th><th>5日留存</th><th>7日留存</th><th>15日留存</th><th>30日留存</th></tr></thead>
+            <div class="cl-tabs rank-tabs" role="tablist">
+              <button class="cl-tab is-active" type="button" data-rank-tab="gameType">游戏类型</button>
+              <button class="cl-tab" type="button" data-rank-tab="vendor">游戏厂商</button>
+              <button class="cl-tab" type="button" data-rank-tab="channel">渠道</button>
+              <button class="cl-tab" type="button" data-rank-tab="member">盈利会员</button>
+            </div>
+            <div class="rank-panel" data-rank-panel="gameType">
+              <table class="cl-table dashboard-table">
+                <thead><tr><th>排名</th><th>类型</th><th class="cl-num">投注额</th><th class="cl-num">游戏盈亏</th><th class="cl-num">投注会员</th></tr></thead>
                 <tbody>
-                  <tr><td>2026-05-18</td><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-                  <tr><td>2026-05-17</td><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-                  <tr><td>2026-05-16</td><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-                  <tr><td>2026-05-15</td><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-                  <tr><td>2026-05-14</td><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+                  <tr><td>1</td><td>真人</td><td class="cl-num">4,926,800.00</td><td class="cl-num positive">386,200.00</td><td class="cl-num">1,208</td></tr>
+                  <tr><td>2</td><td>电子</td><td class="cl-num">3,418,600.00</td><td class="cl-num positive">264,800.00</td><td class="cl-num">1,786</td></tr>
+                  <tr><td>3</td><td>体育</td><td class="cl-num">2,104,900.00</td><td class="cl-num negative">-86,400.00</td><td class="cl-num">642</td></tr>
+                  <tr><td>4</td><td>棋牌</td><td class="cl-num">1,026,300.00</td><td class="cl-num positive">92,180.00</td><td class="cl-num">396</td></tr>
                 </tbody>
               </table>
             </div>
-            <div class="table-foot"><span>最多显示10条</span></div>
-          </section>
-
-          <section class="board-card chart-section">
-            <div class="section-head compact"><h2>投注金额统计</h2></div>
-            <form class="filter-bar"><label class="date-input placeholder"><input type="text" placeholder="请选择"/><span>▣</span></label><span class="range-sep">至</span><label class="date-input placeholder"><input type="text" placeholder="请选择"/><span>▣</span></label><button class="btn primary" type="button">搜索</button></form>
-            <div class="line-chart amount-line">
-              <svg viewBox="0 0 1200 230" preserveAspectRatio="none" aria-label="投注金额折线图">
-                <path class="area" d="M30 160 C80 110 100 70 140 82 C180 94 160 150 220 138 C275 126 270 165 330 158 C385 151 400 92 452 104 C500 115 492 140 555 132 C615 124 620 82 665 96 C715 110 700 176 760 170 C825 164 820 144 875 148 C930 152 918 72 968 86 C1018 100 1010 190 1075 156 C1128 128 1140 154 1170 120 L1170 210 L30 210 Z"/>
-                <polyline points="30,160 95,95 140,82 220,138 330,158 452,104 555,132 665,96 760,170 875,148 968,86 1075,156 1170,120"/>
-                <g><circle cx="30" cy="160" r="3"/><circle cx="95" cy="95" r="3"/><circle cx="140" cy="82" r="3"/><circle cx="220" cy="138" r="3"/><circle cx="330" cy="158" r="3"/><circle cx="452" cy="104" r="3"/><circle cx="555" cy="132" r="3"/><circle cx="665" cy="96" r="3"/><circle cx="760" cy="170" r="3"/><circle cx="875" cy="148" r="3"/><circle cx="968" cy="86" r="3"/><circle cx="1075" cy="156" r="3"/><circle cx="1170" cy="120" r="3"/></g>
-              </svg>
-              <div class="chart-tip amount-tip"><strong>05-09</strong><span>投注金额：1,587,809.80</span></div>
-              <div class="axis-labels dense"><span>04-09</span><span>04-12</span><span>04-17</span><span>04-24</span><span>05-01</span><span>05-09</span><span>05-18</span></div>
-            </div>
-          </section>
-
-          <section class="board-card chart-section">
-            <div class="section-head compact"><h2>充值投放图表</h2></div>
-            <form class="filter-bar"><label class="date-input placeholder"><input type="text" placeholder="开始时间"/><span>▣</span></label><span class="range-sep">至</span><label class="date-input placeholder"><input type="text" placeholder="结束时间"/><span>▣</span></label><button class="btn primary" type="button">搜索</button></form>
-            <div class="donut-grid">
-              <article>
-                <h3>支付通道成功笔数</h3>
-                <div class="donut-chart payment-chart">
-                  <div class="donut one"></div>
-                  <span class="donut-label label-right"><em>支付宝</em><b>29%</b></span>
-                  <span class="donut-label label-bottom-right"><em>微信支付</em><b>27.21%</b></span>
-                  <span class="donut-label label-bottom-left"><em>USDT-TRC20</em><b>13.43%</b></span>
-                  <span class="donut-label label-left"><em>银行卡</em><b>19.65%</b></span>
-                  <span class="donut-label label-top-left"><em>其他</em><b>10.71%</b></span>
-                </div>
-              </article>
-              <article>
-                <h3>投放渠道注册人数</h3>
-                <div class="donut-chart channel-chart">
-                  <div class="donut two"></div>
-                  <span class="donut-label label-right"><em>Google</em><b>23.25%</b></span>
-                  <span class="donut-label label-bottom-right"><em>Facebook</em><b>41.58%</b></span>
-                  <span class="donut-label label-left"><em>TikTok</em><b>19.38%</b></span>
-                  <span class="donut-label label-top-left"><em>自然流量</em><b>13.22%</b></span>
-                  <span class="donut-label label-top"><em>其他</em><b>2.57%</b></span>
-                </div>
-              </article>
-              <article>
-                <h3>充值范围人数占比</h3>
-                <div class="donut-chart range-chart">
-                  <div class="donut three"></div>
-                  <span class="donut-label label-right"><em>1 ~ 100</em><b>15.14%</b></span>
-                  <span class="donut-label label-bottom-right"><em>101 ~ 500</em><b>51.46%</b></span>
-                  <span class="donut-label label-left"><em>501 ~ 1000</em><b>18.83%</b></span>
-                  <span class="donut-label label-top-left"><em>1001 ~ 5000</em><b>9.59%</b></span>
-                  <span class="donut-label label-top"><em>&gt; 5000</em><b>4.98%</b></span>
-                </div>
-              </article>
-              <article>
-                <h3>充值次数范围人数占比</h3>
-                <div class="donut-chart count-chart">
-                  <div class="donut four"></div>
-                  <span class="donut-label label-right"><em>1次</em><b>69.97%</b></span>
-                  <span class="donut-label label-left"><em>2次</em><b>16.64%</b></span>
-                  <span class="donut-label label-top-left"><em>3~10次</em><b>13.39%</b></span>
-                </div>
-              </article>
-            </div>
-          </section>
-
-          <section class="board-card table-section">
-            <div class="section-head compact"><h2>投放ROI统计</h2></div>
-            <form class="filter-bar"><label class="date-input placeholder"><input type="text" placeholder="开始时间"/><span>▣</span></label><span class="range-sep">至</span><label class="date-input placeholder"><input type="text" placeholder="结束时间"/><span>▣</span></label><button class="btn primary" type="button">搜索</button></form>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>日期</th><th>消耗金额（本地币）</th><th>充提差</th><th>当日ROI</th><th>3日ROI</th><th>7日ROI</th><th>15日ROI</th><th>30日ROI</th><th>60日ROI</th><th>90日ROI</th></tr></thead>
+            <div class="rank-panel" data-rank-panel="vendor" hidden>
+              <table class="cl-table dashboard-table">
+                <thead><tr><th>排名</th><th>厂商</th><th class="cl-num">投注额</th><th class="cl-num">游戏盈亏</th><th>状态</th></tr></thead>
                 <tbody>
-                  <tr><td>2026-05-01</td><td>24,300.00</td><td class="positive">20,077.00</td><td class="warn">82.62%</td><td class="negative">0.83%</td><td class="negative">1.47%</td><td class="negative">1.19%</td><td class="negative">1.76%</td><td class="negative">2.00%</td><td class="negative">2.35%</td></tr>
-                  <tr><td>2026-05-02</td><td>28,068.00</td><td class="positive">44,399.00</td><td class="positive">158.18%</td><td class="negative">1.69%</td><td class="negative">2.32%</td><td class="negative">2.46%</td><td class="negative">3.08%</td><td class="negative">3.57%</td><td class="negative">5.37%</td></tr>
-                  <tr><td>2026-05-03</td><td>22,819.00</td><td class="positive">23,781.00</td><td class="positive">104.22%</td><td class="negative">1.13%</td><td class="negative">1.84%</td><td class="negative">1.51%</td><td class="negative">2.66%</td><td class="negative">2.35%</td><td class="negative">3.00%</td></tr>
-                  <tr><td>2026-05-04</td><td>29,338.00</td><td class="positive">22,151.00</td><td class="warn">75.50%</td><td class="negative">0.99%</td><td class="negative">0.96%</td><td class="negative">1.39%</td><td class="negative">1.61%</td><td class="negative">1.88%</td><td class="negative">2.37%</td></tr>
-                  <tr><td>2026-05-05</td><td>40,787.00</td><td class="negative">-10,159.00</td><td class="negative">-24.91%</td><td class="negative">-0.25%</td><td class="negative">-0.43%</td><td class="negative">-0.48%</td><td class="negative">-0.62%</td><td class="negative">-0.60%</td><td class="negative">-0.91%</td></tr>
+                  <tr><td>1</td><td>PG</td><td class="cl-num">2,286,400.00</td><td class="cl-num positive">218,700.00</td><td><span class="cl-status cl-status-success">正常</span></td></tr>
+                  <tr><td>2</td><td>Evolution</td><td class="cl-num">2,064,800.00</td><td class="cl-num positive">172,300.00</td><td><span class="cl-status cl-status-success">正常</span></td></tr>
+                  <tr><td>3</td><td>Pragmatic</td><td class="cl-num">1,496,200.00</td><td class="cl-num negative">-42,500.00</td><td><span class="cl-status cl-status-warning">波动</span></td></tr>
                 </tbody>
               </table>
             </div>
-            <div class="table-foot"><span>最多显示10条</span></div>
+            <div class="rank-panel" data-rank-panel="channel" hidden>
+              <table class="cl-table dashboard-table">
+                <thead><tr><th>排名</th><th>渠道</th><th class="cl-num">注册</th><th class="cl-num">首充</th><th class="cl-num">ROI</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>自然流量</td><td class="cl-num">426</td><td class="cl-num">168</td><td class="cl-num positive">186.2%</td></tr>
+                  <tr><td>2</td><td>Google</td><td class="cl-num">318</td><td class="cl-num">96</td><td class="cl-num positive">142.8%</td></tr>
+                  <tr><td>3</td><td>TikTok</td><td class="cl-num">246</td><td class="cl-num">62</td><td class="cl-num warning">92.4%</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="rank-panel" data-rank-panel="member" hidden>
+              <table class="cl-table dashboard-table">
+                <thead><tr><th>会员账号</th><th class="cl-num">盈利金额</th><th class="cl-num">投注额</th><th>风险状态</th></tr></thead>
+                <tbody>
+                  <tr><td>vip_4821</td><td class="cl-num negative">286,400.00</td><td class="cl-num">820,000.00</td><td><span class="cl-status cl-status-danger">需复核</span></td></tr>
+                  <tr><td>james_908</td><td class="cl-num negative">176,200.00</td><td class="cl-num">610,800.00</td><td><span class="cl-status cl-status-warning">关注</span></td></tr>
+                  <tr><td>sun_7720</td><td class="cl-num negative">124,600.00</td><td class="cl-num">386,400.00</td><td><span class="cl-status cl-status-warning">关注</span></td></tr>
+                </tbody>
+              </table>
+            </div>
           </section>
         </div>
+
       </div>
     </div>
     <script src="custom/js/默认看板.js"></script>

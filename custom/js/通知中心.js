@@ -305,6 +305,7 @@
       autoContentInput.value = editingRow.getAttribute("data-content") || "";
       autoPageInput.value = editingRow.getAttribute("data-page") || "/activity";
       updateAutoScheduleFields(editingRow);
+      setMemberTarget("auto", splitList(editingRow.getAttribute("data-vip-levels")), splitList(editingRow.getAttribute("data-r-levels")));
       syncAllLinkPickers();
       autoModal.hidden = false;
     });
@@ -327,6 +328,9 @@
         editingRow.setAttribute("data-content", content);
         editingRow.setAttribute("data-page", page);
         editingRow.setAttribute("data-time", timeText);
+        var autoMemberTarget = getMemberTarget("auto");
+        editingRow.setAttribute("data-vip-levels", autoMemberTarget.vipLevels.join(","));
+        editingRow.setAttribute("data-r-levels", autoMemberTarget.rLevels.join(","));
         if (kind === "duration") {
           editingRow.setAttribute("data-duration", duration);
         } else {
@@ -335,6 +339,7 @@
         var titleCell = editingRow.querySelector(".auto-title");
         var pageCell = editingRow.querySelector(".auto-page");
         var timeCell = editingRow.querySelector(".auto-time");
+        var groupCell = editingRow.querySelector(".auto-group");
         if (titleCell) {
           titleCell.textContent = title;
         }
@@ -344,18 +349,20 @@
         if (timeCell) {
           timeCell.textContent = timeText;
         }
+        if (groupCell) {
+          groupCell.textContent = formatMemberTarget(autoMemberTarget.vipLevels, autoMemberTarget.rLevels);
+        }
         closeModal(autoModal);
       });
     }
 
     var targetRadios = Array.prototype.slice.call(document.querySelectorAll("input[name='sendTarget']"));
     var targetPanels = Array.prototype.slice.call(document.querySelectorAll("[data-target-panel]"));
+    var memberChoiceGroups = Array.prototype.slice.call(document.querySelectorAll("[data-choice-group]"));
     var noticeTitle = document.getElementById("noticeTitle");
     var noticeContent = document.getElementById("noticeContent");
     var noticePage = document.getElementById("noticePage");
     var playerIds = document.getElementById("playerIds");
-    var groupScene = document.getElementById("groupScene");
-    var multiSelect = document.getElementById("gamePreferenceSelect");
     var pendingTableBody = document.getElementById("pendingTableBody");
     var recordTableBody = document.getElementById("recordTableBody");
     var groupTargetRuleNote = document.getElementById("groupTargetRuleNote");
@@ -385,84 +392,99 @@
       return selected ? selected.value : "players";
     }
 
-    function selectedGames() {
-      if (!multiSelect) {
+    function splitList(value) {
+      return String(value || "").split(",").map(function (item) {
+        return item.trim();
+      }).filter(Boolean);
+    }
+
+    function findChoiceGroup(name) {
+      return document.querySelector("[data-choice-group='" + name + "']");
+    }
+
+    function normalizeChoiceGroup(group, selectedButton) {
+      if (!group) {
+        return;
+      }
+      var allButton = group.querySelector("[data-all-choice]");
+      var valueButtons = Array.prototype.slice.call(group.querySelectorAll(".choice-chip:not([data-all-choice])"));
+      if (selectedButton && selectedButton.hasAttribute("data-all-choice")) {
+        valueButtons.forEach(function (button) {
+          button.classList.remove("is-selected");
+        });
+        selectedButton.classList.add("is-selected");
+        return;
+      }
+      if (selectedButton && selectedButton.classList.contains("choice-chip")) {
+        selectedButton.classList.toggle("is-selected");
+        if (allButton) {
+          allButton.classList.remove("is-selected");
+        }
+      }
+      var hasSelected = valueButtons.some(function (button) {
+        return button.classList.contains("is-selected");
+      });
+      if (!hasSelected && allButton) {
+        allButton.classList.add("is-selected");
+      }
+    }
+
+    function selectedChoiceValues(name) {
+      var group = findChoiceGroup(name);
+      if (!group) {
         return [];
       }
-      return Array.prototype.slice.call(multiSelect.querySelectorAll("input[type='checkbox']:checked:not([data-any-game])")).map(function (input) {
-        return input.value;
-      });
+      return Array.prototype.slice.call(group.querySelectorAll(".choice-chip.is-selected:not([data-all-choice])")).map(function (button) {
+        return button.getAttribute("data-choice-value") || "";
+      }).filter(Boolean);
     }
 
-    function isGamePreferenceUnlimited() {
-      if (!multiSelect) {
-        return true;
-      }
-      var anyGame = multiSelect.querySelector("[data-any-game]");
-      return Boolean(anyGame && anyGame.checked) || selectedGames().length === 0;
-    }
-
-    function setGamePreference(values) {
-      if (!multiSelect) {
+    function setChoiceValues(name, values) {
+      var group = findChoiceGroup(name);
+      if (!group) {
         return;
       }
       var list = values || [];
-      var anyGame = multiSelect.querySelector("[data-any-game]");
-      Array.prototype.slice.call(multiSelect.querySelectorAll("input[type='checkbox']")).forEach(function (input) {
-        if (input.hasAttribute("data-any-game")) {
-          input.checked = list.length === 0;
+      var allButton = group.querySelector("[data-all-choice]");
+      Array.prototype.slice.call(group.querySelectorAll(".choice-chip")).forEach(function (button) {
+        var value = button.getAttribute("data-choice-value") || "";
+        if (button.hasAttribute("data-all-choice")) {
+          button.classList.toggle("is-selected", list.length === 0);
         } else {
-          input.checked = list.indexOf(input.value) > -1;
+          button.classList.toggle("is-selected", list.indexOf(value) > -1);
         }
       });
-      if (anyGame && list.length === 0) {
-        anyGame.checked = true;
+      if (allButton && list.length === 0) {
+        allButton.classList.add("is-selected");
       }
-      normalizeGamePreference(anyGame);
+      normalizeChoiceGroup(group);
     }
 
-    function normalizeGamePreference(changedInput) {
-      if (!multiSelect) {
-        return;
-      }
-      var anyGame = multiSelect.querySelector("[data-any-game]");
-      var gameInputs = Array.prototype.slice.call(multiSelect.querySelectorAll("input[type='checkbox']:not([data-any-game])"));
-      if (changedInput && changedInput.hasAttribute("data-any-game") && changedInput.checked) {
-        gameInputs.forEach(function (input) {
-          input.checked = false;
-        });
-      }
-      if (changedInput && !changedInput.hasAttribute("data-any-game") && changedInput.checked && anyGame) {
-        anyGame.checked = false;
-      }
-      var hasGameSelected = gameInputs.some(function (input) {
-        return input.checked;
-      });
-      if (!hasGameSelected && anyGame) {
-        anyGame.checked = true;
-      }
+    function getMemberTarget(prefix) {
+      return {
+        vipLevels: selectedChoiceValues(prefix + "Vip"),
+        rLevels: selectedChoiceValues(prefix + "R")
+      };
     }
 
-    function updateMultiLabel() {
-      if (!multiSelect) {
-        return;
-      }
-      var trigger = multiSelect.querySelector(".multi-trigger");
-      if (!trigger) {
-        return;
-      }
-      var games = selectedGames();
-      trigger.textContent = isGamePreferenceUnlimited() ? "不限游戏偏好" : games.join("、");
+    function setMemberTarget(prefix, vipLevels, rLevels) {
+      setChoiceValues(prefix + "Vip", vipLevels || []);
+      setChoiceValues(prefix + "R", rLevels || []);
     }
 
-    function createPendingTargetText(target, scene, games, playerValue) {
+    function formatMemberTarget(vipLevels, rLevels) {
+      var vipText = vipLevels && vipLevels.length ? vipLevels.join("、") : "全体用户";
+      var rText = rLevels && rLevels.length ? rLevels.join("、") : "全部R等级";
+      return vipText + " / " + rText;
+    }
+
+    function createPendingTargetText(target, vipLevels, rLevels, playerValue) {
       if (target === "players") {
         var count = String(playerValue || "").split(/[\s,，;；]+/).filter(Boolean).length;
         return "玩家ID：" + count + "人";
       }
       if (target === "group") {
-        var gameText = games && games.length ? games.join("、") : "不限游戏偏好";
-        return (scene || "不限场景") + " / " + gameText;
+        return formatMemberTarget(vipLevels, rLevels);
       }
       return "全部玩家";
     }
@@ -502,8 +524,7 @@
         }
         setSelectedTarget(row.getAttribute("data-target") || "players");
         playerIds.value = (row.getAttribute("data-player-ids") || "").replace(/&#10;/g, "\n");
-        groupScene.value = row.getAttribute("data-group-scene") || "";
-        setGamePreference((row.getAttribute("data-games") || "").split(",").filter(Boolean));
+        setMemberTarget("manual", splitList(row.getAttribute("data-vip-levels")), splitList(row.getAttribute("data-r-levels")));
       } else if (manualDefaultState) {
         noticeTitle.value = manualDefaultState.title;
         noticeContent.value = manualDefaultState.content;
@@ -514,12 +535,10 @@
         }
         setSelectedTarget(manualDefaultState.target);
         playerIds.value = manualDefaultState.playerIds;
-        groupScene.value = manualDefaultState.groupScene;
-        setGamePreference(manualDefaultState.games);
+        setMemberTarget("manual", manualDefaultState.vipLevels, manualDefaultState.rLevels);
       }
 
       syncAllLinkPickers();
-      updateMultiLabel();
       updateTargetPanels();
       updatePreview();
       manualModal.hidden = false;
@@ -549,8 +568,8 @@
         return;
       }
 
-      var games = isGamePreferenceUnlimited() ? [] : selectedGames();
       var target = selectedTarget();
+      var manualMemberTarget = getMemberTarget("manual");
       var data = {
         title: noticeTitle.value || "未命名通知",
         content: noticeContent.value || "",
@@ -559,9 +578,9 @@
         scheduleTime: currentSendTimeValue(),
         target: target,
         playerIds: playerIds ? playerIds.value : "",
-        groupScene: groupScene ? groupScene.value : "",
-        games: games,
-        targetText: createPendingTargetText(target, groupScene ? groupScene.value : "", games, playerIds ? playerIds.value : ""),
+        vipLevels: manualMemberTarget.vipLevels,
+        rLevels: manualMemberTarget.rLevels,
+        targetText: createPendingTargetText(target, manualMemberTarget.vipLevels, manualMemberTarget.rLevels, playerIds ? playerIds.value : ""),
         sendTimeText: currentSendTimeText(),
         createdAt: editingPendingRow ? (editingPendingRow.getAttribute("data-created-at") || "") : "2026-06-30 19:05"
       };
@@ -574,8 +593,8 @@
       row.setAttribute("data-schedule-time", data.scheduleTime);
       row.setAttribute("data-target", data.target);
       row.setAttribute("data-player-ids", serializePlayerIds(data.playerIds));
-      row.setAttribute("data-group-scene", data.groupScene);
-      row.setAttribute("data-games", data.games.join(","));
+      row.setAttribute("data-vip-levels", data.vipLevels.join(","));
+      row.setAttribute("data-r-levels", data.rLevels.join(","));
       row.setAttribute("data-created-at", data.createdAt);
       row.innerHTML = createPendingRowHtml(data);
 
@@ -588,14 +607,14 @@
     }
 
     function isGroupTargetInvalid() {
-      return selectedTarget() === "group" && groupScene && !groupScene.value && isGamePreferenceUnlimited();
+      return false;
     }
 
     function updateSendAvailability() {
       var invalid = isGroupTargetInvalid();
       if (saveManualNoticeButton) {
         saveManualNoticeButton.disabled = invalid;
-        saveManualNoticeButton.title = invalid ? "场景和游戏偏好不能同时不限；如需全量发送，请选择全部玩家。" : "";
+        saveManualNoticeButton.title = "";
       }
       if (groupTargetRuleNote) {
         groupTargetRuleNote.classList.toggle("is-warning", invalid);
@@ -630,10 +649,8 @@
         return "玩家ID：" + countPlayerIds() + "人";
       }
       if (target === "group") {
-        if (isGroupTargetInvalid()) {
-          return "指定玩家群体：请至少限制一个维度";
-        }
-        return (groupScene && groupScene.value ? groupScene.value : "不限场景") + " / " + (isGamePreferenceUnlimited() ? "不限游戏偏好" : selectedGames().join("、"));
+        var manualMemberTarget = getMemberTarget("manual");
+        return formatMemberTarget(manualMemberTarget.vipLevels, manualMemberTarget.rLevels);
       }
       return "全部玩家";
     }
@@ -646,35 +663,23 @@
       radio.addEventListener("change", updateTargetPanels);
     });
 
-    [noticeTitle, noticeContent, noticePage, playerIds, groupScene].forEach(function (element) {
+    [noticeTitle, noticeContent, noticePage, playerIds].forEach(function (element) {
       if (element) {
         element.addEventListener("input", updatePreview);
         element.addEventListener("change", updatePreview);
       }
     });
 
-    if (multiSelect) {
-      var trigger = multiSelect.querySelector(".multi-trigger");
-      var menu = multiSelect.querySelector(".multi-menu");
-      if (trigger && menu) {
-        trigger.addEventListener("click", function () {
-          var expanded = trigger.getAttribute("aria-expanded") === "true";
-          trigger.setAttribute("aria-expanded", expanded ? "false" : "true");
-          menu.hidden = expanded;
-        });
-        menu.addEventListener("change", function (event) {
-          normalizeGamePreference(event.target);
-          updateMultiLabel();
-          updatePreview();
-        });
-        document.addEventListener("click", function (event) {
-          if (!multiSelect.contains(event.target)) {
-            trigger.setAttribute("aria-expanded", "false");
-            menu.hidden = true;
-          }
-        });
-      }
-    }
+    memberChoiceGroups.forEach(function (group) {
+      group.addEventListener("click", function (event) {
+        var button = event.target.closest(".choice-chip");
+        if (!button || !group.contains(button)) {
+          return;
+        }
+        normalizeChoiceGroup(group, button);
+        updatePreview();
+      });
+    });
 
     if (addManualNoticeButton) {
       addManualNoticeButton.addEventListener("click", function () {
@@ -727,10 +732,9 @@
       scheduleTime: scheduleTime ? scheduleTime.value : "",
       target: selectedTarget(),
       playerIds: playerIds ? playerIds.value : "",
-      groupScene: groupScene ? groupScene.value : "",
-      games: selectedGames()
+      vipLevels: selectedChoiceValues("manualVip"),
+      rLevels: selectedChoiceValues("manualR")
     };
-    updateMultiLabel();
     updateTargetPanels();
     updatePreview();
   });
