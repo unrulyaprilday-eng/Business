@@ -39,25 +39,6 @@
     });
   }
 
-  function bindTrendMetricPanels() {
-    var buttons = document.querySelectorAll("[data-trend-metric]");
-    var panels = document.querySelectorAll("[data-trend-panel]");
-
-    if (!buttons.length || !panels.length) {
-      return;
-    }
-
-    buttons.forEach(function (button) {
-      button.addEventListener("click", function () {
-        var metric = button.getAttribute("data-trend-metric");
-
-        panels.forEach(function (panel) {
-          panel.hidden = panel.getAttribute("data-trend-panel") !== metric;
-        });
-      });
-    });
-  }
-
   function ready(callback) {
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", callback);
@@ -70,6 +51,5 @@
   ready(function () {
     bindPeriodTabs();
     bindRankTabs();
-    bindTrendMetricPanels();
   });
 }());

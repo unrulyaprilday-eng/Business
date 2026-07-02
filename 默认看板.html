@@ -83,7 +83,7 @@
               <dl class="domain-metrics">
                 <div><dt>注单数</dt><dd>32,845</dd></div>
                 <div><dt>游戏盈亏</dt><dd class="positive">952,660.00</dd></div>
-                <div><dt>派奖金额</dt><dd>11,911,640.00</dd></div>
+                <div><dt>赢分</dt><dd>11,911,640.00</dd></div>
                 <div><dt>投注会员</dt><dd>4,286</dd></div>
               </dl>
             </div>
@@ -150,26 +150,20 @@
                   <button type="button">本月</button>
                 </div>
               </div>
-              <div class="metric-switch" aria-label="趋势指标">
-                <button class="is-active" type="button" data-trend-metric="bet">投注额</button>
-                <button type="button" data-trend-metric="active">活跃</button>
-                <button type="button" data-trend-metric="recharge">充值</button>
-                <button type="button" data-trend-metric="profit">游戏盈亏</button>
-              </div>
             </div>
             <div class="trend-summary">
               <span><b>当前投注额</b> 12,864,300.00</span>
               <span><b>昨日同段</b> 11,402,800.00</span>
               <span><b>峰值时段</b> 20:00 - 22:00</span>
             </div>
-            <div class="trend-chart" aria-label="今日经营趋势图">
+            <div class="trend-chart" aria-label="今日投注额趋势图">
               <div class="trend-y-labels" aria-hidden="true">
                 <span>14M</span><span>11M</span><span>8M</span><span>5M</span><span>2M</span>
               </div>
               <svg viewBox="0 0 960 280" preserveAspectRatio="none">
                 <defs>
                   <linearGradient id="trendArea" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stop-color="#2f6fed" stop-opacity="0.24"/>
+                    <stop offset="0%" stop-color="#2f6fed" stop-opacity="0.26"/>
                     <stop offset="100%" stop-color="#2f6fed" stop-opacity="0.02"/>
                   </linearGradient>
                 </defs>
@@ -190,59 +184,49 @@
               <div class="axis-labels"><span>00:00</span><span>04:00</span><span>08:00</span><span>12:00</span><span>16:00</span><span>20:00</span><span>当前</span></div>
               <div class="trend-legend" aria-hidden="true"><span class="legend-current">今日</span><span class="legend-compare">昨日同段</span></div>
             </div>
-            <div class="trend-detail" aria-label="经营趋势明细">
-              <div class="trend-detail-panel" data-trend-panel="bet">
-                <table class="cl-table dashboard-table trend-table">
-                  <thead><tr><th>时段</th><th class="cl-num">投注额</th><th class="cl-num">注单数</th><th class="cl-num">投注会员</th><th class="cl-num">较昨日</th></tr></thead>
-                  <tbody>
-                    <tr><td>00:00 - 04:00</td><td class="cl-num">1,426,800.00</td><td class="cl-num">3,862</td><td class="cl-num">618</td><td class="cl-num positive">+6.8%</td></tr>
-                    <tr><td>04:00 - 08:00</td><td class="cl-num">1,684,300.00</td><td class="cl-num">4,116</td><td class="cl-num">705</td><td class="cl-num positive">+8.2%</td></tr>
-                    <tr><td>08:00 - 12:00</td><td class="cl-num">2,138,900.00</td><td class="cl-num">5,420</td><td class="cl-num">836</td><td class="cl-num positive">+10.4%</td></tr>
-                    <tr><td>12:00 - 16:00</td><td class="cl-num">2,486,700.00</td><td class="cl-num">6,308</td><td class="cl-num">928</td><td class="cl-num positive">+12.1%</td></tr>
-                    <tr><td>16:00 - 20:00</td><td class="cl-num">2,742,600.00</td><td class="cl-num">6,982</td><td class="cl-num">1,046</td><td class="cl-num positive">+14.6%</td></tr>
-                    <tr><td>20:00 - 当前</td><td class="cl-num">2,385,000.00</td><td class="cl-num">6,157</td><td class="cl-num">912</td><td class="cl-num positive">+13.5%</td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="trend-detail-panel" data-trend-panel="active" hidden>
-                <table class="cl-table dashboard-table trend-table">
-                  <thead><tr><th>时段</th><th class="cl-num">活跃会员</th><th class="cl-num">新增注册</th><th class="cl-num">在线峰值</th><th class="cl-num">首充人数</th></tr></thead>
-                  <tbody>
-                    <tr><td>00:00 - 04:00</td><td class="cl-num">1,486</td><td class="cl-num">132</td><td class="cl-num">386</td><td class="cl-num">42</td></tr>
-                    <tr><td>04:00 - 08:00</td><td class="cl-num">1,694</td><td class="cl-num">146</td><td class="cl-num">421</td><td class="cl-num">48</td></tr>
-                    <tr><td>08:00 - 12:00</td><td class="cl-num">2,108</td><td class="cl-num">236</td><td class="cl-num">618</td><td class="cl-num">76</td></tr>
-                    <tr><td>12:00 - 16:00</td><td class="cl-num">2,436</td><td class="cl-num">284</td><td class="cl-num">736</td><td class="cl-num">93</td></tr>
-                    <tr><td>16:00 - 20:00</td><td class="cl-num">2,714</td><td class="cl-num">258</td><td class="cl-num">1,286</td><td class="cl-num">82</td></tr>
-                    <tr><td>20:00 - 当前</td><td class="cl-num">1,874</td><td class="cl-num">130</td><td class="cl-num">1,064</td><td class="cl-num">45</td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="trend-detail-panel" data-trend-panel="recharge" hidden>
-                <table class="cl-table dashboard-table trend-table">
-                  <thead><tr><th>时段</th><th class="cl-num">充值金额</th><th class="cl-num">充值订单</th><th class="cl-num">成功率</th><th class="cl-num">首充金额</th></tr></thead>
-                  <tbody>
-                    <tr><td>00:00 - 04:00</td><td class="cl-num">386,400.00</td><td class="cl-num">428</td><td class="cl-num">84.6%</td><td class="cl-num">42,800.00</td></tr>
-                    <tr><td>04:00 - 08:00</td><td class="cl-num">428,600.00</td><td class="cl-num">476</td><td class="cl-num">85.1%</td><td class="cl-num">48,300.00</td></tr>
-                    <tr><td>08:00 - 12:00</td><td class="cl-num">612,800.00</td><td class="cl-num">642</td><td class="cl-num">86.0%</td><td class="cl-num">78,600.00</td></tr>
-                    <tr><td>12:00 - 16:00</td><td class="cl-num">736,900.00</td><td class="cl-num">708</td><td class="cl-num">86.8%</td><td class="cl-num">96,400.00</td></tr>
-                    <tr><td>16:00 - 20:00</td><td class="cl-num">684,300.00</td><td class="cl-num">692</td><td class="cl-num">87.2%</td><td class="cl-num">88,200.00</td></tr>
-                    <tr><td>20:00 - 当前</td><td class="cl-num">419,900.00</td><td class="cl-num">436</td><td class="cl-num">85.9%</td><td class="cl-num">74,300.00</td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="trend-detail-panel" data-trend-panel="profit" hidden>
-                <table class="cl-table dashboard-table trend-table">
-                  <thead><tr><th>时段</th><th class="cl-num">游戏盈亏</th><th class="cl-num">派奖金额</th><th class="cl-num">投注额</th><th class="cl-num">盈亏率</th></tr></thead>
-                  <tbody>
-                    <tr><td>00:00 - 04:00</td><td class="cl-num positive">92,600.00</td><td class="cl-num">1,334,200.00</td><td class="cl-num">1,426,800.00</td><td class="cl-num positive">6.5%</td></tr>
-                    <tr><td>04:00 - 08:00</td><td class="cl-num positive">116,300.00</td><td class="cl-num">1,568,000.00</td><td class="cl-num">1,684,300.00</td><td class="cl-num positive">6.9%</td></tr>
-                    <tr><td>08:00 - 12:00</td><td class="cl-num positive">158,900.00</td><td class="cl-num">1,980,000.00</td><td class="cl-num">2,138,900.00</td><td class="cl-num positive">7.4%</td></tr>
-                    <tr><td>12:00 - 16:00</td><td class="cl-num positive">186,700.00</td><td class="cl-num">2,300,000.00</td><td class="cl-num">2,486,700.00</td><td class="cl-num positive">7.5%</td></tr>
-                    <tr><td>16:00 - 20:00</td><td class="cl-num positive">224,600.00</td><td class="cl-num">2,518,000.00</td><td class="cl-num">2,742,600.00</td><td class="cl-num positive">8.2%</td></tr>
-                    <tr><td>20:00 - 当前</td><td class="cl-num positive">173,560.00</td><td class="cl-num">2,211,440.00</td><td class="cl-num">2,385,000.00</td><td class="cl-num positive">7.3%</td></tr>
-                  </tbody>
-                </table>
-              </div>
+            <div class="trend-secondary-grid" aria-label="资金与盈亏趋势">
+              <article class="trend-secondary-card fund-flow-card">
+                <div class="trend-card-head">
+                  <div><span>充提差</span><strong>1,084,600.00</strong></div>
+                  <em>充提差</em>
+                </div>
+                <div class="trend-combo-chart">
+                  <svg viewBox="0 0 560 220" preserveAspectRatio="none" aria-hidden="true">
+                    <g class="chart-grid"><line x1="32" y1="36" x2="532" y2="36"/><line x1="32" y1="82" x2="532" y2="82"/><line x1="32" y1="128" x2="532" y2="128"/><line x1="32" y1="174" x2="532" y2="174"/></g>
+                    <g class="combo-bars recharge-bars">
+                      <rect x="54" y="124" width="16" height="58"/><rect x="136" y="112" width="16" height="70"/><rect x="218" y="88" width="16" height="94"/><rect x="300" y="66" width="16" height="116"/><rect x="382" y="78" width="16" height="104"/><rect x="464" y="118" width="16" height="64"/>
+                    </g>
+                    <g class="combo-bars withdraw-bars">
+                      <rect x="76" y="138" width="16" height="44"/><rect x="158" y="130" width="16" height="52"/><rect x="240" y="112" width="16" height="70"/><rect x="322" y="96" width="16" height="86"/><rect x="404" y="104" width="16" height="78"/><rect x="486" y="134" width="16" height="48"/>
+                    </g>
+                    <path class="net-line" d="M70 128 C118 118 132 112 164 110 C206 108 220 86 248 90 C292 96 306 64 330 66 C374 70 388 82 412 78 C456 74 474 116 494 112"/>
+                    <g class="chart-dots net-dots"><circle cx="70" cy="128" r="4"/><circle cx="164" cy="110" r="4"/><circle cx="248" cy="90" r="4"/><circle cx="330" cy="66" r="4"/><circle cx="412" cy="78" r="4"/><circle cx="494" cy="112" r="4"/></g>
+                  </svg>
+                  <div class="chart-axis-row"><span>00:00</span><span>04:00</span><span>08:00</span><span>12:00</span><span>16:00</span><span>当前</span></div>
+                </div>
+                <div class="chart-legend compact"><span class="legend-recharge">充值</span><span class="legend-withdraw">提现</span><span class="legend-diff">充提差</span></div>
+              </article>
+              <article class="trend-secondary-card profit-card">
+                <div class="trend-card-head">
+                  <div><span>游戏盈亏</span><strong>952,660.00</strong></div>
+                  <em>盈亏</em>
+                </div>
+                <div class="trend-combo-chart">
+                  <svg viewBox="0 0 560 220" preserveAspectRatio="none" aria-hidden="true">
+                    <g class="chart-grid"><line x1="32" y1="36" x2="532" y2="36"/><line x1="32" y1="82" x2="532" y2="82"/><line x1="32" y1="128" x2="532" y2="128"/><line x1="32" y1="174" x2="532" y2="174"/></g>
+                    <g class="bet-bars">
+                      <rect x="52" y="86" width="18" height="96"/><rect x="134" y="78" width="18" height="104"/><rect x="216" y="62" width="18" height="120"/><rect x="298" y="48" width="18" height="134"/><rect x="380" y="40" width="18" height="142"/><rect x="462" y="58" width="18" height="124"/>
+                    </g>
+                    <g class="win-bars">
+                      <rect x="76" y="96" width="18" height="86"/><rect x="158" y="90" width="18" height="92"/><rect x="240" y="74" width="18" height="108"/><rect x="322" y="62" width="18" height="120"/><rect x="404" y="56" width="18" height="126"/><rect x="486" y="70" width="18" height="112"/>
+                    </g>
+                    <path class="profit-line" d="M85 128 C130 120 146 118 167 116 C204 112 226 100 249 102 C286 104 308 84 331 84 C366 84 388 72 413 72 C450 72 474 96 495 92"/>
+                    <g class="chart-dots profit-dots"><circle cx="85" cy="128" r="4"/><circle cx="167" cy="116" r="4"/><circle cx="249" cy="102" r="4"/><circle cx="331" cy="84" r="4"/><circle cx="413" cy="72" r="4"/><circle cx="495" cy="92" r="4"/></g>
+                  </svg>
+                  <div class="chart-axis-row"><span>00:00</span><span>04:00</span><span>08:00</span><span>12:00</span><span>16:00</span><span>当前</span></div>
+                </div>
+                <div class="chart-legend compact"><span class="legend-bet">投注</span><span class="legend-win">赢分</span><span class="legend-profit-line">盈亏</span></div>
+              </article>
             </div>
           </section>
 
