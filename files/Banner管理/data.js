@@ -1,5 +1,5 @@
 $axure.loadCurrentPage({
-  "url": "宣传管理.html",
+  "url": "Banner管理.html",
   "generationDate": new Date(1779120000000),
   "defaultAdaptiveView": {
     "name": "",
@@ -26,7 +26,7 @@ $axure.loadCurrentPage({
   "page": {
     "packageId": "operation_promotion_manage",
     "type": "Axure:Page",
-    "name": "宣传管理",
+    "name": "Banner管理",
     "notes": {},
     "annotations": [],
     "style": {

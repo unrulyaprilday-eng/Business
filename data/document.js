@@ -184,9 +184,9 @@ $axure.loadDocument({
           },
           {
             "id": "operation_promotion_manage",
-            "pageName": "宣传管理",
+            "pageName": "Banner管理",
             "type": "Wireframe",
-            "url": "宣传管理.html",
+            "url": "Banner管理.html",
             "children": []
           },
           {

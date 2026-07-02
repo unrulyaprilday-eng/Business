@@ -60,8 +60,8 @@
             <div class="period-tabs" aria-label="概览周期">
               <button class="is-active" type="button">今日</button>
               <button type="button">昨日</button>
-              <button type="button">本周</button>
-              <button type="button">本月</button>
+              <button type="button">最近7日</button>
+              <button type="button">最近30日</button>
             </div>
             <button class="light-btn" type="button">刷新</button>
           </div>
@@ -146,8 +146,8 @@
                 <div class="period-tabs" aria-label="经营趋势周期">
                   <button class="is-active" type="button">今日</button>
                   <button type="button">昨日</button>
-                  <button type="button">本周</button>
-                  <button type="button">本月</button>
+                  <button type="button">最近7日</button>
+                  <button type="button">最近30日</button>
                 </div>
               </div>
             </div>
@@ -188,6 +188,10 @@
               <article class="trend-secondary-card fund-flow-card">
                 <div class="trend-card-head">
                   <div class="trend-card-title"><span>充值提现趋势</span></div>
+                  <div class="period-tabs secondary-period-tabs" aria-label="充值提现趋势周期" data-secondary-period="flow">
+                    <button class="is-active" type="button">最近7日</button>
+                    <button type="button">最近30日</button>
+                  </div>
                 </div>
                 <p class="trend-card-note">提现按正数展示，充提差可正可负</p>
                 <div class="trend-combo-chart flow-trend-chart">
@@ -218,6 +222,10 @@
               <article class="trend-secondary-card profit-card">
                 <div class="trend-card-head">
                   <div class="trend-card-title"><span>客损趋势</span></div>
+                  <div class="period-tabs secondary-period-tabs" aria-label="客损趋势周期" data-secondary-period="loss">
+                    <button class="is-active" type="button">最近7日</button>
+                    <button type="button">最近30日</button>
+                  </div>
                 </div>
                 <p class="trend-card-note">正数为平台盈利，负数为平台亏损</p>
                 <div class="trend-combo-chart loss-trend-chart">
@@ -255,8 +263,8 @@
                 <div class="period-tabs" aria-label="排行洞察周期">
                   <button class="is-active" type="button">今日</button>
                   <button type="button">昨日</button>
-                  <button type="button">本周</button>
-                  <button type="button">本月</button>
+                  <button type="button">最近7日</button>
+                  <button type="button">最近30日</button>
                 </div>
               </div>
             </div>

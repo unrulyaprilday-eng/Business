@@ -1,5 +1,10 @@
 (function () {
-  var PERIODS = ["今日", "昨日", "本周", "本月"];
+  var PERIODS = ["今日", "昨日", "最近7日", "最近30日"];
+  var SECONDARY_PERIODS = ["最近7日", "最近30日"];
+  var secondaryTrendState = {
+    flow: "最近7日",
+    loss: "最近7日"
+  };
 
   var PERIOD_DATA = {
     "今日": {
@@ -120,11 +125,11 @@
       rankScale: 0.92,
       roiOffset: -6
     },
-    "本周": {
-      label: "本周",
+    "最近7日": {
+      label: "最近7日",
       overview: {
         game: {
-          headline: "本周投注额",
+          headline: "最近7日投注额",
           value: "78,496,200.00",
           metrics: [
             ["注单数", "218,640"],
@@ -134,7 +139,7 @@
           ]
         },
         member: {
-          headline: "本周活跃会员",
+          headline: "最近7日活跃会员",
           value: "42,860",
           metrics: [
             ["新增注册", "7,482"],
@@ -144,7 +149,7 @@
           ]
         },
         fund: {
-          headline: "本周充提差",
+          headline: "最近7日充提差",
           value: "+6,982,400.00",
           metrics: [
             ["充值金额", "21,406,800.00"],
@@ -165,25 +170,25 @@
         }
       },
       trendSummary: [
-        ["本周投注额", "78,496,200.00"],
-        ["上周同期", "73,105,600.00"],
-        ["高峰日期", "周六"]
+        ["最近7日投注额", "78,496,200.00"],
+        ["前7日同期", "73,105,600.00"],
+        ["高峰日期", "6/29"]
       ],
-      mainAxis: ["周一", "周二", "周三", "周四", "周五", "周六", "今日"],
+      mainAxis: ["6/26", "6/27", "6/28", "6/29", "6/30", "7/1", "今日"],
       mainY: ["82M", "64M", "46M", "28M", "10M"],
-      legend: ["本周", "上周同期"],
-      flowAxis: ["周一", "周二", "周三", "周四", "周五", "周六", "今日"],
+      legend: ["最近7日", "前7日同期"],
+      flowAxis: ["6/26", "6/27", "6/28", "6/29", "6/30", "7/1", "今日"],
       flowY: ["22M", "16M", "10M", "4M", "0"],
-      lossAxis: ["周一", "周二", "周三", "周四", "周五", "周六", "今日"],
+      lossAxis: ["6/26", "6/27", "6/28", "6/29", "6/30", "7/1", "今日"],
       lossY: ["+6M", "+3M", "0", "-3M"],
       rankScale: 6.4,
       roiOffset: 4
     },
-    "本月": {
-      label: "本月",
+    "最近30日": {
+      label: "最近30日",
       overview: {
         game: {
-          headline: "本月投注额",
+          headline: "最近30日投注额",
           value: "326,846,500.00",
           metrics: [
             ["注单数", "906,284"],
@@ -193,7 +198,7 @@
           ]
         },
         member: {
-          headline: "本月活跃会员",
+          headline: "最近30日活跃会员",
           value: "128,640",
           metrics: [
             ["新增注册", "31,680"],
@@ -203,7 +208,7 @@
           ]
         },
         fund: {
-          headline: "本月充提差",
+          headline: "最近30日充提差",
           value: "+28,946,200.00",
           metrics: [
             ["充值金额", "89,246,800.00"],
@@ -224,19 +229,46 @@
         }
       },
       trendSummary: [
-        ["本月投注额", "326,846,500.00"],
-        ["上月同期", "304,520,800.00"],
-        ["高峰周期", "第 4 周"]
+        ["最近30日投注额", "326,846,500.00"],
+        ["前30日同期", "304,520,800.00"],
+        ["高峰日期", "6/29"]
       ],
-      mainAxis: ["第1周", "第2周", "第3周", "第4周", "第5周", "昨日", "今日"],
+      mainAxis: ["6/3", "6/8", "6/13", "6/18", "6/23", "6/28", "今日"],
       mainY: ["340M", "260M", "180M", "100M", "20M"],
-      legend: ["本月", "上月同期"],
-      flowAxis: ["第1周", "第2周", "第3周", "第4周", "第5周", "昨日", "今日"],
+      legend: ["最近30日", "前30日同期"],
+      flowAxis: ["6/3", "6/8", "6/13", "6/18", "6/23", "6/28", "今日"],
       flowY: ["92M", "70M", "48M", "26M", "0"],
-      lossAxis: ["第1周", "第2周", "第3周", "第4周", "第5周", "昨日", "今日"],
+      lossAxis: ["6/3", "6/8", "6/13", "6/18", "6/23", "6/28", "今日"],
       lossY: ["+24M", "+12M", "0", "-12M"],
       rankScale: 26,
       roiOffset: 8
+    }
+  };
+
+  var SECONDARY_TREND_DATA = {
+    flow: {
+      "最近7日": {
+        y: ["4M", "3M", "2M", "1M", "0"],
+        axis: ["6/26", "6/27", "6/28", "6/29", "6/30", "7/1", "今日"],
+        label: "充值提现趋势（最近7日）"
+      },
+      "最近30日": {
+        y: ["18M", "13M", "8M", "3M", "0"],
+        axis: ["6/3", "6/8", "6/13", "6/18", "6/23", "6/28", "今日"],
+        label: "充值提现趋势（最近30日）"
+      }
+    },
+    loss: {
+      "最近7日": {
+        y: ["+1.2M", "+0.6M", "0", "-0.6M"],
+        axis: ["6/26", "6/27", "6/28", "6/29", "6/30", "7/1", "今日"],
+        label: "客损趋势（最近7日）"
+      },
+      "最近30日": {
+        y: ["+5M", "+2.5M", "0", "-2.5M"],
+        axis: ["6/3", "6/8", "6/13", "6/18", "6/23", "6/28", "今日"],
+        label: "客损趋势（最近30日）"
+      }
     }
   };
 
@@ -382,16 +414,47 @@
     renderTrendSummary(data.trendSummary);
     renderTextList(".trend-y-labels", data.mainY);
     renderTextList(".trend-chart .axis-labels", data.mainAxis);
-    renderTextList(".flow-trend-chart .chart-y-axis", data.flowY);
-    renderTextList(".flow-trend-chart .chart-axis-row", data.flowAxis);
-    renderTextList(".loss-trend-chart .chart-y-axis", data.lossY);
-    renderTextList(".loss-trend-chart .chart-axis-row", data.lossAxis);
     setText(".trend-legend .legend-current", data.legend[0]);
     setText(".trend-legend .legend-compare", data.legend[1]);
 
     var chart = document.querySelector(".trend-chart");
     if (chart) {
       chart.setAttribute("aria-label", data.label + "投注额趋势图");
+    }
+  }
+
+  function updateSecondaryTrend(type, period) {
+    var group = SECONDARY_TREND_DATA[type];
+    var data = group && (group[period] || group["最近7日"]);
+    var selectors = {
+      flow: {
+        card: ".fund-flow-card",
+        chart: ".flow-trend-chart"
+      },
+      loss: {
+        card: ".profit-card",
+        chart: ".loss-trend-chart"
+      }
+    }[type];
+
+    if (!data || !selectors) {
+      return;
+    }
+
+    secondaryTrendState[type] = period;
+    renderTextList(selectors.chart + " .chart-y-axis", data.y);
+    renderTextList(selectors.chart + " .chart-axis-row", data.axis);
+
+    var card = document.querySelector(selectors.card);
+    var tabs = card && card.querySelector(".period-tabs[data-secondary-period]");
+    var chart = document.querySelector(selectors.chart);
+
+    if (tabs) {
+      setActivePeriod(tabs, period);
+    }
+
+    if (chart) {
+      chart.setAttribute("aria-label", data.label);
     }
   }
 
@@ -543,7 +606,7 @@
   }
 
   function bindPeriodTabs() {
-    var groups = document.querySelectorAll(".period-tabs");
+    var groups = document.querySelectorAll(".period-tabs:not([data-secondary-period])");
 
     groups.forEach(function (group) {
       group.querySelectorAll("button").forEach(function (button) {
@@ -560,11 +623,33 @@
     });
   }
 
+  function bindSecondaryTrendTabs() {
+    var groups = document.querySelectorAll(".period-tabs[data-secondary-period]");
+
+    groups.forEach(function (group) {
+      var type = group.getAttribute("data-secondary-period");
+
+      group.querySelectorAll("button").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var period = button.textContent.trim();
+
+          if (SECONDARY_PERIODS.indexOf(period) === -1) {
+            return;
+          }
+
+          updateSecondaryTrend(type, period);
+        });
+      });
+    });
+  }
+
   function initializePeriodModules() {
     var defaultData = getPeriodData("今日");
 
     updateOverview(defaultData);
     updateTrend(defaultData);
+    updateSecondaryTrend("flow", secondaryTrendState.flow);
+    updateSecondaryTrend("loss", secondaryTrendState.loss);
     updateRank(defaultData);
   }
 
@@ -602,6 +687,7 @@
 
   ready(function () {
     bindPeriodTabs();
+    bindSecondaryTrendTabs();
     bindRankTabs();
     initializePeriodModules();
   });
