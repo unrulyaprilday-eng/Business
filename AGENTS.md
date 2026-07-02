@@ -218,6 +218,9 @@ Axure 重新导出后，执行一条命令恢复菜单：
 Windows 中文文件名与脚本省 token 规则：
 
 - 不用 PowerShell here-string 向 Node 传递包含中文文件名、中文正则、中文菜单名的脚本；这类脚本可能在进入 Node 前已变成 `????`。
+- 不把包含多层引号、中文路径、中文正则或 `$axure` 的长逻辑写成 `node -e "..."`；优先沉淀为 `scripts/*.js` 固定脚本后再执行，命令行只保留 ASCII 参数。
+- 页面类静态校验优先使用通用脚本：`node scripts/verify-static-page.js --page-cp 9ed8,8ba4,770b,677f --custom-js --custom-css`。中文页面名用 `--page-cp` 传 Unicode 码点，避免 PowerShell/cmd 对中文和引号二次处理；新建 AI 菜单页如需强校验 sitemap 与页面 `data.js`，追加 `--strict-page-data`，旧 Axure 页面可不加。
+- 如果一次 inline 校验因为命令行引号、中文转码或 `$` 展开失败，不要继续调同一条命令；先改为扩展/新增 `scripts/*.js`，再用简短命令重跑。
 - 需要用脚本处理中文路径时，在脚本内部用 Unicode 码点或 `\uXXXX` 拼出中文字符串，例如 `String.fromCharCode(...)`，不要在命令文本里直接写中文。
 - 需要校验中文时，也不要在验证脚本里直接写中文正则；用 Unicode 转义生成目标词，再检查 `includes` 和码点。
 - 手册任务里如果只是定位 Word、章节或目标页面，固定优先用“最后一次成功方案”：脚本内部通过 `next(Path('.').glob('*.docx'))` 找 docx，并在 Python 内用 Unicode 码点/`chr(...)` 生成中文章节名；不要先用 shell 命令里的字面中文路径和标题试错。
@@ -264,6 +267,7 @@ Axure 重新导出后：
 - `node -c data/document.js`
 - `node -c scripts/restore-ai-menu.js`
 - `node -c custom/js/页面名.js`，仅当本次新增或修改了独立交互 JS。
+- `node scripts/verify-static-page.js --page-cp <页面名码点> --custom-js --custom-css`，用于菜单页面、中文文件名页面和带自定义 JS/CSS 的静态页校验；新建 AI 菜单页面追加 `--strict-page-data`。
 - 用一次 Node 读取 `$axure.loadDocument`，输出必要的菜单子树。
 - 检查本次新增或修改的文件是否存在。
 - 检查本次涉及的中文菜单名码点是否正常。
