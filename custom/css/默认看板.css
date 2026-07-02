@@ -1003,6 +1003,230 @@ button {
   background: #a78bfa;
 }
 
+.fund-flow-card,
+.profit-card {
+  --accent: #16a34a;
+  --accent-soft: rgba(22, 163, 74, 0.12);
+  --accent-glow: rgba(22, 163, 74, 0.2);
+}
+
+.profit-card {
+  --accent: #0891b2;
+  --accent-soft: rgba(8, 145, 178, 0.12);
+  --accent-glow: rgba(8, 145, 178, 0.18);
+}
+
+.trend-secondary-card {
+  position: relative;
+  padding: 16px;
+  overflow: hidden;
+  border-color: #dbe5f0;
+  background:
+    linear-gradient(180deg, #fff 0%, #fbfdff 100%),
+    radial-gradient(circle at 16% 0%, var(--accent-soft), transparent 30%);
+}
+
+.trend-secondary-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent) 0%, rgba(47, 111, 237, 0.16) 100%);
+}
+
+.trend-secondary-card .trend-card-head {
+  margin-bottom: 10px;
+}
+
+.trend-secondary-card .trend-card-head strong {
+  color: #0f172a;
+  font-size: clamp(22px, 1.7vw, 28px);
+}
+
+.trend-secondary-card .trend-card-title span {
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.trend-secondary-card .trend-card-head em {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.trend-card-title {
+  min-width: 0;
+}
+
+.trend-card-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.trend-card-meta span {
+  display: block;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid #e3eaf3;
+  border-radius: 6px;
+  background: #f8fbff;
+  color: #0f172a;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.trend-card-meta b {
+  display: block;
+  margin-bottom: 3px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.fund-flow-card .trend-card-meta span:nth-child(1) b {
+  color: #2563eb;
+}
+
+.fund-flow-card .trend-card-meta span:nth-child(2) b {
+  color: #d97706;
+}
+
+.fund-flow-card .trend-card-meta span:nth-child(3) b,
+.profit-card .trend-card-meta span:nth-child(3) b {
+  color: var(--accent);
+}
+
+.trend-card-note {
+  min-height: 18px;
+  margin: 0 0 10px;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.trend-combo-chart {
+  position: relative;
+  height: 252px;
+  padding: 12px 14px 8px 46px;
+  overflow: hidden;
+  border-color: #e3eaf3;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.98) 100%),
+    radial-gradient(circle at 80% 8%, var(--accent-soft), transparent 32%);
+}
+
+.trend-combo-chart svg {
+  height: calc(100% - 24px);
+  overflow: visible;
+}
+
+.chart-y-axis {
+  position: absolute;
+  left: 12px;
+  top: 13px;
+  bottom: 34px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  color: #94a3b8;
+  font-size: 11px;
+  line-height: 1;
+  text-align: right;
+}
+
+.flow-line,
+.context-line,
+.customer-loss-line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.flow-recharge-line {
+  stroke: #2563eb;
+  stroke-width: 2.8;
+}
+
+.flow-withdraw-line {
+  stroke: #f59e0b;
+  stroke-width: 2.8;
+}
+
+.flow-diff-line,
+.customer-loss-line {
+  stroke: var(--accent);
+  stroke-width: 4;
+  filter: drop-shadow(0 6px 8px var(--accent-glow));
+}
+
+.flow-diff-area {
+  fill: url(#flowDiffArea);
+}
+
+.wager-line {
+  stroke: #2563eb;
+  stroke-width: 2.4;
+  opacity: 0.48;
+}
+
+.payout-line {
+  stroke: #8b5cf6;
+  stroke-width: 2.4;
+  opacity: 0.52;
+}
+
+.loss-area {
+  fill: url(#lossArea);
+}
+
+.trend-glow-dot circle {
+  fill: #fff;
+  stroke: var(--accent);
+  stroke-width: 2.5;
+}
+
+.trend-glow-dot .loss-negative-dot {
+  stroke: #dc2626;
+  fill: #fff7f7;
+}
+
+.chart-legend .legend-recharge::before {
+  height: 3px;
+  background: #2563eb;
+}
+
+.chart-legend .legend-withdraw::before {
+  height: 3px;
+  background: #f59e0b;
+}
+
+.chart-legend .legend-diff::before {
+  height: 3px;
+  background: #16a34a;
+}
+
+.chart-legend .legend-wager::before {
+  height: 3px;
+  background: #2563eb;
+  opacity: 0.72;
+}
+
+.chart-legend .legend-payout::before {
+  height: 3px;
+  background: #8b5cf6;
+  opacity: 0.72;
+}
+
+.chart-legend .legend-customer-loss::before {
+  height: 3px;
+  background: #0891b2;
+}
+
 .trend-detail {
   margin-top: 12px;
 }
@@ -1020,7 +1244,7 @@ button {
 }
 
 .rank-board {
-  min-height: 452px;
+  min-height: 0;
 }
 
 .rank-tabs {
@@ -1028,10 +1252,24 @@ button {
 }
 
 .rank-panel {
-  border: 1px solid #dfe7f2;
-  border-radius: 6px;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+}
+
+.rank-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.rank-list-card {
+  min-width: 0;
   overflow-x: auto;
   overflow-y: hidden;
+  border: 1px solid #dfe7f2;
+  border-radius: 6px;
+  background: #fff;
 }
 
 .dashboard-table {
@@ -1050,6 +1288,71 @@ button {
 
 .dashboard-table tbody tr:nth-child(even) td {
   background: #fbfcff;
+}
+
+.rank-table {
+  min-width: 680px;
+}
+
+.rank-table th {
+  height: 38px;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.rank-table td {
+  height: 42px;
+  border-top: 1px solid #edf2f7;
+  color: #0f172a;
+  font-size: 13px;
+}
+
+.rank-table tbody tr:hover td {
+  background: #f8fbff;
+}
+
+.rank-index {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  color: #475569;
+  background: #eef3f8;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.rank-index.is-top {
+  color: #fff;
+  background: #2f6fed;
+  box-shadow: 0 6px 14px rgba(47, 111, 237, 0.22);
+}
+
+.rank-scorebar {
+  width: min(150px, 100%);
+  height: 4px;
+  margin-top: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #eef3f8;
+}
+
+.rank-scorebar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #2f6fed 0%, #18b981 100%);
+}
+
+.rank-scorebar.is-warn i {
+  background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+}
+
+.rank-scorebar.is-danger i {
+  background: linear-gradient(90deg, #f87171 0%, #dc2626 100%);
 }
 
 .insight-grid {
@@ -1891,6 +2194,10 @@ button {
   .trend-secondary-grid {
     grid-template-columns: minmax(0, 1fr);
   }
+
+  .rank-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 @media (max-width: 720px) {
@@ -1927,6 +2234,23 @@ button {
 
   .trend-chart svg {
     height: 180px;
+  }
+
+  .trend-card-meta {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .trend-combo-chart {
+    height: 230px;
+    padding-left: 42px;
+  }
+
+  .chart-y-axis {
+    left: 8px;
+  }
+
+  .rank-table {
+    min-width: 620px;
   }
 }
 
