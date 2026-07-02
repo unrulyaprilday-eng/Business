@@ -421,6 +421,10 @@ textarea {
   margin-top: 12px;
 }
 
+.trigger-conditions--under-select {
+  margin-top: 12px;
+}
+
 .multi-grid {
   grid-template-columns: 120px minmax(0, 1fr) minmax(0, 1.1fr);
   align-items: stretch;

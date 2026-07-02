@@ -193,6 +193,56 @@
               </div>
             </div>
 
+            <div class="trigger-conditions trigger-conditions--under-select" id="triggerConditionSection" hidden>
+              <div class="condition-card" data-condition="余额不足 返回大厅">
+                <h4 id="conditionCardTitle">设置余额不足</h4>
+                <div class="condition-grid">
+                  <label class="form-field compact amount-field">
+                    <span id="balanceAmountLabel">余额不足</span>
+                    <div class="inline-amount">
+                      <span class="symbol">≤</span>
+                      <input id="balanceCurrency" type="text" value="EvUSD" readonly>
+                      <input id="balanceAmount" type="number" value="1.00" min="0" step="0.01">
+                    </div>
+                  </label>
+                </div>
+                <div class="radio-field inline-radio">
+                  <span id="balanceSubTypeLabel">余额不足弹窗子类型</span>
+                  <label><input type="radio" name="balanceSubType" value="首充未完成" checked>首充未完成</label>
+                  <label><input type="radio" name="balanceSubType" value="二充未完成">二充未完成</label>
+                  <label><input type="radio" name="balanceSubType" value="三充未完成">三充未完成</label>
+                  <label><input type="radio" name="balanceSubType" value="其他">其他</label>
+                </div>
+              </div>
+
+              <div class="condition-card" data-condition="进入游戏前">
+                <h4>设置进入游戏前</h4>
+                <div class="condition-grid game-grid">
+                  <label class="form-field compact">
+                    <span>充值次数</span>
+                    <div class="inline-amount">
+                      <select id="gameChargeCountMode">
+                        <option value="不限制">不限制</option>
+                        <option value="累计充值次数">累计充值次数</option>
+                      </select>
+                      <input id="gameChargeCount" type="number" value="1" min="1">
+                    </div>
+                  </label>
+                  <label class="form-field compact">
+                    <span>充值金额</span>
+                    <div class="inline-amount">
+                      <select id="gameChargeAmountMode">
+                        <option value="不限制">不限制</option>
+                        <option value="累计充值金额">累计充值金额</option>
+                      </select>
+                      <input type="text" value="EvUSD" readonly>
+                      <input id="gameChargeAmount" type="number" value="1.00" min="0" step="0.01">
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+
             <div class="terminal-row">
               <span class="row-label">弹窗平台</span>
               <label><input type="checkbox" name="terminal" value="APP" checked>APP</label>
@@ -311,56 +361,6 @@
                 <textarea id="popupText" rows="6" placeholder="请输入弹窗文案内容">尊敬的会员，当前场景已命中对应弹窗。可用于公告、活动引导或风险提醒。</textarea>
               </div>
             </label>
-          </section>
-
-          <section class="form-section trigger-conditions" id="triggerConditionSection">
-            <div class="condition-card" data-condition="余额不足 返回大厅">
-              <h4 id="conditionCardTitle">设置余额不足</h4>
-              <div class="condition-grid">
-                <label class="form-field compact amount-field">
-                  <span>余额不足</span>
-                  <div class="inline-amount">
-                    <span class="symbol">≤</span>
-                    <input id="balanceCurrency" type="text" value="EvUSD" readonly>
-                    <input id="balanceAmount" type="number" value="1.00" min="0" step="0.01">
-                  </div>
-                </label>
-              </div>
-              <div class="radio-field inline-radio">
-                <span>余额不足弹窗子类型</span>
-                <label><input type="radio" name="balanceSubType" value="首充未完成" checked>首充未完成</label>
-                <label><input type="radio" name="balanceSubType" value="二充未完成">二充未完成</label>
-                <label><input type="radio" name="balanceSubType" value="三充未完成">三充未完成</label>
-                <label><input type="radio" name="balanceSubType" value="其他">其他</label>
-              </div>
-            </div>
-
-            <div class="condition-card" data-condition="进入游戏前">
-              <h4>设置进入游戏前</h4>
-              <div class="condition-grid game-grid">
-                <label class="form-field compact">
-                  <span>充值次数</span>
-                  <div class="inline-amount">
-                    <select id="gameChargeCountMode">
-                      <option value="不限制">不限制</option>
-                      <option value="累计充值次数">累计充值次数</option>
-                    </select>
-                    <input id="gameChargeCount" type="number" value="1" min="1">
-                  </div>
-                </label>
-                <label class="form-field compact">
-                  <span>充值金额</span>
-                  <div class="inline-amount">
-                    <select id="gameChargeAmountMode">
-                      <option value="不限制">不限制</option>
-                      <option value="累计充值金额">累计充值金额</option>
-                    </select>
-                    <input type="text" value="EvUSD" readonly>
-                    <input id="gameChargeAmount" type="number" value="1.00" min="0" step="0.01">
-                  </div>
-                </label>
-              </div>
-            </div>
           </section>
 
           <section class="form-section footer-section">

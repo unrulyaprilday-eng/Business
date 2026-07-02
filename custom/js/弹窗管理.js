@@ -79,6 +79,8 @@
   var endTimeEl = document.getElementById("endTime");
   var conditionSectionEl = document.getElementById("triggerConditionSection");
   var conditionCardTitleEl = document.getElementById("conditionCardTitle");
+  var balanceAmountLabelEl = document.getElementById("balanceAmountLabel");
+  var balanceSubTypeLabelEl = document.getElementById("balanceSubTypeLabel");
   var statusSwitchEl = document.getElementById("statusSwitch");
   var statusConfirmModalEl = document.getElementById("statusConfirmModal");
   var statusConfirmTextEl = document.getElementById("statusConfirmText");
@@ -180,7 +182,12 @@
       if (!hide) visibleCount += 1;
     });
     conditionSectionEl.classList.toggle("trigger-conditions--single", visibleCount <= 1);
-    if (balanceVisible) { conditionCardTitleEl.textContent = trigger === T.back ? "\u8bbe\u7f6e\u8fd4\u56de\u5927\u5385\u4f59\u989d" : "\u8bbe\u7f6e\u4f59\u989d\u4e0d\u8db3"; }
+    if (balanceVisible) {
+      var isBackLobby = trigger === T.back;
+      conditionCardTitleEl.textContent = isBackLobby ? "\u8bbe\u7f6e\u8fd4\u56de\u5927\u5385\u4f59\u989d" : "\u8bbe\u7f6e\u4f59\u989d\u4e0d\u8db3";
+      balanceAmountLabelEl.textContent = isBackLobby ? "\u8fd4\u56de\u5927\u5385\u4f59\u989d" : "\u4f59\u989d\u4e0d\u8db3";
+      balanceSubTypeLabelEl.textContent = isBackLobby ? "\u8fd4\u56de\u5927\u5385\u5f39\u7a97\u5b50\u7c7b\u578b" : "\u4f59\u989d\u4e0d\u8db3\u5f39\u7a97\u5b50\u7c7b\u578b";
+    }
   }
 
   function imageBlockTemplate(block, index) {
