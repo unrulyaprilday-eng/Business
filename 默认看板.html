@@ -54,24 +54,25 @@
   <body>
     <div id="base" class="">
       <div class="custom-page-shell dashboard-page">
-        <section class="board-card control-bar">
-          <div class="control-left">
-            <span>概览周期：</span>
-            <div class="period-tabs" aria-label="概览周期">
-              <button class="is-active" type="button">今日</button>
-              <button type="button">昨日</button>
-              <button type="button">最近7日</button>
-              <button type="button">最近30日</button>
+        <section class="board-card overview-board">
+          <div class="control-bar">
+            <div class="control-left">
+              <span>概览</span>
+              <div class="period-tabs" aria-label="概览周期">
+                <button class="is-active" type="button">今日</button>
+                <button type="button">昨日</button>
+                <button type="button">最近7日</button>
+                <button type="button">最近30日</button>
+              </div>
+              <button class="light-btn" type="button">刷新</button>
             </div>
-            <button class="light-btn" type="button">刷新</button>
+            <div class="control-right">
+              <span>刷新时间：</span>
+              <span class="refresh-pill">每 5 分钟</span>
+            </div>
           </div>
-          <div class="control-right">
-            <span>刷新时间：</span>
-            <span class="refresh-pill">每 5 分钟</span>
-          </div>
-        </section>
 
-        <section class="domain-overview" aria-label="运营分组">
+          <div class="domain-overview" aria-label="运营分组">
           <article class="domain-card domain-game">
             <div class="domain-card-head">
               <span class="summary-icon blue" aria-hidden="true">
@@ -136,14 +137,15 @@
               </dl>
             </div>
           </article>
+          </div>
         </section>
 
         <div class="dashboard-grid analysis-grid">
           <section class="board-card trend-board">
             <div class="module-head">
               <div class="module-title">
-                <h2>经营趋势</h2>
-                <div class="period-tabs" aria-label="经营趋势周期">
+                <h2>投注额趋势</h2>
+                <div class="period-tabs" aria-label="投注额趋势周期">
                   <button class="is-active" type="button">今日</button>
                   <button type="button">昨日</button>
                   <button type="button">最近7日</button>
@@ -184,6 +186,9 @@
               <div class="axis-labels"><span>00:00</span><span>04:00</span><span>08:00</span><span>12:00</span><span>16:00</span><span>20:00</span><span>当前</span></div>
               <div class="trend-legend" aria-hidden="true"><span class="legend-current">今日</span><span class="legend-compare">昨日同段</span></div>
             </div>
+          </section>
+
+          <section class="board-card secondary-trend-board" aria-label="资金与客损趋势">
             <div class="trend-secondary-grid" aria-label="资金与客损趋势">
               <article class="trend-secondary-card fund-flow-card">
                 <div class="trend-card-head">
