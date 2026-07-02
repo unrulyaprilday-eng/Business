@@ -380,7 +380,7 @@
         return;
       }
 
-      setText(".domain-card-head span:not(.summary-icon)", item.headline, card);
+      setText(".domain-primary-label", item.headline, card);
       setText(".domain-card-head strong", item.value, card);
       renderMetrics(card, item.metrics);
     });
