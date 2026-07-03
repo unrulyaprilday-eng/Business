@@ -516,7 +516,6 @@
     var mode = getCheckedValue("customActivityJumpMode", "detail");
     var jumpType = getCheckedValue("customActivityJumpType", "inner");
     var innerType = getCheckedValue("customActivityInnerType", "internal");
-    var buttonInput = document.getElementById("customActivityButtonText");
     var buttonField = document.getElementById("customActivityButtonField");
     var targetLabel = document.getElementById("customActivityTargetLabel");
     var innerTypeRow = document.getElementById("customActivityInnerTypeRow");
@@ -525,12 +524,8 @@
     var internalTargetInput = document.getElementById("customActivityInternalTargetInput");
     var externalTargetInput = document.getElementById("customActivityExternalTargetInput");
     var tip = document.getElementById("customActivityJumpTip");
-    var summary = document.getElementById("customActivityJumpSummary");
-    var coverPreview = document.getElementById("customActivityCoverPreview");
-    var previewButton = document.getElementById("customActivityPreviewButton");
     var isOuter = jumpType === "outer";
     var isPopup = !isOuter && innerType === "popup";
-    var buttonText = buttonInput && buttonInput.value ? buttonInput.value : "\u7acb\u5373\u524d\u5f80";
     var target = "";
     var targetTypeLabel = "";
     var actionLabel = mode === "cover" ? "\u5c01\u9762\u70b9\u51fb\u540e\u5c06\u8df3\u8f6c\u81f3" : "\u8be6\u60c5\u6309\u94ae\u5c06\u8df3\u8f6c\u81f3";
@@ -562,17 +557,8 @@
     if (buttonField) {
       buttonField.classList.toggle("is-secondary", mode === "cover");
     }
-    if (previewButton) {
-      previewButton.textContent = buttonText;
-    }
-    if (coverPreview) {
-      coverPreview.textContent = mode === "cover" ? "\u5c01\u9762\u70b9\u51fb\u540e\u76f4\u63a5\u8df3\u8f6c" : "\u5c01\u9762\u70b9\u51fb\u540e\u8fdb\u5165\u6d3b\u52a8\u8be6\u60c5\u9875";
-    }
     if (tip) {
       tip.textContent = actionLabel + targetTypeLabel + " " + target + "\u3002";
-    }
-    if (summary) {
-      summary.textContent = mode === "cover" ? "\u73a9\u5bb6\u70b9\u51fb\u6d3b\u52a8\u5c01\u9762\u540e\uff0c\u76f4\u63a5\u8df3\u8f6c\u81f3" + targetTypeLabel + " " + target + "\u3002" : "\u73a9\u5bb6\u8fdb\u5165\u8be6\u60c5\u9875\u540e\uff0c\u70b9\u51fb\u201c" + buttonText + "\u201d\u8df3\u8f6c\u81f3" + targetTypeLabel + " " + target + "\u3002";
     }
   }
 

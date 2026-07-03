@@ -831,7 +831,7 @@ body.relief-template-active #u1695_state4 {
 
 .custom-custom-jump-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
+  grid-template-columns: minmax(0, 1fr);
   gap: 22px;
   align-items: start;
 }
@@ -903,80 +903,4 @@ body.relief-template-active #u1695_state4 {
   color: #606266;
   font-size: 12px;
   line-height: 1.6;
-}
-
-.custom-custom-preview {
-  display: grid;
-  gap: 12px;
-  padding: 16px;
-  border: 1px solid #dbe8ff;
-  border-radius: 6px;
-  background: #f7fbff;
-}
-
-.custom-custom-preview > strong {
-  color: #303133;
-  font-size: 14px;
-}
-
-.custom-custom-cover-preview {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 96px;
-  border-radius: 6px;
-  background: linear-gradient(135deg, #2f6fe4, #20b7a5);
-  color: #fff;
-  font-size: 15px;
-  font-weight: 600;
-}
-
-.custom-custom-detail-preview {
-  padding: 14px;
-  border: 1px solid #d8e2f0;
-  border-radius: 6px;
-  background: #fff;
-}
-
-.custom-custom-detail-preview h4 {
-  margin: 0 0 8px;
-  color: #303133;
-  font-size: 14px;
-}
-
-.custom-custom-detail-preview p {
-  margin: 0 0 12px;
-  color: #606266;
-  font-size: 12px;
-  line-height: 1.6;
-}
-
-.custom-custom-detail-preview button {
-  min-width: 108px;
-  height: 32px;
-  padding: 0 16px;
-  border: 1px solid #409eff;
-  border-radius: 4px;
-  background: #409eff;
-  color: #fff;
-  font-family: "Microsoft YaHei", sans-serif;
-  font-size: 13px;
-}
-
-.custom-custom-preview > p {
-  margin: 0;
-  color: #606266;
-  font-size: 12px;
-  line-height: 1.6;
-}
-
-.custom-custom-no-reward p {
-  margin: 0;
-  padding: 12px 14px;
-  border: 1px solid #f0e1a7;
-  border-radius: 6px;
-  background: #fffaf0;
-  color: #8b6a00;
-  font-size: 13px;
-  line-height: 1.7;
 }
