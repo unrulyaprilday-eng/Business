@@ -382,7 +382,8 @@ button {
 }
 
 .rule-modal {
-  width: 710px;
+  width: 820px;
+  max-width: calc(100vw - 48px);
 }
 
 .manual-modal {
@@ -450,11 +451,12 @@ button {
   font-weight: 600;
 }
 
-.rule-table th:nth-child(1) { width: 17%; }
-.rule-table th:nth-child(2) { width: 18%; }
-.rule-table th:nth-child(3) { width: 16%; }
-.rule-table th:nth-child(4) { width: 27%; }
+.rule-table th:nth-child(1) { width: 15%; }
+.rule-table th:nth-child(2) { width: 15%; }
+.rule-table th:nth-child(3) { width: 15%; }
+.rule-table th:nth-child(4) { width: 13%; }
 .rule-table th:nth-child(5) { width: 22%; }
+.rule-table th:nth-child(6) { width: 20%; }
 
 .number-stepper {
   display: inline-flex;

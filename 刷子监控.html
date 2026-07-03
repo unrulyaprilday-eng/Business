@@ -74,7 +74,7 @@
             <input type="text" placeholder="请输入"/>
             <button class="btn primary" type="button">搜索</button>
             <button class="btn" type="button">重置</button>
-            <button class="btn primary" id="openDefaultRules" type="button">默认自动规则</button>
+            <button class="btn primary" id="openDefaultRules" type="button">监控处罚设置</button>
           </div>
 
           <div class="filter-bar record-filters" id="recordFilters" hidden>
@@ -147,7 +147,7 @@
         <div class="modal-mask" id="ruleModal" hidden>
           <div class="rule-modal" role="dialog" aria-modal="true" aria-labelledby="ruleModalTitle">
             <header>
-              <h2 id="ruleModalTitle">默认自动规则</h2>
+              <h2 id="ruleModalTitle">监控处罚设置</h2>
               <button class="icon-close" data-close-modal type="button" aria-label="关闭">×</button>
             </header>
             <div class="rule-body">
@@ -155,6 +155,7 @@
                 <thead>
                   <tr>
                     <th>关联类型</th>
+                    <th>预警值</th>
                     <th>处罚触发值</th>
                     <th>限制人数</th>
                     <th>处罚范围</th>

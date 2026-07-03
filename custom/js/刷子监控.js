@@ -10,7 +10,9 @@
     { type: "IP", kind: "ip", value: "56.155.114.134", playerId: "P803906", accounts: ["P803906"], count: 1, action: "限制提现", created: "2026-05-22 17:08:36", updated: "2026-05-22 17:08:36" },
     { type: "IP", kind: "ip", value: "66.90.99.234", playerId: "P785013", accounts: ["P785013"], count: 1, action: "限制提现", created: "2026-05-22 14:24:16", updated: "2026-05-22 14:24:16" },
     { type: "IP", kind: "ip", value: "66.90.99.210", playerId: "P785021", accounts: ["P785021"], count: 1, action: "限制提现", created: "2026-04-24 18:33:38", updated: "2026-04-24 18:33:38" },
-    { type: "设备", kind: "device", value: "25770014-3731-452f-ac0b-d187c517b175", playerId: "P112509", accounts: ["P112509"], count: 1, action: "限制领取优惠", created: "2026-04-24 17:51:52", updated: "2026-04-24 17:51:52" }
+    { type: "设备", kind: "device", value: "25770014-3731-452f-ac0b-d187c517b175", playerId: "P112509", accounts: ["P112509"], count: 1, action: "限制领取优惠", created: "2026-04-24 17:51:52", updated: "2026-04-24 17:51:52" },
+    { type: "提现账号", kind: "name", value: "BANK-6222****4388", playerId: "P671204", accounts: ["P671204", "P671238", "P671259", "P671271"], count: 4, action: "冻结账户", created: "2026-05-28 16:18:09", updated: "2026-05-28 16:32:41" },
+    { type: "提现账号", kind: "name", value: "PIX-maria.pay@example.com", playerId: "P520917", accounts: ["P520917", "P520944", "P520966"], count: 3, action: "冻结账户", created: "2026-05-27 19:24:36", updated: "2026-05-28 09:46:12" }
   ];
 
   var ipFallbacks = ["50.7.250.50", "50.7.250.106", "50.7.250.50", "45.149.92.7", "57.181.37.232", "50.7.158.235", "154.12.53.157", "56.155.114.134", "66.90.99.234", "66.90.99.210", "154.12.53.157"];
@@ -30,19 +32,20 @@
 
   rows = rows.map(function (row, index) {
     return Object.assign({}, row, {
-      ipValue: row.kind === "ip" ? row.value : ipFallbacks[index],
-      deviceValue: row.kind === "device" ? row.value : deviceFallbacks[index]
+      ipValue: row.kind === "ip" ? row.value : ipFallbacks[index] || "",
+      deviceValue: row.kind === "device" ? row.value : deviceFallbacks[index] || ""
     });
   });
 
   var defaultRules = [
-    { type: "同IP", trigger: 4, limit: 100, scope: "只处罚超出范围账号", method: "限制提现" },
-    { type: "同设备号", trigger: 4, limit: 100, scope: "只处罚超出范围账号", method: "限制领取优惠" },
-    { type: "同提现名称", trigger: 2, limit: "", scope: "只处罚超出范围账号", method: "冻结账户" }
+    { type: "同IP", warning: 3, trigger: 4, limit: 100, scope: "只处罚超出范围账号", method: "限制提现" },
+    { type: "同设备号", warning: 3, trigger: 4, limit: 100, scope: "只处罚超出范围账号", method: "限制领取优惠" },
+    { type: "同提现名称", warning: 2, trigger: 3, limit: "", scope: "只处罚超出范围账号", method: "冻结账户" }
   ];
 
   var scopeOptions = ["只处罚超出范围账号", "全部处罚"];
   var methodOptions = ["正常", "冻结账户", "限制领取优惠", "限制提现", "禁止注册"];
+  var withdrawMethodOptions = ["正常", "冻结账户", "限制领取优惠", "限制提现"];
   var records = [
     { triggerUser: "123ooo", punishId: "1010010307", punishUser: "123ooo", type: "设备", kind: "device", value: "4a3bb409-dc95-4d9...", count: 15, action: "限制领取优惠", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-28 15:13:31", updated: "2026-05-28 15:13:31" },
     { triggerUser: "123ooo", punishId: "1010010307", punishUser: "123ooo", type: "IP", kind: "ip", value: "50.7.250.106", count: 5, action: "限制提现", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-28 15:13:31", updated: "2026-05-28 15:13:31" },
@@ -92,11 +95,15 @@
   }
 
   function renderMonitorActions(row, index) {
-    var blacklistLabel = row.kind === "ip" ? "IP拉黑" : "设备拉黑";
-    var blacklistKind = row.kind === "ip" ? "ip" : "device";
+    var blacklistButton = "";
+    if (row.kind === "ip" || row.kind === "device") {
+      var blacklistLabel = row.kind === "ip" ? "IP拉黑" : "设备拉黑";
+      var blacklistKind = row.kind === "ip" ? "ip" : "device";
+      blacklistButton = '<button class="danger-link" data-blacklist="' + blacklistKind + '" data-blacklist-row="' + index + '" type="button">' + blacklistLabel + "</button>";
+    }
     return [
       '<div class="action-group">',
-      '<button class="danger-link" data-blacklist="' + blacklistKind + '" data-blacklist-row="' + index + '" type="button">' + blacklistLabel + "</button>",
+      blacklistButton,
       '<button class="danger-link" data-account-action="' + index + '" type="button">手动风控处罚</button>',
       "</div>"
     ].join("");
@@ -173,15 +180,22 @@
     }).join("") + "</select>";
   }
 
+  function methodOptionsFor(row) {
+    return row.kind === "name" || row.type === "同提现名称" || row.type === "提现账号"
+      ? withdrawMethodOptions
+      : methodOptions;
+  }
+
   function renderRules(rules) {
     $("#ruleRows").innerHTML = rules.map(function (rule) {
       return [
         "<tr>",
         "<td>" + rule.type + "</td>",
+        "<td>" + numberStepper(rule.warning) + "</td>",
         "<td>" + numberStepper(rule.trigger) + "</td>",
         "<td>" + numberStepper(rule.limit) + "</td>",
         "<td>" + selectHtml(scopeOptions, rule.scope) + "</td>",
-        "<td>" + selectHtml(methodOptions, rule.method) + "</td>",
+        "<td>" + selectHtml(methodOptionsFor(rule), rule.method) + "</td>",
         "</tr>"
       ].join("");
     }).join("");
@@ -215,6 +229,9 @@
 
   function openAccountModal(title, row) {
     $("#manualModalTitle").textContent = title;
+    $("#manualMethod").innerHTML = methodOptionsFor(row).map(function (option) {
+      return "<option>" + option + "</option>";
+    }).join("");
     $("#manualMethod").value = defaultMethodFor(row);
     $("#manualModal").hidden = false;
   }
@@ -245,7 +262,7 @@
 
   function bindEvents() {
     $("#openDefaultRules").addEventListener("click", function () {
-      openRuleModal("默认自动规则", defaultRules);
+      openRuleModal("监控处罚设置", defaultRules);
     });
 
     $all(".tab-btn").forEach(function (button) {

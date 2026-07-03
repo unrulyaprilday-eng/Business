@@ -62,16 +62,24 @@
     var mode = getMode(row);
     var lockUser = row.dataset.lockUser || "";
     cell.replaceChildren();
-    if (isCurrentFirstReviewer(row) || lockUser && lockUser !== CURRENT_USER) return;
+    if (isCurrentFirstReviewer(row)) return;
 
     var button = document.createElement("button");
     button.className = "link";
     button.type = "button";
+    if (mode === "second") {
+      button.dataset.audit = "second";
+      button.textContent = "复审";
+      cell.appendChild(button);
+      return;
+    }
+
+    if (lockUser && lockUser !== CURRENT_USER) return;
     if (lockUser === CURRENT_USER) {
-      button.dataset.audit = mode;
-      button.textContent = getAuditLabel(mode);
+      button.dataset.audit = "first";
+      button.textContent = "初审";
     } else {
-      button.dataset.lock = mode;
+      button.dataset.lock = "first";
       button.textContent = "锁定";
     }
     cell.appendChild(button);
@@ -124,14 +132,19 @@
     var lockNote = dialog.querySelector("[data-lock-note]");
     if (lockNote) {
       lockNote.hidden = mode === "view";
-      lockNote.textContent = lockUser === CURRENT_USER
-        ? "当前订单已由 " + CURRENT_USER + " 锁定，可继续提交" + getAuditLabel(mode) + "结果。"
-        : "当前订单尚未由你锁定，请先锁定后再审核。";
+      if (mode === "second") {
+        lockNote.textContent = "复审无需锁定，非初审人可直接提交复审结果。";
+      } else {
+        lockNote.textContent = lockUser === CURRENT_USER
+          ? "当前订单已由 " + CURRENT_USER + " 锁定，可继续提交初审结果。"
+          : "当前订单尚未由你锁定，请先锁定后再初审。";
+      }
     }
     updateFooter(dialog, mode);
   }
 
   function openLockConfirm(row, mode) {
+    if (mode !== "first") return;
     var dialog = document.querySelector('[data-dialog="lock-confirm"]');
     if (!dialog) return;
     var order = row.querySelector("[data-order-cell]");
@@ -154,6 +167,7 @@
     pendingLockRow = null;
     pendingLockMode = "";
     if (confirmDialog) confirmDialog.hidden = true;
+    if (mode !== "first") return;
     if (!row || !auditDialog || isCurrentFirstReviewer(row)) return;
     if (row.dataset.lockUser && row.dataset.lockUser !== CURRENT_USER) {
       renderAction(row);
