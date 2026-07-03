@@ -3,7 +3,8 @@
     "\u6253\u7801\u8fd4\u6c34": 0,
     "\u62fc\u591a\u591a": 1,
     "\u6551\u6d4e\u91d1": 2,
-    "\u5206\u4eab\u6d3b\u52a8": 3
+    "\u5206\u4eab\u6d3b\u52a8": 3,
+    "\u81ea\u5b9a\u4e49\u6d3b\u52a8": 4
   };
 
   var panelStateCache = {};
@@ -96,9 +97,11 @@
     var state = Object.prototype.hasOwnProperty.call(TEMPLATE_TO_STATE, template) ? TEMPLATE_TO_STATE[template] : 0;
     var isRelief = template === "\u6551\u6d4e\u91d1";
     var isShare = template === "\u5206\u4eab\u6d3b\u52a8";
+    var isCustom = template === "\u81ea\u5b9a\u4e49\u6d3b\u52a8";
 
     document.body.classList.toggle("relief-template-active", isRelief);
     document.body.classList.toggle("share-template-active", isShare);
+    document.body.classList.toggle("custom-template-active", isCustom);
     showPanelState("u6", state);
   }
 
@@ -504,12 +507,106 @@
     refreshPicker(false);
   }
 
+  function getCheckedValue(name, fallback) {
+    var checked = document.querySelector('input[name="' + name + '"]:checked');
+    return checked ? checked.value : fallback;
+  }
+
+  function syncCustomActivityJump() {
+    var mode = getCheckedValue("customActivityJumpMode", "detail");
+    var jumpType = getCheckedValue("customActivityJumpType", "inner");
+    var innerType = getCheckedValue("customActivityInnerType", "internal");
+    var buttonInput = document.getElementById("customActivityButtonText");
+    var buttonField = document.getElementById("customActivityButtonField");
+    var targetLabel = document.getElementById("customActivityTargetLabel");
+    var innerTypeRow = document.getElementById("customActivityInnerTypeRow");
+    var systemTarget = document.getElementById("customActivitySystemTarget");
+    var internalTargetSelect = document.getElementById("customActivityInternalTargetSelect");
+    var internalTargetInput = document.getElementById("customActivityInternalTargetInput");
+    var externalTargetInput = document.getElementById("customActivityExternalTargetInput");
+    var tip = document.getElementById("customActivityJumpTip");
+    var summary = document.getElementById("customActivityJumpSummary");
+    var coverPreview = document.getElementById("customActivityCoverPreview");
+    var previewButton = document.getElementById("customActivityPreviewButton");
+    var isOuter = jumpType === "outer";
+    var isPopup = !isOuter && innerType === "popup";
+    var buttonText = buttonInput && buttonInput.value ? buttonInput.value : "\u7acb\u5373\u524d\u5f80";
+    var target = "";
+    var targetTypeLabel = "";
+    var actionLabel = mode === "cover" ? "\u5c01\u9762\u70b9\u51fb\u540e\u5c06\u8df3\u8f6c\u81f3" : "\u8be6\u60c5\u6309\u94ae\u5c06\u8df3\u8f6c\u81f3";
+
+    if (!innerTypeRow || !targetLabel || !systemTarget || !internalTargetSelect || !internalTargetInput || !externalTargetInput) {
+      return;
+    }
+
+    innerTypeRow.hidden = isOuter;
+    systemTarget.hidden = !isPopup;
+    internalTargetSelect.hidden = isOuter || isPopup;
+    internalTargetInput.hidden = isOuter || isPopup || Boolean(internalTargetSelect.value);
+    externalTargetInput.hidden = !isOuter;
+
+    if (isOuter) {
+      targetLabel.textContent = "\u5916\u90e8\u94fe\u63a5";
+      target = externalTargetInput.value || "https://promo.example.com";
+      targetTypeLabel = "\u5916\u94fe";
+    } else if (isPopup) {
+      targetLabel.textContent = "\u7cfb\u7edf\u529f\u80fd";
+      target = systemTarget.value || "\u5145\u503c\u5f39\u7a97";
+      targetTypeLabel = "\u7cfb\u7edf\u529f\u80fd\u5f39\u7a97";
+    } else {
+      targetLabel.textContent = "\u8df3\u8f6c\u94fe\u63a5";
+      target = internalTargetSelect.value || internalTargetInput.value || "/activity/custom-campaign";
+      targetTypeLabel = "\u5185\u90e8\u94fe\u63a5";
+    }
+
+    if (buttonField) {
+      buttonField.classList.toggle("is-secondary", mode === "cover");
+    }
+    if (previewButton) {
+      previewButton.textContent = buttonText;
+    }
+    if (coverPreview) {
+      coverPreview.textContent = mode === "cover" ? "\u5c01\u9762\u70b9\u51fb\u540e\u76f4\u63a5\u8df3\u8f6c" : "\u5c01\u9762\u70b9\u51fb\u540e\u8fdb\u5165\u6d3b\u52a8\u8be6\u60c5\u9875";
+    }
+    if (tip) {
+      tip.textContent = actionLabel + targetTypeLabel + " " + target + "\u3002";
+    }
+    if (summary) {
+      summary.textContent = mode === "cover" ? "\u73a9\u5bb6\u70b9\u51fb\u6d3b\u52a8\u5c01\u9762\u540e\uff0c\u76f4\u63a5\u8df3\u8f6c\u81f3" + targetTypeLabel + " " + target + "\u3002" : "\u73a9\u5bb6\u8fdb\u5165\u8be6\u60c5\u9875\u540e\uff0c\u70b9\u51fb\u201c" + buttonText + "\u201d\u8df3\u8f6c\u81f3" + targetTypeLabel + " " + target + "\u3002";
+    }
+  }
+
+  function bindCustomActivityJump() {
+    var root = document.getElementById("u6_state4");
+
+    if (!root || root.getAttribute("data-custom-jump-bound") === "true") {
+      return;
+    }
+
+    root.setAttribute("data-custom-jump-bound", "true");
+    root.addEventListener("change", function (event) {
+      if (event.target && event.target.name && event.target.name.indexOf("customActivity") === 0) {
+        syncCustomActivityJump();
+      }
+      if (event.target && event.target.id === "customActivityInternalTargetSelect") {
+        syncCustomActivityJump();
+      }
+    });
+    root.addEventListener("input", function (event) {
+      if (event.target && event.target.id && event.target.id.indexOf("customActivity") === 0) {
+        syncCustomActivityJump();
+      }
+    });
+    syncCustomActivityJump();
+  }
+
   ready(function () {
     var select = document.getElementById("u3012_input");
 
     setText("u3011", "\u6d3b\u52a8\u6a21\u677f");
     Array.prototype.forEach.call(document.querySelectorAll(".custom-relief-table"), bindReliefRewardTable);
     bindActivityOgSelection();
+    bindCustomActivityJump();
 
     if (select) {
       select.setAttribute("aria-label", "\u6d3b\u52a8\u6a21\u677f");

@@ -25169,6 +25169,147 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
             </div>
           </div>
         </div>
+        <div id="u6_state4" class="panel_state" data-label="自定义活动" style="visibility: hidden; display: none;" aria-hidden="true">
+          <div id="u6_state4_content" class="panel_state_content">
+            <div class="custom-custom-form">
+              <div class="custom-share-section">
+                <h3>基础配置</h3>
+                <div class="custom-share-grid">
+                  <label class="custom-field required">
+                    <span>活动名称</span>
+                    <input type="text" value="世界杯专题活动" placeholder="请输入活动名称">
+                  </label>
+                  <label class="custom-field required">
+                    <span>活动标题</span>
+                    <input type="text" value="限时专题活动" placeholder="请输入活动标题">
+                  </label>
+                  <label class="custom-field required custom-field-wide">
+                    <span>活动时间</span>
+                    <input type="text" value="2026-07-01 00:00" placeholder="开始时间">
+                    <em>至</em>
+                    <input type="text" value="2026-07-31 23:59" placeholder="结束时间">
+                  </label>
+                  <label class="custom-field">
+                    <span>适用端口</span>
+                    <select>
+                      <option selected>APP + H5</option>
+                      <option>仅 APP</option>
+                      <option>仅 H5</option>
+                    </select>
+                  </label>
+                  <label class="custom-field">
+                    <span>排序</span>
+                    <input type="number" value="0">
+                  </label>
+                  <div class="custom-field">
+                    <span>活动状态</span>
+                    <div class="custom-radio-group">
+                      <label><input type="radio" name="customActivityStatus" checked>开启</label>
+                      <label><input type="radio" name="customActivityStatus">关闭</label>
+                    </div>
+                  </div>
+                  <div class="custom-field">
+                    <span>展示位置</span>
+                    <div class="custom-checkbox-group">
+                      <label><input type="checkbox" checked>活动中心</label>
+                      <label><input type="checkbox" checked>首页活动位</label>
+                    </div>
+                  </div>
+                  <div class="custom-upload required custom-field-wide custom-custom-cover">
+                    <span>活动封面</span>
+                    <button type="button">+<small>上传封面图</small></button>
+                    <p>建议尺寸 750 x 300，封面可设置为直接跳转或进入详情页。</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="custom-share-section custom-custom-jump-section">
+                <h3>跳转配置</h3>
+                <div class="custom-custom-jump-layout">
+                  <div class="custom-custom-jump-main">
+                    <div class="custom-field custom-field-wide custom-custom-mode">
+                      <span>跳转位置</span>
+                      <div class="custom-radio-group">
+                        <label><input type="radio" name="customActivityJumpMode" value="cover">封面直接跳转</label>
+                        <label><input type="radio" name="customActivityJumpMode" value="detail" checked>进入详情页后按钮跳转</label>
+                      </div>
+                    </div>
+                    <label class="custom-field required custom-custom-button-field" id="customActivityButtonField">
+                      <span>自定义按钮</span>
+                      <input id="customActivityButtonText" type="text" value="立即前往" placeholder="请输入详情按钮文案">
+                    </label>
+                    <div class="custom-custom-jump-card" data-custom-activity-jump>
+                      <div class="custom-custom-jump-line">
+                        <span>跳转类型</span>
+                        <div class="custom-radio-group">
+                          <label><input type="radio" name="customActivityJumpType" value="inner" checked>内链</label>
+                          <label><input type="radio" name="customActivityJumpType" value="outer">外链</label>
+                        </div>
+                      </div>
+                      <div class="custom-custom-jump-line" id="customActivityInnerTypeRow">
+                        <span>内链跳转</span>
+                        <div class="custom-radio-group">
+                          <label><input type="radio" name="customActivityInnerType" value="popup">系统功能弹窗</label>
+                          <label><input type="radio" name="customActivityInnerType" value="internal" checked>内部链接</label>
+                        </div>
+                      </div>
+                      <div class="custom-custom-jump-line">
+                        <span id="customActivityTargetLabel">跳转链接</span>
+                        <div class="custom-custom-link-picker">
+                          <select id="customActivitySystemTarget" hidden>
+                            <option>充值弹窗</option>
+                            <option>登录弹窗</option>
+                            <option>注册弹窗</option>
+                            <option>安装PWA</option>
+                            <option>余额不足弹窗</option>
+                            <option>首充成功弹窗</option>
+                          </select>
+                          <select id="customActivityInternalTargetSelect">
+                            <option value="充值中心">充值中心</option>
+                            <option value="活动中心">活动中心</option>
+                            <option value="/activity">活动 /activity</option>
+                            <option value="/vip">VIP /vip</option>
+                            <option value="" selected>自定义</option>
+                          </select>
+                          <input id="customActivityInternalTargetInput" type="text" value="/activity/custom-campaign" placeholder="请输入站内路径">
+                          <input id="customActivityExternalTargetInput" type="text" value="https://promo.example.com" placeholder="请输入完整 URL，如 https://promo.example.com" hidden>
+                        </div>
+                      </div>
+                      <p id="customActivityJumpTip" class="custom-custom-jump-tip">详情按钮将跳转至内部链接 /activity/custom-campaign。</p>
+                    </div>
+                  </div>
+                  <div class="custom-custom-preview">
+                    <strong>玩家端展示预览</strong>
+                    <div class="custom-custom-cover-preview" id="customActivityCoverPreview">封面点击后进入活动详情页</div>
+                    <div class="custom-custom-detail-preview">
+                      <h4>限时专题活动</h4>
+                      <p>自定义活动不配置奖励，详情页用于展示运营内容、活动规则和外部承接入口。</p>
+                      <button id="customActivityPreviewButton" type="button">立即前往</button>
+                    </div>
+                    <p id="customActivityJumpSummary">玩家进入详情页后，点击自定义按钮跳转至内部链接 /activity/custom-campaign。</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="custom-share-section">
+                <h3>活动详情</h3>
+                <div class="custom-editor custom-share-note-editor">
+                  <span>详情内容</span>
+                  <div class="custom-toolbar">B U I S H x2 x2 " " · 1 2 link image undo redo save</div>
+                  <textarea>这里填写自定义活动详情。
+自定义活动不配置奖励规则，主要用于活动专题、赛事页、落地页或指定功能入口。
+当选择封面直接跳转时，玩家点击活动封面后直接按照跳转配置前往目标。
+当选择进入详情页后按钮跳转时，玩家先进入详情页，再点击自定义按钮前往目标。</textarea>
+                </div>
+              </div>
+
+              <div class="custom-share-section custom-custom-no-reward">
+                <h3>无奖励配置</h3>
+                <p>自定义活动不配置奖励，不展示奖励金额、奖励币种、领取限制或打码倍数。该类型只负责活动内容展示和跳转承接。</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Unnamed (矩形) -->
@@ -25195,11 +25336,13 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
           <option class="u3012_input_option" value="游戏排行榜">游戏排行榜</option>
           <option class="u3012_input_option" value="充值排行榜">充值排行榜</option>
           <option class="u3012_input_option" selected value="分享活动">分享活动</option>
+          <option class="u3012_input_option" value="自定义活动">自定义活动</option>
           <option class="u3012_input_option" value="幸运转盘">幸运转盘</option>
           <option class="u3012_input_option" value="拼多多">拼多多</option>
         </select>
       </div>
     </div>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="custom/js/og-shared-data.js"></script>
     <script src="custom/js/新增活动.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
