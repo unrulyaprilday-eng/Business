@@ -76,17 +76,43 @@
             <p class="risk-field-note">说明：关联账号数大于 1 时，后续点击数字进入以该会员ID搜索的刷子监控页；游戏风控为进入风控的条数，不为 0 时后续点击数字进入以该会员ID搜索的游戏获利监控页。</p>
             <div class="table-scroll risk-table-wrap">
               <table class="orders-table risk-table">
-                <thead><tr><th>订单号</th><th>订单状态</th><th>会员ID</th><th>商户ID</th><th>提现金额</th><th>实际金额</th><th>手续费</th><th>提现申请时间</th><th>关联账号数</th><th>游戏风控</th><th>操作</th></tr></thead>
+                <thead><tr><th>订单号</th><th>订单状态</th><th>会员ID</th><th>商户ID</th><th>提现金额</th><th>实际金额</th><th>手续费</th><th>提现申请时间</th><th>关联账号数</th><th>游戏风控</th><th>初审人</th><th>锁定人</th><th>操作</th></tr></thead>
                 <tbody>
-                  <tr data-member-id="1010010007" data-account-count="1" data-game-count="1"><td>17efc41742d54aba8a6c...</td><td><span class="status pass">初审通过</span></td><td>1010010007</td><td>101</td><td class="money purple">100</td><td class="money green">95</td><td>5</td><td>2026-05-13 15:47:08</td><td>1</td><td><span class="risk-count-text">1</span></td><td><button class="link" type="button" data-audit="second">复审</button></td></tr>
-                  <tr data-member-id="1010010012" data-account-count="3" data-game-count="33"><td>45efd6ad817247e58cd9...</td><td><span class="status pass">初审通过</span></td><td>1010010012</td><td>101</td><td class="money purple">200</td><td class="money green">200</td><td>0</td><td>2026-05-15 11:07:55</td><td><span class="risk-count-text">3</span></td><td><span class="risk-count-text">33</span></td><td><button class="link" type="button" data-audit="second">复审</button></td></tr>
-                  <tr data-member-id="1010010012" data-account-count="2" data-game-count="33"><td>0deb24369d124f6da15f...</td><td><span class="status pending">待初审</span></td><td>1010010012</td><td>101</td><td class="money purple">60</td><td class="money green">36</td><td>24</td><td>2026-05-23 13:20:05</td><td><span class="risk-count-text">2</span></td><td><span class="risk-count-text">33</span></td><td><button class="link" type="button" data-audit="first">初审</button></td></tr>
-                  <tr data-member-id="1010010000" data-account-count="1" data-game-count="0"><td>8d1409151ae246248396...</td><td><span class="status pending">待初审</span></td><td>1010010000</td><td>101</td><td class="money purple">100</td><td class="money green">85</td><td>15</td><td>2026-05-27 15:12:16</td><td>1</td><td>0</td><td><button class="link" type="button" data-audit="first">初审</button></td></tr>
-                  <tr data-member-id="1010010000" data-account-count="1" data-game-count="0"><td>d44bd1ac9c0a46eebdb3...</td><td><span class="status pending">待初审</span></td><td>1010010000</td><td>101</td><td class="money purple">100</td><td class="money green">85</td><td>15</td><td>2026-05-27 15:22:43</td><td>1</td><td>0</td><td><button class="link" type="button" data-audit="first">初审</button></td></tr>
+                  <tr data-review-stage="second" data-first-reviewer="qitian" data-lock-user="" data-member-id="1010010007" data-merchant-id="101" data-account-count="1" data-game-count="1" data-withdraw-amount="100" data-actual-amount="95" data-fee="5" data-apply-time="2026-05-13 15:47:08"><td data-order-cell>17efc41742d54aba8a6c...</td><td><span class="status pass">初审通过</span></td><td>1010010007</td><td>101</td><td class="money purple">100</td><td class="money green">95</td><td>5</td><td>2026-05-13 15:47:08</td><td>1</td><td><span class="risk-count-text">1</span></td><td data-first-reviewer-cell>qitian</td><td data-lock-user-cell><span class="lock-user is-empty">--</span></td><td class="actions"><button class="link" type="button" data-lock="second">锁定</button></td></tr>
+                  <tr data-review-stage="second" data-first-reviewer="qitian" data-lock-user="admin01" data-member-id="1010010012" data-merchant-id="101" data-account-count="3" data-game-count="33" data-withdraw-amount="200" data-actual-amount="200" data-fee="0" data-apply-time="2026-05-15 11:07:55"><td data-order-cell>45efd6ad817247e58cd9...</td><td><span class="status pass">初审通过</span></td><td>1010010012</td><td>101</td><td class="money purple">200</td><td class="money green">200</td><td>0</td><td>2026-05-15 11:07:55</td><td><span class="risk-count-text">3</span></td><td><span class="risk-count-text">33</span></td><td data-first-reviewer-cell>qitian</td><td data-lock-user-cell><span class="lock-user">admin01</span></td><td class="actions"></td></tr>
+                  <tr data-review-stage="second" data-first-reviewer="admin02" data-lock-user="" data-member-id="1010010012" data-merchant-id="101" data-account-count="2" data-game-count="33" data-withdraw-amount="60" data-actual-amount="36" data-fee="24" data-apply-time="2026-05-23 13:20:05"><td data-order-cell>0deb24369d124f6da15f...</td><td><span class="status pass">初审通过</span></td><td>1010010012</td><td>101</td><td class="money purple">60</td><td class="money green">36</td><td>24</td><td>2026-05-23 13:20:05</td><td><span class="risk-count-text">2</span></td><td><span class="risk-count-text">33</span></td><td data-first-reviewer-cell>admin02</td><td data-lock-user-cell><span class="lock-user is-empty">--</span></td><td class="actions"></td></tr>
+                  <tr data-review-stage="first" data-first-reviewer="" data-lock-user="admin02" data-member-id="1010010000" data-merchant-id="101" data-account-count="1" data-game-count="0" data-withdraw-amount="100" data-actual-amount="85" data-fee="15" data-apply-time="2026-05-27 15:12:16"><td data-order-cell>8d1409151ae246248396...</td><td><span class="status pending">待初审</span></td><td>1010010000</td><td>101</td><td class="money purple">100</td><td class="money green">85</td><td>15</td><td>2026-05-27 15:12:16</td><td>1</td><td>0</td><td data-first-reviewer-cell>--</td><td data-lock-user-cell><span class="lock-user is-current">admin02</span></td><td class="actions"><button class="link" type="button" data-audit="first">初审</button></td></tr>
+                  <tr data-review-stage="first" data-first-reviewer="" data-lock-user="" data-member-id="1010010000" data-merchant-id="101" data-account-count="1" data-game-count="0" data-withdraw-amount="100" data-actual-amount="85" data-fee="15" data-apply-time="2026-05-27 15:22:43"><td data-order-cell>d44bd1ac9c0a46eebdb3...</td><td><span class="status pending">待初审</span></td><td>1010010000</td><td>101</td><td class="money purple">100</td><td class="money green">85</td><td>15</td><td>2026-05-27 15:22:43</td><td>1</td><td>0</td><td data-first-reviewer-cell>--</td><td data-lock-user-cell><span class="lock-user is-empty">--</span></td><td class="actions"><button class="link" type="button" data-lock="first">锁定</button></td></tr>
                 </tbody>
               </table>
             </div>
             <div class="pager"><span>‹</span><span>≪</span><span>‹</span><input value="1"/><span>/ 1</span><span>›</span><span>≫</span><span>›</span><button>20条/页</button><em>共 5 条记录</em></div>
+            <div class="risk-bottom-notes">
+              <section class="risk-bottom-note">
+                <h3>锁定与审核规则</h3>
+                <table class="risk-rule-table">
+                  <thead><tr><th>审核状态</th><th>初审人</th><th>锁定人</th><th>当前用户操作</th></tr></thead>
+                  <tbody>
+                    <tr><td>待初审</td><td>--</td><td>--</td><td>锁定</td></tr>
+                    <tr><td>待初审</td><td>--</td><td>自己</td><td>初审</td></tr>
+                    <tr><td>待初审</td><td>--</td><td>别人</td><td>无按钮</td></tr>
+                    <tr><td>待复审</td><td>初审人ID</td><td>--</td><td>非初审人显示锁定，初审人无按钮</td></tr>
+                    <tr><td>待复审</td><td>初审人ID</td><td>自己</td><td>复审</td></tr>
+                    <tr><td>待复审</td><td>初审人ID</td><td>别人</td><td>无按钮</td></tr>
+                  </tbody>
+                </table>
+              </section>
+              <section class="risk-bottom-note">
+                <h3>业务流程说明</h3>
+                <ol class="risk-flow-list">
+                  <li>待初审订单未锁定时，审核员需先锁定订单，锁定后仅锁定者可进行初审。</li>
+                  <li>初审通过后，订单进入待复审，系统记录初审人，并将锁定人清空为 --。</li>
+                  <li>初审人不能复审自己初审通过的订单；待复审订单需由其他审核员重新锁定后复审。</li>
+                  <li>订单被别人锁定时，当前用户不展示任何操作按钮，避免多人同时处理同一订单。</li>
+                  <li>复审通过或任一环节拒绝后，订单进入审核结果记录，不再展示审核操作。</li>
+                </ol>
+              </section>
+            </div>
           </div>
           <div class="tab-pane risk-pane" data-pane="auditLogs">
             <form class="filterbar risk-filter">
@@ -115,20 +141,31 @@
           <section class="audit-dialog risk-dialog">
             <header><h2>风控审核详情</h2><button type="button" data-close>×</button></header>
             <div class="dialog-pane is-active" data-inner-pane="detail">
-              <div class="detail-top"><span>订单号：<b>17efc41742d54aba8a6c5db5b9ee26ee</b></span><span>订单状态：<b data-mode-text>初审通过</b></span><span>会员ID：<b>1010010007</b></span><span>商户ID：101</span></div>
+              <div class="detail-top"><span>订单号：<b data-detail-order>17efc41742d54aba8a6c5db5b9ee26ee</b></span><span>订单状态：<b data-mode-text>初审通过</b></span><span>会员ID：<b data-detail-member>1010010007</b></span><span>商户ID：<b data-detail-merchant>101</b></span><span>初审人：<b data-detail-first-reviewer>qitian</b></span><span>锁定人：<b data-detail-lock-user>admin02</b></span></div>
               <div class="metrics">
                 <div><span>玩家当前余额</span><b>1,286.40</b></div><div><span>提现时余额</span><b>1,386.40</b></div><div><span>总提现金额</span><b>2,860</b></div><div><span>总提现次数</span><b>18</b></div>
                 <div><span>总充值金额</span><b>7,420</b></div><div><span>总充值次数</span><b>42</b></div><div><span>总游戏投注</span><b>58,900</b></div><div><span>总游戏输赢</span><b class="negative">-1,260</b></div>
                 <div><span>关联账号数</span><b data-detail-account-count>1</b></div><div><span>游戏风控</span><b data-detail-game-count class="risk-count-text">1</b></div>
               </div>
-              <dl class="detail-grid"><dt>提现金额</dt><dd>100</dd><dt>实际金额</dt><dd>95</dd><dt>手续费</dt><dd>5</dd><dt>提现方式</dt><dd>trc20</dd><dt>收款账号</dt><dd>TPz5T4R9a8...kH21</dd><dt>申请时间</dt><dd>2026-05-13 15:47:08</dd><dt>操作时间</dt><dd>2026-05-13 15:48:15</dd></dl>
+              <dl class="detail-grid"><dt>提现金额</dt><dd data-detail-withdraw>100</dd><dt>实际金额</dt><dd data-detail-actual>95</dd><dt>手续费</dt><dd data-detail-fee>5</dd><dt>提现方式</dt><dd>trc20</dd><dt>收款账号</dt><dd>TPz5T4R9a8...kH21</dd><dt>申请时间</dt><dd data-detail-apply-time>2026-05-13 15:47:08</dd><dt>操作时间</dt><dd>2026-05-13 15:48:15</dd></dl>
               <p class="risk-field-note dialog-note">说明：刷子监控页、游戏获利监控页暂未接入，当前仅展示风险命中数量；页面接入后按会员ID带入搜索。</p>
+              <p class="risk-lock-state" data-lock-note>当前订单已由 admin02 锁定，仅锁定者可提交审核。</p>
               <div class="audit-form">
                 <label class="risk-pay-channel" data-second-only hidden>代付通道<select><option>请选择代付通道</option><option>ecashapp</option><option>TRC20 手动代付</option><option>三方代付通道</option></select></label>
                 <label>审核备注<textarea placeholder="请输入审核意见"></textarea></label>
               </div>
             </div>
             <footer><button class="btn" type="button" data-close data-risk-cancel>取消</button><button class="btn danger" type="button" data-close data-risk-reject>不通过</button><button class="btn primary" type="button" data-close data-approve>通过</button></footer>
+          </section>
+        </div>
+        <div class="modal-mask" data-dialog="lock-confirm" hidden>
+          <section class="confirm-dialog risk-lock-confirm">
+            <header><h2>确认锁定订单</h2><button type="button" data-close>×</button></header>
+            <div class="confirm-body">
+              <strong data-lock-confirm-title>确认锁定该提现订单？</strong>
+              <p data-lock-confirm-text>锁定后仅当前操作人可继续审核，其他人将看不到该订单的操作按钮。</p>
+            </div>
+            <footer><button class="btn" type="button" data-close>取消</button><button class="btn primary" type="button" data-confirm-lock>确认锁定</button></footer>
           </section>
         </div>
       </div>
