@@ -1,4 +1,6 @@
 (function () {
+  var pendingConfirmAction = null;
+
   function qs(selector, root) {
     return (root || document).querySelector(selector);
   }
@@ -18,6 +20,44 @@
     var modal = document.getElementById(id);
     if (modal) {
       modal.hidden = true;
+    }
+    if (id === "confirmModal") {
+      pendingConfirmAction = null;
+    }
+  }
+
+  function setText(id, text) {
+    var node = document.getElementById(id);
+    if (node) {
+      node.textContent = text;
+    }
+  }
+
+  function openConfirm(options) {
+    setText("confirmTitle", options.title);
+    setText("confirmBody", options.body);
+    pendingConfirmAction = options.onConfirm || null;
+    openModal("confirmModal");
+  }
+
+  function setFeatureEnabled(enabled) {
+    var masterSwitch = document.getElementById("featureMasterSwitch");
+    var statusText = document.getElementById("featureMasterStatus");
+    var panel = qs(".redeem-panel");
+
+    if (masterSwitch) {
+      masterSwitch.classList.toggle("on", enabled);
+      masterSwitch.setAttribute("aria-pressed", enabled ? "true" : "false");
+      masterSwitch.setAttribute("aria-label", enabled ? "本功能总开关，当前已开启" : "本功能总开关，当前已关闭");
+    }
+
+    if (statusText) {
+      statusText.textContent = enabled ? "已开启" : "已关闭";
+      statusText.classList.toggle("off", !enabled);
+    }
+
+    if (panel) {
+      panel.classList.toggle("feature-disabled", !enabled);
     }
   }
 
@@ -77,6 +117,8 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     var createBtn = document.getElementById("openCreateModal");
+    var masterSwitch = document.getElementById("featureMasterSwitch");
+    var confirmSubmitButton = document.getElementById("confirmSubmitButton");
     var rows = document.getElementById("redeemRows");
     var channelTrigger = document.getElementById("channelPickerTrigger");
     var channelSearchInput = document.getElementById("channelSearchInput");
@@ -93,6 +135,32 @@
         });
         toggleChannelDropdown(false);
         openModal("createModal");
+      });
+    }
+
+    if (masterSwitch) {
+      masterSwitch.addEventListener("click", function () {
+        var enabled = masterSwitch.classList.contains("on");
+        var nextEnabled = !enabled;
+        openConfirm({
+          title: nextEnabled ? "开启功能确认" : "关闭功能确认",
+          body: nextEnabled
+            ? "确认开启兑换码功能？开启后玩家可使用有效兑换码兑换奖励。"
+            : "确认关闭兑换码功能？关闭后玩家将无法使用兑换码兑换奖励，已有兑换码配置保留。",
+          onConfirm: function () {
+            setFeatureEnabled(nextEnabled);
+          }
+        });
+      });
+    }
+
+    if (confirmSubmitButton) {
+      confirmSubmitButton.addEventListener("click", function () {
+        var action = pendingConfirmAction;
+        if (action) {
+          action();
+        }
+        closeModal("confirmModal");
       });
     }
 
@@ -151,7 +219,10 @@
       }
 
       if (event.target.classList.contains("delete-btn")) {
-        openModal("confirmModal");
+        openConfirm({
+          title: "删除确认",
+          body: "确认删除这条兑换码吗？删除后不可恢复。"
+        });
       }
 
       if (!event.target.closest("[data-channel-picker]")) {
@@ -171,6 +242,7 @@
     showCodePanel("reuse");
     showScopePanel("all");
     showDetailView("reuse");
+    setFeatureEnabled(true);
     renderSelectedChannels();
   });
 }());

@@ -43,9 +43,9 @@ $axure.loadDocument({
           },
           {
             "id": "page_settings",
-            "pageName": "站点配置",
+            "pageName": "站点应用配置",
             "type": "Wireframe",
-            "url": "站点配置.html",
+            "url": "站点应用配置.html",
             "children": []
           },
           {
@@ -170,9 +170,9 @@ $axure.loadDocument({
           },
           {
             "id": "operation_notification_center",
-            "pageName": "通知中心",
+            "pageName": "推送中心",
             "type": "Wireframe",
-            "url": "通知中心.html",
+            "url": "推送中心.html",
             "children": []
           },
           {
@@ -720,9 +720,9 @@ $axure.loadDocument({
           },
           {
             "id": "merchant_status_update",
-            "pageName": "修改商户状态",
+            "pageName": "风控配置",
             "type": "Wireframe",
-            "url": "修改商户状态.html",
+            "url": "风控配置.html",
             "children": []
           }
         ]

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-07-02T08:15:22.935Z",
+  "savedAt": "2026-07-07T03:34:26.717Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -32,9 +32,9 @@
         },
         {
           "id": "page_settings",
-          "pageName": "站点配置",
+          "pageName": "站点应用配置",
           "type": "Wireframe",
-          "url": "站点配置.html",
+          "url": "站点应用配置.html",
           "children": []
         },
         {
@@ -159,9 +159,9 @@
         },
         {
           "id": "operation_notification_center",
-          "pageName": "通知中心",
+          "pageName": "推送中心",
           "type": "Wireframe",
-          "url": "通知中心.html",
+          "url": "推送中心.html",
           "children": []
         },
         {
@@ -709,9 +709,9 @@
         },
         {
           "id": "merchant_status_update",
-          "pageName": "修改商户状态",
+          "pageName": "风控配置",
           "type": "Wireframe",
-          "url": "修改商户状态.html",
+          "url": "风控配置.html",
           "children": []
         }
       ]

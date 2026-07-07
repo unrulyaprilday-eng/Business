@@ -1,6 +1,6 @@
 $axure.loadCurrentPage({
-  "url": "通知中心.html",
-  "generationDate": new Date(1782230400000),
+  "url": "站点应用配置.html",
+  "generationDate": new Date(1779120000000),
   "defaultAdaptiveView": {
     "name": "",
     "cursor": 1,
@@ -24,9 +24,9 @@ $axure.loadCurrentPage({
     "HoverNum"
   ],
   "page": {
-    "packageId": "operation_notification_center",
+    "packageId": "page_settings",
     "type": "Axure:Page",
-    "name": "通知中心",
+    "name": "站点应用配置",
     "notes": {},
     "annotations": [],
     "style": {

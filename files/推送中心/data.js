@@ -1,6 +1,6 @@
 $axure.loadCurrentPage({
-  "url": "修改商户状态.html",
-  "generationDate": new Date(2026, 5, 22),
+  "url": "推送中心.html",
+  "generationDate": new Date(1782230400000),
   "defaultAdaptiveView": {
     "name": "",
     "cursor": 1,
@@ -24,9 +24,9 @@ $axure.loadCurrentPage({
     "HoverNum"
   ],
   "page": {
-    "packageId": "merchant_status_update",
+    "packageId": "operation_notification_center",
     "type": "Axure:Page",
-    "name": "修改商户状态",
+    "name": "推送中心",
     "notes": {},
     "annotations": [],
     "style": {
@@ -34,7 +34,7 @@ $axure.loadCurrentPage({
       "pageAlignment": "center",
       "fill": {
         "fillType": "solid",
-        "color": 4294967295
+        "color": 0xFFFFFFFF
       },
       "image": null,
       "imageAlignment": {
@@ -50,7 +50,7 @@ $axure.loadCurrentPage({
       "borderVisibility": "top right bottom left",
       "borderFill": {
         "fillType": "solid",
-        "color": 4286151033
+        "color": 0xFF797979
       },
       "cornerRadius": "0",
       "cornerVisibility": "top right bottom left",
@@ -59,20 +59,22 @@ $axure.loadCurrentPage({
         "offsetX": 5,
         "offsetY": 5,
         "blurRadius": 5,
-        "color": 855638016
+        "spread": 0,
+        "color": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 0.34901960784313724
+        }
       },
-      "innerShadow": {
-        "on": false,
-        "offsetX": 5,
-        "offsetY": 5,
-        "blurRadius": 5,
-        "color": 855638016
-      }
+      "pageCursor": "touch"
     },
+    "adaptiveStyles": {},
+    "interactionMap": {},
     "diagram": {
       "objects": []
-    }
-  },
-  "masters": {},
-  "objectPaths": {}
+    },
+    "masters": {},
+    "objectPaths": {}
+  }
 });

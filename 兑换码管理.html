@@ -63,6 +63,11 @@
               <button class="btn" type="button">重置</button>
             </div>
             <div class="head-actions">
+              <div class="feature-toggle" id="featureMasterControl">
+                <span class="feature-toggle-label">本功能总开关</span>
+                <button class="switch switch-button on" id="featureMasterSwitch" type="button" aria-pressed="true" aria-label="本功能总开关"></button>
+                <span class="feature-toggle-status" id="featureMasterStatus">已开启</span>
+              </div>
               <button class="add-btn" id="openCreateModal" type="button">新增</button>
             </div>
           </section>
@@ -418,12 +423,12 @@ CCCCCCCCDDDDD</textarea>
               <h2 id="confirmTitle">删除确认</h2>
               <button class="close-btn" type="button" data-close="confirmModal" aria-label="关闭">×</button>
             </header>
-            <div class="confirm-body">
+            <div class="confirm-body" id="confirmBody">
               确认删除这条兑换码吗？删除后不可恢复。
             </div>
             <footer class="modal-foot">
               <button class="plain-btn" type="button" data-close="confirmModal">取消</button>
-              <button class="primary-btn" type="button" data-close="confirmModal">确定</button>
+              <button class="primary-btn" id="confirmSubmitButton" type="button">确定</button>
             </footer>
           </section>
         </div>

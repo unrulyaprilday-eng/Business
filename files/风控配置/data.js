@@ -1,6 +1,6 @@
 $axure.loadCurrentPage({
-  "url": "站点配置.html",
-  "generationDate": new Date(1779120000000),
+  "url": "风控配置.html",
+  "generationDate": new Date(2026, 5, 22),
   "defaultAdaptiveView": {
     "name": "",
     "cursor": 1,
@@ -24,9 +24,9 @@ $axure.loadCurrentPage({
     "HoverNum"
   ],
   "page": {
-    "packageId": "page_settings",
+    "packageId": "merchant_status_update",
     "type": "Axure:Page",
-    "name": "站点配置",
+    "name": "风控配置",
     "notes": {},
     "annotations": [],
     "style": {
@@ -34,7 +34,7 @@ $axure.loadCurrentPage({
       "pageAlignment": "center",
       "fill": {
         "fillType": "solid",
-        "color": 0xFFFFFFFF
+        "color": 4294967295
       },
       "image": null,
       "imageAlignment": {
@@ -50,7 +50,7 @@ $axure.loadCurrentPage({
       "borderVisibility": "top right bottom left",
       "borderFill": {
         "fillType": "solid",
-        "color": 0xFF797979
+        "color": 4286151033
       },
       "cornerRadius": "0",
       "cornerVisibility": "top right bottom left",
@@ -59,22 +59,20 @@ $axure.loadCurrentPage({
         "offsetX": 5,
         "offsetY": 5,
         "blurRadius": 5,
-        "spread": 0,
-        "color": {
-          "r": 0,
-          "g": 0,
-          "b": 0,
-          "a": 0.34901960784313724
-        }
+        "color": 855638016
       },
-      "pageCursor": "touch"
+      "innerShadow": {
+        "on": false,
+        "offsetX": 5,
+        "offsetY": 5,
+        "blurRadius": 5,
+        "color": 855638016
+      }
     },
-    "adaptiveStyles": {},
-    "interactionMap": {},
     "diagram": {
       "objects": []
-    },
-    "masters": {},
-    "objectPaths": {}
-  }
+    }
+  },
+  "masters": {},
+  "objectPaths": {}
 });

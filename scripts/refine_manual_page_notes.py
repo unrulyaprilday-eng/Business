@@ -17,7 +17,7 @@ SOURCE_PATH = ROOT / "backups" / "B端后台操作手册.simplify-page-notes-202
 
 
 ALIASES = {
-    "站点应用配置": "站点配置.html",
+    "站点应用配置": "站点应用配置.html",
     "游戏人数据表": "游戏人数报表.html",
     "游戏厂商统计": "游戏厂商报表.html",
     "充值留存报表": "付费留存率报表.html",

@@ -46,6 +46,41 @@ textarea {
   margin-bottom: 10px;
 }
 
+.head-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.feature-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid #d9dde5;
+  border-radius: 4px;
+  background: #f8fafc;
+  color: #354052;
+  box-sizing: border-box;
+}
+
+.feature-toggle-label {
+  font-weight: 700;
+}
+
+.feature-toggle-status {
+  min-width: 42px;
+  color: #1e8e4d;
+  font-weight: 700;
+}
+
+.feature-toggle-status.off {
+  color: #d36b08;
+}
+
 .search-input,
 .date-input {
   width: 160px;
@@ -96,7 +131,6 @@ textarea {
 .add-btn {
   width: 116px;
   height: 34px;
-  margin-bottom: 18px;
   font-size: 13px;
 }
 
@@ -176,8 +210,12 @@ textarea {
   display: inline-block;
   width: 42px;
   height: 22px;
+  padding: 0;
+  border: 0;
   border-radius: 11px;
   background: #b9c1d0;
+  cursor: pointer;
+  vertical-align: middle;
 }
 
 .switch::after {
@@ -198,6 +236,15 @@ textarea {
 
 .switch.on::after {
   left: 22px;
+}
+
+.switch-button:focus-visible {
+  outline: 2px solid rgba(59, 152, 240, 0.35);
+  outline-offset: 2px;
+}
+
+.redeem-panel.feature-disabled .redeem-table .switch {
+  opacity: 0.55;
 }
 
 .expired {

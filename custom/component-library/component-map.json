@@ -98,7 +98,7 @@
       "name": "表单网格",
       "snippet": "snippets/form-grid.html",
       "needsScript": false,
-      "sources": ["会员提现设置.html", "会员充值配置.html", "站点配置.html"],
+      "sources": ["会员提现设置.html", "会员充值配置.html", "站点应用配置.html"],
       "useWhen": "弹窗或配置页里展示成组输入项。"
     },
     {
