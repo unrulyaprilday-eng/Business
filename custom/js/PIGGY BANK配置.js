@@ -102,12 +102,25 @@
   function validateRange() {
     var min = document.querySelector(".js-range-min");
     var max = document.querySelector(".js-range-max");
+    var count = document.querySelector(".js-spin-count");
     var warning = document.querySelector("[data-rule-warning]");
     if (!min || !max || !warning) return;
 
     var minValue = Number(min.value);
     var maxValue = Number(max.value);
-    warning.hidden = !(Number.isFinite(minValue) && Number.isFinite(maxValue) && minValue > maxValue);
+    var countValue = count ? Number(count.value) : NaN;
+    var messages = [];
+
+    if (Number.isFinite(minValue) && Number.isFinite(maxValue) && minValue > maxValue) {
+      messages.push("最终总金额最小值不能大于最大值。");
+    }
+
+    if (Number.isFinite(countValue) && Number.isFinite(maxValue) && maxValue > countValue * 1000) {
+      messages.push("配置的金额上限不可超出次数 * 1000。");
+    }
+
+    warning.hidden = messages.length === 0;
+    warning.textContent = messages.join(" ");
   }
 
   ready(function () {
@@ -122,7 +135,7 @@
       }
     });
 
-    document.querySelectorAll(".js-range-min, .js-range-max").forEach(function (input) {
+    document.querySelectorAll(".js-range-min, .js-range-max, .js-spin-count").forEach(function (input) {
       input.addEventListener("input", validateRange);
     });
 

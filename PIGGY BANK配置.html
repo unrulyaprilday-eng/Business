@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>PIGGY BANK配置</title>
+    <title>PIGGYBANK配置</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -58,8 +58,8 @@
       <div class="custom-page-shell piggy-config-page">
         <header class="piggy-page-head">
           <div>
-            <div class="piggy-breadcrumb">优惠活动 / PIGGY BANK配置</div>
-            <h1>PIGGY BANK配置</h1>
+            <div class="piggy-breadcrumb">优惠活动 / PIGGYBANK配置</div>
+            <h1>PIGGYBANK配置</h1>
           </div>
           <div class="cl-action-group">
             <a class="piggy-link-btn" href="PIGGY BANK参与记录.html">参与记录</a>
@@ -78,7 +78,7 @@
                 <div class="cl-form-grid">
                   <div class="cl-form-field">
                     <label>活动名称</label>
-                    <input class="cl-input" value="PIGGY BANK"/>
+                    <div class="piggy-static-field">PIGGYBANK</div>
                   </div>
                   <div class="cl-form-field">
                     <label>活动总开关</label>
@@ -100,18 +100,18 @@
                 <div class="cl-form-grid">
                   <div class="cl-form-field">
                     <label><span class="cl-required">*</span>免费SPIN次数</label>
-                    <input class="cl-input" type="number" value="5" data-fixed-spin-count/>
+                    <input class="cl-input piggy-narrow-input js-spin-count" type="number" value="5" min="1" max="100" data-fixed-spin-count/>
                   </div>
                   <div class="cl-form-field">
                     <label><span class="cl-required">*</span>最终总金额范围</label>
                     <div class="piggy-inline-inputs">
-                      <input class="cl-input js-range-min" type="number" value="10.00" step="0.01"/>
+                      <input class="cl-input piggy-narrow-input js-range-min" type="number" value="10.00" step="0.01"/>
                       <span>至</span>
-                      <input class="cl-input js-range-max" type="number" value="20.00" step="0.01"/>
+                      <input class="cl-input piggy-narrow-input js-range-max" type="number" value="20.00" step="0.01"/>
                     </div>
                   </div>
                 </div>
-                <div class="piggy-warning" data-rule-warning hidden>最终总金额最小值不能大于最大值，保存前需要调整。</div>
+                <div class="piggy-warning" data-rule-warning hidden></div>
               </div>
             </section>
           </section>
@@ -133,7 +133,6 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr><td>VIP0</td><td class="cl-num"><div class="piggy-percent-input"><input class="cl-input" type="number" value="0.20" step="0.01"/><span>%</span></div></td></tr>
                       <tr><td>VIP1</td><td class="cl-num"><div class="piggy-percent-input"><input class="cl-input" type="number" value="0.30" step="0.01"/><span>%</span></div></td></tr>
                       <tr><td>VIP2</td><td class="cl-num"><div class="piggy-percent-input"><input class="cl-input" type="number" value="0.40" step="0.01"/><span>%</span></div></td></tr>
                       <tr><td>VIP3</td><td class="cl-num"><div class="piggy-percent-input"><input class="cl-input" type="number" value="0.55" step="0.01"/><span>%</span></div></td></tr>
@@ -148,6 +147,7 @@
                       <tr><td>VIP12</td><td class="cl-num"><div class="piggy-percent-input"><input class="cl-input" type="number" value="2.70" step="0.01"/><span>%</span></div></td></tr>
                       <tr><td>VIP13</td><td class="cl-num"><div class="piggy-percent-input"><input class="cl-input" type="number" value="3.00" step="0.01"/><span>%</span></div></td></tr>
                       <tr><td>VIP14</td><td class="cl-num"><div class="piggy-percent-input"><input class="cl-input" type="number" value="3.50" step="0.01"/><span>%</span></div></td></tr>
+                      <tr><td>VIP15</td><td class="cl-num"><div class="piggy-percent-input"><input class="cl-input" type="number" value="4.00" step="0.01"/><span>%</span></div></td></tr>
                     </tbody>
                   </table>
                 </div>
@@ -159,6 +159,14 @@
             <button class="piggy-btn" type="button" data-edit-action="cancel" hidden>取消</button>
             <button class="piggy-btn primary" type="button" data-edit-action="save" hidden>保存</button>
           </footer>
+          <section class="piggy-desc-panel">
+            <strong>说明</strong>
+            <ul class="piggy-desc-list">
+              <li>根据配置的次数和金额计算每次 SPIN 金额，金额需要是结果集中存在的金额。</li>
+              <li>除非配置超过范围无法计算出结果，尽量不要为 0。</li>
+              <li>配置的金额上限不可超出次数 * 1000。</li>
+            </ul>
+          </section>
         </main>
       </div>
     </div>

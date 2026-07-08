@@ -22,7 +22,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  min-width: 1280px;
+  width: min(1120px, 100%);
   margin: 0 auto;
   padding: 14px 16px;
   background: #fff;
@@ -61,7 +61,7 @@ body {
 }
 
 .piggy-workspace {
-  min-width: 1280px;
+  width: min(1120px, 100%);
   margin: 0 auto;
   padding: 0 0 16px;
   background: #fff;
@@ -103,9 +103,27 @@ body {
 
 .piggy-inline-inputs {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-columns: 160px auto 160px;
   align-items: center;
   gap: 8px;
+}
+
+.piggy-static-field {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 12px;
+  min-width: 160px;
+  color: #303744;
+  background: #f8fafc;
+  border: 1px solid #e1e6ef;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-weight: 600;
+}
+
+.piggy-narrow-input {
+  width: 160px;
 }
 
 .piggy-inline-inputs span,
@@ -275,6 +293,27 @@ body {
   border-top: 1px solid #e2e6ec;
 }
 
+.piggy-desc-panel {
+  margin: 0 18px 18px;
+  padding: 14px 16px;
+  background: #f8fbff;
+  border: 1px solid #d9e8ff;
+  border-radius: 4px;
+}
+
+.piggy-desc-panel strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #303744;
+}
+
+.piggy-desc-list {
+  margin: 0;
+  padding-left: 18px;
+  color: #5b6778;
+  line-height: 1.7;
+}
+
 .piggy-btn {
   height: 32px;
   min-width: 68px;
@@ -300,7 +339,7 @@ body {
 
   .piggy-page-head,
   .piggy-workspace {
-    min-width: 0;
+    width: 100%;
   }
 
   .piggy-page-head {
@@ -314,5 +353,11 @@ body {
 
   .piggy-inline-inputs {
     grid-template-columns: 1fr;
+  }
+
+  .piggy-narrow-input,
+  .piggy-static-field {
+    width: 100%;
+    min-width: 0;
   }
 }
