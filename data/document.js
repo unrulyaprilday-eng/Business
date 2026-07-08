@@ -254,6 +254,20 @@ $axure.loadDocument({
             "children": []
           },
           {
+            "id": "piggy_bank_config",
+            "pageName": "PIGGY BANK配置",
+            "type": "Wireframe",
+            "url": "PIGGY BANK配置.html",
+            "children": []
+          },
+          {
+            "id": "piggy_bank_records",
+            "pageName": "PIGGY BANK参与记录",
+            "type": "Wireframe",
+            "url": "PIGGY BANK参与记录.html",
+            "children": []
+          },
+          {
             "id": "novs01",
             "pageName": "新增活动",
             "type": "Wireframe",

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-07-07T03:34:26.717Z",
+  "savedAt": "2026-07-08T07:00:16.677Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -240,6 +240,20 @@
           "pageName": "幸运转盘配置",
           "type": "Wireframe",
           "url": "幸运转盘配置.html",
+          "children": []
+        },
+        {
+          "id": "piggy_bank_config",
+          "pageName": "PIGGY BANK配置",
+          "type": "Wireframe",
+          "url": "PIGGY BANK配置.html",
+          "children": []
+        },
+        {
+          "id": "piggy_bank_records",
+          "pageName": "PIGGY BANK参与记录",
+          "type": "Wireframe",
+          "url": "PIGGY BANK参与记录.html",
           "children": []
         },
         {

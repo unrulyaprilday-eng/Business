@@ -1,0 +1,270 @@
+html,
+body {
+  margin: 0;
+  background: #f4f6f8;
+  color: #303846;
+  font-family: "Microsoft YaHei", Arial, sans-serif;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.piggy-record-page {
+  min-width: 1280px;
+  min-height: 100vh;
+  padding: 20px 16px 0;
+  box-sizing: border-box;
+  background: #f4f6f8;
+  font-size: 12px;
+}
+
+.record-panel {
+  min-width: 1280px;
+  min-height: calc(100vh - 20px);
+  padding: 18px 16px 0;
+  background: #fff;
+  border-radius: 4px 4px 0 0;
+  box-sizing: border-box;
+}
+
+.record-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.record-breadcrumb {
+  margin-bottom: 4px;
+  color: #9098a6;
+}
+
+.record-head h1 {
+  margin: 0;
+  color: #303744;
+  font-size: 16px;
+}
+
+.record-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 12px;
+  margin-bottom: 12px;
+}
+
+.record-toolbar label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #4b5a6c;
+  white-space: nowrap;
+}
+
+.record-toolbar input,
+.record-toolbar select {
+  width: 136px;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid #d8dee8;
+  border-radius: 3px;
+  box-sizing: border-box;
+  background: #fff;
+  color: #303846;
+  font-family: inherit;
+  font-size: 12px;
+  outline: 0;
+}
+
+.record-toolbar .date-range input {
+  width: 126px;
+}
+
+.record-toolbar em {
+  color: #9098a6;
+  font-style: normal;
+}
+
+button,
+.plain-btn,
+.primary-btn {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.primary-btn,
+.plain-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  min-width: 60px;
+  padding: 0 14px;
+  border-radius: 3px;
+  box-sizing: border-box;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.primary-btn {
+  border: 1px solid #409eff;
+  background: #409eff;
+  color: #fff;
+}
+
+.plain-btn {
+  border: 1px solid #d8dee8;
+  background: #fff;
+  color: #445066;
+}
+
+.table-panel {
+  border: 1px solid #e2e6ec;
+  background: #fff;
+  overflow-x: auto;
+}
+
+.record-table {
+  width: 100%;
+  min-width: 1680px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.record-table th,
+.record-table td {
+  height: 42px;
+  padding: 0 10px;
+  border-right: 1px solid #e6e9ef;
+  border-bottom: 1px solid #e6e9ef;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.record-table th {
+  background: #f7f7f8;
+  color: #303744;
+  font-weight: 600;
+}
+
+.record-table th:nth-child(1),
+.record-table td:nth-child(1),
+.record-table th:nth-child(12),
+.record-table td:nth-child(12) {
+  width: 154px;
+}
+
+.record-table th:nth-child(2),
+.record-table td:nth-child(2),
+.record-table th:nth-child(3),
+.record-table td:nth-child(3) {
+  width: 118px;
+}
+
+.record-table th:nth-child(13),
+.record-table td:nth-child(13) {
+  width: 116px;
+  border-right: 0;
+}
+
+.num {
+  text-align: right !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.tag,
+.status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 58px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-weight: 600;
+}
+
+.tag.ok,
+.status.paid,
+.status.done {
+  background: #f0f9eb;
+  color: #2aa51f;
+}
+
+.tag.warn,
+.status.pending,
+.status.running {
+  background: #fff7e8;
+  color: #d46b08;
+}
+
+.tag.risk,
+.status.locked {
+  background: #fff1f2;
+  color: #d9233f;
+}
+
+.status.disabled,
+.status.expired {
+  background: #eef2f7;
+  color: #64748b;
+}
+
+.actions a {
+  margin: 0 5px;
+  color: #2f8df5;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.pager {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  height: 48px;
+  padding: 0 14px;
+  color: #344054;
+  box-sizing: border-box;
+}
+
+.page-icon {
+  min-width: 18px;
+  height: 30px;
+  border: 0;
+  background: transparent;
+  color: #3d7fc2;
+  font-size: 14px;
+}
+
+.page-icon.disabled {
+  color: #aeb8c6;
+}
+
+.page-num {
+  min-width: 52px;
+  height: 30px;
+  border: 1px solid #d8dee8;
+  border-radius: 3px;
+  line-height: 30px;
+  text-align: center;
+  color: #3478ca;
+}
+
+.pager select {
+  width: 112px;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid #d8dee8;
+  border-radius: 3px;
+  background: #fff;
+  color: #344054;
+  font-family: inherit;
+  font-size: 12px;
+}
