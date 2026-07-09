@@ -182,7 +182,7 @@ button,
 
 .record-table {
   width: 100%;
-  min-width: 1020px;
+  min-width: 1120px;
   border-collapse: collapse;
   table-layout: fixed;
 }
@@ -208,8 +208,8 @@ button,
 
 .record-table th:nth-child(1),
 .record-table td:nth-child(1),
-.record-table th:nth-child(9),
-.record-table td:nth-child(9) {
+.record-table th:nth-child(10),
+.record-table td:nth-child(10) {
   width: 154px;
 }
 
@@ -220,8 +220,8 @@ button,
   width: 118px;
 }
 
-.record-table th:nth-child(10),
-.record-table td:nth-child(10) {
+.record-table th:nth-child(11),
+.record-table td:nth-child(11) {
   width: 90px;
   border-right: 0;
 }
