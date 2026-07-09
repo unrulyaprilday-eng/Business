@@ -103,6 +103,14 @@
                     <input class="cl-input piggy-narrow-input js-spin-count" type="number" value="5" min="1" max="100" data-fixed-spin-count/>
                   </div>
                   <div class="cl-form-field">
+                    <label><span class="cl-required">*</span>BET值</label>
+                    <input class="cl-input piggy-narrow-input js-bet-value" type="number" value="1.00" min="0" step="0.01"/>
+                  </div>
+                  <div class="cl-form-field">
+                    <label><span class="cl-required">*</span>单次最大倍数</label>
+                    <input class="cl-input piggy-narrow-input js-max-multiple" type="number" value="1000" min="1" max="1000" step="1"/>
+                  </div>
+                  <div class="cl-form-field">
                     <label><span class="cl-required">*</span>最终总金额范围</label>
                     <div class="piggy-inline-inputs">
                       <input class="cl-input piggy-narrow-input js-range-min" type="number" value="10.00" step="0.01"/>
@@ -164,7 +172,8 @@
             <ul class="piggy-desc-list">
               <li>根据配置的次数和金额计算每次 SPIN 金额，金额需要是结果集中存在的金额。</li>
               <li>除非配置超过范围无法计算出结果，尽量不要为 0。</li>
-              <li>配置的金额上限不可超出次数 * 1000。</li>
+              <li>单次最大倍数不能超过 1000。</li>
+              <li>总金额上限不可超出 BET值 * 单次最大倍数 * 次数。</li>
             </ul>
           </section>
         </main>

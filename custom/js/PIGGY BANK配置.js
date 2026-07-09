@@ -93,6 +93,10 @@
       }
 
       if (action === "save") {
+        if (!validateRange()) {
+          return;
+        }
+
         saveSnapshot(root);
         setEditMode(root, false);
       }
@@ -103,24 +107,39 @@
     var min = document.querySelector(".js-range-min");
     var max = document.querySelector(".js-range-max");
     var count = document.querySelector(".js-spin-count");
+    var bet = document.querySelector(".js-bet-value");
+    var maxMultiple = document.querySelector(".js-max-multiple");
     var warning = document.querySelector("[data-rule-warning]");
     if (!min || !max || !warning) return;
 
     var minValue = Number(min.value);
     var maxValue = Number(max.value);
     var countValue = count ? Number(count.value) : NaN;
+    var betValue = bet ? Number(bet.value) : NaN;
+    var maxMultipleValue = maxMultiple ? Number(maxMultiple.value) : NaN;
     var messages = [];
 
     if (Number.isFinite(minValue) && Number.isFinite(maxValue) && minValue > maxValue) {
       messages.push("最终总金额最小值不能大于最大值。");
     }
 
-    if (Number.isFinite(countValue) && Number.isFinite(maxValue) && maxValue > countValue * 1000) {
-      messages.push("配置的金额上限不可超出次数 * 1000。");
+    if (Number.isFinite(maxMultipleValue) && maxMultipleValue > 1000) {
+      messages.push("单次最大倍数不能超过 1000。");
+    }
+
+    if (
+      Number.isFinite(betValue) &&
+      Number.isFinite(maxMultipleValue) &&
+      Number.isFinite(countValue) &&
+      Number.isFinite(maxValue) &&
+      maxValue > betValue * maxMultipleValue * countValue
+    ) {
+      messages.push("总金额上限不可超出 BET值 * 单次最大倍数 * 次数。");
     }
 
     warning.hidden = messages.length === 0;
     warning.textContent = messages.join(" ");
+    return messages.length === 0;
   }
 
   ready(function () {
@@ -135,7 +154,7 @@
       }
     });
 
-    document.querySelectorAll(".js-range-min, .js-range-max, .js-spin-count").forEach(function (input) {
+    document.querySelectorAll(".js-range-min, .js-range-max, .js-spin-count, .js-bet-value, .js-max-multiple").forEach(function (input) {
       input.addEventListener("input", validateRange);
     });
 
