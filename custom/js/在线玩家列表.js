@@ -155,22 +155,29 @@
     fillManualBalanceInfo(findMemberById(input ? input.value.trim() : ""));
   }
 
-  function filterTable(playerType, locationType, websitePosition, gameType) {
+  function filterTable(playerType, channel, locationType, websitePosition, gameType) {
     var tbody = document.querySelector(".online-table tbody");
     if (!tbody) return;
     
     var rows = tbody.querySelectorAll("tr");
     
     rows.forEach(function(row) {
-      var typeCell = row.cells[2];
-      var locationCell = row.cells[4];
-      if (!typeCell || !locationCell) return;
+      var channelCell = row.cells[2];
+      var typeCell = row.cells[3];
+      var locationCell = row.cells[5];
+      if (!channelCell || !typeCell || !locationCell) return;
       
       var typeText = typeCell.textContent.trim();
       var locationText = locationCell.textContent.trim();
       var shouldShow = false;
 
       if (playerType && playerType !== "全部" && typeText !== playerType) {
+        row.style.display = "none";
+        return;
+      }
+
+      var hasChannel = !!channelCell.textContent.trim();
+      if (channel && (channel === "none" ? hasChannel : channelCell.textContent.trim() !== channel)) {
         row.style.display = "none";
         return;
       }
@@ -214,7 +221,7 @@
     
     var needAttentionCount = 0;
     visibleRows.forEach(function(row) {
-      var balanceCell = row.cells[3];
+      var balanceCell = row.cells[4];
       if (balanceCell && balanceCell.classList.contains("danger")) {
         needAttentionCount++;
       }
@@ -222,7 +229,7 @@
     
     var totalBalance = 0;
     visibleRows.forEach(function(row) {
-      var balanceCell = row.cells[3];
+      var balanceCell = row.cells[4];
       if (balanceCell) {
         var balanceText = balanceCell.textContent.replace(/,/g, "").trim();
         var balance = parseFloat(balanceText);
@@ -288,20 +295,31 @@
     });
     
     var playerTypeSelect = document.querySelector("[data-player-type-filter]");
-    var locationSelect = document.querySelectorAll(".filter-bar select")[1];
-    var websitePositionSelect = document.querySelectorAll(".filter-bar select")[2];
-    var gameTypeSelect = document.querySelectorAll(".filter-bar select")[3];
+    var channelSelect = document.querySelector("[data-channel-filter]");
+    var locationSelect = document.querySelector("[data-location-filter]");
+    var websitePositionSelect = document.querySelector("[data-website-position-filter]");
+    var gameTypeSelect = document.querySelector("[data-game-type-filter]");
+    var channelSamples = ["111", "112", "113", ""];
+
+    Array.prototype.forEach.call(document.querySelectorAll(".online-table tbody tr"), function (row, index) {
+      if (row.cells[2]) row.cells[2].textContent = channelSamples[index % channelSamples.length];
+    });
 
     function applyFilters() {
       var playerType = playerTypeSelect ? playerTypeSelect.value : "全部";
+      var channel = channelSelect ? channelSelect.value : "";
       var locationType = locationSelect ? locationSelect.value : "全部";
       var websitePosition = websitePositionSelect ? websitePositionSelect.value : "全部";
       var gameType = gameTypeSelect ? gameTypeSelect.value : "全部";
-      filterTable(playerType, locationType, websitePosition, gameType);
+      filterTable(playerType, channel, locationType, websitePosition, gameType);
     }
 
     if (playerTypeSelect) {
       playerTypeSelect.addEventListener("change", applyFilters);
+    }
+
+    if (channelSelect) {
+      channelSelect.addEventListener("change", applyFilters);
     }
     
     if (locationSelect) {

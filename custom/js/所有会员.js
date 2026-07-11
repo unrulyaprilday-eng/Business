@@ -369,6 +369,33 @@
       }
     });
 
+    var channelFilter = document.querySelector("[data-channel-filter]");
+    var memberSearch = document.querySelector("[data-member-search]");
+    var memberReset = document.querySelector("[data-member-reset]");
+    var channelSamples = ["111", "112", "113", ""];
+    $all(".member-table tbody tr").forEach(function (row, index) {
+      if (row.cells[5]) row.cells[5].textContent = channelSamples[index % channelSamples.length];
+    });
+    function applyMemberFilters() {
+      var channel = channelFilter ? channelFilter.value : "";
+      $all(".member-table tbody tr").forEach(function (row) {
+        var channelCell = row.cells[5];
+        var hasChannel = !!(channelCell && channelCell.textContent.trim());
+        var shouldShow = !channel || (channel === "none" ? !hasChannel : channel === channelCell.textContent.trim());
+        row.style.display = shouldShow ? "" : "none";
+      });
+      schedulePlayerRefresh();
+    }
+
+    if (memberSearch) memberSearch.addEventListener("click", applyMemberFilters);
+    if (memberReset) {
+      memberReset.addEventListener("click", function () {
+        $all(".filterbar input").forEach(function (input) { input.value = ""; });
+        $all(".filterbar select").forEach(function (select) { select.selectedIndex = 0; });
+        applyMemberFilters();
+      });
+    }
+
     schedulePlayerRefresh();
     window.addEventListener("load", schedulePlayerRefresh);
   }

@@ -62,10 +62,11 @@
             <label>用户名:<input placeholder="请输入用户名"></label>
             <label>手机号:<input placeholder="请输入手机号"></label>
             <label>用户代码:<input placeholder="请输入用户代码"></label>
+            <label>渠道编码:<select data-channel-filter><option value="">全部</option><option>111</option><option>112</option><option>113</option><option value="none">无</option></select></label>
             <label>账户状态:<select><option>请选择</option></select></label>
             <label>是否在线:<select><option>请选择</option></select></label>
-            <button class="btn primary" type="button">搜索</button>
-            <button class="btn" type="button">重置</button>
+            <button class="btn primary" data-member-search type="button">搜索</button>
+            <button class="btn" data-member-reset type="button">重置</button>
             <button class="btn primary" type="button">导出报表</button>
             <button class="btn success" type="button" data-create>创建玩家</button>
           </div>
