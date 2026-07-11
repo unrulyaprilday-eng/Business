@@ -394,6 +394,35 @@ input[type="radio"] {
   accent-color: #3b98f0;
 }
 
+.claim-limit-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 30px;
+  margin: 8px 0 14px 8px;
+  color: #3b4655;
+}
+
+.claim-limit-label {
+  width: 78px;
+  text-align: right;
+  color: #404956;
+}
+
+.claim-limit-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.claim-limit-option input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: #3b98f0;
+}
+
 .scope-panel {
   margin: 8px 0 14px;
 }

@@ -79,6 +79,13 @@
     });
   }
 
+  function showDetailClaimLimit(limit) {
+    var text = limit === "none" ? "无" : "已完成首充";
+    qsa("[data-detail-claim-limit]").forEach(function (node) {
+      node.textContent = text;
+    });
+  }
+
   function renderSelectedChannels() {
     var selectedBox = document.getElementById("selectedChannelList");
     var triggerText = document.getElementById("channelPickerText");
@@ -214,6 +221,7 @@
         var row = event.target.closest("tr");
         if (row) {
           showDetailView(row.getAttribute("data-type") === "one-time" ? "one-time" : "reuse");
+          showDetailClaimLimit(row.getAttribute("data-claim-limit"));
           openModal("detailModal");
         }
       }
