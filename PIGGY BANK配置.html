@@ -113,9 +113,13 @@
                       <span class="piggy-range-separator" aria-hidden="true">-</span>
                       <input class="cl-input piggy-narrow-input js-range-max" type="number" value="20.00" step="0.01" aria-label="最终总金额最大值"/>
                     </div>
+                    <div class="piggy-range-help">
+                      <span data-theoretical-range>理论最低金额：10.00；理论最高金额：5000.00</span>
+                      <span class="is-valid" data-reachable-summary>当前范围内存在 5 个可达结果，可以保存。</span>
+                    </div>
                   </div>
                 </div>
-                <div class="piggy-warning" data-rule-warning hidden></div>
+                <div class="piggy-warning" data-rule-warning role="alert" aria-live="polite" hidden></div>
               </div>
             </section>
           </section>
@@ -166,8 +170,8 @@
           <section class="piggy-desc-panel">
             <strong>说明</strong>
             <ul class="piggy-desc-list">
-              <li>根据配置的次数和金额计算每次 SPIN 金额，金额需要是结果集中存在的金额。</li>
-              <li>除非配置超过范围无法计算出结果，尽量不要为 0。</li>
+              <li>理论最低金额 = 2 × 免费 SPIN 次数 × BET 值；理论最高金额 = 1000 × 免费 SPIN 次数 × BET 值。</li>
+              <li>保存时会校验金额范围内是否至少存在 1 个可达结果；若不存在，将阻止保存并提示调整配置。</li>
             </ul>
           </section>
         </main>

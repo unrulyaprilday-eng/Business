@@ -141,6 +141,24 @@ body {
   font-weight: 600;
 }
 
+.piggy-range-help {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 2px;
+  color: #7b8494;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.piggy-range-help [data-reachable-summary].is-valid {
+  color: #16845b;
+}
+
+.piggy-range-help [data-reachable-summary].is-invalid {
+  color: #c2413b;
+}
+
 .piggy-static-field {
   display: inline-flex;
   align-items: center;

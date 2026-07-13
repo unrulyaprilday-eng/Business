@@ -135,6 +135,7 @@ def reset_section(
     title: str,
     keep_existing_media: bool,
     heading_style: str = "Heading 3",
+    result_heading_style: str | None = None,
     stop_styles: list[str] | None = None,
 ):
     start, end = find_section_range(document, title=title, heading_style=heading_style, stop_styles=stop_styles)
@@ -144,7 +145,9 @@ def reset_section(
         delete_paragraph(paragraph)
 
     anchor = document.paragraphs[start]
-    format_heading_paragraph(anchor, heading_style)
+    output_style = result_heading_style or heading_style
+    anchor.style = output_style
+    format_heading_paragraph(anchor, output_style)
     return anchor
 
 
@@ -350,6 +353,7 @@ def main() -> None:
             title=section["title"],
             keep_existing_media=resolve_keep_existing_media(config, section),
             heading_style=section.get("heading_style", "Heading 3"),
+            result_heading_style=section.get("result_heading_style"),
             stop_styles=section.get("stop_styles"),
         )
         apply_blocks(anchor, section.get("blocks", []), config_dir=config_dir)

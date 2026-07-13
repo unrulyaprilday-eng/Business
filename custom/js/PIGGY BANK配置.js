@@ -1,4 +1,8 @@
 (function () {
+  var RESULT_MULTIPLIERS = [2, 5, 10, 20, 22, 25, 30, 50, 55, 75, 100];
+  var THEORETICAL_MIN_MULTIPLE = 2;
+  var THEORETICAL_MAX_MULTIPLE = 1000;
+
   function ready(fn) {
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", fn);
@@ -103,19 +107,107 @@
     });
   }
 
+  function formatAmount(value) {
+    return Number.isFinite(value) ? value.toFixed(2) : "--";
+  }
+
+  function getReachableTotals(spinCount, betValue, minValue, maxValue) {
+    if (!Number.isInteger(spinCount) || spinCount < 1 || !Number.isFinite(betValue) || betValue <= 0) {
+      return [];
+    }
+
+    var reachable = new Set([0]);
+
+    for (var spin = 0; spin < spinCount; spin += 1) {
+      var next = new Set();
+      reachable.forEach(function (totalMultiple) {
+        RESULT_MULTIPLIERS.forEach(function (multiple) {
+          next.add(totalMultiple + multiple);
+        });
+      });
+      reachable = next;
+    }
+
+    return Array.from(reachable).filter(function (totalMultiple) {
+      var amount = totalMultiple * betValue;
+      return amount + 0.000001 >= minValue && amount - 0.000001 <= maxValue;
+    });
+  }
+
+  function updateRangeHelp(theoreticalMin, theoreticalMax, reachableCount, isComplete) {
+    var theoreticalRange = document.querySelector("[data-theoretical-range]");
+    var reachableSummary = document.querySelector("[data-reachable-summary]");
+
+    if (theoreticalRange) {
+      theoreticalRange.textContent = "理论最低金额：" + formatAmount(theoreticalMin) + "；理论最高金额：" + formatAmount(theoreticalMax);
+    }
+
+    if (!reachableSummary) return;
+
+    reachableSummary.classList.toggle("is-valid", isComplete && reachableCount > 0);
+    reachableSummary.classList.toggle("is-invalid", isComplete && reachableCount === 0);
+
+    if (!isComplete) {
+      reachableSummary.textContent = "填写完整配置后，将自动校验可达结果。";
+    } else if (reachableCount > 0) {
+      reachableSummary.textContent = "当前范围内存在 " + reachableCount + " 个可达结果，可以保存。";
+    } else {
+      reachableSummary.textContent = "当前范围内不存在可达结果，无法保存。";
+    }
+  }
+
   function validateRange() {
     var min = document.querySelector(".js-range-min");
     var max = document.querySelector(".js-range-max");
+    var count = document.querySelector(".js-spin-count");
+    var bet = document.querySelector(".js-bet-value");
     var warning = document.querySelector("[data-rule-warning]");
     if (!min || !max || !warning) return;
 
     var minValue = Number(min.value);
     var maxValue = Number(max.value);
+    var countValue = count ? Number(count.value) : NaN;
+    var betValue = bet ? Number(bet.value) : NaN;
+    var baseValuesValid = Number.isInteger(countValue) && countValue >= 1 && Number.isFinite(betValue) && betValue > 0;
+    var rangeValuesValid = Number.isFinite(minValue) && Number.isFinite(maxValue);
+    var theoreticalMin = baseValuesValid ? THEORETICAL_MIN_MULTIPLE * countValue * betValue : NaN;
+    var theoreticalMax = baseValuesValid ? THEORETICAL_MAX_MULTIPLE * countValue * betValue : NaN;
+    var reachableTotals = baseValuesValid && rangeValuesValid
+      ? getReachableTotals(countValue, betValue, minValue, maxValue)
+      : [];
+    var rangeCanBeChecked = baseValuesValid &&
+      rangeValuesValid &&
+      minValue <= maxValue &&
+      minValue >= theoreticalMin &&
+      maxValue <= theoreticalMax;
     var messages = [];
 
-    if (Number.isFinite(minValue) && Number.isFinite(maxValue) && minValue > maxValue) {
+    if (!baseValuesValid) {
+      messages.push("请输入有效的免费 SPIN 次数和 BET 值。");
+    }
+
+    if (!rangeValuesValid) {
+      messages.push("请输入完整的最终总金额范围。");
+    } else if (minValue > maxValue) {
       messages.push("最终总金额最小值不能大于最大值。");
     }
+
+    if (baseValuesValid && rangeValuesValid && minValue < theoreticalMin) {
+      messages.push("最终总金额下限不得低于理论最低金额 " + formatAmount(theoreticalMin) + "。");
+    }
+
+    if (baseValuesValid && rangeValuesValid && maxValue > theoreticalMax) {
+      messages.push("最终总金额上限不得高于理论最高金额 " + formatAmount(theoreticalMax) + "。");
+    }
+
+    if (
+      rangeCanBeChecked &&
+      reachableTotals.length === 0
+    ) {
+      messages.push("当前金额范围内没有可生成的结果，请调整金额范围、BET 值或免费 SPIN 次数后重试。");
+    }
+
+    updateRangeHelp(theoreticalMin, theoreticalMax, reachableTotals.length, rangeCanBeChecked);
 
     warning.hidden = messages.length === 0;
     warning.textContent = messages.join(" ");
@@ -134,7 +226,7 @@
       }
     });
 
-    document.querySelectorAll(".js-range-min, .js-range-max").forEach(function (input) {
+    document.querySelectorAll(".js-range-min, .js-range-max, .js-spin-count, .js-bet-value").forEach(function (input) {
       input.addEventListener("input", validateRange);
     });
 

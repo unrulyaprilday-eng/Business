@@ -1,0 +1,144 @@
+{
+  "backup_tag": "manual-share-pages-20260713",
+  "keep_existing_media": false,
+  "sections": [
+    {
+      "title": "分享配置",
+      "heading_style": "Heading 2",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "分享配置用于维护前台可用的分享渠道、渠道图标、展示顺序和启用状态，配置结果会影响分享入口中可选择的渠道。"
+        },
+        {
+          "type": "module",
+          "title": "分享渠道列表",
+          "intro": "分享渠道列表用于统一查看 Telegram、X / Twitter、Line、WhatsApp、Facebook 等渠道的展示配置，并进入单个渠道的修改页面。",
+          "path": "../custom/assets/manual-share-pages/share-config-overview.png",
+          "caption": "图：分享渠道列表，用于查看渠道名称、图标、渠道标识、展示开关和排序。",
+          "blocks": [
+            {
+              "type": "bullet",
+              "label": "列表字段",
+              "text": "排序决定渠道在前台分享入口中的显示先后；名称和图标用于识别渠道；渠道标识用于匹配对应的分享方式；展示开关表示当前渠道是否对前台开放。"
+            },
+            {
+              "type": "bullet",
+              "label": "状态调整",
+              "text": "可直接切换展示开关控制渠道是否显示。停用前应确认当前活动、推广页面或品牌入口是否仍依赖该渠道。"
+            },
+            {
+              "type": "bullet",
+              "label": "修改入口",
+              "text": "点击行内“修改”可进入渠道编辑弹窗，调整图标、排序和启用状态。"
+            }
+          ]
+        },
+        {
+          "type": "module",
+          "title": "编辑分享渠道",
+          "intro": "编辑分享渠道弹窗用于维护单个渠道的展示资料。渠道名称和渠道标识由系统确定，编辑时重点核对图标、排序和启用状态。",
+          "path": "../custom/assets/manual-share-pages/share-config-edit-modal.png",
+          "width": 4.3,
+          "caption": "图：编辑分享渠道弹窗，用于维护渠道图标、排序和启用状态。",
+          "blocks": [
+            {
+              "type": "bullet",
+              "label": "渠道信息",
+              "text": "渠道名称和渠道标识为当前渠道的固定信息，不可编辑；链接地址会由渠道标识和当前前台页面 URL 自动拼接。"
+            },
+            {
+              "type": "bullet",
+              "label": "图标要求",
+              "text": "图标为必填项，建议上传 64×64 像素或等比例的 PNG、JPG、GIF 图片，文件大小不超过 200KB。"
+            },
+            {
+              "type": "bullet",
+              "label": "排序与状态",
+              "text": "排序值用于控制渠道展示顺序；启用状态决定渠道是否可在前台使用。修改后应同时检查列表中的排序和开关结果。"
+            },
+            {
+              "type": "bullet",
+              "label": "保存操作",
+              "text": "点击“确定”保存当前配置，点击“取消”或右上角关闭按钮放弃本次修改。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "分享卡片管理",
+      "heading_style": "Heading 2",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "分享卡片管理用于维护站点和指定页面的 OG 分享信息，包括分享标题、描述、预览图片和跳转地址，便于控制链接在社交平台中的卡片展示效果。"
+        },
+        {
+          "type": "module",
+          "title": "分享卡片列表",
+          "intro": "分享卡片列表集中展示站点 OG、页面 OG 和自定义链接配置，可按类型、状态和关键字定位记录，并对卡片进行启停、编辑或删除。",
+          "path": "../custom/assets/manual-share-pages/share-card-list.png",
+          "caption": "图：分享卡片列表，用于查看不同类型卡片的 OG 内容、状态和操作入口。",
+          "blocks": [
+            {
+              "type": "bullet",
+              "label": "筛选条件",
+              "text": "可按类型、状态筛选，并输入名称、链接地址或 OG 标题作为关键字查询；点击“重置”可清空筛选条件。"
+            },
+            {
+              "type": "bullet",
+              "label": "列表字段",
+              "text": "表格展示类型、名称、实际跳转地址、OG 标题、OG 描述、OG 图片、状态和更新时间，用于核对卡片内容与生效范围。"
+            },
+            {
+              "type": "bullet",
+              "label": "类型说明",
+              "text": "站点 OG 用于站点级分享；页面 OG 用于活动、任务、VIP、返水、邀请等指定页面；自定义链接用于补充独立页面或推广链接。"
+            },
+            {
+              "type": "bullet",
+              "label": "页面操作",
+              "text": "顶部“添加自定义”用于新建自定义链接卡片；行内“关闭/启用”用于切换状态，“编辑”用于修改内容，自定义链接还支持删除。"
+            },
+            {
+              "type": "bullet",
+              "label": "使用要点",
+              "text": "关闭卡片前应确认对应页面是否仍在投放；删除自定义链接前应核对实际跳转地址，避免影响已发布的分享链接。"
+            }
+          ]
+        },
+        {
+          "type": "module",
+          "title": "编辑自定义 OG",
+          "intro": "编辑自定义 OG 弹窗用于维护自定义链接的分享卡片内容，右侧预览区会同步展示图片、标题、描述和跳转地址。",
+          "path": "../custom/assets/manual-share-pages/share-card-edit-modal.png",
+          "width": 6.0,
+          "caption": "图：编辑自定义 OG 弹窗，用于维护跳转地址、OG 文案、图片和启用状态。",
+          "blocks": [
+            {
+              "type": "bullet",
+              "label": "基础信息",
+              "text": "类型在编辑时不可修改；名称、实际跳转地址、OG 标题和 OG 描述为主要配置内容，其中实际跳转地址应填写前台可访问的有效路径或链接。"
+            },
+            {
+              "type": "bullet",
+              "label": "OG 图片",
+              "text": "建议上传 1200×630 像素的 PNG、JPG、GIF 或 WEBP 图片，文件大小不超过 1MB；上传后应在右侧预览区检查裁切和文字可读性。"
+            },
+            {
+              "type": "bullet",
+              "label": "OG 链接与状态",
+              "text": "OG 链接可用于指定卡片跳转目标；状态开关决定当前卡片是否启用，停用后对应链接不再按该配置展示分享卡片。"
+            },
+            {
+              "type": "bullet",
+              "label": "保存操作",
+              "text": "确认左侧配置与右侧预览一致后点击“确定”保存；点击“取消”或关闭按钮可放弃本次修改。"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
