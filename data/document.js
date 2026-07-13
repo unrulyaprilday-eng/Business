@@ -78,9 +78,9 @@ $axure.loadDocument({
           },
           {
             "id": "og_management",
-            "pageName": "OG管理",
+            "pageName": "分享卡片管理",
             "type": "Wireframe",
-            "url": "OG管理.html",
+            "url": "分享卡片管理.html",
             "children": []
           },
           {

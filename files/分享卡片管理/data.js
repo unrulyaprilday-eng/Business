@@ -1,5 +1,5 @@
 $axure.loadCurrentPage({
-  "url": "OG管理.html",
+  "url": "分享卡片管理.html",
   "generationDate": new Date(1782691200000),
   "defaultAdaptiveView": {
     "name": "",
@@ -26,7 +26,7 @@ $axure.loadCurrentPage({
   "page": {
     "packageId": "og_management",
     "type": "Axure:Page",
-    "name": "OG管理",
+    "name": "分享卡片管理",
     "notes": {},
     "annotations": [],
     "style": {
