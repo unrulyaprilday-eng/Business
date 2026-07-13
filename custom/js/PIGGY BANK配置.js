@@ -269,9 +269,7 @@
       var switchButton = event.target.closest(".js-switch");
       if (switchButton) {
         var root = switchButton.closest("[data-edit-root]");
-        if (root && !root.classList.contains("is-editing")) {
-          return;
-        }
+        if (!root || !root.classList.contains("is-editing")) return;
         toggleSwitch(switchButton);
         updateDirtyState(root);
       }
