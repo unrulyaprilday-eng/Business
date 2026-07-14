@@ -198,44 +198,50 @@
               <button class="close-btn" data-close type="button">×</button>
             </div>
             <div class="modal-body params-form">
+              <div class="params-security-card">
+                <div class="form-row password-switch-row">
+                  <span>提现密码开关:</span>
+                  <div class="password-switch-content">
+                    <label class="switch">
+                      <input type="checkbox" checked/>
+                      <i></i>
+                      <b>开</b>
+                    </label>
+                    <em>开启后，会员提现时需验证提现密码，同时在会员端展示提现密码设置入口；关闭后不验证并隐藏该入口</em>
+                  </div>
+                </div>
+              </div>
+              <div class="params-divider"></div>
               <label class="form-row">
                 <span>会员可同时进行提现笔数:</span>
                 <input value="2" type="number"/>
                 <em>笔</em>
               </label>
-              <p class="muted">说明：若填1笔，则未审核出账完成无法发起第二笔，填0表示无限制，默认为0</p>
-              <div class="form-row password-switch-row">
-                <span>提现密码:</span>
-                <div class="password-switch-content">
-                  <label class="switch">
-                    <input type="checkbox" checked/>
-                    <i></i>
-                    <b>开</b>
-                  </label>
-                  <em>开启后，会员提现需完成提现密码校验，同时会员端展示提现密码设置入口；关闭后不校验且隐藏该入口</em>
+              <p class="muted">说明：填 1 表示上一笔提现完成审核并出账后才可发起下一笔；填 0 表示不限制，默认为 0</p>
+              <div class="form-row radio-row review-switch-row">
+                <span>提现初审:</span>
+                <label><input checked name="withdrawReview" value="disabled" type="radio"/> 关闭</label>
+                <label><input name="withdrawReview" value="enabled" type="radio"/> 开启</label>
+              </div>
+              <div class="review-config" data-review-config hidden>
+                <ol class="help-list">
+                  <li>开启后，提现申请将先进入初审，初审通过后再由财务审核并出款；</li>
+                  <li>后台账号需具备“提现初审”权限，方可处理初审；</li>
+                  <li>下方免初审条件为“且”关系，仅当累计提现次数、单笔提现金额和会员层级同时符合时，申请才可跳过初审。如需所有提现均进入初审，请勿配置可免初审的会员层级。</li>
+                </ol>
+                <div class="form-row inline-rules">
+                  <span>免初审条件:</span>
+                  <em>累计提现 ≥</em>
+                  <input value="1" type="number"/>
+                  <em>次，且本次提现金额 ≤</em>
+                  <input value="100" type="number"/>
+                  <em>元</em>
                 </div>
-              </div>
-              <div class="form-row radio-row">
-                <span>是否需要风控审核:</span>
-                <label><input name="risk" type="radio"/> 关闭</label>
-                <label><input checked name="risk" type="radio"/> 开启</label>
-              </div>
-              <ol class="help-list">
-                <li>开启后将增加风控页签，所有提现都需要先经过风控审核，最后再由财务审核出款；</li>
-                <li>需要后台加上相应的风控审核权限才能使用；</li>
-                <li>以下条件为非且关系（即所有条件都符合才能免风控审核），若都必须审核，配置需大于0，则都需要先风控审核。</li>
-              </ol>
-              <div class="form-row inline-rules">
-                <span>累计提现≥</span>
-                <input value="1" type="number"/>
-                <em>次可免风控，提现金额≤</em>
-                <input value="100" type="number"/>
-                <em>元可免风控</em>
-              </div>
-              <div class="form-row vip-checks wide">
-                <span>免风控层级:</span>
-                <label><input type="checkbox"/> 全部层级</label>
-                <div class="check-grid selected" data-count="15"></div>
+                <div class="form-row vip-checks wide">
+                  <span>可免初审层级:</span>
+                  <label><input type="checkbox"/> 全部层级</label>
+                  <div class="check-grid selected" data-count="15"></div>
+                </div>
               </div>
               <section class="mode-card">
                 <div class="mode-card-head">

@@ -26,6 +26,10 @@ button {
   cursor: pointer;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 .withdraw-page {
   min-width: 1280px;
   min-height: 100vh;
@@ -495,7 +499,8 @@ input[type="checkbox"] {
 }
 
 .params-form {
-  min-height: 640px;
+  max-height: calc(100vh - 130px);
+  overflow-y: auto;
 }
 
 .params-form .form-row > span {
@@ -517,7 +522,7 @@ input[type="checkbox"] {
 }
 
 .help-list {
-  margin: -4px 0 12px 150px;
+  margin: -4px 24px 12px 164px;
   line-height: 22px;
 }
 
@@ -527,6 +532,7 @@ input[type="checkbox"] {
 
 .password-switch-row {
   align-items: center;
+  margin-bottom: 0;
 }
 
 .password-switch-content {
@@ -541,6 +547,45 @@ input[type="checkbox"] {
   color: #667386;
   font-size: 12px;
   line-height: 18px;
+}
+
+.params-security-card {
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  border: 1px solid #dce3ec;
+  border-radius: 6px;
+  background: #f7f9fc;
+}
+
+.params-security-card .form-row > span {
+  flex-basis: 122px;
+}
+
+.params-divider {
+  height: 1px;
+  margin: 6px 0 10px;
+  background: #e3e8ef;
+}
+
+.review-switch-row {
+  margin-bottom: 8px;
+}
+
+.review-switch-row label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.review-switch-row input {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+}
+
+.review-config {
+  padding: 2px 0 4px;
 }
 
 .inline-rules span {

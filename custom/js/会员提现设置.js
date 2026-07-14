@@ -140,6 +140,24 @@
     });
   }
 
+  function bindWithdrawReview() {
+    var radios = $all('input[name="withdrawReview"]');
+    var config = $("[data-review-config]");
+    if (!radios.length || !config) return;
+
+    function syncReviewConfig() {
+      var enabled = radios.some(function (input) {
+        return input.checked && input.value === "enabled";
+      });
+      config.hidden = !enabled;
+    }
+
+    radios.forEach(function (input) {
+      input.addEventListener("change", syncReviewConfig);
+    });
+    syncReviewConfig();
+  }
+
   function bindEvents() {
     $all("[data-tab]").forEach(function (button) {
       button.addEventListener("click", function () {
@@ -168,6 +186,7 @@
     });
 
     bindRuleMode();
+    bindWithdrawReview();
   }
 
   renderVipChecks();
