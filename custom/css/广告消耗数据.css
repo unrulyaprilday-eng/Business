@@ -64,7 +64,7 @@ textarea {
 .filter-bar {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   flex-wrap: wrap;
   padding: 12px 16px;
   border: 1px solid #e4eaf1;
@@ -81,6 +81,43 @@ textarea {
 
 .range-field span {
   color: #7d8ca1;
+}
+
+.range-field .date-control {
+  position: relative;
+  display: inline-flex;
+  width: 162px;
+  height: 32px;
+}
+
+.date-control input {
+  width: 100%;
+  padding-right: 34px;
+  background: #fff url("../assets/calendar-dot.svg") no-repeat right 9px center;
+}
+
+.date-control input::-webkit-calendar-picker-indicator {
+  width: 24px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.date-placeholder {
+  position: absolute;
+  top: 1px;
+  right: 30px;
+  bottom: 1px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  color: #aeb8c4 !important;
+  pointer-events: none;
+}
+
+.date-control.has-value .date-placeholder,
+.date-control:focus-within .date-placeholder {
+  display: none;
 }
 
 input,
@@ -107,16 +144,18 @@ select {
   padding: 0 10px;
 }
 
-.range-field input {
-  width: 150px;
-}
-
 .inline-field select {
-  min-width: 182px;
+  width: 162px;
 }
 
 .entry-btn {
   margin-left: auto;
+}
+
+.filter-bar > .primary-btn,
+.filter-bar > .plain-btn {
+  padding-right: 14px;
+  padding-left: 14px;
 }
 
 .primary-btn,
@@ -189,10 +228,13 @@ select {
 }
 
 .data-table th:nth-child(2),
-.data-table td:nth-child(2),
+.data-table td:nth-child(2) {
+  width: 150px;
+}
+
 .data-table th:nth-child(3),
 .data-table td:nth-child(3) {
-  width: 108px;
+  width: 120px;
 }
 
 .data-table th:nth-child(4),
@@ -202,22 +244,22 @@ select {
 
 .data-table th:nth-child(5),
 .data-table td:nth-child(5) {
-  width: 180px;
+  width: 160px;
 }
 
 .data-table th:nth-child(6),
 .data-table td:nth-child(6) {
-  width: 104px;
+  width: 110px;
 }
 
 .data-table th:nth-child(7),
 .data-table td:nth-child(7) {
-  width: 146px;
+  width: 230px;
 }
 
 .data-table th:nth-child(8),
 .data-table td:nth-child(8) {
-  width: 116px;
+  width: 120px;
 }
 
 .amount-cell {
@@ -261,6 +303,14 @@ select {
   background: transparent;
   color: #2f8cff;
   cursor: pointer;
+}
+
+.action-cell .link-btn + .link-btn {
+  margin-left: 12px;
+}
+
+.danger-link {
+  color: #ff4d4f;
 }
 
 .pager {

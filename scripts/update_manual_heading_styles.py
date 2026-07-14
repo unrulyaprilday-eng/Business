@@ -19,8 +19,8 @@ FONT_NAME = "\u5fae\u8f6f\u96c5\u9ed1"
 
 HEADING_STYLE = {
     "Heading 1": {
-        "size": 14,
-        "color": "2F5597",
+        "size": 15,
+        "color": "254061",
         "before": 18,
         "after": 12,
         "line": 1.15,

@@ -57,26 +57,32 @@
         </div>
 
         <main class="page-main">
-          <section class="filter-bar" aria-label="筛选条件">
+          <form class="filter-bar" id="spendFilter" aria-label="筛选条件">
             <label class="range-field">
-              <input type="date" value="2026-06-01"/>
-              <span>-</span>
-              <input type="date" value="2026-06-11"/>
+              <span class="date-control">
+                <input id="filterStartDate" type="date" aria-label="开始日期"/>
+                <span class="date-placeholder">请选择</span>
+              </span>
+              <span>至</span>
+              <span class="date-control">
+                <input id="filterEndDate" type="date" aria-label="结束日期"/>
+                <span class="date-placeholder">请选择</span>
+              </span>
             </label>
             <label class="inline-field">
-              <span>渠道:</span>
-              <select>
+              <span>渠道</span>
+              <select id="filterChannel">
                 <option>请选择渠道</option>
-                <option>Facebook-AEO</option>
-                <option>Google-UAC</option>
-                <option>TikTok-Slot</option>
-                <option>Kwai-Casino</option>
+                <option>Facebook测试</option>
+                <option>adjust测试</option>
+                <option>Google UAC</option>
+                <option>TikTok Ads</option>
               </select>
             </label>
-            <button class="primary-btn" type="button">搜索</button>
+            <button class="primary-btn" type="submit">搜索</button>
             <button class="plain-btn" type="reset">重置</button>
-            <button class="primary-btn entry-btn" type="button" data-entry-action="add">新增广告消耗</button>
-          </section>
+            <button class="primary-btn entry-btn" type="button" data-entry-action="add">新增渠道消耗</button>
+          </form>
 
           <section class="table-card" aria-label="广告消耗数据列表">
             <div class="table-scroll">
@@ -84,45 +90,55 @@
                 <thead>
                   <tr>
                     <th>消耗日期</th>
-                    <th>渠道ID</th>
                     <th>渠道名称</th>
-                    <th>消耗金额<br/>(USDT)</th>
-                    <th>录入备注</th>
-                    <th>最后录入人</th>
-                    <th>最后录入时间</th>
+                    <th>渠道编码</th>
+                    <th>消耗金额(USDT)</th>
+                    <th>备注</th>
+                    <th>操作人</th>
+                    <th>最后更新时间</th>
                     <th>操作</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr data-row-id="row-1" data-site="TTTT（ID：14）" data-site-id="14" data-channel="Facebook-AEO" data-channel-id="CH10021" data-date="2026-06-10" data-amount="1280.00" data-remark="首次补录 06-10 费用" data-user="陈菲" data-time="2026-06-10 16:23:18" data-history='[{"amount":"1280.00","remark":"首次补录 06-10 费用","user":"陈菲","time":"2026-06-10 16:23:18"}]'>
-                    <td>2026-06-10</td>
-                    <td>CH10021</td>
-                    <td>Facebook-AEO</td>
-                    <td class="amount-cell">1,280.00</td>
-                    <td class="remark-cell">首次补录 06-10 费用</td>
-                    <td class="user-cell">陈菲</td>
-                    <td class="time-cell">2026-06-10 16:23:18</td>
-                    <td><button class="link-btn" type="button" data-entry-action="edit" data-row-id="row-1">修改金额</button></td>
+                  <tr data-row-id="row-1" data-channel="Facebook测试" data-channel-code="101102" data-date="2026-07-13" data-amount="1000" data-remark="7月品牌推广消耗" data-user="Admin" data-time="2026-07-14T13:41:21.487398+08:00">
+                    <td>2026-07-13</td>
+                    <td class="channel-cell">Facebook测试</td>
+                    <td class="code-cell">101102</td>
+                    <td class="amount-cell">1000</td>
+                    <td class="remark-cell">7月品牌推广消耗</td>
+                    <td class="user-cell">Admin</td>
+                    <td class="time-cell">2026-07-14T13:41:21.487398+08:00</td>
+                    <td class="action-cell"><button class="link-btn" type="button" data-entry-action="edit" data-row-id="row-1">编辑</button><button class="link-btn danger-link" type="button" data-entry-action="delete" data-row-id="row-1">删除</button></td>
                   </tr>
-                  <tr data-row-id="row-2" data-site="TTTT（ID：14）" data-site-id="14" data-channel="Google-UAC" data-channel-id="CH10035" data-date="2026-06-10" data-amount="820.50" data-remark="归因口径调整后重录" data-user="王敏" data-time="2026-06-11 10:12:09" data-history='[{"amount":"798.00","remark":"首次录入","user":"王敏","time":"2026-06-10 19:40:26"},{"amount":"820.50","remark":"归因口径调整后重录","user":"王敏","time":"2026-06-11 10:12:09"}]'>
-                    <td>2026-06-10</td>
-                    <td>CH10035</td>
-                    <td>Google-UAC</td>
-                    <td class="amount-cell">820.50</td>
-                    <td class="remark-cell">归因口径调整后重录</td>
-                    <td class="user-cell">王敏</td>
-                    <td class="time-cell">2026-06-11 10:12:09</td>
-                    <td><button class="link-btn" type="button" data-entry-action="edit" data-row-id="row-2">修改金额</button></td>
+                  <tr data-row-id="row-2" data-channel="adjust测试" data-channel-code="101101" data-date="2026-07-01" data-amount="111" data-remark="归因链路测试消耗" data-user="操作员" data-time="2026-07-02T13:46:42.161814+08:00">
+                    <td>2026-07-01</td>
+                    <td class="channel-cell">adjust测试</td>
+                    <td class="code-cell">101101</td>
+                    <td class="amount-cell">111</td>
+                    <td class="remark-cell">归因链路测试消耗</td>
+                    <td class="user-cell">操作员</td>
+                    <td class="time-cell">2026-07-02T13:46:42.161814+08:00</td>
+                    <td class="action-cell"><button class="link-btn" type="button" data-entry-action="edit" data-row-id="row-2">编辑</button><button class="link-btn danger-link" type="button" data-entry-action="delete" data-row-id="row-2">删除</button></td>
                   </tr>
-                  <tr data-row-id="row-3" data-site="WIN88（ID：18）" data-site-id="18" data-channel="TikTok-Slot" data-channel-id="CH10052" data-date="2026-06-09" data-amount="2450.00" data-remark="晚间加投已补入" data-user="赵琳" data-time="2026-06-10 09:28:44" data-history='[{"amount":"2450.00","remark":"晚间加投已补入","user":"赵琳","time":"2026-06-10 09:28:44"}]'>
-                    <td>2026-06-09</td>
-                    <td>CH10052</td>
-                    <td>TikTok-Slot</td>
-                    <td class="amount-cell">2,450.00</td>
-                    <td class="remark-cell">晚间加投已补入</td>
-                    <td class="user-cell">赵琳</td>
-                    <td class="time-cell">2026-06-10 09:28:44</td>
-                    <td><button class="link-btn" type="button" data-entry-action="edit" data-row-id="row-3">修改金额</button></td>
+                  <tr data-row-id="row-3" data-channel="Google UAC" data-channel-code="101103" data-date="2026-06-25" data-amount="856.75" data-remark="安卓端应用拉新投放" data-user="Admin" data-time="2026-06-26T09:18:35.682410+08:00">
+                    <td>2026-06-25</td>
+                    <td class="channel-cell">Google UAC</td>
+                    <td class="code-cell">101103</td>
+                    <td class="amount-cell">856.75</td>
+                    <td class="remark-cell">安卓端应用拉新投放</td>
+                    <td class="user-cell">Admin</td>
+                    <td class="time-cell">2026-06-26T09:18:35.682410+08:00</td>
+                    <td class="action-cell"><button class="link-btn" type="button" data-entry-action="edit" data-row-id="row-3">编辑</button><button class="link-btn danger-link" type="button" data-entry-action="delete" data-row-id="row-3">删除</button></td>
+                  </tr>
+                  <tr data-row-id="row-4" data-channel="TikTok Ads" data-channel-code="101104" data-date="2026-06-18" data-amount="2360.50" data-remark="短视频素材放量测试" data-user="操作员" data-time="2026-06-19T16:27:08.315206+08:00">
+                    <td>2026-06-18</td>
+                    <td class="channel-cell">TikTok Ads</td>
+                    <td class="code-cell">101104</td>
+                    <td class="amount-cell">2360.50</td>
+                    <td class="remark-cell">短视频素材放量测试</td>
+                    <td class="user-cell">操作员</td>
+                    <td class="time-cell">2026-06-19T16:27:08.315206+08:00</td>
+                    <td class="action-cell"><button class="link-btn" type="button" data-entry-action="edit" data-row-id="row-4">编辑</button><button class="link-btn danger-link" type="button" data-entry-action="delete" data-row-id="row-4">删除</button></td>
                   </tr>
                 </tbody>
               </table>
@@ -139,7 +155,7 @@
                 <option>20条/页</option>
                 <option>50条/页</option>
               </select>
-              <span id="recordCount">共 3 条记录</span>
+              <span id="recordCount">共 4 条记录</span>
             </div>
           </section>
         </main>
@@ -147,23 +163,23 @@
         <div class="modal-mask" id="entryModal" hidden>
           <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="entryModalTitle">
             <div class="modal-head">
-              <h3 id="entryModalTitle">新增广告消耗</h3>
+              <h3 id="entryModalTitle">新增渠道消耗</h3>
               <button class="modal-close" type="button" data-close-modal="entryModal" aria-label="关闭">×</button>
             </div>
             <div class="modal-body">
               <div class="form-grid">
-                <label class="form-row" id="entrySiteRow">
-                  <span><em>*</em> 站点:</span>
-                  <div class="text-display" id="entrySite">TTTT（ID：14）</div>
-                </label>
                 <label class="form-row" id="entryChannelRow">
-                  <span><em>*</em> 选择渠道:</span>
+                  <span><em>*</em> 渠道名称:</span>
                   <select id="entryChannel">
-                    <option>Facebook-AEO</option>
-                    <option>Google-UAC</option>
-                    <option>TikTok-Slot</option>
-                    <option>Kwai-Casino</option>
+                    <option>Facebook测试</option>
+                    <option>adjust测试</option>
+                    <option>Google UAC</option>
+                    <option>TikTok Ads</option>
                   </select>
+                </label>
+                <label class="form-row" id="entryCodeRow">
+                  <span><em>*</em> 渠道编码:</span>
+                  <input id="entryCode" type="text" placeholder="请输入渠道编码"/>
                 </label>
                 <label class="form-row" id="entryAmountRow">
                   <span><em>*</em> 消耗金额（USDT）:</span>
@@ -191,19 +207,6 @@
           </div>
         </div>
 
-        <div class="modal-mask" id="historyModal" hidden>
-          <div class="modal-card history-card" role="dialog" aria-modal="true" aria-labelledby="historyModalTitle">
-            <div class="modal-head">
-              <h3 id="historyModalTitle">录入记录</h3>
-              <button class="modal-close" type="button" data-close-modal="historyModal" aria-label="关闭">×</button>
-            </div>
-            <div class="modal-body history-body">
-              <div class="history-list" id="historyList">
-                <div class="history-empty">暂无记录</div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
