@@ -549,7 +549,7 @@ input[type="checkbox"] {
   line-height: 18px;
 }
 
-.params-security-card {
+.params-section {
   margin-bottom: 8px;
   padding: 8px 12px;
   border: 1px solid #dce3ec;
@@ -557,31 +557,65 @@ input[type="checkbox"] {
   background: #f7f9fc;
 }
 
+.params-section:last-of-type {
+  margin-bottom: 10px;
+}
+
+.params-security-card {
+  margin-bottom: 10px;
+}
+
 .params-security-card .form-row > span {
   flex-basis: 122px;
 }
 
-.params-divider {
-  height: 1px;
-  margin: 6px 0 10px;
-  background: #e3e8ef;
+.review-section {
+  background: #fff;
 }
 
 .review-switch-row {
+  align-items: center;
+  min-height: 32px;
   margin-bottom: 8px;
+  gap: 12px;
+}
+
+.review-switch-row > span {
+  line-height: 20px;
 }
 
 .review-switch-row label {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  min-height: 20px;
+  gap: 5px;
+  line-height: 20px;
   cursor: pointer;
 }
 
 .review-switch-row input {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 0 0 14px;
   width: 14px;
   height: 14px;
   margin: 0;
+  padding: 0;
+  border: 1px solid #d7dde7;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: none;
+  vertical-align: middle;
+}
+
+.review-switch-row input:checked {
+  border: 4px solid #409eff;
+  background: #fff;
+}
+
+.review-switch-row input:focus-visible {
+  outline: 2px solid rgba(64, 158, 255, 0.22);
+  outline-offset: 2px;
 }
 
 .review-config {
