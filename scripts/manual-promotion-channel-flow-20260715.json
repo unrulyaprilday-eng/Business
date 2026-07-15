@@ -1,0 +1,157 @@
+{
+  "docx": "../B端后台操作手册.docx",
+  "backup_tag": "manual-promotion-channel-flow-20260715",
+  "keep_existing_media": false,
+  "sections": [
+    {
+      "title": "十六、典型业务流程",
+      "heading_style": "Heading 1",
+      "stop_styles": ["Heading 1"],
+      "validate": {
+        "required_text": [
+          "新增推广渠道并查看推广效果",
+          "站点配置 > 站点域名",
+          "投放管理 > 渠道报表"
+        ],
+        "expected_images": 0
+      },
+      "blocks": [
+        {
+          "type": "heading",
+          "style": "Heading 2",
+          "text": "新站点上线流程"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "进入站点配置，完成模板管理、站点配置、品牌、域名、客服、分享、登录和支付相关配置。"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "检查首页、登录、充值、客服、活动入口和分享入口。"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "上线后通过首页看板、数据报表和异常日志观察运行状态。"
+        },
+        {
+          "type": "heading",
+          "style": "Heading 2",
+          "text": "新增推广渠道并查看推广效果"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "进入站点配置 > 站点域名，切换到“推广域名”页签，点击“新增”，选择实际使用的 CDN 节点并填写推广主域名后提交。提交前检查域名拼写、后缀和重复项，避免把正式投放域名添加到错误节点。"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "按列表展示的 NS 地址在域名服务商完成解析，等待主域名验证通过；随后为该推广域名绑定目标站点和落地页模板，确认域名状态、站点、模板及过期时间无误后启用。启用前用浏览器直接访问域名，确认能够打开正确落地页且跳转链路正常。"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "进入站点配置 > 广告埋点配置，点击“新增”，填写渠道名称，选择刚启用的落地页域名，配置跳转地址和渠道类型。Facebook、Google 等渠道按投放平台填写像素 ID；Adjust 等归因渠道按实际入口填写安装类型以及注册、首充、复充事件标识，完成后提交。"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "返回广告埋点配置列表，记录系统生成的渠道编码，复核渠道名称、渠道类型、落地页域名、跳转地址及平台参数。正式投放前使用测试链接完成一次访问、注册及可执行的转化测试，确认落地页可访问、渠道能够归因，且广告平台能收到对应事件。"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "产生推广数据后，进入投放管理 > 渠道报表，选择与投放周期一致的日期范围，并按渠道、媒体和广告链接筛选后点击“查询”。重点查看访问人数、新增、注册转化率、PWA 安装数、首充人数、访问-首充转化率、注册-首充转化率、充值金额、充提差、有效投注额以及次日、3 日、7 日复充占比。"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "点击渠道报表操作列的“查看明细”，按日期定位流量或转化波动，并核对渠道、媒体、广告链接和日期范围是否与当前投放批次一致。需要评估成本和 ROI 时，先在广告消耗数据中补录同一渠道、同一日期的实际消耗，再到投放数据报表查看注册成本、充值成本和各回收周期 ROI；复充和周期 ROI 尚未到观察期时不要提前下结论。"
+        },
+        {
+          "type": "heading",
+          "style": "Heading 2",
+          "text": "发布活动流程"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "进入优惠活动，创建或编辑活动规则。"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "检查活动展示入口、票券或任务关联、预算、领取限制和目标人群。"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "上线后通过活动报表、优惠数据报表和用户分析跟踪效果。"
+        },
+        {
+          "type": "heading",
+          "style": "Heading 2",
+          "text": "处理提现流程"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "进入财务中心的提现订单列表，筛选待审核或处理中订单。"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "核对会员、金额、账户、打码、风控提示和历史资金记录。"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "无异常时通过；存在风险时转入提现风控审核或驳回，并填写处理原因。"
+        },
+        {
+          "type": "heading",
+          "style": "Heading 2",
+          "text": "排查用户资金问题"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "进入用户管理定位会员，或进入财务中心账变记录筛选会员账号。"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "结合充值订单、提现订单、人工加扣款和账变记录核对完整资金链路。"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "需要追责时进入人事中心的管理员操作日志查询相关操作。"
+        },
+        {
+          "type": "heading",
+          "style": "Heading 2",
+          "text": "查看活动效果"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "固定活动名称、统计时间和渠道范围。"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "查看优惠活动、数据报表中的活动相关报表。"
+        },
+        {
+          "type": "paragraph",
+          "style": "List Number",
+          "text": "结合用户分析、充值分布、留存和 LTV 判断活动质量。"
+        }
+      ]
+    }
+  ]
+}

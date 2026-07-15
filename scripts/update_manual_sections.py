@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import dataclass
+from io import BytesIO
 import json
 import shutil
 from datetime import datetime
@@ -18,7 +20,6 @@ import extract_chat_images_from_codex_log as chat_images
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_DOCX = next(ROOT.glob("*.docx"))
 BACKUP_DIR = ROOT / "backups"
 
 FONT_NAME = "Microsoft YaHei"
@@ -30,6 +31,37 @@ HEADING_SIZES = {
     "Heading 3": 10.5,
     "Heading 4": 10.5,
 }
+HEADING_RANKS = {
+    "Heading 1": 1,
+    "Heading 2": 2,
+    "Heading 3": 3,
+    "Heading 4": 4,
+}
+
+
+class DocumentLockedError(RuntimeError):
+    pass
+
+
+@dataclass(frozen=True)
+class SectionLocation:
+    start: int
+    end: int
+    matched_style: str
+
+
+@dataclass(frozen=True)
+class EmbeddedImage:
+    data: bytes
+    caption: str | None = None
+
+
+@dataclass
+class BlockContext:
+    config_dir: Path
+    embedded_images: list[EmbeddedImage]
+    chat_images: dict[str, EmbeddedImage]
+    image_ordinal: int = 0
 
 
 def parse_args() -> argparse.Namespace:
@@ -57,6 +89,28 @@ def resolve_path(value: str | None, base_dir: Path) -> Path | None:
     if not path.is_absolute():
         path = (base_dir / path).resolve()
     return path
+
+
+def find_default_docx(root: Path = ROOT) -> Path:
+    candidates = sorted(
+        path for path in root.glob("*.docx") if not path.name.startswith("~$")
+    )
+    if not candidates:
+        raise FileNotFoundError(f"no docx found in {root}")
+    if len(candidates) > 1:
+        names = ", ".join(path.name for path in candidates)
+        raise RuntimeError(f"multiple docx files found; set config.docx or --docx: {names}")
+    return candidates[0]
+
+
+def ensure_document_writable(docx_path: Path) -> None:
+    try:
+        with docx_path.open("r+b"):
+            pass
+    except PermissionError as exc:
+        raise DocumentLockedError(
+            f"document is in use; close it and rerun the same config: {docx_path}"
+        ) from exc
 
 
 def set_run(run, *, size: float = 10, bold: bool = False, color: RGBColor | None = None) -> None:
@@ -98,27 +152,115 @@ def paragraph_is_media(paragraph) -> bool:
     return text.startswith(("图：", "圖："))
 
 
+def collect_section_images(
+    document: Document, location: SectionLocation
+) -> list[EmbeddedImage]:
+    paragraphs = document.paragraphs
+    images: list[EmbeddedImage] = []
+    for index in range(location.start + 1, location.end):
+        paragraph = paragraphs[index]
+        relationship_ids = paragraph._element.xpath(".//a:blip/@r:embed")
+        if not relationship_ids:
+            continue
+        caption = None
+        if index + 1 < location.end:
+            next_paragraph = paragraphs[index + 1]
+            if paragraph_is_media(next_paragraph) and not paragraph_has_drawing(next_paragraph):
+                caption = next_paragraph.text.strip() or None
+        for relationship_id in relationship_ids:
+            image_part = document.part.related_parts.get(relationship_id)
+            if image_part is None or not hasattr(image_part, "blob"):
+                raise RuntimeError(
+                    f"unable to read embedded image relationship: {relationship_id}"
+                )
+            images.append(EmbeddedImage(data=image_part.blob, caption=caption))
+    return images
+
+
+def default_stop_styles(heading_style: str) -> set[str]:
+    rank = HEADING_RANKS.get(heading_style)
+    if rank is None:
+        return {"Heading 1", "Heading 2", "Heading 3"}
+    return {style for style, style_rank in HEADING_RANKS.items() if style_rank <= rank}
+
+
+def paragraph_is_within_parent(
+    paragraphs: list[Paragraph],
+    index: int,
+    parent_title: str | None,
+    parent_heading_style: str,
+) -> bool:
+    if not parent_title:
+        return True
+    for parent_index in range(index - 1, -1, -1):
+        paragraph = paragraphs[parent_index]
+        if paragraph.style.name == parent_heading_style:
+            return paragraph.text.strip() == parent_title
+    return False
+
+
 def find_section_range(
     document: Document,
     title: str,
     heading_style: str = "Heading 3",
     stop_styles: list[str] | None = None,
-) -> tuple[int, int]:
-    start = None
-    for index, paragraph in enumerate(document.paragraphs):
-        if paragraph.style.name == heading_style and paragraph.text.strip() == title:
-            start = index
-            break
-    if start is None:
-        raise RuntimeError(f"section not found: {title}")
+    parent_title: str | None = None,
+    parent_heading_style: str = "Heading 2",
+    match_index: int | None = None,
+    allow_style_fallback: bool = True,
+) -> SectionLocation:
+    paragraphs = document.paragraphs
+    matches = [
+        index
+        for index, paragraph in enumerate(paragraphs)
+        if paragraph.style.name == heading_style
+        and paragraph.text.strip() == title
+        and paragraph_is_within_parent(
+            paragraphs, index, parent_title, parent_heading_style
+        )
+    ]
 
-    stop_style_set = set(stop_styles or {"Heading 1", "Heading 2", "Heading 3"})
-    end = len(document.paragraphs)
-    for index in range(start + 1, len(document.paragraphs)):
-        if document.paragraphs[index].style.name in stop_style_set:
+    if not matches and allow_style_fallback:
+        matches = [
+            index
+            for index, paragraph in enumerate(paragraphs)
+            if paragraph.style.name in HEADING_RANKS
+            and paragraph.text.strip() == title
+            and paragraph_is_within_parent(
+                paragraphs, index, parent_title, parent_heading_style
+            )
+        ]
+        if len(matches) == 1:
+            actual_style = paragraphs[matches[0]].style.name
+            print(
+                f"section_style_fallback title={title} "
+                f"requested={heading_style} actual={actual_style}"
+            )
+
+    if match_index is not None:
+        if match_index < 1 or match_index > len(matches):
+            raise RuntimeError(
+                f"section match_index out of range: {title} index={match_index} matches={len(matches)}"
+            )
+        start = matches[match_index - 1]
+    elif len(matches) == 1:
+        start = matches[0]
+    elif not matches:
+        raise RuntimeError(f"section not found: {title} style={heading_style}")
+    else:
+        raise RuntimeError(
+            f"section is ambiguous: {title} style={heading_style} matches={len(matches)}; "
+            "set parent_title or match_index"
+        )
+
+    matched_style = paragraphs[start].style.name
+    stop_style_set = set(stop_styles) if stop_styles else default_stop_styles(matched_style)
+    end = len(paragraphs)
+    for index in range(start + 1, len(paragraphs)):
+        if paragraphs[index].style.name in stop_style_set:
             end = index
             break
-    return start, end
+    return SectionLocation(start=start, end=end, matched_style=matched_style)
 
 
 def style_size(style: str, default: float = 10) -> float:
@@ -137,15 +279,26 @@ def reset_section(
     heading_style: str = "Heading 3",
     result_heading_style: str | None = None,
     stop_styles: list[str] | None = None,
+    parent_title: str | None = None,
+    parent_heading_style: str = "Heading 2",
+    match_index: int | None = None,
 ):
-    start, end = find_section_range(document, title=title, heading_style=heading_style, stop_styles=stop_styles)
-    for paragraph in list(document.paragraphs[start + 1 : end]):
+    location = find_section_range(
+        document,
+        title=title,
+        heading_style=heading_style,
+        stop_styles=stop_styles,
+        parent_title=parent_title,
+        parent_heading_style=parent_heading_style,
+        match_index=match_index,
+    )
+    for paragraph in list(document.paragraphs[location.start + 1 : location.end]):
         if keep_existing_media and paragraph_is_media(paragraph):
             continue
         delete_paragraph(paragraph)
 
-    anchor = document.paragraphs[start]
-    output_style = result_heading_style or heading_style
+    anchor = document.paragraphs[location.start]
+    output_style = result_heading_style or location.matched_style
     anchor.style = output_style
     format_heading_paragraph(anchor, output_style)
     return anchor
@@ -156,7 +309,7 @@ def resolve_keep_existing_media(config: dict[str, Any], section: dict[str, Any])
         return bool(section["keep_existing_media"])
     if "keep_existing_media" in config:
         return bool(config["keep_existing_media"])
-    return True
+    return False
 
 
 def add_paragraph_after(anchor, text: str, style: str = "Normal"):
@@ -202,10 +355,14 @@ def add_bullet_after(anchor, label: str | None, text: str):
     return paragraph
 
 
-def add_picture_after(anchor, image_path: Path, width: float = 6.4):
+def add_picture_after(anchor, image_source: Path | bytes, width: float = 6.4):
     paragraph = insert_after(anchor, style="Normal")
     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    paragraph.add_run().add_picture(str(image_path), width=Inches(width))
+    if isinstance(image_source, bytes):
+        picture_source = BytesIO(image_source)
+    else:
+        picture_source = str(image_source)
+    paragraph.add_run().add_picture(picture_source, width=Inches(width))
     paragraph.paragraph_format.space_after = Pt(2)
     return paragraph
 
@@ -219,11 +376,7 @@ def add_caption_after(anchor, text: str):
     return paragraph
 
 
-def materialize_chat_images(task: dict[str, Any], config_dir: Path) -> list[Path]:
-    output_dir = resolve_path(task["output_dir"], config_dir)
-    assert output_dir is not None
-    output_dir.mkdir(parents=True, exist_ok=True)
-
+def load_chat_images(task: dict[str, Any], config_dir: Path) -> dict[str, EmbeddedImage]:
     if task.get("thread_read_file"):
         _, message, images = chat_images.extract_from_thread_read_file(
             resolve_path(task["thread_read_file"], config_dir),
@@ -244,32 +397,112 @@ def materialize_chat_images(task: dict[str, Any], config_dir: Path) -> list[Path
         source = "local_codex_logs"
 
     chat_images.validate_count(len(images), task.get("expected_count"))
-    prefix = task.get("prefix", "chat")
-    written = chat_images.write_images(images, output_dir=output_dir, prefix=prefix)
+    names = task.get("names") or task.get("rename_to") or []
+    if names and len(names) != len(images):
+        raise RuntimeError("chat image names count does not match extracted image count")
+    if not names:
+        names = [f"chat-{index}.{extension}" for index, (extension, _) in enumerate(images, 1)]
 
-    rename_to = task.get("rename_to") or []
-    if rename_to:
-        if len(rename_to) != len(written):
-            raise RuntimeError("rename_to count does not match extracted image count")
-        renamed: list[Path] = []
-        for src, target_name in zip(written, rename_to):
-            target = output_dir / target_name
-            src.replace(target)
-            renamed.append(target)
-        written = renamed
+    loaded: dict[str, EmbeddedImage] = {}
+    task_id = task.get("id")
+    for name, (_, data) in zip(names, images):
+        key = str(name)
+        aliases = [key]
+        if task_id:
+            aliases.append(f"{task_id}:{key}")
+        for alias in aliases:
+            if alias in loaded:
+                raise RuntimeError(f"duplicate chat image name: {alias}")
+            loaded[alias] = EmbeddedImage(data=data)
 
-    print(f"chat_images source={source} message_id={message.get('id', '')} count={len(written)}")
-    for path in written:
-        print(path)
-    return written
+    if task.get("output_dir"):
+        print("chat_images in_memory output_dir_ignored=true")
+    print(
+        f"chat_images source={source} message_id={message.get('id', '')} "
+        f"count={len(images)} mode=in_memory"
+    )
+    return loaded
 
 
-def run_image_tasks(section: dict[str, Any], config_dir: Path) -> None:
+def load_section_chat_images(
+    section: dict[str, Any], config_dir: Path
+) -> dict[str, EmbeddedImage]:
+    loaded: dict[str, EmbeddedImage] = {}
     for task in section.get("chat_image_tasks", []):
-        materialize_chat_images(task, config_dir=config_dir)
+        for name, image in load_chat_images(task, config_dir=config_dir).items():
+            if name in loaded:
+                raise RuntimeError(f"duplicate chat image name across tasks: {name}")
+            loaded[name] = image
+    return loaded
 
 
-def apply_blocks(anchor, blocks: list[dict[str, Any]], config_dir: Path):
+def image_from_embedded_source(
+    block: dict[str, Any], context: BlockContext, ordinal: int
+) -> bytes:
+    if "source_index" in block:
+        source_index = int(block["source_index"])
+        if source_index < 1 or source_index > len(context.embedded_images):
+            raise RuntimeError(
+                f"embedded image source_index out of range: {source_index} "
+                f"count={len(context.embedded_images)}"
+            )
+        return context.embedded_images[source_index - 1].data
+
+    if "source_caption" in block:
+        source_caption = str(block["source_caption"])
+        matches = [
+            image
+            for image in context.embedded_images
+            if image.caption == source_caption
+        ]
+        if len(matches) != 1:
+            raise RuntimeError(
+                f"embedded image caption must match exactly once: {source_caption} "
+                f"matches={len(matches)}"
+            )
+        return matches[0].data
+
+    if ordinal < len(context.embedded_images):
+        return context.embedded_images[ordinal].data
+    raise RuntimeError(
+        f"no embedded image available for block position {ordinal + 1}; "
+        "set path, chat_image, source_index, or source_caption"
+    )
+
+
+def resolve_image_source(
+    block: dict[str, Any], context: BlockContext
+) -> Path | bytes:
+    ordinal = context.image_ordinal
+    context.image_ordinal += 1
+
+    chat_image_name = block.get("chat_image")
+    if chat_image_name:
+        image = context.chat_images.get(str(chat_image_name))
+        if image is None:
+            raise RuntimeError(f"chat image not found: {chat_image_name}")
+        return image.data
+
+    if "source_index" in block or "source_caption" in block:
+        return image_from_embedded_source(block, context, ordinal)
+
+    path_value = block.get("path")
+    if path_value:
+        image_path = resolve_path(path_value, context.config_dir)
+        if image_path is not None and image_path.exists():
+            return image_path
+        if ordinal < len(context.embedded_images):
+            print(
+                f"image_path_missing fallback=embedded source_index={ordinal + 1} "
+                f"path={image_path}"
+            )
+            return context.embedded_images[ordinal].data
+        raise FileNotFoundError(image_path)
+
+    return image_from_embedded_source(block, context, ordinal)
+
+
+def apply_blocks(anchor, blocks: list[dict[str, Any]], context: BlockContext):
     last = anchor
     for block in blocks:
         block_type = block["type"]
@@ -285,11 +518,11 @@ def apply_blocks(anchor, blocks: list[dict[str, Any]], config_dir: Path):
         if block_type == "bullet":
             last = add_bullet_after(last, block.get("label"), block["text"])
             continue
-        if block_type == "image":
-            image_path = resolve_path(block["path"], config_dir)
-            if image_path is None or not image_path.exists():
-                raise FileNotFoundError(image_path)
-            last = add_picture_after(last, image_path=image_path, width=float(block.get("width", 6.4)))
+        if block_type in {"image", "document_image", "chat_image"}:
+            image_source = resolve_image_source(block, context)
+            last = add_picture_after(
+                last, image_source=image_source, width=float(block.get("width", 6.4))
+            )
             caption = block.get("caption")
             if caption:
                 last = add_caption_after(last, caption)
@@ -300,15 +533,15 @@ def apply_blocks(anchor, blocks: list[dict[str, Any]], config_dir: Path):
             if intro:
                 last = add_paragraph_after(last, intro, style=block.get("intro_style", "Normal"))
             if block.get("pre_blocks"):
-                last = apply_blocks(last, block.get("pre_blocks", []), config_dir=config_dir)
-            image_path = resolve_path(block["path"], config_dir)
-            if image_path is None or not image_path.exists():
-                raise FileNotFoundError(image_path)
-            last = add_picture_after(last, image_path=image_path, width=float(block.get("width", 6.4)))
+                last = apply_blocks(last, block.get("pre_blocks", []), context=context)
+            image_source = resolve_image_source(block, context)
+            last = add_picture_after(
+                last, image_source=image_source, width=float(block.get("width", 6.4))
+            )
             caption = block.get("caption")
             if caption:
                 last = add_caption_after(last, caption)
-            last = apply_blocks(last, block.get("blocks", []), config_dir=config_dir)
+            last = apply_blocks(last, block.get("blocks", []), context=context)
             continue
         raise RuntimeError(f"unsupported block type: {block_type}")
     return last
@@ -322,11 +555,82 @@ def backup_docx(docx_path: Path, tag: str) -> Path:
     return backup
 
 
-def validate_titles(document: Document, titles: list[str]) -> None:
-    text = "\n".join(p.text for p in document.paragraphs)
-    for title in titles:
-        if title not in text:
-            raise RuntimeError(f"title validation failed: {title}")
+def section_lookup_kwargs(section: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "title": section["title"],
+        "heading_style": section.get("heading_style", "Heading 3"),
+        "stop_styles": section.get("stop_styles"),
+        "parent_title": section.get("parent_title"),
+        "parent_heading_style": section.get("parent_heading_style", "Heading 2"),
+        "match_index": section.get("match_index"),
+    }
+
+
+def validate_blocks(blocks: list[dict[str, Any]]) -> None:
+    supported = {
+        "paragraph",
+        "submodule_title",
+        "heading",
+        "bullet",
+        "image",
+        "document_image",
+        "chat_image",
+        "module",
+    }
+    for block in blocks:
+        block_type = block.get("type")
+        if block_type not in supported:
+            raise RuntimeError(f"unsupported block type: {block_type}")
+        if block_type == "module":
+            if not block.get("title"):
+                raise RuntimeError("module block requires title")
+            validate_blocks(block.get("pre_blocks", []))
+            validate_blocks(block.get("blocks", []))
+
+
+def locate_sections(
+    document: Document, sections: list[dict[str, Any]]
+) -> list[SectionLocation]:
+    locations = [
+        find_section_range(document, **section_lookup_kwargs(section))
+        for section in sections
+    ]
+    ordered = sorted(
+        ((location.start, location.end, sections[index]["title"]) for index, location in enumerate(locations)),
+        key=lambda item: item[0],
+    )
+    for previous, current in zip(ordered, ordered[1:]):
+        if current[0] < previous[1]:
+            raise RuntimeError(
+                f"overlapping section updates are not supported: {previous[2]} / {current[2]}"
+            )
+    return locations
+
+
+def validate_document_sections(
+    document: Document, sections: list[dict[str, Any]]
+) -> None:
+    for section in sections:
+        location = find_section_range(document, **section_lookup_kwargs(section))
+        section_paragraphs = document.paragraphs[location.start : location.end]
+        section_text = "\n".join(paragraph.text for paragraph in section_paragraphs)
+        validation = section.get("validate", {})
+        for required_text in validation.get("required_text", []):
+            if required_text not in section_text:
+                raise RuntimeError(
+                    f"required text validation failed: {section['title']} / {required_text}"
+                )
+        if "expected_images" in validation:
+            actual_images = sum(
+                len(paragraph._element.xpath(".//a:blip/@r:embed"))
+                for paragraph in section_paragraphs
+            )
+            expected_images = int(validation["expected_images"])
+            if actual_images != expected_images:
+                raise RuntimeError(
+                    f"image validation failed: {section['title']} "
+                    f"expected={expected_images} actual={actual_images}"
+                )
 
 
 def main() -> None:
@@ -335,19 +639,32 @@ def main() -> None:
     config_dir = config_path.parent
     config = load_json(config_path)
 
-    docx_path = resolve_path(args.docx or config.get("docx"), config_dir) or DEFAULT_DOCX
+    docx_value = args.docx or config.get("docx")
+    docx_path = resolve_path(docx_value, config_dir) if docx_value else find_default_docx()
+    assert docx_path is not None
     if not docx_path.exists():
         raise FileNotFoundError(docx_path)
 
     sections = config.get("sections", [])
     if not sections:
         raise RuntimeError("config.sections is empty")
-
     for section in sections:
-        run_image_tasks(section, config_dir=config_dir)
+        validate_blocks(section.get("blocks", []))
 
     document = Document(docx_path)
-    for section in sections:
+    initial_locations = locate_sections(document, sections)
+    embedded_images = [
+        collect_section_images(document, location) for location in initial_locations
+    ]
+
+    if not args.dry_run:
+        ensure_document_writable(docx_path)
+
+    section_chat_images = [
+        load_section_chat_images(section, config_dir=config_dir) for section in sections
+    ]
+
+    for section_index, section in enumerate(sections):
         anchor = reset_section(
             document,
             title=section["title"],
@@ -355,10 +672,18 @@ def main() -> None:
             heading_style=section.get("heading_style", "Heading 3"),
             result_heading_style=section.get("result_heading_style"),
             stop_styles=section.get("stop_styles"),
+            parent_title=section.get("parent_title"),
+            parent_heading_style=section.get("parent_heading_style", "Heading 2"),
+            match_index=section.get("match_index"),
         )
-        apply_blocks(anchor, section.get("blocks", []), config_dir=config_dir)
+        context = BlockContext(
+            config_dir=config_dir,
+            embedded_images=embedded_images[section_index],
+            chat_images=section_chat_images[section_index],
+        )
+        apply_blocks(anchor, section.get("blocks", []), context=context)
 
-    validate_titles(document, [section["title"] for section in sections])
+    validate_document_sections(document, sections)
 
     if args.dry_run:
         print(f"dry_run ok docx={docx_path}")
@@ -367,13 +692,21 @@ def main() -> None:
     backup = backup_docx(docx_path, tag=config.get("backup_tag", "manual-sections"))
     try:
         document.save(docx_path)
-    except PermissionError:
-        print(f"PERMISSION_ERROR backup={backup}")
-        raise
+    except PermissionError as exc:
+        raise DocumentLockedError(
+            f"document became locked during save; close it and rerun the same config: {docx_path}"
+        ) from exc
+
+    saved_document = Document(docx_path)
+    validate_document_sections(saved_document, sections)
 
     print(f"updated manual docx={docx_path}")
     print(f"backup={backup}")
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except DocumentLockedError as exc:
+        print(f"DOCX_LOCKED {exc}")
+        raise SystemExit(2) from None
