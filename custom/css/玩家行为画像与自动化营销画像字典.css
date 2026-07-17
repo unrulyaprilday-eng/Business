@@ -1,0 +1,7 @@
+.solution-dictionary-page .solution-section-index {
+  background: var(--solution-green);
+}
+
+.solution-dictionary-page .solution-doc-summary {
+  border-top: 3px solid var(--solution-green);
+}

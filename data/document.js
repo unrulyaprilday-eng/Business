@@ -814,6 +814,35 @@ $axure.loadDocument({
             ]
           }
         ]
+      },
+      {
+        "id": "intelligent_marketing_solution",
+        "pageName": "智能营销方案",
+        "type": "Folder",
+        "url": "",
+        "children": [
+          {
+            "id": "intelligent_marketing_solution_overview",
+            "pageName": "整体方案",
+            "type": "Wireframe",
+            "url": "玩家行为画像与自动化营销整体方案.html",
+            "children": []
+          },
+          {
+            "id": "intelligent_marketing_solution_roadmap",
+            "pageName": "实施路线图",
+            "type": "Wireframe",
+            "url": "玩家行为画像与自动化营销实施路线图.html",
+            "children": []
+          },
+          {
+            "id": "intelligent_marketing_solution_dictionary",
+            "pageName": "画像与策略字典",
+            "type": "Wireframe",
+            "url": "玩家行为画像与自动化营销画像字典.html",
+            "children": []
+          }
+        ]
       }
     ]
   },

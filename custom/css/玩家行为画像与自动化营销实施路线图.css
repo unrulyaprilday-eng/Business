@@ -1,0 +1,7 @@
+.solution-roadmap-page .solution-section-index {
+  background: var(--solution-violet);
+}
+
+.solution-roadmap-page .solution-doc-summary {
+  border-top: 3px solid var(--solution-violet);
+}

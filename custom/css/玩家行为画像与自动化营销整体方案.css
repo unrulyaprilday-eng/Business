@@ -1,0 +1,7 @@
+.solution-overview-page .solution-section-index {
+  background: var(--solution-blue);
+}
+
+.solution-overview-page .solution-doc-summary {
+  border-top: 3px solid var(--solution-blue);
+}
