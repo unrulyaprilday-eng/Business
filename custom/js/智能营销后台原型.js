@@ -108,5 +108,36 @@
     Array.prototype.forEach.call(document.querySelectorAll("[data-demo-notify]"), function (button) {
       button.addEventListener("click", function () { showNotice(button.getAttribute("data-demo-notify")); });
     });
+
+    Array.prototype.forEach.call(document.querySelectorAll('input[name="rewardPolicy"]'), function (radio) {
+      radio.addEventListener("change", function () {
+        var policy = radio.value;
+        var taskCost = document.querySelector("[data-task-cost]");
+        var activityCost = document.querySelector("[data-activity-cost]");
+        var totalCost = document.querySelector("[data-total-cost]");
+        var warning = document.querySelector("[data-stack-warning]");
+        if (taskCost) taskCost.textContent = policy === "activity" ? "0" : "18";
+        if (activityCost) activityCost.textContent = policy === "task" ? "0" : "30";
+        if (totalCost) totalCost.textContent = policy === "stack" ? "48" : (policy === "task" ? "18" : "30");
+        if (warning) warning.hidden = policy !== "stack";
+        showNotice("奖励策略已切换为" + radio.closest("label").querySelector("strong").textContent);
+      });
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll("[data-template-publish]"), function (button) {
+      button.addEventListener("click", function () {
+        var version = document.querySelector("[data-template-version]");
+        if (version) version.textContent = "v4";
+        showNotice("模板 v4 已发布，运行中方案继续使用原版本");
+      });
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll("[data-ai-apply]"), function (button) {
+      button.addEventListener("click", function () {
+        button.textContent = "已加入候选";
+        button.disabled = true;
+        showNotice("建议已加入待发布方案，不会直接执行");
+      });
+    });
   });
 })();

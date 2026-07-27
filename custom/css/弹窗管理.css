@@ -118,8 +118,11 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  gap: 8px;
   margin-bottom: 10px;
 }
+
+.popup-table-toolbar a { text-decoration: none; }
 
 .popup-table-wrap {
   position: relative;
@@ -394,6 +397,24 @@ textarea {
 .footer-section {
   background: #fff;
 }
+
+.integration-grid { grid-template-columns: repeat(4,minmax(0,1fr)); margin: 12px 0; }
+.popup-reference-box { display: grid; gap: 8px; margin-bottom: 12px; padding: 11px 12px; border: 1px solid #cbdcf2; border-radius: 4px; background: #eef5ff; }
+.popup-reference-box > div { display: grid; grid-template-columns: 112px minmax(0,1fr); gap: 10px; }
+.popup-reference-box span { color: #66758a; }
+.popup-reference-box strong { color: #344256; font-weight: 600; }
+.tracking-options { display: flex !important; flex-wrap: wrap; align-items: center; gap: 12px !important; }
+.tracking-options label { display: inline-flex; align-items: center; gap: 4px; }
+.tracking-summary { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 1px; margin-bottom: 12px; overflow: hidden; border: 1px solid #dce3ec; background: #dce3ec; }
+.tracking-summary > div { padding: 12px; background: #f8fafc; }
+.tracking-summary span,.tracking-summary strong { display: block; }
+.tracking-summary span { color: #7a8494; font-size: 12px; }
+.tracking-summary strong { margin-top: 3px; font-size: 20px; }
+.tracking-card { width: min(1080px,calc(100vw - 32px)); }
+.tracking-table { width: 100%; border-collapse: collapse; }
+.tracking-table th,.tracking-table td { padding: 10px; border: 1px solid #e2e8f0; text-align: left; }
+.tracking-table th { background: #f8fafc; }
+.popup-row-meta { display: block; margin-top: 4px; color: #8792a3; font-size: 11px; font-weight: 400; line-height: 1.45; }
 
 .form-grid {
   display: grid;

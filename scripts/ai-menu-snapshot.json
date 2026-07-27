@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-07-17T07:45:01.761Z",
+  "savedAt": "2026-07-27T03:27:50.318Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -811,25 +811,135 @@
       "url": "",
       "children": [
         {
-          "id": "intelligent_marketing_solution_overview",
-          "pageName": "整体方案",
-          "type": "Wireframe",
-          "url": "玩家行为画像与自动化营销整体方案.html",
-          "children": []
+          "id": "intelligent_marketing_docs",
+          "pageName": "方案文档",
+          "type": "Folder",
+          "url": "",
+          "children": [
+            {
+              "id": "intelligent_marketing_solution_overview",
+              "pageName": "整体方案",
+              "type": "Wireframe",
+              "url": "玩家行为画像与自动化营销整体方案.html",
+              "children": []
+            },
+            {
+              "id": "intelligent_marketing_solution_roadmap",
+              "pageName": "实施路线图",
+              "type": "Wireframe",
+              "url": "玩家行为画像与自动化营销实施路线图.html",
+              "children": []
+            },
+            {
+              "id": "intelligent_marketing_solution_dictionary",
+              "pageName": "营销对象与画像字典",
+              "type": "Wireframe",
+              "url": "玩家行为画像与自动化营销画像字典.html",
+              "children": []
+            }
+          ]
         },
         {
-          "id": "intelligent_marketing_solution_roadmap",
-          "pageName": "实施路线图",
-          "type": "Wireframe",
-          "url": "玩家行为画像与自动化营销实施路线图.html",
-          "children": []
+          "id": "intelligent_marketing_data_module",
+          "pageName": "数据与事件",
+          "type": "Folder",
+          "url": "",
+          "children": [
+            {
+              "id": "intelligent_marketing_event_data_center",
+              "pageName": "数据与事件中心",
+              "type": "Wireframe",
+              "url": "数据与事件中心.html",
+              "children": []
+            },
+            {
+              "id": "intelligent_marketing_shadow_rule",
+              "pageName": "影子规则管理",
+              "type": "Wireframe",
+              "url": "影子规则管理.html",
+              "children": []
+            }
+          ]
         },
         {
-          "id": "intelligent_marketing_solution_dictionary",
-          "pageName": "画像与策略字典",
-          "type": "Wireframe",
-          "url": "玩家行为画像与自动化营销画像字典.html",
-          "children": []
+          "id": "intelligent_marketing_operations_module",
+          "pageName": "营销运营",
+          "type": "Folder",
+          "url": "",
+          "children": [
+            {
+              "id": "intelligent_marketing_resource_center",
+              "pageName": "营销资源中心",
+              "type": "Wireframe",
+              "url": "营销资源中心.html",
+              "children": []
+            },
+            {
+              "id": "intelligent_marketing_strategy_center",
+              "pageName": "营销方案管理",
+              "type": "Wireframe",
+              "url": "自动策略中心.html",
+              "children": []
+            },
+            {
+              "id": "intelligent_marketing_strategy_config",
+              "pageName": "营销方案配置",
+              "type": "Wireframe",
+              "url": "自动策略配置.html",
+              "children": []
+            },
+            {
+              "id": "intelligent_marketing_template_management",
+              "pageName": "营销模板管理",
+              "type": "Wireframe",
+              "url": "营销模板管理.html",
+              "children": []
+            },
+            {
+              "id": "intelligent_marketing_execution_analysis",
+              "pageName": "营销执行与效果",
+              "type": "Wireframe",
+              "url": "自动策略执行与效果.html",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "intelligent_marketing_profile_module",
+          "pageName": "玩家画像",
+          "type": "Folder",
+          "url": "",
+          "children": [
+            {
+              "id": "intelligent_marketing_profile_management",
+              "pageName": "玩家画像管理",
+              "type": "Wireframe",
+              "url": "玩家画像管理.html",
+              "children": []
+            },
+            {
+              "id": "intelligent_marketing_player_profile",
+              "pageName": "玩家画像查询",
+              "type": "Wireframe",
+              "url": "玩家画像查询.html",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "intelligent_marketing_ai_module",
+          "pageName": "AI决策",
+          "type": "Folder",
+          "url": "",
+          "children": [
+            {
+              "id": "intelligent_marketing_ai_lab",
+              "pageName": "AI策略实验室",
+              "type": "Wireframe",
+              "url": "AI策略实验室.html",
+              "children": []
+            }
+          ]
         }
       ]
     }

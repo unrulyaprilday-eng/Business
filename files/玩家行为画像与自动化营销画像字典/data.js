@@ -26,7 +26,7 @@ $axure.loadCurrentPage({
   "page": {
     "packageId": "intelligent_marketing_solution_dictionary",
     "type": "Axure:Page",
-    "name": "画像与策略字典",
+    "name": "营销对象与画像字典",
     "notes": {},
     "annotations": [],
     "style": {

@@ -32,7 +32,7 @@
   TIP[T.firstPay] = { p: "\u9996\u5145\u6210\u529f\u5e38\u7528\u4e8e\u4e8c\u5145\u5f15\u5bfc\u3001\u6210\u957f\u793c\u5305\u6216\u798f\u5229\u5347\u7ea7\u63d0\u793a\u3002", s: "\u53ef\u642d\u914d\u5f39\u7a97\u6309\u94ae\u548c\u5185\u94fe\u8df3\u8f6c\uff0c\u627f\u63a5\u540e\u7eed\u8f6c\u5316\u52a8\u4f5c\u3002" };
 
   var POPUPS = [
-    { id: "202610001", name: "\u65b0\u4eba\u9996\u767b\u793c\u5305", sortOrder: 1, imageTheme: "light", platform: "APP", trigger: T.reg, jumpType: "\u5916\u94fe", jumpLink: "https://gift.example.com", language: "\u8bed\u8a001", status: T.on, startTime: "2026-06-30 00:00:00", endTime: "2026-07-30 23:59:59", createdTime: "2026-06-28 10:21:16" },
+    { id: "202610001", name: "\u65b0\u4eba\u9996\u767b\u793c\u5305", version: "v5", refs: "2\u4e2a\u65b9\u6848", metrics: "8,642 / 1,286", sortOrder: 1, imageTheme: "light", platform: "APP", trigger: T.reg, jumpType: "\u5916\u94fe", jumpLink: "https://gift.example.com", language: "\u8bed\u8a001", status: T.on, startTime: "2026-06-30 00:00:00", endTime: "2026-07-30 23:59:59", createdTime: "2026-06-28 10:21:16" },
     { id: "202610004", name: "\u6bcf\u65e5\u9996\u767b\u7b7e\u5230\u63d0\u9192", sortOrder: 2, imageTheme: "purple", platform: "H5", trigger: T.daily, jumpType: "\u5185\u94fe", jumpLink: "\u7b7e\u5230\u4e2d\u5fc3", language: "\u8bed\u8a002", status: T.on, startTime: "2026-06-29 00:00:00", endTime: "2026-09-30 23:59:59", createdTime: "2026-06-24 09:16:31" },
     { id: "202610002", name: "\u4f59\u989d\u8865\u8d34\u63d0\u793a", sortOrder: 3, imageTheme: "purple", platform: "H5", trigger: T.low, jumpType: "\u5185\u94fe", jumpLink: "\u5145\u503c\u4e2d\u5fc3", language: "\u8bed\u8a001", status: T.on, startTime: "2026-06-30 00:00:00", endTime: "2026-08-31 23:59:59", createdTime: "2026-06-27 16:35:22" },
     { id: "202610003", name: "\u56de\u5385\u518d\u51b2\u793c\u5305", sortOrder: 4, imageTheme: "light", platform: "APP,H5", trigger: T.back, jumpType: "\u5185\u94fe", jumpLink: "\u5145\u503c\u4e2d\u5fc3", language: "\u8bed\u8a001", status: T.off, startTime: "2026-06-26 12:00:00", endTime: "2026-12-31 23:59:59", createdTime: "2026-06-25 14:08:53" }
@@ -102,7 +102,7 @@
       return [
         "<tr>",
         "<td>" + esc(item.id) + "</td>",
-        "<td>" + esc(item.name) + "</td>",
+        "<td><strong>" + esc(item.name) + "</strong><small class=\"popup-row-meta\">" + esc(item.version || "v1") + " · " + esc(item.refs || "\u72ec\u7acb\u6295\u653e") + "<br>\u4eca\u65e5\u66dd\u5149/\u70b9\u51fb " + esc(item.metrics || "0 / 0") + "</small></td>",
         "<td>" + esc(getSortValue(item)) + "</td>",
         '<td><div class="thumb-card ' + esc(item.imageTheme) + '"></div></td>',
         "<td>" + esc(item.platform) + "</td>",
@@ -347,6 +347,14 @@
   document.getElementById("statusConfirmClose").addEventListener("click", closeStatusConfirm);
   document.getElementById("statusConfirmCancel").addEventListener("click", closeStatusConfirm);
   document.getElementById("statusConfirmSubmit").addEventListener("click", submitStatusConfirm);
+  var trackingModalEl = document.getElementById("popupTrackingModal");
+  document.getElementById("trackingBtn").addEventListener("click", function () { trackingModalEl.hidden = false; });
+  Array.prototype.forEach.call(document.querySelectorAll("[data-tracking-close]"), function (button) {
+    button.addEventListener("click", function () { trackingModalEl.hidden = true; });
+  });
+  trackingModalEl.addEventListener("click", function (event) {
+    if (event.target === trackingModalEl) trackingModalEl.hidden = true;
+  });
   formTriggerEl.addEventListener("change", function () { renderTips(formTriggerEl.value); renderConditions(formTriggerEl.value); });
   Array.prototype.forEach.call(document.querySelectorAll('input[name="hasButton"]'), function (radio) { radio.addEventListener("change", renderButtonTextState); });
   channelVisibilityEl.addEventListener("change", renderChannelState);
