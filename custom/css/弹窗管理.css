@@ -536,6 +536,20 @@ textarea {
   line-height: 1.5;
 }
 
+.tips-box .trigger-code-line {
+  margin-top: 6px;
+  color: #66758a;
+}
+
+.trigger-code-line code {
+  padding: 1px 5px;
+  border: 1px solid #d7e0eb;
+  border-radius: 3px;
+  background: #fff;
+  color: #344256;
+  font-family: Consolas, "Courier New", monospace;
+}
+
 .field-note,
 .option-help,
 .jump-field-tip,

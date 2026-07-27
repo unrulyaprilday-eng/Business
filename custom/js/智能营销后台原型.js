@@ -154,22 +154,26 @@
     }
 
     var activeTemplateVersion;
+    var activeTemplateRow;
     function setTemplateModal(row) {
       var title = document.getElementById("templateModalTitle");
       var name = document.getElementById("templateName");
       var lifecycle = document.getElementById("templateLifecycle");
       var goal = document.getElementById("templateGoal");
       var execution = document.getElementById("templateExecution");
+      var touch = document.getElementById("templateTouchTiming");
       var reward = document.getElementById("templateReward");
       var description = document.getElementById("templateDescription");
-      if (!name || !lifecycle || !goal || !execution || !reward || !description) return;
+      if (!name || !lifecycle || !goal || !execution || !touch || !reward || !description) return;
       if (!row) {
         activeTemplateVersion = null;
+        activeTemplateRow = null;
         if (title) title.textContent = "新建营销模板";
         name.value = "";
         lifecycle.value = "新手建立";
         goal.value = "";
         execution.value = "立即/单次";
+        touch.value = "等待弹窗原场景";
         reward.value = "仅任务奖励";
         description.value = "";
         return;
@@ -178,19 +182,21 @@
       var nameNode = cells[0] ? cells[0].querySelector("strong") : null;
       var templateName = nameNode ? nameNode.textContent : "营销模板";
       activeTemplateVersion = row.querySelector("[data-template-version]");
+      activeTemplateRow = row;
       if (title) title.textContent = "编辑模板：" + templateName;
       name.value = templateName;
       lifecycle.value = row.getAttribute("data-category") || "新手建立";
       goal.value = row.getAttribute("data-goal") || "";
       execution.value = row.getAttribute("data-period") || "立即/单次";
-      var rewardText = cells[4] ? cells[4].textContent.trim() : "按方案选择";
+      touch.value = row.getAttribute("data-touch") || "等待弹窗原场景";
+      var rewardText = cells[5] ? cells[5].textContent.trim() : "按方案选择";
       if (rewardText === "任务奖励") rewardText = "仅任务奖励";
       else if (rewardText === "仅原活动奖励") rewardText = "仅活动奖励";
       else if (rewardText.indexOf("不新增") !== -1) rewardText = "不新增奖励";
       else if (rewardText.indexOf("任务/活动") !== -1 || rewardText.indexOf("叠加") !== -1 || rewardText.indexOf("可配置") !== -1 || rewardText.indexOf("按旅程节点") !== -1) rewardText = "按方案选择";
       reward.value = rewardText;
       if (!Array.prototype.some.call(reward.options, function (option) { return option.value === reward.value; })) reward.value = "按方案选择";
-      description.value = "适用于" + lifecycle.value + "生命周期，默认" + (cells[2] ? cells[2].textContent.trim() : "按条件入组") + "；资源结构为" + (cells[3] ? cells[3].textContent.trim() : "按方案选择") + "。";
+      description.value = "适用于" + lifecycle.value + "生命周期，默认" + (cells[2] ? cells[2].textContent.trim() : "按条件入组") + "；资源结构为" + (cells[3] ? cells[3].textContent.trim() : "按方案选择") + "；触达时机为" + touch.value + "。";
     }
     Array.prototype.forEach.call(document.querySelectorAll("[data-template-edit]"), function (button) {
       button.addEventListener("click", function () { setTemplateModal(button.closest("tr")); });
@@ -205,6 +211,12 @@
         if (activeTemplateVersion) {
           nextVersion = "v" + (Number(activeTemplateVersion.textContent.replace("v", "")) + 1);
           activeTemplateVersion.textContent = nextVersion;
+        }
+        if (activeTemplateRow) {
+          var touch = document.getElementById("templateTouchTiming");
+          var touchCell = activeTemplateRow.querySelector("[data-template-touch]");
+          if (touch) activeTemplateRow.setAttribute("data-touch", touch.value);
+          if (touch && touchCell) touchCell.textContent = touch.value;
         }
         showNotice("模板 " + nextVersion + " 已发布，运行中方案继续使用原版本");
       });

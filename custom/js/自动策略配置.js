@@ -14,11 +14,43 @@
       if (element) element.value = value;
     }
     function executionMode(period) {
+      if (period.indexOf("首次登录") !== -1 || period.indexOf("事件") !== -1) return "事件触发";
       if (period.indexOf("每月") !== -1 || period.indexOf("月末") !== -1) return "每月周期";
       if (period.indexOf("每周") !== -1) return "每周周期";
       if (period.indexOf("每日") !== -1) return "每日周期";
       if (period.indexOf("画像") !== -1) return "画像触发";
       return "事件触发";
+    }
+    function touchPolicy(templateId, popup) {
+      var sameEvent = ["MT-003", "MT-014", "MT-025"];
+      var onlineImmediate = ["MT-009", "MT-019", "MT-026"];
+      var nextActive = ["MT-006", "MT-007", "MT-008", "MT-010", "MT-011", "MT-012", "MT-016", "MT-018", "MT-020", "MT-027", "MT-028", "MT-029"];
+      if (sameEvent.indexOf(templateId) !== -1) {
+        return {
+          label: "同事件场景实时校验",
+          detail: "事件内先计算方案资格，再进入弹窗决策；不允许在场景结束后补登记。",
+          timelineTitle: "同事件内完成触达决策"
+        };
+      }
+      if (onlineImmediate.indexOf(templateId) !== -1) {
+        return {
+          label: "在线即时，离线待触达",
+          detail: "旅程节点命中且玩家在线时立即请求；无有效会话时等待下一活跃场景。",
+          timelineTitle: "在线即时请求弹窗"
+        };
+      }
+      if (nextActive.indexOf(templateId) !== -1) {
+        return {
+          label: "下一活跃场景",
+          detail: "节点命中后登记待触达资格，在有效期内的下一次登录、返回大厅或进入游戏场景展示。",
+          timelineTitle: "登记下一活跃场景触达"
+        };
+      }
+      return {
+        label: "等待弹窗原场景",
+        detail: "方案仅登记展示资格；玩家命中" + popup + "的原场景后进入弹窗决策。",
+        timelineTitle: "登记弹窗展示资格"
+      };
     }
     function applyTemplate() {
       if (!templateSelect) return;
@@ -38,6 +70,7 @@
       var activityCost = Number(option.getAttribute("data-activity-cost") || 0);
       var totalCost = taskCost + activityCost;
       var mode = executionMode(period);
+      var touch = touchPolicy(templateId, popup);
       if (templateId === "MT-016") task = "已完成待领取任务";
 
       setText("configPageTitle", "配置方案：" + name);
@@ -67,6 +100,11 @@
       setText("popupResourceName", popup);
       setText("taskResourceRule", taskCost ? "按任务原生条件推进；单人预计成本 " + taskCost + " EvUSD" : "按任务原生条件推进，不新增奖励");
       setText("activityResourceRule", activityCost ? "按活动原生规则参与；单人最高成本 " + activityCost + " EvUSD" : "沿用活动原生资格与权益，不新增奖励");
+      setText("popupTouchTiming", touch.label);
+      setText("popupTouchDetail", touch.detail);
+      setValue("planTouchTiming", touch.label);
+      setValue("popupBaseRule", templateId === "MT-001" ? "每会话1次 / 每日1次 / 冷却12小时" : "发布时读取所选弹窗版本");
+      setValue("planMutexGroup", goal.indexOf("充值") !== -1 || goal.indexOf("首充") !== -1 ? "继承弹窗：充值促进组" : "继承所选弹窗互斥组");
 
       var taskCostNode = document.querySelector("[data-task-cost]");
       var activityCostNode = document.querySelector("[data-activity-cost]");
@@ -108,7 +146,7 @@
       var checkItems = document.querySelectorAll('[data-wizard-panel="5"] .im-status-line span');
       if (checkItems[1]) checkItems[1].hidden = task === "无";
       if (checkItems[2]) checkItems[2].hidden = activity === "无";
-      if (checkItems[4]) checkItems[4].hidden = task === "无" || activity === "无";
+      if (checkItems[6]) checkItems[6].hidden = task === "无" || activity === "无";
       var timelineItems = document.querySelectorAll('[data-wizard-panel="5"] .im-timeline-item');
       if (timelineItems[0]) {
         timelineItems[0].querySelector("strong").textContent = period + "计算/接收人群";
@@ -118,20 +156,21 @@
         timelineItems[1].querySelector("strong").textContent = "绑定模板允许的营销资源";
         timelineItems[1].querySelector("span").textContent = [task, activity].filter(function (item) { return item !== "无"; }).join("；") + "，发布时固定资源版本。";
       }
-      if (timelineItems[2]) timelineItems[2].querySelector("span").textContent = popup + "仅在同时满足方案资格和弹窗自身规则时展示。";
+      setText("popupTimelineTitle", touch.timelineTitle);
+      setText("popupTimelineDetail", touch.detail + " 最终仍需通过弹窗状态、平台、渠道、时段、频控和互斥检查。");
       if (timelineItems[3]) {
         timelineItems[3].querySelector("strong").textContent = success;
         timelineItems[3].querySelector("span").textContent = "记录成功事件，分别汇总任务与活动奖励，并停止后续触达。";
       }
-      var summaryValues = document.querySelectorAll('[data-wizard-panel="5"] aside dl dd');
-      if (summaryValues[0]) summaryValues[0].textContent = name + " " + version;
-      if (summaryValues[1]) summaryValues[1].textContent = period;
-      if (summaryValues[3]) summaryValues[3].textContent = totalCost === 0 ? "不新增奖励" : (defaultPolicy === "stack" ? "任务与活动叠加" : (defaultPolicy === "task" ? "仅任务奖励" : "仅活动奖励"));
-      if (summaryValues[4]) summaryValues[4].textContent = totalCost + " EvUSD";
+      setText("publishTemplateSummary", name + " " + version);
+      setText("publishExecutionSummary", period);
+      setText("publishTouchTiming", touch.label);
+      setText("publishRewardSummary", totalCost === 0 ? "不新增奖励" : (defaultPolicy === "stack" ? "任务与活动叠加" : (defaultPolicy === "task" ? "仅任务奖励" : "仅活动奖励")));
+      setText("publishCostSummary", totalCost + " EvUSD");
       var publishNotice = document.querySelector('[data-cl-modal="publishConfirmModal"] .im-notice');
       var publishNote = document.querySelector('[data-cl-modal="publishConfirmModal"] textarea');
       if (publishNotice) publishNotice.textContent = "当前模板单人最高预计成本 " + totalCost + " EvUSD，本批按1,024人估算最高 " + (totalCost * 1024).toLocaleString("en-US") + " EvUSD；任务与活动奖励按所选策略分别结算和记账。";
-      if (publishNote) publishNote.value = name + "常规方案，模板 " + templateId + " " + version + "，资源版本在发布时固定。";
+      if (publishNote) publishNote.value = name + "常规方案，模板 " + templateId + " " + version + "，触达时机为「" + touch.label + "」，资源版本在发布时固定。";
     }
     if (templateSelect) {
       var queryTemplate = new URLSearchParams(window.location.search).get("template");

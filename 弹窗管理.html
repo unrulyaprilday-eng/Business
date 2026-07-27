@@ -70,17 +70,17 @@
               <label for="popupTrigger">触发弹窗</label>
               <select class="cl-select" id="popupTrigger">
                 <option value="">全部触发场景</option>
-                <option value="注册成功">注册成功</option>
-                <option value="登录成功">登录成功</option>
-                <option value="游客访问">游客访问</option>
-                <option value="每日首次登录">每日首次登录</option>
-                <option value="余额不足">余额不足</option>
-                <option value="提现成功">提现成功</option>
-                <option value="非首次充值成功">非首次充值成功</option>
-                <option value="进入游戏前">进入游戏前</option>
-                <option value="返回大厅">返回大厅</option>
-                <option value="关闭注册">关闭注册</option>
-                <option value="首充成功">首充成功</option>
+                <option value="register_success">注册成功</option>
+                <option value="login_success">登录成功</option>
+                <option value="guest_visit">游客访问</option>
+                <option value="daily_first_login">每日首次登录</option>
+                <option value="low_balance">余额不足</option>
+                <option value="withdraw_success">提现成功</option>
+                <option value="repeat_recharge_success">非首次充值成功</option>
+                <option value="game_pre_enter">进入游戏前</option>
+                <option value="lobby_return">返回大厅</option>
+                <option value="register_closed">关闭注册</option>
+                <option value="first_recharge_success">首充成功</option>
               </select>
             </div>
             <div class="cl-filter-field">
@@ -176,22 +176,23 @@
               <label class="form-field">
                 <span>弹窗触发</span>
                 <select id="formTrigger">
-                  <option value="注册成功">注册成功</option>
-                  <option value="登录成功">登录成功</option>
-                  <option value="游客访问">游客访问</option>
-                  <option value="每日首次登录">每日首次登录</option>
-                  <option value="余额不足">余额不足</option>
-                  <option value="提现成功">提现成功</option>
-                  <option value="非首次充值成功">非首次充值成功</option>
-                  <option value="进入游戏前">进入游戏前</option>
-                  <option value="返回大厅">返回大厅</option>
-                  <option value="关闭注册">关闭注册</option>
-                  <option value="首充成功">首充成功</option>
+                  <option value="register_success">注册成功</option>
+                  <option value="login_success">登录成功</option>
+                  <option value="guest_visit">游客访问</option>
+                  <option value="daily_first_login">每日首次登录</option>
+                  <option value="low_balance">余额不足</option>
+                  <option value="withdraw_success">提现成功</option>
+                  <option value="repeat_recharge_success">非首次充值成功</option>
+                  <option value="game_pre_enter">进入游戏前</option>
+                  <option value="lobby_return">返回大厅</option>
+                  <option value="register_closed">关闭注册</option>
+                  <option value="first_recharge_success">首充成功</option>
                 </select>
               </label>
               <div class="tips-box">
                 <p id="triggerTipPrimary">注册成功后首次进入大厅展示，适合引导绑卡或下载。</p>
                 <p id="triggerTipSecondary">同一种触发弹窗下，多个弹窗按排序从小到大依次弹出；前一个窗口关闭后再展示下一个。</p>
+                <p class="trigger-code-line">标准触发编码：<code id="triggerCode">register_success</code></p>
               </div>
             </div>
 
@@ -369,6 +370,7 @@
             <div class="section-title-group"><strong>投放控制与营销方案接入</strong></div>
             <div class="form-grid integration-grid">
               <label class="form-field"><span>使用方式</span><select id="deliveryMode"><option>独立投放并允许方案引用</option><option>仅独立投放</option><option>仅营销方案引用</option></select></label>
+              <label class="form-field"><span>方案请求能力</span><select id="planRequestCapability"><option>仅登记资格，等待原场景</option><option>允许方案请求（仍执行全部规则）</option></select></label>
               <label class="form-field"><span>弹窗版本</span><input id="popupVersion" value="v5" readonly></label>
               <label class="form-field"><span>弹窗优先级</span><input id="popupPriority" type="number" value="80" min="1" max="100"></label>
               <label class="form-field"><span>互斥组</span><select id="popupMutex"><option>新人转化组</option><option>充值促进组</option><option>无互斥组</option></select></label>
@@ -377,7 +379,7 @@
               <label class="form-field"><span>玩家冷却时间</span><select id="popupCooldown"><option>12小时</option><option>24小时</option><option>7天</option><option>不限制</option></select></label>
               <label class="form-field"><span>测试会员</span><input id="testMembers" value="1010123523, 1010123321" placeholder="会员ID，多个用逗号分隔"></label>
             </div>
-            <div class="popup-reference-box"><div><span>当前引用方案</span><strong>新人首充转化 v6、注册未首充自动培育 v2</strong></div><div><span>展示资格</span><strong>独立投放按原规则；方案投放需同时满足方案人群资格</strong></div><div class="tracking-options"><span>回传事件</span><label><input type="checkbox" checked>曝光</label><label><input type="checkbox" checked>点击</label><label><input type="checkbox" checked>关闭</label><label><input type="checkbox" checked>跳转</label><label><input type="checkbox" checked>失败</label></div></div>
+            <div class="popup-reference-box"><div><span>当前引用方案</span><strong id="popupPlanRefs">新人首充转化 v6、注册未首充自动培育 v2</strong></div><div><span>展示资格</span><strong>独立投放按原规则；方案投放需同时满足方案人群资格</strong></div><div><span>方案触达</span><strong>模板决定等待原场景、在线即时或下一活跃场景；所有请求均执行本弹窗全部规则</strong></div><div class="tracking-options"><span>回传事件</span><label><input type="checkbox" checked>曝光</label><label><input type="checkbox" checked>点击</label><label><input type="checkbox" checked>关闭</label><label><input type="checkbox" checked>跳转</label><label><input type="checkbox" checked>失败</label></div></div>
             <div class="week-panel">
               <div class="week-panel-head">
                 <span class="row-label">展示星期</span>
@@ -420,7 +422,7 @@
 
         <footer class="modal-actions">
           <button class="btn plain" type="button" data-close>取消</button>
-          <button class="btn primary" id="saveBtn" type="button">保存</button>
+          <button class="btn primary" id="saveBtn" type="button">保存并生成新版本</button>
         </footer>
       </div>
     </div>
@@ -444,7 +446,7 @@
     <div class="modal-mask" id="popupTrackingModal" hidden>
       <div class="modal-card tracking-card" role="dialog" aria-modal="true" aria-labelledby="trackingModalTitle">
         <header class="modal-head"><h3 id="trackingModalTitle">弹窗投放记录</h3><button class="modal-close" type="button" data-tracking-close aria-label="关闭">×</button></header>
-        <div class="modal-body"><div class="tracking-summary"><div><span>今日决策请求</span><strong>36,842</strong></div><div><span>返回弹窗队列</span><strong>24,680</strong></div><div><span>曝光</span><strong>23,906</strong></div><div><span>点击</span><strong>4,912</strong></div></div><table class="tracking-table"><thead><tr><th>时间</th><th>会员</th><th>弹窗/版本</th><th>来源</th><th>触发场景</th><th>结果</th><th>方案/批次</th></tr></thead><tbody><tr><td>10:17:12</td><td>1010123523</td><td>新人首充引导 v5</td><td>营销方案</td><td>登录成功</td><td>曝光 → 点击</td><td>MP-001 / BAT-260727-1000</td></tr><tr><td>10:15:28</td><td>1010123321</td><td>每日首登签到提醒 v2</td><td>独立投放</td><td>每日首次登录</td><td>曝光 → 关闭</td><td>-</td></tr><tr><td>10:14:03</td><td>1010112840</td><td>新人首充引导 v5</td><td>营销方案</td><td>返回大厅</td><td>每日频控拦截</td><td>MP-001 / BAT-260727-1000</td></tr></tbody></table></div>
+        <div class="modal-body"><div class="tracking-summary"><div><span>今日决策请求</span><strong>36,842</strong></div><div><span>返回弹窗队列</span><strong>24,680</strong></div><div><span>曝光</span><strong>23,906</strong></div><div><span>点击</span><strong>4,912</strong></div></div><table class="tracking-table"><thead><tr><th>时间</th><th>会员</th><th>弹窗/版本</th><th>来源</th><th>触发场景</th><th>结果</th><th>方案/批次</th></tr></thead><tbody><tr><td>10:17:12</td><td>1010123523</td><td>新人首充引导 v5</td><td>营销方案</td><td>登录成功</td><td>曝光 → 点击</td><td>MP-001 / BAT-260727-1000</td></tr><tr><td>10:15:28</td><td>1010123321</td><td>每日首登签到提醒 v2</td><td>独立投放</td><td>每日首次登录</td><td>曝光 → 关闭</td><td>-</td></tr><tr><td>10:14:03</td><td>1010112840</td><td>新人首充引导 v5</td><td>营销方案</td><td>返回大厅</td><td>每日频控拦截</td><td>MP-001 / BAT-260727-1000</td></tr><tr><td>10:13:22</td><td>1010123330</td><td>充值失败帮助 v2</td><td>营销方案</td><td>在线即时请求</td><td>无在线会话 → 待下一活跃场景</td><td>MP-019 / BAT-260727-1005</td></tr></tbody></table></div>
         <footer class="modal-actions"><button class="btn plain" type="button" data-tracking-close>关闭</button><button class="btn primary" type="button">导出记录</button></footer>
       </div>
     </div>
