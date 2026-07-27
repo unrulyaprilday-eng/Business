@@ -27,7 +27,6 @@
       var name = option.textContent.split(" MT-")[0];
       var templateId = option.value;
       var version = option.getAttribute("data-version") || "v1";
-      var stage = option.getAttribute("data-stage") || "第一期";
       var goal = option.getAttribute("data-goal") || "促活";
       var audience = option.getAttribute("data-audience") || "按模板条件筛选";
       var task = option.getAttribute("data-task") || "无";
@@ -38,14 +37,15 @@
       var taskCost = Number(option.getAttribute("data-task-cost") || 0);
       var activityCost = Number(option.getAttribute("data-activity-cost") || 0);
       var totalCost = taskCost + activityCost;
+      var mode = executionMode(period);
       if (templateId === "MT-016") task = "已完成待领取任务";
 
       setText("configPageTitle", "配置方案：" + name);
-      setText("configPageMeta", "模板 " + templateId + " " + version + " · 方案草稿 v1 · " + stage + "执行模式");
+      setText("configPageMeta", "模板 " + templateId + " " + version + " · 方案草稿 v1 · " + mode);
       setValue("planName", name + "-常规方案");
       setValue("planGoal", goal);
       setValue("planDescription", "面向" + audience + "，按模板组合" + [task, activity, popup].filter(function (item) { return item !== "无"; }).join("、") + "；以" + success + "作为成功或退出口径。");
-      setText("templateStageLabel", stage + "可用");
+      setText("templateModeLabel", mode);
       setText("templateAudience", audience);
       setText("templateTask", task);
       setText("templateActivity", activity);
@@ -98,7 +98,7 @@
       if (rewardTitles[2]) rewardTitles[2].textContent = "任务与活动叠加";
       if (rewardOptions[0]) rewardOptions[0].textContent = task === "无" ? "该模板不使用任务资源。" : task + "按任务系统原生规则结算，单人预计 " + taskCost + " EvUSD。";
       if (rewardOptions[1]) rewardOptions[1].textContent = activity === "无" ? "该模板不使用活动资源。" : activity + "按活动系统原生规则结算，单人最高 " + activityCost + " EvUSD。";
-      if (rewardOptions[2]) rewardOptions[2].textContent = task !== "无" && activity !== "无" ? "任务与活动分别结算、分别记账，单人最高 " + totalCost + " EvUSD。" : "当前模板没有同时使用任务和活动，不能选择叠加奖励。";
+      if (rewardOptions[2]) rewardOptions[2].textContent = task !== "无" && activity !== "无" ? "任务与活动分别结算、分别记账，单人最高 " + totalCost + " EvUSD。" : "当前模板未同时使用任务和活动，叠加奖励不可选。";
       var stackWarning = document.querySelector("[data-stack-warning]");
       if (stackWarning) {
         stackWarning.hidden = defaultPolicy !== "stack";

@@ -133,13 +133,11 @@
       var keyword = (document.getElementById("templateKeyword") || {}).value || "";
       var category = (document.getElementById("templateCategory") || {}).value || "";
       var period = (document.getElementById("templatePeriod") || {}).value || "";
-      var stage = (document.getElementById("templateStage") || {}).value || "";
       var visible = 0;
       templateRows.forEach(function (row) {
         var matched = (!keyword || row.textContent.toLowerCase().indexOf(keyword.toLowerCase()) !== -1) &&
           (!category || row.getAttribute("data-category") === category) &&
-          (!period || row.getAttribute("data-period") === period) &&
-          (!stage || row.getAttribute("data-stage") === stage);
+          (!period || row.getAttribute("data-period") === period);
         row.hidden = !matched;
         if (matched) visible += 1;
       });
@@ -161,18 +159,16 @@
       var name = document.getElementById("templateName");
       var lifecycle = document.getElementById("templateLifecycle");
       var goal = document.getElementById("templateGoal");
-      var stage = document.getElementById("templateOpenStage");
       var execution = document.getElementById("templateExecution");
       var reward = document.getElementById("templateReward");
       var description = document.getElementById("templateDescription");
-      if (!name || !lifecycle || !goal || !stage || !execution || !reward || !description) return;
+      if (!name || !lifecycle || !goal || !execution || !reward || !description) return;
       if (!row) {
         activeTemplateVersion = null;
         if (title) title.textContent = "新建营销模板";
         name.value = "";
         lifecycle.value = "新手建立";
         goal.value = "";
-        stage.value = "第一期";
         execution.value = "立即/单次";
         reward.value = "仅任务奖励";
         description.value = "";
@@ -186,16 +182,15 @@
       name.value = templateName;
       lifecycle.value = row.getAttribute("data-category") || "新手建立";
       goal.value = row.getAttribute("data-goal") || "";
-      stage.value = row.getAttribute("data-stage") || "第一期";
       execution.value = row.getAttribute("data-period") || "立即/单次";
-      var rewardText = cells[5] ? cells[5].textContent.trim() : "按方案选择";
+      var rewardText = cells[4] ? cells[4].textContent.trim() : "按方案选择";
       if (rewardText === "任务奖励") rewardText = "仅任务奖励";
       else if (rewardText === "仅原活动奖励") rewardText = "仅活动奖励";
       else if (rewardText.indexOf("不新增") !== -1) rewardText = "不新增奖励";
-      else if (rewardText.indexOf("任务/活动") !== -1 || rewardText.indexOf("叠加") !== -1 || rewardText.indexOf("可配置") !== -1 || rewardText.indexOf("按阶段") !== -1) rewardText = "按方案选择";
+      else if (rewardText.indexOf("任务/活动") !== -1 || rewardText.indexOf("叠加") !== -1 || rewardText.indexOf("可配置") !== -1 || rewardText.indexOf("按旅程节点") !== -1) rewardText = "按方案选择";
       reward.value = rewardText;
       if (!Array.prototype.some.call(reward.options, function (option) { return option.value === reward.value; })) reward.value = "按方案选择";
-      description.value = "适用于" + lifecycle.value + "阶段，默认" + (cells[3] ? cells[3].textContent.trim() : "按条件入组") + "；资源结构为" + (cells[4] ? cells[4].textContent.trim() : "按方案选择") + "。";
+      description.value = "适用于" + lifecycle.value + "生命周期，默认" + (cells[2] ? cells[2].textContent.trim() : "按条件入组") + "；资源结构为" + (cells[3] ? cells[3].textContent.trim() : "按方案选择") + "。";
     }
     Array.prototype.forEach.call(document.querySelectorAll("[data-template-edit]"), function (button) {
       button.addEventListener("click", function () { setTemplateModal(button.closest("tr")); });
@@ -219,7 +214,7 @@
       button.addEventListener("click", function () {
         button.textContent = "已加入候选";
         button.disabled = true;
-        showNotice("建议已加入待发布方案，不会直接执行");
+        showNotice("策略建议已加入待审核队列");
       });
     });
   });
