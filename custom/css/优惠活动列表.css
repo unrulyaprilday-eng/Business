@@ -210,6 +210,26 @@ td:last-child {
   cursor: pointer;
 }
 
+.challenge-row-actions button {
+  margin: 0 5px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #1688ff;
+  font: 12px "Microsoft YaHei", Arial, sans-serif;
+  cursor: pointer;
+}
+
+.challenge-row-actions button.danger {
+  color: #ff5c5c;
+}
+
+button.switch {
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+}
+
 .actions .danger {
   color: #ff5c5c;
 }

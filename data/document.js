@@ -879,38 +879,17 @@ $axure.loadDocument({
             "url": "",
             "children": [
               {
-                "id": "intelligent_marketing_resource_center",
-                "pageName": "营销资源中心",
-                "type": "Wireframe",
-                "url": "营销资源中心.html",
-                "children": []
-              },
-              {
                 "id": "intelligent_marketing_strategy_center",
-                "pageName": "营销方案管理",
+                "pageName": "营销方案",
                 "type": "Wireframe",
                 "url": "自动策略中心.html",
                 "children": []
               },
               {
-                "id": "intelligent_marketing_strategy_config",
-                "pageName": "营销方案配置",
-                "type": "Wireframe",
-                "url": "自动策略配置.html",
-                "children": []
-              },
-              {
                 "id": "intelligent_marketing_template_management",
-                "pageName": "营销模板管理",
+                "pageName": "营销模板",
                 "type": "Wireframe",
                 "url": "营销模板管理.html",
-                "children": []
-              },
-              {
-                "id": "intelligent_marketing_execution_analysis",
-                "pageName": "营销执行与效果",
-                "type": "Wireframe",
-                "url": "自动策略执行与效果.html",
                 "children": []
               }
             ]

@@ -25278,6 +25278,48 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
             </div>
           </div>
         </div>
+        <div id="u6_state5" class="panel_state" data-label="连续挑战" style="visibility: hidden; display: none;" aria-hidden="true">
+          <div id="u6_state5_content" class="panel_state_content">
+            <form id="challengeActivityForm" class="custom-challenge-form" novalidate>
+              <section class="custom-share-section">
+                <h3>基础配置</h3>
+                <div class="custom-share-grid">
+                  <label class="custom-field required"><span>活动名称</span><input id="challengeName" type="text" value="连续挑战赢好礼" placeholder="请输入活动名称" required></label>
+                  <label class="custom-field required"><span>活动标题</span><input id="challengeTitle" type="text" value="完成连续任务，解锁多档奖励" placeholder="请输入活动标题" required></label>
+                  <div class="custom-field required custom-field-wide custom-time-range"><span>活动时间</span><input id="challengeStartTime" type="datetime-local" value="2026-07-28T00:00" required><em>至</em><input id="challengeEndTime" type="datetime-local" value="2026-08-31T23:59" required></div>
+                  <div class="custom-field"><span>活动状态</span><div class="custom-radio-group"><label><input type="radio" name="challengeStatus" value="开放" checked>开放</label><label><input type="radio" name="challengeStatus" value="关闭">关闭</label></div></div>
+                  <div class="custom-field"><span>参与用户</span><div class="custom-checkbox-group challenge-vip-options"><label><input type="checkbox" name="challengeVip" value="VIP0" checked>VIP0</label><label><input type="checkbox" name="challengeVip" value="VIP1" checked>VIP1</label><label><input type="checkbox" name="challengeVip" value="VIP2" checked>VIP2</label><label><input type="checkbox" name="challengeVip" value="VIP3">VIP3</label><label><input type="checkbox" name="challengeVip" value="VIP4">VIP4</label><label><input type="checkbox" name="challengeVip" value="VIP5">VIP5</label></div></div>
+                  <div class="custom-field"><span>任务周期</span><div class="custom-radio-group"><label><input type="radio" name="challengeCycle" value="一次性">一次性</label><label><input type="radio" name="challengeCycle" value="每日" checked>每日</label><label><input type="radio" name="challengeCycle" value="每周">每周</label><label><input type="radio" name="challengeCycle" value="每月">每月</label></div></div>
+                  <div class="custom-field"><span>领取方式</span><div class="custom-radio-group"><label><input type="radio" name="challengeClaimMode" value="手动领取" checked>手动领取</label><label><input type="radio" name="challengeClaimMode" value="自动发放">自动发放</label></div></div>
+                  <div class="custom-field custom-field-wide challenge-reward-mode"><span>奖励模式</span><div class="custom-radio-group"><label><input type="radio" name="challengeRewardMode" value="每项任务独立奖励" checked>每项任务独立奖励</label><label><input type="radio" name="challengeRewardMode" value="全部任务完成后统一奖励">全部任务完成后统一奖励</label></div></div>
+                  <div class="custom-field custom-field-wide challenge-completion-mode"><span>多任务完成方式</span><div class="challenge-completion-options"><label><input type="radio" name="challengeCompletionMode" value="顺序完成" checked><span class="challenge-mode-visual"><b>1</b><i>→</i><b>2</b><i>→</i><b>3</b></span><strong>顺序完成</strong></label><label><input type="radio" name="challengeCompletionMode" value="并行完成"><span class="challenge-mode-visual is-parallel"><b>A</b><b>B</b><b>C</b></span><strong>并行完成</strong></label></div></div>
+                </div>
+              </section>
+              <section class="custom-share-section">
+                <div class="custom-share-section-head challenge-task-head"><h3>任务配置</h3><button id="challengeAddTask" class="challenge-add-task" type="button">+ 添加任务</button></div>
+                <div class="challenge-table-wrap">
+                  <table class="challenge-task-table"><thead><tr><th>任务类型</th><th>达成条件</th><th>奖励类型</th><th>奖励内容</th><th id="challengeOrderHeader">执行顺序</th><th>操作</th></tr></thead><tbody id="challengeTaskRows">
+                    <tr data-task-type="充值"><td><select class="challenge-task-type-select"><option selected>充值</option><option>有效打码</option><option>每日登录</option><option>邀请好友</option></select></td><td><div class="challenge-condition"><span class="challenge-condition-label">累计充值满</span><input type="number" value="100" min="1"><span class="challenge-condition-unit"></span></div></td><td class="challenge-row-reward"><select class="challenge-reward-type"><option value="金额">金额</option><option value="存钱罐">存钱罐</option><option value="优惠券">优惠券</option></select><span class="challenge-unified-label">全部任务完成后统一发放</span></td><td class="challenge-row-reward"><input class="challenge-reward-value" type="number" value="5" min="0" step="0.01"><span class="challenge-unified-label">--</span></td><td class="challenge-order-cell"><span class="challenge-order-index">1</span><span class="challenge-order-actions"><button type="button" data-challenge-move-up title="上移任务" aria-label="上移任务">↑</button><button type="button" data-challenge-move-down title="下移任务" aria-label="下移任务">↓</button></span></td><td><button class="challenge-row-action danger" type="button" data-challenge-delete-task>删除</button></td></tr>
+                    <tr data-task-type="充值"><td><select class="challenge-task-type-select"><option selected>充值</option><option>有效打码</option><option>每日登录</option><option>邀请好友</option></select></td><td><div class="challenge-condition"><span class="challenge-condition-label">累计充值满</span><input type="number" value="500" min="1"><span class="challenge-condition-unit"></span></div></td><td class="challenge-row-reward"><select class="challenge-reward-type"><option value="金额">金额</option><option value="存钱罐">存钱罐</option><option value="优惠券">优惠券</option></select><span class="challenge-unified-label">全部任务完成后统一发放</span></td><td class="challenge-row-reward"><input class="challenge-reward-value" type="number" value="30" min="0" step="0.01"><span class="challenge-unified-label">--</span></td><td class="challenge-order-cell"><span class="challenge-order-index">2</span><span class="challenge-order-actions"><button type="button" data-challenge-move-up title="上移任务" aria-label="上移任务">↑</button><button type="button" data-challenge-move-down title="下移任务" aria-label="下移任务">↓</button></span></td><td><button class="challenge-row-action danger" type="button" data-challenge-delete-task>删除</button></td></tr>
+                    <tr data-task-type="有效打码"><td><select class="challenge-task-type-select"><option>充值</option><option selected>有效打码</option><option>每日登录</option><option>邀请好友</option></select></td><td><div class="challenge-condition"><span class="challenge-condition-label">有效打码满</span><input type="number" value="1000" min="1"><span class="challenge-condition-unit"></span></div></td><td class="challenge-row-reward"><select class="challenge-reward-type"><option value="金额">金额</option><option value="存钱罐">存钱罐</option><option value="优惠券">优惠券</option></select><span class="challenge-unified-label">全部任务完成后统一发放</span></td><td class="challenge-row-reward"><input class="challenge-reward-value" type="number" value="10" min="0" step="0.01"><span class="challenge-unified-label">--</span></td><td class="challenge-order-cell"><span class="challenge-order-index">3</span><span class="challenge-order-actions"><button type="button" data-challenge-move-up title="上移任务" aria-label="上移任务">↑</button><button type="button" data-challenge-move-down title="下移任务" aria-label="下移任务">↓</button></span></td><td><button class="challenge-row-action danger" type="button" data-challenge-delete-task>删除</button></td></tr>
+                  </tbody></table>
+                  <div id="challengeTaskEmpty" class="challenge-task-empty" hidden>请先选择至少一种任务类型。</div>
+                </div>
+                <div id="challengeUnifiedReward" class="challenge-unified-reward" hidden><strong>统一奖励配置</strong><p>全部任务完成后统一发放一次，单项任务不单独发奖。</p><label><span>奖励类型</span><select id="challengeUnifiedRewardType"><option value="金额">金额</option><option value="存钱罐">存钱罐</option><option value="优惠券">优惠券</option></select></label><label><span>奖励内容</span><input id="challengeUnifiedRewardValue" type="number" value="50" min="0" step="0.01"></label></div>
+              </section>
+              <section class="custom-share-section">
+                <h3>展示与规则</h3>
+                <div class="custom-share-grid">
+                  <label class="custom-field"><span>排序</span><input id="challengeSort" type="number" value="0" min="0"></label>
+                  <div></div>
+                  <div class="custom-upload challenge-compact-upload"><span>Banner</span><button type="button">+<small>上传 Banner</small></button><p>建议尺寸 800 x 400，最大 500KB</p></div>
+                  <div class="custom-upload challenge-compact-upload"><span>活动图片</span><button type="button">+<small>上传活动图片</small></button><p>支持多张图片，用于活动详情展示</p></div>
+                  <div class="custom-editor challenge-rule-editor"><span>活动规则</span><div class="custom-toolbar">B U I S H x2 x2 " " · 1 2 link image undo redo save</div><textarea id="challengeRules">1. 用户需在活动周期内依次完成已配置任务。&#10;2. 同一任务可配置多个达成档位，满足条件后按奖励模式发放。&#10;3. 优惠券奖励以配置的优惠券名称为准。</textarea></div>
+                </div>
+              </section>
+            </form>
+          </div>
+        </div>
       </div>
 
       <!-- Unnamed (矩形) -->
@@ -25305,6 +25347,7 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
           <option class="u3012_input_option" value="充值排行榜">充值排行榜</option>
           <option class="u3012_input_option" selected value="分享活动">分享活动</option>
           <option class="u3012_input_option" value="自定义活动">自定义活动</option>
+          <option class="u3012_input_option" value="连续挑战">连续挑战</option>
           <option class="u3012_input_option" value="幸运转盘">幸运转盘</option>
           <option class="u3012_input_option" value="拼多多">拼多多</option>
         </select>

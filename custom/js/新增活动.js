@@ -4,7 +4,8 @@
     "\u62fc\u591a\u591a": 1,
     "\u6551\u6d4e\u91d1": 2,
     "\u5206\u4eab\u6d3b\u52a8": 3,
-    "\u81ea\u5b9a\u4e49\u6d3b\u52a8": 4
+    "\u81ea\u5b9a\u4e49\u6d3b\u52a8": 4,
+    "\u8fde\u7eed\u6311\u6218": 5
   };
 
   var panelStateCache = {};
@@ -98,11 +99,14 @@
     var isRelief = template === "\u6551\u6d4e\u91d1";
     var isShare = template === "\u5206\u4eab\u6d3b\u52a8";
     var isCustom = template === "\u81ea\u5b9a\u4e49\u6d3b\u52a8";
+    var isChallenge = template === "\u8fde\u7eed\u6311\u6218";
 
     document.body.classList.toggle("relief-template-active", isRelief);
     document.body.classList.toggle("share-template-active", isShare);
     document.body.classList.toggle("custom-template-active", isCustom);
+    document.body.classList.toggle("challenge-template-active", isChallenge);
     showPanelState("u6", state);
+    syncChallengeFooter(isChallenge);
   }
 
   function bindTemplateSelect(select) {
@@ -586,6 +590,301 @@
     syncCustomActivityJump();
   }
 
+  var CHALLENGE_STORAGE_KEY = "promoChallengeActivities";
+
+  function syncChallengeFooter(active) {
+    setText("u4", active ? "\u4fdd\u5b58" : "\u63d0\u4ea4");
+    setText("u5", "\u53d6\u6d88");
+  }
+
+  function getChallengeTaskMeta(type) {
+    var meta = {
+      "\u5145\u503c": { label: "\u7d2f\u8ba1\u5145\u503c\u6ee1", unit: "", condition: "100" },
+      "\u6709\u6548\u6253\u7801": { label: "\u6709\u6548\u6253\u7801\u6ee1", unit: "", condition: "1000" },
+      "\u6bcf\u65e5\u767b\u5f55": { label: "\u8fde\u7eed\u767b\u5f55", unit: "\u5929", condition: "1" },
+      "\u9080\u8bf7\u597d\u53cb": { label: "\u6210\u529f\u9080\u8bf7", unit: "\u4eba", condition: "1" }
+    };
+    return meta[type] || meta["\u5145\u503c"];
+  }
+
+  function getChallengeTaskTypeOptions(selectedType) {
+    return ["\u5145\u503c", "\u6709\u6548\u6253\u7801", "\u6bcf\u65e5\u767b\u5f55", "\u9080\u8bf7\u597d\u53cb"].map(function (type) {
+      return "<option" + (type === selectedType ? " selected" : "") + ">" + type + "</option>";
+    }).join("");
+  }
+
+  function createChallengeTaskRow(type, orderIndex) {
+    var meta = getChallengeTaskMeta(type);
+    var row = document.createElement("tr");
+    row.setAttribute("data-task-type", type);
+    row.innerHTML = [
+      "<td><select class=\"challenge-task-type-select\">" + getChallengeTaskTypeOptions(type) + "</select></td>",
+      "<td><div class=\"challenge-condition\"><span class=\"challenge-condition-label\">" + meta.label + "</span><input type=\"number\" value=\"" + meta.condition + "\" min=\"1\"><span class=\"challenge-condition-unit\">" + meta.unit + "</span></div></td>",
+      "<td class=\"challenge-row-reward\"><select class=\"challenge-reward-type\"><option value=\"\u91d1\u989d\">\u91d1\u989d</option><option value=\"\u5b58\u94b1\u7f50\">\u5b58\u94b1\u7f50</option><option value=\"\u4f18\u60e0\u5238\">\u4f18\u60e0\u5238</option></select><span class=\"challenge-unified-label\">\u5168\u90e8\u4efb\u52a1\u5b8c\u6210\u540e\u7edf\u4e00\u53d1\u653e</span></td>",
+      "<td class=\"challenge-row-reward\"><input class=\"challenge-reward-value\" type=\"number\" value=\"5\" min=\"0\" step=\"0.01\"><span class=\"challenge-unified-label\">--</span></td>",
+      "<td class=\"challenge-order-cell\"><span class=\"challenge-order-index\">" + orderIndex + "</span><span class=\"challenge-order-actions\"><button type=\"button\" data-challenge-move-up title=\"\u4e0a\u79fb\u4efb\u52a1\" aria-label=\"\u4e0a\u79fb\u4efb\u52a1\">\u2191</button><button type=\"button\" data-challenge-move-down title=\"\u4e0b\u79fb\u4efb\u52a1\" aria-label=\"\u4e0b\u79fb\u4efb\u52a1\">\u2193</button></span></td>",
+      "<td><button class=\"challenge-row-action danger\" type=\"button\" data-challenge-delete-task>\u5220\u9664</button></td>"
+    ].join("");
+    return row;
+  }
+
+  function syncChallengeTaskRow(row, resetCondition) {
+    var typeSelect = row.querySelector(".challenge-task-type-select");
+    var condition = row.querySelector(".challenge-condition");
+    var input = condition ? condition.querySelector("input") : null;
+    var label = condition ? condition.querySelector(".challenge-condition-label") : null;
+    var unit = condition ? condition.querySelector(".challenge-condition-unit") : null;
+    var meta;
+    if (!typeSelect || !condition || !input || !label || !unit) { return; }
+    meta = getChallengeTaskMeta(typeSelect.value);
+    row.setAttribute("data-task-type", typeSelect.value);
+    label.textContent = meta.label;
+    unit.textContent = meta.unit;
+    if (resetCondition) { input.value = meta.condition; }
+  }
+
+  function syncChallengeTaskOrder(rows) {
+    var root = document.getElementById("u6_state5");
+    var parallel = getCheckedValue("challengeCompletionMode", "\u987a\u5e8f\u5b8c\u6210") === "\u5e76\u884c\u5b8c\u6210";
+    var rowList = Array.prototype.slice.call(rows.querySelectorAll("tr"));
+    var orderHeader = document.getElementById("challengeOrderHeader");
+    if (root) { root.classList.toggle("is-parallel-tasks", parallel); }
+    if (orderHeader) { orderHeader.textContent = parallel ? "\u5b8c\u6210\u65b9\u5f0f" : "\u6267\u884c\u987a\u5e8f"; }
+    rowList.forEach(function (row, index) {
+      var order = row.querySelector(".challenge-order-index");
+      var up = row.querySelector("[data-challenge-move-up]");
+      var down = row.querySelector("[data-challenge-move-down]");
+      if (order) { order.textContent = parallel ? "\u5e76\u884c" : String(index + 1); }
+      if (up) { up.disabled = index === 0; }
+      if (down) { down.disabled = index === rowList.length - 1; }
+    });
+  }
+
+  function syncChallengeRewardControl(row) {
+    var typeSelect = row.querySelector(".challenge-reward-type");
+    var oldControl = row.querySelector(".challenge-reward-value");
+    var control;
+    if (!typeSelect || !oldControl) {
+      return;
+    }
+    if (typeSelect.value === "\u4f18\u60e0\u5238" && oldControl.tagName !== "SELECT") {
+      control = document.createElement("select");
+      control.className = "challenge-reward-value";
+      control.innerHTML = "<option>5\u5143\u65e0\u95e8\u69db\u5238</option><option>10\u5143\u6ee150\u51cf\u514d\u5238</option><option>VIP\u4e13\u5c5e\u52a0\u606f\u5238</option>";
+      oldControl.parentNode.replaceChild(control, oldControl);
+    } else if (typeSelect.value !== "\u4f18\u60e0\u5238" && oldControl.tagName !== "INPUT") {
+      control = document.createElement("input");
+      control.className = "challenge-reward-value";
+      control.type = "number";
+      control.min = "0";
+      control.step = "0.01";
+      control.value = "5";
+      oldControl.parentNode.replaceChild(control, oldControl);
+    }
+  }
+
+  function syncChallengeUnifiedRewardControl() {
+    var typeSelect = document.getElementById("challengeUnifiedRewardType");
+    var oldControl = document.getElementById("challengeUnifiedRewardValue");
+    var control;
+    if (!typeSelect || !oldControl) { return; }
+    if (typeSelect.value === "\u4f18\u60e0\u5238" && oldControl.tagName !== "SELECT") {
+      control = document.createElement("select");
+      control.id = "challengeUnifiedRewardValue";
+      control.innerHTML = "<option>5\u5143\u65e0\u95e8\u69db\u5238</option><option>10\u5143\u6ee150\u51cf\u514d\u5238</option><option>VIP\u4e13\u5c5e\u52a0\u606f\u5238</option>";
+      oldControl.parentNode.replaceChild(control, oldControl);
+    } else if (typeSelect.value !== "\u4f18\u60e0\u5238" && oldControl.tagName !== "INPUT") {
+      control = document.createElement("input");
+      control.id = "challengeUnifiedRewardValue";
+      control.type = "number";
+      control.min = "0";
+      control.step = "0.01";
+      control.value = "50";
+      oldControl.parentNode.replaceChild(control, oldControl);
+    }
+  }
+
+  function syncChallengeRewardMode() {
+    var unified = getCheckedValue("challengeRewardMode", "\u6bcf\u9879\u4efb\u52a1\u72ec\u7acb\u5956\u52b1") === "\u5168\u90e8\u4efb\u52a1\u5b8c\u6210\u540e\u7edf\u4e00\u5956\u52b1";
+    var root = document.getElementById("u6_state5");
+    var panel = document.getElementById("challengeUnifiedReward");
+    if (root) { root.classList.toggle("is-unified-reward", unified); }
+    if (panel) { panel.hidden = !unified; }
+    Array.prototype.forEach.call(document.querySelectorAll("#challengeTaskRows .challenge-reward-type, #challengeTaskRows .challenge-reward-value"), function (control) {
+      control.disabled = unified;
+    });
+  }
+
+  function getChallengeRecords() {
+    try {
+      return JSON.parse(window.localStorage.getItem(CHALLENGE_STORAGE_KEY) || "[]");
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function setChallengeRecords(records) {
+    try {
+      window.localStorage.setItem(CHALLENGE_STORAGE_KEY, JSON.stringify(records));
+    } catch (error) {
+      return false;
+    }
+    return true;
+  }
+
+  function getNamedValues(name) {
+    return Array.prototype.map.call(document.querySelectorAll('input[name="' + name + '"]:checked'), function (input) {
+      return input.value;
+    });
+  }
+
+  function collectChallengeRecord() {
+    var taskRows = Array.prototype.map.call(document.querySelectorAll("#challengeTaskRows tr"), function (row, index) {
+      var condition = row.querySelector(".challenge-condition input");
+      var rewardType = row.querySelector(".challenge-reward-type");
+      var rewardValue = row.querySelector(".challenge-reward-value");
+      var typeSelect = row.querySelector(".challenge-task-type-select");
+      return { taskType: typeSelect ? typeSelect.value : row.getAttribute("data-task-type"), condition: condition ? condition.value : "", rewardType: rewardType ? rewardType.value : "", rewardValue: rewardValue ? rewardValue.value : "", order: index + 1 };
+    });
+    var taskTypes = taskRows.map(function (task) { return task.taskType; }).filter(function (type, index, values) { return values.indexOf(type) === index; });
+    var unifiedRewardType = document.getElementById("challengeUnifiedRewardType");
+    var unifiedRewardValue = document.getElementById("challengeUnifiedRewardValue");
+    return {
+      id: new URLSearchParams(window.location.search).get("challengeId") || "challenge-" + Date.now(),
+      name: document.getElementById("challengeName").value.trim(),
+      title: document.getElementById("challengeTitle").value.trim(),
+      startTime: document.getElementById("challengeStartTime").value,
+      endTime: document.getElementById("challengeEndTime").value,
+      status: getCheckedValue("challengeStatus", "\u5f00\u653e"),
+      enabled: getCheckedValue("challengeStatus", "\u5f00\u653e") !== "\u5173\u95ed",
+      vips: getNamedValues("challengeVip"),
+      cycle: getCheckedValue("challengeCycle", "\u6bcf\u65e5"),
+      claimMode: getCheckedValue("challengeClaimMode", "\u624b\u52a8\u9886\u53d6"),
+      rewardMode: getCheckedValue("challengeRewardMode", "\u6bcf\u9879\u4efb\u52a1\u72ec\u7acb\u5956\u52b1"),
+      completionMode: getCheckedValue("challengeCompletionMode", "\u987a\u5e8f\u5b8c\u6210"),
+      taskTypes: taskTypes,
+      tasks: taskRows,
+      unifiedReward: { type: unifiedRewardType ? unifiedRewardType.value : "\u91d1\u989d", value: unifiedRewardValue ? unifiedRewardValue.value : "50" },
+      rules: document.getElementById("challengeRules").value,
+      sort: document.getElementById("challengeSort").value || "0"
+    };
+  }
+
+  function saveChallengeActivity() {
+    var form = document.getElementById("challengeActivityForm");
+    var record;
+    var records;
+    var index;
+    if (!form || !form.checkValidity()) {
+      if (form) { form.reportValidity(); }
+      return;
+    }
+    record = collectChallengeRecord();
+    if (!record.vips.length || !record.taskTypes.length || !record.tasks.length) {
+      window.alert("\u8bf7\u81f3\u5c11\u9009\u62e9\u4e00\u4e2aVIP\u7b49\u7ea7\u548c\u4e00\u79cd\u4efb\u52a1\u7c7b\u578b\u3002");
+      return;
+    }
+    records = getChallengeRecords();
+    index = records.findIndex(function (item) { return item.id === record.id; });
+    if (index === -1) { records.unshift(record); } else { records[index] = record; }
+    setChallengeRecords(records);
+    window.location.href = "\u4f18\u60e0\u6d3b\u52a8\u5217\u8868.html?challengeSaved=1";
+  }
+
+  function loadChallengeRecord() {
+    var id = new URLSearchParams(window.location.search).get("challengeId");
+    var record = id ? getChallengeRecords().find(function (item) { return item.id === id; }) : null;
+    var rows = document.getElementById("challengeTaskRows");
+    if (!record) { return; }
+    document.getElementById("challengeName").value = record.name || "";
+    document.getElementById("challengeTitle").value = record.title || "";
+    document.getElementById("challengeStartTime").value = record.startTime || "";
+    document.getElementById("challengeEndTime").value = record.endTime || "";
+    document.getElementById("challengeSort").value = record.sort || "0";
+    document.getElementById("challengeRules").value = record.rules || "";
+    ["challengeStatus", "challengeCycle", "challengeClaimMode", "challengeRewardMode", "challengeCompletionMode"].forEach(function (name) {
+      var completionMode = record.completionMode === "\u6309\u987a\u5e8f\u5b8c\u6210" ? "\u987a\u5e8f\u5b8c\u6210" : (record.completionMode === "\u540c\u65f6\u5b8c\u6210" ? "\u5e76\u884c\u5b8c\u6210" : (record.completionMode || "\u987a\u5e8f\u5b8c\u6210"));
+      var value = { challengeStatus: record.status === "\u7ef4\u62a4" ? "\u5f00\u653e" : record.status, challengeCycle: record.cycle, challengeClaimMode: record.claimMode, challengeRewardMode: record.rewardMode, challengeCompletionMode: completionMode }[name];
+      var input = document.querySelector('input[name="' + name + '"][value="' + value + '"]');
+      if (input) { input.checked = true; }
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('input[name="challengeVip"]'), function (input) {
+      input.checked = (record.vips || []).indexOf(input.value) !== -1;
+    });
+    rows.innerHTML = "";
+    (record.tasks || []).forEach(function (task, index) {
+      var row = createChallengeTaskRow(task.taskType, index + 1);
+      row.querySelector(".challenge-condition input").value = task.condition;
+      row.querySelector(".challenge-reward-type").value = task.rewardType;
+      rows.appendChild(row);
+      syncChallengeRewardControl(row);
+      row.querySelector(".challenge-reward-value").value = task.rewardValue;
+    });
+    if (record.unifiedReward) {
+      document.getElementById("challengeUnifiedRewardType").value = record.unifiedReward.type || "\u91d1\u989d";
+      syncChallengeUnifiedRewardControl();
+      document.getElementById("challengeUnifiedRewardValue").value = record.unifiedReward.value || "50";
+    }
+    syncChallengeRewardMode();
+    syncChallengeTaskOrder(rows);
+  }
+
+  function bindChallengeActivity() {
+    var root = document.getElementById("u6_state5");
+    var rows = document.getElementById("challengeTaskRows");
+    var empty = document.getElementById("challengeTaskEmpty");
+    var addTask = document.getElementById("challengeAddTask");
+    if (!root || !rows) { return; }
+    loadChallengeRecord();
+    root.addEventListener("change", function (event) {
+      var input = event.target;
+      if (input && input.classList.contains("challenge-reward-type")) { syncChallengeRewardControl(input.closest("tr")); }
+      if (input && input.classList.contains("challenge-task-type-select")) {
+        syncChallengeTaskRow(input.closest("tr"), true);
+      }
+      if (input && input.name === "challengeRewardMode") { syncChallengeRewardMode(); }
+      if (input && input.name === "challengeCompletionMode") { syncChallengeTaskOrder(rows); }
+      if (input && input.id === "challengeUnifiedRewardType") { syncChallengeUnifiedRewardControl(); }
+    });
+    if (addTask) {
+      addTask.addEventListener("click", function () {
+        var lastTypeSelect = rows.lastElementChild ? rows.lastElementChild.querySelector(".challenge-task-type-select") : null;
+        var type = lastTypeSelect ? lastTypeSelect.value : "\u5145\u503c";
+        rows.appendChild(createChallengeTaskRow(type, rows.children.length + 1));
+        empty.hidden = true;
+        syncChallengeRewardMode();
+        syncChallengeTaskOrder(rows);
+      });
+    }
+    rows.addEventListener("click", function (event) {
+      var button = event.target.closest("button");
+      var row;
+      if (!button) { return; }
+      row = button.closest("tr");
+      if (button.hasAttribute("data-challenge-delete-task")) {
+        row.remove();
+      } else if (button.hasAttribute("data-challenge-move-up") && row.previousElementSibling) {
+        rows.insertBefore(row, row.previousElementSibling);
+      } else if (button.hasAttribute("data-challenge-move-down") && row.nextElementSibling) {
+        rows.insertBefore(row.nextElementSibling, row);
+      }
+      syncChallengeTaskOrder(rows);
+      empty.hidden = Boolean(rows.children.length);
+    });
+    syncChallengeRewardMode();
+    syncChallengeTaskOrder(rows);
+    empty.hidden = Boolean(rows.children.length);
+    [document.getElementById("u4"), document.getElementById("u5"), document.getElementById("u1")].forEach(function (button, index) {
+      if (!button) { return; }
+      button.addEventListener("click", function (event) {
+        if (!document.body.classList.contains("challenge-template-active")) { return; }
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if (index === 0) { saveChallengeActivity(); } else { window.location.href = "\u4f18\u60e0\u6d3b\u52a8\u5217\u8868.html"; }
+      }, true);
+    });
+  }
+
   ready(function () {
     var select = document.getElementById("u3012_input");
 
@@ -593,11 +892,15 @@
     Array.prototype.forEach.call(document.querySelectorAll(".custom-relief-table"), bindReliefRewardTable);
     bindActivityOgSelection();
     bindCustomActivityJump();
+    bindChallengeActivity();
 
     if (select) {
       select.setAttribute("aria-label", "\u6d3b\u52a8\u6a21\u677f");
       if (!select.value) {
         select.value = "\u5206\u4eab\u6d3b\u52a8";
+      }
+      if (new URLSearchParams(window.location.search).has("challengeId")) {
+        select.value = "\u8fde\u7eed\u6311\u6218";
       }
       bindTemplateSelect(select);
     }

@@ -81,6 +81,7 @@
                 <option value="lobby_return">返回大厅</option>
                 <option value="register_closed">关闭注册</option>
                 <option value="first_recharge_success">首充成功</option>
+                <option value="auto_marketing">自动营销触发</option>
               </select>
             </div>
             <div class="cl-filter-field">
@@ -108,26 +109,20 @@
           <div class="popup-table-toolbar">
             <button class="cl-btn cl-btn-primary" id="addBtn" type="button">添加弹窗</button>
             <button class="cl-btn" id="trackingBtn" type="button">投放记录</button>
-            <a class="cl-btn" href="营销资源中心.html">营销资源中心</a>
           </div>
 
           <section class="popup-table-wrap">
             <table class="popup-table">
               <thead>
                 <tr>
-                  <th class="col-id">弹窗ID</th>
                   <th class="col-name">弹窗名称</th>
-                  <th class="col-sort">排序</th>
-                  <th class="col-image">图片</th>
-                  <th class="col-platform">弹窗平台</th>
-                  <th class="col-trigger">触发弹窗</th>
-                  <th class="col-jump">跳转类型</th>
-                  <th class="col-link">跳转地址</th>
-                  <th class="col-language">语言</th>
+                  <th class="col-trigger">触发场景</th>
+                  <th class="col-platform">平台</th>
+                  <th class="col-stat">今日曝光</th>
+                  <th class="col-stat">今日点击</th>
+                  <th class="col-rate">点击率</th>
                   <th class="col-status">状态</th>
-                  <th class="col-time">开始时间</th>
-                  <th class="col-time">结束时间</th>
-                  <th class="col-time">创建时间</th>
+                  <th class="col-effective">生效时间</th>
                   <th class="col-action">操作</th>
                 </tr>
               </thead>
@@ -165,16 +160,31 @@
 
         <div class="modal-body">
           <section class="form-section base-section">
-            <div class="form-grid two-column name-row">
+            <div class="section-title-group"><strong>基础信息</strong></div>
+            <div class="popup-overview-grid">
               <label class="form-field">
                 <span>弹窗名称</span>
-                <input id="formName" type="text" placeholder="输入弹窗名称">
+                <input id="formName" type="text" placeholder="请输入弹窗名称">
+              </label>
+              <div class="compact-control mode-control">
+                <span class="field-label">弹窗形式</span>
+                <div class="segmented-control">
+                  <label><input type="radio" name="contentMode" value="配置弹窗" checked><span>配置弹窗</span></label>
+                  <label><input type="radio" name="contentMode" value="功能弹窗"><span>功能弹窗</span></label>
+                </div>
+              </div>
+              <label class="form-field sort-field">
+                <span>排序</span>
+                <input id="formSort" type="number" value="1" min="1">
               </label>
             </div>
+          </section>
 
+          <section class="form-section trigger-section">
+            <div class="section-title-group"><strong>触发与范围</strong></div>
             <div class="form-grid trigger-grid">
               <label class="form-field">
-                <span>弹窗触发</span>
+                <span>触发方式</span>
                 <select id="formTrigger">
                   <option value="register_success">注册成功</option>
                   <option value="login_success">登录成功</option>
@@ -187,6 +197,7 @@
                   <option value="lobby_return">返回大厅</option>
                   <option value="register_closed">关闭注册</option>
                   <option value="first_recharge_success">首充成功</option>
+                  <option value="auto_marketing">自动营销触发</option>
                 </select>
               </label>
               <div class="tips-box">
@@ -228,7 +239,7 @@
                         <option value="不限制">不限制</option>
                         <option value="累计充值次数">累计充值次数</option>
                       </select>
-                      <input id="gameChargeCount" type="number" value="1" min="1">
+                      <input id="gameChargeCount" type="number" value="1" min="1" hidden>
                     </div>
                   </label>
                   <label class="form-field compact">
@@ -238,32 +249,30 @@
                         <option value="不限制">不限制</option>
                         <option value="累计充值金额">累计充值金额</option>
                       </select>
-                      <input type="text" value="EvUSD" readonly>
-                      <input id="gameChargeAmount" type="number" value="1.00" min="0" step="0.01">
+                      <input id="gameChargeAmount" type="number" value="1.00" min="0" step="0.01" hidden>
                     </div>
                   </label>
                 </div>
               </div>
             </div>
 
-            <div class="terminal-row">
-              <span class="row-label">弹窗平台</span>
-              <label><input type="checkbox" name="terminal" value="APP" checked>APP</label>
-              <label><input type="checkbox" name="terminal" value="H5">H5</label>
-            </div>
-
-            <div class="channel-limit-row">
-              <div class="channel-limit-head">
-                <label class="form-field compact">
-                  <span>渠道限制</span>
-                  <select id="channelVisibility">
-                    <option value="不限制">不限制</option>
-                    <option value="仅渠道可见">仅渠道可见</option>
-                    <option value="仅渠道不可见">仅渠道不可见</option>
-                  </select>
-                </label>
-                <p class="field-note" id="channelNote">游客访问、玩法限制等场景建议开放全部渠道。</p>
+            <div class="scope-grid">
+              <div class="compact-control terminal-control">
+                <span class="field-label">弹窗平台</span>
+                <div class="check-options">
+                  <label><input type="checkbox" name="terminal" value="APP" checked>APP</label>
+                  <label><input type="checkbox" name="terminal" value="H5">H5</label>
+                </div>
               </div>
+              <label class="form-field compact">
+                <span>渠道限制</span>
+                <select id="channelVisibility">
+                  <option value="不限制">不限制</option>
+                  <option value="仅渠道可见">仅渠道可见</option>
+                  <option value="仅渠道不可见">仅渠道不可见</option>
+                </select>
+              </label>
+              <p class="field-note scope-note" id="channelNote">游客访问、玩法限制等场景建议开放全部渠道。</p>
               <div class="channel-target-box" id="channelTargetRow" hidden>
                 <label class="form-field compact channel-target">
                   <span>指定渠道</span>
@@ -271,74 +280,56 @@
                 </label>
               </div>
             </div>
-
-            <div class="form-grid multi-grid">
-              <label class="form-field compact field-block--narrow">
-                <span>排序</span>
-                <input id="formSort" type="number" value="1" min="1">
-              </label>
-              <div class="option-block">
-                <span class="option-block-title">是否显示不再提示选择</span>
-                <div class="radio-field">
-                  <label><input type="radio" name="skipTip" value="是" checked>是</label>
-                  <label><input type="radio" name="skipTip" value="否">否</label>
-                </div>
-                <em class="option-help">勾选后，本地自然日内不再出现该弹窗</em>
-              </div>
-              <div class="option-block">
-                <span class="option-block-title">是否显示弹窗底板</span>
-                <div class="radio-field">
-                  <label><input type="radio" name="popupBackdrop" value="显示" checked>显示</label>
-                  <label><input type="radio" name="popupBackdrop" value="隐藏">隐藏</label>
-                </div>
-                <em class="option-help">隐藏后适用于透明背景异形 PNG，按素材原始轮廓直接展示。</em>
-              </div>
-            </div>
-
-              <div class="option-block mode-inline-block">
-                <span class="option-block-title">内容模式</span>
-                <div class="mode-inline-group">
-                  <div class="radio-field">
-                    <label><input type="radio" name="contentMode" value="配置弹窗" checked>默认配置弹窗</label>
-                    <label><input type="radio" name="contentMode" value="功能弹窗">功能弹窗</label>
-                  </div>
-                </div>
-              </div>
-
           </section>
 
-          <section class="form-section content-section">
-            <div class="section-title-group">
-              <strong>配置弹窗内容</strong>
+          <section class="form-section function-section" id="systemPopupSection" hidden>
+            <div class="section-title-group"><strong>功能弹窗</strong></div>
+            <div class="system-popup-config">
+              <label class="form-field">
+                <span>系统功能</span>
+                <select id="directSystemPopup">
+                  <option value="充值">充值</option>
+                  <option value="提现">提现</option>
+                  <option value="安装PWA">安装 PWA</option>
+                  <option value="兑换码">兑换码</option>
+                </select>
+              </label>
             </div>
+          </section>
 
-            <div class="form-grid align-top content-head-grid">
+          <section class="form-section content-section" id="contentPopupSection">
+            <div class="section-title-group"><strong>弹窗内容</strong></div>
+            <div class="content-meta-grid">
               <label class="form-field">
                 <span>弹窗标题</span>
-                <input id="popupTitle" type="text" placeholder="输入弹窗标题">
+                <input id="popupTitle" type="text" placeholder="请输入弹窗标题">
               </label>
-              <div class="option-block button-option-block button-option-block-stacked">
-                <span class="option-block-title">弹窗按钮</span>
-                <div class="option-inline-row">
-                  <div class="radio-field">
-                    <label><input type="radio" name="hasButton" value="有" checked>有</label>
-                    <label><input type="radio" name="hasButton" value="无">无</label>
-                  </div>
-                  <label class="form-field compact inline-input-field" id="buttonTextField">
-                    <input id="buttonText" type="text" placeholder="请输入内容">
+              <div class="compact-control button-control">
+                <span class="field-label">弹窗按钮</span>
+                <div class="button-config-row">
+                  <label class="check-control"><input id="hasButton" type="checkbox" checked>显示按钮</label>
+                  <label class="form-field compact" id="buttonTextField">
+                    <input id="buttonText" type="text" placeholder="请输入按钮文案">
                   </label>
                 </div>
               </div>
             </div>
+            <div class="content-options-row">
+              <label class="checkbox-setting"><input id="showSkipToday" type="checkbox" checked><span>显示“今日不再展示”</span></label>
+              <label class="checkbox-setting"><input id="showBackdrop" type="checkbox" checked><span>显示弹窗底板</span></label>
+            </div>
+
+            <div class="action-block">
+              <div class="content-block-head"><span>点击动作</span></div>
+              <div id="actionEditor"></div>
+            </div>
 
             <div class="content-block">
-              <div class="content-block-head">
-                <span>弹窗图片</span>
-              </div>
+              <div class="content-block-head"><span>弹窗图片</span></div>
               <div class="image-list" id="imageList"></div>
               <button class="add-image-btn" id="addImageBtn" type="button">
                 <span>＋</span>
-                <strong>添加多图片</strong>
+                <strong>添加图片</strong>
               </button>
             </div>
 
@@ -366,37 +357,9 @@
             </label>
           </section>
 
-          <section class="form-section footer-section">
-            <div class="section-title-group"><strong>投放控制与营销方案接入</strong></div>
-            <div class="form-grid integration-grid">
-              <label class="form-field"><span>使用方式</span><select id="deliveryMode"><option>独立投放并允许方案引用</option><option>仅独立投放</option><option>仅营销方案引用</option></select></label>
-              <label class="form-field"><span>方案请求能力</span><select id="planRequestCapability"><option>仅登记资格，等待原场景</option><option>允许方案请求（仍执行全部规则）</option></select></label>
-              <label class="form-field"><span>弹窗版本</span><input id="popupVersion" value="v5" readonly></label>
-              <label class="form-field"><span>弹窗优先级</span><input id="popupPriority" type="number" value="80" min="1" max="100"></label>
-              <label class="form-field"><span>互斥组</span><select id="popupMutex"><option>新人转化组</option><option>充值促进组</option><option>无互斥组</option></select></label>
-              <label class="form-field"><span>每会话最多展示</span><input id="sessionCap" type="number" value="1" min="1"></label>
-              <label class="form-field"><span>每日最多展示</span><input id="dailyCap" type="number" value="1" min="1"></label>
-              <label class="form-field"><span>玩家冷却时间</span><select id="popupCooldown"><option>12小时</option><option>24小时</option><option>7天</option><option>不限制</option></select></label>
-              <label class="form-field"><span>测试会员</span><input id="testMembers" value="1010123523, 1010123321" placeholder="会员ID，多个用逗号分隔"></label>
-            </div>
-            <div class="popup-reference-box"><div><span>当前引用方案</span><strong id="popupPlanRefs">新人首充转化 v6、注册未首充自动培育 v2</strong></div><div><span>展示资格</span><strong>独立投放按原规则；方案投放需同时满足方案人群资格</strong></div><div><span>方案触达</span><strong>模板决定等待原场景、在线即时或下一活跃场景；所有请求均执行本弹窗全部规则</strong></div><div class="tracking-options"><span>回传事件</span><label><input type="checkbox" checked>曝光</label><label><input type="checkbox" checked>点击</label><label><input type="checkbox" checked>关闭</label><label><input type="checkbox" checked>跳转</label><label><input type="checkbox" checked>失败</label></div></div>
-            <div class="week-panel">
-              <div class="week-panel-head">
-                <span class="row-label">展示星期</span>
-                <em>默认全选</em>
-              </div>
-              <div class="week-options">
-                <label><input type="checkbox" name="weekday" value="周一" checked>周一</label>
-                <label><input type="checkbox" name="weekday" value="周二" checked>周二</label>
-                <label><input type="checkbox" name="weekday" value="周三" checked>周三</label>
-                <label><input type="checkbox" name="weekday" value="周四" checked>周四</label>
-                <label><input type="checkbox" name="weekday" value="周五" checked>周五</label>
-                <label><input type="checkbox" name="weekday" value="周六" checked>周六</label>
-                <label><input type="checkbox" name="weekday" value="周日" checked>周日</label>
-              </div>
-            </div>
-
-            <div class="form-grid footer-detail-grid">
+          <section class="form-section effective-section">
+            <div class="section-title-group"><strong>生效设置</strong></div>
+            <div class="effective-grid">
               <label class="form-field">
                 <span>开始时间</span>
                 <input id="startTime" type="text" value="2026-06-30 00:00:00">
@@ -405,12 +368,12 @@
                 <span>结束时间</span>
                 <input id="endTime" type="text" value="2026-12-31 23:59:59">
               </label>
-              <label class="inline-check-inline long-term-inline">
+              <label class="checkbox-setting effective-check">
                 <input id="longTerm" type="checkbox">
                 <span>长期有效</span>
               </label>
-              <div class="info-panel info-panel--status">
-                <span class="panel-label">状态</span>
+              <div class="status-setting">
+                <span class="field-label">状态</span>
                 <div class="switch-line">
                   <button class="switch on" id="statusSwitch" type="button" aria-pressed="true"><span></span></button>
                   <span>启用</span>
@@ -422,7 +385,7 @@
 
         <footer class="modal-actions">
           <button class="btn plain" type="button" data-close>取消</button>
-          <button class="btn primary" id="saveBtn" type="button">保存并生成新版本</button>
+          <button class="btn primary" id="saveBtn" type="button">保存</button>
         </footer>
       </div>
     </div>

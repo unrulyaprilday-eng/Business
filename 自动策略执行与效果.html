@@ -1,14 +1,110 @@
-<!DOCTYPE html><html><head><title>营销执行与效果</title><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta http-equiv="content-type" content="text/html; charset=utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<link href="resources/css/axure_rp_page.css" rel="stylesheet"/><link href="data/styles.css" rel="stylesheet"/><link href="files/自动策略执行与效果/styles.css" rel="stylesheet"/><link href="custom/component-library/css/tokens.css" rel="stylesheet"/><link href="custom/component-library/css/components.css" rel="stylesheet"/><link href="custom/css/智能营销后台原型.css" rel="stylesheet"/><link href="custom/css/自动策略执行与效果.css" rel="stylesheet"/>
-<script src="resources/scripts/jquery-3.7.1.min.js"></script><script src="resources/scripts/axure/axQuery.js"></script><script src="resources/scripts/axure/globals.js"></script><script src="resources/scripts/axutils.js"></script><script src="resources/scripts/axure/annotation.js"></script><script src="resources/scripts/axure/axQuery.std.js"></script><script src="resources/scripts/axure/doc.js"></script><script src="resources/scripts/messagecenter.js"></script><script src="resources/scripts/axure/events.js"></script><script src="resources/scripts/axure/recording.js"></script><script src="resources/scripts/axure/action.js"></script><script src="resources/scripts/axure/expr.js"></script><script src="resources/scripts/axure/geometry.js"></script><script src="resources/scripts/axure/flyout.js"></script><script src="resources/scripts/axure/model.js"></script><script src="resources/scripts/axure/repeater.js"></script><script src="resources/scripts/axure/sto.js"></script><script src="resources/scripts/axure/utils.temp.js"></script><script src="resources/scripts/axure/variables.js"></script><script src="resources/scripts/axure/drag.js"></script><script src="resources/scripts/axure/move.js"></script><script src="resources/scripts/axure/visibility.js"></script><script src="resources/scripts/axure/style.js"></script><script src="resources/scripts/axure/adaptive.js"></script><script src="resources/scripts/axure/tree.js"></script><script src="resources/scripts/axure/init.temp.js"></script><script src="resources/scripts/axure/legacy.js"></script><script src="resources/scripts/axure/viewer.js"></script><script src="resources/scripts/axure/math.js"></script><script src="resources/scripts/axure/jquery.nicescroll.min.js"></script><script src="data/document.js"></script><script src="files/自动策略执行与效果/data.js"></script><script>$axure.utils.getTransparentGifPath=function(){return'resources/images/transparent.gif';};$axure.utils.getOtherPath=function(){return'resources/Other.html';};$axure.utils.getReloadPath=function(){return'resources/reload.html';};</script></head>
-<body><div id="base" class=""><div class="im-page"><header class="im-topbar"><div class="im-crumbs"><span>智能营销方案</span><i>/</i><span>营销运营</span><i>/</i><strong>营销执行与效果</strong></div><nav class="im-doc-links"><a href="自动策略中心.html">营销方案</a><a href="营销资源中心.html">资源中心</a><a href="玩家活动报表.html">玩家活动报表</a><a href="玩家任务报表.html">玩家任务报表</a></nav></header>
-<div class="im-page-head"><div class="im-page-title"><h1>营销执行与效果</h1><p>按方案、批次和玩家追踪任务、活动、弹窗、奖励与业务结果。</p></div><div class="im-actions"><button class="cl-btn cl-btn-primary" data-demo-notify="报表已导出">导出报表</button></div></div>
-<main class="im-content">
-<section class="im-panel"><div class="im-panel-body"><div class="cl-tabs"><button class="cl-tab is-active" data-cl-tab-group="executionTabs" data-cl-tab="batches">批次执行</button><button class="cl-tab" data-cl-tab-group="executionTabs" data-cl-tab="players">玩家链路</button><button class="cl-tab" data-cl-tab-group="executionTabs" data-cl-tab="effect">效果漏斗</button><button class="cl-tab" data-cl-tab-group="executionTabs" data-cl-tab="rewards">奖励与异常</button></div>
-<section class="im-tabs-panel" data-cl-tab-group="executionTabs" data-cl-tab-panel="batches"><form class="im-filter" id="batchFilter"><div class="cl-filter-field"><label>日期</label><input class="cl-input" type="date" value="2026-07-27"/></div><div class="cl-filter-field is-grow"><label>方案</label><input class="cl-input" value="新人首充转化"/></div><div class="cl-filter-field"><label>状态</label><select class="cl-select"><option>全部</option><option>已完成</option><option>部分失败</option></select></div><div class="im-actions"><button class="cl-btn cl-btn-primary" type="button">查询</button><button class="cl-btn" type="button" data-cl-reset="#batchFilter">重置</button></div></form><div class="cl-table-wrap"><table class="cl-table im-main-table"><thead><tr><th>批次</th><th>方案/版本</th><th>人群来源</th><th>快照人数</th><th>任务分配</th><th>活动加入</th><th>弹窗资格</th><th>首充成功</th><th>奖励成本</th><th>状态</th><th>操作</th></tr></thead><tbody><tr><td>BAT-260727-1000</td><td><strong>新人首充转化</strong><div class="im-muted">方案v6 / 模板v3</div></td><td>保存筛选 + 固定名单</td><td>1,024</td><td>1,018 / 6失败</td><td>1,012 / 12过滤</td><td>998 / 14达频控</td><td>238</td><td>任务18,324<br/>活动28,092</td><td><span class="cl-status cl-status-success">已完成</span></td><td><button class="cl-link" data-cl-modal-open="batchDetailModal">详情</button></td></tr><tr><td>BAT-260726-1000</td><td><strong>新人首充转化</strong><div class="im-muted">方案v5 / 模板v2</div></td><td>保存筛选 + 固定名单</td><td>986</td><td>981 / 5失败</td><td>976 / 10过滤</td><td>960 / 16达频控</td><td>211</td><td>任务17,658<br/>活动24,870</td><td><span class="cl-status cl-status-success">已完成</span></td><td><button class="cl-link">详情</button></td></tr><tr><td>BAT-260725-1605</td><td><strong>回归玩家名单补投</strong><div class="im-muted">方案v2 / 模板v2</div></td><td>固定会员名单</td><td>268</td><td>266 / 2失败</td><td>264 / 4过滤</td><td>261 / 3达频控</td><td>52</td><td>12,672</td><td><span class="cl-status cl-status-warning">部分失败</span></td><td><button class="cl-link">异常</button></td></tr></tbody></table></div></section>
-<section class="im-tabs-panel" data-cl-tab-group="executionTabs" data-cl-tab-panel="players" hidden><div class="cl-table-wrap"><table class="cl-table im-main-table"><thead><tr><th>会员</th><th>入组与资格</th><th>任务结果</th><th>活动结果</th><th>弹窗结果</th><th>业务结果</th><th>任务奖励</th><th>活动奖励</th><th>状态</th><th>操作</th></tr></thead><tbody><tr><td>1010123523</td><td>注册31小时 · 未首充</td><td>已完成 10:26</td><td>已参与 · 档位200</td><td>曝光/点击</td><td>首充200</td><td>18 + 20活跃度</td><td>30</td><td><span class="cl-status cl-status-success">成功退出</span></td><td><button class="cl-link" data-cl-modal-open="playerJourneyModal">链路</button></td></tr><tr><td>1010123321</td><td>注册2天 · 未首充</td><td>进行中</td><td>已参与</td><td>曝光/关闭</td><td>未首充</td><td>-</td><td>-</td><td><span class="cl-status cl-status-info">执行中</span></td><td><button class="cl-link">链路</button></td></tr><tr><td>1010112840</td><td>注册4天 · 未首充</td><td>重复分配被拦截</td><td>资格有效</td><td>达到每日频控</td><td>未首充</td><td>-</td><td>-</td><td><span class="cl-status cl-status-warning">部分过滤</span></td><td><button class="cl-link">链路</button></td></tr><tr><td>1010109821</td><td>风险调查命中</td><td>未分配</td><td>未加入</td><td>未登记</td><td>-</td><td>-</td><td>-</td><td><span class="cl-status cl-status-danger">保护过滤</span></td><td><button class="cl-link">原因</button></td></tr></tbody></table></div></section>
-<section class="im-tabs-panel" data-cl-tab-group="executionTabs" data-cl-tab-panel="effect" hidden><div class="im-split"><div class="im-card"><h3>新人首充转化漏斗</h3><div class="im-timeline"><div class="im-timeline-item"><strong>人群快照 1,024</strong><span>筛选命中1,018 + 补充名单42 - 排除36</span></div><div class="im-timeline-item"><strong>执行资源 988</strong><span>过滤风险、过期资格和重复执行36人</span></div><div class="im-timeline-item"><strong>弹窗曝光 742</strong><span>点击286 · 关闭94 · 未到触发场景246</span></div><div class="im-timeline-item"><strong>任务查看 518 / 活动参与 476</strong><span>同一玩家可以同时进入任务与活动</span></div><div class="im-timeline-item"><strong>首充成功 238</strong><span>转化率23.2% · 首充金额128,640</span></div></div></div><aside class="im-card"><h3>成本与收益</h3><dl><dt>任务奖励</dt><dd>18,324</dd><dt>活动奖励</dt><dd>28,092</dd><dt>奖励总成本</dt><dd>46,416</dd><dt>首充金额</dt><dd>128,640</dd><dt>直接 ROI</dt><dd class="im-positive">1.77</dd><dt>重复奖励拦截</dt><dd>7笔</dd></dl></aside></div><h3>资源效果对比</h3><div class="cl-table-wrap"><table class="cl-table"><thead><tr><th>资源</th><th>触达/参与</th><th>完成/点击</th><th>首充转化</th><th>奖励成本</th><th>异常</th></tr></thead><tbody><tr><td>完成首次充值任务 v6</td><td>1,018</td><td>238完成</td><td>23.4%</td><td>18,324</td><td>6次分配失败</td></tr><tr><td>新人首充活动 v12</td><td>1,012</td><td>238完成</td><td>23.5%</td><td>28,092</td><td>12人资格过滤</td></tr><tr><td>新人首充弹窗 v5</td><td>742曝光</td><td>286点击</td><td>28.1%（点击后）</td><td>0</td><td>14人达频控</td></tr></tbody></table></div></section>
-<section class="im-tabs-panel" data-cl-tab-group="executionTabs" data-cl-tab-panel="rewards" hidden><div class="cl-table-wrap"><table class="cl-table im-main-table"><thead><tr><th>记录</th><th>会员</th><th>来源</th><th>业务单号/幂等键</th><th>奖励</th><th>状态</th><th>时间</th><th>处理</th></tr></thead><tbody><tr><td>RW-260727-8821</td><td>1010123523</td><td>任务 TSK-NEW-010</td><td class="im-code">MP001-BAT1000-U3523-TASK-v6</td><td>18 EvUSD + 20活跃度</td><td><span class="cl-status cl-status-success">发放成功</span></td><td>10:26:19</td><td><button class="cl-link">详情</button></td></tr><tr><td>RW-260727-8822</td><td>1010123523</td><td>活动 ACT-FIRST-001</td><td class="im-code">MP001-BAT1000-U3523-ACT-v12</td><td>30 EvUSD</td><td><span class="cl-status cl-status-success">发放成功</span></td><td>10:26:21</td><td><button class="cl-link">详情</button></td></tr><tr><td>ER-260727-148</td><td>1010112840</td><td>任务 TSK-NEW-010</td><td class="im-code">MP001-BAT1000-U2840-TASK-v6</td><td>-</td><td><span class="cl-status cl-status-warning">重复拦截</span></td><td>10:14:22</td><td><button class="cl-link">证据</button></td></tr><tr><td>ER-260727-151</td><td>1010131022</td><td>活动 ACT-FIRST-001</td><td class="im-code">MP001-BAT1000-U1022-ACT-v12</td><td>30 EvUSD</td><td><span class="cl-status cl-status-danger">发放失败</span></td><td>10:18:09</td><td><button class="cl-link">重试</button></td></tr></tbody></table></div></section></div></section></main>
-<div class="cl-modal-layer" data-cl-modal="batchDetailModal" hidden><div class="cl-modal-mask"></div><section class="cl-modal im-modal-wide"><header class="cl-modal-head"><strong>批次详情：BAT-260727-1000</strong><button class="cl-close-btn" data-cl-modal-close="batchDetailModal">×</button></header><div class="cl-modal-body"><div class="im-summary-grid"><div class="im-summary-item"><span>方案版本</span><strong>新人首充转化 v6</strong></div><div class="im-summary-item"><span>模板版本</span><strong>MT-001 v3</strong></div><div class="im-summary-item"><span>执行时间</span><strong>2026-07-27 10:00</strong></div><div class="im-summary-item"><span>奖励策略</span><strong>任务与活动叠加</strong></div></div><h3>批次检查</h3><div class="im-status-line"><span class="cl-status cl-status-success">人群快照已保存</span><span class="cl-status cl-status-success">资源版本已固定</span><span class="cl-status cl-status-success">幂等检查通过</span><span class="cl-status cl-status-warning">18条异常待复核</span></div></div><footer class="cl-modal-foot"><button class="cl-btn" data-cl-modal-close="batchDetailModal">关闭</button></footer></section></div>
-<div class="cl-modal-layer" data-cl-modal="playerJourneyModal" hidden><div class="cl-modal-mask"></div><section class="cl-modal im-modal-xwide"><header class="cl-modal-head"><strong>玩家执行链：1010123523</strong><button class="cl-close-btn" data-cl-modal-close="playerJourneyModal">×</button></header><div class="cl-modal-body"><div class="im-timeline"><div class="im-timeline-item"><strong>10:00:02 入组</strong><span>命中注册7天未首充人群；账号与保护校验通过</span></div><div class="im-timeline-item"><strong>10:00:04 资源执行</strong><span>首充任务分配成功；首充活动加入成功；弹窗资格登记成功</span></div><div class="im-timeline-item"><strong>10:17:12 弹窗触达</strong><span>登录成功场景曝光，10:17:24点击跳转充值中心</span></div><div class="im-timeline-item"><strong>10:26:18 首充成功</strong><span>recharge_success，金额200；任务和活动分别完成</span></div><div class="im-timeline-item"><strong>10:26:19 / 10:26:21 奖励结算</strong><span>任务18 EvUSD + 20活跃度；活动30 EvUSD；两笔均成功</span></div><div class="im-timeline-item"><strong>10:26:22 成功退出</strong><span>停止后续弹窗资格，保留完整执行与奖励证据</span></div></div></div><footer class="cl-modal-foot"><a class="cl-btn" href="事件流水.html">事件流水</a><a class="cl-btn" href="玩家任务报表.html">任务报表</a><a class="cl-btn" href="玩家活动报表.html">活动报表</a><button class="cl-btn cl-btn-primary" data-cl-modal-close="playerJourneyModal">关闭</button></footer></section></div>
-<div class="im-demo-notice" data-demo-notice hidden></div></div></div><script src="custom/component-library/js/components.js"></script><script src="custom/js/智能营销后台原型.js"></script><script src="custom/js/axure-custom-page-ready.js"></script><script src="resources/scripts/axure/ios.js"></script></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>方案详情</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link href="resources/css/axure_rp_page.css" rel="stylesheet"/>
+  <link href="data/styles.css" rel="stylesheet"/>
+  <link href="files/自动策略执行与效果/styles.css" rel="stylesheet"/>
+  <link href="custom/component-library/css/tokens.css" rel="stylesheet"/>
+  <link href="custom/component-library/css/components.css" rel="stylesheet"/>
+  <link href="custom/css/营销运营精简.css" rel="stylesheet"/>
+  <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+  <script src="resources/scripts/axure/axQuery.js"></script>
+  <script src="resources/scripts/axure/globals.js"></script>
+  <script src="resources/scripts/axutils.js"></script>
+  <script src="resources/scripts/axure/annotation.js"></script>
+  <script src="resources/scripts/axure/axQuery.std.js"></script>
+  <script src="resources/scripts/axure/doc.js"></script>
+  <script src="resources/scripts/messagecenter.js"></script>
+  <script src="resources/scripts/axure/events.js"></script>
+  <script src="resources/scripts/axure/recording.js"></script>
+  <script src="resources/scripts/axure/action.js"></script>
+  <script src="resources/scripts/axure/expr.js"></script>
+  <script src="resources/scripts/axure/geometry.js"></script>
+  <script src="resources/scripts/axure/flyout.js"></script>
+  <script src="resources/scripts/axure/model.js"></script>
+  <script src="resources/scripts/axure/repeater.js"></script>
+  <script src="resources/scripts/axure/sto.js"></script>
+  <script src="resources/scripts/axure/utils.temp.js"></script>
+  <script src="resources/scripts/axure/variables.js"></script>
+  <script src="resources/scripts/axure/drag.js"></script>
+  <script src="resources/scripts/axure/move.js"></script>
+  <script src="resources/scripts/axure/visibility.js"></script>
+  <script src="resources/scripts/axure/style.js"></script>
+  <script src="resources/scripts/axure/adaptive.js"></script>
+  <script src="resources/scripts/axure/tree.js"></script>
+  <script src="resources/scripts/axure/init.temp.js"></script>
+  <script src="resources/scripts/axure/legacy.js"></script>
+  <script src="resources/scripts/axure/viewer.js"></script>
+  <script src="resources/scripts/axure/math.js"></script>
+  <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+  <script src="data/document.js"></script>
+  <script src="files/自动策略执行与效果/data.js"></script>
+</head>
+<body>
+  <div id="base" class="">
+    <div class="mo-page">
+      <header class="mo-topbar">
+        <div class="mo-crumbs"><span>智能营销方案</span><i>/</i><span>营销运营</span><i>/</i><a href="自动策略中心.html">营销方案</a><i>/</i><strong>方案详情</strong></div>
+        <nav class="mo-links"><a href="营销模板管理.html">营销模板</a></nav>
+      </header>
+      <main class="mo-content">
+        <div class="mo-page-head">
+          <div><h1>新人首充转化</h1><p>面向注册 7 天内未首充玩家，每日执行一次。</p></div>
+          <div class="mo-actions"><a class="cl-btn" href="自动策略中心.html">返回列表</a><a class="cl-btn cl-btn-primary" href="自动策略配置.html?mode=edit">编辑方案</a></div>
+        </div>
+
+        <section class="mo-panel"><div class="mo-panel-body">
+          <div class="cl-tabs mo-tabs" role="tablist">
+            <button class="cl-tab is-active" type="button" data-cl-tab-group="planDetail" data-cl-tab="config">基本配置</button>
+            <button class="cl-tab" type="button" data-cl-tab-group="planDetail" data-cl-tab="records">执行记录</button>
+            <button class="cl-tab" type="button" data-cl-tab-group="planDetail" data-cl-tab="results">效果数据</button>
+          </div>
+
+          <section class="cl-tab-panel" data-cl-tab-group="planDetail" data-cl-tab-panel="config">
+            <dl class="mo-detail-list">
+              <div><dt>方案名称</dt><dd>新人首充转化</dd></div>
+              <div><dt>状态</dt><dd><span class="mo-status on">运行中</span></dd></div>
+              <div><dt>目标人群</dt><dd>注册 7 天未首充</dd></div>
+              <div><dt>执行方式</dt><dd>每日 10:00</dd></div>
+              <div><dt>任务</dt><dd><a class="mo-link" href="任务中心.html">首充引导任务</a></dd></div>
+              <div><dt>活动</dt><dd><a class="mo-link" href="优惠活动列表.html">新人首充加赠</a></dd></div>
+              <div><dt>弹窗</dt><dd><a class="mo-link" href="弹窗管理.html">新人首充提示</a></dd></div>
+              <div><dt>有效时间</dt><dd>2026-07-28 至 2026-08-31</dd></div>
+              <div><dt>创建人</dt><dd>运营管理员</dd></div>
+              <div><dt>最近更新</dt><dd>2026-07-28 09:24:16</dd></div>
+            </dl>
+          </section>
+
+          <section class="cl-tab-panel" data-cl-tab-group="planDetail" data-cl-tab-panel="records" hidden>
+            <div class="mo-tab-toolbar"><span>最近 7 次执行</span><span class="mo-muted">数据更新时间：2026-07-28 10:05</span></div>
+            <div class="mo-table-wrap"><table class="mo-table mo-record-table"><thead><tr><th style="width:130px">执行批次</th><th style="width:145px">执行时间</th><th style="width:90px">命中人数</th><th>任务</th><th>活动</th><th>弹窗</th><th style="width:76px">结果</th><th style="width:90px">异常人数</th></tr></thead><tbody>
+              <tr><td>20260728-1000</td><td>2026-07-28 10:00</td><td class="mo-number">1,024</td><td>已发放</td><td>已开放</td><td>已展示</td><td><span class="mo-status on">成功</span></td><td class="mo-number">3</td></tr>
+              <tr><td>20260727-1000</td><td>2026-07-27 10:00</td><td class="mo-number">986</td><td>已发放</td><td>已开放</td><td>已展示</td><td><span class="mo-status on">成功</span></td><td class="mo-number">0</td></tr>
+              <tr><td>20260726-1000</td><td>2026-07-26 10:00</td><td class="mo-number">941</td><td>已发放</td><td>已开放</td><td>已展示</td><td><span class="mo-status on">成功</span></td><td class="mo-number">2</td></tr>
+              <tr><td>20260725-1000</td><td>2026-07-25 10:00</td><td class="mo-number">903</td><td>已发放</td><td>已开放</td><td>已展示</td><td><span class="mo-status on">成功</span></td><td class="mo-number">1</td></tr>
+            </tbody></table></div>
+          </section>
+
+          <section class="cl-tab-panel" data-cl-tab-group="planDetail" data-cl-tab-panel="results" hidden>
+            <div class="mo-tab-toolbar"><span>按执行日期统计</span><span class="mo-muted">奖励成本以活动和任务实际发放为准</span></div>
+            <div class="mo-table-wrap"><table class="mo-table mo-effect-table"><thead><tr><th style="width:110px">日期</th><th>命中人数</th><th>弹窗曝光</th><th>弹窗点击</th><th>活动参与</th><th>任务完成</th><th>首充人数</th><th>转化率</th><th>奖励成本</th></tr></thead><tbody>
+              <tr><td>2026-07-28</td><td class="mo-number">1,024</td><td class="mo-number">892</td><td class="mo-number">416</td><td class="mo-number">301</td><td class="mo-number">264</td><td class="mo-number">238</td><td class="mo-number">23.2%</td><td class="mo-number">12,614.00</td></tr>
+              <tr><td>2026-07-27</td><td class="mo-number">986</td><td class="mo-number">851</td><td class="mo-number">382</td><td class="mo-number">274</td><td class="mo-number">241</td><td class="mo-number">216</td><td class="mo-number">21.9%</td><td class="mo-number">11,485.00</td></tr>
+              <tr><td>2026-07-26</td><td class="mo-number">941</td><td class="mo-number">808</td><td class="mo-number">365</td><td class="mo-number">251</td><td class="mo-number">226</td><td class="mo-number">197</td><td class="mo-number">20.9%</td><td class="mo-number">10,402.00</td></tr>
+              <tr class="mo-total-row"><td>合计</td><td class="mo-number">2,951</td><td class="mo-number">2,551</td><td class="mo-number">1,163</td><td class="mo-number">826</td><td class="mo-number">731</td><td class="mo-number">651</td><td class="mo-number">22.1%</td><td class="mo-number">34,501.00</td></tr>
+            </tbody></table></div>
+          </section>
+        </div></section>
+      </main>
+    </div>
+  </div>
+  <script src="custom/component-library/js/components.js"></script>
+  <script src="custom/js/营销运营精简.js"></script>
+  <script src="custom/js/axure-custom-page-ready.js"></script>
+  <script src="resources/scripts/axure/ios.js"></script>
+</body>
+</html>
