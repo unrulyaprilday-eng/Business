@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-07-28T05:38:17.355Z",
+  "savedAt": "2026-07-29T08:05:41.580Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -183,6 +183,13 @@
           "pageName": "弹窗管理",
           "type": "Wireframe",
           "url": "弹窗管理.html",
+          "children": []
+        },
+        {
+          "id": "operation_direct_charge_activity_config",
+          "pageName": "直充活动配置",
+          "type": "Wireframe",
+          "url": "直充活动配置.html",
           "children": []
         },
         {

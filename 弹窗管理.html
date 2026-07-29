@@ -108,7 +108,6 @@
 
           <div class="popup-table-toolbar">
             <button class="cl-btn cl-btn-primary" id="addBtn" type="button">添加弹窗</button>
-            <button class="cl-btn" id="trackingBtn" type="button">投放记录</button>
           </div>
 
           <section class="popup-table-wrap">
@@ -147,6 +146,20 @@
             </select>
             <span id="totalCount">共 0 条记录</span>
           </div>
+
+          <section class="page-description" aria-labelledby="pageDescriptionTitle">
+            <div class="page-description-head">
+              <strong id="pageDescriptionTitle">页面说明</strong>
+              <span>设置为“自动营销触发”时，弹窗系统收到触发后依次判断：</span>
+            </div>
+            <ol class="page-description-steps">
+              <li><span>1</span><p>弹窗是否启用、是否在有效期内。</p></li>
+              <li><span>2</span><p>用户是否已经展示过。</p></li>
+              <li><span>3</span><p>当前是否有更高优先级弹窗。</p></li>
+              <li><span>4</span><p>是否达到弹窗侧的展示上限。</p></li>
+              <li><span>5</span><p>功能是否适用于当前端和当前用户。</p></li>
+            </ol>
+          </section>
         </main>
       </div>
     </div>
@@ -166,13 +179,6 @@
                 <span>弹窗名称</span>
                 <input id="formName" type="text" placeholder="请输入弹窗名称">
               </label>
-              <div class="compact-control mode-control">
-                <span class="field-label">弹窗形式</span>
-                <div class="segmented-control">
-                  <label><input type="radio" name="contentMode" value="配置弹窗" checked><span>配置弹窗</span></label>
-                  <label><input type="radio" name="contentMode" value="功能弹窗"><span>功能弹窗</span></label>
-                </div>
-              </div>
               <label class="form-field sort-field">
                 <span>排序</span>
                 <input id="formSort" type="number" value="1" min="1">
@@ -282,84 +288,99 @@
             </div>
           </section>
 
-          <section class="form-section function-section" id="systemPopupSection" hidden>
-            <div class="section-title-group"><strong>功能弹窗</strong></div>
-            <div class="system-popup-config">
-              <label class="form-field">
-                <span>系统功能</span>
-                <select id="directSystemPopup">
-                  <option value="充值">充值</option>
-                  <option value="提现">提现</option>
-                  <option value="安装PWA">安装 PWA</option>
-                  <option value="兑换码">兑换码</option>
-                </select>
-              </label>
-            </div>
-          </section>
-
-          <section class="form-section content-section" id="contentPopupSection">
-            <div class="section-title-group"><strong>弹窗内容</strong></div>
-            <div class="content-meta-grid">
-              <label class="form-field">
-                <span>弹窗标题</span>
-                <input id="popupTitle" type="text" placeholder="请输入弹窗标题">
-              </label>
-              <div class="compact-control button-control">
-                <span class="field-label">弹窗按钮</span>
-                <div class="button-config-row">
-                  <label class="check-control"><input id="hasButton" type="checkbox" checked>显示按钮</label>
-                  <label class="form-field compact" id="buttonTextField">
-                    <input id="buttonText" type="text" placeholder="请输入按钮文案">
-                  </label>
+          <section class="form-section content-section">
+            <div class="section-title-group"><strong>弹窗内容配置</strong></div>
+            <div class="content-mode-row">
+              <div class="compact-control mode-control">
+                <span class="field-label">弹窗类型</span>
+                <div class="content-mode-options" role="radiogroup" aria-label="弹窗类型">
+                  <label><input type="radio" name="contentMode" value="配置弹窗" checked>配置弹窗</label>
+                  <label><input type="radio" name="contentMode" value="功能弹窗">功能弹窗</label>
                 </div>
               </div>
-            </div>
-            <div class="content-options-row">
-              <label class="checkbox-setting"><input id="showSkipToday" type="checkbox" checked><span>显示“今日不再展示”</span></label>
-              <label class="checkbox-setting"><input id="showBackdrop" type="checkbox" checked><span>显示弹窗底板</span></label>
+              <p class="field-note content-mode-note">配置弹窗支持图片、文本及逐图跳转；功能弹窗直接拉起系统内置功能。</p>
             </div>
 
-            <div class="action-block">
-              <div class="content-block-head"><span>点击动作</span></div>
-              <div id="actionEditor"></div>
+            <div class="content-mode-panel system-popup-panel" id="systemPopupSection" hidden>
+              <div class="system-popup-config">
+                <label class="form-field">
+                  <span>系统功能</span>
+                  <select id="directSystemPopup">
+                    <option value="充值">充值</option>
+                    <option value="提现">提现</option>
+                    <option value="安装PWA">安装 PWA</option>
+                    <option value="兑换码">兑换码</option>
+                  </select>
+                </label>
+                <p class="field-note">保存后触发该弹窗时，将直接打开所选系统功能。</p>
+              </div>
             </div>
 
-            <div class="content-block">
-              <div class="content-block-head"><span>弹窗图片</span></div>
-              <div class="image-list" id="imageList"></div>
-              <button class="add-image-btn" id="addImageBtn" type="button">
-                <span>＋</span>
-                <strong>添加图片</strong>
-              </button>
-            </div>
-
-            <label class="form-field textarea-field">
-              <span>弹窗文本</span>
-              <div class="rich-editor" id="popupTextEditor">
-                <div class="editor-toolbar">
-                  <div class="toolbar-group">
-                    <button class="tool-btn tool-btn-strong" type="button">B</button>
-                    <button class="tool-btn tool-btn-italic" type="button">I</button>
-                    <button class="tool-btn tool-btn-underline" type="button">U</button>
-                    <button class="tool-btn tool-btn-accent" type="button">A</button>
-                  </div>
-                  <span class="toolbar-divider" aria-hidden="true"></span>
-                  <div class="toolbar-group toolbar-group--text">
-                    <button class="tool-btn" type="button">链接</button>
-                    <button class="tool-btn" type="button">图片</button>
-                    <button class="tool-btn" type="button">表情</button>
-                    <button class="tool-btn" type="button">对齐</button>
-                    <button class="tool-btn" type="button">列表</button>
+            <div class="content-mode-panel configured-popup-panel" id="contentPopupSection">
+              <div class="content-meta-grid">
+                <label class="form-field">
+                  <span>弹窗标题</span>
+                  <input id="popupTitle" type="text" placeholder="请输入弹窗标题">
+                </label>
+                <div class="compact-control button-control">
+                  <span class="field-label">弹窗按钮</span>
+                  <div class="button-config-row">
+                    <label class="check-control"><input id="hasButton" type="checkbox" checked>显示按钮</label>
+                    <label class="form-field compact" id="buttonTextField">
+                      <input id="buttonText" type="text" placeholder="请输入按钮文案">
+                    </label>
                   </div>
                 </div>
-                <textarea id="popupText" rows="6" placeholder="请输入弹窗文案内容">尊敬的会员，当前场景已命中对应弹窗。可用于公告、活动引导或风险提醒。</textarea>
               </div>
-            </label>
+              <div class="content-options-row">
+                <label class="checkbox-setting"><input id="showSkipToday" type="checkbox" checked><span>显示“今日不再展示”</span></label>
+                <label class="checkbox-setting"><input id="showBackdrop" type="checkbox" checked><span>显示弹窗底板</span></label>
+              </div>
+
+              <div class="content-block">
+                <div class="content-block-head"><span>弹窗图片</span></div>
+                <div class="image-list" id="imageList"></div>
+                <button class="add-image-btn" id="addImageBtn" type="button">
+                  <span>＋</span>
+                  <strong>添加图片</strong>
+                </button>
+              </div>
+
+              <label class="form-field textarea-field">
+                <span>弹窗文本</span>
+                <div class="rich-editor" id="popupTextEditor">
+                  <div class="editor-toolbar">
+                    <div class="toolbar-group">
+                      <button class="tool-btn tool-btn-strong" type="button">B</button>
+                      <button class="tool-btn tool-btn-italic" type="button">I</button>
+                      <button class="tool-btn tool-btn-underline" type="button">U</button>
+                      <button class="tool-btn tool-btn-accent" type="button">A</button>
+                    </div>
+                    <span class="toolbar-divider" aria-hidden="true"></span>
+                    <div class="toolbar-group toolbar-group--text">
+                      <button class="tool-btn" type="button">链接</button>
+                      <button class="tool-btn" type="button">图片</button>
+                      <button class="tool-btn" type="button">表情</button>
+                      <button class="tool-btn" type="button">对齐</button>
+                      <button class="tool-btn" type="button">列表</button>
+                    </div>
+                  </div>
+                  <textarea id="popupText" rows="6" placeholder="请输入弹窗文案内容">尊敬的会员，当前场景已命中对应弹窗。可用于公告、活动引导或风险提醒。</textarea>
+                </div>
+              </label>
+            </div>
           </section>
 
           <section class="form-section effective-section">
             <div class="section-title-group"><strong>生效设置</strong></div>
             <div class="effective-grid">
+              <div class="status-setting">
+                <span class="field-label">状态</span>
+                <div class="switch-line">
+                  <button class="switch on" id="statusSwitch" type="button" aria-pressed="true"><span></span></button>
+                  <span>启用</span>
+                </div>
+              </div>
               <label class="form-field">
                 <span>开始时间</span>
                 <input id="startTime" type="text" value="2026-06-30 00:00:00">
@@ -372,13 +393,6 @@
                 <input id="longTerm" type="checkbox">
                 <span>长期有效</span>
               </label>
-              <div class="status-setting">
-                <span class="field-label">状态</span>
-                <div class="switch-line">
-                  <button class="switch on" id="statusSwitch" type="button" aria-pressed="true"><span></span></button>
-                  <span>启用</span>
-                </div>
-              </div>
             </div>
           </section>
         </div>
@@ -406,14 +420,7 @@
       </div>
     </div>
 
-    <div class="modal-mask" id="popupTrackingModal" hidden>
-      <div class="modal-card tracking-card" role="dialog" aria-modal="true" aria-labelledby="trackingModalTitle">
-        <header class="modal-head"><h3 id="trackingModalTitle">弹窗投放记录</h3><button class="modal-close" type="button" data-tracking-close aria-label="关闭">×</button></header>
-        <div class="modal-body"><div class="tracking-summary"><div><span>今日决策请求</span><strong>36,842</strong></div><div><span>返回弹窗队列</span><strong>24,680</strong></div><div><span>曝光</span><strong>23,906</strong></div><div><span>点击</span><strong>4,912</strong></div></div><table class="tracking-table"><thead><tr><th>时间</th><th>会员</th><th>弹窗/版本</th><th>来源</th><th>触发场景</th><th>结果</th><th>方案/批次</th></tr></thead><tbody><tr><td>10:17:12</td><td>1010123523</td><td>新人首充引导 v5</td><td>营销方案</td><td>登录成功</td><td>曝光 → 点击</td><td>MP-001 / BAT-260727-1000</td></tr><tr><td>10:15:28</td><td>1010123321</td><td>每日首登签到提醒 v2</td><td>独立投放</td><td>每日首次登录</td><td>曝光 → 关闭</td><td>-</td></tr><tr><td>10:14:03</td><td>1010112840</td><td>新人首充引导 v5</td><td>营销方案</td><td>返回大厅</td><td>每日频控拦截</td><td>MP-001 / BAT-260727-1000</td></tr><tr><td>10:13:22</td><td>1010123330</td><td>充值失败帮助 v2</td><td>营销方案</td><td>在线即时请求</td><td>无在线会话 → 待下一活跃场景</td><td>MP-019 / BAT-260727-1005</td></tr></tbody></table></div>
-        <footer class="modal-actions"><button class="btn plain" type="button" data-tracking-close>关闭</button><button class="btn primary" type="button">导出记录</button></footer>
-      </div>
-    </div>
-
+    <script src="custom/js/direct-charge-activity-store.js"></script>
     <script src="custom/js/弹窗管理.js"></script>
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>

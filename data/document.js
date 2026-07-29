@@ -197,6 +197,13 @@ $axure.loadDocument({
             "children": []
           },
           {
+            "id": "operation_direct_charge_activity_config",
+            "pageName": "直充活动配置",
+            "type": "Wireframe",
+            "url": "直充活动配置.html",
+            "children": []
+          },
+          {
             "id": "operation_customer_service_center",
             "pageName": "客服中心",
             "type": "Wireframe",

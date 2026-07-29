@@ -45,7 +45,7 @@
   TIP[T.back] = { p: "\u8fd4\u56de\u5927\u5385\u65f6\u5c55\u793a\u8865\u8d34\u6216\u5145\u503c\u5f15\u5bfc\uff0c\u9002\u5408\u5728\u4f59\u989d\u4e0d\u8db3\u540e\u627f\u63a5\u3002", s: "\u5e38\u4e0e\u4f59\u989d\u4e0d\u8db3\u9608\u503c\u7ec4\u5408\u4f7f\u7528\uff0c\u73a9\u5bb6\u9000\u51fa\u6e38\u620f\u540e\u518d\u89e6\u53d1\u5f39\u7a97\u3002" };
   TIP[T.closeReg] = { p: "\u5173\u95ed\u6ce8\u518c\u9002\u5408\u8bf4\u660e\u539f\u56e0\u3001\u5f15\u5bfc\u8054\u7cfb\u5ba2\u670d\u6216\u8df3\u8f6c\u5907\u7528\u5165\u53e3\u3002", s: "\u5efa\u8bae\u957f\u671f\u6709\u6548\u5e76\u8986\u76d6\u591a\u8bed\u8a00\uff0c\u907f\u514d\u4e0d\u540c\u7aef\u5c55\u793a\u53e3\u5f84\u4e0d\u4e00\u81f4\u3002" };
   TIP[T.firstPay] = { p: "\u9996\u5145\u6210\u529f\u5e38\u7528\u4e8e\u4e8c\u5145\u5f15\u5bfc\u3001\u6210\u957f\u793c\u5305\u6216\u798f\u5229\u5347\u7ea7\u63d0\u793a\u3002", s: "\u53ef\u642d\u914d\u5f39\u7a97\u6309\u94ae\u548c\u5185\u94fe\u8df3\u8f6c\uff0c\u627f\u63a5\u540e\u7eed\u8f6c\u5316\u52a8\u4f5c\u3002" };
-  TIP[T.marketing] = { p: "\u7531\u81ea\u52a8\u8425\u9500\u7b56\u7565\u547d\u4e2d\u73a9\u5bb6\u540e\u8c03\u7528\u5f39\u7a97\u89e6\u53d1\u63a5\u53e3\u3002", s: "\u89e6\u53d1\u65f6\u4f7f\u7528\u5f39\u7a97 ID \u548c\u6807\u51c6\u89e6\u53d1\u7f16\u7801\uff0c\u5c55\u793a\u4ecd\u6267\u884c\u672c\u5f39\u7a97\u7684\u9891\u63a7\u3001\u6709\u6548\u671f\u548c\u72b6\u6001\u89c4\u5219\u3002" };
+  TIP[T.marketing] = { p: "\u7531\u81ea\u52a8\u8425\u9500\u7b56\u7565\u547d\u4e2d\u73a9\u5bb6\u540e\u8c03\u7528\u5f39\u7a97\u89e6\u53d1\u63a5\u53e3\u3002", s: "\u89e6\u53d1\u65f6\u4f7f\u7528\u5f39\u7a97 ID \u548c\u6807\u51c6\u89e6\u53d1\u7f16\u7801\uff0c\u5c55\u793a\u4ecd\u6267\u884c\u672c\u5f39\u7a97\u7684\u6709\u6548\u671f\u548c\u72b6\u6001\u89c4\u5219\u3002" };
 
   var POPUPS = [
     { id: "202610001", name: "\u65b0\u4eba\u9996\u767b\u793c\u5305", refs: "2\u4e2a\u65b9\u6848", planRefs: "\u65b0\u4eba\u9996\u5145\u8f6c\u5316 v6\u3001\u6ce8\u518c\u672a\u9996\u5145\u81ea\u52a8\u57f9\u80b2 v2", todayExposure: 8642, todayClicks: 1286, sortOrder: 1, imageTheme: "light", platform: "APP", trigger: T.reg, jumpType: "\u5916\u94fe", jumpLink: "https://gift.example.com", language: "\u8bed\u8a001", status: T.on, startTime: "2026-06-30 00:00:00", endTime: "2026-07-30 23:59:59", createdTime: "2026-06-28 10:21:16" },
@@ -69,10 +69,11 @@
     { value: "", label: "\u81ea\u5b9a\u4e49" }
   ];
 
-  var DEFAULT_IMAGE_BLOCKS = [{}];
-  var DEFAULT_POPUP_ACTION = { jumpType: "\u5185\u94fe", target: "/activity", rechargeAmount: 100, rewardAmount: 10 };
+  var DEFAULT_IMAGE_BLOCKS = [
+    { jumpType: "\u5185\u94fe", target: "/activity", directChargeActivityId: "dca_001" }
+  ];
 
-  var state = { rows: POPUPS.slice(), editingId: null, imageBlocks: cloneBlocks(DEFAULT_IMAGE_BLOCKS), popupAction: Object.assign({}, DEFAULT_POPUP_ACTION), pendingStatusId: null, pendingStatusNext: null };
+  var state = { rows: POPUPS.slice(), editingId: null, imageBlocks: cloneBlocks(DEFAULT_IMAGE_BLOCKS), pendingStatusId: null, pendingStatusNext: null };
 
   var rowsEl = document.getElementById("popupRows");
   var emptyStateEl = document.getElementById("emptyState");
@@ -80,7 +81,6 @@
   var modalEl = document.getElementById("popupModal");
   var modalTitleEl = document.getElementById("popupModalTitle");
   var imageListEl = document.getElementById("imageList");
-  var actionEditorEl = document.getElementById("actionEditor");
   var tipP = document.getElementById("triggerTipPrimary");
   var tipS = document.getElementById("triggerTipSecondary");
   var triggerCodeEl = document.getElementById("triggerCode");
@@ -114,6 +114,21 @@
   function esc(v) { return String(v).replace(/[&<>\"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c]; }); }
   function renderOptions(options, selected) { return options.map(function (option) { return '<option value="' + esc(option.value) + '"' + (String(selected) === String(option.value) ? " selected" : "") + '>' + esc(option.label) + "</option>"; }).join(""); }
   function hasOption(options, value) { return options.some(function (option) { return option.value === value; }); }
+  function getDirectChargeActivities() {
+    return window.DirectChargeActivityStore ? window.DirectChargeActivityStore.getAll() : [];
+  }
+  function resolveDirectChargeActivity(block) {
+    var activities = getDirectChargeActivities();
+    var selected = activities.filter(function (activity) { return activity.id === block.directChargeActivityId; })[0] || null;
+    if (!selected && block.rechargeAmount != null) {
+      selected = activities.filter(function (activity) {
+        return Number(activity.rechargeAmount) === Number(block.rechargeAmount) && Number(activity.rewardAmount) === Number(block.rewardAmount);
+      })[0] || null;
+    }
+    if (!selected) selected = activities.filter(function (activity) { return activity.status === "\u542f\u7528"; })[0] || null;
+    if (selected) block.directChargeActivityId = selected.id;
+    return selected;
+  }
   function setSwitch(button, on) {
     button.classList.toggle("on", on);
     button.setAttribute("aria-pressed", on ? "true" : "false");
@@ -232,7 +247,7 @@
     }
   }
 
-  function popupActionTemplate(block) {
+  function popupActionTemplate(block, index) {
     var showConfigBox = block.jumpType !== "\u65e0";
     var isExternal = block.jumpType === "\u5916\u94fe";
     var isInternal = block.jumpType === "\u5185\u94fe";
@@ -249,15 +264,29 @@
     } else if (isSystemPopup) {
       targetControl = '<select class="link-select" data-target-select aria-label="\u7cfb\u7edf\u529f\u80fd\u5f39\u7a97">' + renderOptions(SYSTEM_POPUP_OPTIONS, block.target || SYSTEM_POPUP_OPTIONS[0].value) + '</select>';
     } else if (isDirectCharge) {
-      targetControl = '<div class="direct-charge-fields"><label><span>\u5145\u503c\u91d1\u989d</span><input data-recharge-amount type="number" min="0.01" step="0.01" value="' + esc(block.rechargeAmount == null ? "100.00" : block.rechargeAmount) + '"></label><label><span>\u5956\u52b1\u91d1\u989d</span><input data-reward-amount type="number" min="0" step="0.01" value="' + esc(block.rewardAmount == null ? "10.00" : block.rewardAmount) + '"></label></div>';
+      var directChargeActivity = resolveDirectChargeActivity(block);
+      var directChargeOptions = getDirectChargeActivities().filter(function (activity) { return activity.status === "\u542f\u7528" || (directChargeActivity && activity.id === directChargeActivity.id); });
+      var activityOptionsHtml = directChargeOptions.length ? directChargeOptions.map(function (activity) {
+        return '<option value="' + esc(activity.id) + '"' + (directChargeActivity && activity.id === directChargeActivity.id ? " selected" : "") + '>' + esc(activity.name) + "</option>";
+      }).join("") : '<option value="">\u6682\u65e0\u53ef\u7528\u6d3b\u52a8</option>';
+      targetControl = [
+        '<div class="direct-charge-template">',
+        '<div class="direct-charge-template-head"><label><span>\u6d3b\u52a8\u540d</span><select data-direct-charge-activity>' + activityOptionsHtml + '</select></label><a href="\u76f4\u5145\u6d3b\u52a8\u914d\u7f6e.html">\u7ba1\u7406\u6d3b\u52a8\u6a21\u677f</a></div>',
+        '<div class="direct-charge-fields">',
+        '<label><span>\u6e20\u9053</span><input type="text" value="' + esc(directChargeActivity ? directChargeActivity.channel : "-") + '" readonly></label>',
+        '<label><span>\u5145\u503c\u91d1\u989d</span><input type="text" value="' + esc(directChargeActivity && window.DirectChargeActivityStore ? window.DirectChargeActivityStore.formatAmount(directChargeActivity.rechargeAmount) : "-") + '" readonly></label>',
+        '<label><span>\u5956\u52b1\u7c7b\u578b</span><input type="text" value="' + esc(directChargeActivity ? directChargeActivity.rewardType : "-") + '" readonly></label>',
+        '<label><span>\u8d60\u9001\u91d1\u989d</span><input type="text" value="' + esc(directChargeActivity && window.DirectChargeActivityStore ? window.DirectChargeActivityStore.formatAmount(directChargeActivity.rewardAmount) : "-") + '" readonly></label>',
+        "</div></div>"
+      ].join("");
     }
     return [
       '<div class="jump-side"><div class="jump-line jump-type-line"><span>\u52a8\u4f5c\u7c7b\u578b</span><div class="jump-choice-group">',
-      '<label><input type="radio" name="popupActionType" value="\u5185\u94fe"' + (block.jumpType === "\u5185\u94fe" ? " checked" : "") + '>\u5185\u94fe</label>',
-      '<label><input type="radio" name="popupActionType" value="\u5916\u94fe"' + (block.jumpType === "\u5916\u94fe" ? " checked" : "") + '>\u5916\u94fe</label>',
-      '<label><input type="radio" name="popupActionType" value="\u529f\u80fd\u5f39\u7a97"' + (block.jumpType === "\u529f\u80fd\u5f39\u7a97" ? " checked" : "") + '>\u529f\u80fd\u5f39\u7a97</label>',
-      '<label><input type="radio" name="popupActionType" value="\u76f4\u5145"' + (block.jumpType === "\u76f4\u5145" ? " checked" : "") + '>\u76f4\u5145</label>',
-      '<label><input type="radio" name="popupActionType" value="\u65e0"' + (block.jumpType === "\u65e0" ? " checked" : "") + '>\u65e0</label></div></div>',
+      '<label><input type="radio" name="imageActionType' + index + '" value="\u5185\u94fe"' + (block.jumpType === "\u5185\u94fe" ? " checked" : "") + '>\u5185\u94fe</label>',
+      '<label><input type="radio" name="imageActionType' + index + '" value="\u5916\u94fe"' + (block.jumpType === "\u5916\u94fe" ? " checked" : "") + '>\u5916\u94fe</label>',
+      '<label><input type="radio" name="imageActionType' + index + '" value="\u529f\u80fd\u5f39\u7a97"' + (block.jumpType === "\u529f\u80fd\u5f39\u7a97" ? " checked" : "") + '>\u529f\u80fd\u5f39\u7a97</label>',
+      '<label><input type="radio" name="imageActionType' + index + '" value="\u76f4\u5145"' + (block.jumpType === "\u76f4\u5145" ? " checked" : "") + '>\u76f4\u5145</label>',
+      '<label><input type="radio" name="imageActionType' + index + '" value="\u65e0"' + (block.jumpType === "\u65e0" ? " checked" : "") + '>\u65e0</label></div></div>',
       '<div class="jump-config-box"' + (showConfigBox ? "" : ' hidden') + '>',
       '<div class="jump-line target-line"' + (showConfigBox ? "" : ' hidden') + '><span>' + targetLabel + '</span><div class="link-picker jump-link-picker">',
       targetControl,
@@ -273,6 +302,7 @@
       '<button class="mini-btn select" type="button">\u9009\u62e9\u6587\u4ef6</button>',
       '<button class="mini-btn upload" type="button">\u5f00\u59cb\u4e0a\u4f20</button>',
       "</div><div class=\"upload-note\">\u652f\u6301 jpg\u3001png\uff0c\u5355\u4e2a\u6587\u4ef6\u4e0d\u8d85\u8fc7 1MB\uff0c\u5efa\u8bae 350x120 \u50cf\u7d20</div></div></div>",
+      popupActionTemplate(block, index),
       index > 0 ? '<button class="image-remove-btn" type="button" data-remove-image title="\u5220\u9664\u56fe\u7247" aria-label="\u5220\u9664\u56fe\u7247">&times;</button>' : "",
       "</div>"
     ].join("");
@@ -280,11 +310,9 @@
 
   function renderImageBlocks() {
     imageListEl.innerHTML = state.imageBlocks.map(function (block, index) { return imageBlockTemplate(block, index); }).join("");
-    actionEditorEl.innerHTML = popupActionTemplate(state.popupAction);
   }
   function resetImageBlocks() {
     state.imageBlocks = cloneBlocks(DEFAULT_IMAGE_BLOCKS);
-    state.popupAction = Object.assign({}, DEFAULT_POPUP_ACTION);
   }
   function getRowJumpMeta(block) {
     if (!block || block.jumpType === "\u65e0") {
@@ -297,7 +325,8 @@
       return { type: "\u529f\u80fd\u5f39\u7a97", link: block.target || SYSTEM_POPUP_OPTIONS[0].value };
     }
     if (block.jumpType === "\u76f4\u5145") {
-      return { type: "\u76f4\u5145", link: String(block.rechargeAmount || 0) + " / " + String(block.rewardAmount || 0) };
+      var activity = resolveDirectChargeActivity(block);
+      return { type: "\u76f4\u5145", link: activity ? activity.name : "-" };
     }
     return { type: "\u5185\u94fe", link: block.target || "-" };
   }
@@ -332,17 +361,15 @@
     setCheckedValue("contentMode", item ? (item.contentMode || "\u914d\u7f6e\u5f39\u7a97") : "\u914d\u7f6e\u5f39\u7a97");
     directSystemPopupEl.value = item && hasOption(SYSTEM_POPUP_OPTIONS, item.systemPopupTarget) ? item.systemPopupTarget : SYSTEM_POPUP_OPTIONS[0].value;
     setSwitch(statusSwitchEl, !item || item.status === T.on);
+    resetImageBlocks();
     if (item && item.imageBlocks && item.imageBlocks.length) {
       state.imageBlocks = cloneBlocks(item.imageBlocks);
-    } else {
-      resetImageBlocks();
-    }
-    if (item && !item.imageBlocks && state.imageBlocks[0]) {
+      if (item.popupAction && state.imageBlocks.length === 1 && !state.imageBlocks[0].jumpType) {
+        state.imageBlocks[0] = Object.assign({}, item.popupAction);
+      }
+    } else if (item) {
       state.imageBlocks[0].jumpType = item.jumpType === "\u5916\u94fe" ? "\u5916\u94fe" : item.jumpType === "\u529f\u80fd\u5f39\u7a97" ? "\u529f\u80fd\u5f39\u7a97" : item.jumpType === "\u76f4\u5145" ? "\u76f4\u5145" : item.jumpType === "\u65e0" ? "\u65e0" : "\u5185\u94fe";
       state.imageBlocks[0].target = item.jumpLink === "-" ? "" : item.jumpLink;
-      if (state.imageBlocks[0].jumpType === "\u529f\u80fd\u5f39\u7a97" && !hasOption(SYSTEM_POPUP_OPTIONS, state.imageBlocks[0].target)) {
-        state.imageBlocks[0].target = SYSTEM_POPUP_OPTIONS[0].value;
-      }
     }
     renderImageBlocks(); renderTips(formTriggerEl.value); renderChannelState(); renderButtonTextState(); renderConditions(formTriggerEl.value); renderContentMode();
     modalEl.hidden = false;
@@ -368,14 +395,24 @@
     if (d) { var id = d.getAttribute("data-delete"); var next = POPUPS.filter(function (item) { return item.id !== id; }); POPUPS.length = 0; Array.prototype.push.apply(POPUPS, next); applyFilters(); }
   });
 
+  imageListEl.addEventListener("click", function (event) {
+    var removeButton = event.target.closest("[data-remove-image]");
+    if (!removeButton) return;
+    var itemEl = removeButton.closest(".image-item");
+    var index = Number(itemEl.getAttribute("data-image-index"));
+    if (index > 0) {
+      state.imageBlocks.splice(index, 1);
+      renderImageBlocks();
+    }
+  });
+
   imageListEl.addEventListener("change", function (event) {
     var itemEl = event.target.closest(".image-item");
     if (!itemEl) return;
     var index = Number(itemEl.getAttribute("data-image-index"));
     var block = state.imageBlocks[index];
     if (!block) return;
-
-    if (event.target.name === "jumpType" + index) {
+    if (event.target.name === "imageActionType" + index) {
       block.jumpType = event.target.value;
       if (block.jumpType === "\u5916\u94fe" && (!block.target || block.target.indexOf("http") !== 0)) {
         block.target = "https://promo.example.com";
@@ -387,17 +424,19 @@
         block.target = "/activity";
       }
       if (block.jumpType === "\u76f4\u5145") {
-        if (block.rechargeAmount == null) block.rechargeAmount = 100;
-        if (block.rewardAmount == null) block.rewardAmount = 10;
+        var defaultActivity = getDirectChargeActivities().filter(function (activity) { return activity.status === "\u542f\u7528"; })[0];
+        if (defaultActivity && !block.directChargeActivityId) block.directChargeActivityId = defaultActivity.id;
       }
       renderImageBlocks();
       return;
     }
 
-    if (event.target.matches("[data-target-select]")) {
+    if (event.target.matches("[data-direct-charge-activity]")) {
+      block.directChargeActivityId = event.target.value;
+      renderImageBlocks();
+    } else if (event.target.matches("[data-target-select]")) {
       block.target = event.target.value || "";
       renderImageBlocks();
-      return;
     }
   });
 
@@ -407,17 +446,12 @@
     var index = Number(itemEl.getAttribute("data-image-index"));
     var block = state.imageBlocks[index];
     if (!block) return;
-
     if (event.target.matches("[data-target-input]")) {
       block.target = event.target.value;
       if (block.jumpType === "\u5185\u94fe") {
         var linkSelect = itemEl.querySelector("[data-target-select]");
         if (linkSelect) linkSelect.value = hasOption(INTERNAL_LINK_OPTIONS, block.target) && block.target ? block.target : "";
       }
-    } else if (event.target.matches("[data-recharge-amount]")) {
-      block.rechargeAmount = event.target.value;
-    } else if (event.target.matches("[data-reward-amount]")) {
-      block.rewardAmount = event.target.value;
     }
   });
 
@@ -434,14 +468,6 @@
   document.getElementById("statusConfirmClose").addEventListener("click", closeStatusConfirm);
   document.getElementById("statusConfirmCancel").addEventListener("click", closeStatusConfirm);
   document.getElementById("statusConfirmSubmit").addEventListener("click", submitStatusConfirm);
-  var trackingModalEl = document.getElementById("popupTrackingModal");
-  document.getElementById("trackingBtn").addEventListener("click", function () { trackingModalEl.hidden = false; });
-  Array.prototype.forEach.call(document.querySelectorAll("[data-tracking-close]"), function (button) {
-    button.addEventListener("click", function () { trackingModalEl.hidden = true; });
-  });
-  trackingModalEl.addEventListener("click", function (event) {
-    if (event.target === trackingModalEl) trackingModalEl.hidden = true;
-  });
   formTriggerEl.addEventListener("change", function () { renderTips(formTriggerEl.value); renderConditions(formTriggerEl.value); });
   gameChargeCountModeEl.addEventListener("change", renderGameChargeLimits);
   gameChargeAmountModeEl.addEventListener("change", renderGameChargeLimits);
@@ -449,7 +475,7 @@
   Array.prototype.forEach.call(document.querySelectorAll('input[name="contentMode"]'), function (radio) { radio.addEventListener("change", renderContentMode); });
   channelVisibilityEl.addEventListener("change", renderChannelState);
   longTermEl.addEventListener("change", function () { endTimeEl.disabled = longTermEl.checked; endTimeEl.value = longTermEl.checked ? "\u957f\u671f\u6709\u6548" : "2026-12-31 23:59:59"; });
-  document.getElementById("addImageBtn").addEventListener("click", function () { state.imageBlocks.push({ jumpType: "\u5185\u94fe", target: "/activity" }); renderImageBlocks(); });
+  document.getElementById("addImageBtn").addEventListener("click", function () { state.imageBlocks.push(Object.assign({}, DEFAULT_IMAGE_BLOCKS[0])); renderImageBlocks(); });
   document.getElementById("saveBtn").addEventListener("click", function () {
     var sortOrder = Number(document.getElementById("formSort").value) || 1;
     var primaryBlock = state.imageBlocks[0] || DEFAULT_IMAGE_BLOCKS[0];

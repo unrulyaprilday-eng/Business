@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>直充活动配置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/直充活动配置/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/tokens.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/components.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/直充活动配置.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/直充活动配置/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return "resources/images/transparent.gif"; };
+      $axure.utils.getOtherPath = function() { return "resources/Other.html"; };
+      $axure.utils.getReloadPath = function() { return "resources/reload.html"; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell direct-charge-page">
+        <header class="direct-charge-titlebar">
+          <button class="title-icon" type="button" aria-label="返回">‹</button>
+          <button class="title-icon refresh" type="button" aria-label="刷新">↻</button>
+          <span>运营中心</span>
+          <b>/</b>
+          <strong>直充活动配置</strong>
+        </header>
+
+        <main class="direct-charge-panel">
+          <form class="cl-filter-bar direct-charge-filter" id="activityFilter">
+            <div class="cl-filter-field">
+              <label for="filterKeyword">活动名</label>
+              <input class="cl-input" id="filterKeyword" type="text" placeholder="请输入活动名">
+            </div>
+            <div class="cl-filter-field">
+              <label for="filterChannel">渠道</label>
+              <select class="cl-select" id="filterChannel">
+                <option value="">全部渠道</option>
+                <option>SuccusPay / Cashapp</option>
+                <option>SuccusPay / Applepay</option>
+                <option>UsdtPay / TRC20</option>
+                <option>WiwiPay / PIX</option>
+              </select>
+            </div>
+            <div class="cl-filter-field filter-status-field">
+              <label for="filterStatus">状态</label>
+              <select class="cl-select" id="filterStatus">
+                <option value="">全部状态</option>
+                <option>启用</option>
+                <option>停用</option>
+              </select>
+            </div>
+            <div class="cl-filter-actions">
+              <button class="cl-btn cl-btn-primary" id="searchBtn" type="button">查询</button>
+              <button class="cl-btn" id="resetBtn" type="button">重置</button>
+            </div>
+          </form>
+
+          <div class="cl-toolbar activity-toolbar">
+            <div class="cl-toolbar-left">
+              <button class="cl-btn cl-btn-primary" id="addActivityBtn" type="button">新增活动</button>
+            </div>
+          </div>
+
+          <div class="cl-table-wrap activity-table-wrap">
+            <table class="cl-table activity-table">
+              <thead>
+                <tr>
+                  <th>活动名</th>
+                  <th>渠道</th>
+                  <th class="cl-num">充值金额</th>
+                  <th>奖励类型</th>
+                  <th class="cl-num">赠送金额</th>
+                  <th>状态</th>
+                  <th>更新时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="activityRows">
+                <tr>
+                  <td><strong>新客直充100送10</strong></td><td>SuccusPay / Cashapp</td><td class="cl-num">100.00</td><td>现金奖励</td><td class="cl-num">10.00</td><td><span class="cl-status cl-status-success">启用</span></td><td>2026-07-29 10:20:00</td><td><span class="cl-row-actions"><button class="cl-link" type="button">编辑</button><button class="cl-link" type="button">停用</button><button class="cl-link cl-link-danger" type="button">删除</button></span></td>
+                </tr>
+                <tr>
+                  <td><strong>Apple Pay 9.99赠1</strong></td><td>SuccusPay / Applepay</td><td class="cl-num">9.99</td><td>余额奖励</td><td class="cl-num">1.00</td><td><span class="cl-status cl-status-success">启用</span></td><td>2026-07-28 16:45:00</td><td><span class="cl-row-actions"><button class="cl-link" type="button">编辑</button><button class="cl-link" type="button">停用</button><button class="cl-link cl-link-danger" type="button">删除</button></span></td>
+                </tr>
+                <tr>
+                  <td><strong>USDT直充50送5</strong></td><td>UsdtPay / TRC20</td><td class="cl-num">50.00</td><td>活动奖金</td><td class="cl-num">5.00</td><td><span class="cl-status cl-status-muted">停用</span></td><td>2026-07-27 09:30:00</td><td><span class="cl-row-actions"><button class="cl-link" type="button">编辑</button><button class="cl-link" type="button">启用</button><button class="cl-link cl-link-danger" type="button">删除</button></span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="activity-empty" id="activityEmpty" hidden>暂无符合条件的直充活动</div>
+          </div>
+
+          <footer class="cl-pagination activity-pagination">
+            <button class="cl-btn cl-page-btn is-disabled" type="button" disabled>|&lt;</button>
+            <button class="cl-btn cl-page-btn is-disabled" type="button" disabled>&lt;</button>
+            <input class="cl-input cl-page-input" type="text" value="1" aria-label="当前页">
+            <span>/ 1</span>
+            <button class="cl-btn cl-page-btn is-disabled" type="button" disabled>&gt;</button>
+            <button class="cl-btn cl-page-btn is-disabled" type="button" disabled>&gt;|</button>
+            <select class="cl-select" aria-label="每页条数"><option>20条/页</option></select>
+            <span id="totalCount">共 3 条记录</span>
+          </footer>
+        </main>
+
+        <div class="cl-modal-layer" id="activityModal" hidden>
+          <div class="cl-modal-mask"></div>
+          <section class="cl-modal activity-modal" role="dialog" aria-modal="true" aria-labelledby="activityModalTitle">
+            <header class="cl-modal-head">
+              <strong id="activityModalTitle">新增直充活动</strong>
+              <button class="cl-close-btn" id="activityModalClose" type="button" aria-label="关闭">×</button>
+            </header>
+            <div class="cl-modal-body">
+              <div class="cl-form-grid activity-form-grid">
+                <div class="cl-form-field is-wide">
+                  <label for="activityName"><span class="cl-required">*</span>活动名</label>
+                  <input class="cl-input" id="activityName" type="text" maxlength="40" placeholder="请输入唯一活动名">
+                  <small class="field-error" id="activityNameError" hidden></small>
+                </div>
+                <div class="cl-form-field is-wide">
+                  <label for="activityChannel"><span class="cl-required">*</span>渠道</label>
+                  <select class="cl-select" id="activityChannel"></select>
+                </div>
+                <div class="cl-form-field is-wide" id="fixedAmountField">
+                  <label for="fixedRechargeAmount"><span class="cl-required">*</span>充值金额</label>
+                  <select class="cl-select" id="fixedRechargeAmount"></select>
+                  <small class="field-note">该渠道仅支持固定金额档位</small>
+                </div>
+                <div class="cl-form-field is-wide" id="customAmountField" hidden>
+                  <label for="customRechargeAmount"><span class="cl-required">*</span>充值金额</label>
+                  <input class="cl-input" id="customRechargeAmount" type="number" min="0.01" step="0.01" placeholder="请输入充值金额">
+                  <small class="field-note">该渠道支持自定义充值金额</small>
+                </div>
+                <div class="cl-form-field">
+                  <label for="activityRewardType"><span class="cl-required">*</span>奖励类型</label>
+                  <select class="cl-select" id="activityRewardType"></select>
+                </div>
+                <div class="cl-form-field">
+                  <label for="activityRewardAmount"><span class="cl-required">*</span>赠送金额</label>
+                  <input class="cl-input" id="activityRewardAmount" type="number" min="0" step="0.01" placeholder="请输入赠送金额">
+                </div>
+                <div class="cl-form-field">
+                  <label for="activityStatus">状态</label>
+                  <select class="cl-select" id="activityStatus"><option>启用</option><option>停用</option></select>
+                </div>
+              </div>
+            </div>
+            <footer class="cl-modal-foot">
+              <button class="cl-btn" id="activityModalCancel" type="button">取消</button>
+              <button class="cl-btn cl-btn-primary" id="saveActivityBtn" type="button">确定</button>
+            </footer>
+          </section>
+        </div>
+
+        <div class="cl-modal-layer" id="deleteModal" hidden>
+          <div class="cl-modal-mask"></div>
+          <section class="cl-modal delete-modal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+            <header class="cl-modal-head">
+              <strong id="deleteModalTitle">删除确认</strong>
+              <button class="cl-close-btn" id="deleteModalClose" type="button" aria-label="关闭">×</button>
+            </header>
+            <div class="cl-modal-body delete-modal-body">
+              <strong>确认删除该直充活动吗？</strong>
+              <p>删除后，弹窗直充配置将无法继续选择该活动。</p>
+            </div>
+            <footer class="cl-modal-foot">
+              <button class="cl-btn" id="deleteModalCancel" type="button">取消</button>
+              <button class="cl-btn cl-btn-danger" id="confirmDeleteBtn" type="button">确定</button>
+            </footer>
+          </section>
+        </div>
+
+        <div class="activity-toast" id="activityToast" hidden></div>
+      </div>
+    </div>
+    <script src="custom/js/direct-charge-activity-store.js"></script>
+    <script src="custom/js/直充活动配置.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>
