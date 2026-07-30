@@ -129,6 +129,19 @@
 
   ready(function () {
     document.addEventListener("click", function (event) {
+      var activitySwitch = event.target.closest("[data-activity-switch]");
+      if (activitySwitch) {
+        var isOn = !activitySwitch.classList.contains("is-on");
+        var activityStatus = document.querySelector("[data-activity-status]");
+        activitySwitch.classList.toggle("is-on", isOn);
+        activitySwitch.setAttribute("aria-pressed", isOn ? "true" : "false");
+        if (activityStatus) {
+          activityStatus.textContent = isOn ? "已开启" : "已关闭";
+          activityStatus.classList.toggle("is-off", !isOn);
+        }
+        return;
+      }
+
       var detailTrigger = event.target.closest("[data-detail-key]");
       if (detailTrigger) {
         event.preventDefault();

@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>PIGGYBANK参与记录</title>
+    <title>PIGGY BANK参与记录</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
     <link href="data/styles.css" type="text/css" rel="stylesheet"/>
     <link href="files/PIGGY BANK参与记录/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/tokens.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/components.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/PIGGY BANK参与记录.css" type="text/css" rel="stylesheet"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
     <script src="resources/scripts/axure/axQuery.js"></script>
@@ -56,10 +58,9 @@
         <main class="record-panel">
           <header class="record-head">
             <div>
-              <div class="record-breadcrumb">优惠活动 / PIGGYBANK配置 / 参与记录</div>
-              <h1>PIGGYBANK参与记录</h1>
+              <div class="record-breadcrumb">优惠活动 / PIGGY BANK参与记录</div>
+              <h1>PIGGY BANK参与记录</h1>
             </div>
-            <a class="plain-btn" href="PIGGY BANK配置.html">返回 PIGGYBANK配置</a>
           </header>
 
           <section class="record-filter-panel">
@@ -77,8 +78,15 @@
 
           <section class="record-list-panel">
             <div class="record-list-head">
-              <strong>参与记录列表</strong>
-              <span>展示会员参与 PIGGYBANK 活动后的明细记录</span>
+              <div class="record-list-copy">
+                <strong>参与记录列表</strong>
+                <span>展示会员参与 PIGGY BANK 活动后的明细记录</span>
+              </div>
+              <div class="record-activity-control">
+                <span class="record-activity-label">活动总开关</span>
+                <button class="cl-switch-button is-on" type="button" aria-label="活动总开关" aria-pressed="true" data-activity-switch></button>
+                <span class="record-activity-state" data-activity-status>已开启</span>
+              </div>
             </div>
             <table class="record-table">
               <thead>

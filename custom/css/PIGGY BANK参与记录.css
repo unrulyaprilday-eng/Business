@@ -161,19 +161,46 @@ button,
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 12px;
   padding: 14px 16px;
   border-bottom: 1px solid #e6e9ef;
 }
 
-.record-list-head strong {
+.record-list-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.record-list-copy strong {
   color: #303744;
   font-size: 14px;
 }
 
-.record-list-head span {
+.record-list-copy > span {
   color: #8a94a6;
   font-size: 12px;
+}
+
+.record-activity-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 24px;
+}
+
+.record-activity-label {
+  color: #4b5a6c;
+  font-weight: 600;
+}
+
+.record-activity-state {
+  min-width: 36px;
+  color: #2f8f61;
+}
+
+.record-activity-state.is-off {
+  color: #8a94a6;
 }
 
 .record-list-panel {
