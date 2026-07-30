@@ -182,7 +182,7 @@ button,
 
 .record-table {
   width: 100%;
-  min-width: 1120px;
+  min-width: 1020px;
   border-collapse: collapse;
   table-layout: fixed;
 }
@@ -207,9 +207,7 @@ button,
 }
 
 .record-table th:nth-child(1),
-.record-table td:nth-child(1),
-.record-table th:nth-child(10),
-.record-table td:nth-child(10) {
+.record-table td:nth-child(1) {
   width: 154px;
 }
 
@@ -220,8 +218,8 @@ button,
   width: 118px;
 }
 
-.record-table th:nth-child(11),
-.record-table td:nth-child(11) {
+.record-table th:nth-child(9),
+.record-table td:nth-child(9) {
   width: 90px;
   border-right: 0;
 }
@@ -297,6 +295,16 @@ button,
 
 .record-modal-body {
   padding: 16px 20px 20px;
+}
+
+.record-detail-spin {
+  margin: 0 0 14px;
+  color: #64748b;
+}
+
+.record-detail-spin strong {
+  color: #303744;
+  font-weight: 600;
 }
 
 .record-detail-meta {
