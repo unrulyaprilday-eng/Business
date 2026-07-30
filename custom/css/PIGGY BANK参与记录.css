@@ -29,8 +29,8 @@ body {
 
 .record-head {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 12px;
   margin-bottom: 12px;
   padding: 16px 18px;
@@ -51,7 +51,6 @@ body {
   font-weight: 700;
 }
 
-.record-filter-panel,
 .record-list-panel {
   background: #fff;
   border: 1px solid #e5e9f2;
@@ -59,8 +58,8 @@ body {
 }
 
 .record-filter-panel {
-  margin-bottom: 12px;
   padding: 16px 18px;
+  border-bottom: 1px solid #e6e9ef;
 }
 
 .record-toolbar {
@@ -204,6 +203,10 @@ button,
 }
 
 .record-list-panel {
+  overflow: hidden;
+}
+
+.record-table-wrap {
   overflow-x: auto;
 }
 
@@ -452,7 +455,6 @@ button,
   }
 
   .record-filter-panel,
-  .record-list-panel,
   .record-head {
     padding-left: 12px;
     padding-right: 12px;
