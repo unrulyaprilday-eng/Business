@@ -277,30 +277,6 @@ body {
   resize: none;
 }
 
-.piggy-vip-table {
-  min-width: 100%;
-}
-
-.piggy-vip-ratio-table {
-  min-width: 100%;
-}
-
-.piggy-percent-input {
-  display: inline-grid;
-  grid-template-columns: 88px auto;
-  align-items: center;
-  gap: 6px;
-}
-
-.piggy-percent-input .cl-input {
-  width: 88px;
-  text-align: right;
-}
-
-.piggy-percent-input span {
-  color: #64748b;
-}
-
 .piggy-rule-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
