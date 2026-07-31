@@ -1449,6 +1449,15 @@ textarea {
   margin-top: 10px;
 }
 
+.lobby-charge-count {
+  max-width: 360px;
+  margin-top: 10px;
+}
+
+.lobby-charge-count .inline-amount input:last-of-type {
+  width: 72px;
+}
+
 .game-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }

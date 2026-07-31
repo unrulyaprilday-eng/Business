@@ -225,13 +225,23 @@
                     </div>
                   </label>
                 </div>
-                <div class="radio-field inline-radio">
+                <div class="radio-field inline-radio" id="balanceSubTypeField">
                   <span id="balanceSubTypeLabel">余额不足弹窗子类型</span>
                   <label><input type="radio" name="balanceSubType" value="首充未完成" checked>首充未完成</label>
                   <label><input type="radio" name="balanceSubType" value="二充未完成">二充未完成</label>
                   <label><input type="radio" name="balanceSubType" value="三充未完成">三充未完成</label>
                   <label><input type="radio" name="balanceSubType" value="其他">其他</label>
                 </div>
+                <label class="form-field compact lobby-charge-count" id="lobbyChargeCountField" hidden>
+                  <span>充值次数</span>
+                  <div class="inline-amount">
+                    <select id="lobbyChargeCountMode">
+                      <option value="不限制">不限制</option>
+                      <option value="累计充值次数">累计充值次数</option>
+                    </select>
+                    <input id="lobbyChargeCount" type="number" value="1" min="1" hidden>
+                  </div>
+                </label>
               </div>
 
               <div class="condition-card" data-condition="进入游戏前">
