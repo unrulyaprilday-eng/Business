@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
     <link href="data/styles.css" type="text/css" rel="stylesheet"/>
-    <link href="files/消息推送/styles.css" type="text/css" rel="stylesheet"/>
-    <link href="custom/css/消息推送.css" type="text/css" rel="stylesheet"/>
+    <link href="files/消息公告/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/消息公告.css" type="text/css" rel="stylesheet"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
     <script src="resources/scripts/axure/axQuery.js"></script>
     <script src="resources/scripts/axure/globals.js"></script>
@@ -40,7 +40,7 @@
     <script src="resources/scripts/axure/math.js"></script>
     <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
     <script src="data/document.js"></script>
-    <script src="files/消息推送/data.js"></script>
+    <script src="files/消息公告/data.js"></script>
     <script type="text/javascript">
       $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
       $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
@@ -140,16 +140,6 @@
                 <option>消息</option>
                 <option>公告</option>
                 <option>跑马灯</option>
-              </select>
-            </label>
-            <label class="field">
-              <span class="field-label">弹窗频次</span>
-              <select id="popupFrequency">
-                <option>不弹窗</option>
-                <option>登录后弹一次</option>
-                <option>每次进入首页弹窗</option>
-                <option>每日一次</option>
-                <option>每小时一次</option>
               </select>
             </label>
             <label class="field required">
@@ -259,7 +249,6 @@
             <div><dt>消息编号</dt><dd id="detailId"></dd></div>
             <div><dt>状态</dt><dd id="detailStatus"></dd></div>
             <div><dt>消息类型</dt><dd id="detailType"></dd></div>
-            <div><dt>弹窗频次</dt><dd id="detailFrequency"></dd></div>
             <div><dt>收件人</dt><dd id="detailRecipient"></dd></div>
             <div><dt>发送时间</dt><dd id="detailSend"></dd></div>
             <div><dt>结束时间</dt><dd id="detailEnd"></dd></div>
@@ -290,7 +279,7 @@
       </section>
     </div>
 
-    <script src="custom/js/消息推送.js"></script>
+    <script src="custom/js/消息公告.js"></script>
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
   </body>

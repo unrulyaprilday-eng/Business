@@ -61,6 +61,11 @@
     { value: "\u5151\u6362\u7801", label: "\u5151\u6362\u7801" }
   ];
 
+  var ENABLED_ANNOUNCEMENTS = [
+    { id: "aae327c9-6a27-49ee-9010-7eec062013c9", title: "\u6d4b\u8bd5", endTime: "2026-11-08 00:00" },
+    { id: "6a2ec8c2-bd0f-47d5-a5df-1ad5e3e1f355", title: "\u6d4b\u8bd5\u516c\u544a", endTime: "2026-09-20 00:00" }
+  ];
+
   var INTERNAL_LINK_OPTIONS = [
     { value: "\u5145\u503c\u4e2d\u5fc3", label: "\u5145\u503c\u4e2d\u5fc3" },
     { value: "\u6d3b\u52a8\u4e2d\u5fc3", label: "\u6d3b\u52a8\u4e2d\u5fc3" },
@@ -109,6 +114,11 @@
   var contentPopupSectionEl = document.getElementById("contentPopupSection");
   var systemPopupSectionEl = document.getElementById("systemPopupSection");
   var directSystemPopupEl = document.getElementById("directSystemPopup");
+  var announcementPickerEl = document.getElementById("announcementPicker");
+  var announcementSearchEl = document.getElementById("announcementSearch");
+  var announcementOptionsEl = document.getElementById("announcementOptions");
+  var selectedAnnouncementIdEl = document.getElementById("selectedAnnouncementId");
+  var functionSourceNoteEl = document.getElementById("functionSourceNote");
 
   function cloneBlocks(blocks) { return blocks.map(function (b) { return Object.assign({}, b); }); }
   function esc(v) { return String(v).replace(/[&<>\"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c]; }); }
@@ -221,6 +231,36 @@
     var isSystemPopup = mode === "\u529f\u80fd\u5f39\u7a97";
     systemPopupSectionEl.hidden = !isSystemPopup;
     contentPopupSectionEl.hidden = isSystemPopup;
+    if (isSystemPopup) renderFunctionSource();
+  }
+  function getSelectedAnnouncement() {
+    return ENABLED_ANNOUNCEMENTS.filter(function (item) { return item.id === selectedAnnouncementIdEl.value; })[0] || null;
+  }
+  function renderAnnouncementOptions(keyword) {
+    var normalized = String(keyword || "").trim().toLowerCase();
+    var list = ENABLED_ANNOUNCEMENTS.filter(function (item) {
+      return !normalized || item.title.toLowerCase().indexOf(normalized) !== -1 || item.id.toLowerCase().indexOf(normalized) !== -1;
+    });
+    announcementOptionsEl.innerHTML = list.length ? list.map(function (item) {
+      return '<button class="announcement-option' + (item.id === selectedAnnouncementIdEl.value ? ' is-selected' : '') + '" type="button" role="option" data-announcement-id="' + esc(item.id) + '">' + esc(item.title) + '<small>\u5f00\u542f\u4e2d \u00b7 \u6709\u6548\u671f\u81f3 ' + esc(item.endTime) + '</small></button>';
+    }).join("") : '<span class="announcement-empty">\u672a\u627e\u5230\u5f00\u542f\u72b6\u6001\u7684\u6d88\u606f\u516c\u544a</span>';
+    announcementOptionsEl.hidden = false;
+    announcementSearchEl.setAttribute("aria-expanded", "true");
+  }
+  function selectAnnouncement(id) {
+    var selected = ENABLED_ANNOUNCEMENTS.filter(function (item) { return item.id === id; })[0];
+    if (!selected) return;
+    selectedAnnouncementIdEl.value = selected.id;
+    announcementSearchEl.value = selected.title;
+    announcementOptionsEl.hidden = true;
+    announcementSearchEl.setAttribute("aria-expanded", "false");
+  }
+  function renderFunctionSource() {
+    var source = getCheckedValue("functionSource", "\u7cfb\u7edf\u529f\u80fd");
+    var isAnnouncement = source === "\u6d88\u606f\u516c\u544a";
+    directSystemPopupEl.parentElement.hidden = isAnnouncement;
+    announcementPickerEl.hidden = !isAnnouncement;
+    functionSourceNoteEl.textContent = isAnnouncement ? "\u4ec5\u53ef\u9009\u62e9\u5df2\u53d1\u9001\u4e14\u672a\u64a4\u56de\u7684\u6d88\u606f\u516c\u544a\uff1b\u5f39\u7a97\u5185\u5bb9\u8ddf\u968f\u516c\u544a\u66f4\u65b0\u3002" : "\u4fdd\u5b58\u540e\u89e6\u53d1\u8be5\u5f39\u7a97\u65f6\uff0c\u5c06\u76f4\u63a5\u6253\u5f00\u6240\u9009\u7cfb\u7edf\u529f\u80fd\u3002";
   }
   function renderGameChargeLimits() {
     gameChargeCountEl.hidden = gameChargeCountModeEl.value === "\u4e0d\u9650\u5236";
@@ -359,7 +399,10 @@
     gameChargeAmountEl.value = item ? (item.gameChargeAmount || 1) : 1;
     renderGameChargeLimits();
     setCheckedValue("contentMode", item ? (item.contentMode || "\u914d\u7f6e\u5f39\u7a97") : "\u914d\u7f6e\u5f39\u7a97");
+    setCheckedValue("functionSource", item ? (item.functionSource || "\u7cfb\u7edf\u529f\u80fd") : "\u7cfb\u7edf\u529f\u80fd");
     directSystemPopupEl.value = item && hasOption(SYSTEM_POPUP_OPTIONS, item.systemPopupTarget) ? item.systemPopupTarget : SYSTEM_POPUP_OPTIONS[0].value;
+    selectedAnnouncementIdEl.value = item ? (item.announcementId || "") : "";
+    announcementSearchEl.value = item ? (item.announcementTitle || "") : "";
     setSwitch(statusSwitchEl, !item || item.status === T.on);
     resetImageBlocks();
     if (item && item.imageBlocks && item.imageBlocks.length) {
@@ -473,6 +516,22 @@
   gameChargeAmountModeEl.addEventListener("change", renderGameChargeLimits);
   hasButtonEl.addEventListener("change", renderButtonTextState);
   Array.prototype.forEach.call(document.querySelectorAll('input[name="contentMode"]'), function (radio) { radio.addEventListener("change", renderContentMode); });
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="functionSource"]'), function (radio) { radio.addEventListener("change", renderFunctionSource); });
+  announcementSearchEl.addEventListener("focus", function () {
+    var selected = getSelectedAnnouncement();
+    renderAnnouncementOptions(selected && announcementSearchEl.value === selected.title ? "" : announcementSearchEl.value);
+  });
+  announcementSearchEl.addEventListener("input", function () { selectedAnnouncementIdEl.value = ""; renderAnnouncementOptions(announcementSearchEl.value); });
+  announcementOptionsEl.addEventListener("click", function (event) {
+    var option = event.target.closest("[data-announcement-id]");
+    if (option) selectAnnouncement(option.getAttribute("data-announcement-id"));
+  });
+  document.addEventListener("click", function (event) {
+    if (!announcementPickerEl.contains(event.target)) {
+      announcementOptionsEl.hidden = true;
+      announcementSearchEl.setAttribute("aria-expanded", "false");
+    }
+  });
   channelVisibilityEl.addEventListener("change", renderChannelState);
   longTermEl.addEventListener("change", function () { endTimeEl.disabled = longTermEl.checked; endTimeEl.value = longTermEl.checked ? "\u957f\u671f\u6709\u6548" : "2026-12-31 23:59:59"; });
   document.getElementById("addImageBtn").addEventListener("click", function () { state.imageBlocks.push(Object.assign({}, DEFAULT_IMAGE_BLOCKS[0])); renderImageBlocks(); });
@@ -480,7 +539,14 @@
     var sortOrder = Number(document.getElementById("formSort").value) || 1;
     var primaryBlock = state.imageBlocks[0] || DEFAULT_IMAGE_BLOCKS[0];
     var contentMode = getCheckedValue("contentMode", "\u914d\u7f6e\u5f39\u7a97");
-    var jumpMeta = contentMode === "\u529f\u80fd\u5f39\u7a97" ? { type: "\u529f\u80fd\u5f39\u7a97", link: directSystemPopupEl.value } : getRowJumpMeta(primaryBlock);
+    var functionSource = getCheckedValue("functionSource", "\u7cfb\u7edf\u529f\u80fd");
+    var selectedAnnouncement = getSelectedAnnouncement();
+    if (contentMode === "\u529f\u80fd\u5f39\u7a97" && functionSource === "\u6d88\u606f\u516c\u544a" && !selectedAnnouncement) {
+      announcementSearchEl.focus();
+      renderAnnouncementOptions(announcementSearchEl.value);
+      return;
+    }
+    var jumpMeta = contentMode === "\u529f\u80fd\u5f39\u7a97" ? { type: functionSource, link: functionSource === "\u6d88\u606f\u516c\u544a" ? selectedAnnouncement.id : directSystemPopupEl.value } : getRowJumpMeta(primaryBlock);
     var previous = state.editingId ? getPopupById(state.editingId) : null;
     var item = {
       id: state.editingId || String(Date.now()).slice(-9),
@@ -494,7 +560,10 @@
       platform: getSelectedPlatforms().join(",") || "APP",
       trigger: formTriggerEl.value,
       contentMode: contentMode,
+      functionSource: functionSource,
       systemPopupTarget: directSystemPopupEl.value,
+      announcementId: selectedAnnouncement ? selectedAnnouncement.id : "",
+      announcementTitle: selectedAnnouncement ? selectedAnnouncement.title : "",
       imageBlocks: cloneBlocks(state.imageBlocks),
       hasButton: hasButtonEl.checked,
       buttonText: document.getElementById("buttonText").value.trim(),

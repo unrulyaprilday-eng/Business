@@ -303,6 +303,13 @@
 
             <div class="content-mode-panel system-popup-panel" id="systemPopupSection" hidden>
               <div class="system-popup-config">
+                <div class="compact-control function-source-control">
+                  <span class="field-label">功能来源</span>
+                  <div class="content-mode-options" role="radiogroup" aria-label="功能来源">
+                    <label><input type="radio" name="functionSource" value="系统功能" checked>系统功能</label>
+                    <label><input type="radio" name="functionSource" value="消息公告">消息公告</label>
+                  </div>
+                </div>
                 <label class="form-field">
                   <span>系统功能</span>
                   <select id="directSystemPopup">
@@ -312,7 +319,15 @@
                     <option value="兑换码">兑换码</option>
                   </select>
                 </label>
-                <p class="field-note">保存后触发该弹窗时，将直接打开所选系统功能。</p>
+                <div class="announcement-picker" id="announcementPicker" hidden>
+                  <label class="form-field" for="announcementSearch">
+                    <span>消息公告</span>
+                    <input id="announcementSearch" type="search" placeholder="搜索并选择已开启的消息公告" autocomplete="off" aria-expanded="false" aria-controls="announcementOptions">
+                  </label>
+                  <div class="announcement-options" id="announcementOptions" role="listbox" hidden></div>
+                  <input id="selectedAnnouncementId" type="hidden">
+                </div>
+                <p class="field-note" id="functionSourceNote">保存后触发该弹窗时，将直接打开所选系统功能。</p>
               </div>
             </div>
 

@@ -82,7 +82,7 @@
       "name": "状态标签",
       "snippet": "snippets/status-tags.html",
       "needsScript": false,
-      "sources": ["商户账单.html", "任务统计报表.html", "充值订单列表.html", "消息推送.html"],
+      "sources": ["商户账单.html", "任务统计报表.html", "充值订单列表.html", "消息公告.html"],
       "useWhen": "展示启用、停用、待处理、成功、失败、风险等短状态。"
     },
     {

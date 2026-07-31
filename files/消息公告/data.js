@@ -1,5 +1,5 @@
 $axure.loadCurrentPage({
-  "url": "消息推送.html",
+  "url": "消息公告.html",
   "generationDate": new Date(1779465600000),
   "defaultAdaptiveView": {
     "name": "",

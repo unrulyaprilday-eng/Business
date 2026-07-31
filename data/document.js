@@ -165,7 +165,7 @@ $axure.loadDocument({
             "id": "operation_message_push",
             "pageName": "消息公告",
             "type": "Wireframe",
-            "url": "消息推送.html",
+            "url": "消息公告.html",
             "children": []
           },
           {

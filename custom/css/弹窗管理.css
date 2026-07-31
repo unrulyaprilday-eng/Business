@@ -402,10 +402,71 @@ textarea {
 
 .system-popup-config {
   display: grid;
-  grid-template-columns: 300px minmax(0, 1fr);
+  grid-template-columns: 300px 300px minmax(0, 1fr);
   align-items: end;
   gap: 16px;
-  max-width: 760px;
+  max-width: 980px;
+}
+
+.function-source-control {
+  align-self: end;
+}
+
+.announcement-picker {
+  position: relative;
+}
+
+.announcement-picker .form-field {
+  width: 100%;
+}
+
+.announcement-options {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  left: 0;
+  z-index: 20;
+  max-height: 196px;
+  overflow-y: auto;
+  border: 1px solid #d8e0eb;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(35, 51, 75, 0.14);
+}
+
+.announcement-option,
+.announcement-empty {
+  display: block;
+  width: 100%;
+  min-height: 42px;
+  padding: 7px 10px;
+  border: 0;
+  background: #fff;
+  color: #344256;
+  text-align: left;
+}
+
+.announcement-option:hover,
+.announcement-option.is-selected {
+  background: #edf5ff;
+  color: #1d78d5;
+}
+
+.announcement-option small {
+  display: block;
+  margin-top: 3px;
+  color: #8792a3;
+  font-size: 11px;
+}
+
+.announcement-empty {
+  color: #8792a3;
+  line-height: 28px;
+}
+
+.system-popup-config > .field-note {
+  grid-column: 1 / -1;
+  margin-top: -4px;
 }
 
 .popup-row-meta { display: block; margin-top: 4px; color: #8792a3; font-size: 11px; font-weight: 400; line-height: 1.45; }
