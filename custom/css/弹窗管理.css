@@ -1449,12 +1449,12 @@ textarea {
   margin-top: 10px;
 }
 
-.lobby-charge-count {
+.balance-charge-count {
   max-width: 360px;
   margin-top: 10px;
 }
 
-.lobby-charge-count .inline-amount input:last-of-type {
+.balance-charge-count .inline-amount input:last-of-type {
   width: 72px;
 }
 

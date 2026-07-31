@@ -99,11 +99,9 @@
   var conditionSectionEl = document.getElementById("triggerConditionSection");
   var conditionCardTitleEl = document.getElementById("conditionCardTitle");
   var balanceAmountLabelEl = document.getElementById("balanceAmountLabel");
-  var balanceSubTypeLabelEl = document.getElementById("balanceSubTypeLabel");
-  var balanceSubTypeFieldEl = document.getElementById("balanceSubTypeField");
-  var lobbyChargeCountFieldEl = document.getElementById("lobbyChargeCountField");
-  var lobbyChargeCountModeEl = document.getElementById("lobbyChargeCountMode");
-  var lobbyChargeCountEl = document.getElementById("lobbyChargeCount");
+  var balanceChargeCountModeEl = document.getElementById("balanceChargeCountMode");
+  var balanceChargeCountOperatorEl = document.getElementById("balanceChargeCountOperator");
+  var balanceChargeCountEl = document.getElementById("balanceChargeCount");
   var statusSwitchEl = document.getElementById("statusSwitch");
   var statusConfirmModalEl = document.getElementById("statusConfirmModal");
   var statusConfirmTextEl = document.getElementById("statusConfirmText");
@@ -112,8 +110,10 @@
   var showSkipTodayEl = document.getElementById("showSkipToday");
   var showBackdropEl = document.getElementById("showBackdrop");
   var gameChargeCountModeEl = document.getElementById("gameChargeCountMode");
+  var gameChargeCountOperatorEl = document.getElementById("gameChargeCountOperator");
   var gameChargeCountEl = document.getElementById("gameChargeCount");
   var gameChargeAmountModeEl = document.getElementById("gameChargeAmountMode");
+  var gameChargeAmountOperatorEl = document.getElementById("gameChargeAmountOperator");
   var gameChargeAmountEl = document.getElementById("gameChargeAmount");
   var contentPopupSectionEl = document.getElementById("contentPopupSection");
   var systemPopupSectionEl = document.getElementById("systemPopupSection");
@@ -267,9 +267,15 @@
     functionSourceNoteEl.textContent = isAnnouncement ? "\u4ec5\u53ef\u9009\u62e9\u5df2\u53d1\u9001\u4e14\u672a\u64a4\u56de\u7684\u6d88\u606f\u516c\u544a\uff1b\u5f39\u7a97\u5185\u5bb9\u8ddf\u968f\u516c\u544a\u66f4\u65b0\u3002" : "\u4fdd\u5b58\u540e\u89e6\u53d1\u8be5\u5f39\u7a97\u65f6\uff0c\u5c06\u76f4\u63a5\u6253\u5f00\u6240\u9009\u7cfb\u7edf\u529f\u80fd\u3002";
   }
   function renderGameChargeLimits() {
-    lobbyChargeCountEl.hidden = lobbyChargeCountModeEl.value === "\u4e0d\u9650\u5236";
-    gameChargeCountEl.hidden = gameChargeCountModeEl.value === "\u4e0d\u9650\u5236";
-    gameChargeAmountEl.hidden = gameChargeAmountModeEl.value === "\u4e0d\u9650\u5236";
+    var balanceCountLimited = balanceChargeCountModeEl.value !== "\u4e0d\u9650\u5236";
+    var gameCountLimited = gameChargeCountModeEl.value !== "\u4e0d\u9650\u5236";
+    var gameAmountLimited = gameChargeAmountModeEl.value !== "\u4e0d\u9650\u5236";
+    balanceChargeCountOperatorEl.hidden = !balanceCountLimited;
+    balanceChargeCountEl.hidden = !balanceCountLimited;
+    gameChargeCountOperatorEl.hidden = !gameCountLimited;
+    gameChargeCountEl.hidden = !gameCountLimited;
+    gameChargeAmountOperatorEl.hidden = !gameAmountLimited;
+    gameChargeAmountEl.hidden = !gameAmountLimited;
   }
   function renderConditions(trigger) {
     var balanceVisible = trigger === T.low || trigger === T.back;
@@ -288,9 +294,6 @@
       var isBackLobby = trigger === T.back;
       conditionCardTitleEl.textContent = isBackLobby ? "\u8bbe\u7f6e\u8fd4\u56de\u5927\u5385\u4f59\u989d" : "\u8bbe\u7f6e\u4f59\u989d\u4e0d\u8db3";
       balanceAmountLabelEl.textContent = isBackLobby ? "\u8fd4\u56de\u5927\u5385\u4f59\u989d" : "\u4f59\u989d\u4e0d\u8db3";
-      balanceSubTypeLabelEl.textContent = "\u4f59\u989d\u4e0d\u8db3\u5f39\u7a97\u5b50\u7c7b\u578b";
-      balanceSubTypeFieldEl.hidden = isBackLobby;
-      lobbyChargeCountFieldEl.hidden = !isBackLobby;
     }
   }
 
@@ -399,9 +402,8 @@
     channelVisibilityEl.value = item ? (item.channelVisibility || (item.trigger === T.guest ? "\u4e0d\u9650\u5236" : "\u4ec5\u6e20\u9053\u53ef\u89c1")) : "\u4ec5\u6e20\u9053\u53ef\u89c1";
     channelNamesEl.value = item ? (item.channelNames || "") : "";
     document.getElementById("balanceAmount").value = item ? (item.balanceAmount || 1) : 1;
-    setCheckedValue("balanceSubType", item ? (item.balanceSubType || "\u9996\u5145\u672a\u5b8c\u6210") : "\u9996\u5145\u672a\u5b8c\u6210");
-    lobbyChargeCountModeEl.value = item ? (item.lobbyChargeCountMode || "\u4e0d\u9650\u5236") : "\u4e0d\u9650\u5236";
-    lobbyChargeCountEl.value = item ? (item.lobbyChargeCount || 1) : 1;
+    balanceChargeCountModeEl.value = item ? (item.balanceChargeCountMode || item.lobbyChargeCountMode || "\u4e0d\u9650\u5236") : "\u4e0d\u9650\u5236";
+    balanceChargeCountEl.value = item ? (item.balanceChargeCount || item.lobbyChargeCount || 1) : 1;
     gameChargeCountModeEl.value = item ? (item.gameChargeCountMode || "\u4e0d\u9650\u5236") : "\u4e0d\u9650\u5236";
     gameChargeCountEl.value = item ? (item.gameChargeCount || 1) : 1;
     gameChargeAmountModeEl.value = item ? (item.gameChargeAmountMode || "\u4e0d\u9650\u5236") : "\u4e0d\u9650\u5236";
@@ -523,7 +525,7 @@
   formTriggerEl.addEventListener("change", function () { renderTips(formTriggerEl.value); renderConditions(formTriggerEl.value); });
   gameChargeCountModeEl.addEventListener("change", renderGameChargeLimits);
   gameChargeAmountModeEl.addEventListener("change", renderGameChargeLimits);
-  lobbyChargeCountModeEl.addEventListener("change", renderGameChargeLimits);
+  balanceChargeCountModeEl.addEventListener("change", renderGameChargeLimits);
   hasButtonEl.addEventListener("change", renderButtonTextState);
   Array.prototype.forEach.call(document.querySelectorAll('input[name="contentMode"]'), function (radio) { radio.addEventListener("change", renderContentMode); });
   Array.prototype.forEach.call(document.querySelectorAll('input[name="functionSource"]'), function (radio) { radio.addEventListener("change", renderFunctionSource); });
@@ -582,9 +584,8 @@
       channelVisibility: channelVisibilityEl.value,
       channelNames: channelNamesEl.value.trim(),
       balanceAmount: Number(document.getElementById("balanceAmount").value) || 0,
-      balanceSubType: getCheckedValue("balanceSubType", "\u9996\u5145\u672a\u5b8c\u6210"),
-      lobbyChargeCountMode: lobbyChargeCountModeEl.value,
-      lobbyChargeCount: Number(lobbyChargeCountEl.value) || 1,
+      balanceChargeCountMode: balanceChargeCountModeEl.value,
+      balanceChargeCount: Number(balanceChargeCountEl.value) || 1,
       gameChargeCountMode: document.getElementById("gameChargeCountMode").value,
       gameChargeCount: Number(document.getElementById("gameChargeCount").value) || 1,
       gameChargeAmountMode: document.getElementById("gameChargeAmountMode").value,

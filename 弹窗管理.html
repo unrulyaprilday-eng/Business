@@ -225,21 +225,15 @@
                     </div>
                   </label>
                 </div>
-                <div class="radio-field inline-radio" id="balanceSubTypeField">
-                  <span id="balanceSubTypeLabel">余额不足弹窗子类型</span>
-                  <label><input type="radio" name="balanceSubType" value="首充未完成" checked>首充未完成</label>
-                  <label><input type="radio" name="balanceSubType" value="二充未完成">二充未完成</label>
-                  <label><input type="radio" name="balanceSubType" value="三充未完成">三充未完成</label>
-                  <label><input type="radio" name="balanceSubType" value="其他">其他</label>
-                </div>
-                <label class="form-field compact lobby-charge-count" id="lobbyChargeCountField" hidden>
+                <label class="form-field compact balance-charge-count" id="balanceChargeCountField">
                   <span>充值次数</span>
                   <div class="inline-amount">
-                    <select id="lobbyChargeCountMode">
+                    <select id="balanceChargeCountMode">
                       <option value="不限制">不限制</option>
                       <option value="累计充值次数">累计充值次数</option>
                     </select>
-                    <input id="lobbyChargeCount" type="number" value="1" min="1" hidden>
+                    <span class="symbol" id="balanceChargeCountOperator" hidden>≤</span>
+                    <input id="balanceChargeCount" type="number" value="1" min="1" hidden>
                   </div>
                 </label>
               </div>
@@ -254,6 +248,7 @@
                         <option value="不限制">不限制</option>
                         <option value="累计充值次数">累计充值次数</option>
                       </select>
+                      <span class="symbol" id="gameChargeCountOperator" hidden>≤</span>
                       <input id="gameChargeCount" type="number" value="1" min="1" hidden>
                     </div>
                   </label>
@@ -264,6 +259,7 @@
                         <option value="不限制">不限制</option>
                         <option value="累计充值金额">累计充值金额</option>
                       </select>
+                      <span class="symbol" id="gameChargeAmountOperator" hidden>≥</span>
                       <input id="gameChargeAmount" type="number" value="1.00" min="0" step="0.01" hidden>
                     </div>
                   </label>
