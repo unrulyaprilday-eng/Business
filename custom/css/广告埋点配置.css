@@ -163,7 +163,7 @@ table {
 }
 
 .config-table {
-  min-width: 1640px;
+  min-width: 1778px;
 }
 
 .config-table th:nth-child(1),
@@ -177,36 +177,38 @@ table {
 .config-table td:nth-child(3),
 .config-table th:nth-child(4),
 .config-table td:nth-child(4),
-.config-table th:nth-child(7),
-.config-table td:nth-child(7),
-.config-table th:nth-child(12),
-.config-table td:nth-child(12) {
+.config-table th:nth-child(8),
+.config-table td:nth-child(8),
+.config-table th:nth-child(13),
+.config-table td:nth-child(13) {
   width: 94px;
 }
 
 .config-table th:nth-child(5),
 .config-table td:nth-child(5),
 .config-table th:nth-child(6),
-.config-table td:nth-child(6) {
+.config-table td:nth-child(6),
+.config-table th:nth-child(7),
+.config-table td:nth-child(7) {
   width: 138px;
 }
 
-.config-table th:nth-child(8),
-.config-table td:nth-child(8) {
+.config-table th:nth-child(9),
+.config-table td:nth-child(9) {
   width: 84px;
 }
 
-.config-table th:nth-child(9),
-.config-table td:nth-child(9),
 .config-table th:nth-child(10),
 .config-table td:nth-child(10),
 .config-table th:nth-child(11),
-.config-table td:nth-child(11) {
+.config-table td:nth-child(11),
+.config-table th:nth-child(12),
+.config-table td:nth-child(12) {
   width: 120px;
 }
 
-.config-table th:nth-child(13),
-.config-table td:nth-child(13) {
+.config-table th:nth-child(14),
+.config-table td:nth-child(14) {
   width: 140px;
 }
 
