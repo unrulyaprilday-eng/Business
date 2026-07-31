@@ -255,6 +255,16 @@ th.sticky-col {
   color: #16815b;
 }
 
+.type-tag.google {
+  background: #fff6e8;
+  color: #b76808;
+}
+
+.type-tag.tiktok {
+  background: #f3f0ff;
+  color: #6941c6;
+}
+
 .pager {
   display: flex;
   justify-content: flex-end;

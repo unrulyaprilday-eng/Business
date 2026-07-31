@@ -25,9 +25,9 @@
   function commonRows(data) {
     return [
       field('渠道名称', input(data.name, '请输入渠道名称'), true, data.nameError),
-      field('落地页域名', select(['请选择落地页域名', 'tuiguanawda.jyowhite.cc', 'm.tuiguan-demo.cc'], data.domain), true),
+      field('落地页域名', select(['请选择落地页域名', 'tuiguanawda.jyowhite.cc', 'm.tuiguan-demo.cc', 'promo.jyowhite.cc', 'go.jyowhite.cc'], data.domain), true),
       field('跳转地址', input(data.jump, '请输入跳转地址'), false),
-      field('渠道类型', select(['Facebook', 'Google', 'Adjust'], data.type, ' data-channel-type'), true)
+      field('渠道类型', select(['Facebook', 'Google', 'Adjust', 'TikTok'], data.type, ' data-channel-type'), true)
     ].join('');
   }
 
@@ -76,11 +76,11 @@
     if (mode === 'edit-google') {
       return {
         type: 'Google',
-        name: 'Google测试',
-        domain: 'tuiguanawda.jyowhite.cc',
-        jump: 'tuiguanawda.jyowhite.cc',
+        name: 'Google搜索投放',
+        domain: 'promo.jyowhite.cc',
+        jump: 'promo.jyowhite.cc/register',
         pixel: 'G-102938',
-        remark: '测试'
+        remark: '搜索广告'
       };
     }
     if (mode === 'edit-adjust') {
@@ -94,6 +94,16 @@
         firstPayEvent: '22',
         repeatPayEvent: '33',
         remark: 'cs'
+      };
+    }
+    if (mode === 'edit-tiktok') {
+      return {
+        type: 'TikTok',
+        name: 'TikTok海外推广',
+        domain: 'go.jyowhite.cc',
+        jump: 'go.jyowhite.cc/signup',
+        pixel: 'TT-8A72F9',
+        remark: '海外推广'
       };
     }
     return {
