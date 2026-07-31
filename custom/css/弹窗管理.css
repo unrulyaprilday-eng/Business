@@ -1436,13 +1436,13 @@ textarea {
   background: #fff;
 }
 
-.amount-field .inline-amount input:first-of-type {
-  width: 80px;
-}
-
 .amount-field .inline-amount input:last-of-type,
 .game-grid .inline-amount input:last-of-type {
   width: 72px;
+}
+
+.amount-field .inline-amount input:last-of-type {
+  width: 158px;
 }
 
 .inline-radio {
