@@ -1,5 +1,6 @@
 (function () {
   var CHALLENGE_STORAGE_KEY = 'promoChallengeActivities';
+  var RED_PACKET_STORAGE_KEY = 'promoRedPacketActivities';
 
   function escapeHtml(value) {
     return String(value || '')
@@ -21,6 +22,23 @@
   function setRecords(records) {
     try {
       window.localStorage.setItem(CHALLENGE_STORAGE_KEY, JSON.stringify(records));
+    } catch (error) {
+      return false;
+    }
+    return true;
+  }
+
+  function getRedPacketRecords() {
+    try {
+      return JSON.parse(window.localStorage.getItem(RED_PACKET_STORAGE_KEY) || '[]');
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function setRedPacketRecords(records) {
+    try {
+      window.localStorage.setItem(RED_PACKET_STORAGE_KEY, JSON.stringify(records));
     } catch (error) {
       return false;
     }
@@ -62,6 +80,38 @@
     });
   }
 
+  function renderRedPacketRows() {
+    var tbody = document.getElementById('promoActivityRows');
+    var records = getRedPacketRecords();
+    var existing;
+    if (!tbody) {
+      return;
+    }
+    existing = tbody.querySelectorAll('[data-red-packet-id]');
+    Array.prototype.forEach.call(existing, function (row) { row.remove(); });
+    records.slice().reverse().forEach(function (record) {
+      var row = document.createElement('tr');
+      var enabled = record.enabled !== false;
+      var period = (record.timeRanges || []).map(function (range) { return range.start + '-' + (range.endDay === 'next' ? '次日 ' : '') + range.end; }).join('、') || '-';
+      row.setAttribute('data-red-packet-id', record.id);
+      row.innerHTML = [
+        '<td>' + escapeHtml(record.name) + '</td>',
+        '<td>全部游戏</td>',
+        '<td title="' + escapeHtml(period) + '">' + escapeHtml(period) + '</td>',
+        '<td>红包雨</td>',
+        '<td>周期活动</td>',
+        '<td>长期有效</td>',
+        '<td>' + escapeHtml(record.wagerMultiple || '1') + '</td>',
+        '<td><span class="switch on" aria-label="活动可见"></span></td>',
+        '<td><button class="switch red-packet-status-switch' + (enabled ? ' on' : '') + '" type="button" data-red-packet-toggle aria-label="' + (enabled ? '关闭活动' : '启用活动') + '"></button></td>',
+        '<td>' + escapeHtml(record.sort || '0') + '</td>',
+        '<td>admin</td>',
+        '<td class="actions red-packet-row-actions"><button type="button" data-red-packet-edit>编辑</button><button type="button" data-red-packet-toggle>' + (enabled ? '关闭' : '启用') + '</button><button class="danger" type="button" data-red-packet-delete>删除</button></td>'
+      ].join('');
+      tbody.insertBefore(row, tbody.firstChild);
+    });
+  }
+
   function updateRecord(id, updater) {
     var records = getRecords();
     records = records.map(function (record) {
@@ -72,10 +122,21 @@
     renderChallengeRows();
   }
 
+  function updateRedPacketRecord(id, updater) {
+    var records = getRedPacketRecords();
+    records = records.map(function (record) {
+      if (record.id === id) { updater(record); }
+      return record;
+    });
+    setRedPacketRecords(records);
+    renderRedPacketRows();
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     var createButton = document.getElementById('createActivityBtn');
     var tbody = document.getElementById('promoActivityRows');
     renderChallengeRows();
+    renderRedPacketRows();
 
     if (createButton) {
       createButton.addEventListener('click', function () {
@@ -86,8 +147,30 @@
     if (tbody) {
       tbody.addEventListener('click', function (event) {
         var challengeRow = event.target.closest('[data-challenge-id]');
+        var redPacketRow = event.target.closest('[data-red-packet-id]');
         var toggle = event.target.closest('[data-challenge-toggle]');
+        var redPacketToggle = event.target.closest('[data-red-packet-toggle]');
         var id;
+        if (redPacketRow) {
+          id = redPacketRow.getAttribute('data-red-packet-id');
+          if (event.target.closest('.switch') && !redPacketToggle) {
+            event.target.closest('.switch').classList.toggle('on');
+            return;
+          }
+          if (event.target.closest('[data-red-packet-edit]')) {
+            window.location.href = '新增活动.html?redPacketId=' + encodeURIComponent(id);
+            return;
+          }
+          if (redPacketToggle) {
+            updateRedPacketRecord(id, function (record) { record.enabled = record.enabled === false; });
+            return;
+          }
+          if (event.target.closest('[data-red-packet-delete]') && window.confirm('确定删除该红包雨活动吗？删除后不可恢复。')) {
+            setRedPacketRecords(getRedPacketRecords().filter(function (record) { return record.id !== id; }));
+            renderRedPacketRows();
+          }
+          return;
+        }
         if (!challengeRow) {
           var genericSwitch = event.target.closest('.switch');
           if (genericSwitch) { genericSwitch.classList.toggle('on'); }
@@ -113,7 +196,7 @@
     }
 
     document.querySelectorAll('.switch').forEach(function (toggle) {
-      if (toggle.closest('[data-challenge-id]')) { return; }
+      if (toggle.closest('[data-challenge-id], [data-red-packet-id]')) { return; }
       toggle.addEventListener('click', function () { toggle.classList.toggle('on'); });
     });
   });

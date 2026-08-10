@@ -1,54 +1,32 @@
-# Axure11 静态原型维护规则
+# AGENTS.md
 
-## 项目定位
+本项目是 Axure11 导出的 B 端 SaaS 运营/管理后台静态原型，用于 GitHub Pages。保持 Axure 目录、运行方式和菜单导航，不改造成现代前端工程。
 
-本项目是 Axure11 导出的静态 HTML 原型，用于 GitHub Pages 部署。
+## 子代理调用
 
-如需编辑 `B端后台操作手册.docx`，先遵守独立规则文档：`操作手册编辑规则.md`。
+- 默认选择能可靠完成任务的最低级别；不确定时上调一级，质量优先于省 token。低到高：`Luna Max`（简单隔离/UI/CRUD/测试/文档）；`Terra High`（常规开发/bug/集成/中等重构）；`Terra Max`（中大型/跨模块/难 bug）；`Sol High`（重要功能/复杂业务/较大重构）；`Sol XHigh`（复杂架构/关键跨模块/困难调试）；`Sol Max`（关键架构/安全/支付钱包/数据库迁移/极端调试）。
+- 只派发独立、可验收的子任务，并注明级别。子代理先读当前项目和目标端 `AGENTS.md`，检查现有代码，限范围修改，按目标端规则验证并回报改动/风险；超出级别只报 `ESCALATE`，由主代理决定升级。
+- 最多 5 个并发，避免多个代理改同一文件；主代理负责整合、冲突处理和最终验证。本端作为独立项目打开时，本节直接生效；跨端访问先确认工作区权限。
 
-补充约定：
+## 操作手册任务
 
-- 用户消息如果以“操作手册”开头，默认表示本次任务只需要修改操作手册相关内容。
-- 除非用户在同一条需求里明确要求同步原型页面、菜单或静态资源，否则不要改 HTML、`data/document.js`、页面 CSS/JS 或其他原型文件。
-- 这类请求优先按操作手册流程执行：定位目标章节、更新 `B端后台操作手册.docx`、保留或新增所需手册图片资产，并做最小校验。
-- 用户如果明确说“按小节重建处理”，或表达“新增图片后更新文档内容”这类意思，固定按整节重建执行：图片先落盘到 `custom/assets/manual-*/`，`scripts/manual-*.json` 显式写 `module/image/caption/bullet` 顺序，`keep_existing_media` 视为 `false`，不要继续做保留原位补字。
-- 如果用户在聊天里直接发了截图，默认把该截图视为手册配图第一来源；不要先生成示意图、不要先截图 HTML、不要先讨论替代图源。
-- 手册配图固定优先级：当前会话原图 > 当前线程历史原图 > 本机 Codex 日志中的原图 > 用户重新上传/提供路径；只有用户没有提供聊天原图时，才考虑旧 Word 截图、本地 HTML 截图或 Pillow 示意图。
-- 对“使用聊天中的原图”这类需求，固定动作是：读取线程或日志中的 `data:image` -> 落盘到 `custom/assets/manual-模块名/` 或 `custom/assets/manual-模块名-original/` -> 核对图片内容 -> 让手册脚本引用该原图；不要每次临时换方案。
-- 不要为了确认聊天原图而先大范围扫描缓存、浏览器存储或无关目录；优先复用现成脚本 `scripts/extract_chat_images_from_codex_log.py`，仅在它失败时再做最小范围日志定位。
-- 如果手册脚本已经确认使用聊天原图，脚本中不要再保留自动生成示意图、自动截 HTML 或其他 fallback 图源分支，避免后续误用。
+- 编辑 `B端后台操作手册.docx` 前先遵守 `操作手册编辑规则.md`。用户消息以“操作手册”开头时，默认只改手册；未明确要求时不改 HTML、菜单或页面 CSS/JS。
+- 用户要求“按小节重建”或“新增图片后更新内容”时，整节重建：图片放 `custom/assets/manual-*/`，`scripts/manual-*.json` 明确 `module/image/caption/bullet` 顺序，`keep_existing_media=false`。
+- 聊天截图是第一图源；优先级为当前会话原图、线程历史原图、Codex 日志原图、用户路径，之后才考虑旧 Word/HTML/Pillow 图。优先用 `scripts/extract_chat_images_from_codex_log.py`，失败后才做小范围日志定位。
+- 原图确认后，脚本只引用该图，不保留自动示意图、HTML 截图等 fallback 分支。
 
-维护目标：
+## 硬性规则
 
-- 保持 Axure11 原有 HTML 文件夹结构和运行方式。
-- 保持左上角页面目录菜单可导航。
-- 支持后续 Axure11 再导出并增量覆盖。
-- AI 新页面作为静态页面资产独立维护。
-- 不改造成现代前端工程。
-
-默认页面风格为 B 端 SaaS 运营/管理后台。
-
-## 必须遵守
-
-- 使用静态 HTML、CSS、JS 和 Axure 原有页面壳。
-- 所有路径使用相对路径，保证 GitHub Pages 可直接访问。
-- 中文文件名、中文菜单名、中文内容使用 UTF-8，不能乱码。
-- 公共自定义资产放在 `custom/`、`custom/css/`、`custom/js/`、`custom/assets/`。
-- AI 新增且要进入 Axure 菜单的 HTML 默认放项目根目录。
-- 修改菜单只改 `data/document.js` 的 `sitemap.rootNodes`，保留 `$axure.loadDocument(...)` 外壳。
-- 复用已有菜单节点时保留原 `id / pageName / url / children`，不要无故重建节点。
-
-## 避免事项
-
-- 不引入 React、Vue、Angular、NextJS、Vite、Webpack、npm 工程化、TypeScript 工程化、Tailwind CLI、SPA 路由或大型 UI 框架。
-- 不修改 `resources/` 下 Axure 核心脚本、Axure runtime、Axure 原有页面核心逻辑和 Axure 原有全局 CSS。
-- 不把需要进入左上角菜单的页面默认放进 `custom/pages/`，否则 Axure 菜单可能无法识别。
-- 不依赖本地绝对路径、构建命令或外部网络资源作为必要能力。
-- 不为了菜单目录调整而移动 HTML 文件位置，除非用户明确要求。
+- 只用静态 HTML、CSS、JS 和 Axure 页面壳；路径使用相对路径。
+- 不引入 React、Vue、Angular、NextJS、Vite、Webpack、npm、TypeScript 工程化、Tailwind CLI、SPA 路由或大型 UI 框架。
+- 不修改 `resources/`、Axure runtime、原有页面核心逻辑和全局 CSS，除非用户明确要求。
+- 自定义资产放 `custom/`、`custom/css/`、`custom/js/`、`custom/assets/`；要进 Axure 菜单的 AI HTML 默认放项目根目录，不放 `custom/pages/`。
+- 不依赖绝对路径、构建命令或外部网络资源，不为菜单调整移动 HTML，不批量改写无关文件。
+- 中文文件名/内容使用 UTF-8；PowerShell 读取中文显式加 `-Encoding UTF8`。
 
 ## 新增菜单页面
 
-推荐结构：
+先读取目标父级菜单片段、一个相近页面及所需组件，不默认全项目扫描。推荐结构：
 
 ```text
 页面名.html
@@ -58,250 +36,45 @@ custom/css/页面名.css
 custom/js/页面名.js
 ```
 
-菜单页面 HTML 必须引用：
+HTML 引用 `resources/css/axure_rp_page.css`、`data/styles.css`、页面 styles、自有 CSS、`data/document.js`、页面 data、`custom/js/axure-custom-page-ready.js`、`resources/scripts/axure/ios.js`；有独立交互时再引自有 JS。
 
-- `resources/css/axure_rp_page.css`
-- `data/styles.css`
-- `files/页面名/styles.css`
-- `custom/css/页面名.css`
-- `data/document.js`
-- `files/页面名/data.js`
-- `custom/js/axure-custom-page-ready.js`
-- `resources/scripts/axure/ios.js`
-- 如有独立交互 JS，再引用 `custom/js/页面名.js`
+- `#base` 保持 Axure 空容器，自定义布局放内部容器；JS 渲染表格、Tab、弹窗或编辑态时，HTML 先有首屏静态内容/空态，JS 等 DOM 就绪并保护关键节点。
+- 多 Tab 按截图顺序准备完整数据；编辑、保存、取消、确认弹窗应能回到正确状态。
+- `files/页面名/styles.css` 即使为空也必须存在并引用。
+- `files/页面名/data.js` 调用 `$axure.loadCurrentPage(...)`，保证 `url`、`page.packageId`、`page.name`、`variables`、`diagram.objects` 正确。通过 `index.html?id=...` 进入时，对齐稳定页面的完整最小结构，包含 `defaultAdaptiveView`、`adaptiveViews`、`sketchKeys`、annotations/style、masters/objectPaths 等必要字段。
 
-如页面依赖自定义 JS 渲染表格、Tab、弹窗或编辑态：
+## 组件库
 
-- HTML 中先放可展示的首屏静态内容或兜底空态，不能只留空容器等待 JS 渲染。
-- 自定义 JS 必须等 DOM 就绪后再查询元素和绑定事件，可使用 `DOMContentLoaded` 或项目已有 ready 工具。
-- JS 初始化前要做关键 DOM 空值保护，避免一个元素没取到导致整页交互失效。
-- 多 Tab 页面必须为每个 Tab 准备完整展示态数据；用户截图有顺序时，按截图顺序和选中态实现。
-- 编辑态如果由点击主表单元格触发，展示态和编辑态都要可用；保存、取消、确认弹窗要能回到正确状态。
-
-`#base` 必须保持 Axure 标准空容器：
-
-```html
-<div id="base" class="">
-  <div class="custom-page-shell">
-    ...
-  </div>
-</div>
-```
-
-自定义布局、背景、grid/flex、`min-height: 100vh` 等样式放在 `#base` 内部容器上，不直接作用于 `#base`。
-
-## 组件库优先规则
-
-组件库独立存放在：
-
-```text
-custom/component-library/
-```
-
-每次新建页面或修改页面前，先根据本次需求判断需要哪些后台组件，并优先从组件库调用：
-
-- 先查看 `custom/component-library/component-map.json`，按需求匹配筛选区、工具栏、表格、分页、Tabs、状态标签、表单、弹窗、统计卡片、空态、批量操作栏等组件。
-- 再读取对应 `custom/component-library/snippets/*.html`，复制片段到目标页面并替换业务字段、列名、按钮文案和默认数据。
-- 新页面如使用组件库样式，默认引用 `custom/component-library/css/tokens.css` 和 `custom/component-library/css/components.css`。
-- 只有使用 Tabs、弹窗、筛选重置、批量选择等交互组件时，才引用 `custom/component-library/js/components.js`。
-- 组件库类名统一使用 `cl-` 前缀，交互属性统一使用 `data-cl-*`；新增页面不要把组件库类名改成旧页面的 `.btn`、`.toolbar`、`.modal` 等通用类名，避免样式冲突。
-- 如果组件库没有匹配组件，先在目标页面按现有风格实现；确认可复用后，再把通用部分补回组件库。
-- 不因为调用组件库而改动无关旧页面，也不自动迁移旧页面。
-
-## 页面 data.js
-
-每个菜单页面必须有：
-
-```text
-files/页面名/data.js
-files/页面名/styles.css
-```
-
-`files/页面名/styles.css` 可以为空，但必须存在并被 HTML 引用。
-
-`files/页面名/data.js` 使用完整最小 Axure 页面数据结构，至少保证：
-
-- 存在 `$axure.loadCurrentPage({...})`。
-- `url` 等于页面 HTML 文件名。
-- `page.packageId` 与 `data/document.js` sitemap 节点 `id` 一致。
-- `page.name` 是页面名称。
-- 保留 Axure 常用 `variables`。
-- `diagram.objects` 至少为空数组。
-- 若页面需要通过 `index.html?id=...` 进入，不要把 `files/页面名/data.js` 写成过薄的极简壳；应直接对齐项目内稳定页面的完整最小结构，至少补齐 `defaultAdaptiveView`、`adaptiveViews`、`sketchKeys`、完整 `variables`、`page.annotations`、`page.style`、顶层 `masters/objectPaths`。
+- 先查 `custom/component-library/component-map.json`，再复用 `snippets/*.html`；按业务替换字段、列名、按钮和默认数据。
+- 使用组件库样式时引用 `css/tokens.css`、`css/components.css`；只有 Tabs、弹窗、筛选重置、批量选择等交互才引 `js/components.js`。
+- 组件类名保持 `cl-`，交互属性保持 `data-cl-*`；无匹配组件时先在目标页实现，确认可复用后再补组件库。不自动迁移旧页面或改无关页面。
 
 ## 菜单与快照
 
-当前菜单基准保存在：
+- 只改 `data/document.js` 的 `sitemap.rootNodes`，保留 `$axure.loadDocument(...)` 外壳；用 Node 解析对象后修改回写，不手拼压缩长行。
+- 页面 id 唯一，`pageName`/`url` 与文件一致；复用节点时保留 `id/pageName/url/children`。按稳定 id 找父级和重复项，只插入/覆盖目标节点；例如 `用户管理` 常用 id 为 `user_management`。
+- 写入后校验 sitemap id、`packageId`、页面 `url/name`、父级归属和文件存在；中文验证用稳定 id/url 或 Unicode 转义，不打印完整 sitemap。
+- 菜单基准为 `scripts/ai-menu-snapshot.json`；Axure 重导出后执行 `.\restore-ai-menu.cmd`。调整目录或确认当前结构为新基准后执行 `.\restore-ai-menu.cmd save`；恢复时保留快照中没有的新导出节点。
+- 新增 AI 节点 id 必须唯一。菜单中文码点异常时先修复，不保存 `????` 快照。
 
-```text
-scripts/ai-menu-snapshot.json
-```
+## B 端 UI 规则
 
-恢复脚本：
+- 白色科技感、低饱和蓝、圆角通常不超过 8px；高信息密度、紧凑可读。优先筛选区、工具栏、表格、状态、分页和行内操作，配置/报表/管理流程优先弹窗。
+- 避免营销 Hero、过度渐变/动画/插画/留白、霓虹风；无需求不加顶部“保存/操作日志”，行内修改默认弹窗。
+- 默认不加统计卡、KPI、数据概览或摘要横条；仅用户/参考明确要求，或看板、分析、经营报表确实需要时使用。列表、配置、审核、操作、普通查询页默认不用，疑问时不加。
+- 单选框不得只靠 `accent-color`：在页面或 `cl-` 作用域内用 `appearance:none`，默认 16px 白底浅边框，选中蓝框蓝点，`:focus-visible` 用浅蓝轮廓；不混用原生与自定义外观。
+- 弹窗包含标题、关闭、表单、取消/确定；遮罩默认 `hidden`，自定义 CSS 必须有 `[hidden] { display: none !important; }`。
 
-```text
-restore-ai-menu.cmd
-scripts/restore-ai-menu.js
-```
+## 编码与验证
 
-Axure 重新导出后，执行一条命令恢复菜单：
+- 中文显示为 `?` 不等于损坏；实际码点为 `0x3f` 才需恢复。写入中文 HTML、`data/document.js`、页面 data 或快照后做码点检查。
+- 不用 PowerShell here-string/长 `node -e` 传递中文、正则、`$axure` 或多层引号；优先 `apply_patch` 或固定 `scripts/*.js`，命令行只传 ASCII/码点参数。失败后不要反复调同一条 inline 命令。
+- 中文页面静态校验优先用 `node scripts/verify-static-page.js --page-cp <码点> --custom-js --custom-css`；新建 AI 菜单页追加 `--strict-page-data`。
+- 默认只做相关静态验证，不启动服务、不截图、不跑 Playwright，除非用户明确要求。按需执行 `node -c data/document.js`、`node -c scripts/restore-ai-menu.js`、`node -c custom/js/页面名.js`，并检查文件、菜单子树、中文码点、首屏数据、关键按钮/弹窗和 ready 初始化。
+- 页面靠 JS 显示数据/Tab 时确认 HTML 有兜底内容。若编码、脚本或 sitemap 写坏，先停止写入，从备份/快照/Git 恢复后只重跑必要检查。
 
-```powershell
-.\restore-ai-menu.cmd
-```
+## 默认流程与输出
 
-当用户确认当前菜单结构已经调整正确，并希望作为以后恢复基准时，保存新快照：
+新页面按“相近页面/组件 -> 父级菜单 -> HTML/data/styles/CSS/JS -> sitemap -> id/url/ready/交互 -> 中文码点 -> 必要时保存快照 -> 静态验证”执行。Axure 重导出后先恢复菜单，再检查新页面并做最小验证。
 
-```powershell
-.\restore-ai-menu.cmd save
-```
-
-菜单恢复规则：
-
-- 默认按 `scripts/ai-menu-snapshot.json` 恢复菜单结构。
-- 恢复时保留 Axure 新导出的、快照里没有的菜单节点。
-- 调整目录结构或移动菜单节点后，必须执行 `.\restore-ai-menu.cmd save` 更新快照。
-- 新增 AI 页面菜单节点时，新增页面 `data.js` 的 `page.packageId` 必须与 sitemap 节点 `id` 一致。
-- AI 新增节点的 `id` 应唯一；移动或复用已有节点时保留原 `id`。
-
-手动调整 sitemap 时：
-
-- 先解析 `data/document.js` 得到真实 `sitemap.rootNodes`，不要直接手改 Axure 压缩变量表。
-- 如果 `data/document.js` 是 `$axure.loadDocument((function(){...})())` 形式，可用 Node 临时提供 `$axure.loadDocument = d => doc = d` 读取对象。
-- 写回时保留 `$axure.loadDocument(...)` 外壳，可以写成格式化 JSON，便于后续维护。
-- 重排后检查顶层顺序、关键子级归属、页面 `url` 和文件是否存在。
-
-菜单挂载快速规则：
-
-- 已知父级中文名时，优先按截图/面包屑推断父级，再用一次 `data/document.js` 解析确认；不要反复全局搜索和打印大段菜单。
-- 父级节点优先用稳定 `id` 查找；如本项目常见父级：`用户管理` 对应 `user_management`。
-- 新增节点只做“查父级、查是否已有同 id/pageName/url、插入或覆盖该节点”三步，不重建同级节点。
-- 打印菜单校验时只输出目标父级的 `id/pageName/url` 三列，避免输出完整 `document.js` 或整棵 sitemap。
-- 写入后立即校验：菜单节点 `id`、页面 `data.js` 的 `page.packageId`、页面 `url`、页面 `name` 四项必须一致。
-
-## B 端 SaaS 页面风格
-
-优先使用：
-
-- 现代后台 UI，白色科技感，低饱和蓝，适中圆角，通常不超过 8px。
-- 高信息密度、清晰层级、紧凑但可读的布局。
-- 筛选区、操作按钮、数据表格、状态标签、分页、行内操作。
-- 配置页、报表页、管理页优先用表格和弹窗承载流程。
-- 默认数据要完整，方便静态原型直接演示。
-
-避免使用：
-
-- 营销页 Hero、过度渐变、夸张动画、大面积插画、低端霓虹风、过度留白。
-- 页面顶部无需求的“保存”或“操作日志”按钮。
-- 行内“修改”跳转页面；默认使用弹窗，除非用户明确要求跳转。
-
-### 顶部汇总模块限制
-
-- 默认不要在页面顶部新增统计卡片、KPI 卡片、数据概览、汇总指标或摘要横条；组件库中存在统计卡片组件不构成使用理由。
-- 只有以下情况才可以使用顶部汇总模块：用户明确要求展示汇总数据；用户提供的截图或参考页面中明确包含该模块；页面本身是看板、数据分析或经营报表，并且汇总指标是完成核心判断所必需的。
-- 列表页、配置页、管理页、审核页、操作页和普通查询页，默认直接使用筛选区、工具栏、表格或表单，不为了丰富视觉层级添加汇总模块。
-- 不得为了填充页面、制造“完整感”或展示组件能力而虚构汇总指标。
-- 对是否需要汇总模块存在疑问时，默认不添加。
-- 修改已有页面时，不新增与本次需求无关的顶部汇总模块；已有汇总模块是否删除，以用户需求为准。
-
-弹窗统一包含：
-
-- 标题栏。
-- 右上角关闭。
-- 中间表单。
-- 底部按钮：取消、确定。
-- 遮罩默认使用 `hidden` 关闭态。
-- 自定义 CSS 必须包含 `[hidden] { display: none !important; }`。
-
-## 编码与 Windows 注意事项
-
-- HTML、CSS、JS、`data/document.js`、页面 `data.js` 均使用 UTF-8 读写。
-- 控制台显示中文为 `?` 不一定代表文件损坏；必须检查文件实际内容或字符码点。
-- 若码点是 `0x3f`，说明中文已经真实损坏，需要从备份或 Git 对象恢复。
-- 写入 `data/document.js`、页面 `data.js` 或中文 HTML 后，至少做一次中文关键字/码点验证。
-- 不要把包含中文字符串的长脚本通过 PowerShell here-string 管道传给 Node/Python 后直接写入项目文件。
-- 不要在 PowerShell 双引号命令中直接写未转义的 `$axure`，否则可能被展开成空字符串并写坏 `data/document.js` 外壳。
-- 需要写中文内容时，优先使用 `apply_patch`；脚本写入时使用 Unicode 转义字符串生成 UTF-8。
-- 不假设系统一定存在 `git` 命令；需要恢复文件时优先用可用 Git 工具，必要时再从 `.git` 对象库读取。
-
-Windows 中文文件名与脚本省 token 规则：
-
-- 不用 PowerShell here-string 向 Node 传递包含中文文件名、中文正则、中文菜单名的脚本；这类脚本可能在进入 Node 前已变成 `????`。
-- 不把包含多层引号、中文路径、中文正则或 `$axure` 的长逻辑写成 `node -e "..."`；优先沉淀为 `scripts/*.js` 固定脚本后再执行，命令行只保留 ASCII 参数。
-- 页面类静态校验优先使用通用脚本：`node scripts/verify-static-page.js --page-cp 9ed8,8ba4,770b,677f --custom-js --custom-css`。中文页面名用 `--page-cp` 传 Unicode 码点，避免 PowerShell/cmd 对中文和引号二次处理；新建 AI 菜单页如需强校验 sitemap 与页面 `data.js`，追加 `--strict-page-data`，旧 Axure 页面可不加。
-- 如果一次 inline 校验因为命令行引号、中文转码或 `$` 展开失败，不要继续调同一条命令；先改为扩展/新增 `scripts/*.js`，再用简短命令重跑。
-- 需要用脚本处理中文路径时，在脚本内部用 Unicode 码点或 `\uXXXX` 拼出中文字符串，例如 `String.fromCharCode(...)`，不要在命令文本里直接写中文。
-- 需要校验中文时，也不要在验证脚本里直接写中文正则；用 Unicode 转义生成目标词，再检查 `includes` 和码点。
-- 手册任务里如果只是定位 Word、章节或目标页面，固定优先用“最后一次成功方案”：脚本内部通过 `next(Path('.').glob('*.docx'))` 找 docx，并在 Python 内用 Unicode 码点/`chr(...)` 生成中文章节名；不要先用 shell 命令里的字面中文路径和标题试错。
-- 如果控制台输出 `????`，不要继续保存快照；先做码点验证。若目标字符串码点包含 `3f`，先修复文件，再执行 `.\restore-ai-menu.cmd save`。
-- 创建中文命名页面文件本身优先用 `apply_patch`，不要用 PowerShell/Node 脚本批量写中文文件名。
-- `.\restore-ai-menu.cmd save` 只能在菜单中文码点确认正常后执行；如果误保存了 `????` 快照，修复 `data/document.js` 后必须重新 save。
-- 与中文无关的语法检查继续用 `node -c`；涉及中文路径的存在性检查用脚本内部生成路径，避免命令行字面中文被转码。
-
-新增页面少绕路基线：
-
-- 如项目已有相似 AI 静态页面，优先复用其 HTML Axure 壳、`data.js` 最小结构、CSS/JS 引用顺序，不再从零探索 Axure 运行时结构。
-- 常规新增菜单页只需要读取：目标父级菜单片段、一个相似页面 HTML、一个相似页面 `files/页面名/data.js`；除非报错，不做全项目结构深挖。
-- 页面修改任务默认不拉起浏览器预览、不启动本地服务、不做截图或 Playwright 验证；只做代码级静态验证和交互源码连通检查。除非用户明确要求看页面效果，否则不要为了确认版式、间距、对齐或状态变化去开浏览器。
-- 如果验证脚本本身因中文转码失败，立即改为 Unicode 转义脚本，不要反复重跑同一类失败命令。
-
-## 默认执行流程
-
-生成新页面时：
-
-1. 先按需求查看 `custom/component-library/component-map.json` 并读取需要的 `snippets/*.html`；再读取目标父级菜单片段和一个相似页面作为 Axure 壳模板，不要默认全量扫描项目结构。
-2. 确认页面挂载的菜单父节点；如果用户提供截图，优先根据截图左上角的菜单/面包屑文字判断新页面应挂载的位置，再结合现有 `sitemap.rootNodes` 校验父级是否存在。
-3. 新增根目录 HTML、`files/页面名/data.js`、`files/页面名/styles.css`。
-4. 新增 `custom/css/页面名.css`，如有交互再新增 `custom/js/页面名.js`。
-5. 修改 `data/document.js` sitemap，保证 `id / packageId / url` 一致。
-6. 检查 `#base class=""`、ready 脚本、ios 脚本和相对路径。
-7. 对 Tab、按钮、弹窗、编辑态等交互做简单连通检查：确认入口元素存在、默认数据不为空、事件脚本在 DOM 就绪后初始化。
-8. 先做中文码点和 sitemap 对齐校验，确认没有 `0x3f` 后再执行 `.\restore-ai-menu.cmd save`。
-9. 做静态验证。
-
-Axure 重新导出后：
-
-1. 执行 `.\restore-ai-menu.cmd`。
-2. 检查新导出页面是否被保留在菜单中。
-3. 如需调整目录位置，调整后执行 `.\restore-ai-menu.cmd save`。
-4. 做最小静态验证。
-
-## 验证约定
-
-默认只做静态验证，不做浏览器预览、截图、Playwright 检查或启动本地服务，除非用户明确要求。
-页面类修改一律先走源码和数据结构检查，不要因为“前端改动较大”就自动升级到浏览器验证流程。
-
-优先运行与本次修改直接相关的最小验证：
-
-- `node -c data/document.js`
-- `node -c scripts/restore-ai-menu.js`
-- `node -c custom/js/页面名.js`，仅当本次新增或修改了独立交互 JS。
-- `node scripts/verify-static-page.js --page-cp <页面名码点> --custom-js --custom-css`，用于菜单页面、中文文件名页面和带自定义 JS/CSS 的静态页校验；新建 AI 菜单页面追加 `--strict-page-data`。
-- 用一次 Node 读取 `$axure.loadDocument`，输出必要的菜单子树。
-- 检查本次新增或修改的文件是否存在。
-- 检查本次涉及的中文菜单名码点是否正常。
-- 对新页面做简单源码检查：Tab 数量、首屏表格行数、关键按钮/弹窗节点、`DOMContentLoaded` 或等价 ready 初始化是否存在。
-- 验证脚本涉及中文词、中文路径时，使用 Unicode 转义或 `String.fromCharCode` 生成字符串，不直接在命令里写中文。
-
-检查保持简单，不要求每次都做完整浏览器预览；但如果页面靠 JS 才能显示数据或切换 Tab，至少要确认 HTML 有兜底内容，JS 不会在 DOM 未生成时提前绑定失败。
-
-避免重复打印完整 `data/document.js` 或做无关的全项目扫描。
-
-如果发现编码写坏、脚本误写或 sitemap 结构异常：
-
-1. 先停止继续写入。
-2. 优先从修改前备份、菜单快照或 Git HEAD 恢复目标文件。
-3. 用不会破坏中文编码的方式重新应用变更。
-4. 只重复必要的最小验证。
-
-## 回复用户
-
-生成页面或调整菜单后的回复保持简洁，通常包含：
-
-- 改了什么页面或菜单。
-- 涉及的文件结构。
-- 页面放置路径。
-- 导航接入方式。
-- GitHub Pages 注意事项。
-
-默认不输出 git 信息，除非用户明确要求。
+回复只说明实际改动、页面/菜单位置和关键验证结果；默认不输出 git 信息。

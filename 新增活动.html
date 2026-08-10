@@ -25284,7 +25284,21 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
               <section class="custom-share-section">
                 <h3>基础配置</h3>
                 <div class="custom-share-grid">
-                  <label class="custom-field required"><span>活动名称</span><input id="challengeName" type="text" value="连续挑战赢好礼" placeholder="请输入活动名称" required></label>
+                  <div class="custom-field required custom-field-wide challenge-name-field">
+                    <span>活动名称</span>
+                    <div class="challenge-name-picker">
+                      <div class="challenge-name-controls">
+                        <select id="challengeNamePreset" aria-label="活动名称固定选项">
+                          <option value="holiday-benefits" selected>Holiday Benefits</option>
+                          <option value="carnival">Carnival</option>
+                          <option value="challenge">Challenge</option>
+                          <option value="new-user-bonus">New-User Bonus</option>
+                          <option value="custom">自定义</option>
+                        </select>
+                        <input id="challengeNameCustom" type="text" maxlength="20" placeholder="请输入自定义活动名称" hidden>
+                      </div>
+                    </div>
+                  </div>
                   <label class="custom-field required"><span>活动标题</span><input id="challengeTitle" type="text" value="完成连续任务，解锁多档奖励" placeholder="请输入活动标题" required></label>
                   <div class="custom-field required custom-field-wide custom-time-range"><span>活动时间</span><input id="challengeStartTime" type="datetime-local" value="2026-07-28T00:00" required><em>至</em><input id="challengeEndTime" type="datetime-local" value="2026-08-31T23:59" required></div>
                   <div class="custom-field"><span>活动状态</span><div class="custom-radio-group"><label><input type="radio" name="challengeStatus" value="开放" checked>开放</label><label><input type="radio" name="challengeStatus" value="关闭">关闭</label></div></div>
@@ -25320,6 +25334,98 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
             </form>
           </div>
         </div>
+        <div id="u6_state6" class="panel_state" data-label="红包雨" style="visibility: hidden; display: none;" aria-hidden="true">
+          <div id="u6_state6_content" class="panel_state_content">
+            <form id="redPacketActivityForm" class="custom-red-packet-form" novalidate>
+              <section class="custom-share-section">
+                <h3>基础配置</h3>
+                <div class="custom-share-grid red-packet-basic-grid">
+                  <label class="custom-field required"><span>活动名称</span><input id="redPacketName" type="text" value="周末红包雨" placeholder="请输入活动名称" required></label>
+                  <label class="custom-field"><span>活动排序</span><input id="redPacketSort" type="number" value="0" min="0"></label>
+                  <div class="custom-field"><span>活动开关</span><label class="red-packet-switch"><input id="redPacketEnabled" type="checkbox" checked><i></i><b>开启</b></label></div>
+                </div>
+              </section>
+
+              <section class="custom-share-section">
+                <h3>周期与时间段</h3>
+                <div class="red-packet-cycle-field">
+                  <span>红包周期</span>
+                  <div class="red-packet-cycle-options">
+                    <div class="red-packet-cycle-relation"><strong>周期关系</strong><div class="red-packet-cycle-relation-controls"><div class="custom-radio-group"><label><input type="radio" name="redPacketCycleRelation" value="or" checked>满足任一（或）</label><label><input type="radio" name="redPacketCycleRelation" value="and">同时满足（且）</label></div><span>“或”为命中每月或每周即投放；“且”为日期与星期同时命中才投放。</span></div></div>
+                    <div><strong>每月</strong><div class="red-packet-month-options"><div class="red-packet-month-tools" role="group" aria-label="每月周期快捷选择"><button type="button" data-red-packet-month-select-all>全选</button><button type="button" data-red-packet-month-invert>反选</button><button type="button" data-red-packet-month-clear>清空</button></div><div class="custom-checkbox-group red-packet-day-options">
+                      <label><input type="checkbox" name="redPacketMonthDay" value="1" checked>1日</label><label><input type="checkbox" name="redPacketMonthDay" value="2" checked>2日</label><label><input type="checkbox" name="redPacketMonthDay" value="3">3日</label><label><input type="checkbox" name="redPacketMonthDay" value="4">4日</label><label><input type="checkbox" name="redPacketMonthDay" value="5">5日</label><label><input type="checkbox" name="redPacketMonthDay" value="6">6日</label><label><input type="checkbox" name="redPacketMonthDay" value="7">7日</label><label><input type="checkbox" name="redPacketMonthDay" value="8">8日</label><label><input type="checkbox" name="redPacketMonthDay" value="9">9日</label><label><input type="checkbox" name="redPacketMonthDay" value="10">10日</label><label><input type="checkbox" name="redPacketMonthDay" value="11" checked>11日</label><label><input type="checkbox" name="redPacketMonthDay" value="12" checked>12日</label><label><input type="checkbox" name="redPacketMonthDay" value="13">13日</label><label><input type="checkbox" name="redPacketMonthDay" value="14">14日</label><label><input type="checkbox" name="redPacketMonthDay" value="15">15日</label><label><input type="checkbox" name="redPacketMonthDay" value="16">16日</label><label><input type="checkbox" name="redPacketMonthDay" value="17">17日</label><label><input type="checkbox" name="redPacketMonthDay" value="18">18日</label><label><input type="checkbox" name="redPacketMonthDay" value="19">19日</label><label><input type="checkbox" name="redPacketMonthDay" value="20">20日</label><label><input type="checkbox" name="redPacketMonthDay" value="21" checked>21日</label><label><input type="checkbox" name="redPacketMonthDay" value="22" checked>22日</label><label><input type="checkbox" name="redPacketMonthDay" value="23">23日</label><label><input type="checkbox" name="redPacketMonthDay" value="24">24日</label><label><input type="checkbox" name="redPacketMonthDay" value="25">25日</label><label><input type="checkbox" name="redPacketMonthDay" value="26">26日</label><label><input type="checkbox" name="redPacketMonthDay" value="27">27日</label><label><input type="checkbox" name="redPacketMonthDay" value="28">28日</label><label><input type="checkbox" name="redPacketMonthDay" value="29">29日</label><label><input type="checkbox" name="redPacketMonthDay" value="30">30日</label><label><input type="checkbox" name="redPacketMonthDay" value="31">31日</label>
+                    </div></div></div>
+                    <div><strong>每周</strong><div class="custom-checkbox-group red-packet-week-options">
+                      <label><input type="checkbox" name="redPacketWeekDay" value="1" checked>周一</label><label><input type="checkbox" name="redPacketWeekDay" value="2" checked>周二</label><label><input type="checkbox" name="redPacketWeekDay" value="3">周三</label><label><input type="checkbox" name="redPacketWeekDay" value="4">周四</label><label><input type="checkbox" name="redPacketWeekDay" value="5">周五</label><label><input type="checkbox" name="redPacketWeekDay" value="6">周六</label><label><input type="checkbox" name="redPacketWeekDay" value="7">周日</label>
+                    </div></div>
+                  </div>
+                </div>
+                <div class="red-packet-time-field">
+                  <span>红包时间段</span>
+                  <div>
+                    <div id="redPacketTimeRanges" class="red-packet-time-ranges">
+                      <div class="red-packet-time-header"><span>序号</span><span>开始时间</span><i></i><span>结束日期</span><span>结束时间</span><span>操作</span></div>
+                      <div class="red-packet-time-row"><span class="red-packet-time-index">1</span><input class="red-packet-start-time" type="time" value="08:00" aria-label="开始时间"><em>至</em><select class="red-packet-end-day" aria-label="结束日期" disabled><option value="same" selected>当日</option><option value="next">次日</option></select><input class="red-packet-end-time" type="time" value="09:00" aria-label="结束时间"><button type="button" data-red-packet-remove-time aria-label="删除时间段">删除</button></div>
+                      <div class="red-packet-time-row"><span class="red-packet-time-index">2</span><input class="red-packet-start-time" type="time" value="18:00" aria-label="开始时间"><em>至</em><select class="red-packet-end-day" aria-label="结束日期"><option value="same" selected>当日</option><option value="next">次日</option></select><input class="red-packet-end-time" type="time" value="19:00" aria-label="结束时间"><button type="button" data-red-packet-remove-time aria-label="删除时间段">删除</button></div>
+                    </div>
+                    <button id="redPacketAddTimeRange" class="red-packet-add-button" type="button">+ 添加时间段</button>
+                  </div>
+                </div>
+              </section>
+
+              <section class="custom-share-section">
+                <h3>红包配置</h3>
+                <div class="custom-share-grid red-packet-config-grid">
+                  <label class="custom-field required"><span>奖金洗码倍数</span><input id="redPacketWagerMultiple" type="number" value="1" min="0" step="0.1" required></label>
+                  <label class="custom-field"><span>单场领取红包次数</span><span class="red-packet-input-unit"><input id="redPacketDailyClaimLimit" type="number" value="3" min="1"><b>次</b></span></label>
+                  <label class="custom-field"><span>时间段红包总额显示</span><input id="redPacketTotalDisplay" type="number" value="1000" min="0" step="0.01"></label>
+                  <label class="custom-field"><span>时间段单个奖金金额显示</span><input id="redPacketSingleDisplay" type="number" value="66" min="0" step="0.01"></label>
+                  <label class="custom-field required"><span>时间段总金额限制</span><input id="redPacketTotalLimit" type="number" value="1000" min="0" step="0.01" required></label>
+                  <label class="custom-field required"><span>单个红包金额上限</span><input id="redPacketSingleLimit" type="number" value="66" min="0" step="0.01" required></label>
+                  <div class="custom-field red-packet-target-field"><span>中奖金额目标</span><div class="custom-radio-group"><label><input type="radio" name="redPacketRewardTarget" value="金额" checked>金额</label><label><input type="radio" name="redPacketRewardTarget" value="存钱罐">存钱罐</label></div></div>
+                </div>
+                <div class="red-packet-table-headline">
+                  <div class="red-packet-table-title"><strong>单场红包设置</strong><span>多个档位共同组成一个时间段的红包投放</span></div>
+                  <div id="redPacketConditionPanel" class="red-packet-claim-rule">
+                    <div class="red-packet-claim-rule-line"><strong>领取条件</strong><div class="red-packet-claim-controls"><div class="custom-radio-group"><label><input type="radio" name="redPacketConditionMode" value="满足任意一个" checked>满足任意一个</label><label><input type="radio" name="redPacketConditionMode" value="必须全部满足">必须全部满足</label><label><input type="radio" name="redPacketConditionMode" value="不限制">不限制</label></div><label id="redPacketLookbackField" class="red-packet-lookback-field"><span>统计范围</span><b>最近</b><input id="redPacketLookbackDays" type="number" value="3" min="1" max="14" aria-label="最近天数"><b>天</b></label></div></div>
+                  </div>
+                </div>
+                <div class="red-packet-table-wrap">
+                  <table class="red-packet-tier-table">
+                    <thead><tr><th rowspan="2">档位</th><th rowspan="2">最小金额</th><th rowspan="2">最大金额</th><th rowspan="2">红包数量</th><th colspan="2">领取条件</th><th rowspan="2">操作</th></tr><tr><th>充值达到</th><th>有效投注达到</th></tr></thead>
+                    <tbody id="redPacketTierRows">
+                      <tr><td class="red-packet-tier-index">1</td><td><input class="red-packet-tier-min" type="number" value="7777" min="0" step="0.01" aria-label="最小金额"></td><td><input class="red-packet-tier-max" type="number" value="7777" min="0" step="0.01" aria-label="最大金额"></td><td><input class="red-packet-tier-count" type="number" value="1" min="1" aria-label="红包数量"></td><td><input class="red-packet-tier-recharge" type="number" value="100" min="0" step="0.01" aria-label="充值达到"></td><td><input class="red-packet-tier-valid-bet" type="number" value="0" min="0" step="0.01" aria-label="有效投注达到"></td><td><button type="button" data-red-packet-remove-tier>删除</button></td></tr>
+                      <tr><td class="red-packet-tier-index">2</td><td><input class="red-packet-tier-min" type="number" value="5.01" min="0" step="0.01" aria-label="最小金额"></td><td><input class="red-packet-tier-max" type="number" value="10" min="0" step="0.01" aria-label="最大金额"></td><td><input class="red-packet-tier-count" type="number" value="20" min="1" aria-label="红包数量"></td><td><input class="red-packet-tier-recharge" type="number" value="100" min="0" step="0.01" aria-label="充值达到"></td><td><input class="red-packet-tier-valid-bet" type="number" value="0" min="0" step="0.01" aria-label="有效投注达到"></td><td><button type="button" data-red-packet-remove-tier>删除</button></td></tr>
+                      <tr><td class="red-packet-tier-index">3</td><td><input class="red-packet-tier-min" type="number" value="0.5" min="0" step="0.01" aria-label="最小金额"></td><td><input class="red-packet-tier-max" type="number" value="5" min="0" step="0.01" aria-label="最大金额"></td><td><input class="red-packet-tier-count" type="number" value="50" min="1" aria-label="红包数量"></td><td><input class="red-packet-tier-recharge" type="number" value="100" min="0" step="0.01" aria-label="充值达到"></td><td><input class="red-packet-tier-valid-bet" type="number" value="0" min="0" step="0.01" aria-label="有效投注达到"></td><td><button type="button" data-red-packet-remove-tier>删除</button></td></tr>
+                    </tbody>
+                  </table>
+                  <button id="redPacketAddTier" class="red-packet-table-add" type="button">+ 添加红包档位</button>
+                </div>
+              </section>
+
+              <section class="custom-share-section">
+                <h3>活动说明</h3>
+                <div class="custom-share-grid red-packet-media-grid">
+                  <div class="custom-upload red-packet-icon-upload"><span>活动图标</span><button type="button">+<small>上传活动图标</small></button><p>支持 JPG、PNG，建议尺寸 350 x 120，最大 1MB</p></div>
+                  <div></div>
+                  <div class="custom-editor red-packet-rule-editor"><span>活动说明</span><div class="custom-toolbar">B U I S H x2 x2 " " · 1 2 link image undo redo save</div><textarea id="redPacketDescription">活动期间，符合领取条件的玩家可参与红包雨。&#10;每个时间段内，每位玩家仅可领取配置次数内的红包。&#10;红包金额按档位随机发放，并领取至所选的中奖金额目标。</textarea></div>
+                </div>
+              </section>
+              <aside class="red-packet-notes">
+                <strong>配置说明</strong>
+                <ol>
+                  <li>多个红包档位共同组成一个时间段的红包投放，档位按金额从高到低配置；新增时间段时均使用同一组档位。</li>
+                  <li>每月与每周可选择“或 / 且”关系：“或”为任一周期命中即投放，同一日重复命中只生成一场；“且”为日期和星期同时命中才投放。</li>
+                  <li>时间段按开始时间从早到晚配置，允许首尾相接但不得重叠；只有最后一段可选“次日”，跨天部分归属开始周期日。</li>
+                  <li>跨天场次不在零点重置领取次数；如果次日也命中周期，上一场跨天时间与次日新场次不得重叠。</li>
+                  <li>“满足任意一个 / 必须全部满足 / 不限制”和“最近 N 天”是时间段通用配置，对时间段内每个档位生效；选择“不限制”时不统计最近 N 天。</li>
+                  <li>充值达到、有效投注达到由每个档位分别配置，系统根据玩家在红包开始前最近 N 天的数据，从高到低判断可领取档位。</li>
+                  <li>高档位红包数量不足时继续判断下一档位；同一玩家在同一时间段只能领取一次，红包发完后等待下一个时间段。</li>
+                </ol>
+              </aside>
+            </form>
+          </div>
+        </div>
       </div>
 
       <!-- Unnamed (矩形) -->
@@ -25348,6 +25454,7 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
           <option class="u3012_input_option" selected value="分享活动">分享活动</option>
           <option class="u3012_input_option" value="自定义活动">自定义活动</option>
           <option class="u3012_input_option" value="连续挑战">连续挑战</option>
+          <option class="u3012_input_option" value="红包雨">红包雨</option>
           <option class="u3012_input_option" value="幸运转盘">幸运转盘</option>
           <option class="u3012_input_option" value="拼多多">拼多多</option>
         </select>

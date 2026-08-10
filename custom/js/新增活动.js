@@ -5,8 +5,16 @@
     "\u6551\u6d4e\u91d1": 2,
     "\u5206\u4eab\u6d3b\u52a8": 3,
     "\u81ea\u5b9a\u4e49\u6d3b\u52a8": 4,
-    "\u8fde\u7eed\u6311\u6218": 5
+    "\u8fde\u7eed\u6311\u6218": 5,
+    "\u7ea2\u5305\u96e8": 6
   };
+
+  var CHALLENGE_NAME_OPTIONS = [
+    { value: "holiday-benefits", label: "Holiday Benefits", localLabel: "\u8282\u65e5\u798f\u5229" },
+    { value: "carnival", label: "Carnival", localLabel: "\u5609\u5e74\u534e" },
+    { value: "challenge", label: "Challenge", localLabel: "\u6311\u6218" },
+    { value: "new-user-bonus", label: "New-User Bonus", localLabel: "\u65b0\u624b\u5956\u52b1" }
+  ];
 
   var panelStateCache = {};
 
@@ -100,13 +108,15 @@
     var isShare = template === "\u5206\u4eab\u6d3b\u52a8";
     var isCustom = template === "\u81ea\u5b9a\u4e49\u6d3b\u52a8";
     var isChallenge = template === "\u8fde\u7eed\u6311\u6218";
+    var isRedPacket = template === "\u7ea2\u5305\u96e8";
 
     document.body.classList.toggle("relief-template-active", isRelief);
     document.body.classList.toggle("share-template-active", isShare);
     document.body.classList.toggle("custom-template-active", isCustom);
     document.body.classList.toggle("challenge-template-active", isChallenge);
+    document.body.classList.toggle("red-packet-template-active", isRedPacket);
     showPanelState("u6", state);
-    syncChallengeFooter(isChallenge);
+    syncChallengeFooter(isChallenge || isRedPacket);
   }
 
   function bindTemplateSelect(select) {
@@ -738,6 +748,72 @@
     });
   }
 
+  function getChallengeNameOption(value) {
+    return CHALLENGE_NAME_OPTIONS.find(function (option) {
+      return option.value === value;
+    }) || null;
+  }
+
+  function getChallengeNameValue() {
+    var select = document.getElementById("challengeNamePreset");
+    var customInput = document.getElementById("challengeNameCustom");
+    var option;
+    if (!select) {
+      return "";
+    }
+    if (select.value === "custom") {
+      return customInput ? customInput.value.trim() : "";
+    }
+    option = getChallengeNameOption(select.value);
+    return option ? option.label : "";
+  }
+
+  function syncChallengeNamePicker() {
+    var select = document.getElementById("challengeNamePreset");
+    var customInput = document.getElementById("challengeNameCustom");
+    var isCustom;
+
+    if (!select) {
+      return;
+    }
+
+    isCustom = select.value === "custom";
+    option = isCustom ? null : getChallengeNameOption(select.value);
+    if (customInput) {
+      customInput.hidden = !isCustom;
+      customInput.required = isCustom;
+    }
+  }
+
+  function setChallengeNameSelection(record) {
+    var select = document.getElementById("challengeNamePreset");
+    var customInput = document.getElementById("challengeNameCustom");
+    var savedName = String(record && record.name || "").trim();
+    var option = record && record.nameKey ? getChallengeNameOption(record.nameKey) : null;
+    var isCustom = Boolean(record && record.nameMode === "custom");
+
+    if (!select) {
+      return;
+    }
+    if (!isCustom && !option) {
+      option = CHALLENGE_NAME_OPTIONS.find(function (item) {
+        return item.label === savedName || item.localLabel === savedName;
+      }) || null;
+    }
+    if (option && !isCustom) {
+      select.value = option.value;
+      if (customInput) {
+        customInput.value = "";
+      }
+    } else {
+      select.value = "custom";
+      if (customInput) {
+        customInput.value = savedName;
+      }
+    }
+    syncChallengeNamePicker();
+  }
+
   function collectChallengeRecord() {
     var taskRows = Array.prototype.map.call(document.querySelectorAll("#challengeTaskRows tr"), function (row, index) {
       var condition = row.querySelector(".challenge-condition input");
@@ -749,9 +825,14 @@
     var taskTypes = taskRows.map(function (task) { return task.taskType; }).filter(function (type, index, values) { return values.indexOf(type) === index; });
     var unifiedRewardType = document.getElementById("challengeUnifiedRewardType");
     var unifiedRewardValue = document.getElementById("challengeUnifiedRewardValue");
+    var nameSelect = document.getElementById("challengeNamePreset");
+    var nameOption = nameSelect ? getChallengeNameOption(nameSelect.value) : null;
+    var nameMode = nameSelect && nameSelect.value !== "custom" ? "fixed" : "custom";
     return {
       id: new URLSearchParams(window.location.search).get("challengeId") || "challenge-" + Date.now(),
-      name: document.getElementById("challengeName").value.trim(),
+      name: getChallengeNameValue(),
+      nameMode: nameMode,
+      nameKey: nameMode === "fixed" && nameOption ? nameOption.value : "",
       title: document.getElementById("challengeTitle").value.trim(),
       startTime: document.getElementById("challengeStartTime").value,
       endTime: document.getElementById("challengeEndTime").value,
@@ -796,7 +877,7 @@
     var record = id ? getChallengeRecords().find(function (item) { return item.id === id; }) : null;
     var rows = document.getElementById("challengeTaskRows");
     if (!record) { return; }
-    document.getElementById("challengeName").value = record.name || "";
+    setChallengeNameSelection(record);
     document.getElementById("challengeTitle").value = record.title || "";
     document.getElementById("challengeStartTime").value = record.startTime || "";
     document.getElementById("challengeEndTime").value = record.endTime || "";
@@ -836,8 +917,10 @@
     var addTask = document.getElementById("challengeAddTask");
     if (!root || !rows) { return; }
     loadChallengeRecord();
+    syncChallengeNamePicker();
     root.addEventListener("change", function (event) {
       var input = event.target;
+      if (input && input.id === "challengeNamePreset") { syncChallengeNamePicker(); }
       if (input && input.classList.contains("challenge-reward-type")) { syncChallengeRewardControl(input.closest("tr")); }
       if (input && input.classList.contains("challenge-task-type-select")) {
         syncChallengeTaskRow(input.closest("tr"), true);
@@ -845,6 +928,9 @@
       if (input && input.name === "challengeRewardMode") { syncChallengeRewardMode(); }
       if (input && input.name === "challengeCompletionMode") { syncChallengeTaskOrder(rows); }
       if (input && input.id === "challengeUnifiedRewardType") { syncChallengeUnifiedRewardControl(); }
+    });
+    root.addEventListener("input", function (event) {
+      if (event.target && event.target.id === "challengeNameCustom") { syncChallengeNamePicker(); }
     });
     if (addTask) {
       addTask.addEventListener("click", function () {
@@ -885,6 +971,363 @@
     });
   }
 
+  var RED_PACKET_STORAGE_KEY = "promoRedPacketActivities";
+
+  function parseRedPacketTime(value) {
+    var parts = String(value || "").split(":");
+    var hours;
+    var minutes;
+    if (parts.length !== 2) { return null; }
+    hours = Number(parts[0]);
+    minutes = Number(parts[1]);
+    if (!Number.isInteger(hours) || !Number.isInteger(minutes) || hours < 0 || hours > 23 || minutes < 0 || minutes > 59) { return null; }
+    return hours * 60 + minutes;
+  }
+
+  function formatRedPacketTime(totalMinutes) {
+    var hours = Math.floor(totalMinutes / 60);
+    var minutes = totalMinutes % 60;
+    return String(hours).padStart(2, "0") + ":" + String(minutes).padStart(2, "0");
+  }
+
+  function createRedPacketTimeRow(start, end, endDay) {
+    var row = document.createElement("div");
+    var selectedEndDay = endDay === "next" ? "next" : "same";
+    row.className = "red-packet-time-row";
+    row.innerHTML = [
+      '<span class="red-packet-time-index"></span>',
+      '<input class="red-packet-start-time" type="time" value="' + (start || "12:00") + '" aria-label="\u5f00\u59cb\u65f6\u95f4">',
+      "<em>\u81f3</em>",
+      '<select class="red-packet-end-day" aria-label="\u7ed3\u675f\u65e5\u671f"><option value="same"' + (selectedEndDay === "same" ? " selected" : "") + '>\u5f53\u65e5</option><option value="next"' + (selectedEndDay === "next" ? " selected" : "") + '>\u6b21\u65e5</option></select>',
+      '<input class="red-packet-end-time" type="time" value="' + (end || "13:00") + '" aria-label="\u7ed3\u675f\u65f6\u95f4">',
+      '<button type="button" data-red-packet-remove-time aria-label="\u5220\u9664\u65f6\u95f4\u6bb5">\u5220\u9664</button>'
+    ].join("");
+    return row;
+  }
+
+  function syncRedPacketTimeRows() {
+    var rows = Array.prototype.slice.call(document.querySelectorAll("#redPacketTimeRanges .red-packet-time-row"));
+    rows.forEach(function (row, index) {
+      var indexNode = row.querySelector(".red-packet-time-index");
+      var endDay = row.querySelector(".red-packet-end-day");
+      var isLast = index === rows.length - 1;
+      if (indexNode) { indexNode.textContent = String(index + 1); }
+      if (endDay) {
+        endDay.disabled = !isLast;
+        if (!isLast) { endDay.value = "same"; }
+      }
+    });
+  }
+
+  function getNextRedPacketTimeDefaults() {
+    var rows = document.querySelectorAll("#redPacketTimeRanges .red-packet-time-row");
+    var lastRow = rows.length ? rows[rows.length - 1] : null;
+    var lastEnd = lastRow ? lastRow.querySelector(".red-packet-end-time") : null;
+    var endMinutes;
+    if (!lastEnd || !lastEnd.value) { return { start: "12:00", end: "13:00", endDay: "same" }; }
+    endMinutes = parseRedPacketTime(lastEnd.value);
+    if (endMinutes === null || endMinutes + 60 > 1439) { return null; }
+    return { start: lastEnd.value, end: formatRedPacketTime(endMinutes + 60), endDay: "same" };
+  }
+
+  function createRedPacketTierRow(tier) {
+    var row = document.createElement("tr");
+    var item = tier || { min: "0.1", max: "1", count: "10", recharge: "100", validBet: "0" };
+    row.innerHTML = [
+      '<td class="red-packet-tier-index"></td>',
+      '<td><input class="red-packet-tier-min" type="number" value="' + escapeHtml(item.min) + '" min="0" step="0.01" aria-label="\u6700\u5c0f\u91d1\u989d"></td>',
+      '<td><input class="red-packet-tier-max" type="number" value="' + escapeHtml(item.max) + '" min="0" step="0.01" aria-label="\u6700\u5927\u91d1\u989d"></td>',
+      '<td><input class="red-packet-tier-count" type="number" value="' + escapeHtml(item.count) + '" min="1" aria-label="\u7ea2\u5305\u6570\u91cf"></td>',
+      '<td><input class="red-packet-tier-recharge" type="number" value="' + escapeHtml(item.recharge === undefined ? "100" : item.recharge) + '" min="0" step="0.01" aria-label="\u5145\u503c\u8fbe\u5230"></td>',
+      '<td><input class="red-packet-tier-valid-bet" type="number" value="' + escapeHtml(item.validBet === undefined ? "0" : item.validBet) + '" min="0" step="0.01" aria-label="\u6709\u6548\u6295\u6ce8\u8fbe\u5230"></td>',
+      '<td><button type="button" data-red-packet-remove-tier>\u5220\u9664</button></td>'
+    ].join("");
+    return row;
+  }
+
+  function syncRedPacketTierIndexes() {
+    Array.prototype.forEach.call(document.querySelectorAll("#redPacketTierRows tr"), function (row, index) {
+      var node = row.querySelector(".red-packet-tier-index");
+      if (node) { node.textContent = String(index + 1); }
+    });
+  }
+
+  function syncRedPacketConditionMode() {
+    var disabled = getCheckedValue("redPacketConditionMode", "\u6ee1\u8db3\u4efb\u610f\u4e00\u4e2a") === "\u4e0d\u9650\u5236";
+    var panel = document.getElementById("redPacketConditionPanel");
+    var lookback = document.getElementById("redPacketLookbackDays");
+    var lookbackField = document.getElementById("redPacketLookbackField");
+    if (!panel) { return; }
+    if (lookbackField) { lookbackField.hidden = disabled; }
+    if (lookback) { lookback.disabled = disabled; }
+    Array.prototype.forEach.call(document.querySelectorAll("#redPacketTierRows .red-packet-tier-recharge, #redPacketTierRows .red-packet-tier-valid-bet"), function (control) {
+      control.disabled = disabled;
+    });
+  }
+
+  function syncRedPacketEnabledLabel() {
+    var input = document.getElementById("redPacketEnabled");
+    var label = input ? input.closest("label") : null;
+    var textNode = label ? label.querySelector("b") : null;
+    if (textNode) { textNode.textContent = input.checked ? "\u5f00\u542f" : "\u5173\u95ed"; }
+  }
+
+  function getRedPacketRecords() {
+    try {
+      return JSON.parse(window.localStorage.getItem(RED_PACKET_STORAGE_KEY) || "[]");
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function setRedPacketRecords(records) {
+    try {
+      window.localStorage.setItem(RED_PACKET_STORAGE_KEY, JSON.stringify(records));
+    } catch (error) {
+      return false;
+    }
+    return true;
+  }
+
+  function collectRedPacketRecord() {
+    return {
+      id: new URLSearchParams(window.location.search).get("redPacketId") || "red-packet-" + Date.now(),
+      name: document.getElementById("redPacketName").value.trim(),
+      sort: document.getElementById("redPacketSort").value || "0",
+      enabled: document.getElementById("redPacketEnabled").checked,
+      monthDays: getNamedValues("redPacketMonthDay"),
+      weekDays: getNamedValues("redPacketWeekDay"),
+      cycleRelation: getCheckedValue("redPacketCycleRelation", "or"),
+      timeRanges: Array.prototype.map.call(document.querySelectorAll("#redPacketTimeRanges .red-packet-time-row"), function (row) {
+        var endDay = row.querySelector(".red-packet-end-day");
+        return { start: row.querySelector(".red-packet-start-time").value, end: row.querySelector(".red-packet-end-time").value, endDay: endDay ? endDay.value : "same" };
+      }),
+      wagerMultiple: document.getElementById("redPacketWagerMultiple").value,
+      dailyClaimLimit: document.getElementById("redPacketDailyClaimLimit").value,
+      totalDisplay: document.getElementById("redPacketTotalDisplay").value,
+      singleDisplay: document.getElementById("redPacketSingleDisplay").value,
+      totalLimit: document.getElementById("redPacketTotalLimit").value,
+      singleLimit: document.getElementById("redPacketSingleLimit").value,
+      tiers: Array.prototype.map.call(document.querySelectorAll("#redPacketTierRows tr"), function (row) {
+        return {
+          min: row.querySelector(".red-packet-tier-min").value,
+          max: row.querySelector(".red-packet-tier-max").value,
+          count: row.querySelector(".red-packet-tier-count").value,
+          recharge: row.querySelector(".red-packet-tier-recharge").value,
+          validBet: row.querySelector(".red-packet-tier-valid-bet").value
+        };
+      }),
+      rewardTarget: getCheckedValue("redPacketRewardTarget", "\u91d1\u989d"),
+      conditionMode: getCheckedValue("redPacketConditionMode", "\u6ee1\u8db3\u4efb\u610f\u4e00\u4e2a"),
+      lookbackDays: document.getElementById("redPacketLookbackDays").value,
+      description: document.getElementById("redPacketDescription").value
+    };
+  }
+
+  function validateRedPacketTimeRanges(ranges) {
+    var previousEnd = null;
+    var lastIndex = ranges.length - 1;
+    for (var index = 0; index < ranges.length; index += 1) {
+      var range = ranges[index];
+      var start = parseRedPacketTime(range.start);
+      var end = parseRedPacketTime(range.end);
+      var endAbsolute;
+      if (start === null || end === null) { return "请完整配置每个红包时间段的开始和结束时间。"; }
+      if (index !== lastIndex && range.endDay === "next") { return "只有最后一个时间段可以选择次日结束。"; }
+      endAbsolute = end + (range.endDay === "next" ? 1440 : 0);
+      if (endAbsolute <= start) { return "时间段必须按时间先后配置，结束时间需晚于开始时间。"; }
+      if (endAbsolute - start >= 1440) { return "单个红包时间段不能达到或超过 24 小时。"; }
+      if (previousEnd !== null && start < previousEnd) { return "后一时间段不能早于前一时间段结束时间，时间段之间不能重叠。"; }
+      previousEnd = endAbsolute;
+    }
+    return "";
+  }
+
+  function isRedPacketCycleDate(date, record) {
+    var weekValue = date.getDay() === 0 ? 7 : date.getDay();
+    var monthMatch = record.monthDays.indexOf(String(date.getDate())) !== -1;
+    var weekMatch = record.weekDays.indexOf(String(weekValue)) !== -1;
+    return record.cycleRelation === "and" ? monthMatch && weekMatch : monthMatch || weekMatch;
+  }
+
+  function formatRedPacketDate(date) {
+    return date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, "0") + "-" + String(date.getDate()).padStart(2, "0");
+  }
+
+  function findRedPacketCycleConflict(record) {
+    var ranges = record.timeRanges;
+    var lastRange = ranges[ranges.length - 1];
+    var firstStart = parseRedPacketTime(ranges[0].start);
+    var crossEnd = parseRedPacketTime(lastRange.end);
+    var cursor;
+    var next;
+    var daysToCheck = 366 * 28;
+    if (!ranges.length || lastRange.endDay !== "next" || firstStart === null || crossEnd === null || crossEnd <= firstStart) { return null; }
+    cursor = new Date(new Date().getFullYear(), 0, 1, 12, 0, 0, 0);
+    for (var index = 0; index < daysToCheck; index += 1) {
+      next = new Date(cursor.getTime());
+      next.setDate(next.getDate() + 1);
+      if (isRedPacketCycleDate(cursor, record) && isRedPacketCycleDate(next, record)) {
+        return { current: formatRedPacketDate(cursor), next: formatRedPacketDate(next) };
+      }
+      cursor = next;
+    }
+    return null;
+  }
+
+  function saveRedPacketActivity() {
+    var form = document.getElementById("redPacketActivityForm");
+    var record;
+    var records;
+    var index;
+    var rangeError;
+    var cycleConflict;
+    var invalidTier;
+    if (!form || !form.checkValidity()) {
+      if (form) { form.reportValidity(); }
+      return;
+    }
+    record = collectRedPacketRecord();
+    rangeError = validateRedPacketTimeRanges(record.timeRanges);
+    invalidTier = record.tiers.some(function (tier) {
+      return tier.min === "" || tier.max === "" || tier.count === "" || tier.recharge === "" || tier.validBet === "" || Number(tier.min) > Number(tier.max);
+    });
+    if (!record.monthDays.length && !record.weekDays.length) {
+      window.alert("\u8bf7\u81f3\u5c11\u9009\u62e9\u4e00\u4e2a\u7ea2\u5305\u5468\u671f\u3002");
+      return;
+    }
+    if (record.cycleRelation === "and" && (!record.monthDays.length || !record.weekDays.length)) {
+      window.alert("\u9009\u62e9\u201c\u540c\u65f6\u6ee1\u8db3\uff08\u4e14\uff09\u201d\u65f6，\u6bcf\u6708\u548c\u6bcf\u5468\u90fd\u9700\u81f3\u5c11\u914d\u7f6e\u4e00\u9879。");
+      return;
+    }
+    if (!record.timeRanges.length || rangeError) {
+      window.alert(rangeError || "\u8bf7\u81f3\u5c11\u914d\u7f6e\u4e00\u4e2a\u7ea2\u5305\u65f6\u95f4\u6bb5。");
+      return;
+    }
+    cycleConflict = findRedPacketCycleConflict(record);
+    if (cycleConflict) {
+      window.alert("\u5468\u671f\u4f1a\u751f\u6210\u76f8\u90bb\u6295\u653e\u65e5\uff1a" + cycleConflict.current + " \u4e0e " + cycleConflict.next + " \u7684\u8de8\u5929\u65f6\u95f4\u6bb5\u53ef\u80fd\u91cd\u53e0，\u8bf7\u8c03\u6574\u65f6\u95f4\u6bb5\u6216\u5468\u671f。");
+      return;
+    }
+    if (!record.tiers.length || invalidTier) {
+      window.alert("\u8bf7\u81f3\u5c11\u914d\u7f6e\u4e00\u4e2a\u7ea2\u5305\u6863\u4f4d\uff0c\u4e14\u6700\u5927\u91d1\u989d\u4e0d\u5f97\u5c0f\u4e8e\u6700\u5c0f\u91d1\u989d\u3002");
+      return;
+    }
+    records = getRedPacketRecords();
+    index = records.findIndex(function (item) { return item.id === record.id; });
+    if (index === -1) { records.unshift(record); } else { records[index] = record; }
+    setRedPacketRecords(records);
+    window.location.href = "\u4f18\u60e0\u6d3b\u52a8\u5217\u8868.html?redPacketSaved=1";
+  }
+
+  function setRedPacketFieldValue(id, value) {
+    var control = document.getElementById(id);
+    if (control && value !== undefined && value !== null) { control.value = value; }
+  }
+
+  function loadRedPacketRecord() {
+    var id = new URLSearchParams(window.location.search).get("redPacketId");
+    var record = id ? getRedPacketRecords().find(function (item) { return item.id === id; }) : null;
+    var timeRows = document.getElementById("redPacketTimeRanges");
+    var tierRows = document.getElementById("redPacketTierRows");
+    var timeHeader;
+    var legacyLookback;
+    if (!record) { return; }
+    setRedPacketFieldValue("redPacketName", record.name);
+    setRedPacketFieldValue("redPacketSort", record.sort);
+    setRedPacketFieldValue("redPacketWagerMultiple", record.wagerMultiple);
+    setRedPacketFieldValue("redPacketDailyClaimLimit", record.dailyClaimLimit);
+    setRedPacketFieldValue("redPacketTotalDisplay", record.totalDisplay);
+    setRedPacketFieldValue("redPacketSingleDisplay", record.singleDisplay);
+    setRedPacketFieldValue("redPacketTotalLimit", record.totalLimit);
+    setRedPacketFieldValue("redPacketSingleLimit", record.singleLimit);
+    setRedPacketFieldValue("redPacketDescription", record.description);
+    legacyLookback = record.conditions && record.conditions.length ? record.conditions[0].days : "3";
+    setRedPacketFieldValue("redPacketLookbackDays", record.lookbackDays || legacyLookback);
+    document.getElementById("redPacketEnabled").checked = record.enabled !== false;
+    Array.prototype.forEach.call(document.querySelectorAll('input[name="redPacketMonthDay"]'), function (input) { input.checked = (record.monthDays || []).indexOf(input.value) !== -1; });
+    Array.prototype.forEach.call(document.querySelectorAll('input[name="redPacketWeekDay"]'), function (input) { input.checked = (record.weekDays || []).indexOf(input.value) !== -1; });
+    ["redPacketRewardTarget", "redPacketConditionMode", "redPacketCycleRelation"].forEach(function (name) {
+      var value = name === "redPacketRewardTarget" ? record.rewardTarget : (name === "redPacketConditionMode" ? record.conditionMode : (record.cycleRelation || "or"));
+      var input = document.querySelector('input[name="' + name + '"][value="' + value + '"]');
+      if (input) { input.checked = true; }
+    });
+    timeHeader = timeRows.querySelector(".red-packet-time-header");
+    timeRows.innerHTML = "";
+    if (timeHeader) { timeRows.appendChild(timeHeader); }
+    (record.timeRanges || []).forEach(function (range) { timeRows.appendChild(createRedPacketTimeRow(range.start, range.end, range.endDay || "same")); });
+    tierRows.innerHTML = "";
+    (record.tiers || []).forEach(function (tier) { tierRows.appendChild(createRedPacketTierRow(tier)); });
+    syncRedPacketTimeRows();
+    syncRedPacketTierIndexes();
+    syncRedPacketConditionMode();
+    syncRedPacketEnabledLabel();
+  }
+
+  function bindRedPacketActivity() {
+    var root = document.getElementById("u6_state6");
+    var timeRows = document.getElementById("redPacketTimeRanges");
+    var tierRows = document.getElementById("redPacketTierRows");
+    if (!root || !timeRows || !tierRows) { return; }
+    loadRedPacketRecord();
+    root.addEventListener("click", function (event) {
+      var target = event.target.closest("button");
+      var row;
+      if (!target) { return; }
+      if (target.hasAttribute("data-red-packet-month-select-all")) {
+        Array.prototype.forEach.call(document.querySelectorAll('input[name="redPacketMonthDay"]'), function (input) { input.checked = true; });
+      } else if (target.hasAttribute("data-red-packet-month-invert")) {
+        Array.prototype.forEach.call(document.querySelectorAll('input[name="redPacketMonthDay"]'), function (input) { input.checked = !input.checked; });
+      } else if (target.hasAttribute("data-red-packet-month-clear")) {
+        Array.prototype.forEach.call(document.querySelectorAll('input[name="redPacketMonthDay"]'), function (input) { input.checked = false; });
+      } else if (target.id === "redPacketAddTimeRange") {
+        var timeRowsList = timeRows.querySelectorAll(".red-packet-time-row");
+        var lastTimeRow = timeRowsList.length ? timeRowsList[timeRowsList.length - 1] : null;
+        var lastEndDay = lastTimeRow ? lastTimeRow.querySelector(".red-packet-end-day") : null;
+        var nextDefaults;
+        if (lastEndDay && lastEndDay.value === "next") {
+          window.alert("\u5f53\u524d\u6700\u540e\u4e00\u4e2a\u65f6\u95f4\u6bb5\u5df2\u8de8\u5929，\u8bf7\u5148\u53d6\u6d88\u6b21\u65e5\u7ed3\u675f\u518d\u6dfb\u52a0\u65b0\u65f6\u95f4\u6bb5。");
+          return;
+        }
+        nextDefaults = getNextRedPacketTimeDefaults();
+        if (!nextDefaults) {
+          window.alert("\u5f53\u524d\u65f6\u95f4\u5df2\u63a5\u8fd1\u5f53\u65e5\u7ed3\u675f，\u8bf7\u5148\u8c03\u6574\u4e0a\u4e00\u6bb5\u65f6\u95f4\u3002");
+          return;
+        }
+        timeRows.appendChild(createRedPacketTimeRow(nextDefaults.start, nextDefaults.end, nextDefaults.endDay));
+        syncRedPacketTimeRows();
+      } else if (target.id === "redPacketAddTier") {
+        tierRows.appendChild(createRedPacketTierRow());
+        syncRedPacketTierIndexes();
+        syncRedPacketConditionMode();
+      } else if (target.hasAttribute("data-red-packet-remove-time")) {
+        row = target.closest(".red-packet-time-row");
+        if (row) { row.remove(); syncRedPacketTimeRows(); }
+      } else if (target.hasAttribute("data-red-packet-remove-tier")) {
+        row = target.closest("tr");
+        if (row) { row.remove(); syncRedPacketTierIndexes(); }
+      }
+    });
+    root.addEventListener("change", function (event) {
+      if (event.target && event.target.name === "redPacketConditionMode") { syncRedPacketConditionMode(); }
+      if (event.target && event.target.id === "redPacketEnabled") { syncRedPacketEnabledLabel(); }
+      if (event.target && event.target.classList.contains("red-packet-end-day")) { syncRedPacketTimeRows(); }
+    });
+    syncRedPacketTimeRows();
+    syncRedPacketTierIndexes();
+    syncRedPacketConditionMode();
+    syncRedPacketEnabledLabel();
+    [document.getElementById("u4"), document.getElementById("u5"), document.getElementById("u1")].forEach(function (button, index) {
+      if (!button) { return; }
+      button.addEventListener("click", function (event) {
+        if (!document.body.classList.contains("red-packet-template-active")) { return; }
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if (index === 0) { saveRedPacketActivity(); } else { window.location.href = "\u4f18\u60e0\u6d3b\u52a8\u5217\u8868.html"; }
+      }, true);
+    });
+  }
+
   ready(function () {
     var select = document.getElementById("u3012_input");
 
@@ -893,6 +1336,7 @@
     bindActivityOgSelection();
     bindCustomActivityJump();
     bindChallengeActivity();
+    bindRedPacketActivity();
 
     if (select) {
       select.setAttribute("aria-label", "\u6d3b\u52a8\u6a21\u677f");
@@ -901,6 +1345,9 @@
       }
       if (new URLSearchParams(window.location.search).has("challengeId")) {
         select.value = "\u8fde\u7eed\u6311\u6218";
+      }
+      if (new URLSearchParams(window.location.search).has("redPacketId")) {
+        select.value = "\u7ea2\u5305\u96e8";
       }
       bindTemplateSelect(select);
     }

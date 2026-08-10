@@ -38,9 +38,9 @@
     var memberId = getText(row.cells[1]);
     return {
       memberId: memberId,
-      memberName: memberId || "-",
+      memberName: getText(row.cells[2]) || memberId || "-",
       merchantId: "101",
-      balance: getText(row.cells[3]) || "-"
+      balance: getText(row.cells[5]) || "-"
     };
   }
 
@@ -155,58 +155,110 @@
     fillManualBalanceInfo(findMemberById(input ? input.value.trim() : ""));
   }
 
-  function filterTable(playerType, channel, locationType, websitePosition, gameType) {
+  function getCreatePlayerModal() {
+    return $("[data-create-player-modal]");
+  }
+
+  function resetCreatePlayerForm() {
+    var modal = getCreatePlayerModal();
+    if (!modal) return;
+
+    var nameInput = $("[data-create-player-name]", modal);
+    var phoneInput = $("[data-create-player-phone]", modal);
+    var passwordInput = $("[data-create-player-password]", modal);
+    var channelSelect = $("[data-create-player-channel]", modal);
+    var tip = $("[data-create-player-tip]", modal);
+
+    if (nameInput) nameInput.value = "";
+    if (phoneInput) phoneInput.value = "";
+    if (passwordInput) passwordInput.value = "123456";
+    if (channelSelect) channelSelect.selectedIndex = 0;
+    if (tip) {
+      tip.textContent = "用户名和手机号至少填写一项";
+      tip.classList.remove("error", "success");
+    }
+  }
+
+  function openCreatePlayerModal() {
+    var modal = getCreatePlayerModal();
+    if (!modal) return;
+
+    resetCreatePlayerForm();
+    modal.hidden = false;
+  }
+
+  function closeCreatePlayerModal() {
+    var modal = getCreatePlayerModal();
+    if (modal) modal.hidden = true;
+  }
+
+  function submitCreatePlayer() {
+    var modal = getCreatePlayerModal();
+    if (!modal) return;
+
+    var nameInput = $("[data-create-player-name]", modal);
+    var phoneInput = $("[data-create-player-phone]", modal);
+    var passwordInput = $("[data-create-player-password]", modal);
+    var tip = $("[data-create-player-tip]", modal);
+    var hasIdentity = !!((nameInput && nameInput.value.trim()) || (phoneInput && phoneInput.value.trim()));
+    var hasPassword = !!(passwordInput && passwordInput.value.trim());
+
+    if (!hasIdentity || !hasPassword) {
+      if (tip) {
+        tip.textContent = !hasIdentity ? "请填写用户名或手机号" : "请填写密码";
+        tip.classList.add("error");
+        tip.classList.remove("success");
+      }
+      return;
+    }
+
+    if (tip) {
+      tip.textContent = "玩家创建成功";
+      tip.classList.add("success");
+      tip.classList.remove("error");
+    }
+  }
+
+  function parseAmount(cell) {
+    var amount = parseFloat(getText(cell).replace(/,/g, ""));
+    return isNaN(amount) ? 0 : amount;
+  }
+
+  function filterTable(filters) {
     var tbody = document.querySelector(".online-table tbody");
     if (!tbody) return;
-    
+
     var rows = tbody.querySelectorAll("tr");
-    
+
     rows.forEach(function(row) {
-      var channelCell = row.cells[2];
-      var typeCell = row.cells[3];
-      var locationCell = row.cells[5];
-      if (!channelCell || !typeCell || !locationCell) return;
-      
+      var playerIdCell = row.cells[1];
+      var channelCell = row.cells[3];
+      var typeCell = row.cells[4];
+      var balanceCell = row.cells[5];
+      var locationCell = row.cells[6];
+      var ipCell = row.cells[14];
+      if (!playerIdCell || !channelCell || !typeCell || !balanceCell || !locationCell || !ipCell) return;
+
+      var playerIdText = getText(playerIdCell);
+      var channelText = getText(channelCell);
       var typeText = typeCell.textContent.trim();
       var locationText = locationCell.textContent.trim();
-      var shouldShow = false;
+      var ipText = getText(ipCell);
+      var balance = parseAmount(balanceCell);
+      var hasChannel = channelText !== "" && channelText !== "-";
+      var shouldShow = true;
 
-      if (playerType && playerType !== "全部" && typeText !== playerType) {
-        row.style.display = "none";
-        return;
-      }
+      if (filters.playerId && playerIdText.indexOf(filters.playerId) === -1) shouldShow = false;
+      if (filters.playerType !== "全部" && typeText !== filters.playerType) shouldShow = false;
+      if (filters.channel && (filters.channel === "none" ? hasChannel : channelText !== filters.channel)) shouldShow = false;
+      if (filters.balanceMin !== "" && balance < Number(filters.balanceMin)) shouldShow = false;
+      if (filters.balanceMax !== "" && balance > Number(filters.balanceMax)) shouldShow = false;
+      if (filters.websitePosition !== "全部" && locationText !== "网站-" + filters.websitePosition) shouldShow = false;
+      if (filters.loginIp && ipText.indexOf(filters.loginIp) === -1) shouldShow = false;
 
-      var hasChannel = !!channelCell.textContent.trim();
-      if (channel && (channel === "none" ? hasChannel : channelCell.textContent.trim() !== channel)) {
-        row.style.display = "none";
-        return;
-      }
-      
-      // 所在位置筛选
-      if (locationType === "全部") {
-        shouldShow = true;
-      } else if (locationType === "网站") {
-        shouldShow = locationText.startsWith("网站-");
-      } else if (locationType === "游戏") {
-        shouldShow = locationText.startsWith("真人-") || 
-                     locationText.startsWith("电子-") || 
-                     locationText.startsWith("棋牌-") || 
-                     locationText.startsWith("捕鱼-");
-      }
-      
-      // 网站位置筛选（独立生效）
-      if (shouldShow && websitePosition && websitePosition !== "全部") {
-        shouldShow = locationText === "网站-" + websitePosition;
-      }
-      
-      // 游戏类型筛选（独立生效）
-      if (shouldShow && gameType && gameType !== "全部") {
-        shouldShow = locationText.startsWith(gameType + "-");
-      }
-      
       row.style.display = shouldShow ? "" : "none";
     });
-    
+
     updateSummary();
   }
   
@@ -221,7 +273,7 @@
     
     var needAttentionCount = 0;
     visibleRows.forEach(function(row) {
-      var balanceCell = row.cells[4];
+      var balanceCell = row.cells[5];
       if (balanceCell && balanceCell.classList.contains("danger")) {
         needAttentionCount++;
       }
@@ -229,7 +281,7 @@
     
     var totalBalance = 0;
     visibleRows.forEach(function(row) {
-      var balanceCell = row.cells[4];
+      var balanceCell = row.cells[5];
       if (balanceCell) {
         var balanceText = balanceCell.textContent.replace(/,/g, "").trim();
         var balance = parseFloat(balanceText);
@@ -248,6 +300,9 @@
         maximumFractionDigits: 2
       });
     }
+
+    var paginationCount = document.querySelector(".pagination-info b");
+    if (paginationCount) paginationCount.textContent = totalCount;
   }
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -288,50 +343,66 @@
       searchButton.addEventListener("click", searchManualBalanceMember);
     }
 
+    var createModal = getCreatePlayerModal();
+    var openCreateButton = $("[data-open-create-player]");
+    var submitCreateButton = $("[data-submit-create-player]");
+
+    if (openCreateButton) {
+      openCreateButton.addEventListener("click", openCreatePlayerModal);
+    }
+
+    $all("[data-close-create-player]").forEach(function (button) {
+      button.addEventListener("click", closeCreatePlayerModal);
+    });
+
+    if (submitCreateButton) {
+      submitCreateButton.addEventListener("click", submitCreatePlayer);
+    }
+
+    if (createModal) {
+      createModal.addEventListener("click", function (event) {
+        if (event.target === createModal) closeCreatePlayerModal();
+      });
+    }
+
     document.addEventListener("change", function (event) {
       if (event.target.matches('input[name="onlineBalanceAction"]')) {
         setManualBalanceAction(event.target.value);
       }
     });
     
-    var playerTypeSelect = document.querySelector("[data-player-type-filter]");
+    var filterForm = document.querySelector(".filter-bar");
+    var playerIdInput = document.querySelector("[data-player-id-filter]");
     var channelSelect = document.querySelector("[data-channel-filter]");
-    var locationSelect = document.querySelector("[data-location-filter]");
+    var balanceMinInput = document.querySelector("[data-balance-min]");
+    var balanceMaxInput = document.querySelector("[data-balance-max]");
+    var playerTypeSelect = document.querySelector("[data-player-type-filter]");
     var websitePositionSelect = document.querySelector("[data-website-position-filter]");
-    var gameTypeSelect = document.querySelector("[data-game-type-filter]");
-    var channelSamples = ["111", "112", "113", ""];
-
-    Array.prototype.forEach.call(document.querySelectorAll(".online-table tbody tr"), function (row, index) {
-      if (row.cells[2]) row.cells[2].textContent = channelSamples[index % channelSamples.length];
-    });
+    var loginIpInput = document.querySelector("[data-login-ip-filter]");
+    var filterSearchButton = document.querySelector("[data-filter-search]");
+    var filterResetButton = document.querySelector("[data-filter-reset]");
 
     function applyFilters() {
-      var playerType = playerTypeSelect ? playerTypeSelect.value : "全部";
-      var channel = channelSelect ? channelSelect.value : "";
-      var locationType = locationSelect ? locationSelect.value : "全部";
-      var websitePosition = websitePositionSelect ? websitePositionSelect.value : "全部";
-      var gameType = gameTypeSelect ? gameTypeSelect.value : "全部";
-      filterTable(playerType, channel, locationType, websitePosition, gameType);
+      filterTable({
+        playerId: playerIdInput ? playerIdInput.value.trim() : "",
+        channel: channelSelect ? channelSelect.value : "",
+        balanceMin: balanceMinInput ? balanceMinInput.value : "",
+        balanceMax: balanceMaxInput ? balanceMaxInput.value : "",
+        playerType: playerTypeSelect ? playerTypeSelect.value : "全部",
+        websitePosition: websitePositionSelect ? websitePositionSelect.value : "全部",
+        loginIp: loginIpInput ? loginIpInput.value.trim() : ""
+      });
     }
 
-    if (playerTypeSelect) {
-      playerTypeSelect.addEventListener("change", applyFilters);
+    if (filterSearchButton) {
+      filterSearchButton.addEventListener("click", applyFilters);
     }
 
-    if (channelSelect) {
-      channelSelect.addEventListener("change", applyFilters);
-    }
-    
-    if (locationSelect) {
-      locationSelect.addEventListener("change", applyFilters);
-    }
-    
-    if (websitePositionSelect) {
-      websitePositionSelect.addEventListener("change", applyFilters);
-    }
-    
-    if (gameTypeSelect) {
-      gameTypeSelect.addEventListener("change", applyFilters);
+    if (filterResetButton) {
+      filterResetButton.addEventListener("click", function () {
+        if (filterForm) filterForm.reset();
+        applyFilters();
+      });
     }
 
     applyFilters();

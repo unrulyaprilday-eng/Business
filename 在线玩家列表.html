@@ -56,9 +56,9 @@
             <h1>在线玩家列表</h1>
           </div>
           <div class="summary-strip">
-            <span><b>8</b> 在线玩家</span>
-            <span><b>3</b> 需关注</span>
-            <span><b>42,872.10</b> 总余额</span>
+            <span><b>9</b> 在线玩家</span>
+            <span><b>2</b> 需关注</span>
+            <span><b>13,080.53</b> 总余额</span>
           </div>
         </header>
 
@@ -69,19 +69,7 @@
           <form class="filter-bar">
             <label>
               <span>玩家ID:</span>
-              <input type="text" placeholder="请输入会员ID"/>
-            </label>
-            <label>
-              <span>余额范围:</span>
-              <input type="text" placeholder="请输入余额"/>
-            </label>
-            <label>
-              <span>玩家类型:</span>
-              <select data-player-type-filter>
-                <option>全部</option>
-                <option>存款玩家</option>
-                <option>免费玩家</option>
-              </select>
+              <input data-player-id-filter type="text" placeholder="请输入会员ID"/>
             </label>
             <label>
               <span>渠道编码:</span>
@@ -93,12 +81,20 @@
                 <option value="none">无</option>
               </select>
             </label>
+            <label class="balance-filter">
+              <span>余额范围:</span>
+              <span class="balance-range">
+                <input data-balance-min type="number" min="0" placeholder="最小"/>
+                <i>-</i>
+                <input data-balance-max type="number" min="0" placeholder="最大"/>
+              </span>
+            </label>
             <label>
-              <span>在线状态:</span>
-              <select data-location-filter>
+              <span>玩家类型:</span>
+              <select data-player-type-filter>
                 <option>全部</option>
-                <option>网站</option>
-                <option>游戏</option>
+                <option>存款</option>
+                <option>免费</option>
               </select>
             </label>
             <label>
@@ -113,21 +109,12 @@
               </select>
             </label>
             <label>
-              <span>游戏类型:</span>
-              <select data-game-type-filter>
-                <option>全部</option>
-                <option>真人</option>
-                <option>电子</option>
-                <option>棋牌</option>
-                <option>捕鱼</option>
-              </select>
+              <span>登录IP:</span>
+              <input data-login-ip-filter type="text" placeholder="请输入IP"/>
             </label>
-            <label>
-              <span>IP地址:</span>
-              <input type="text" placeholder="请输入地址"/>
-            </label>
-            <button class="btn primary" type="button">搜索</button>
-            <button class="btn" type="button">导出报表</button>
+            <button class="btn primary" data-filter-search type="button">搜索</button>
+            <button class="btn" data-filter-reset type="button">重置</button>
+            <button class="btn success" data-open-create-player type="button">创建玩家</button>
           </form>
 
           <div class="table-wrap">
@@ -136,130 +123,184 @@
                 <tr>
                   <th>序号</th>
                   <th>玩家ID</th>
+                  <th>玩家名称</th>
                   <th>渠道编码</th>
-                  <th>玩家类型</th>
+                  <th>类型</th>
                   <th>余额</th>
                   <th>所在位置</th>
-                  <th>当前充值<br/>最近充值</th>
-                  <th>历史充值<br/>历史充值</th>
-                  <th>在线时长</th>
-                  <th>玩家IP</th>
+                  <th class="metric-col">今日充值</th>
+                  <th class="metric-col">赎回累计</th>
+                  <th class="metric-col">今日领取</th>
+                  <th class="metric-col">累计充值</th>
+                  <th class="metric-col">剩余打码量</th>
                   <th>赎回和打码状态</th>
+                  <th>在线时长</th>
+                  <th>登录IP</th>
                   <th class="action-col">操作</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>1</td>
-                  <td>VIP_103</td>
-                  <td></td>
-                  <td><span class="type-tag deposit">存款玩家</span></td>
-                  <td>15,800.00</td>
-                  <td>网站-首页</td>
-                  <td>8,000</td>
-                  <td>20,000</td>
-                  <td>01:45:00</td>
-                  <td>112.94.22.108</td>
-                  <td><span class="status met">Met Wager<br/>(Total*10)</span></td>
-                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link" data-open-action type="button">操作</button></td>
+                  <td><button class="text-link player-link" type="button">1010125283</button></td>
+                  <td>tjj7x3tz3</td>
+                  <td>-</td>
+                  <td><span class="type-tag free">免费</span></td>
+                  <td>12,710.00</td>
+                  <td><span class="position-tag">网站-我的</span></td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">30</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">10,000</td>
+                  <td class="metric-col wager-value">12,710</td>
+                  <td><span class="status normal">不满足</span></td>
+                  <td>02:22:46</td>
+                  <td>155.254.98.168</td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link manual-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link danger-link" data-open-action type="button">封禁</button></td>
                 </tr>
                 <tr>
                   <td>2</td>
-                  <td>VIP_100</td>
-                  <td></td>
-                  <td><span class="type-tag deposit">存款玩家</span></td>
-                  <td class="danger">12,450.00</td>
-                  <td>真人-EVO Baccarat</td>
-                  <td>10,000</td>
-                  <td>10,000</td>
-                  <td>01:22:10</td>
-                  <td>112.94.22.105</td>
-                  <td><span class="status met">Met Wager<br/>(Total*10)</span></td>
-                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link" data-open-action type="button">操作</button></td>
+                  <td><button class="text-link player-link" type="button">1010010008</button></td>
+                  <td>tttt007</td>
+                  <td>-</td>
+                  <td><span class="type-tag free">免费</span></td>
+                  <td>331.03</td>
+                  <td><span class="position-tag">网站-我的</span></td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">20</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col wager-value">331.03</td>
+                  <td><span class="status normal">不满足</span></td>
+                  <td>1798:56:43</td>
+                  <td>207.189.9.24</td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link manual-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link danger-link" data-open-action type="button">封禁</button></td>
                 </tr>
                 <tr>
                   <td>3</td>
-                  <td>VIP_102</td>
-                  <td></td>
-                  <td><span class="type-tag deposit">存款玩家</span></td>
-                  <td class="danger">6,200.00</td>
-                  <td>电子-PG Fortune Tiger</td>
-                  <td>3,000</td>
-                  <td>8,000</td>
-                  <td>00:55:20</td>
-                  <td>112.94.22.107</td>
-                  <td><span class="status wager">Met Wager<br/>(Deposit*3)</span></td>
-                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link" data-open-action type="button">操作</button></td>
+                  <td><button class="text-link player-link" type="button">1010125071</button></td>
+                  <td>jhkl</td>
+                  <td>-</td>
+                  <td><span class="type-tag free">免费</span></td>
+                  <td>10.00</td>
+                  <td><span class="position-tag offer">网站-优惠</span></td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col wager-value">10</td>
+                  <td><span class="status normal">不满足</span></td>
+                  <td>118:30:12</td>
+                  <td>50.7.250.106</td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link manual-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link danger-link" data-open-action type="button">封禁</button></td>
                 </tr>
                 <tr>
                   <td>4</td>
-                  <td>VIP_104</td>
-                  <td></td>
-                  <td><span class="type-tag deposit">存款玩家</span></td>
-                  <td class="danger">3,500.00</td>
-                  <td>网站-存款</td>
-                  <td>2,000</td>
-                  <td>5,000</td>
-                  <td>00:30:15</td>
-                  <td>112.94.22.109</td>
+                  <td><button class="text-link player-link" type="button">1010123908</button></td>
+                  <td>thiqu52gz</td>
+                  <td>-</td>
+                  <td><span class="type-tag free">免费</span></td>
+                  <td>10.00</td>
+                  <td><span class="position-tag">网站-首页</span></td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col wager-value">10</td>
                   <td><span class="status normal">不满足</span></td>
-                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link" data-open-action type="button">操作</button></td>
+                  <td>00:00:00</td>
+                  <td>40.77.178.10</td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link manual-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link danger-link" data-open-action type="button">封禁</button></td>
                 </tr>
                 <tr>
                   <td>5</td>
-                  <td>FREE_300</td>
-                  <td></td>
-                  <td><span class="type-tag free">免费玩家</span></td>
-                  <td>2,500.00</td>
-                  <td>棋牌-KY 斗地主</td>
-                  <td>0</td>
-                  <td>30,000</td>
-                  <td>00:30:00</td>
-                  <td>180.110.3.56</td>
-                  <td><span class="status wager">Met Wager<br/>(Deposit*3)</span></td>
-                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link" data-open-action type="button">操作</button></td>
+                  <td><button class="text-link player-link" type="button">1010123751</button></td>
+                  <td>tgmsox3il</td>
+                  <td>-</td>
+                  <td><span class="type-tag free">免费</span></td>
+                  <td>10.00</td>
+                  <td><span class="position-tag">网站-首页</span></td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col wager-value">100</td>
+                  <td><span class="status normal">不满足</span></td>
+                  <td>00:00:00</td>
+                  <td>65.55.210.251</td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link manual-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link danger-link" data-open-action type="button">封禁</button></td>
                 </tr>
                 <tr>
                   <td>6</td>
-                  <td>FREE_301</td>
-                  <td></td>
-                  <td><span class="type-tag free">免费玩家</span></td>
-                  <td>1,800.00</td>
-                  <td>网站-优惠</td>
-                  <td>0</td>
-                  <td>25,000</td>
-                  <td>00:25:00</td>
-                  <td>180.110.3.57</td>
-                  <td><span class="status wager">Met Wager<br/>(Deposit*3)</span></td>
-                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link" data-open-action type="button">操作</button></td>
+                  <td><button class="text-link player-link" type="button">1010125272</button></td>
+                  <td>hhshsh</td>
+                  <td>-</td>
+                  <td><span class="type-tag free">免费</span></td>
+                  <td>5.50</td>
+                  <td><span class="position-tag">网站-我的</span></td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col wager-value">5.5</td>
+                  <td><span class="status normal">不满足</span></td>
+                  <td>42:07:04</td>
+                  <td>171.217.42.97</td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link manual-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link danger-link" data-open-action type="button">封禁</button></td>
                 </tr>
                 <tr>
                   <td>7</td>
-                  <td>NOVICE_400</td>
-                  <td></td>
-                  <td><span class="type-tag free">免费玩家</span></td>
-                  <td>520.00</td>
-                  <td>网站-我的</td>
-                  <td>0</td>
-                  <td>500</td>
-                  <td>00:12:00</td>
-                  <td>104.16.0.1</td>
-                  <td><span class="status met">Met Wager<br/>(Deposit*3)</span></td>
-                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link" data-open-action type="button">操作</button></td>
+                  <td><button class="text-link player-link" type="button">1010125285</button></td>
+                  <td>tjj9ohbge</td>
+                  <td>-</td>
+                  <td><span class="type-tag free">免费</span></td>
+                  <td>4.00</td>
+                  <td><span class="position-tag offer">网站-优惠</span></td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col wager-value">4</td>
+                  <td><span class="status normal">不满足</span></td>
+                  <td>02:07:58</td>
+                  <td>178.173.243.42</td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link manual-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link danger-link" data-open-action type="button">封禁</button></td>
                 </tr>
                 <tr>
                   <td>8</td>
-                  <td>NOVICE_401</td>
-                  <td></td>
-                  <td><span class="type-tag free">免费玩家</span></td>
-                  <td class="danger">52.10</td>
-                  <td>捕鱼-JILI Fishing</td>
-                  <td>0</td>
-                  <td>50</td>
-                  <td>00:15:00</td>
-                  <td>104.16.0.2</td>
-                  <td><span class="status met">Met Wager<br/>(Deposit*3)</span></td>
-                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link" data-open-action type="button">操作</button></td>
+                  <td><button class="text-link player-link" type="button">1010125186</button></td>
+                  <td>tjdu8jqd6</td>
+                  <td>-</td>
+                  <td><span class="type-tag free">免费</span></td>
+                  <td class="danger">0.00</td>
+                  <td><span class="position-tag">网站-首页</span></td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">0</td>
+                  <td><span class="status met">已满足打码<br/>(Free*1)</span></td>
+                  <td>00:00:00</td>
+                  <td>65.55.210.132</td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link manual-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link danger-link" data-open-action type="button">封禁</button></td>
+                </tr>
+                <tr>
+                  <td>9</td>
+                  <td><button class="text-link player-link" type="button">1010010027</button></td>
+                  <td>gb103</td>
+                  <td>-</td>
+                  <td><span class="type-tag deposit">存款</span></td>
+                  <td class="danger">0.00</td>
+                  <td><span class="position-tag">网站-首页</span></td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col wager-value">0</td>
+                  <td><span class="status met">已满足打码<br/>(Deposit*1)</span></td>
+                  <td>93:20:02</td>
+                  <td>135.84.210.172</td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link manual-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link danger-link" data-open-action type="button">封禁</button></td>
                 </tr>
               </tbody>
             </table>
@@ -267,7 +308,7 @@
 
           <div class="pagination-wrap">
             <div class="pagination-info">
-              共 <b>8</b> 条记录，第 <b>1</b> / <b>1</b> 页
+              共 <b>9</b> 条记录，第 <b>1</b> / <b>1</b> 页
             </div>
             <div class="pagination-btns">
               <button class="page-btn" disabled>首页</button>
@@ -293,8 +334,8 @@
           </article>
           <article class="logic-card alert">
             <h2>余额标红逻辑</h2>
-            <p>独立打码规则：赎回打码要求满足 OR 打码要求满足（任意一项达到）</p>
-            <p>常规打码规则：打码完成显示成红色，状态显示"已完成打码"</p>
+            <p>玩家余额为 0 时显示红色，便于快速识别空余额账号。</p>
+            <p>赎回或打码条件满足时，状态单独显示“已满足打码”。</p>
           </article>
           <article class="logic-card">
             <h2>所在位置显示逻辑</h2>
@@ -306,6 +347,11 @@
             <h2>独立打码规则</h2>
             <p>存款玩家：最近一次非游戏余额增加是充值或充值送</p>
             <p>免费玩家：最近一次非游戏余额增加是领取免费奖励或未存款</p>
+          </article>
+          <article class="logic-card">
+            <h2>赎回与领取统计</h2>
+            <p>赎回累计：账号历史全部赎回金额；免费奖金玩家每次提现按 10 元计入。</p>
+            <p>今日领取：账号当日领取的全部免费奖金金额合计。</p>
           </article>
           <article class="logic-card">
             <h2>常规打码规则</h2>
@@ -393,6 +439,43 @@
             <div class="modal-footer manual-balance-footer">
               <button class="btn" data-close-manual-balance type="button">取消</button>
               <button class="btn primary" data-close-manual-balance type="button">提交</button>
+            </div>
+          </section>
+        </div>
+
+        <div class="modal-mask" data-create-player-modal hidden>
+          <section class="create-player-modal" role="dialog" aria-modal="true" aria-labelledby="createPlayerTitle">
+            <div class="modal-head">
+              <strong id="createPlayerTitle">创建玩家</strong>
+              <button class="close-btn" data-close-create-player type="button" aria-label="关闭">×</button>
+            </div>
+            <div class="create-player-body">
+              <p class="create-player-tip" data-create-player-tip>用户名和手机号至少填写一项</p>
+              <label class="create-player-row">
+                <span>用户名:</span>
+                <input data-create-player-name placeholder="请输入用户名" type="text"/>
+              </label>
+              <label class="create-player-row">
+                <span>手机号:</span>
+                <input data-create-player-phone placeholder="请输入手机号" type="text"/>
+              </label>
+              <label class="create-player-row required">
+                <span>密码:</span>
+                <input data-create-player-password value="123456" type="password"/>
+              </label>
+              <label class="create-player-row">
+                <span>渠道:</span>
+                <select data-create-player-channel>
+                  <option value="">请选择渠道</option>
+                  <option>111</option>
+                  <option>112</option>
+                  <option>113</option>
+                </select>
+              </label>
+            </div>
+            <div class="modal-footer create-player-footer">
+              <button class="btn" data-close-create-player type="button">取消</button>
+              <button class="btn primary" data-submit-create-player type="button">提交</button>
             </div>
           </section>
         </div>

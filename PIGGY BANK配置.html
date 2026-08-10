@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PIGGY BANK配置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/PIGGY BANK配置/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/tokens.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/components.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/PIGGY BANK配置.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/PIGGY BANK配置/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/PIGGY BANK配置.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell piggy-config-page">
+        <main class="piggy-config-main">
+          <header class="piggy-config-head">
+            <div>
+              <div class="piggy-breadcrumb">优惠活动 / PIGGY BANK配置</div>
+              <h1>PIGGY BANK配置</h1>
+              <div class="piggy-master-control">
+                <span class="piggy-master-label">活动总开关</span>
+                <button class="cl-switch-button is-on" type="button" aria-label="活动总开关" aria-pressed="true" data-piggy-master-switch></button>
+                <span data-piggy-switch-label>已开启</span>
+              </div>
+            </div>
+          </header>
+
+          <form data-piggy-config-form>
+
+            <section class="piggy-section" data-piggy-section>
+              <div class="piggy-section-head">
+                <div>
+                  <h2>余额提取方式</h2>
+                </div>
+              </div>
+
+              <div class="extract-method-grid">
+                <label class="extract-method-card is-selected" data-extract-card="recharge">
+                  <input type="radio" name="extractMethod" value="recharge" checked data-extract-method/>
+                  <span class="custom-radio" aria-hidden="true"></span>
+                  <span class="extract-method-copy">
+                    <strong>充值</strong>
+                    <em>按充值金额所在档位解锁 PIGGY BANK 余额。</em>
+                  </span>
+                </label>
+                <label class="extract-method-card" data-extract-card="wager">
+                  <input type="radio" name="extractMethod" value="wager" data-extract-method/>
+                  <span class="custom-radio" aria-hidden="true"></span>
+                  <span class="extract-method-copy">
+                    <strong>打码按比例</strong>
+                    <em>按玩家当前 VIP 等级的解锁比例解锁 PIGGY BANK 余额。</em>
+                  </span>
+                </label>
+              </div>
+
+              <div class="extract-setting-box" data-extract-settings="recharge">
+                <div class="field-label">充值解锁档位</div>
+                <div class="tier-content">
+                  <table class="recharge-tier-table">
+                    <thead>
+                      <tr><th>单次充值金额</th><th>解锁比例</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td><div class="tier-range"><input type="number" min="1" step="1" value="1" data-recharge-tier/><em>至</em><input type="number" min="1" step="1" value="499" data-recharge-tier/></div></td><td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="20" data-recharge-tier data-recharge-tier-ratio/><span>%</span></div></td></tr>
+                      <tr><td><div class="tier-range"><input type="number" min="1" step="1" value="500" data-recharge-tier/><em>至</em><input type="number" min="1" step="1" value="999" data-recharge-tier/></div></td><td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="40" data-recharge-tier data-recharge-tier-ratio/><span>%</span></div></td></tr>
+                      <tr><td><div class="tier-range"><input type="number" min="1" step="1" value="1000" data-recharge-tier/><em>至</em><input type="number" min="1" step="1" value="4999" data-recharge-tier/></div></td><td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="60" data-recharge-tier data-recharge-tier-ratio/><span>%</span></div></td></tr>
+                      <tr><td><div class="tier-range"><input type="number" min="1" step="1" value="5000" data-recharge-tier/><em>以上</em></div></td><td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="100" data-recharge-tier data-recharge-tier-ratio/><span>%</span></div></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </section>
+
+            <section class="piggy-section" data-piggy-section data-vip-section hidden>
+              <div class="piggy-section-head">
+                <div>
+                  <h2>VIP 解锁比例</h2>
+                </div>
+                <span class="piggy-table-hint" data-vip-method-tag>当前方式：充值</span>
+              </div>
+
+              <div class="vip-ratio-wrap">
+                <table class="vip-ratio-table" data-vip-ratio-table data-current-method="recharge">
+                  <thead>
+                    <tr>
+                      <th>VIP等级</th>
+                      <th>解锁比例</th>
+                    </tr>
+                  </thead>
+                  <tbody data-vip-ratio-body>
+                    <tr>
+                      <td><span class="vip-badge">VIP1</span></td>
+                      <td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="0.30" data-vip-ratio/><span>%</span></div></td>
+                    </tr>
+                    <tr>
+                      <td><span class="vip-badge">VIP2</span></td>
+                      <td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="0.40" data-vip-ratio/><span>%</span></div></td>
+                    </tr>
+                    <tr>
+                      <td><span class="vip-badge">VIP3</span></td>
+                      <td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="0.55" data-vip-ratio/><span>%</span></div></td>
+                    </tr>
+                    <tr>
+                      <td><span class="vip-badge">VIP4</span></td>
+                      <td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="0.70" data-vip-ratio/><span>%</span></div></td>
+                    </tr>
+                    <tr>
+                      <td><span class="vip-badge">VIP5</span></td>
+                      <td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="0.90" data-vip-ratio/><span>%</span></div></td>
+                    </tr>
+                    <tr><td><span class="vip-badge">VIP6</span></td><td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="1.10" data-vip-ratio/><span>%</span></div></td></tr>
+                    <tr><td><span class="vip-badge">VIP7</span></td><td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="1.30" data-vip-ratio/><span>%</span></div></td></tr>
+                    <tr><td><span class="vip-badge">VIP8</span></td><td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="1.50" data-vip-ratio/><span>%</span></div></td></tr>
+                    <tr><td><span class="vip-badge">VIP9</span></td><td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="1.80" data-vip-ratio/><span>%</span></div></td></tr>
+                    <tr><td><span class="vip-badge">VIP10</span></td><td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="2.10" data-vip-ratio/><span>%</span></div></td></tr>
+                    <tr><td><span class="vip-badge">VIP11</span></td><td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="2.40" data-vip-ratio/><span>%</span></div></td></tr>
+                    <tr><td><span class="vip-badge">VIP12</span></td><td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="2.70" data-vip-ratio/><span>%</span></div></td></tr>
+                    <tr><td><span class="vip-badge">VIP13</span></td><td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="3.00" data-vip-ratio/><span>%</span></div></td></tr>
+                    <tr><td><span class="vip-badge">VIP14</span></td><td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="3.50" data-vip-ratio/><span>%</span></div></td></tr>
+                    <tr><td><span class="vip-badge">VIP15</span></td><td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="4.00" data-vip-ratio/><span>%</span></div></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <div class="piggy-form-actions">
+              <span class="piggy-save-state" role="status" data-save-state></span>
+              <button class="cl-btn cl-btn-ghost" type="button" data-reset-config>恢复默认</button>
+              <button class="cl-btn cl-btn-primary" type="button" data-save-config>保存配置</button>
+            </div>
+          </form>
+        </main>
+
+        <section class="piggy-confirm-modal" hidden data-save-modal>
+          <div class="piggy-confirm-backdrop" data-close-save-modal></div>
+          <div class="piggy-confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="piggySaveTitle">
+            <header>
+              <strong id="piggySaveTitle">确认保存配置</strong>
+              <button type="button" aria-label="关闭" data-close-save-modal>×</button>
+            </header>
+            <div class="piggy-confirm-body">保存后将按当前活动状态、余额提取方式和 VIP 解锁比例执行。</div>
+            <footer>
+              <button class="cl-btn" type="button" data-close-save-modal>取消</button>
+              <button class="cl-btn cl-btn-primary" type="button" data-confirm-save>确定</button>
+            </footer>
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>
