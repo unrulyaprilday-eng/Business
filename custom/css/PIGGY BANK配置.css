@@ -54,43 +54,69 @@ body {
 }
 
 .piggy-config-head h1 {
-  font-size: 16px;
+  font-size: 17px;
+  line-height: 1.35;
 }
 
 .piggy-master-control {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 10px;
+  gap: 10px;
+  margin-top: 11px;
   flex-shrink: 0;
   padding: 0;
 }
 
 .piggy-master-label {
   color: #435066;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.piggy-master-control [data-piggy-switch-label] {
-  color: #2f8f61;
   font-size: 13px;
   font-weight: 600;
 }
 
-.piggy-master-control [data-piggy-switch-label].is-off {
-  color: #8b96a7;
-}
-
+.piggy-config-actions,
 .piggy-edit-actions {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
   flex-shrink: 0;
 }
 
+.piggy-config-actions {
+  justify-content: flex-end;
+  padding-top: 1px;
+}
+
+.piggy-record-link {
+  color: #2f6fed;
+  background: #f5f9ff;
+  border-color: #c8dcff;
+  text-decoration: none;
+}
+
+.piggy-record-link:hover {
+  color: #245fce;
+  background: #edf5ff;
+  border-color: #9fc3ff;
+  text-decoration: none;
+}
+
+.piggy-record-link::after {
+  content: "→";
+  margin-left: 2px;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.piggy-config-page .cl-btn:focus-visible,
+.piggy-config-page .cl-switch-button:focus-visible {
+  outline: 2px solid rgba(47, 111, 237, 0.26);
+  outline-offset: 2px;
+}
+
 .piggy-config-page.is-readonly .extract-method-card {
   cursor: default;
+  background: #fafbfc;
 }
 
 .piggy-config-page.is-readonly .tier-range input,
@@ -119,8 +145,8 @@ body {
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
-  min-height: 64px;
-  padding: 16px 20px 14px;
+  min-height: 54px;
+  padding: 13px 20px 11px;
   border-bottom: 1px solid #e7ebf1;
 }
 
@@ -139,15 +165,15 @@ body {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
-  padding: 18px 20px 12px;
+  padding: 14px 20px 10px;
 }
 
 .extract-method-card {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  min-height: 82px;
-  padding: 16px;
+  min-height: 70px;
+  padding: 13px 14px;
   border: 1px solid #dce4ee;
   border-radius: 4px;
   background: #fff;
@@ -157,6 +183,16 @@ body {
 .extract-method-card.is-selected {
   border-color: #6faaf5;
   background: #f6faff;
+}
+
+.extract-method-card:hover {
+  border-color: #a9c8f5;
+  background: #fbfdff;
+}
+
+.extract-method-card.is-selected:hover {
+  border-color: #5e9cf0;
+  background: #f3f8ff;
 }
 
 .extract-method-card input {
@@ -210,7 +246,7 @@ body {
   color: #788496;
   font-size: 12px;
   font-style: normal;
-  line-height: 20px;
+  line-height: 18px;
 }
 
 .extract-setting-box {
@@ -218,8 +254,8 @@ body {
   grid-template-columns: 132px minmax(0, 1fr);
   align-items: start;
   gap: 16px;
-  margin: 0 20px 18px;
-  padding: 14px 16px;
+  margin: 0 20px 14px;
+  padding: 12px 16px;
   border: 1px solid #e2e8f1;
   border-radius: 4px;
   background: #fafcff;
@@ -307,7 +343,7 @@ body {
 
 .recharge-tier-table th,
 .recharge-tier-table td {
-  height: 44px;
+  height: 40px;
   padding: 6px 12px;
   border-bottom: 1px solid #e6ebf2;
   text-align: left;
@@ -322,6 +358,11 @@ body {
 
 .recharge-tier-table tbody tr:last-child td {
   border-bottom: 0;
+}
+
+.recharge-tier-table tbody tr:hover,
+.vip-ratio-table tbody tr:hover {
+  background: #fbfdff;
 }
 
 .tier-range {
@@ -356,7 +397,7 @@ body {
 }
 
 .vip-ratio-wrap {
-  padding: 18px 20px 20px;
+  padding: 14px 20px 16px;
 }
 
 .vip-ratio-table {
@@ -370,8 +411,8 @@ body {
 
 .vip-ratio-table th,
 .vip-ratio-table td {
-  height: 48px;
-  padding: 7px 16px;
+  height: 40px;
+  padding: 5px 14px;
   border-bottom: 1px solid #e6ebf2;
   text-align: left;
   vertical-align: middle;
@@ -502,6 +543,11 @@ body {
   .piggy-section-head {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .piggy-config-actions {
+    width: 100%;
+    justify-content: flex-start;
   }
 
   .extract-method-grid {

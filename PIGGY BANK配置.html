@@ -62,14 +62,16 @@
               <h1>PIGGY BANK配置</h1>
               <div class="piggy-master-control">
                 <span class="piggy-master-label">活动总开关</span>
-                <button class="cl-switch-button is-on" type="button" aria-label="活动总开关" aria-pressed="true" data-piggy-master-switch></button>
-                <span data-piggy-switch-label>已开启</span>
+                <button class="cl-switch-button is-on" type="button" role="switch" aria-label="活动总开关" aria-checked="true" data-piggy-master-switch></button>
               </div>
             </div>
-            <div class="piggy-edit-actions">
-              <button class="cl-btn cl-btn-primary" type="button" data-edit-action="edit">编辑</button>
-              <button class="cl-btn" type="button" data-edit-action="cancel" hidden>取消</button>
-              <button class="cl-btn cl-btn-primary" type="button" data-edit-action="save" hidden>保存</button>
+            <div class="piggy-config-actions">
+              <a class="cl-btn piggy-record-link" href="PIGGY BANK参与记录.html">查看参与记录</a>
+              <div class="piggy-edit-actions">
+                <button class="cl-btn cl-btn-primary" type="button" data-edit-action="edit">编辑</button>
+                <button class="cl-btn" type="button" data-edit-action="cancel" hidden>取消</button>
+                <button class="cl-btn cl-btn-primary" type="button" data-edit-action="save" hidden>保存</button>
+              </div>
             </div>
           </header>
 
@@ -175,7 +177,6 @@
 
             <div class="piggy-form-actions">
               <span class="piggy-save-state" role="status" data-save-state></span>
-              <button class="cl-btn cl-btn-ghost" type="button" data-reset-config hidden>恢复默认</button>
             </div>
           </form>
         </main>

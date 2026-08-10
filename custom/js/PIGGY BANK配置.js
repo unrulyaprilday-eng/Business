@@ -2,7 +2,6 @@
   var defaults = {
     masterOn: true,
     method: "recharge",
-    rechargeTiers: ["1", "499", "20", "500", "999", "40", "1000", "4999", "60", "5000", "100"],
     vipRatios: {
       recharge: ["0.30", "0.40", "0.55", "0.70", "0.90", "1.10", "1.30", "1.50", "1.80", "2.10", "2.40", "2.70", "3.00", "3.50", "4.00"],
       wager: ["0.30", "0.40", "0.55", "0.70", "0.90", "1.10", "1.30", "1.50", "1.80", "2.10", "2.40", "2.70", "3.00", "3.50", "4.00"]
@@ -35,7 +34,7 @@
 
     if (masterSwitch) {
       masterSwitch.classList.toggle("is-on", isOn);
-      masterSwitch.setAttribute("aria-pressed", isOn ? "true" : "false");
+      masterSwitch.setAttribute("aria-checked", isOn ? "true" : "false");
     }
 
     if (label) {
@@ -154,15 +153,6 @@
     setMethod(state.method, true);
   }
 
-  function restoreDefaults() {
-    vipRatioState = cloneVipState(defaults.vipRatios);
-    document.querySelectorAll("[data-recharge-tier]").forEach(function (input, index) {
-      if (defaults.rechargeTiers[index] !== undefined) input.value = defaults.rechargeTiers[index];
-    });
-    setMasterState(defaults.masterOn);
-    setMethod(defaults.method, true);
-  }
-
   function setEditing(next) {
     editing = next;
     var page = document.querySelector(".piggy-config-page");
@@ -170,7 +160,6 @@
     var editButton = document.querySelector('[data-edit-action="edit"]');
     var cancelButton = document.querySelector('[data-edit-action="cancel"]');
     var saveButton = document.querySelector('[data-edit-action="save"]');
-    var resetButton = document.querySelector("[data-reset-config]");
     var table = document.querySelector("[data-vip-ratio-table]");
 
     if (page) page.classList.toggle("is-readonly", !next);
@@ -180,7 +169,6 @@
     if (editButton) editButton.hidden = next;
     if (cancelButton) cancelButton.hidden = !next;
     if (saveButton) saveButton.hidden = !next;
-    if (resetButton) resetButton.hidden = !next;
     renderVipRatios(table ? table.getAttribute("data-current-method") : defaults.method);
   }
 
@@ -243,13 +231,6 @@
       if (masterSwitch) {
         if (!editing) return;
         setMasterState(!masterSwitch.classList.contains("is-on"));
-        return;
-      }
-
-      if (event.target.closest("[data-reset-config]")) {
-        if (!editing) return;
-        restoreDefaults();
-        showSaveState("已恢复默认值，尚未保存");
         return;
       }
 
