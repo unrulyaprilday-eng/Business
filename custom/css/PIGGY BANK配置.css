@@ -120,7 +120,8 @@ body {
 }
 
 .piggy-config-page.is-readonly .tier-range input,
-.piggy-config-page.is-readonly .ratio-input input {
+.piggy-config-page.is-readonly .ratio-input input,
+.piggy-config-page.is-readonly .number-field input {
   color: #647084;
   background: #f7f9fc;
   cursor: not-allowed;

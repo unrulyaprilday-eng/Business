@@ -103,6 +103,16 @@
                 </label>
               </div>
 
+              <div class="extract-setting-box piggy-minimum-setting">
+                <div class="field-label">领取到余额最低金额</div>
+                <div class="field-content">
+                  <div class="number-field">
+                    <input type="number" min="0.01" step="0.01" value="1.00" inputmode="decimal" aria-label="领取到余额最低金额" data-claim-minimum/>
+                  </div>
+                  <p>可领取金额达到该值后，才允许转入玩家钱包余额。</p>
+                </div>
+              </div>
+
               <div class="extract-setting-box" data-extract-settings="recharge">
                 <div class="field-label">充值解锁比例</div>
                 <div class="tier-content">
@@ -188,7 +198,7 @@
               <strong id="piggySaveTitle">确认保存配置</strong>
               <button type="button" aria-label="关闭" data-close-save-modal>×</button>
             </header>
-            <div class="piggy-confirm-body">保存后将按当前活动状态、余额提取方式和 VIP 解锁比例执行。</div>
+            <div class="piggy-confirm-body">保存后将按当前活动状态、提取方式、最低领取金额和解锁比例执行。</div>
             <footer>
               <button class="cl-btn" type="button" data-close-save-modal>取消</button>
               <button class="cl-btn cl-btn-primary" type="button" data-confirm-save>确定</button>
