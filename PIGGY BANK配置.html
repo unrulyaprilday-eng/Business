@@ -66,6 +66,11 @@
                 <span data-piggy-switch-label>已开启</span>
               </div>
             </div>
+            <div class="piggy-edit-actions">
+              <button class="cl-btn cl-btn-primary" type="button" data-edit-action="edit">编辑</button>
+              <button class="cl-btn" type="button" data-edit-action="cancel" hidden>取消</button>
+              <button class="cl-btn cl-btn-primary" type="button" data-edit-action="save" hidden>保存</button>
+            </div>
           </header>
 
           <form data-piggy-config-form>
@@ -97,11 +102,11 @@
               </div>
 
               <div class="extract-setting-box" data-extract-settings="recharge">
-                <div class="field-label">充值解锁档位</div>
+                <div class="field-label">充值解锁比例</div>
                 <div class="tier-content">
                   <table class="recharge-tier-table">
                     <thead>
-                      <tr><th>单次充值金额</th><th>解锁比例</th></tr>
+                      <tr><th>充值金额档位</th><th>解锁比例</th></tr>
                     </thead>
                     <tbody>
                       <tr><td><div class="tier-range"><input type="number" min="1" step="1" value="1" data-recharge-tier/><em>至</em><input type="number" min="1" step="1" value="499" data-recharge-tier/></div></td><td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="20" data-recharge-tier data-recharge-tier-ratio/><span>%</span></div></td></tr>
@@ -110,6 +115,7 @@
                       <tr><td><div class="tier-range"><input type="number" min="1" step="1" value="5000" data-recharge-tier/><em>以上</em></div></td><td><div class="ratio-input"><input type="number" min="0" max="100" step="0.01" value="100" data-recharge-tier data-recharge-tier-ratio/><span>%</span></div></td></tr>
                     </tbody>
                   </table>
+                  <p class="tier-note">解锁金额 = 单次充值金额 × 所在档位解锁比例。例如充值 500，按 40% 计算，本次最多解锁 200。</p>
                 </div>
               </div>
 
@@ -169,8 +175,7 @@
 
             <div class="piggy-form-actions">
               <span class="piggy-save-state" role="status" data-save-state></span>
-              <button class="cl-btn cl-btn-ghost" type="button" data-reset-config>恢复默认</button>
-              <button class="cl-btn cl-btn-primary" type="button" data-save-config>保存配置</button>
+              <button class="cl-btn cl-btn-ghost" type="button" data-reset-config hidden>恢复默认</button>
             </div>
           </form>
         </main>
