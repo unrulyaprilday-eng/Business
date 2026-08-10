@@ -289,6 +289,57 @@ button {
   color: #667085;
 }
 
+.facebook-app-field[hidden] {
+  display: none !important;
+}
+
+.app-id-help {
+  margin: -3px 0 16px;
+  padding: 14px 16px 13px;
+  border: 1px solid #d7e3f0;
+  border-radius: 6px;
+  background: #f7faff;
+  color: #526173;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.app-id-help strong {
+  display: block;
+  margin-bottom: 9px;
+  color: #243b53;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.app-id-help ol {
+  margin: 0 0 12px;
+  padding-left: 25px;
+}
+
+.app-id-help li {
+  padding-left: 3px;
+  margin: 3px 0;
+}
+
+.app-id-help b {
+  color: #344054;
+  font-weight: 600;
+}
+
+.app-id-help a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.app-id-note {
+  margin: 0;
+  padding: 8px 10px;
+  border-left: 3px solid #7aa7d9;
+  background: #eef5fc;
+  color: #526173;
+}
+
 .icon-picker {
   display: flex;
   align-items: center;

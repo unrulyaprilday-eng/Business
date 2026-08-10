@@ -146,6 +146,21 @@
                 <span>渠道标识</span>
                 <input id="channelKey" type="text" readonly/>
               </label>
+              <div class="facebook-app-field" id="facebookAppIdField" hidden>
+                <label class="field">
+                  <span>Facebook App ID</span>
+                  <input id="facebookAppId" type="text" inputmode="numeric" autocomplete="off" placeholder="请输入 Facebook App ID"/>
+                </label>
+                <div class="app-id-help">
+                  <strong>Facebook 分享 App ID 配置</strong>
+                  <ol>
+                    <li>登录 <a href="https://developers.facebook.com/" target="_blank" rel="noopener noreferrer">Meta for Developers</a> → <b>My Apps → Create App</b> → 选择 <b>Other → Business</b>，创建应用。</li>
+                    <li>进入应用 → <b>Settings → Basic</b>，填写 <b>App Domains</b>，然后将应用发布。</li>
+                    <li>复制应用的 <b>App ID</b>，填写到本后台的 <b>Facebook App ID</b> 配置项并保存。</li>
+                  </ol>
+                  <p class="app-id-note"><b>注意：</b>App ID 必须使用已发布（Live）的 Facebook App。</p>
+                </div>
+              </div>
               <label class="field">
                 <span>图标</span>
                 <div class="icon-picker">

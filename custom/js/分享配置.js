@@ -22,6 +22,7 @@
       name: "Facebook",
       key: "facebook",
       icon: "facebook.svg",
+      appId: "",
       enabled: true
     },
     {
@@ -101,6 +102,11 @@
     document.getElementById("modalTitle").textContent = "编辑分享渠道 - " + row.name;
     document.getElementById("channelName").value = row.name;
     document.getElementById("channelKey").value = row.key;
+    var facebookAppIdField = document.getElementById("facebookAppIdField");
+    var facebookAppId = document.getElementById("facebookAppId");
+    var isFacebook = row.key === "facebook";
+    if (facebookAppIdField) facebookAppIdField.hidden = !isFacebook;
+    if (facebookAppId) facebookAppId.value = row.appId || "";
     document.getElementById("channelIconPreview").src = iconRoot + row.icon;
     document.getElementById("channelSort").value = row.sort;
     document.getElementById("channelEnabled").classList.toggle("is-on", row.enabled);
@@ -115,8 +121,10 @@
     var sortInput = document.getElementById("channelSort");
     var preview = document.getElementById("channelIconPreview");
     var enabledButton = document.getElementById("channelEnabled");
+    var facebookAppId = document.getElementById("facebookAppId");
     row.sort = Math.max(1, Number(sortInput.value || row.sort));
     row.icon = preview.getAttribute("src").replace(iconRoot, "");
+    if (row.key === "facebook" && facebookAppId) row.appId = facebookAppId.value.trim();
     row.enabled = enabledButton.classList.contains("is-on");
     renderRows();
     closeModal();
