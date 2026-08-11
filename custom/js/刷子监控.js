@@ -38,9 +38,9 @@
   });
 
   var defaultRules = [
-    { type: "同IP", warning: 3, trigger: 4, register1d: 10, register3d: 25, register7d: 50, scope: "只处罚超出范围账号", method: "限制提现" },
-    { type: "同设备号", warning: 3, trigger: 4, register1d: 8, register3d: 20, register7d: 40, scope: "只处罚超出范围账号", method: "限制领取优惠" },
-    { type: "同提现名称", warning: 2, trigger: 3, register1d: null, register3d: null, register7d: null, scope: "只处罚超出范围账号", method: "冻结账户" }
+    { type: "同IP", warning: 3, trigger: 4, register1d: 10, register7d: 50, scope: "只处罚超出范围账号", method: "限制提现" },
+    { type: "同设备号", warning: 3, trigger: 4, register1d: 8, register7d: 40, scope: "只处罚超出范围账号", method: "限制领取优惠" },
+    { type: "同提现名称", warning: 2, trigger: 3, register1d: null, register7d: null, scope: "只处罚超出范围账号", method: "冻结账户" }
   ];
 
   var scopeOptions = ["只处罚超出范围账号", "全部处罚"];
@@ -194,7 +194,6 @@
         "<td>" + numberStepper(rule.warning) + "</td>",
         "<td>" + numberStepper(rule.trigger) + "</td>",
         "<td>" + numberStepper(rule.register1d) + "</td>",
-        "<td>" + numberStepper(rule.register3d) + "</td>",
         "<td>" + numberStepper(rule.register7d) + "</td>",
         "<td>" + selectHtml(scopeOptions, rule.scope) + "</td>",
         "<td>" + selectHtml(methodOptionsFor(rule), rule.method) + "</td>",

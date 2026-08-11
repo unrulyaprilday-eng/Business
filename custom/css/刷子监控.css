@@ -382,7 +382,7 @@ button {
 }
 
 .rule-modal {
-  width: 1180px;
+  width: 1080px;
   max-width: calc(100vw - 48px);
 }
 
@@ -451,14 +451,13 @@ button {
   font-weight: 600;
 }
 
-.rule-table th:nth-child(1) { width: 11%; }
-.rule-table th:nth-child(2) { width: 12%; }
-.rule-table th:nth-child(3) { width: 12%; }
-.rule-table th:nth-child(4) { width: 12%; }
-.rule-table th:nth-child(5) { width: 12%; }
-.rule-table th:nth-child(6) { width: 12%; }
-.rule-table th:nth-child(7) { width: 15%; }
-.rule-table th:nth-child(8) { width: 14%; }
+.rule-table th:nth-child(1) { width: 13%; }
+.rule-table th:nth-child(2) { width: 13%; }
+.rule-table th:nth-child(3) { width: 13%; }
+.rule-table th:nth-child(4) { width: 14%; }
+.rule-table th:nth-child(5) { width: 14%; }
+.rule-table th:nth-child(6) { width: 16%; }
+.rule-table th:nth-child(7) { width: 17%; }
 
 .number-stepper {
   display: inline-flex;
