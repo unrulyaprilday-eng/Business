@@ -382,7 +382,7 @@ button {
 }
 
 .rule-modal {
-  width: 820px;
+  width: 1180px;
   max-width: calc(100vw - 48px);
 }
 
@@ -451,12 +451,14 @@ button {
   font-weight: 600;
 }
 
-.rule-table th:nth-child(1) { width: 15%; }
-.rule-table th:nth-child(2) { width: 15%; }
-.rule-table th:nth-child(3) { width: 15%; }
-.rule-table th:nth-child(4) { width: 13%; }
-.rule-table th:nth-child(5) { width: 22%; }
-.rule-table th:nth-child(6) { width: 20%; }
+.rule-table th:nth-child(1) { width: 11%; }
+.rule-table th:nth-child(2) { width: 12%; }
+.rule-table th:nth-child(3) { width: 12%; }
+.rule-table th:nth-child(4) { width: 12%; }
+.rule-table th:nth-child(5) { width: 12%; }
+.rule-table th:nth-child(6) { width: 12%; }
+.rule-table th:nth-child(7) { width: 15%; }
+.rule-table th:nth-child(8) { width: 14%; }
 
 .number-stepper {
   display: inline-flex;
@@ -471,6 +473,10 @@ button {
   border: 0;
   padding: 0 8px;
   color: #4e5d70;
+}
+
+.rule-empty {
+  color: #98a2b3;
 }
 
 .step-actions {
