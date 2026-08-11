@@ -68,6 +68,7 @@
               <option>全部</option>
               <option>同IP</option>
               <option>同设备号</option>
+              <option>同客户端指纹</option>
               <option>同提现名称</option>
             </select>
             <label>关联标识值:</label>
@@ -82,7 +83,7 @@
             <span class="range-text">至</span>
             <div class="date-input">请选择<span class="calendar-icon"></span></div>
             <label>风控类型:</label>
-            <select><option>全部</option><option>同IP</option><option>同设备号</option><option>同提现名称</option></select>
+            <select><option>全部</option><option>同IP</option><option>同设备号</option><option>同客户端指纹</option><option>同提现名称</option></select>
             <label>处罚类型:</label>
             <select><option>全部</option><option>冻结账户</option><option>限制领取优惠</option><option>限制提现</option><option>禁止注册</option></select>
             <label>触发会员ID:</label>
@@ -214,6 +215,7 @@
                 <select id="blacklistKind">
                   <option value="ip">IP</option>
                   <option value="device">设备号</option>
+                  <option value="fingerprint">客户端指纹</option>
                 </select>
               </label>
               <label>

@@ -243,6 +243,11 @@ button {
   background: #fff2da;
 }
 
+.tag.fingerprint {
+  color: #147d72;
+  background: #e4f6f3;
+}
+
 .account-cell {
   display: flex;
   justify-content: flex-start;
