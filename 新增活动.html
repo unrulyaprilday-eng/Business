@@ -25305,7 +25305,7 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
                   <div class="custom-field"><span>参与用户</span><div class="custom-checkbox-group challenge-vip-options"><label><input type="checkbox" name="challengeVip" value="VIP0" checked>VIP0</label><label><input type="checkbox" name="challengeVip" value="VIP1" checked>VIP1</label><label><input type="checkbox" name="challengeVip" value="VIP2" checked>VIP2</label><label><input type="checkbox" name="challengeVip" value="VIP3">VIP3</label><label><input type="checkbox" name="challengeVip" value="VIP4">VIP4</label><label><input type="checkbox" name="challengeVip" value="VIP5">VIP5</label></div></div>
                   <div class="custom-field"><span>任务周期</span><div class="custom-radio-group"><label><input type="radio" name="challengeCycle" value="一次性">一次性</label><label><input type="radio" name="challengeCycle" value="每日" checked>每日</label><label><input type="radio" name="challengeCycle" value="每周">每周</label><label><input type="radio" name="challengeCycle" value="每月">每月</label></div></div>
                   <div class="custom-field"><span>领取方式</span><div class="custom-radio-group"><label><input type="radio" name="challengeClaimMode" value="手动领取" checked>手动领取</label><label><input type="radio" name="challengeClaimMode" value="自动发放">自动发放</label></div></div>
-                  <div class="custom-field custom-field-wide challenge-reward-mode"><span>奖励模式</span><div class="custom-radio-group"><label><input type="radio" name="challengeRewardMode" value="每项任务独立奖励" checked>每项任务独立奖励</label><label><input type="radio" name="challengeRewardMode" value="全部任务完成后统一奖励">全部任务完成后统一奖励</label></div></div>
+                  <div class="custom-field custom-field-wide challenge-reward-mode"><span>奖励设置</span><div class="challenge-reward-setting"><div class="custom-checkbox-group challenge-reward-options" role="group" aria-label="奖励设置"><label><input id="challengeTaskRewardEnabled" type="checkbox" checked><span><strong>子任务奖励</strong><small>完成当前任务后发放</small></span></label><label><input id="challengeGrandRewardEnabled" type="checkbox" checked><span><strong>完成大奖</strong><small>完成全部任务后发放一次</small></span></label></div></div></div>
                   <div class="custom-field custom-field-wide challenge-completion-mode"><span>多任务完成方式</span><div class="challenge-completion-options"><label><input type="radio" name="challengeCompletionMode" value="顺序完成" checked><span class="challenge-mode-visual"><b>1</b><i>→</i><b>2</b><i>→</i><b>3</b></span><strong>顺序完成</strong></label><label><input type="radio" name="challengeCompletionMode" value="并行完成"><span class="challenge-mode-visual is-parallel"><b>A</b><b>B</b><b>C</b></span><strong>并行完成</strong></label></div></div>
                 </div>
               </section>
@@ -25319,7 +25319,7 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
                   </tbody></table>
                   <div id="challengeTaskEmpty" class="challenge-task-empty" hidden>请先选择至少一种任务类型。</div>
                 </div>
-                <div id="challengeUnifiedReward" class="challenge-unified-reward" hidden><strong>统一奖励配置</strong><p>全部任务完成后统一发放一次，单项任务不单独发奖。</p><label><span>奖励类型</span><select id="challengeUnifiedRewardType"><option value="金额">金额</option><option value="存钱罐">存钱罐</option><option value="优惠券">优惠券</option></select></label><label><span>奖励内容</span><input id="challengeUnifiedRewardValue" type="number" value="50" min="0" step="0.01"></label></div>
+                <div id="challengeGrandReward" class="challenge-grand-reward"><div class="challenge-grand-reward-head"><strong>完成大奖</strong><span>完成全部任务后发放一次</span></div><label><span>奖励类型</span><select id="challengeGrandRewardType" required><option value="金额">金额</option><option value="存钱罐">存钱罐</option><option value="优惠券">优惠券</option></select></label><label><span>奖励内容</span><input id="challengeGrandRewardValue" type="number" value="50" min="0" step="0.01" required></label></div>
               </section>
               <section class="custom-share-section">
                 <h3>展示与规则</h3>
@@ -25328,10 +25328,18 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
                   <div></div>
                   <div class="custom-upload challenge-compact-upload"><span>Banner</span><button type="button">+<small>上传 Banner</small></button><p>建议尺寸 800 x 400，最大 500KB</p></div>
                   <div class="custom-upload challenge-compact-upload"><span>活动图片</span><button type="button">+<small>上传活动图片</small></button><p>支持多张图片，用于活动详情展示</p></div>
-                  <div class="custom-editor challenge-rule-editor"><span>活动规则</span><div class="custom-toolbar">B U I S H x2 x2 " " · 1 2 link image undo redo save</div><textarea id="challengeRules">1. 用户需在活动周期内依次完成已配置任务。&#10;2. 同一任务可配置多个达成档位，满足条件后按奖励模式发放。&#10;3. 优惠券奖励以配置的优惠券名称为准。</textarea></div>
+                  <div class="custom-editor challenge-rule-editor"><span>活动规则</span><div class="custom-toolbar">B U I S H x2 x2 " " · 1 2 link image undo redo save</div><textarea id="challengeRules">1. 用户需在活动周期内依次完成已配置任务。&#10;2. 子任务奖励按任务配置发放，完成全部任务后再按完成大奖配置发放。&#10;3. 优惠券奖励以配置的优惠券名称为准。</textarea></div>
                 </div>
               </section>
             </form>
+            <div id="challengeRewardTip" class="challenge-tip-modal" hidden>
+              <div class="challenge-tip-mask" data-challenge-reward-tip-close></div>
+              <section class="challenge-tip-dialog" role="alertdialog" aria-modal="true" aria-labelledby="challengeRewardTipTitle">
+                <header><strong id="challengeRewardTipTitle">提示</strong><button type="button" data-challenge-reward-tip-close aria-label="关闭">×</button></header>
+                <div class="challenge-tip-body"><p>至少选择一种奖励</p></div>
+                <footer><button type="button" class="challenge-tip-confirm" data-challenge-reward-tip-close>确定</button></footer>
+              </section>
+            </div>
           </div>
         </div>
         <div id="u6_state6" class="panel_state" data-label="红包雨" style="visibility: hidden; display: none;" aria-hidden="true">
