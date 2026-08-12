@@ -3,6 +3,7 @@
     masterOn: true,
     method: "recharge",
     minimumClaimAmount: "1.00",
+    wagerMultiplier: "1.50",
     vipRatios: {
       recharge: ["0.30", "0.40", "0.55", "0.70", "0.90", "1.10", "1.30", "1.50", "1.80", "2.10", "2.40", "2.70", "3.00", "3.50", "4.00"],
       wager: ["0.30", "0.40", "0.55", "0.70", "0.90", "1.10", "1.30", "1.50", "1.80", "2.10", "2.40", "2.70", "3.00", "3.50", "4.00"]
@@ -125,6 +126,15 @@
     input.value = value.toFixed(2);
   }
 
+  function normalizeWagerMultiplier(input) {
+    var value = Number(input.value);
+    if (!Number.isFinite(value) || value < 0) {
+      input.value = "0.00";
+      return;
+    }
+    input.value = value.toFixed(2);
+  }
+
   function cloneVipState(source) {
     return {
       recharge: source.recharge.slice(),
@@ -136,12 +146,16 @@
     var masterSwitch = getMasterSwitch();
     var methodInput = document.querySelector("[data-extract-method]:checked");
     var minimumInput = document.querySelector("[data-claim-minimum]");
+    var multiplierInput = document.querySelector("[data-wager-multiplier]");
     var table = document.querySelector("[data-vip-ratio-table]");
     var method = methodInput ? methodInput.value : defaults.method;
     var currentTableMethod = table && table.getAttribute("data-current-method");
 
     if (minimumInput) {
       normalizeMinimumClaimAmount(minimumInput);
+    }
+    if (multiplierInput) {
+      normalizeWagerMultiplier(multiplierInput);
     }
 
     if (table && currentTableMethod) {
@@ -152,6 +166,7 @@
       masterOn: !!(masterSwitch && masterSwitch.classList.contains("is-on")),
       method: method,
       minimumClaimAmount: minimumInput ? minimumInput.value : defaults.minimumClaimAmount,
+      wagerMultiplier: multiplierInput ? multiplierInput.value : defaults.wagerMultiplier,
       rechargeTiers: Array.prototype.map.call(document.querySelectorAll("[data-recharge-tier]"), function (input) {
         return input.value;
       }),
@@ -163,8 +178,12 @@
     if (!state) return;
     vipRatioState = cloneVipState(state.vipRatios);
     var minimumInput = document.querySelector("[data-claim-minimum]");
+    var multiplierInput = document.querySelector("[data-wager-multiplier]");
     if (minimumInput && state.minimumClaimAmount !== undefined) {
       minimumInput.value = state.minimumClaimAmount;
+    }
+    if (multiplierInput && state.wagerMultiplier !== undefined) {
+      multiplierInput.value = state.wagerMultiplier;
     }
     document.querySelectorAll("[data-recharge-tier]").forEach(function (input, index) {
       if (state.rechargeTiers[index] !== undefined) input.value = state.rechargeTiers[index];
@@ -176,7 +195,7 @@
   function setEditing(next) {
     editing = next;
     var page = document.querySelector(".piggy-config-page");
-    var editables = document.querySelectorAll("[data-piggy-master-switch], [data-extract-method], [data-claim-minimum], [data-recharge-tier], [data-recharge-tier-ratio], [data-vip-ratio]");
+    var editables = document.querySelectorAll("[data-piggy-master-switch], [data-extract-method], [data-claim-minimum], [data-wager-multiplier], [data-recharge-tier], [data-recharge-tier-ratio], [data-vip-ratio]");
     var editButton = document.querySelector('[data-edit-action="edit"]');
     var cancelButton = document.querySelector('[data-edit-action="cancel"]');
     var saveButton = document.querySelector('[data-edit-action="save"]');
@@ -229,6 +248,10 @@
 
       if (event.target.matches("[data-claim-minimum]")) {
         normalizeMinimumClaimAmount(event.target);
+      }
+
+      if (event.target.matches("[data-wager-multiplier]")) {
+        normalizeWagerMultiplier(event.target);
       }
     });
 

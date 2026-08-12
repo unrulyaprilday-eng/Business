@@ -113,6 +113,17 @@
                 </div>
               </div>
 
+              <div class="extract-setting-box piggy-wager-multiplier-setting">
+                <div class="field-label">打码倍数</div>
+                <div class="field-content">
+                  <div class="number-field">
+                    <input type="number" min="0" step="0.01" value="1.50" inputmode="decimal" aria-label="打码倍数" data-wager-multiplier/>
+                    <span>倍</span>
+                  </div>
+                  <p>领取前需完成可领取金额 × 打码倍数的有效投注。</p>
+                </div>
+              </div>
+
               <div class="extract-setting-box" data-extract-settings="recharge">
                 <div class="field-label">充值解锁比例</div>
                 <div class="tier-content">
@@ -198,7 +209,7 @@
               <strong id="piggySaveTitle">确认保存配置</strong>
               <button type="button" aria-label="关闭" data-close-save-modal>×</button>
             </header>
-            <div class="piggy-confirm-body">保存后将按当前活动状态、提取方式、最低领取金额和解锁比例执行。</div>
+            <div class="piggy-confirm-body">保存后将按当前活动状态、提取方式、最低领取金额、打码倍数和解锁比例执行。</div>
             <footer>
               <button class="cl-btn" type="button" data-close-save-modal>取消</button>
               <button class="cl-btn cl-btn-primary" type="button" data-confirm-save>确定</button>
