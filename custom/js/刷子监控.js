@@ -1,6 +1,5 @@
 (function () {
   var rows = [
-    { type: "客户端指纹", kind: "fingerprint", value: "fp-9f4c18d2a7e6b031", playerId: "P558214", accounts: ["P558214", "P558239", "P558266", "P558291", "P558304"], count: 5, action: "限制领取优惠", created: "2026-05-23 10:24:16", updated: "2026-05-28 15:02:41" },
     { type: "设备", kind: "device", value: "4a3bb409-dc95-4d9d-ad8a-4a8fdbfe24e9", playerId: "P884201", accounts: ["P884201", "P884219", "P884238", "P884247", "P884251", "P884260", "P884281", "P884294", "P884305", "P884319", "P884332", "P884340"], count: 10, action: "限制领取优惠", created: "2026-05-22 18:05:38", updated: "2026-05-28 14:37:34" },
     { type: "设备", kind: "device", value: "b78cca14-053c-4a9d-8c97-fd6b2afbcecf", playerId: "P730112", accounts: ["P730112", "P730148", "P730173", "P730205"], count: 4, action: "限制领取优惠", created: "2026-05-22 17:08:36", updated: "2026-05-28 14:31:34" },
     { type: "IP", kind: "ip", value: "50.7.250.50", playerId: "P624918", accounts: ["P624918", "P624966"], count: 2, action: "限制提现", created: "2026-05-21 11:13:14", updated: "2026-05-28 13:40:57" },
@@ -12,7 +11,6 @@
     { type: "IP", kind: "ip", value: "66.90.99.234", playerId: "P785013", accounts: ["P785013"], count: 1, action: "限制提现", created: "2026-05-22 14:24:16", updated: "2026-05-22 14:24:16" },
     { type: "IP", kind: "ip", value: "66.90.99.210", playerId: "P785021", accounts: ["P785021"], count: 1, action: "限制提现", created: "2026-04-24 18:33:38", updated: "2026-04-24 18:33:38" },
     { type: "设备", kind: "device", value: "25770014-3731-452f-ac0b-d187c517b175", playerId: "P112509", accounts: ["P112509"], count: 1, action: "限制领取优惠", created: "2026-04-24 17:51:52", updated: "2026-04-24 17:51:52" },
-    { type: "客户端指纹", kind: "fingerprint", value: "fp-1c7b9a24e8d6053f", playerId: "P412708", accounts: ["P412708", "P412736", "P412759"], count: 3, action: "限制领取优惠", created: "2026-05-25 09:17:44", updated: "2026-05-28 11:26:18" },
     { type: "提现账号", kind: "name", value: "BANK-6222****4388", playerId: "P671204", accounts: ["P671204", "P671238", "P671259", "P671271"], count: 4, action: "冻结账户", created: "2026-05-28 16:18:09", updated: "2026-05-28 16:32:41" },
     { type: "提现账号", kind: "name", value: "PIX-maria.pay@example.com", playerId: "P520917", accounts: ["P520917", "P520944", "P520966"], count: 3, action: "冻结账户", created: "2026-05-27 19:24:36", updated: "2026-05-28 09:46:12" }
   ];
@@ -35,15 +33,13 @@
   rows = rows.map(function (row, index) {
     return Object.assign({}, row, {
       ipValue: row.kind === "ip" ? row.value : ipFallbacks[index] || "",
-      deviceValue: row.kind === "device" ? row.value : deviceFallbacks[index] || "",
-      fingerprintValue: row.kind === "fingerprint" ? row.value : ""
+      deviceValue: row.kind === "device" ? row.value : deviceFallbacks[index] || ""
     });
   });
 
   var defaultRules = [
     { type: "同IP", warning: 3, trigger: 4, register1d: 10, register7d: 50, scope: "只处罚超出范围账号", method: "限制提现" },
     { type: "同设备号", warning: 3, trigger: 4, register1d: 8, register7d: 40, scope: "只处罚超出范围账号", method: "限制领取优惠" },
-    { type: "同客户端指纹", warning: 3, trigger: 4, register1d: 8, register7d: 40, scope: "只处罚超出范围账号", method: "限制领取优惠" },
     { type: "同提现名称", warning: 2, trigger: 3, register1d: null, register7d: null, scope: "只处罚超出范围账号", method: "冻结账户" }
   ];
 
@@ -51,7 +47,6 @@
   var methodOptions = ["正常", "冻结账户", "限制领取优惠", "限制提现", "禁止注册"];
   var withdrawMethodOptions = ["正常", "冻结账户", "限制领取优惠", "限制提现"];
   var records = [
-    { triggerUser: "123kkk", punishId: "1010010412", punishUser: "123kkk", type: "客户端指纹", kind: "fingerprint", value: "fp-9f4c18d2a7e6...", count: 8, action: "限制领取优惠", scope: "只处罚超出范围账...", operator: "system", remark: "fingerprint match", created: "2026-05-28 15:02:41", updated: "2026-05-28 15:02:41" },
     { triggerUser: "123ooo", punishId: "1010010307", punishUser: "123ooo", type: "设备", kind: "device", value: "4a3bb409-dc95-4d9...", count: 15, action: "限制领取优惠", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-28 15:13:31", updated: "2026-05-28 15:13:31" },
     { triggerUser: "123ooo", punishId: "1010010307", punishUser: "123ooo", type: "IP", kind: "ip", value: "50.7.250.106", count: 5, action: "限制提现", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-28 15:13:31", updated: "2026-05-28 15:13:31" },
     { triggerUser: "123hhh", punishId: "1010010185", punishUser: "123hhh", type: "设备", kind: "device", value: "4a3bb409-dc95-4d9...", count: 14, action: "限制领取优惠", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-28 15:07:05", updated: "2026-05-28 15:07:05" },
@@ -62,8 +57,7 @@
     { triggerUser: "aaa147", punishId: "1010010337", punishUser: "aaa147", type: "IP", kind: "ip", value: "50.7.250.50", count: 5, action: "限制提现", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-28 13:40:57", updated: "2026-05-28 13:40:57" },
     { triggerUser: "123ooo", punishId: "1010010307", punishUser: "123ooo", type: "IP", kind: "ip", value: "45.149.92.7", count: 15, action: "限制提现", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-27 18:58:50", updated: "2026-05-27 18:58:50" },
     { triggerUser: "123jjj", punishId: "1010010186", punishUser: "123jjj", type: "设备", kind: "device", value: "4a3bb409-dc95-4d9...", count: 11, action: "限制领取优惠", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-27 17:58:17", updated: "2026-05-27 17:58:17" },
-    { triggerUser: "123jjj", punishId: "1010010186", punishUser: "123jjj", type: "IP", kind: "ip", value: "45.149.92.7", count: 14, action: "限制提现", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-27 17:54:40", updated: "2026-05-27 17:54:40" },
-    { triggerUser: "123mmm", punishId: "1010010455", punishUser: "123mmm", type: "客户端指纹", kind: "fingerprint", value: "fp-1c7b9a24e8d6...", count: 6, action: "限制领取优惠", scope: "只处罚超出范围账...", operator: "system", remark: "fingerprint match", created: "2026-05-27 11:26:18", updated: "2026-05-27 11:26:18" }
+    { triggerUser: "123jjj", punishId: "1010010186", punishUser: "123jjj", type: "IP", kind: "ip", value: "45.149.92.7", count: 14, action: "限制提现", scope: "只处罚超出范围账...", operator: "system", remark: "bot spy auto", created: "2026-05-27 17:54:40", updated: "2026-05-27 17:54:40" }
   ];
 
   var monitorRows = rows.filter(function (row) {
@@ -106,9 +100,9 @@
 
   function renderMonitorActions(row, index) {
     var blacklistButton = "";
-    if (row.kind === "ip" || row.kind === "device" || row.kind === "fingerprint") {
-      var blacklistLabel = row.kind === "ip" ? "IP拉黑" : row.kind === "device" ? "设备拉黑" : "指纹拉黑";
-      var blacklistKind = row.kind === "ip" ? "ip" : row.kind === "device" ? "device" : "fingerprint";
+    if (row.kind === "ip" || row.kind === "device") {
+      var blacklistLabel = row.kind === "ip" ? "IP拉黑" : "设备拉黑";
+      var blacklistKind = row.kind;
       blacklistButton = '<button class="danger-link" data-blacklist="' + blacklistKind + '" data-blacklist-row="' + index + '" type="button">' + blacklistLabel + "</button>";
     }
     return [
@@ -231,7 +225,7 @@
   }
 
   function defaultMethodFor(row) {
-    var ruleType = row.kind === "ip" ? "同IP" : row.kind === "device" ? "同设备号" : row.kind === "fingerprint" ? "同客户端指纹" : "同提现名称";
+    var ruleType = row.kind === "ip" ? "同IP" : row.kind === "device" ? "同设备号" : "同提现名称";
     var rule = defaultRules.find(function (item) {
       return item.type === ruleType;
     });
@@ -248,10 +242,10 @@
   }
 
   function openBlacklistModal(row, kind) {
-    $("#blacklistModalTitle").textContent = kind === "ip" ? "IP拉黑" : kind === "device" ? "设备拉黑" : "客户端指纹拉黑";
+    $("#blacklistModalTitle").textContent = kind === "ip" ? "IP拉黑" : "设备拉黑";
     $("#blacklistKind").value = kind;
     $("#blacklistKind").disabled = true;
-    $("#blacklistValue").value = kind === "ip" ? row.ipValue : kind === "device" ? row.deviceValue : row.fingerprintValue;
+    $("#blacklistValue").value = kind === "ip" ? row.ipValue : row.deviceValue;
     $("#blacklistModal textarea").value = "";
     $all("#blacklistModal input[type='checkbox']").forEach(function (checkbox, index) {
       checkbox.checked = index === 0;
