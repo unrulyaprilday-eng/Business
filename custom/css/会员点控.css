@@ -217,10 +217,6 @@ body {
   color: #e25353;
 }
 
-.rtp-neutral {
-  color: #7b8796;
-}
-
 .point-value {
   font-weight: 600;
 }
@@ -243,11 +239,6 @@ body {
 .direction-tag.direction-lose {
   color: #d94f4f;
   background: #fef0f0;
-}
-
-.direction-tag.direction-neutral {
-  color: #7b8796;
-  background: #f2f4f7;
 }
 
 .progress-cell {
@@ -467,9 +458,6 @@ body {
   color: #d94f4f;
 }
 
-.rtp-direction-hint.direction-neutral strong {
-  color: #7b8796;
-}
 
 .rtp-direction-hint span {
   color: #8792a1;

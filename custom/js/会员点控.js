@@ -3,7 +3,7 @@
     { id: "pc-1001", memberId: "1010123475", username: "xxx123", vip: "VIP15", accountStatus: "启用", rtp: 105, targetAmount: 100000, completedAmount: 68450, status: "active", releaseResult: "", updatedAt: "2026-08-17 10:35:22", remark: "高价值玩家" },
     { id: "pc-1002", memberId: "1010123468", username: "zzz123", vip: "VIP10", accountStatus: "启用", rtp: 98, targetAmount: 50000, completedAmount: 47500, status: "active", releaseResult: "", updatedAt: "2026-08-17 09:42:10", remark: "" },
     { id: "pc-1003", memberId: "1010123462", username: "lucky77", vip: "VIP8", accountStatus: "启用", rtp: 90, targetAmount: 20000, completedAmount: 20000, status: "released", releaseResult: "amount", updatedAt: "2026-08-16 22:10:03", remark: "已达到目标" },
-    { id: "pc-1004", memberId: "1010123449", username: "gamer_01", vip: "VIP5", accountStatus: "启用", rtp: 100, targetAmount: null, completedAmount: 0, status: "active", releaseResult: "", updatedAt: "2026-08-16 18:20:44", remark: "平衡点控" },
+    { id: "pc-1004", memberId: "1010123449", username: "gamer_01", vip: "VIP5", accountStatus: "启用", rtp: 100, targetAmount: 10000, completedAmount: 3650, status: "active", releaseResult: "", updatedAt: "2026-08-16 18:20:44", remark: "100%控赢" },
     { id: "pc-1005", memberId: "1010123421", username: "betmaster", vip: "VIP12", accountStatus: "启用", rtp: 108, targetAmount: null, completedAmount: 123600, status: "active", releaseResult: "", updatedAt: "2026-08-15 16:04:18", remark: "无退出条件" },
     { id: "pc-1006", memberId: "1010123398", username: "sunshine", vip: "VIP3", accountStatus: "冻结", rtp: 92, targetAmount: 5000, completedAmount: 5000, status: "released", releaseResult: "amount", updatedAt: "2026-08-14 12:55:27", remark: "" }
   ];
@@ -41,18 +41,15 @@
   }
 
   function getDirection(rtp) {
-    if (Number(rtp) > 100) return "win";
-    if (Number(rtp) < 100) return "lose";
-    return "neutral";
+    return Number(rtp) >= 100 ? "win" : "lose";
   }
 
   function directionHtml(direction) {
-    var labels = { win: "控赢", lose: "控输", neutral: "平衡" };
+    var labels = { win: "控赢", lose: "控输" };
     return '<span class="direction-tag direction-' + direction + '">' + labels[direction] + "</span>";
   }
 
   function pointValueHtml(value, direction, isTarget) {
-    if (direction === "neutral") return '<span class="no-exit-condition">-</span>';
     if (isTarget && !(value > 0)) return '<span class="no-exit-condition">不设置</span>';
     var label = direction === "win" ? "净赢 " : "净输 ";
     return '<span class="point-value point-value-' + direction + '">' + label + money(value) + "</span>";
@@ -60,7 +57,7 @@
 
   function syncAutoRelease() {
     records.forEach(function (record) {
-      if (getDirection(record.rtp) !== "neutral" && record.targetAmount > 0 && record.status === "active" && record.completedAmount >= record.targetAmount) {
+      if (record.targetAmount > 0 && record.status === "active" && record.completedAmount >= record.targetAmount) {
         record.status = "released";
         record.releaseResult = "amount";
       }
@@ -71,12 +68,12 @@
     var memberId = $("#pointMemberId").value.trim().toLowerCase();
     var username = $("#pointUsername").value.trim().toLowerCase();
     var status = $("#pointStatus").value;
-    var rtp = $("#pointRtp").value;
+    var direction = $("#pointDirection").value;
     return records.filter(function (record) {
       return (!memberId || record.memberId.toLowerCase().indexOf(memberId) !== -1) &&
         (!username || record.username.toLowerCase().indexOf(username) !== -1) &&
         (!status || record.status === status) &&
-        (!rtp || String(record.rtp) === rtp);
+        (!direction || getDirection(record.rtp) === direction);
     });
   }
 
@@ -105,7 +102,7 @@
     } else {
       body.innerHTML = rows.map(function (record, index) {
         var direction = getDirection(record.rtp);
-        var hasExitCondition = direction !== "neutral" && record.targetAmount > 0;
+        var hasExitCondition = record.targetAmount > 0;
         var progress = hasExitCondition ? Math.min(100, record.completedAmount / record.targetAmount * 100) : 0;
         var progressText = hasExitCondition ? progress.toFixed(2).replace(/\.00$/, "") + "%" : "-";
         var action = '<button class="cl-link" data-point-edit="' + escapeHtml(record.id) + '" type="button">编辑</button>';
@@ -157,13 +154,13 @@
 
   function syncEditorDirection() {
     var rtp = Number($("#editorRtp").value);
-    var direction = Number.isFinite(rtp) ? getDirection(rtp) : "neutral";
+    var direction = getDirection(rtp);
     var hint = $("#editorDirectionHint");
     var targetInput = $("#editorTargetAmount");
     var targetLabel = $("#editorTargetLabel");
     hint.className = "rtp-direction-hint direction-" + direction;
     if (direction === "win") {
-      hint.innerHTML = "<strong>控赢</strong><span>RTP高于100%，目标按玩家净赢累计</span>";
+      hint.innerHTML = "<strong>控赢</strong><span>RTP达到100%，目标按玩家净赢累计</span>";
       targetLabel.textContent = "净赢目标金额";
       targetInput.placeholder = "可不设置净赢目标";
       targetInput.disabled = false;
@@ -172,12 +169,6 @@
       targetLabel.textContent = "净输目标金额";
       targetInput.placeholder = "可不设置净输目标";
       targetInput.disabled = false;
-    } else {
-      hint.innerHTML = "<strong>平衡</strong><span>平衡点控不设置自动退出目标</span>";
-      targetLabel.textContent = "目标金额";
-      targetInput.value = "";
-      targetInput.placeholder = "平衡点控仅支持手动解除";
-      targetInput.disabled = true;
     }
   }
 
@@ -258,7 +249,6 @@
     var direction = getDirection(rtp);
     var targetAmountInput = $("#editorTargetAmount").value.trim();
     var targetAmount = targetAmountInput === "" ? null : Number(targetAmountInput);
-    if (direction === "neutral") targetAmount = null;
     var error = "";
     if (!queriedMember || queriedMember.memberId !== memberId) error = "请先输入会员ID并查询会员。";
     else if (!Number.isFinite(rtp) || rtp <= 0 || rtp > 200) error = "设定RTP需填写大于0且不超过200的百分比。";
@@ -276,7 +266,7 @@
       current.memberId = memberId;
       current.rtp = rtp;
       current.targetAmount = targetAmount;
-      current.status = direction !== "neutral" && targetAmount !== null && current.completedAmount >= targetAmount ? "released" : "active";
+      current.status = targetAmount !== null && current.completedAmount >= targetAmount ? "released" : "active";
       current.releaseResult = current.status === "released" ? "amount" : "";
       current.remark = $("#editorRemark").value.trim();
       current.updatedAt = now;
