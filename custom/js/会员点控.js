@@ -1,11 +1,11 @@
 (function () {
   var records = [
-    { id: "pc-1001", memberId: "1010123475", username: "xxx123", vip: "VIP15", accountStatus: "启用", rtp: 95, targetAmount: 100000, completedAmount: 68450, autoRelease: true, status: "active", updatedAt: "2026-08-17 10:35:22", remark: "高价值玩家" },
-    { id: "pc-1002", memberId: "1010123468", username: "zzz123", vip: "VIP10", accountStatus: "启用", rtp: 98, targetAmount: 50000, completedAmount: 47500, autoRelease: true, status: "active", updatedAt: "2026-08-17 09:42:10", remark: "" },
-    { id: "pc-1003", memberId: "1010123462", username: "lucky77", vip: "VIP8", accountStatus: "启用", rtp: 90, targetAmount: 20000, completedAmount: 20000, autoRelease: true, status: "released", updatedAt: "2026-08-16 22:10:03", remark: "已达到目标" },
-    { id: "pc-1004", memberId: "1010123449", username: "gamer_01", vip: "VIP5", accountStatus: "启用", rtp: 100, targetAmount: 10000, completedAmount: 3650, autoRelease: true, status: "active", updatedAt: "2026-08-16 18:20:44", remark: "新客观察" },
-    { id: "pc-1005", memberId: "1010123421", username: "betmaster", vip: "VIP12", accountStatus: "启用", rtp: 95, targetAmount: null, completedAmount: 123600, autoRelease: false, status: "active", updatedAt: "2026-08-15 16:04:18", remark: "无退出条件" },
-    { id: "pc-1006", memberId: "1010123398", username: "sunshine", vip: "VIP3", accountStatus: "冻结", rtp: 90, targetAmount: 5000, completedAmount: 5000, autoRelease: true, status: "released", updatedAt: "2026-08-14 12:55:27", remark: "" }
+    { id: "pc-1001", memberId: "1010123475", username: "xxx123", vip: "VIP15", accountStatus: "启用", rtp: 105, targetAmount: 100000, completedAmount: 68450, status: "active", releaseResult: "", updatedAt: "2026-08-17 10:35:22", remark: "高价值玩家" },
+    { id: "pc-1002", memberId: "1010123468", username: "zzz123", vip: "VIP10", accountStatus: "启用", rtp: 98, targetAmount: 50000, completedAmount: 47500, status: "active", releaseResult: "", updatedAt: "2026-08-17 09:42:10", remark: "" },
+    { id: "pc-1003", memberId: "1010123462", username: "lucky77", vip: "VIP8", accountStatus: "启用", rtp: 90, targetAmount: 20000, completedAmount: 20000, status: "released", releaseResult: "amount", updatedAt: "2026-08-16 22:10:03", remark: "已达到目标" },
+    { id: "pc-1004", memberId: "1010123449", username: "gamer_01", vip: "VIP5", accountStatus: "启用", rtp: 100, targetAmount: null, completedAmount: 0, status: "active", releaseResult: "", updatedAt: "2026-08-16 18:20:44", remark: "平衡点控" },
+    { id: "pc-1005", memberId: "1010123421", username: "betmaster", vip: "VIP12", accountStatus: "启用", rtp: 108, targetAmount: null, completedAmount: 123600, status: "active", releaseResult: "", updatedAt: "2026-08-15 16:04:18", remark: "无退出条件" },
+    { id: "pc-1006", memberId: "1010123398", username: "sunshine", vip: "VIP3", accountStatus: "冻结", rtp: 92, targetAmount: 5000, completedAmount: 5000, status: "released", releaseResult: "amount", updatedAt: "2026-08-14 12:55:27", remark: "" }
   ];
 
   var pageSize = 5;
@@ -40,10 +40,29 @@
     return date.getFullYear() + "-" + pad(date.getMonth() + 1) + "-" + pad(date.getDate()) + " " + pad(date.getHours()) + ":" + pad(date.getMinutes()) + ":" + pad(date.getSeconds());
   }
 
+  function getDirection(rtp) {
+    if (Number(rtp) > 100) return "win";
+    if (Number(rtp) < 100) return "lose";
+    return "neutral";
+  }
+
+  function directionHtml(direction) {
+    var labels = { win: "控赢", lose: "控输", neutral: "平衡" };
+    return '<span class="direction-tag direction-' + direction + '">' + labels[direction] + "</span>";
+  }
+
+  function pointValueHtml(value, direction, isTarget) {
+    if (direction === "neutral") return '<span class="no-exit-condition">-</span>';
+    if (isTarget && !(value > 0)) return '<span class="no-exit-condition">不设置</span>';
+    var label = direction === "win" ? "净赢 " : "净输 ";
+    return '<span class="point-value point-value-' + direction + '">' + label + money(value) + "</span>";
+  }
+
   function syncAutoRelease() {
     records.forEach(function (record) {
-      if (record.autoRelease && record.targetAmount > 0 && record.status === "active" && record.completedAmount >= record.targetAmount) {
+      if (getDirection(record.rtp) !== "neutral" && record.targetAmount > 0 && record.status === "active" && record.completedAmount >= record.targetAmount) {
         record.status = "released";
+        record.releaseResult = "amount";
       }
     });
   }
@@ -66,6 +85,12 @@
     return '<span class="cl-status cl-status-primary">点控中</span>';
   }
 
+  function releaseResultHtml(record) {
+    if (record.status !== "released") return '<span class="no-exit-condition">-</span>';
+    if (record.releaseResult === "manual") return '<span class="cl-status cl-status-warning">手动解除</span>';
+    return '<span class="cl-status cl-status-success">达到额度解除</span>';
+  }
+
   function renderRows() {
     syncAutoRelease();
     var filtered = getFilteredRecords();
@@ -76,10 +101,11 @@
     var body = $("#pointTableBody");
 
     if (!rows.length) {
-      body.innerHTML = '<tr><td class="point-empty" colspan="13">暂无符合条件的点控记录</td></tr>';
+      body.innerHTML = '<tr><td class="point-empty" colspan="15">暂无符合条件的点控记录</td></tr>';
     } else {
       body.innerHTML = rows.map(function (record, index) {
-        var hasExitCondition = record.targetAmount > 0;
+        var direction = getDirection(record.rtp);
+        var hasExitCondition = direction !== "neutral" && record.targetAmount > 0;
         var progress = hasExitCondition ? Math.min(100, record.completedAmount / record.targetAmount * 100) : 0;
         var progressText = hasExitCondition ? progress.toFixed(2).replace(/\.00$/, "") + "%" : "-";
         var action = '<button class="cl-link" data-point-edit="' + escapeHtml(record.id) + '" type="button">编辑</button>';
@@ -90,14 +116,16 @@
           "<td class=\"point-username\">" + escapeHtml(record.username) + "</td>" +
           "<td>" + escapeHtml(record.vip) + "</td>" +
           "<td><span class=\"cl-status " + (record.accountStatus === "启用" ? "cl-status-success" : "cl-status-muted") + "\">" + escapeHtml(record.accountStatus) + "</span></td>" +
-          "<td><strong class=\"rtp-value\">" + escapeHtml(record.rtp) + "%</strong></td>" +
-          "<td>" + (hasExitCondition ? money(record.targetAmount) : "不设置") + "</td>" +
-          "<td>" + money(record.completedAmount) + "</td>" +
-          "<td>" + (hasExitCondition ? "<span class=\"progress-cell\"><i style=\"width:" + progress + "%\"></i><em>" + progressText + "</em></span>" : "<span class=\"no-exit-condition\">-</span>") + "</td>" +
-          "<td><span class=\"cl-status " + (hasExitCondition && record.autoRelease ? "cl-status-success" : "cl-status-muted") + "\">" + (hasExitCondition && record.autoRelease ? "达到金额解除" : "无退出条件") + "</span></td>" +
+          "<td><strong class=\"rtp-value rtp-" + direction + "\">" + escapeHtml(record.rtp) + "%</strong></td>" +
+          "<td>" + directionHtml(direction) + "</td>" +
+          "<td>" + pointValueHtml(record.targetAmount, direction, true) + "</td>" +
+          "<td>" + pointValueHtml(record.completedAmount, direction, false) + "</td>" +
+          "<td>" + (hasExitCondition ? "<span class=\"progress-cell progress-" + direction + "\"><i style=\"width:" + progress + "%\"></i><em>" + progressText + "</em></span>" : "<span class=\"no-exit-condition\">-</span>") + "</td>" +
           "<td>" + statusHtml(record) + "</td>" +
+          "<td>" + releaseResultHtml(record) + "</td>" +
+          "<td class=\"point-remark\" title=\"" + escapeHtml(record.remark || "-") + "\">" + escapeHtml(record.remark || "-") + "</td>" +
           "<td>" + escapeHtml(record.updatedAt) + "</td>" +
-          "<td><span class=\"cl-row-actions\">" + action + "</span></td>" +
+          "<td class=\"action-col\"><span class=\"cl-row-actions\">" + action + "</span></td>" +
           "</tr>";
       }).join("");
     }
@@ -127,6 +155,32 @@
     if (modal) modal.hidden = !open;
   }
 
+  function syncEditorDirection() {
+    var rtp = Number($("#editorRtp").value);
+    var direction = Number.isFinite(rtp) ? getDirection(rtp) : "neutral";
+    var hint = $("#editorDirectionHint");
+    var targetInput = $("#editorTargetAmount");
+    var targetLabel = $("#editorTargetLabel");
+    hint.className = "rtp-direction-hint direction-" + direction;
+    if (direction === "win") {
+      hint.innerHTML = "<strong>控赢</strong><span>RTP高于100%，目标按玩家净赢累计</span>";
+      targetLabel.textContent = "净赢目标金额";
+      targetInput.placeholder = "可不设置净赢目标";
+      targetInput.disabled = false;
+    } else if (direction === "lose") {
+      hint.innerHTML = "<strong>控输</strong><span>RTP低于100%，目标按玩家净输累计</span>";
+      targetLabel.textContent = "净输目标金额";
+      targetInput.placeholder = "可不设置净输目标";
+      targetInput.disabled = false;
+    } else {
+      hint.innerHTML = "<strong>平衡</strong><span>平衡点控不设置自动退出目标</span>";
+      targetLabel.textContent = "目标金额";
+      targetInput.value = "";
+      targetInput.placeholder = "平衡点控仅支持手动解除";
+      targetInput.disabled = true;
+    }
+  }
+
   function resetEditor() {
     $("#editorMemberId").value = "";
     $("#editorRtp").value = "95";
@@ -138,6 +192,7 @@
     $("#pointQueryError").hidden = true;
     $("#pointFormError").hidden = true;
     queriedMember = null;
+    syncEditorDirection();
   }
 
   function queryMember(isEditing) {
@@ -169,10 +224,11 @@
     }
     var member = existingRecord || { memberId: memberId, username: "会员" + memberId.slice(-4), vip: "", accountStatus: "启用" };
     queriedMember = member;
-    queryResult.textContent = "已找到会员：" + member.username + "（ID：" + member.memberId + "），可以继续设置点控。";
+    queryResult.textContent = "已找到会员：" + member.username + "（ID：" + member.memberId + "）";
     queryResult.hidden = false;
     configStep.hidden = false;
     saveButton.disabled = false;
+    syncEditorDirection();
   }
 
   function openEditor(id) {
@@ -191,6 +247,7 @@
       $("#editorRtp").value = record.rtp;
       $("#editorTargetAmount").value = record.targetAmount == null ? "" : record.targetAmount;
       $("#editorRemark").value = record.remark || "";
+      syncEditorDirection();
     }
     setModal("editor", true);
   }
@@ -198,11 +255,13 @@
   function saveEditor() {
     var memberId = $("#editorMemberId").value.trim();
     var rtp = Number($("#editorRtp").value);
+    var direction = getDirection(rtp);
     var targetAmountInput = $("#editorTargetAmount").value.trim();
     var targetAmount = targetAmountInput === "" ? null : Number(targetAmountInput);
+    if (direction === "neutral") targetAmount = null;
     var error = "";
     if (!queriedMember || queriedMember.memberId !== memberId) error = "请先输入会员ID并查询会员。";
-    else if (!Number.isFinite(rtp) || rtp < 0 || rtp > 100) error = "设定RTP需填写0至100之间的数值。";
+    else if (!Number.isFinite(rtp) || rtp <= 0 || rtp > 200) error = "设定RTP需填写大于0且不超过200的百分比。";
     else if (targetAmount !== null && (!Number.isFinite(targetAmount) || targetAmount <= 0)) error = "目标金额留空表示无退出条件，否则需填写大于0的金额。";
     if (error) {
       $("#pointFormError").textContent = error;
@@ -217,8 +276,8 @@
       current.memberId = memberId;
       current.rtp = rtp;
       current.targetAmount = targetAmount;
-      current.autoRelease = targetAmount !== null;
-      current.status = targetAmount !== null && current.completedAmount >= targetAmount ? "released" : "active";
+      current.status = direction !== "neutral" && targetAmount !== null && current.completedAmount >= targetAmount ? "released" : "active";
+      current.releaseResult = current.status === "released" ? "amount" : "";
       current.remark = $("#editorRemark").value.trim();
       current.updatedAt = now;
       showToast("点控配置已更新");
@@ -232,8 +291,8 @@
         rtp: rtp,
         targetAmount: targetAmount,
         completedAmount: 0,
-        autoRelease: targetAmount !== null,
         status: "active",
+        releaseResult: "",
         updatedAt: now,
         remark: $("#editorRemark").value.trim()
       });
@@ -298,6 +357,8 @@
       queryMember(Boolean(editingId));
     });
 
+    $("#editorRtp").addEventListener("input", syncEditorDirection);
+
     $("#editorMemberId").addEventListener("input", function () {
       queriedMember = null;
       $("#pointConfigStep").hidden = true;
@@ -310,6 +371,7 @@
       var record = records.find(function (item) { return item.id === releasingId; });
       if (record) {
         record.status = "released";
+        record.releaseResult = "manual";
         record.updatedAt = formatDate(new Date());
       }
       setModal("release", false);
