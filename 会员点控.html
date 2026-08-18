@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>会员点控</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/会员点控/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/tokens.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/components.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/会员点控.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/会员点控/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <main class="custom-page-shell point-control-page">
+        <header class="page-titlebar">
+          <span class="title-refresh" aria-hidden="true">↻</span>
+          <span>用户管理</span><b>/</b><strong>会员点控</strong>
+        </header>
+
+        <section class="point-control-workbench">
+          <div class="section-heading">
+            <div>
+              <h1>会员点控</h1>
+              <p>为指定玩家设定 RTP 目标及金额门槛，达到门槛后自动解除点控。</p>
+            </div>
+            <button class="cl-btn cl-btn-primary" data-point-open="create" type="button"><span aria-hidden="true">＋</span>新增点控</button>
+          </div>
+
+          <form class="cl-filter-bar point-filter" id="pointFilter" novalidate>
+            <div class="cl-filter-field">
+              <label for="pointMemberId">会员ID</label>
+              <input class="cl-input" id="pointMemberId" type="text" placeholder="请输入会员ID"/>
+            </div>
+            <div class="cl-filter-field">
+              <label for="pointUsername">用户名</label>
+              <input class="cl-input" id="pointUsername" type="text" placeholder="请输入用户名"/>
+            </div>
+            <div class="cl-filter-field">
+              <label for="pointStatus">点控状态</label>
+              <select class="cl-select" id="pointStatus">
+                <option value="">全部状态</option>
+                <option value="active">点控中</option>
+                <option value="released">已解除</option>
+              </select>
+            </div>
+            <div class="cl-filter-field">
+              <label for="pointRtp">设定RTP</label>
+              <select class="cl-select" id="pointRtp">
+                <option value="">全部RTP</option>
+                <option value="90">90%</option>
+                <option value="95">95%</option>
+                <option value="98">98%</option>
+                <option value="100">100%</option>
+              </select>
+            </div>
+            <div class="cl-filter-actions">
+              <button class="cl-btn cl-btn-primary" type="submit">查询</button>
+              <button class="cl-btn" id="pointReset" type="button">重置</button>
+            </div>
+          </form>
+
+          <div class="point-summary" aria-live="polite">
+            <span>当前点控 <strong id="activeCount">4</strong> 人</span>
+            <span>已自动解除 <strong id="releasedCount">2</strong> 人</span>
+            <span class="summary-tip">金额达到目标后，系统将自动解除该玩家点控。</span>
+          </div>
+
+          <div class="cl-table-wrap point-table-wrap">
+            <table class="cl-table point-table" aria-label="会员点控列表">
+              <thead>
+                <tr>
+                  <th class="index-col">序号</th>
+                  <th>会员ID</th>
+                  <th>用户名</th>
+                  <th>VIP等级</th>
+                  <th>账户状态</th>
+                  <th>设定RTP</th>
+                  <th>目标金额</th>
+                  <th>已完成金额</th>
+                  <th class="progress-col">完成进度</th>
+                  <th>自动解除</th>
+                  <th>点控状态</th>
+                  <th>更新时间</th>
+                  <th class="action-col">操作</th>
+                </tr>
+              </thead>
+              <tbody id="pointTableBody">
+                <tr>
+                  <td>1</td><td>1010123475</td><td>xxx123</td><td>VIP15</td><td><span class="cl-status cl-status-success">启用</span></td>
+                  <td><strong class="rtp-value">95%</strong></td><td>100,000.00</td><td>68,450.00</td><td><span class="progress-cell"><i style="width:68%"></i><em>68.45%</em></span></td>
+                  <td><span class="cl-status cl-status-success">达到金额解除</span></td><td><span class="cl-status cl-status-primary">点控中</span></td><td>2026-08-17 10:35:22</td><td><span class="cl-row-actions"><button class="cl-link" type="button">编辑</button><button class="cl-link" type="button">解除</button></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="point-pager" id="pointPager" aria-label="分页">
+            <button type="button" disabled>‹</button><button class="is-current" type="button">1</button><button type="button">›</button><span>20条/页</span><span>共 6 条记录</span>
+          </div>
+        </section>
+
+        <div class="cl-modal-layer" data-point-modal="editor" hidden>
+          <div class="cl-modal-mask" data-point-close="editor"></div>
+          <section class="cl-modal point-editor-modal" role="dialog" aria-modal="true" aria-labelledby="pointEditorTitle">
+            <header class="cl-modal-head">
+              <strong id="pointEditorTitle">新增会员点控</strong>
+              <button class="cl-close-btn" type="button" data-point-close="editor" aria-label="关闭">×</button>
+            </header>
+            <div class="cl-modal-body">
+              <div class="point-query-step">
+                <div class="cl-form-field">
+                  <label for="editorMemberId"><span class="cl-required">*</span>会员ID</label>
+                  <div class="member-query-row"><input class="cl-input" id="editorMemberId" type="text" placeholder="请输入会员ID"/><button class="cl-btn cl-btn-primary" id="editorMemberQuery" type="button">查询会员</button></div>
+                </div>
+                <p class="query-result" id="pointQueryResult" hidden></p>
+                <p class="field-error" id="pointQueryError" role="alert" hidden></p>
+              </div>
+              <div class="point-config-step" id="pointConfigStep" hidden>
+                <div class="editor-notice"><strong>点控规则</strong><span>目标金额可不设置；留空表示没有自动退出条件。</span></div>
+                <div class="cl-form-grid point-form-grid">
+                  <div class="cl-form-field">
+                    <label for="editorRtp"><span class="cl-required">*</span>设定RTP</label>
+                    <div class="input-suffix"><input class="cl-input" id="editorRtp" type="number" min="0" max="100" step="0.1" placeholder="0-100"/><span>%</span></div>
+                  </div>
+                  <div class="cl-form-field">
+                    <label for="editorTargetAmount">目标金额</label>
+                    <div class="input-suffix"><input class="cl-input" id="editorTargetAmount" type="number" min="0.01" step="0.01" placeholder="不设置退出金额"/><span>元</span></div>
+                  </div>
+                  <div class="cl-form-field is-wide">
+                    <label for="editorRemark">备注</label>
+                    <textarea class="cl-textarea" id="editorRemark" rows="3" placeholder="请输入点控备注"></textarea>
+                  </div>
+                </div>
+              </div>
+              <p class="field-error" id="pointFormError" role="alert" hidden></p>
+            </div>
+            <footer class="cl-modal-foot">
+              <button class="cl-btn" type="button" data-point-close="editor">取消</button>
+              <button class="cl-btn cl-btn-primary" id="pointSave" type="button" disabled>保存</button>
+            </footer>
+          </section>
+        </div>
+
+        <div class="cl-modal-layer" data-point-modal="release" hidden>
+          <div class="cl-modal-mask" data-point-close="release"></div>
+          <section class="cl-modal point-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="pointReleaseTitle">
+            <header class="cl-modal-head"><strong id="pointReleaseTitle">解除点控</strong><button class="cl-close-btn" type="button" data-point-close="release" aria-label="关闭">×</button></header>
+            <div class="cl-modal-body confirm-content"><span class="confirm-icon release">✓</span><p>确定立即解除该会员点控吗？解除后将恢复正常 RTP。</p></div>
+            <footer class="cl-modal-foot"><button class="cl-btn" type="button" data-point-close="release">取消</button><button class="cl-btn cl-btn-primary" id="pointReleaseConfirm" type="button">确认解除</button></footer>
+          </section>
+        </div>
+        <div class="point-toast" id="pointToast" role="status" aria-live="polite" hidden></div>
+      </main>
+    </div>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/会员点控.js"></script>
+  </body>
+</html>

@@ -595,6 +595,13 @@ $axure.loadDocument({
             "type": "Wireframe",
             "url": "有奖反馈.html",
             "children": []
+          },
+          {
+            "id": "member_point_control",
+            "pageName": "会员点控",
+            "type": "Wireframe",
+            "url": "会员点控.html",
+            "children": []
           }
         ]
       },

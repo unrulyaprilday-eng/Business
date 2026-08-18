@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-08-10T02:41:20.812Z",
+  "savedAt": "2026-08-17T11:01:56.539Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -583,6 +583,13 @@
           "pageName": "有奖反馈",
           "type": "Wireframe",
           "url": "有奖反馈.html",
+          "children": []
+        },
+        {
+          "id": "member_point_control",
+          "pageName": "会员点控",
+          "type": "Wireframe",
+          "url": "会员点控.html",
           "children": []
         }
       ]
