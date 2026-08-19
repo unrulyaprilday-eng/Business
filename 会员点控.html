@@ -201,20 +201,20 @@
               <button class="cl-close-btn" type="button" data-point-close="global" aria-label="关闭">×</button>
             </header>
             <div class="cl-modal-body">
-              <p class="point-global-config-intro">全局限制所有会员的金额与中奖励倍数。</p>
+              <p class="point-global-config-intro">全局限制所有会员的金额与中奖励倍数。设置为0时，为不限制。</p>
               <div class="cl-form-grid point-global-config-form">
                 <div class="cl-form-field">
-                  <label for="pointMaxIntermediateAmount">最大中间金额</label>
+                  <label for="pointMaxWinningAmount">最大中奖金额</label>
                   <div class="input-suffix">
-                    <input class="cl-input" id="pointMaxIntermediateAmount" type="number" min="0.01" step="0.01" value="200" />
+                    <input class="cl-input" id="pointMaxWinningAmount" type="number" min="0" step="0.01" value="200" />
                     <span>元</span>
                   </div>
                 </div>
                 <div class="cl-form-field">
-                  <label for="pointMaxWinningAmount">最大中奖金额</label>
+                  <label for="pointMaxWinMultiplier">最大中奖励倍数</label>
                   <div class="input-suffix">
-                    <input class="cl-input" id="pointMaxWinningAmount" type="number" min="0.01" step="0.01" value="200" />
-                    <span>元</span>
+                    <input class="cl-input" id="pointMaxWinMultiplier" type="number" min="0" step="0.01" value="200" />
+                    <span>倍</span>
                   </div>
                 </div>
               </div>

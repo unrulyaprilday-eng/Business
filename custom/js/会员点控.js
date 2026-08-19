@@ -14,8 +14,8 @@
   var queriedMember = null;
   var releasingId = null;
   var globalConfig = {
-    maxIntermediateAmount: 200,
-    maxWinningAmount: 200
+    maxWinningAmount: 200,
+    maxWinMultiplier: 200
   };
 
   function $(selector, root) {
@@ -306,13 +306,13 @@
   }
 
   function saveGlobalConfig() {
-    var maxIntermediateAmount = Number($("#pointMaxIntermediateAmount").value);
     var maxWinningAmount = Number($("#pointMaxWinningAmount").value);
+    var maxWinMultiplier = Number($("#pointMaxWinMultiplier").value);
     var error = "";
-    if (!Number.isFinite(maxIntermediateAmount) || maxIntermediateAmount <= 0) {
-      error = "最大中间金额需填写大于0的金额。";
-    } else if (!Number.isFinite(maxWinningAmount) || maxWinningAmount <= 0) {
-      error = "最大中奖金额需填写大于0的金额。";
+    if (!Number.isFinite(maxWinningAmount) || maxWinningAmount < 0) {
+      error = "最大中奖金额需填写不小于0的金额。";
+    } else if (!Number.isFinite(maxWinMultiplier) || maxWinMultiplier < 0) {
+      error = "最大中奖励倍数需填写不小于0的倍数。";
     }
     var errorElement = $("#pointGlobalConfigError");
     var saveState = $("#pointConfigSaveState");
@@ -322,8 +322,8 @@
       saveState.textContent = "未保存";
       return;
     }
-    globalConfig.maxIntermediateAmount = maxIntermediateAmount;
     globalConfig.maxWinningAmount = maxWinningAmount;
+    globalConfig.maxWinMultiplier = maxWinMultiplier;
     errorElement.hidden = true;
     saveState.textContent = "已保存";
     showToast("全局配置已保存");
@@ -331,8 +331,8 @@
   }
 
   function openGlobalConfig() {
-    $("#pointMaxIntermediateAmount").value = globalConfig.maxIntermediateAmount;
     $("#pointMaxWinningAmount").value = globalConfig.maxWinningAmount;
+    $("#pointMaxWinMultiplier").value = globalConfig.maxWinMultiplier;
     $("#pointConfigSaveState").textContent = "已保存";
     $("#pointGlobalConfigError").hidden = true;
     setModal("global", true);
@@ -390,8 +390,8 @@
     $("#pointSave").addEventListener("click", saveEditor);
 
     $("#pointGlobalConfigSave").addEventListener("click", saveGlobalConfig);
-    $("#pointMaxIntermediateAmount").addEventListener("input", markGlobalConfigDirty);
     $("#pointMaxWinningAmount").addEventListener("input", markGlobalConfigDirty);
+    $("#pointMaxWinMultiplier").addEventListener("input", markGlobalConfigDirty);
 
     $("#editorMemberQuery").addEventListener("click", function () {
       queryMember(Boolean(editingId));
