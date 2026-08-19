@@ -62,7 +62,10 @@
               <h1>会员点控</h1>
               <p>为指定玩家设定 RTP 目标及金额门槛，达到门槛后自动解除点控。</p>
             </div>
-            <button class="cl-btn cl-btn-primary" data-point-open="create" type="button"><span aria-hidden="true">＋</span>新增点控</button>
+            <div class="section-heading-actions">
+              <button class="cl-btn cl-btn-primary point-global-config-trigger" data-point-open="global" type="button">全局配置</button>
+              <button class="cl-btn cl-btn-primary" data-point-open="create" type="button"><span aria-hidden="true">＋</span>新增点控</button>
+            </div>
           </div>
 
           <form class="cl-filter-bar point-filter" id="pointFilter" novalidate>
@@ -186,6 +189,41 @@
             <footer class="cl-modal-foot">
               <button class="cl-btn" type="button" data-point-close="editor">取消</button>
               <button class="cl-btn cl-btn-primary" id="pointSave" type="button" disabled>保存</button>
+            </footer>
+          </section>
+        </div>
+
+        <div class="cl-modal-layer" data-point-modal="global" hidden>
+          <div class="cl-modal-mask" data-point-close="global"></div>
+          <section class="cl-modal point-global-config-modal" role="dialog" aria-modal="true" aria-labelledby="pointGlobalConfigTitle">
+            <header class="cl-modal-head">
+              <strong id="pointGlobalConfigTitle">配置全局</strong>
+              <button class="cl-close-btn" type="button" data-point-close="global" aria-label="关闭">×</button>
+            </header>
+            <div class="cl-modal-body">
+              <p class="point-global-config-intro">全局限制所有会员的金额与中奖励倍数。</p>
+              <div class="cl-form-grid point-global-config-form">
+                <div class="cl-form-field">
+                  <label for="pointMaxIntermediateAmount">最大中间金额</label>
+                  <div class="input-suffix">
+                    <input class="cl-input" id="pointMaxIntermediateAmount" type="number" min="0.01" step="0.01" value="200" />
+                    <span>元</span>
+                  </div>
+                </div>
+                <div class="cl-form-field">
+                  <label for="pointMaxWinningAmount">最大中奖金额</label>
+                  <div class="input-suffix">
+                    <input class="cl-input" id="pointMaxWinningAmount" type="number" min="0.01" step="0.01" value="200" />
+                    <span>元</span>
+                  </div>
+                </div>
+              </div>
+              <p class="field-error point-global-config-error" id="pointGlobalConfigError" role="alert" hidden></p>
+              <p class="point-config-save-state" id="pointConfigSaveState" aria-live="polite">已保存</p>
+            </div>
+            <footer class="cl-modal-foot">
+              <button class="cl-btn" type="button" data-point-close="global">取消</button>
+              <button class="cl-btn cl-btn-primary" id="pointGlobalConfigSave" type="button">保存配置</button>
             </footer>
           </section>
         </div>

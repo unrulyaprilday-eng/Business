@@ -69,7 +69,17 @@ body {
   color: #909399;
 }
 
-.section-heading .cl-btn {
+.section-heading-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-heading-actions .cl-btn {
+  min-width: 92px;
+}
+
+.section-heading-actions .point-global-config-trigger {
   min-width: 104px;
 }
 
@@ -110,6 +120,52 @@ body {
 
 .point-summary .summary-tip {
   color: #a1a7b3;
+}
+
+.point-config-save-state {
+  margin: 8px 0 0;
+  color: #67c23a;
+  white-space: nowrap;
+}
+
+.point-global-config-modal {
+  width: 520px;
+}
+
+.point-global-config-intro {
+  margin: 0 0 16px;
+  color: #8792a1;
+  line-height: 18px;
+}
+
+.point-global-config-form {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.point-global-config-form .cl-form-field {
+  min-width: 0;
+}
+
+.point-global-config-form .input-suffix {
+  position: relative;
+}
+
+.point-global-config-form .cl-input {
+  width: 100%;
+  padding-right: 34px;
+}
+
+.point-global-config-form .input-suffix > span {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  color: #909399;
+  line-height: 32px;
+}
+
+.point-global-config-modal .point-global-config-error {
+  margin-bottom: 0;
 }
 
 .point-table-wrap {

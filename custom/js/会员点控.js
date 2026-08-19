@@ -13,6 +13,10 @@
   var editingId = null;
   var queriedMember = null;
   var releasingId = null;
+  var globalConfig = {
+    maxIntermediateAmount: 200,
+    maxWinningAmount: 200
+  };
 
   function $(selector, root) {
     return (root || document).querySelector(selector);
@@ -301,6 +305,44 @@
     showToast.timer = window.setTimeout(function () { toast.hidden = true; }, 2200);
   }
 
+  function saveGlobalConfig() {
+    var maxIntermediateAmount = Number($("#pointMaxIntermediateAmount").value);
+    var maxWinningAmount = Number($("#pointMaxWinningAmount").value);
+    var error = "";
+    if (!Number.isFinite(maxIntermediateAmount) || maxIntermediateAmount <= 0) {
+      error = "最大中间金额需填写大于0的金额。";
+    } else if (!Number.isFinite(maxWinningAmount) || maxWinningAmount <= 0) {
+      error = "最大中奖金额需填写大于0的金额。";
+    }
+    var errorElement = $("#pointGlobalConfigError");
+    var saveState = $("#pointConfigSaveState");
+    if (error) {
+      errorElement.textContent = error;
+      errorElement.hidden = false;
+      saveState.textContent = "未保存";
+      return;
+    }
+    globalConfig.maxIntermediateAmount = maxIntermediateAmount;
+    globalConfig.maxWinningAmount = maxWinningAmount;
+    errorElement.hidden = true;
+    saveState.textContent = "已保存";
+    showToast("全局配置已保存");
+    setModal("global", false);
+  }
+
+  function openGlobalConfig() {
+    $("#pointMaxIntermediateAmount").value = globalConfig.maxIntermediateAmount;
+    $("#pointMaxWinningAmount").value = globalConfig.maxWinningAmount;
+    $("#pointConfigSaveState").textContent = "已保存";
+    $("#pointGlobalConfigError").hidden = true;
+    setModal("global", true);
+  }
+
+  function markGlobalConfigDirty() {
+    $("#pointConfigSaveState").textContent = "未保存";
+    $("#pointGlobalConfigError").hidden = true;
+  }
+
   function confirmRelease(id) {
     releasingId = id;
     setModal("release", true);
@@ -326,7 +368,11 @@
       var releaseButton = event.target.closest("[data-point-release]");
       var pageButton = event.target.closest("[data-point-page]");
 
-      if (openButton) openEditor(openButton.getAttribute("data-point-open") === "edit" ? editingId : null);
+      if (openButton) {
+        var openTarget = openButton.getAttribute("data-point-open");
+        if (openTarget === "global") openGlobalConfig();
+        else openEditor(openTarget === "edit" ? editingId : null);
+      }
       if (closeButton) setModal(closeButton.getAttribute("data-point-close"), false);
       if (editButton) openEditor(editButton.getAttribute("data-point-edit"));
       if (releaseButton) confirmRelease(releaseButton.getAttribute("data-point-release"));
@@ -342,6 +388,10 @@
     });
 
     $("#pointSave").addEventListener("click", saveEditor);
+
+    $("#pointGlobalConfigSave").addEventListener("click", saveGlobalConfig);
+    $("#pointMaxIntermediateAmount").addEventListener("input", markGlobalConfigDirty);
+    $("#pointMaxWinningAmount").addEventListener("input", markGlobalConfigDirty);
 
     $("#editorMemberQuery").addEventListener("click", function () {
       queryMember(Boolean(editingId));
