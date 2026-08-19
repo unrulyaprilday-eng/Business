@@ -1,0 +1,15 @@
+.self-game-rtp-table {
+  min-width: 900px;
+}
+
+.self-game-records-table {
+  min-width: 900px;
+}
+
+.self-game-rtp-table th:nth-child(1) { width: 44px; }
+.self-game-rtp-table th:nth-child(2) { width: 90px; }
+.self-game-rtp-table th:nth-child(3) { width: 118px; }
+.self-game-rtp-table th:nth-child(4) { width: 150px; }
+.self-game-rtp-table th:nth-child(5) { width: 108px; }
+.self-game-rtp-table th:nth-child(6) { width: 142px; }
+.self-game-rtp-table th:nth-child(7) { width: 64px; }

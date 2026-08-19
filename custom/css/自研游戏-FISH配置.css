@@ -1,0 +1,10 @@
+.self-game-type-table {
+  min-width: 900px;
+}
+
+.self-game-type-table th:nth-child(1) { width: 120px; }
+.self-game-type-table th:nth-child(2) { width: 150px; }
+.self-game-type-table th:nth-child(3) { width: 270px; }
+.self-game-type-table th:nth-child(4) { width: 98px; }
+.self-game-type-table th:nth-child(5) { width: 142px; }
+.self-game-type-table th:nth-child(6) { width: 56px; }

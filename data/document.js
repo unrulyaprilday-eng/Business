@@ -540,6 +540,49 @@ $axure.loadDocument({
             "children": []
           },
           {
+            "id": "self_game_config",
+            "pageName": "自研游戏配置",
+            "type": "Folder",
+            "url": "",
+            "children": [
+              {
+                "id": "self_game_rtp_config",
+                "pageName": "自研游戏-RTP配置",
+                "type": "Wireframe",
+                "url": "自研游戏-RTP配置.html",
+                "children": []
+              },
+              {
+                "id": "self_game_slots_config",
+                "pageName": "自研游戏-SLOTS配置",
+                "type": "Wireframe",
+                "url": "自研游戏-SLOTS配置.html",
+                "children": []
+              },
+              {
+                "id": "self_game_fish_config",
+                "pageName": "自研游戏-FISH配置",
+                "type": "Wireframe",
+                "url": "自研游戏-FISH配置.html",
+                "children": []
+              },
+              {
+                "id": "self_game_poker_config",
+                "pageName": "自研游戏-Poker配置",
+                "type": "Wireframe",
+                "url": "自研游戏-Poker配置.html",
+                "children": []
+              },
+              {
+                "id": "self_game_mini_config",
+                "pageName": "自研游戏-Mini配置",
+                "type": "Wireframe",
+                "url": "自研游戏-Mini配置.html",
+                "children": []
+              }
+            ]
+          },
+          {
             "id": "game_statistics",
             "pageName": "游戏统计",
             "type": "Wireframe",
