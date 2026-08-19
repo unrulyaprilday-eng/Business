@@ -1,0 +1,45 @@
+.self-game-merged-table {
+  min-width: 1120px;
+}
+
+.self-game-merged-table th:nth-child(1) { width: 44px; }
+.self-game-merged-table th:nth-child(2) { width: 90px; }
+.self-game-merged-table th:nth-child(3) { width: 118px; }
+.self-game-merged-table th:nth-child(4) { width: 150px; }
+.self-game-merged-table th:nth-child(5) { width: 340px; }
+.self-game-merged-table th:nth-child(6) { width: 98px; }
+.self-game-merged-table th:nth-child(7) { width: 142px; }
+.self-game-merged-table th:nth-child(8) { width: 56px; }
+
+.self-game-merged-records {
+  min-width: 920px;
+}
+
+#configCapability {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.self-game-batch-modal {
+  width: min(680px, 100%);
+}
+
+.self-game-batch-modal .self-game-capabilities {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 18px;
+}
+
+.self-game-batch-modal .self-game-form-grid {
+  grid-template-columns: minmax(150px, 0.65fr) minmax(0, 1.35fr);
+  align-items: start;
+}
+
+.self-game-batch-modal .self-game-batch-preview {
+  margin-top: 16px;
+}
+
+@media (max-width: 620px) {
+  .self-game-batch-modal .self-game-capabilities,
+  .self-game-batch-modal .self-game-form-grid {
+    grid-template-columns: 1fr;
+  }
+}

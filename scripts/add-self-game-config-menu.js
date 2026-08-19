@@ -32,13 +32,7 @@ function findNode(nodes, id) {
   return null;
 }
 
-const pageNodes = [
-  ["self_game_rtp_config", "自研游戏-RTP配置", "自研游戏-RTP配置.html"],
-  ["self_game_slots_config", "自研游戏-SLOTS配置", "自研游戏-SLOTS配置.html"],
-  ["self_game_fish_config", "自研游戏-FISH配置", "自研游戏-FISH配置.html"],
-  ["self_game_poker_config", "自研游戏-Poker配置", "自研游戏-Poker配置.html"],
-  ["self_game_mini_config", "自研游戏-Mini配置", "自研游戏-Mini配置.html"]
-].map(([id, pageName, url]) => ({ id, pageName, type: "Wireframe", url, children: [] }));
+const pageNode = { id: "self_game_config", pageName: "自研游戏配置", type: "Wireframe", url: "自研游戏配置.html", children: [] };
 
 const documentData = loadDocument(documentPath);
 const gameCenter = findNode(documentData.sitemap.rootNodes, "game_center");
@@ -46,7 +40,7 @@ if (!gameCenter || !Array.isArray(gameCenter.children)) {
   throw new Error("未找到游戏中心菜单节点 game_center");
 }
 
-gameCenter.children = gameCenter.children.filter((node) => node.id !== "self_game_config");
+gameCenter.children = gameCenter.children.filter((node) => !["self_game_config", "self_game_config_page", "self_game_rtp_config", "self_game_slots_config", "self_game_fish_config", "self_game_poker_config", "self_game_mini_config"].includes(node.id));
 
 const existingIds = new Set();
 (function collect(nodes) {
@@ -56,21 +50,13 @@ const existingIds = new Set();
   });
 }(documentData.sitemap.rootNodes));
 
-pageNodes.forEach((node) => {
-  if (existingIds.has(node.id)) throw new Error(`菜单 id 已存在：${node.id}`);
-});
+if (existingIds.has(pageNode.id)) throw new Error(`菜单 id 已存在：${pageNode.id}`);
 
 const insertAfter = gameCenter.children.findIndex((node) => node.id === "sub_game_list");
 if (insertAfter < 0) throw new Error("游戏中心下未找到子游戏列表节点");
 
-gameCenter.children.splice(insertAfter + 1, 0, {
-  id: "self_game_config",
-  pageName: "自研游戏配置",
-  type: "Folder",
-  url: "",
-  children: pageNodes
-});
+gameCenter.children.splice(insertAfter + 1, 0, pageNode);
 
 fs.writeFileSync(documentPath, `$axure.loadDocument(${JSON.stringify(documentData, null, 2)});\n`, "utf8");
-console.log("已新增游戏中心/自研游戏配置菜单目录。");
-console.log(pageNodes.map((node) => `- ${node.pageName} (${node.url})`).join("\n"));
+console.log("已更新游戏中心/自研游戏配置菜单目录。");
+console.log(`- ${pageNode.pageName} (${pageNode.url})`);
