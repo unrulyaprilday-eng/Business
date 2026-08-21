@@ -1,22 +1,175 @@
+.self-game-header {
+  margin-bottom: 14px;
+}
+
+.self-game-list-panel {
+  margin-bottom: 0;
+}
+
+.self-game-list-filter {
+  align-items: flex-end;
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  background: var(--self-game-soft);
+}
+
+.self-game-keyword-field {
+  flex: 0 1 340px;
+}
+
+.self-game-type-field {
+  flex: 0 0 auto;
+}
+
+.self-game-type-field .self-game-segmented {
+  min-height: 32px;
+}
+
 .self-game-merged-table {
-  min-width: 1120px;
+  min-width: 1220px;
 }
 
 .self-game-merged-table th:nth-child(1) { width: 44px; }
-.self-game-merged-table th:nth-child(2) { width: 90px; }
-.self-game-merged-table th:nth-child(3) { width: 118px; }
-.self-game-merged-table th:nth-child(4) { width: 150px; }
-.self-game-merged-table th:nth-child(5) { width: 340px; }
-.self-game-merged-table th:nth-child(6) { width: 98px; }
-.self-game-merged-table th:nth-child(7) { width: 142px; }
-.self-game-merged-table th:nth-child(8) { width: 56px; }
+.self-game-merged-table th:nth-child(2) { width: 86px; }
+.self-game-merged-table th:nth-child(3) { width: 160px; }
+.self-game-merged-table th:nth-child(4) { width: 290px; }
+.self-game-merged-table th:nth-child(5) { width: 86px; }
+.self-game-merged-table th:nth-child(6) { width: 142px; }
+.self-game-merged-table th:nth-child(7) { width: 390px; }
+
+.self-game-merged-table td:nth-child(3),
+.self-game-merged-table td:nth-child(4),
+.self-game-merged-table td:nth-child(7) {
+  white-space: normal;
+}
+
+.self-game-name,
+.self-game-code {
+  display: block;
+}
+
+.self-game-name {
+  margin-bottom: 2px;
+  font-weight: 600;
+}
+
+.self-game-code {
+  color: var(--self-game-muted);
+  font-size: 12px;
+}
+
+.self-game-summary-cell {
+  color: #475569;
+  line-height: 1.55;
+}
+
+.self-game-type-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 2px 7px;
+  border: 1px solid #cbd8ea;
+  border-radius: 4px;
+  background: #f3f6fa;
+  color: #526176;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.self-game-type-tag.is-slots {
+  border-color: #bfd2f4;
+  background: #edf4ff;
+  color: #315f9f;
+}
+
+.self-game-type-tag.is-fish {
+  border-color: #b9ddd4;
+  background: #edf9f6;
+  color: #26735f;
+}
+
+.self-game-type-tag.is-poker {
+  border-color: #ecd3ad;
+  background: #fff8e9;
+  color: #8a5a16;
+}
+
+.self-game-type-tag.is-mini {
+  border-color: #d3cce8;
+  background: #f7f4fb;
+  color: #65557e;
+}
+
+.self-game-config-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 14px;
+}
+
+.self-game-config-actions .self-game-link {
+  min-height: 26px;
+  padding: 3px 0;
+  text-align: left;
+  white-space: nowrap;
+}
 
 .self-game-merged-records {
   min-width: 920px;
 }
 
-#configCapability {
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+.self-game-module-modal {
+  width: min(680px, 100%);
+}
+
+.self-game-module-modal.is-medium {
+  width: min(920px, 100%);
+}
+
+.self-game-module-modal.is-wide {
+  width: min(1180px, 100%);
+}
+
+.self-game-modal-context {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.7fr;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  border-left: 3px solid var(--self-game-blue);
+  background: var(--self-game-soft);
+}
+
+.self-game-modal-context span,
+.self-game-modal-context strong {
+  display: block;
+}
+
+.self-game-modal-context span {
+  margin-bottom: 2px;
+  color: var(--self-game-muted);
+  font-size: 12px;
+}
+
+.self-game-modal-context strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+#moduleFields > .self-game-config-section {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.self-game-single-field {
+  max-width: 320px;
+}
+
+.self-game-module-note {
+  margin: 8px 0 0;
+  color: var(--self-game-muted);
+  font-size: 12px;
 }
 
 .self-game-batch-modal {
@@ -37,7 +190,36 @@
   margin-top: 16px;
 }
 
+@media (max-width: 900px) {
+  .self-game-list-filter {
+    align-items: stretch;
+  }
+
+  .self-game-keyword-field,
+  .self-game-type-field {
+    flex: 1 1 100%;
+  }
+
+  .self-game-modal-context {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 620px) {
+  .self-game-list-filter .self-game-filter-actions {
+    width: 100%;
+  }
+
+  .self-game-type-field .self-game-segmented {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .self-game-type-field .self-game-segmented button {
+    flex: 1 0 auto;
+  }
+
+  .self-game-modal-context,
   .self-game-batch-modal .self-game-capabilities,
   .self-game-batch-modal .self-game-form-grid {
     grid-template-columns: 1fr;

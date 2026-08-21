@@ -585,6 +585,24 @@
   background: #fff;
 }
 
+.self-game-room-table {
+  min-width: 720px;
+}
+
+.self-game-room-robot-table {
+  min-width: 920px;
+}
+
+.self-game-room-ranges-table {
+  min-width: 1420px;
+}
+
+.self-game-room-table input {
+  width: 100%;
+  min-width: 92px;
+  box-sizing: border-box;
+}
+
 .self-game-empty-note {
   padding: 18px;
   border: 1px dashed var(--self-game-border-strong);

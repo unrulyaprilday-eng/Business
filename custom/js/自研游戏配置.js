@@ -11,8 +11,15 @@
     { code: "FISH-2001", name: "深海猎场", type: "FISH", rtp: 95.5, updated: "2026-08-18 10:05", capability: { levels: 6, minAmount: 0.1, maxAmount: 100, step: 0.1 }, cannons: [{ level: 1, amount: 0.1 }, { level: 2, amount: 0.5 }, { level: 3, amount: 1 }, { level: 4, amount: 5 }, { level: 5, amount: 10 }, { level: 6, amount: 50 }], records: [] },
     { code: "FISH-2002", name: "极地捕鱼王", type: "FISH", rtp: 96.5, updated: "2026-08-17 14:18", capability: { levels: 5, minAmount: 0.1, maxAmount: 50, step: 0.1 }, cannons: [{ level: 1, amount: 0.1 }, { level: 2, amount: 0.2 }, { level: 3, amount: 1 }, { level: 4, amount: 5 }, { level: 5, amount: 20 }], records: [{ time: "2026-08-17 14:18", game: "极地捕鱼王", action: "更新玩法配置", before: "96.0%", after: "96.5%", operator: "运营管理员" }] },
     { code: "FISH-2003", name: "黄金海岸", type: "FISH", rtp: 94.0, updated: "2026-08-16 09:40", capability: { levels: 4, minAmount: 1, maxAmount: 100, step: 1 }, cannons: [{ level: 1, amount: 1 }, { level: 2, amount: 5 }, { level: 3, amount: 10 }, { level: 4, amount: 50 }], records: [] },
-    { code: "POK-3001", name: "极速德州", type: "Poker", rtp: 95.0, updated: "2026-08-18 08:55", capability: { roomTypes: ["低分房", "中分房", "高分房"], scoreUnit: "积分" }, rooms: [{ code: "P-L", name: "低分房", baseScore: 1, minEntry: 100 }, { code: "P-M", name: "中分房", baseScore: 10, minEntry: 1000 }, { code: "P-H", name: "高分房", baseScore: 100, minEntry: 10000 }], records: [{ time: "2026-08-18 08:55", game: "极速德州", action: "更新玩法配置", before: "94.0%", after: "95.0%", operator: "运营管理员" }] },
-    { code: "POK-3002", name: "短牌扑克", type: "Poker", rtp: 94.5, updated: "2026-08-17 12:30", capability: { roomTypes: ["低分房", "高分房"], scoreUnit: "积分" }, rooms: [{ code: "S-L", name: "低分房", baseScore: 2, minEntry: 200 }, { code: "S-H", name: "高分房", baseScore: 50, minEntry: 5000 }], records: [] },
+    { code: "POK-3001", name: "极速德州", type: "Poker", rtp: 95.0, updated: "2026-08-18 08:55", capability: { roomTypes: ["低分房", "中分房", "高分房"], scoreUnit: "积分" }, rooms: [
+      { id: 1, code: "P-L", name: "低分房", baseScore: 1, minEntry: 100, tableNum: 3, joinTableCountLimit: 6, maxRobotNum: 3, robotNum: [1, 1, 0], minGold: 100, maxGold: 10000, exitGameMinGold: 10, exitGameMaxGold: 20000, minPlayTime: 5, maxPlayTime: 120, minPlayRound: 1, maxPlayRound: 50 },
+      { id: 2, code: "P-M", name: "中分房", baseScore: 10, minEntry: 1000, tableNum: 3, joinTableCountLimit: 6, maxRobotNum: 2, robotNum: [0, 1, 1], minGold: 1000, maxGold: 50000, exitGameMinGold: 100, exitGameMaxGold: 100000, minPlayTime: 5, maxPlayTime: 180, minPlayRound: 1, maxPlayRound: 80 },
+      { id: 3, code: "P-H", name: "高分房", baseScore: 100, minEntry: 10000, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0, 1], minGold: 10000, maxGold: 500000, exitGameMinGold: 1000, exitGameMaxGold: 1000000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 100 }
+    ], records: [{ time: "2026-08-18 08:55", game: "极速德州", action: "更新玩法配置", before: "94.0%", after: "95.0%", operator: "运营管理员" }] },
+    { code: "POK-3002", name: "短牌扑克", type: "Poker", rtp: 94.5, updated: "2026-08-17 12:30", capability: { roomTypes: ["低分房", "高分房"], scoreUnit: "积分" }, rooms: [
+      { id: 1, code: "S-L", name: "低分房", baseScore: 2, minEntry: 200, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 2, robotNum: [1, 0], minGold: 200, maxGold: 20000, exitGameMinGold: 20, exitGameMaxGold: 40000, minPlayTime: 5, maxPlayTime: 120, minPlayRound: 1, maxPlayRound: 60 },
+      { id: 2, code: "S-H", name: "高分房", baseScore: 50, minEntry: 5000, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0, 1], minGold: 5000, maxGold: 250000, exitGameMinGold: 500, exitGameMaxGold: 500000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 100 }
+    ], records: [] },
     { code: "MINI-4001", name: "极速飞车", type: "Mini", miniType: "Crash", rtp: 96.5, updated: "2026-08-17 17:10", capability: { fields: ["最大结算倍数", "自动结束阈值"] }, params: [{ key: "maxMultiplier", label: "最大结算倍数", value: "500", unit: "倍", type: "number", min: 1, max: 10000, step: 1 }, { key: "autoStop", label: "自动结束阈值", value: "1.2", unit: "倍", type: "number", min: 1, max: 100, step: 0.1 }], records: [] },
     { code: "MINI-4002", name: "地雷宝藏", type: "Mini", miniType: "Mines", rtp: 95.5, updated: "2026-08-16 15:45", capability: { fields: ["雷区数量", "风险档位"] }, params: [{ key: "mineCount", label: "雷区数量", value: "5", unit: "个", type: "number", min: 1, max: 24, step: 1 }, { key: "riskLevel", label: "风险档位", value: "中", unit: "", type: "select", options: ["低", "中", "高"] }], records: [{ time: "2026-08-16 15:45", game: "地雷宝藏", action: "更新玩法配置", before: "95.0%", after: "95.5%", operator: "运营管理员" }] },
     { code: "MINI-4003", name: "弹珠风险台", type: "Mini", miniType: "Plinko", rtp: 94.0, updated: "2026-08-15 10:22", capability: { fields: ["风险档位", "落点行数"] }, params: [{ key: "riskLevel", label: "风险档位", value: "中", unit: "", type: "select", options: ["低", "中", "高"] }, { key: "rows", label: "落点行数", value: "12", unit: "行", type: "number", min: 8, max: 20, step: 1 }], records: [] }
@@ -20,6 +27,8 @@
   var records = [];
   var activeType = "全部";
   var editingIndex = -1;
+  var activeModule = "";
+  var editingBefore = "";
 
   games.forEach(function (game) { records = records.concat(game.records || []); });
   records.sort(function (a, b) { return String(b.time).localeCompare(String(a.time)); });
@@ -29,86 +38,162 @@
   function renderSummary(game) {
     if (game.type === "SLOTS") return "底分 " + game.enabledBets.join(" / ") + " · " + (game.capability.freeGamePurchase ? "Free Game 支持" : "Free Game 不支持");
     if (game.type === "FISH") return game.cannons.length + " 个炮台 · " + game.cannons[0].amount + "～" + game.cannons[game.cannons.length - 1].amount + " / 炮";
-    if (game.type === "Poker") return game.rooms.length + " 个房间 · 低分房底分 " + game.rooms[0].baseScore + " · 最低进入 " + game.rooms[0].minEntry;
+    if (game.type === "Poker") return game.rooms.length + " 个房间 · 低分房底分 " + game.rooms[0].baseScore + " · 机器人上限 " + game.rooms[0].maxRobotNum + "/桌";
     return game.miniType + " · " + game.params.length + " 个专属参数";
   }
 
-  function renderCapability(game) {
-    if (game.type === "SLOTS") return [
-      "<div class=\"self-game-capability-item\"><span>玩法类型</span><strong>SLOTS</strong></div>",
-      "<div class=\"self-game-capability-item\"><span>Free Game 能力</span><strong>" + (game.capability.freeGamePurchase ? "支持购买" : "不支持购买") + "</strong></div>",
-      "<div class=\"self-game-capability-item\"><span>基础底分</span><strong>" + game.capability.baseBets.join(" / ") + "</strong></div>"
-    ].join("");
-    if (game.type === "FISH") return [
-      "<div class=\"self-game-capability-item\"><span>玩法类型</span><strong>FISH</strong></div>",
-      "<div class=\"self-game-capability-item\"><span>炮台档位</span><strong>" + game.capability.levels + " 档</strong></div>",
-      "<div class=\"self-game-capability-item\"><span>金额范围</span><strong>" + game.capability.minAmount + "～" + game.capability.maxAmount + "</strong></div>",
-      "<div class=\"self-game-capability-item\"><span>调整步长</span><strong>" + game.capability.step + "</strong></div>"
-    ].join("");
-    if (game.type === "Poker") return [
-      "<div class=\"self-game-capability-item\"><span>玩法类型</span><strong>Poker</strong></div>",
-      "<div class=\"self-game-capability-item\"><span>支持房间</span><strong>" + game.capability.roomTypes.join(" / ") + "</strong></div>",
-      "<div class=\"self-game-capability-item\"><span>进入条件单位</span><strong>" + game.capability.scoreUnit + "</strong></div>"
-    ].join("");
-    return [
-      "<div class=\"self-game-capability-item\"><span>玩法类型</span><strong>Mini / " + game.miniType + "</strong></div>",
-      "<div class=\"self-game-capability-item\"><span>基础参数</span><strong>" + game.capability.fields.length + " 项</strong></div>",
-      "<div class=\"self-game-capability-item\"><span>可配置字段</span><strong>游戏能力提供</strong></div>"
-    ].join("");
+  var moduleNames = {
+    rtp: "单个 RTP 配置",
+    slotsBets: "投注底分配置",
+    slotsFreeGame: "Free Game 配置",
+    fishCannons: "炮台配置",
+    pokerRooms: "房间配置",
+    pokerRobots: "机器人配置",
+    pokerRanges: "运行范围配置",
+    miniParams: "玩法参数配置"
+  };
+
+  function modulesFor(game) {
+    var modules = [{ key: "rtp", label: "RTP 配置" }];
+    if (game.type === "SLOTS") {
+      modules.push({ key: "slotsBets", label: "投注底分" });
+      if (game.capability.freeGamePurchase) modules.push({ key: "slotsFreeGame", label: "Free Game" });
+    } else if (game.type === "FISH") {
+      modules.push({ key: "fishCannons", label: "炮台配置" });
+    } else if (game.type === "Poker") {
+      modules.push({ key: "pokerRooms", label: "房间配置" });
+      modules.push({ key: "pokerRobots", label: "机器人配置" });
+      modules.push({ key: "pokerRanges", label: "运行范围" });
+    } else if (game.type === "Mini") {
+      modules.push({ key: "miniParams", label: "玩法参数" });
+    }
+    return modules;
   }
 
-  function renderFields(game) {
-    if (game.type === "SLOTS") return [
+  function renderModuleActions(game, index) {
+    return modulesFor(game).map(function (module) {
+      return "<button class=\"self-game-link\" type=\"button\" data-config-index=\"" + index + "\" data-config-module=\"" + module.key + "\">" + esc(module.label) + "</button>";
+    }).join("");
+  }
+
+  function typeClass(type) {
+    return { SLOTS: "is-slots", FISH: "is-fish", Poker: "is-poker", Mini: "is-mini" }[type] || "";
+  }
+
+  function renderFields(game, module) {
+    if (module === "rtp") return [
+      "<section class=\"self-game-config-section\"><h3>RTP</h3><p>仅修改当前游戏的 RTP，范围 50.0%～200.0%，最小步长 0.1%。</p>",
+      "<div class=\"self-game-form-field self-game-single-field\"><label for=\"moduleRtp\">RTP</label><div class=\"self-game-input-wrap\"><input class=\"self-game-input self-game-rtp-input\" id=\"moduleRtp\" type=\"number\" min=\"50\" max=\"200\" step=\"0.1\" value=\"" + Number(game.rtp).toFixed(1) + "\"><span class=\"self-game-input-suffix\">%</span></div><p class=\"self-game-field-error\" id=\"moduleRtpError\" hidden></p></div></section>"
+    ].join("");
+    if (module === "slotsBets") return [
       "<section class=\"self-game-config-section\"><h3>投注底分</h3><p>只能选择游戏基础能力提供的底分，未勾选的底分不会对玩家开放。</p><div class=\"self-game-option-grid\">",
       game.capability.baseBets.map(function (value) { return "<label class=\"self-game-option\"><input class=\"slot-bet-option\" type=\"checkbox\" value=\"" + value + "\"" + (game.enabledBets.indexOf(value) !== -1 ? " checked" : "") + "><span>底分 " + value + "</span></label>"; }).join(""),
-      "</div></section><section class=\"self-game-config-section\"><h3>购买 Free Game</h3><p>该开关仅在游戏基础能力支持时可编辑，购买价格由游戏基础数据提供。</p><label class=\"self-game-switch\"><input id=\"slotFreeGame\" type=\"checkbox\"" + (game.freeGameAllowed ? " checked" : "") + (game.capability.freeGamePurchase ? "" : " disabled") + "><span class=\"self-game-switch-track\"></span><span class=\"self-game-switch-text\">" + (game.capability.freeGamePurchase ? "允许购买" : "游戏不支持") + "</span></label></section>"
+      "</div></section>"
     ].join("");
-    if (game.type === "FISH") return [
+    if (module === "slotsFreeGame") return "<section class=\"self-game-config-section\"><h3>购买 Free Game</h3><p>此入口仅对游戏基础能力支持购买 Free Game 的游戏显示。</p><label class=\"self-game-switch\"><input id=\"slotFreeGame\" type=\"checkbox\"" + (game.freeGameAllowed ? " checked" : "") + "><span class=\"self-game-switch-track\"></span><span class=\"self-game-switch-text\">允许购买</span></label></section>";
+    if (module === "fishCannons") return [
       "<section class=\"self-game-config-section\"><h3>炮台金额梯度</h3><p>可在游戏基础数据提供的范围内调整每个炮台档位的金额。</p><table class=\"self-game-data-table\"><thead><tr><th>炮台档位</th><th>当前每炮金额</th><th>金额范围</th><th>调整步长</th></tr></thead><tbody>",
       game.cannons.map(function (cannon) { return "<tr><td>炮台 " + cannon.level + "</td><td><input class=\"fish-amount\" type=\"number\" min=\"" + game.capability.minAmount + "\" max=\"" + game.capability.maxAmount + "\" step=\"" + game.capability.step + "\" value=\"" + cannon.amount + "\" data-level=\"" + cannon.level + "\"></td><td>" + game.capability.minAmount + "～" + game.capability.maxAmount + "</td><td>" + game.capability.step + "</td></tr>"; }).join(""),
       "</tbody></table></section>"
     ].join("");
-    if (game.type === "Poker") return [
-      "<section class=\"self-game-config-section\"><h3>房间底分与最低进入条件</h3><p>房间类型来自游戏基础数据，页面仅配置房间底分和最低进入条件。</p><table class=\"self-game-data-table\"><thead><tr><th>房间</th><th>房间底分</th><th>最低进入条件</th><th>单位</th></tr></thead><tbody>",
-      game.rooms.map(function (room) { return "<tr><td>" + room.name + "<span class=\"self-game-help\">（" + room.code + "）</span></td><td><input class=\"poker-base-score\" type=\"number\" min=\"0.1\" step=\"0.1\" value=\"" + room.baseScore + "\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-min-entry\" type=\"number\" min=\"0.1\" step=\"0.1\" value=\"" + room.minEntry + "\" data-room=\"" + room.code + "\"></td><td>" + game.capability.scoreUnit + "</td></tr>"; }).join(""),
+    if (module === "pokerRooms") return [
+      "<section class=\"self-game-config-section\"><h3>房间底分与最低进入条件</h3><p>房间类型来自游戏基础数据，此处只维护房间底分和最低进入条件。</p><table class=\"self-game-data-table self-game-room-table\"><thead><tr><th>ID</th><th>房间</th><th>房间底分</th><th>最低进入条件</th><th>单位</th></tr></thead><tbody>",
+      game.rooms.map(function (room) { return "<tr><td>" + room.id + "</td><td>" + room.name + "<span class=\"self-game-help\">（" + room.code + "）</span></td><td><input class=\"poker-base-score\" type=\"number\" min=\"0.1\" step=\"0.1\" value=\"" + room.baseScore + "\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-min-entry\" type=\"number\" min=\"0.1\" step=\"0.1\" value=\"" + room.minEntry + "\" data-room=\"" + room.code + "\"></td><td>" + game.capability.scoreUnit + "</td></tr>"; }).join(""),
       "</tbody></table></section>"
     ].join("");
-    return [
+    if (module === "pokerRobots") return [
+      "<section class=\"self-game-config-section\"><h3>机器人配置</h3><p>仅房间型游戏显示此入口。机器人数量按桌子顺序填写，使用英文逗号分隔。</p><table class=\"self-game-data-table self-game-room-table self-game-room-robot-table\"><thead><tr><th>房间</th><th>进入桌子数量</th><th>进入桌子人数限制</th><th>每桌机器人上限</th><th>机器人数量</th></tr></thead><tbody>",
+      game.rooms.map(function (room) { return "<tr><td>" + room.name + "</td><td><input class=\"poker-table-num\" type=\"number\" min=\"1\" step=\"1\" value=\"" + room.tableNum + "\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-join-limit\" type=\"number\" min=\"1\" step=\"1\" value=\"" + room.joinTableCountLimit + "\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-max-robot\" type=\"number\" min=\"0\" step=\"1\" value=\"" + room.maxRobotNum + "\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-robot-num\" type=\"text\" value=\"" + room.robotNum.join(",") + "\" data-room=\"" + room.code + "\" placeholder=\"如 1,0,2\"></td></tr>"; }).join(""),
+      "</tbody></table></section>"
+    ].join("");
+    if (module === "pokerRanges") return [
+      "<section class=\"self-game-config-section\"><h3>金币、时长与局数范围</h3><p>游戏时间单位为分钟；金币、时长和局数均按整数配置。</p><table class=\"self-game-data-table self-game-room-table self-game-room-ranges-table\"><thead><tr><th>房间</th><th>携带金币最小值</th><th>携带金币最大值</th><th>退出金币最小值</th><th>退出金币最大值</th><th>游戏时间最小值</th><th>游戏时间最大值</th><th>游戏局数最小值</th><th>游戏局数最大值</th></tr></thead><tbody>",
+      game.rooms.map(function (room) { return "<tr><td>" + room.name + "</td><td><input class=\"poker-range\" type=\"number\" min=\"0\" step=\"1\" value=\"" + room.minGold + "\" data-field=\"minGold\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-range\" type=\"number\" min=\"0\" step=\"1\" value=\"" + room.maxGold + "\" data-field=\"maxGold\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-range\" type=\"number\" min=\"0\" step=\"1\" value=\"" + room.exitGameMinGold + "\" data-field=\"exitGameMinGold\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-range\" type=\"number\" min=\"0\" step=\"1\" value=\"" + room.exitGameMaxGold + "\" data-field=\"exitGameMaxGold\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-range\" type=\"number\" min=\"0\" step=\"1\" value=\"" + room.minPlayTime + "\" data-field=\"minPlayTime\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-range\" type=\"number\" min=\"0\" step=\"1\" value=\"" + room.maxPlayTime + "\" data-field=\"maxPlayTime\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-range\" type=\"number\" min=\"0\" step=\"1\" value=\"" + room.minPlayRound + "\" data-field=\"minPlayRound\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-range\" type=\"number\" min=\"0\" step=\"1\" value=\"" + room.maxPlayRound + "\" data-field=\"maxPlayRound\" data-room=\"" + room.code + "\"></td></tr>"; }).join(""),
+      "</tbody></table></section>"
+    ].join("");
+    if (module === "miniParams") return [
       "<section class=\"self-game-config-section\"><h3>" + game.miniType + " 专属参数</h3><p>参数名称和可用范围由游戏基础能力提供。</p><table class=\"self-game-data-table\"><thead><tr><th>参数</th><th>配置值</th><th>单位</th><th>能力范围</th></tr></thead><tbody>",
       game.params.map(function (param) { var control = param.type === "select" ? "<select class=\"mini-param\" data-param=\"" + param.key + "\">" + param.options.map(function (option) { return "<option" + (option === param.value ? " selected" : "") + ">" + option + "</option>"; }).join("") + "</select>" : "<input class=\"mini-param\" type=\"number\" min=\"" + param.min + "\" max=\"" + param.max + "\" step=\"" + param.step + "\" value=\"" + param.value + "\" data-param=\"" + param.key + "\">"; return "<tr><td>" + param.label + "</td><td>" + control + "</td><td>" + param.unit + "</td><td>" + (param.type === "select" ? param.options.join(" / ") : param.min + "～" + param.max) + "</td></tr>"; }).join(""),
       "</tbody></table></section>"
     ].join("");
+    return "<div class=\"self-game-empty-note\">当前游戏不支持此配置模块</div>";
   }
 
-  function validateFields(root, game) {
-    if (game.type === "SLOTS" && !root.querySelectorAll(".slot-bet-option:checked").length) return "至少选择一个投注底分";
-    if (game.type === "FISH") {
+  function validateFields(root, game, module) {
+    if (module === "rtp") {
+      var parsedRtp = api.parseRtp(root.querySelector("#moduleRtp").value);
+      var rtpError = root.querySelector("#moduleRtpError");
+      rtpError.textContent = parsedRtp.message || "";
+      rtpError.hidden = !parsedRtp.message;
+      return parsedRtp.message;
+    }
+    if (module === "slotsBets" && !root.querySelectorAll(".slot-bet-option:checked").length) return "至少选择一个投注底分";
+    if (module === "fishCannons") {
       var fishError = "";
       root.querySelectorAll(".fish-amount").forEach(function (input) { var value = Number(input.value); var scale = Math.round(value / game.capability.step); if (!isFinite(value) || value < game.capability.minAmount || value > game.capability.maxAmount || Math.abs(scale * game.capability.step - value) > 0.000001) fishError = "炮台金额必须在基础数据范围内，并符合步长 " + game.capability.step; });
       return fishError;
     }
-    if (game.type === "Poker") {
+    if (module === "pokerRooms") {
+      var roomError = "";
+      root.querySelectorAll(".poker-base-score, .poker-min-entry").forEach(function (input) { if (!input.value.trim() || !isFinite(Number(input.value)) || Number(input.value) <= 0) roomError = "房间底分和最低进入条件必须大于 0"; });
+      return roomError;
+    }
+    if (module === "pokerRobots") {
       var pokerError = "";
-      root.querySelectorAll(".poker-base-score, .poker-min-entry").forEach(function (input) { if (!isFinite(Number(input.value)) || Number(input.value) <= 0) pokerError = "房间底分和最低进入条件必须大于 0"; });
+      root.querySelectorAll(".poker-table-num, .poker-join-limit, .poker-max-robot").forEach(function (input) { var value = Number(input.value); var mustBePositive = !input.classList.contains("poker-max-robot"); if (!input.value.trim() || !isFinite(value) || value < 0 || mustBePositive && value <= 0 || Math.floor(value) !== value) pokerError = "桌子数量和人数限制必须为正整数，机器人上限须为非负整数"; });
+      if (pokerError) return pokerError;
+      game.rooms.forEach(function (room) {
+        var tableNum = Number(root.querySelector(".poker-table-num[data-room=\"" + room.code + "\"]").value);
+        var joinLimit = Number(root.querySelector(".poker-join-limit[data-room=\"" + room.code + "\"]").value);
+        var maxRobot = Number(root.querySelector(".poker-max-robot[data-room=\"" + room.code + "\"]").value);
+        var robotsRaw = root.querySelector(".poker-robot-num[data-room=\"" + room.code + "\"]").value.trim();
+        var robots = robotsRaw ? robotsRaw.split(",").map(function (item) { return Number(item.trim()); }) : [];
+        if (!/^\d+(?:\s*,\s*\d+)*$/.test(robotsRaw) || robots.length !== tableNum || robots.some(function (value) { return value > maxRobot; })) pokerError = room.name + "的机器人数量必须按桌子数量填写，且不能超过每桌上限";
+        if (maxRobot > joinLimit) pokerError = room.name + "的桌子机器人上限不能大于进入桌子人数限制";
+      });
       return pokerError;
     }
+    if (module === "pokerRanges") {
+      var rangeError = "";
+      root.querySelectorAll(".poker-range").forEach(function (input) { var value = Number(input.value); if (!input.value.trim() || !isFinite(value) || value < 0 || Math.floor(value) !== value) rangeError = "金币、时长和局数必须为非负整数"; });
+      game.rooms.forEach(function (room) { ["minGold", "exitGameMinGold", "minPlayTime", "minPlayRound"].forEach(function (minField) { var maxField = { minGold: "maxGold", exitGameMinGold: "exitGameMaxGold", minPlayTime: "maxPlayTime", minPlayRound: "maxPlayRound" }[minField]; var minValue = Number(root.querySelector("[data-field=\"" + minField + "\"][data-room=\"" + room.code + "\"]").value); var maxValue = Number(root.querySelector("[data-field=\"" + maxField + "\"][data-room=\"" + room.code + "\"]").value); if (minValue > maxValue) rangeError = room.name + "的最小值不能大于最大值"; }); });
+      return rangeError;
+    }
+    if (module !== "miniParams") return "";
     var miniError = "";
     root.querySelectorAll(".mini-param[type=number]").forEach(function (input) { var value = Number(input.value); var param = game.params.filter(function (item) { return item.key === input.getAttribute("data-param"); })[0]; if (!param || !isFinite(value) || value < param.min || value > param.max) miniError = "Mini 参数必须在游戏基础能力范围内"; });
     return miniError;
   }
 
-  function collectFields(root, game) {
-    if (game.type === "SLOTS") {
+  function collectFields(root, game, module) {
+    if (module === "rtp") {
+      game.rtp = api.parseRtp(root.querySelector("#moduleRtp").value).value;
+    } else if (module === "slotsBets") {
       game.enabledBets = Array.prototype.map.call(root.querySelectorAll(".slot-bet-option:checked"), function (item) { return Number(item.value); });
-      var freeGame = root.querySelector("#slotFreeGame");
-      if (freeGame && !freeGame.disabled) game.freeGameAllowed = freeGame.checked;
-    } else if (game.type === "FISH") {
+    } else if (module === "slotsFreeGame") {
+      game.freeGameAllowed = root.querySelector("#slotFreeGame").checked;
+    } else if (module === "fishCannons") {
       root.querySelectorAll(".fish-amount").forEach(function (input) { var level = Number(input.getAttribute("data-level")); game.cannons.forEach(function (cannon) { if (cannon.level === level) cannon.amount = Number(input.value); }); });
-    } else if (game.type === "Poker") {
-      game.rooms.forEach(function (room) { var base = root.querySelector(".poker-base-score[data-room=\"" + room.code + "\"]"); var entry = root.querySelector(".poker-min-entry[data-room=\"" + room.code + "\"]"); if (base) room.baseScore = Number(base.value); if (entry) room.minEntry = Number(entry.value); });
-    } else {
+    } else if (module === "pokerRooms") {
+      game.rooms.forEach(function (room) { room.baseScore = Number(root.querySelector(".poker-base-score[data-room=\"" + room.code + "\"]").value); room.minEntry = Number(root.querySelector(".poker-min-entry[data-room=\"" + room.code + "\"]").value); });
+    } else if (module === "pokerRobots") {
+      game.rooms.forEach(function (room) { room.tableNum = Number(root.querySelector(".poker-table-num[data-room=\"" + room.code + "\"]").value); room.joinTableCountLimit = Number(root.querySelector(".poker-join-limit[data-room=\"" + room.code + "\"]").value); room.maxRobotNum = Number(root.querySelector(".poker-max-robot[data-room=\"" + room.code + "\"]").value); room.robotNum = root.querySelector(".poker-robot-num[data-room=\"" + room.code + "\"]").value.split(",").map(function (item) { return Number(item.trim()); }); });
+    } else if (module === "pokerRanges") {
+      game.rooms.forEach(function (room) { ["minGold", "maxGold", "exitGameMinGold", "exitGameMaxGold", "minPlayTime", "maxPlayTime", "minPlayRound", "maxPlayRound"].forEach(function (field) { room[field] = Number(root.querySelector("[data-field=\"" + field + "\"][data-room=\"" + room.code + "\"]").value); }); });
+    } else if (module === "miniParams") {
       game.params.forEach(function (param) { var input = root.querySelector(".mini-param[data-param=\"" + param.key + "\"]"); if (input) param.value = input.value; });
     }
+  }
+
+  function moduleSummary(game, module) {
+    if (module === "rtp") return api.formatRtp(game.rtp);
+    if (module === "slotsBets") return "底分 " + game.enabledBets.join(" / ");
+    if (module === "slotsFreeGame") return game.freeGameAllowed ? "允许购买" : "禁止购买";
+    if (module === "fishCannons") return game.cannons.map(function (item) { return item.amount; }).join(" / ");
+    if (module === "pokerRooms") return game.rooms.map(function (room) { return room.name + " " + room.baseScore + "/" + room.minEntry; }).join("；");
+    if (module === "pokerRobots") return game.rooms.map(function (room) { return room.name + " " + room.tableNum + "桌/上限" + room.maxRobotNum; }).join("；");
+    if (module === "pokerRanges") return game.rooms.map(function (room) { return room.name + " 金币" + room.minGold + "-" + room.maxGold; }).join("；");
+    return game.params.map(function (param) { return param.label + "=" + param.value; }).join("；");
   }
 
   function syncSelectionState() {
@@ -124,7 +209,7 @@
     var keyword = String(document.getElementById("gameName").value || "").trim().toLowerCase();
     var visible = games.map(function (game, index) { return { game: game, index: index }; }).filter(function (item) { var game = item.game; return (activeType === "全部" || game.type === activeType) && (!keyword || [game.name, game.code].join(" ").toLowerCase().indexOf(keyword) !== -1); });
     var rows = document.getElementById("gameRows");
-    rows.innerHTML = visible.length ? visible.map(function (item) { var game = item.game; return "<tr><td class=\"check-cell\"><input class=\"game-row-check\" type=\"checkbox\" data-index=\"" + item.index + "\"" + (game.selected ? " checked" : "") + "></td><td>" + esc(game.type) + "</td><td>" + esc(game.code) + "</td><td>" + esc(game.name) + "</td><td>" + esc(renderSummary(game)) + "</td><td class=\"number-cell\"><span class=\"self-game-rtp\">" + api.formatRtp(game.rtp) + "</span></td><td>" + esc(game.updated) + "</td><td><button class=\"self-game-link\" type=\"button\" data-config-index=\"" + item.index + "\">配置</button></td></tr>"; }).join("") : "<tr class=\"empty-row\"><td colspan=\"8\">暂无符合条件的自研游戏</td></tr>";
+    rows.innerHTML = visible.length ? visible.map(function (item) { var game = item.game; return "<tr><td class=\"check-cell\"><input class=\"game-row-check\" type=\"checkbox\" data-index=\"" + item.index + "\"" + (game.selected ? " checked" : "") + "></td><td><span class=\"self-game-type-tag " + typeClass(game.type) + "\">" + esc(game.type) + "</span></td><td><strong class=\"self-game-name\">" + esc(game.name) + "</strong><span class=\"self-game-code\">" + esc(game.code) + "</span></td><td class=\"self-game-summary-cell\">" + esc(renderSummary(game)) + "</td><td class=\"number-cell\"><span class=\"self-game-rtp\">" + api.formatRtp(game.rtp) + "</span></td><td>" + esc(game.updated) + "</td><td><div class=\"self-game-config-actions\">" + renderModuleActions(game, item.index) + "</div></td></tr>"; }).join("") : "<tr class=\"empty-row\"><td colspan=\"7\">暂无符合条件的自研游戏</td></tr>";
     syncSelectionState();
   }
 
@@ -133,43 +218,42 @@
     target.innerHTML = records.length ? records.map(function (record) { return "<tr><td>" + esc(record.time) + "</td><td>" + esc(record.type || "-") + "</td><td>" + esc(record.game) + "</td><td>" + esc(record.action) + "</td><td>" + esc((record.before || "-") + " → " + (record.after || "-")) + "</td><td>" + esc(record.operator || "运营管理员") + "</td></tr>"; }).join("") : "<tr class=\"empty-row\"><td colspan=\"6\">暂无变更记录</td></tr>";
   }
 
-  function openConfig(index) {
+  function openModule(index, module) {
     var game = games[index];
-    if (!game) return;
+    var supported = game && modulesFor(game).some(function (item) { return item.key === module; });
+    if (!supported) return;
     editingIndex = index;
-    document.getElementById("configTitle").textContent = game.type + " 配置 / " + game.name;
-    document.getElementById("configGameName").textContent = game.name;
-    document.getElementById("configGameCode").textContent = game.code;
-    document.getElementById("configType").textContent = game.type;
-    document.getElementById("configCapability").innerHTML = renderCapability(game);
-    document.getElementById("configRtp").value = Number(game.rtp).toFixed(1);
-    document.getElementById("configFields").innerHTML = renderFields(game);
-    document.getElementById("configModalError").hidden = true;
-    document.getElementById("configRtpError").hidden = true;
-    api.setLayer(document.getElementById("configModal"), true);
+    activeModule = module;
+    editingBefore = moduleSummary(game, module);
+    document.getElementById("moduleTitle").textContent = moduleNames[module] + " / " + game.name;
+    document.getElementById("moduleGameName").textContent = game.name;
+    document.getElementById("moduleGameCode").textContent = game.code;
+    document.getElementById("moduleGameType").textContent = game.type;
+    document.getElementById("moduleFields").innerHTML = renderFields(game, module);
+    document.getElementById("moduleModalError").hidden = true;
+    var dialog = document.querySelector("#moduleModal .self-game-module-modal");
+    dialog.classList.toggle("is-medium", ["fishCannons", "pokerRooms", "miniParams"].indexOf(module) !== -1);
+    dialog.classList.toggle("is-wide", ["pokerRobots", "pokerRanges"].indexOf(module) !== -1);
+    api.setLayer(document.getElementById("moduleModal"), true);
   }
 
-  function closeConfig() { editingIndex = -1; api.setLayer(document.getElementById("configModal"), false); }
+  function closeModule() { editingIndex = -1; activeModule = ""; editingBefore = ""; api.setLayer(document.getElementById("moduleModal"), false); }
 
-  function applyConfig() {
-    if (editingIndex < 0) return;
+  function applyModule() {
+    if (editingIndex < 0 || !activeModule) return;
     var game = games[editingIndex];
-    var parsed = api.parseRtp(document.getElementById("configRtp").value);
-    var rtpError = document.getElementById("configRtpError");
-    rtpError.textContent = parsed.message || "";
-    rtpError.hidden = !parsed.message;
-    if (parsed.message) return;
-    var fieldError = validateFields(document.getElementById("configFields"), game);
-    if (fieldError) { var error = document.getElementById("configModalError"); error.textContent = fieldError; error.hidden = false; return; }
-    var before = game.rtp;
-    collectFields(document.getElementById("configFields"), game);
-    game.rtp = parsed.value;
+    var fields = document.getElementById("moduleFields");
+    var error = document.getElementById("moduleModalError");
+    error.hidden = true;
+    var fieldError = validateFields(fields, game, activeModule);
+    if (fieldError) { error.textContent = fieldError; error.hidden = false; return; }
+    collectFields(fields, game, activeModule);
     game.updated = api.nowText();
-    records.unshift({ time: game.updated, type: game.type, game: game.name, action: "更新玩法配置", before: api.formatRtp(before), after: api.formatRtp(game.rtp), operator: "运营管理员" });
+    records.unshift({ time: game.updated, type: game.type, game: game.name, action: moduleNames[activeModule], before: editingBefore, after: moduleSummary(game, activeModule), operator: "运营管理员" });
     renderRows();
     renderRecords();
-    closeConfig();
-    api.showToast("配置已立即生效", false);
+    api.showToast(moduleNames[activeModule] + "已生效", false);
+    closeModule();
   }
 
   function updateBatchPreview() {
@@ -214,18 +298,17 @@
   api.ready(function () {
     document.querySelectorAll("[data-game-type]").forEach(function (button) { button.addEventListener("click", function () { document.querySelectorAll("[data-game-type]").forEach(function (item) { item.classList.remove("is-active"); }); button.classList.add("is-active"); activeType = button.getAttribute("data-game-type"); renderRows(); }); });
     document.getElementById("gameFilterForm").addEventListener("submit", function (event) { event.preventDefault(); renderRows(); });
-    document.getElementById("gameReset").addEventListener("click", function () { document.getElementById("gameName").value = ""; renderRows(); });
-    document.getElementById("gameRows").addEventListener("click", function (event) { var button = event.target.closest("[data-config-index]"); if (button) openConfig(Number(button.getAttribute("data-config-index"))); });
+    document.getElementById("gameReset").addEventListener("click", function () { document.getElementById("gameName").value = ""; activeType = "全部"; document.querySelectorAll("[data-game-type]").forEach(function (button) { button.classList.toggle("is-active", button.getAttribute("data-game-type") === "全部"); }); renderRows(); });
+    document.getElementById("gameRows").addEventListener("click", function (event) { var button = event.target.closest("[data-config-module]"); if (button) openModule(Number(button.getAttribute("data-config-index")), button.getAttribute("data-config-module")); });
     document.getElementById("gameRows").addEventListener("change", function (event) { if (event.target.matches(".game-row-check")) { games[Number(event.target.getAttribute("data-index"))].selected = event.target.checked; syncSelectionState(); } });
     document.getElementById("gameSelectAll").addEventListener("change", function (event) { document.querySelectorAll(".game-row-check").forEach(function (checkbox) { checkbox.checked = event.target.checked; games[Number(checkbox.getAttribute("data-index"))].selected = event.target.checked; }); renderRows(); });
     document.getElementById("openBatchRtp").addEventListener("click", function () { if (!games.some(function (game) { return game.selected; })) { api.showToast("请先勾选需要修改 RTP 的游戏", true); return; } openBatch(); });
     document.getElementById("batchApply").addEventListener("click", applyBatch);
     document.querySelectorAll("[data-batch-close]").forEach(function (button) { button.addEventListener("click", closeBatch); });
-    document.querySelectorAll("[data-config-close]").forEach(function (button) { button.addEventListener("click", closeConfig); });
-    document.getElementById("configModal").querySelector(".self-game-modal-mask").addEventListener("click", closeConfig);
-    document.getElementById("batchModal").querySelector(".self-game-modal-mask").addEventListener("click", closeBatch);
-    document.getElementById("applyConfig").addEventListener("click", applyConfig);
+    document.querySelectorAll("[data-module-close]").forEach(function (button) { button.addEventListener("click", closeModule); });
+    document.getElementById("applyModule").addEventListener("click", applyModule);
     document.addEventListener("click", function (event) { var tab = event.target.closest("[data-self-tab]"); if (!tab) return; var group = tab.getAttribute("data-self-tab-group"); var target = tab.getAttribute("data-self-tab"); document.querySelectorAll("[data-self-tab-group=\"" + group + "\"]").forEach(function (item) { if (item.hasAttribute("data-self-tab")) item.classList.toggle("is-active", item === tab); if (item.hasAttribute("data-self-tab-panel")) item.hidden = item.getAttribute("data-self-tab-panel") !== target; }); });
+    document.addEventListener("keydown", function (event) { if (event.key !== "Escape") return; if (!document.getElementById("moduleModal").hidden) closeModule(); else if (!document.getElementById("batchModal").hidden) closeBatch(); });
     renderRows();
     renderRecords();
   });
