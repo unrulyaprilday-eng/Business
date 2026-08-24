@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-08-19T07:38:06.932Z",
+  "savedAt": "2026-08-24T09:03:09.612Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -200,13 +200,6 @@
           "children": []
         },
         {
-          "id": "operation_task_center",
-          "pageName": "任务中心",
-          "type": "Wireframe",
-          "url": "任务中心.html",
-          "children": []
-        },
-        {
           "id": "operation_landing_page_manage",
           "pageName": "落地页管理",
           "type": "Wireframe",
@@ -297,6 +290,13 @@
           "pageName": "全局配置",
           "type": "Wireframe",
           "url": "全局配置.html",
+          "children": []
+        },
+        {
+          "id": "operation_task_center",
+          "pageName": "任务中心",
+          "type": "Wireframe",
+          "url": "任务中心.html",
           "children": []
         }
       ]

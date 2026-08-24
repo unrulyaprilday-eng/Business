@@ -313,6 +313,73 @@ body.red-packet-template-active #u6 > #u6_state6 {
   accent-color: #409eff;
 }
 
+.activity-reward-target .custom-radio-group input[type="radio"] {
+  appearance: none;
+  box-sizing: border-box;
+  flex: 0 0 16px;
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  max-width: 16px !important;
+  min-height: 16px !important;
+  max-height: 16px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 1px solid #c4ccd8;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+}
+
+.activity-reward-target .custom-radio-group input[type="radio"]:checked {
+  border: 5px solid #409eff;
+}
+
+.activity-reward-target .custom-radio-group input[type="radio"]:focus-visible {
+  outline: 3px solid #d9ecff;
+  outline-offset: 2px;
+}
+
+.activity-reward-target-legacy {
+  position: absolute;
+  left: 650px;
+  top: 40px;
+  z-index: 5;
+  width: 320px;
+  grid-template-columns: 104px minmax(0, 1fr);
+  font-family: "Microsoft YaHei", sans-serif;
+  font-size: 13px;
+}
+
+#u6_state1 .activity-reward-target-legacy {
+  top: 53px;
+}
+
+.custom-challenge-form .activity-reward-target .custom-radio-group label {
+  min-height: 20px;
+  padding-left: 0;
+}
+
+.custom-challenge-form .activity-reward-target .custom-radio-group label::before,
+.custom-challenge-form .activity-reward-target .custom-radio-group label::after {
+  content: none;
+}
+
+.custom-challenge-form .activity-reward-target .custom-radio-group input[type="radio"] {
+  position: static !important;
+  flex: 0 0 16px;
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  max-width: 16px !important;
+  min-height: 16px !important;
+  max-height: 16px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .custom-relief-table {
   margin: 20px 0 26px 104px;
   width: calc(100% - 104px);

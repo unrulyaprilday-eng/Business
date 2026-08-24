@@ -34,6 +34,8 @@
       currency: "USDT",
       rewardAmount: "88.00",
       activity: "20",
+      rewardTarget: "piggy-bank",
+      rewardTargetText: "存钱罐",
       rewardStatus: "claimed",
       rewardStatusText: "已领取",
       rewardTime: "2026-06-10 14:18:26",
@@ -70,6 +72,8 @@
       currency: "USDT",
       rewardAmount: "28.00",
       activity: "10",
+      rewardTarget: "balance",
+      rewardTargetText: "余额",
       rewardStatus: "claimed",
       rewardStatusText: "已领取",
       rewardTime: "2026-06-10 09:41:02",
@@ -106,6 +110,8 @@
       currency: "USD",
       rewardAmount: "18.00",
       activity: "12",
+      rewardTarget: "balance",
+      rewardTargetText: "余额",
       rewardStatus: "pending",
       rewardStatusText: "待领取",
       rewardTime: "-",
@@ -142,6 +148,8 @@
       currency: "USDT",
       rewardAmount: "58.00",
       activity: "30",
+      rewardTarget: "piggy-bank",
+      rewardTargetText: "存钱罐",
       rewardStatus: "claimed",
       rewardStatusText: "已领取",
       rewardTime: "2026-06-10 10:18:27",
@@ -179,6 +187,8 @@
       currency: "USDT",
       rewardAmount: "188.00",
       activity: "88",
+      rewardTarget: "piggy-bank",
+      rewardTargetText: "存钱罐",
       rewardStatus: "claimed",
       rewardStatusText: "已领取",
       rewardTime: "2026-06-09 23:10:18",
@@ -215,6 +225,8 @@
       currency: "USDT",
       rewardAmount: "66.00",
       activity: "120",
+      rewardTarget: "piggy-bank",
+      rewardTargetText: "存钱罐",
       rewardStatus: "invalid",
       rewardStatusText: "未达成",
       rewardTime: "-",
@@ -261,6 +273,11 @@
 
   function rowKey(item) {
     return [item.id, item.playerId, item.rewardTime].join("__");
+  }
+
+  function buildRewardTarget(target, text) {
+    var targetClass = target === "balance" ? "balance" : "piggy-bank";
+    return '<span class="reward-target-badge ' + targetClass + '">' + escapeHtml(text) + "</span>";
   }
 
   function quickFeedback(button, doneText, originalText) {
@@ -317,6 +334,7 @@
             "<td>" + escapeHtml(item.currency) + "</td>",
             '<td class="num positive">' + escapeHtml(item.rewardAmount) + "</td>",
             '<td class="num">' + escapeHtml(item.activity) + "</td>",
+            "<td>" + buildRewardTarget(item.rewardTarget, item.rewardTargetText) + "</td>",
             '<td><span class="status-tag ' + escapeHtml(item.rewardStatus) + '">' + escapeHtml(item.rewardStatusText) + "</span></td>",
             "<td>" + escapeHtml(item.rewardTime) + "</td>",
             '<td><div class="action-links"><button class="link-btn" type="button" data-action="member" data-row-id="' + escapeHtml(rowKey(item)) + '">用户详情</button><button class="link-btn" type="button" data-action="reward" data-row-id="' + escapeHtml(rowKey(item)) + '">奖励明细</button></div></td>',
@@ -397,7 +415,7 @@
       rewardDetailSubline.textContent = item.name + " - " + item.playerId + " - 奖励明细";
 
       if (!item.rewardRecords.length) {
-        rewardDetailBody.innerHTML = '<tr><td colspan="4" class="empty-cell">当前玩家在该任务下暂无奖励发放记录</td></tr>';
+        rewardDetailBody.innerHTML = '<tr><td colspan="5" class="empty-cell">当前玩家在该任务下暂无奖励发放记录</td></tr>';
       } else {
         rewardDetailBody.innerHTML = item.rewardRecords
           .map(function (record) {
@@ -406,6 +424,7 @@
               "<td>" + escapeHtml(record.currency) + "</td>",
               '<td class="num positive">' + escapeHtml(record.amount) + "</td>",
               '<td class="num">' + escapeHtml(record.activity) + "</td>",
+              "<td>" + buildRewardTarget(item.rewardTarget, item.rewardTargetText) + "</td>",
               "<td>" + escapeHtml(record.time) + "</td>",
               "</tr>"
             ].join("");

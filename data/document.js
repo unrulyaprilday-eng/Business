@@ -211,13 +211,6 @@ $axure.loadDocument({
             "children": []
           },
           {
-            "id": "operation_task_center",
-            "pageName": "任务中心",
-            "type": "Wireframe",
-            "url": "任务中心.html",
-            "children": []
-          },
-          {
             "id": "operation_landing_page_manage",
             "pageName": "落地页管理",
             "type": "Wireframe",
@@ -308,6 +301,13 @@ $axure.loadDocument({
             "pageName": "全局配置",
             "type": "Wireframe",
             "url": "全局配置.html",
+            "children": []
+          },
+          {
+            "id": "operation_task_center",
+            "pageName": "任务中心",
+            "type": "Wireframe",
+            "url": "任务中心.html",
             "children": []
           }
         ]

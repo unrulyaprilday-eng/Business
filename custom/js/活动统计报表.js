@@ -9,6 +9,8 @@
       participants: "12,860",
       claimed: "5,126",
       amount: "826,400.00",
+      rewardTarget: "piggy-bank",
+      rewardTargetText: "存钱罐",
       status: "running",
       statusText: "进行中"
     },
@@ -21,6 +23,8 @@
       participants: "10,204",
       claimed: "4,880",
       amount: "624,260.00",
+      rewardTarget: "balance",
+      rewardTargetText: "余额",
       status: "running",
       statusText: "进行中"
     },
@@ -33,6 +37,8 @@
       participants: "6,904",
       claimed: "2,910",
       amount: "438,000.00",
+      rewardTarget: "balance",
+      rewardTargetText: "余额",
       status: "ended",
       statusText: "已结束"
     },
@@ -45,6 +51,8 @@
       participants: "2,892",
       claimed: "510",
       amount: "296,000.00",
+      rewardTarget: "piggy-bank",
+      rewardTargetText: "存钱罐",
       status: "pending",
       statusText: "待开始"
     }
@@ -69,6 +77,10 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#39;");
+  }
+
+  function buildRewardTarget(target, text) {
+    return '<span class="reward-target-badge ' + target + '">' + escapeHtml(text) + "</span>";
   }
 
   ready(function () {
@@ -98,6 +110,7 @@
             '<td class="num">' + escapeHtml(item.participants) + "</td>",
             '<td class="num">' + escapeHtml(item.claimed) + "</td>",
             '<td class="num positive">' + escapeHtml(item.amount) + "</td>",
+            "<td>" + buildRewardTarget(item.rewardTarget, item.rewardTargetText) + "</td>",
             "<td>" + buildStatus(item.status, item.statusText) + "</td>",
             '<td><button class="link-btn" type="button" data-row-id="' + escapeHtml(item.id) + '">查看玩家</button></td>',
             "</tr>"

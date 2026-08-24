@@ -31,11 +31,16 @@
 
 .task-player-page .report-table th:nth-child(9),
 .task-player-page .report-table td:nth-child(9) {
-  width: 148px;
+  width: 92px;
 }
 
 .task-player-page .report-table th:nth-child(10),
 .task-player-page .report-table td:nth-child(10) {
+  width: 148px;
+}
+
+.task-player-page .report-table th:nth-child(11),
+.task-player-page .report-table td:nth-child(11) {
   width: 172px;
 }
 
@@ -60,4 +65,9 @@
 .task-reward-dialog .claim-detail-table th:nth-child(3),
 .task-reward-dialog .claim-detail-table td:nth-child(3) {
   width: 140px;
+}
+
+.task-reward-dialog .claim-detail-table th:nth-child(4),
+.task-reward-dialog .claim-detail-table td:nth-child(4) {
+  width: 120px;
 }

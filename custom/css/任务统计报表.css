@@ -18,19 +18,27 @@
 .task-report-page .report-table th:nth-child(6),
 .task-report-page .report-table td:nth-child(6),
 .task-report-page .report-table th:nth-child(7),
-.task-report-page .report-table td:nth-child(7),
-.task-report-page .report-table th:nth-child(8),
-.task-report-page .report-table td:nth-child(8) {
+.task-report-page .report-table td:nth-child(7) {
   width: 96px;
 }
 
 .task-report-page .report-table th:nth-child(9),
 .task-report-page .report-table td:nth-child(9) {
-  width: 92px;
+  width: 96px;
+}
+
+.task-report-page .report-table th:nth-child(8),
+.task-report-page .report-table td:nth-child(8) {
+  width: 104px;
 }
 
 .task-report-page .report-table th:nth-child(10),
 .task-report-page .report-table td:nth-child(10) {
+  width: 92px;
+}
+
+.task-report-page .report-table th:nth-child(11),
+.task-report-page .report-table td:nth-child(11) {
   width: 96px;
 }
 

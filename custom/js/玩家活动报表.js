@@ -91,6 +91,8 @@
       playerId: "P102438",
       currency: "USDT",
       rewardAmount: "188.00",
+      rewardTarget: "piggy-bank",
+      rewardTargetText: "存钱罐",
       rewardStatus: "claimed",
       rewardStatusText: "已领取",
       rewardTime: "2026-06-09 14:18:26",
@@ -174,6 +176,8 @@
       playerId: "P204511",
       currency: "USDT",
       rewardAmount: "128.00",
+      rewardTarget: "piggy-bank",
+      rewardTargetText: "存钱罐",
       rewardStatus: "claimed",
       rewardStatusText: "已领取",
       rewardTime: "2026-06-10 09:41:02",
@@ -256,6 +260,8 @@
       playerId: "P774520",
       currency: "USD",
       rewardAmount: "88.00",
+      rewardTarget: "balance",
+      rewardTargetText: "余额",
       rewardStatus: "pending",
       rewardStatusText: "待领取",
       rewardTime: "-",
@@ -337,6 +343,8 @@
       playerId: "P884203",
       currency: "USDT",
       rewardAmount: "288.00",
+      rewardTarget: "balance",
+      rewardTargetText: "余额",
       rewardStatus: "claimed",
       rewardStatusText: "已领取",
       rewardTime: "2026-06-10 10:18:27",
@@ -420,6 +428,8 @@
       playerId: "P661204",
       currency: "USD",
       rewardAmount: "0.00",
+      rewardTarget: "balance",
+      rewardTargetText: "余额",
       rewardStatus: "invalid",
       rewardStatusText: "未达标",
       rewardTime: "-",
@@ -499,6 +509,8 @@
       playerId: "P991530",
       currency: "USDT",
       rewardAmount: "300.00",
+      rewardTarget: "balance",
+      rewardTargetText: "余额",
       rewardStatus: "claimed",
       rewardStatusText: "已领取",
       rewardTime: "2026-06-08 18:26:10",
@@ -581,6 +593,8 @@
       playerId: "P902188",
       currency: "USDT",
       rewardAmount: "1288.00",
+      rewardTarget: "piggy-bank",
+      rewardTargetText: "存钱罐",
       rewardStatus: "pending",
       rewardStatusText: "待领取",
       rewardTime: "-",
@@ -662,6 +676,8 @@
       playerId: "P772610",
       currency: "USD",
       rewardAmount: "888.00",
+      rewardTarget: "piggy-bank",
+      rewardTargetText: "存钱罐",
       rewardStatus: "pending",
       rewardStatusText: "待领取",
       rewardTime: "-",
@@ -758,6 +774,11 @@
     return '<span class="status-tag ' + status + '">' + escapeHtml(text) + "</span>";
   }
 
+  function buildRewardTarget(target, text) {
+    var targetClass = target === "balance" ? "balance" : "piggy-bank";
+    return '<span class="reward-target-badge ' + targetClass + '">' + escapeHtml(text) + "</span>";
+  }
+
   function amountClass(value) {
     if (String(value).indexOf("-") === 0) {
       return "red";
@@ -845,6 +866,7 @@
             "<td>" + escapeHtml(item.type) + "</td>",
             "<td>" + escapeHtml(item.currency) + "</td>",
             '<td class="num positive">' + escapeHtml(item.rewardAmount) + "</td>",
+            "<td>" + buildRewardTarget(item.rewardTarget, item.rewardTargetText) + "</td>",
             "<td>" + buildStatus(item.rewardStatus, item.rewardStatusText) + "</td>",
             "<td>" + escapeHtml(item.rewardTime) + "</td>",
             '<td><div class="action-links"><button class="link-btn" type="button" data-action="user" data-row-id="' + key + '">用户详情</button><button class="link-btn" type="button" data-action="claim" data-row-id="' + key + '">领取详情</button></div></td>',
@@ -1056,7 +1078,7 @@
       claimDetailSubline.textContent = item.name + " - " + item.playerId + " - 领奖详情";
 
       if (!item.claimRecords.length) {
-        claimDetailBody.innerHTML = '<tr><td colspan="3" class="empty-cell">当前玩家在该活动下暂无领取记录</td></tr>';
+        claimDetailBody.innerHTML = '<tr><td colspan="4" class="empty-cell">当前玩家在该活动下暂无领取记录</td></tr>';
       } else {
         claimDetailBody.innerHTML = item.claimRecords
           .map(function (record) {
@@ -1064,6 +1086,7 @@
               "<tr>",
               "<td>" + escapeHtml(record.currency) + "</td>",
               '<td class="num positive">' + escapeHtml(record.amount) + "</td>",
+              "<td>" + buildRewardTarget(item.rewardTarget, item.rewardTargetText) + "</td>",
               "<td>" + escapeHtml(record.time) + "</td>",
               "</tr>"
             ].join("");

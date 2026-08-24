@@ -344,11 +344,16 @@ button {
 
 .report-table th:nth-child(9),
 .report-table td:nth-child(9) {
-  width: 88px;
+  width: 104px;
 }
 
 .report-table th:nth-child(10),
 .report-table td:nth-child(10) {
+  width: 88px;
+}
+
+.report-table th:nth-child(11),
+.report-table td:nth-child(11) {
   width: 96px;
 }
 
@@ -387,6 +392,28 @@ button {
 .status-tag.ended {
   background: #eef2f7;
   color: #6b7280;
+}
+
+.reward-target-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.reward-target-badge.balance {
+  background: #e8f3ff;
+  color: #226bb2;
+}
+
+.reward-target-badge.piggy-bank {
+  background: #fff4e5;
+  color: #ad6a16;
 }
 
 .link-btn {

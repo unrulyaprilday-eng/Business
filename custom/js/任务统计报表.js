@@ -10,6 +10,8 @@
       completed: "6,118",
       amount: "426,800.00",
       activity: "98,540",
+      rewardTarget: "piggy-bank",
+      rewardTargetText: "存钱罐",
       status: "running",
       statusText: "进行中"
     },
@@ -23,6 +25,8 @@
       completed: "5,834",
       amount: "185,620.00",
       activity: "62,400",
+      rewardTarget: "balance",
+      rewardTargetText: "余额",
       status: "running",
       statusText: "进行中"
     },
@@ -36,6 +40,8 @@
       completed: "2,406",
       amount: "142,320.00",
       activity: "44,860",
+      rewardTarget: "balance",
+      rewardTargetText: "余额",
       status: "running",
       statusText: "进行中"
     },
@@ -49,6 +55,8 @@
       completed: "9,208",
       amount: "296,540.00",
       activity: "136,200",
+      rewardTarget: "piggy-bank",
+      rewardTargetText: "存钱罐",
       status: "running",
       statusText: "进行中"
     },
@@ -62,6 +70,8 @@
       completed: "1,242",
       amount: "208,000.00",
       activity: "52,600",
+      rewardTarget: "piggy-bank",
+      rewardTargetText: "存钱罐",
       status: "pending",
       statusText: "待开始"
     },
@@ -75,6 +85,8 @@
       completed: "10,886",
       amount: "366,880.00",
       activity: "188,640",
+      rewardTarget: "piggy-bank",
+      rewardTargetText: "存钱罐",
       status: "ended",
       statusText: "已结束"
     }
@@ -99,6 +111,10 @@
 
   function buildStatus(status, text) {
     return '<span class="status-tag ' + status + '">' + text + "</span>";
+  }
+
+  function buildRewardTarget(target, text) {
+    return '<span class="reward-target-badge ' + target + '">' + escapeHtml(text) + "</span>";
   }
 
   function quickFeedback(button, doneText, originalText) {
@@ -136,6 +152,7 @@
             '<td class="num">' + escapeHtml(item.participants) + "</td>",
             '<td class="num">' + escapeHtml(item.completed) + "</td>",
             '<td class="num positive">' + escapeHtml(item.amount) + "</td>",
+            "<td>" + buildRewardTarget(item.rewardTarget, item.rewardTargetText) + "</td>",
             '<td class="num">' + escapeHtml(item.activity) + "</td>",
             "<td>" + buildStatus(item.status, item.statusText) + "</td>",
             '<td><button class="link-btn" type="button" data-row-id="' + escapeHtml(item.id) + '">查看玩家</button></td>',

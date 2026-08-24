@@ -42,6 +42,72 @@
     }
   }
 
+  function createRewardTargetField(stateIndex) {
+    var field = document.createElement("div");
+    var inputName = "activityRewardTarget" + stateIndex;
+
+    field.className = "custom-field activity-reward-target";
+    field.setAttribute("data-activity-reward-target", String(stateIndex));
+    field.innerHTML = [
+      "<span>\u4e2d\u5956\u91d1\u989d\u76ee\u6807</span>",
+      '<div class="custom-radio-group">',
+      '<label><input type="radio" name="' + inputName + '" value="\u4f59\u989d" checked>\u4f59\u989d</label>',
+      '<label><input type="radio" name="' + inputName + '" value="\u5b58\u94b1\u7f50">\u5b58\u94b1\u7f50</label>',
+      "</div>"
+    ].join("");
+    return field;
+  }
+
+  function ensureRewardTargetFields() {
+    var stateIndex;
+
+    for (stateIndex = 0; stateIndex <= 6; stateIndex += 1) {
+      var state = document.getElementById("u6_state" + stateIndex);
+      var content;
+      var grid;
+      var field;
+
+      if (!state) {
+        continue;
+      }
+
+      if (stateIndex === 6) {
+        field = state.querySelector(".red-packet-target-field");
+        if (field) {
+          field.classList.add("activity-reward-target");
+          field.querySelector("span").textContent = "\u4e2d\u5956\u91d1\u989d\u76ee\u6807";
+          Array.prototype.forEach.call(field.querySelectorAll('input[name="redPacketRewardTarget"]'), function (input) {
+            var label = input.parentNode;
+            if (input.value === "\u91d1\u989d") {
+              input.value = "\u4f59\u989d";
+              if (label) {
+                label.lastChild.nodeValue = "\u4f59\u989d";
+              }
+            }
+          });
+        }
+        continue;
+      }
+
+      if (state.querySelector("[data-activity-reward-target]")) {
+        continue;
+      }
+
+      field = createRewardTargetField(stateIndex);
+      grid = state.querySelector(".custom-relief-grid, .custom-share-grid");
+      if (grid) {
+        grid.insertBefore(field, grid.children[2] || null);
+        continue;
+      }
+
+      content = document.getElementById("u6_state" + stateIndex + "_content");
+      if (content) {
+        field.classList.add("activity-reward-target-legacy");
+        content.appendChild(field);
+      }
+    }
+  }
+
   function getPanelStates(panel) {
     if (panel.id && panelStateCache[panel.id]) {
       return panelStateCache[panel.id];
@@ -1183,7 +1249,7 @@
           validBet: row.querySelector(".red-packet-tier-valid-bet").value
         };
       }),
-      rewardTarget: getCheckedValue("redPacketRewardTarget", "\u91d1\u989d"),
+      rewardTarget: getCheckedValue("redPacketRewardTarget", "\u4f59\u989d"),
       conditionMode: getCheckedValue("redPacketConditionMode", "\u6ee1\u8db3\u4efb\u610f\u4e00\u4e2a"),
       lookbackDays: document.getElementById("redPacketLookbackDays").value,
       description: document.getElementById("redPacketDescription").value
@@ -1314,7 +1380,7 @@
     Array.prototype.forEach.call(document.querySelectorAll('input[name="redPacketMonthDay"]'), function (input) { input.checked = (record.monthDays || []).indexOf(input.value) !== -1; });
     Array.prototype.forEach.call(document.querySelectorAll('input[name="redPacketWeekDay"]'), function (input) { input.checked = (record.weekDays || []).indexOf(input.value) !== -1; });
     ["redPacketRewardTarget", "redPacketConditionMode", "redPacketCycleRelation"].forEach(function (name) {
-      var value = name === "redPacketRewardTarget" ? record.rewardTarget : (name === "redPacketConditionMode" ? record.conditionMode : (record.cycleRelation || "or"));
+      var value = name === "redPacketRewardTarget" ? (record.rewardTarget === "\u91d1\u989d" ? "\u4f59\u989d" : (record.rewardTarget || "\u4f59\u989d")) : (name === "redPacketConditionMode" ? record.conditionMode : (record.cycleRelation || "or"));
       var input = document.querySelector('input[name="' + name + '"][value="' + value + '"]');
       if (input) { input.checked = true; }
     });
@@ -1398,6 +1464,7 @@
     var select = document.getElementById("u3012_input");
 
     setText("u3011", "\u6d3b\u52a8\u6a21\u677f");
+    ensureRewardTargetFields();
     Array.prototype.forEach.call(document.querySelectorAll(".custom-relief-table"), bindReliefRewardTable);
     bindActivityOgSelection();
     bindCustomActivityJump();
