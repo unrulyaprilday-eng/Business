@@ -8,3 +8,9 @@
 .self-game-type-table th:nth-child(4) { width: 98px; }
 .self-game-type-table th:nth-child(5) { width: 142px; }
 .self-game-type-table th:nth-child(6) { width: 56px; }
+
+.self-game-robot-range-section {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid #e5eaf2;
+}

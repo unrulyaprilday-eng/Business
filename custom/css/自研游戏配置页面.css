@@ -26,20 +26,22 @@
 }
 
 .self-game-merged-table {
-  min-width: 1220px;
+  min-width: 1350px;
 }
 
 .self-game-merged-table th:nth-child(1) { width: 44px; }
 .self-game-merged-table th:nth-child(2) { width: 86px; }
 .self-game-merged-table th:nth-child(3) { width: 160px; }
-.self-game-merged-table th:nth-child(4) { width: 290px; }
-.self-game-merged-table th:nth-child(5) { width: 86px; }
-.self-game-merged-table th:nth-child(6) { width: 142px; }
-.self-game-merged-table th:nth-child(7) { width: 390px; }
+.self-game-merged-table th:nth-child(4) { width: 130px; }
+.self-game-merged-table th:nth-child(5) { width: 290px; }
+.self-game-merged-table th:nth-child(6) { width: 86px; }
+.self-game-merged-table th:nth-child(7) { width: 142px; }
+.self-game-merged-table th:nth-child(8) { width: 390px; }
 
 .self-game-merged-table td:nth-child(3),
 .self-game-merged-table td:nth-child(4),
-.self-game-merged-table td:nth-child(7) {
+.self-game-merged-table td:nth-child(5),
+.self-game-merged-table td:nth-child(8) {
   white-space: normal;
 }
 
@@ -128,6 +130,12 @@
 
 .self-game-module-modal.is-wide {
   width: min(1180px, 100%);
+}
+
+.self-game-robot-range-section {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid #e5eaf2;
 }
 
 .self-game-modal-context {

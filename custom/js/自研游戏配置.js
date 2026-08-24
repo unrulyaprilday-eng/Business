@@ -4,6 +4,19 @@
   var api = window.SelfGameConfig;
   if (!api) return;
 
+  var teenPattiProbabilityRows = [
+    { key: "highLow", label: "10以下的高牌（包含10）", count: 4620, natural: 2090, good1: 1558, good2: 1126, good3: 701, basis: "最高牌面≤10，且不属于对子、同花或顺子" },
+    { key: "highHigh", label: "10以上的高牌", count: 11820, natural: 5348, good1: 5581, good2: 5761, good3: 5889, basis: "最高牌面≥J，且不属于对子、同花或顺子" },
+    { key: "pairLow", label: "10以下的对子（包含10）", count: 2592, natural: 1173, good1: 1224, good2: 1263, good3: 1291, basis: "对子点数≤10，且不是三条" },
+    { key: "pairHigh", label: "10以上的对子", count: 1152, natural: 521, good1: 622, good2: 689, good3: 799, basis: "对子点数≥J，且不是三条" },
+    { key: "flushLow", label: "10以下的同花（包含10）", count: 308, natural: 139, good1: 152, good2: 164, good3: 173, basis: "三张同花、非顺子，最高牌面≤10" },
+    { key: "flushHigh", label: "10以上的同花", count: 788, natural: 357, good1: 443, good2: 524, good3: 615, basis: "三张同花、非顺子，最高牌面≥J" },
+    { key: "straightLow", label: "10以下的顺子（包含10）", count: 480, natural: 217, good1: 237, good2: 255, good3: 270, basis: "非同花顺；A-2-3 或顺子最高牌面≤10" },
+    { key: "straightHigh", label: "10以上的顺子", count: 240, natural: 109, good1: 135, good2: 170, good3: 208, basis: "非同花顺；顺子最高牌面≥J" },
+    { key: "straightFlush", label: "同花顺", count: 48, natural: 22, good1: 23, good2: 23, good3: 27, basis: "三张同花且连续，独立于高低分档" },
+    { key: "trips", label: "三条", count: 52, natural: 24, good1: 25, good2: 25, good3: 27, basis: "三张牌点数相同，独立于高低分档" }
+  ];
+
   var games = [
     { code: "SLOT-1001", name: "星穹宝藏", type: "SLOTS", rtp: 96.0, updated: "2026-08-18 09:30", capability: { freeGamePurchase: true, baseBets: [1, 5, 10, 50] }, enabledBets: [1, 5, 10], freeGameAllowed: true, records: [{ time: "2026-08-18 09:30", game: "星穹宝藏", action: "更新玩法配置", before: "95.0%", after: "96.0%", operator: "运营管理员" }] },
     { code: "SLOT-1002", name: "黄金矿场", type: "SLOTS", rtp: 95.0, updated: "2026-08-17 16:20", capability: { freeGamePurchase: false, baseBets: [0.5, 1, 2, 5] }, enabledBets: [0.5, 1, 2], freeGameAllowed: false, records: [{ time: "2026-08-17 16:20", game: "黄金矿场", action: "更新玩法配置", before: "94.5%", after: "95.0%", operator: "运营管理员" }] },
@@ -20,6 +33,26 @@
       { id: 1, code: "S-L", name: "低分房", baseScore: 2, minEntry: 200, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 2, robotNum: [1, 0], minGold: 200, maxGold: 20000, exitGameMinGold: 20, exitGameMaxGold: 40000, minPlayTime: 5, maxPlayTime: 120, minPlayRound: 1, maxPlayRound: 60 },
       { id: 2, code: "S-H", name: "高分房", baseScore: 50, minEntry: 5000, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0, 1], minGold: 5000, maxGold: 250000, exitGameMinGold: 500, exitGameMaxGold: 500000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 100 }
     ], records: [] },
+    { code: "TP-3001", name: "Teen Patti", type: "Poker", isTeenPatti: true, rtp: 95.0, updated: "2026-08-24 10:00", capability: { roomTypes: ["低分房", "中分房", "高分房"], scoreUnit: "积分" }, rooms: [
+      { id: 1, code: "TP-L", name: "低分房", baseScore: 10, minEntry: 100, tableNum: 3, joinTableCountLimit: 6, maxRobotNum: 3, robotNum: [1, 1, 0], minGold: 1000, maxGold: 100000, exitGameMinGold: 100, exitGameMaxGold: 200000, minPlayTime: 5, maxPlayTime: 120, minPlayRound: 1, maxPlayRound: 50 },
+      { id: 2, code: "TP-M", name: "中分房", baseScore: 50, minEntry: 500, tableNum: 3, joinTableCountLimit: 6, maxRobotNum: 2, robotNum: [0, 1, 1], minGold: 5000, maxGold: 500000, exitGameMinGold: 500, exitGameMaxGold: 1000000, minPlayTime: 5, maxPlayTime: 180, minPlayRound: 1, maxPlayRound: 80 },
+      { id: 3, code: "TP-H", name: "高分房", baseScore: 100, minEntry: 1000, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0, 1], minGold: 10000, maxGold: 1000000, exitGameMinGold: 1000, exitGameMaxGold: 2000000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 100 }
+    ], robotRules: {
+      controlMode: "natural",
+      goodModeEnabled: false,
+      goodMode: "good1",
+      roomBotSwitch: true,
+      pointControlEnabled: false,
+      controlBands: [
+        { key: "naturalFull", label: "库存充足 / 完全不控", min: 80, max: 100, action: "自然概率", status: "已确认" },
+        { key: "naturalLight", label: "库存充足 / 轻微控制", min: 60, max: 80, action: "好牌强度 1", status: "待配置" },
+        { key: "normal", label: "库存不足 / 普通控制", min: 40, max: 60, action: "好牌强度 2", status: "待配置" },
+        { key: "point", label: "点控命中", min: 0, max: 40, action: "默认关闭，需授权", status: "待确认" }
+      ],
+      entry: { count: 3, games: 50, start: "00:00", end: "23:59", poolId: "TP-POOL-01", segment: "TP-3001-0001~0999" },
+      game: { gameId: "teen-patti", ruleVersion: "v1", behaviorMode: "current-hand-only", minPlayers: 2, maxPlayers: 5, boot: 10, startingStack: 100000, blind: "1 / 2", seen: "2 / 4", maxBlindBets: 4, maxBetMultiplier: 128, maxPotMultiplier: 1024 },
+      probabilityRows: teenPattiProbabilityRows
+    }, records: [{ time: "2026-08-24 10:00", game: "Teen Patti", action: "新增游戏设定", before: "-", after: "自然发牌", operator: "运营管理员" }] },
     { code: "MINI-4001", name: "极速飞车", type: "Mini", miniType: "Crash", rtp: 96.5, updated: "2026-08-17 17:10", capability: { fields: ["最大结算倍数", "自动结束阈值"] }, params: [{ key: "maxMultiplier", label: "最大结算倍数", value: "500", unit: "倍", type: "number", min: 1, max: 10000, step: 1 }, { key: "autoStop", label: "自动结束阈值", value: "1.2", unit: "倍", type: "number", min: 1, max: 100, step: 0.1 }], records: [] },
     { code: "MINI-4002", name: "地雷宝藏", type: "Mini", miniType: "Mines", rtp: 95.5, updated: "2026-08-16 15:45", capability: { fields: ["雷区数量", "风险档位"] }, params: [{ key: "mineCount", label: "雷区数量", value: "5", unit: "个", type: "number", min: 1, max: 24, step: 1 }, { key: "riskLevel", label: "风险档位", value: "中", unit: "", type: "select", options: ["低", "中", "高"] }], records: [{ time: "2026-08-16 15:45", game: "地雷宝藏", action: "更新玩法配置", before: "95.0%", after: "95.5%", operator: "运营管理员" }] },
     { code: "MINI-4003", name: "弹珠风险台", type: "Mini", miniType: "Plinko", rtp: 94.0, updated: "2026-08-15 10:22", capability: { fields: ["风险档位", "落点行数"] }, params: [{ key: "riskLevel", label: "风险档位", value: "中", unit: "", type: "select", options: ["低", "中", "高"] }, { key: "rows", label: "落点行数", value: "12", unit: "行", type: "number", min: 8, max: 20, step: 1 }], records: [] }
@@ -38,7 +71,10 @@
   function renderSummary(game) {
     if (game.type === "SLOTS") return "底分 " + game.enabledBets.join(" / ") + " · " + (game.capability.freeGamePurchase ? "Free Game 支持" : "Free Game 不支持");
     if (game.type === "FISH") return game.cannons.length + " 个炮台 · " + game.cannons[0].amount + "～" + game.cannons[game.cannons.length - 1].amount + " / 炮";
-    if (game.type === "Poker") return game.rooms.length + " 个房间 · 低分房底分 " + game.rooms[0].baseScore + " · 机器人上限 " + game.rooms[0].maxRobotNum + "/桌";
+    if (game.type === "Poker") {
+      var pokerSummary = game.rooms.length + " 个房间 · 低分房底分 " + game.rooms[0].baseScore + " · 机器人上限 " + game.rooms[0].maxRobotNum + "/桌";
+      return game.isTeenPatti ? pokerSummary + " · " + robotRuleSummary(game) : pokerSummary;
+    }
     return game.miniType + " · " + game.params.length + " 个专属参数";
   }
 
@@ -49,7 +85,7 @@
     fishCannons: "炮台配置",
     pokerRooms: "房间配置",
     pokerRobots: "机器人配置",
-    pokerRanges: "运行范围配置",
+    robotRules: "游戏设定",
     miniParams: "玩法参数配置"
   };
 
@@ -63,7 +99,7 @@
     } else if (game.type === "Poker") {
       modules.push({ key: "pokerRooms", label: "房间配置" });
       modules.push({ key: "pokerRobots", label: "机器人配置" });
-      modules.push({ key: "pokerRanges", label: "运行范围" });
+      if (game.isTeenPatti) modules.push({ key: "robotRules", label: "游戏设定" });
     } else if (game.type === "Mini") {
       modules.push({ key: "miniParams", label: "玩法参数" });
     }
@@ -80,7 +116,33 @@
     return { SLOTS: "is-slots", FISH: "is-fish", Poker: "is-poker", Mini: "is-mini" }[type] || "";
   }
 
+  var robotModeNames = { natural: "自然概率", good1: "好牌强度 1", good2: "好牌强度 2", good3: "好牌强度 3" };
+  var controlModeNames = { natural: "自然规则", normal: "普通控制规则", point: "点控规则" };
+
+  function robotRuleSummary(game) {
+    if (!game.robotRules) return "游戏设定未配置";
+    if (!game.robotRules.goodModeEnabled) return "自然发牌";
+    return "好牌强度 " + String(game.robotRules.goodMode).replace("good", "");
+  }
+
+  function probabilityTotal(rows, mode) {
+    return rows.reduce(function (total, row) { return total + Number(row[mode] || 0); }, 0);
+  }
+
+  function renderRobotProbabilityRows(game) {
+    var rows = game.robotRules.probabilityRows || [];
+    return rows.map(function (row) {
+      return "<tr><td><strong>" + esc(row.label) + "</strong></td><td class=\"number-cell\">" + Number(row.count).toLocaleString("zh-CN") + "</td><td class=\"number-cell\">" + row.natural + "</td>" +
+        ["good1", "good2", "good3"].map(function (mode) { return "<td><input class=\"robot-probability-input\" type=\"number\" min=\"0\" max=\"10000\" step=\"1\" value=\"" + row[mode] + "\" data-row=\"" + row.key + "\" data-mode=\"" + mode + "\"></td>"; }).join("") +
+        "<td class=\"robot-rule-basis\">" + esc(row.basis) + "</td></tr>";
+    }).join("");
+  }
+
   function renderFields(game, module) {
+    if (module === "robotRules") return [
+      "<section class=\"self-game-config-section\"><h3>发牌模式</h3><p>自然发牌保持自然概率；好牌模式下，整桌玩家和机器人共用对应牌型分布，单局发牌仍保持随机。</p>",
+      "<div class=\"self-game-form-field self-game-single-field\"><label for=\"robotDealMode\">发牌模式</label><select class=\"self-game-select\" id=\"robotDealMode\"><option value=\"natural\"" + (!game.robotRules.goodModeEnabled ? " selected" : "") + ">自然发牌</option><option value=\"good1\"" + (game.robotRules.goodModeEnabled && game.robotRules.goodMode === "good1" ? " selected" : "") + ">好牌强度 1</option><option value=\"good2\"" + (game.robotRules.goodModeEnabled && game.robotRules.goodMode === "good2" ? " selected" : "") + ">好牌强度 2</option><option value=\"good3\"" + (game.robotRules.goodModeEnabled && game.robotRules.goodMode === "good3" ? " selected" : "") + ">好牌强度 3</option></select></div></section>"
+    ].join("");
     if (module === "rtp") return [
       "<section class=\"self-game-config-section\"><h3>RTP</h3><p>仅修改当前游戏的 RTP，范围 50.0%～200.0%，最小步长 0.1%。</p>",
       "<div class=\"self-game-form-field self-game-single-field\"><label for=\"moduleRtp\">RTP</label><div class=\"self-game-input-wrap\"><input class=\"self-game-input self-game-rtp-input\" id=\"moduleRtp\" type=\"number\" min=\"50\" max=\"200\" step=\"0.1\" value=\"" + Number(game.rtp).toFixed(1) + "\"><span class=\"self-game-input-suffix\">%</span></div><p class=\"self-game-field-error\" id=\"moduleRtpError\" hidden></p></div></section>"
@@ -104,10 +166,8 @@
     if (module === "pokerRobots") return [
       "<section class=\"self-game-config-section\"><h3>机器人配置</h3><p>仅房间型游戏显示此入口。机器人数量按桌子顺序填写，使用英文逗号分隔。</p><table class=\"self-game-data-table self-game-room-table self-game-room-robot-table\"><thead><tr><th>房间</th><th>进入桌子数量</th><th>进入桌子人数限制</th><th>每桌机器人上限</th><th>机器人数量</th></tr></thead><tbody>",
       game.rooms.map(function (room) { return "<tr><td>" + room.name + "</td><td><input class=\"poker-table-num\" type=\"number\" min=\"1\" step=\"1\" value=\"" + room.tableNum + "\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-join-limit\" type=\"number\" min=\"1\" step=\"1\" value=\"" + room.joinTableCountLimit + "\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-max-robot\" type=\"number\" min=\"0\" step=\"1\" value=\"" + room.maxRobotNum + "\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-robot-num\" type=\"text\" value=\"" + room.robotNum.join(",") + "\" data-room=\"" + room.code + "\" placeholder=\"如 1,0,2\"></td></tr>"; }).join(""),
-      "</tbody></table></section>"
-    ].join("");
-    if (module === "pokerRanges") return [
-      "<section class=\"self-game-config-section\"><h3>金币、时长与局数范围</h3><p>游戏时间单位为分钟；金币、时长和局数均按整数配置。</p><table class=\"self-game-data-table self-game-room-table self-game-room-ranges-table\"><thead><tr><th>房间</th><th>携带金币最小值</th><th>携带金币最大值</th><th>退出金币最小值</th><th>退出金币最大值</th><th>游戏时间最小值</th><th>游戏时间最大值</th><th>游戏局数最小值</th><th>游戏局数最大值</th></tr></thead><tbody>",
+      "</tbody></table></section>",
+      "<section class=\"self-game-config-section self-game-robot-range-section\"><h3>机器人运行范围</h3><p>配置机器人携带金币、退出金币、游戏时长和游戏局数范围；时间单位为分钟，均按整数配置。</p><table class=\"self-game-data-table self-game-room-table self-game-room-ranges-table\"><thead><tr><th>房间</th><th>携带金币最小值</th><th>携带金币最大值</th><th>退出金币最小值</th><th>退出金币最大值</th><th>游戏时间最小值</th><th>游戏时间最大值</th><th>游戏局数最小值</th><th>游戏局数最大值</th></tr></thead><tbody>",
       game.rooms.map(function (room) { return "<tr><td>" + room.name + "</td><td><input class=\"poker-range\" type=\"number\" min=\"0\" step=\"1\" value=\"" + room.minGold + "\" data-field=\"minGold\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-range\" type=\"number\" min=\"0\" step=\"1\" value=\"" + room.maxGold + "\" data-field=\"maxGold\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-range\" type=\"number\" min=\"0\" step=\"1\" value=\"" + room.exitGameMinGold + "\" data-field=\"exitGameMinGold\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-range\" type=\"number\" min=\"0\" step=\"1\" value=\"" + room.exitGameMaxGold + "\" data-field=\"exitGameMaxGold\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-range\" type=\"number\" min=\"0\" step=\"1\" value=\"" + room.minPlayTime + "\" data-field=\"minPlayTime\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-range\" type=\"number\" min=\"0\" step=\"1\" value=\"" + room.maxPlayTime + "\" data-field=\"maxPlayTime\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-range\" type=\"number\" min=\"0\" step=\"1\" value=\"" + room.minPlayRound + "\" data-field=\"minPlayRound\" data-room=\"" + room.code + "\"></td><td><input class=\"poker-range\" type=\"number\" min=\"0\" step=\"1\" value=\"" + room.maxPlayRound + "\" data-field=\"maxPlayRound\" data-room=\"" + room.code + "\"></td></tr>"; }).join(""),
       "</tbody></table></section>"
     ].join("");
@@ -151,13 +211,10 @@
         if (!/^\d+(?:\s*,\s*\d+)*$/.test(robotsRaw) || robots.length !== tableNum || robots.some(function (value) { return value > maxRobot; })) pokerError = room.name + "的机器人数量必须按桌子数量填写，且不能超过每桌上限";
         if (maxRobot > joinLimit) pokerError = room.name + "的桌子机器人上限不能大于进入桌子人数限制";
       });
+      if (pokerError) return pokerError;
+      root.querySelectorAll(".poker-range").forEach(function (input) { var value = Number(input.value); if (!input.value.trim() || !isFinite(value) || value < 0 || Math.floor(value) !== value) pokerError = "金币、时长和局数必须为非负整数"; });
+      game.rooms.forEach(function (room) { ["minGold", "exitGameMinGold", "minPlayTime", "minPlayRound"].forEach(function (minField) { var maxField = { minGold: "maxGold", exitGameMinGold: "exitGameMaxGold", minPlayTime: "maxPlayTime", minPlayRound: "maxPlayRound" }[minField]; var minValue = Number(root.querySelector("[data-field=\"" + minField + "\"][data-room=\"" + room.code + "\"]").value); var maxValue = Number(root.querySelector("[data-field=\"" + maxField + "\"][data-room=\"" + room.code + "\"]").value); if (minValue > maxValue) pokerError = room.name + "的最小值不能大于最大值"; }); });
       return pokerError;
-    }
-    if (module === "pokerRanges") {
-      var rangeError = "";
-      root.querySelectorAll(".poker-range").forEach(function (input) { var value = Number(input.value); if (!input.value.trim() || !isFinite(value) || value < 0 || Math.floor(value) !== value) rangeError = "金币、时长和局数必须为非负整数"; });
-      game.rooms.forEach(function (room) { ["minGold", "exitGameMinGold", "minPlayTime", "minPlayRound"].forEach(function (minField) { var maxField = { minGold: "maxGold", exitGameMinGold: "exitGameMaxGold", minPlayTime: "maxPlayTime", minPlayRound: "maxPlayRound" }[minField]; var minValue = Number(root.querySelector("[data-field=\"" + minField + "\"][data-room=\"" + room.code + "\"]").value); var maxValue = Number(root.querySelector("[data-field=\"" + maxField + "\"][data-room=\"" + room.code + "\"]").value); if (minValue > maxValue) rangeError = room.name + "的最小值不能大于最大值"; }); });
-      return rangeError;
     }
     if (module !== "miniParams") return "";
     var miniError = "";
@@ -166,7 +223,10 @@
   }
 
   function collectFields(root, game, module) {
-    if (module === "rtp") {
+    if (module === "robotRules") {
+      game.robotRules.goodMode = root.querySelector("#robotDealMode").value;
+      game.robotRules.goodModeEnabled = game.robotRules.goodMode !== "natural";
+    } else if (module === "rtp") {
       game.rtp = api.parseRtp(root.querySelector("#moduleRtp").value).value;
     } else if (module === "slotsBets") {
       game.enabledBets = Array.prototype.map.call(root.querySelectorAll(".slot-bet-option:checked"), function (item) { return Number(item.value); });
@@ -178,7 +238,6 @@
       game.rooms.forEach(function (room) { room.baseScore = Number(root.querySelector(".poker-base-score[data-room=\"" + room.code + "\"]").value); room.minEntry = Number(root.querySelector(".poker-min-entry[data-room=\"" + room.code + "\"]").value); });
     } else if (module === "pokerRobots") {
       game.rooms.forEach(function (room) { room.tableNum = Number(root.querySelector(".poker-table-num[data-room=\"" + room.code + "\"]").value); room.joinTableCountLimit = Number(root.querySelector(".poker-join-limit[data-room=\"" + room.code + "\"]").value); room.maxRobotNum = Number(root.querySelector(".poker-max-robot[data-room=\"" + room.code + "\"]").value); room.robotNum = root.querySelector(".poker-robot-num[data-room=\"" + room.code + "\"]").value.split(",").map(function (item) { return Number(item.trim()); }); });
-    } else if (module === "pokerRanges") {
       game.rooms.forEach(function (room) { ["minGold", "maxGold", "exitGameMinGold", "exitGameMaxGold", "minPlayTime", "maxPlayTime", "minPlayRound", "maxPlayRound"].forEach(function (field) { room[field] = Number(root.querySelector("[data-field=\"" + field + "\"][data-room=\"" + room.code + "\"]").value); }); });
     } else if (module === "miniParams") {
       game.params.forEach(function (param) { var input = root.querySelector(".mini-param[data-param=\"" + param.key + "\"]"); if (input) param.value = input.value; });
@@ -191,8 +250,8 @@
     if (module === "slotsFreeGame") return game.freeGameAllowed ? "允许购买" : "禁止购买";
     if (module === "fishCannons") return game.cannons.map(function (item) { return item.amount; }).join(" / ");
     if (module === "pokerRooms") return game.rooms.map(function (room) { return room.name + " " + room.baseScore + "/" + room.minEntry; }).join("；");
-    if (module === "pokerRobots") return game.rooms.map(function (room) { return room.name + " " + room.tableNum + "桌/上限" + room.maxRobotNum; }).join("；");
-    if (module === "pokerRanges") return game.rooms.map(function (room) { return room.name + " 金币" + room.minGold + "-" + room.maxGold; }).join("；");
+    if (module === "pokerRobots") return game.rooms.map(function (room) { return room.name + " " + room.tableNum + "桌/上限" + room.maxRobotNum + " · 金币" + room.minGold + "-" + room.maxGold; }).join("；");
+    if (module === "robotRules") return robotRuleSummary(game);
     return game.params.map(function (param) { return param.label + "=" + param.value; }).join("；");
   }
 
@@ -209,7 +268,7 @@
     var keyword = String(document.getElementById("gameName").value || "").trim().toLowerCase();
     var visible = games.map(function (game, index) { return { game: game, index: index }; }).filter(function (item) { var game = item.game; return (activeType === "全部" || game.type === activeType) && (!keyword || [game.name, game.code].join(" ").toLowerCase().indexOf(keyword) !== -1); });
     var rows = document.getElementById("gameRows");
-    rows.innerHTML = visible.length ? visible.map(function (item) { var game = item.game; return "<tr><td class=\"check-cell\"><input class=\"game-row-check\" type=\"checkbox\" data-index=\"" + item.index + "\"" + (game.selected ? " checked" : "") + "></td><td><span class=\"self-game-type-tag " + typeClass(game.type) + "\">" + esc(game.type) + "</span></td><td><strong class=\"self-game-name\">" + esc(game.name) + "</strong><span class=\"self-game-code\">" + esc(game.code) + "</span></td><td class=\"self-game-summary-cell\">" + esc(renderSummary(game)) + "</td><td class=\"number-cell\"><span class=\"self-game-rtp\">" + api.formatRtp(game.rtp) + "</span></td><td>" + esc(game.updated) + "</td><td><div class=\"self-game-config-actions\">" + renderModuleActions(game, item.index) + "</div></td></tr>"; }).join("") : "<tr class=\"empty-row\"><td colspan=\"7\">暂无符合条件的自研游戏</td></tr>";
+    rows.innerHTML = visible.length ? visible.map(function (item) { var game = item.game; return "<tr><td class=\"check-cell\"><input class=\"game-row-check\" type=\"checkbox\" data-index=\"" + item.index + "\"" + (game.selected ? " checked" : "") + "></td><td><span class=\"self-game-type-tag " + typeClass(game.type) + "\">" + esc(game.type) + "</span></td><td><strong class=\"self-game-name\">" + esc(game.name) + "</strong></td><td><span class=\"self-game-code\">" + esc(game.code) + "</span></td><td class=\"self-game-summary-cell\">" + esc(renderSummary(game)) + "</td><td class=\"number-cell\"><span class=\"self-game-rtp\">" + api.formatRtp(game.rtp) + "</span></td><td>" + esc(game.updated) + "</td><td><div class=\"self-game-config-actions\">" + renderModuleActions(game, item.index) + "</div></td></tr>"; }).join("") : "<tr class=\"empty-row\"><td colspan=\"8\">暂无符合条件的自研游戏</td></tr>";
     syncSelectionState();
   }
 
@@ -233,7 +292,7 @@
     document.getElementById("moduleModalError").hidden = true;
     var dialog = document.querySelector("#moduleModal .self-game-module-modal");
     dialog.classList.toggle("is-medium", ["fishCannons", "pokerRooms", "miniParams"].indexOf(module) !== -1);
-    dialog.classList.toggle("is-wide", ["pokerRobots", "pokerRanges"].indexOf(module) !== -1);
+    dialog.classList.toggle("is-wide", module === "pokerRobots");
     api.setLayer(document.getElementById("moduleModal"), true);
   }
 
