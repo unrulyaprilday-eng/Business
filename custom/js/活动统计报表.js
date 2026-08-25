@@ -23,8 +23,8 @@
       participants: "10,204",
       claimed: "4,880",
       amount: "624,260.00",
-      rewardTarget: "balance",
-      rewardTargetText: "余额",
+      rewardTarget: "mixed",
+      rewardTargetText: "混合",
       status: "running",
       statusText: "进行中"
     },
@@ -125,7 +125,7 @@
         tableSubline.textContent = "共 " + data.length + " 个活动，点击查看玩家可进入对应活动的玩家列表。";
       }
       if (ticketStatNote) {
-        ticketStatNote.textContent = "票券形式发放的奖励，派奖金额按最终从票券领取的金额统计。";
+        ticketStatNote.textContent = "奖励到账目标按当前统计范围内的实际发放记录汇总；中途调整目标时显示混合，明细以每笔记录为准。";
       }
     }
 

@@ -416,6 +416,11 @@ button {
   color: #ad6a16;
 }
 
+.reward-target-badge.mixed {
+  background: #f1ecff;
+  color: #6e4bb1;
+}
+
 .link-btn {
   border: 0;
   padding: 0;

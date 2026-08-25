@@ -55,8 +55,8 @@
       completed: "9,208",
       amount: "296,540.00",
       activity: "136,200",
-      rewardTarget: "piggy-bank",
-      rewardTargetText: "存钱罐",
+      rewardTarget: "mixed",
+      rewardTargetText: "混合",
       status: "running",
       statusText: "进行中"
     },
@@ -162,7 +162,7 @@
         .join("");
 
       pageTotalText.textContent = "共 " + data.length + " 条记录";
-      tableSubline.textContent = "共 " + data.length + " 个任务，点击查看玩家可进入对应任务的玩家列表。";
+      tableSubline.textContent = "共 " + data.length + " 个任务，点击查看玩家可进入对应任务的玩家列表；中途调整到账目标的任务显示为混合。";
     }
 
     function applyFilters() {

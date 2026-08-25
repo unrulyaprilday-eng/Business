@@ -260,13 +260,13 @@
       playerId: "P774520",
       currency: "USD",
       rewardAmount: "88.00",
-      rewardTarget: "balance",
-      rewardTargetText: "余额",
+      rewardTarget: "piggy-bank",
+      rewardTargetText: "存钱罐",
       rewardStatus: "pending",
       rewardStatusText: "待领取",
       rewardTime: "-",
       claimRecords: [
-        { currency: "USD", amount: "88.00", time: "-" }
+        { currency: "USD", amount: "88.00", rewardTarget: "piggy-bank", rewardTargetText: "存钱罐", time: "-" }
       ],
       member: buildMember({
         id: "AC240588",
@@ -343,14 +343,14 @@
       playerId: "P884203",
       currency: "USDT",
       rewardAmount: "288.00",
-      rewardTarget: "balance",
-      rewardTargetText: "余额",
+      rewardTarget: "mixed",
+      rewardTargetText: "混合",
       rewardStatus: "claimed",
       rewardStatusText: "已领取",
       rewardTime: "2026-06-10 10:18:27",
       claimRecords: [
-        { currency: "USDT", amount: "88.00", time: "2026-06-10 10:06:10" },
-        { currency: "USDT", amount: "200.00", time: "2026-06-10 10:18:27" }
+        { currency: "USDT", amount: "88.00", rewardTarget: "balance", rewardTargetText: "余额", time: "2026-06-10 10:06:10" },
+        { currency: "USDT", amount: "200.00", rewardTarget: "piggy-bank", rewardTargetText: "存钱罐", time: "2026-06-10 10:18:27" }
       ],
       member: buildMember({
         id: "AC240588",
@@ -775,7 +775,7 @@
   }
 
   function buildRewardTarget(target, text) {
-    var targetClass = target === "balance" ? "balance" : "piggy-bank";
+    var targetClass = target === "balance" || target === "mixed" ? target : "piggy-bank";
     return '<span class="reward-target-badge ' + targetClass + '">' + escapeHtml(text) + "</span>";
   }
 
@@ -1086,7 +1086,7 @@
               "<tr>",
               "<td>" + escapeHtml(record.currency) + "</td>",
               '<td class="num positive">' + escapeHtml(record.amount) + "</td>",
-              "<td>" + buildRewardTarget(item.rewardTarget, item.rewardTargetText) + "</td>",
+              "<td>" + buildRewardTarget(record.rewardTarget || item.rewardTarget, record.rewardTargetText || item.rewardTargetText) + "</td>",
               "<td>" + escapeHtml(record.time) + "</td>",
               "</tr>"
             ].join("");

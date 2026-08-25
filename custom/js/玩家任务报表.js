@@ -148,14 +148,14 @@
       currency: "USDT",
       rewardAmount: "58.00",
       activity: "30",
-      rewardTarget: "piggy-bank",
-      rewardTargetText: "存钱罐",
+      rewardTarget: "mixed",
+      rewardTargetText: "混合",
       rewardStatus: "claimed",
       rewardStatusText: "已领取",
       rewardTime: "2026-06-10 10:18:27",
       rewardRecords: [
-        { currency: "USDT", amount: "18.00", activity: "10", time: "2026-06-10 10:06:10" },
-        { currency: "USDT", amount: "40.00", activity: "20", time: "2026-06-10 10:18:27" }
+        { currency: "USDT", amount: "18.00", activity: "10", rewardTarget: "balance", rewardTargetText: "余额", time: "2026-06-10 10:06:10" },
+        { currency: "USDT", amount: "40.00", activity: "20", rewardTarget: "piggy-bank", rewardTargetText: "存钱罐", time: "2026-06-10 10:18:27" }
       ],
       member: buildMember({
         accountName: "Piper",
@@ -276,7 +276,7 @@
   }
 
   function buildRewardTarget(target, text) {
-    var targetClass = target === "balance" ? "balance" : "piggy-bank";
+    var targetClass = target === "balance" || target === "mixed" ? target : "piggy-bank";
     return '<span class="reward-target-badge ' + targetClass + '">' + escapeHtml(text) + "</span>";
   }
 
@@ -424,7 +424,7 @@
               "<td>" + escapeHtml(record.currency) + "</td>",
               '<td class="num positive">' + escapeHtml(record.amount) + "</td>",
               '<td class="num">' + escapeHtml(record.activity) + "</td>",
-              "<td>" + buildRewardTarget(item.rewardTarget, item.rewardTargetText) + "</td>",
+              "<td>" + buildRewardTarget(record.rewardTarget || item.rewardTarget, record.rewardTargetText || item.rewardTargetText) + "</td>",
               "<td>" + escapeHtml(record.time) + "</td>",
               "</tr>"
             ].join("");
