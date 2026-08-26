@@ -529,11 +529,26 @@
           "children": []
         },
         {
-          "id": "self_game_config",
-          "pageName": "自研游戏配置",
-          "type": "Wireframe",
-          "url": "自研游戏配置.html",
-          "children": []
+          "id": "self_game",
+          "pageName": "自研游戏",
+          "type": "Folder",
+          "url": "",
+          "children": [
+            {
+              "id": "self_game_config",
+              "pageName": "自研游戏配置",
+              "type": "Wireframe",
+              "url": "自研游戏配置.html",
+              "children": []
+            },
+            {
+              "id": "self_game_performance",
+              "pageName": "自研游戏表现",
+              "type": "Wireframe",
+              "url": "自研游戏表现.html",
+              "children": []
+            }
+          ]
         },
         {
           "id": "game_statistics",

@@ -18,12 +18,12 @@
   ];
 
   var games = [
-    { code: "SLOT-1001", name: "星穹宝藏", type: "SLOTS", rtp: 96.0, updated: "2026-08-18 09:30", capability: { freeGamePurchase: true, baseBets: [1, 5, 10, 50] }, enabledBets: [1, 5, 10], freeGameAllowed: true, records: [{ time: "2026-08-18 09:30", game: "星穹宝藏", action: "更新玩法配置", before: "95.0%", after: "96.0%", operator: "运营管理员" }] },
-    { code: "SLOT-1002", name: "黄金矿场", type: "SLOTS", rtp: 95.0, updated: "2026-08-17 16:20", capability: { freeGamePurchase: false, baseBets: [0.5, 1, 2, 5] }, enabledBets: [0.5, 1, 2], freeGameAllowed: false, records: [{ time: "2026-08-17 16:20", game: "黄金矿场", action: "更新玩法配置", before: "94.5%", after: "95.0%", operator: "运营管理员" }] },
-    { code: "SLOT-1003", name: "霓虹水果机", type: "SLOTS", rtp: 97.0, updated: "2026-08-16 11:05", capability: { freeGamePurchase: true, baseBets: [1, 2, 5, 10, 20] }, enabledBets: [1, 2, 5, 10], freeGameAllowed: false, records: [] },
-    { code: "FISH-2001", name: "深海猎场", type: "FISH", rtp: 95.5, updated: "2026-08-18 10:05", capability: { levels: 6, minAmount: 0.1, maxAmount: 100, step: 0.1 }, cannons: [{ level: 1, amount: 0.1 }, { level: 2, amount: 0.5 }, { level: 3, amount: 1 }, { level: 4, amount: 5 }, { level: 5, amount: 10 }, { level: 6, amount: 50 }], records: [] },
-    { code: "FISH-2002", name: "极地捕鱼王", type: "FISH", rtp: 96.5, updated: "2026-08-17 14:18", capability: { levels: 5, minAmount: 0.1, maxAmount: 50, step: 0.1 }, cannons: [{ level: 1, amount: 0.1 }, { level: 2, amount: 0.2 }, { level: 3, amount: 1 }, { level: 4, amount: 5 }, { level: 5, amount: 20 }], records: [{ time: "2026-08-17 14:18", game: "极地捕鱼王", action: "更新玩法配置", before: "96.0%", after: "96.5%", operator: "运营管理员" }] },
-    { code: "FISH-2003", name: "黄金海岸", type: "FISH", rtp: 94.0, updated: "2026-08-16 09:40", capability: { levels: 4, minAmount: 1, maxAmount: 100, step: 1 }, cannons: [{ level: 1, amount: 1 }, { level: 2, amount: 5 }, { level: 3, amount: 10 }, { level: 4, amount: 50 }], records: [] },
+    { code: "SLOT-1001", name: "星穹宝藏", type: "SLOTS", inventory: 68420, rtp: 96.0, updated: "2026-08-18 09:30", capability: { freeGamePurchase: true, baseBets: [1, 5, 10, 50] }, enabledBets: [1, 5, 10], freeGameAllowed: true, records: [{ time: "2026-08-18 09:30", game: "星穹宝藏", action: "更新玩法配置", before: "95.0%", after: "96.0%", operator: "运营管理员" }] },
+    { code: "SLOT-1002", name: "黄金矿场", type: "SLOTS", inventory: 52480, rtp: 95.0, updated: "2026-08-17 16:20", capability: { freeGamePurchase: false, baseBets: [0.5, 1, 2, 5] }, enabledBets: [0.5, 1, 2], freeGameAllowed: false, records: [{ time: "2026-08-17 16:20", game: "黄金矿场", action: "更新玩法配置", before: "94.5%", after: "95.0%", operator: "运营管理员" }] },
+    { code: "SLOT-1003", name: "霓虹水果机", type: "SLOTS", inventory: 38120, rtp: 97.0, updated: "2026-08-16 11:05", capability: { freeGamePurchase: true, baseBets: [1, 2, 5, 10, 20] }, enabledBets: [1, 2, 5, 10], freeGameAllowed: false, records: [] },
+    { code: "FISH-2001", name: "深海猎场", type: "FISH", inventory: 44280, rtp: 95.5, updated: "2026-08-18 10:05", capability: { levels: 6, minAmount: 0.1, maxAmount: 100, step: 0.1 }, cannons: [{ level: 1, amount: 0.1 }, { level: 2, amount: 0.5 }, { level: 3, amount: 1 }, { level: 4, amount: 5 }, { level: 5, amount: 10 }, { level: 6, amount: 50 }], records: [] },
+    { code: "FISH-2002", name: "极地捕鱼王", type: "FISH", inventory: 29760, rtp: 96.5, updated: "2026-08-17 14:18", capability: { levels: 5, minAmount: 0.1, maxAmount: 50, step: 0.1 }, cannons: [{ level: 1, amount: 0.1 }, { level: 2, amount: 0.2 }, { level: 3, amount: 1 }, { level: 4, amount: 5 }, { level: 5, amount: 20 }], records: [{ time: "2026-08-17 14:18", game: "极地捕鱼王", action: "更新玩法配置", before: "96.0%", after: "96.5%", operator: "运营管理员" }] },
+    { code: "FISH-2003", name: "黄金海岸", type: "FISH", inventory: 18450, rtp: 94.0, updated: "2026-08-16 09:40", capability: { levels: 4, minAmount: 1, maxAmount: 100, step: 1 }, cannons: [{ level: 1, amount: 1 }, { level: 2, amount: 5 }, { level: 3, amount: 10 }, { level: 4, amount: 50 }], records: [] },
     { code: "POK-3001", name: "极速德州", type: "Poker", rtp: 95.0, updated: "2026-08-18 08:55", capability: { roomTypes: ["低分房", "中分房", "高分房"], scoreUnit: "积分" }, rooms: [
       { id: 1, code: "P-L", name: "低分房", baseScore: 1, minEntry: 100, tableNum: 3, joinTableCountLimit: 6, maxRobotNum: 3, robotNum: [1, 1, 0], minGold: 100, maxGold: 10000, exitGameMinGold: 10, exitGameMaxGold: 20000, minPlayTime: 5, maxPlayTime: 120, minPlayRound: 1, maxPlayRound: 50 },
       { id: 2, code: "P-M", name: "中分房", baseScore: 10, minEntry: 1000, tableNum: 3, joinTableCountLimit: 6, maxRobotNum: 2, robotNum: [0, 1, 1], minGold: 1000, maxGold: 50000, exitGameMinGold: 100, exitGameMaxGold: 100000, minPlayTime: 5, maxPlayTime: 180, minPlayRound: 1, maxPlayRound: 80 },
@@ -62,8 +62,12 @@
   var editingIndex = -1;
   var activeModule = "";
   var editingBefore = "";
+  var inventoryMode = "edit";
+  var inventoryRecords = [];
+  var inventoryGameIndex = -1;
 
   games.forEach(function (game) { records = records.concat(game.records || []); });
+  games.forEach(function (game, index) { if (!isFinite(Number(game.inventory))) game.inventory = [68420, 52480, 38120, 44280, 29760, 18450, 12680, 19840, 15620, 11240, 9840, 13260][index] || 0; });
   records.sort(function (a, b) { return String(b.time).localeCompare(String(a.time)); });
 
   function esc(value) { return api.esc(value); }
@@ -79,7 +83,7 @@
   }
 
   var moduleNames = {
-    rtp: "单个 RTP 配置",
+    rtp: "RTP 配置",
     slotsBets: "投注底分配置",
     slotsFreeGame: "Free Game 配置",
     fishCannons: "炮台配置",
@@ -268,13 +272,94 @@
     var keyword = String(document.getElementById("gameName").value || "").trim().toLowerCase();
     var visible = games.map(function (game, index) { return { game: game, index: index }; }).filter(function (item) { var game = item.game; return (activeType === "全部" || game.type === activeType) && (!keyword || [game.name, game.code].join(" ").toLowerCase().indexOf(keyword) !== -1); });
     var rows = document.getElementById("gameRows");
-    rows.innerHTML = visible.length ? visible.map(function (item) { var game = item.game; return "<tr><td class=\"check-cell\"><input class=\"game-row-check\" type=\"checkbox\" data-index=\"" + item.index + "\"" + (game.selected ? " checked" : "") + "></td><td><span class=\"self-game-type-tag " + typeClass(game.type) + "\">" + esc(game.type) + "</span></td><td><strong class=\"self-game-name\">" + esc(game.name) + "</strong></td><td><span class=\"self-game-code\">" + esc(game.code) + "</span></td><td class=\"self-game-summary-cell\">" + esc(renderSummary(game)) + "</td><td class=\"number-cell\"><span class=\"self-game-rtp\">" + api.formatRtp(game.rtp) + "</span></td><td>" + esc(game.updated) + "</td><td><div class=\"self-game-config-actions\">" + renderModuleActions(game, item.index) + "</div></td></tr>"; }).join("") : "<tr class=\"empty-row\"><td colspan=\"8\">暂无符合条件的自研游戏</td></tr>";
+    rows.innerHTML = visible.length ? visible.map(function (item) { var game = item.game; return "<tr><td class=\"check-cell\"><input class=\"game-row-check\" type=\"checkbox\" data-index=\"" + item.index + "\"" + (game.selected ? " checked" : "") + "></td><td><span class=\"self-game-type-tag " + typeClass(game.type) + "\">" + esc(game.type) + "</span></td><td><strong class=\"self-game-name\">" + esc(game.name) + "</strong></td><td><span class=\"self-game-code\">" + esc(game.code) + "</span></td><td class=\"number-cell self-game-inventory-cell\"><strong>" + esc(formatAmount(game.inventory, false)) + "</strong><div class=\"self-game-inventory-row-actions\"><button class=\"self-game-link\" type=\"button\" data-inventory-index=\"" + item.index + "\" data-inventory-mode=\"edit\">库存编辑</button><button class=\"self-game-link\" type=\"button\" data-inventory-index=\"" + item.index + "\" data-inventory-mode=\"daily\">每日库存重置</button></div></td><td class=\"self-game-summary-cell\">" + esc(renderSummary(game)) + "</td><td class=\"number-cell\"><span class=\"self-game-rtp\">" + api.formatRtp(game.rtp) + "</span></td><td>" + esc(game.updated) + "</td><td><div class=\"self-game-config-actions\">" + renderModuleActions(game, item.index) + "</div></td></tr>"; }).join("") : "<tr class=\"empty-row\"><td colspan=\"9\">暂无符合条件的自研游戏</td></tr>";
     syncSelectionState();
   }
 
   function renderRecords() {
     var target = document.getElementById("recordRows");
     target.innerHTML = records.length ? records.map(function (record) { return "<tr><td>" + esc(record.time) + "</td><td>" + esc(record.type || "-") + "</td><td>" + esc(record.game) + "</td><td>" + esc(record.action) + "</td><td>" + esc((record.before || "-") + " → " + (record.after || "-")) + "</td><td>" + esc(record.operator || "运营管理员") + "</td></tr>"; }).join("") : "<tr class=\"empty-row\"><td colspan=\"6\">暂无变更记录</td></tr>";
+  }
+
+  function formatAmount(value, signed) {
+    var number = Number(value) || 0;
+    return (signed && number >= 0 ? "+" : "") + number.toLocaleString("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function renderInventory() {
+    var rows = document.getElementById("inventoryRecordRows");
+    if (!rows) return;
+    rows.innerHTML = inventoryRecords.length ? inventoryRecords.map(function (record) {
+      var isReset = record.type === "每日库存重置";
+      return "<tr><td>" + esc(record.time) + "</td><td>" + esc(record.game || "-") + "</td><td>" + esc(record.type) + "</td><td><span class=\"self-game-status-tag " + (isReset ? "is-info" : (record.value >= 0 ? "is-success" : "is-danger")) + "\">" + (isReset ? "重置" : (record.value >= 0 ? "增加" : "减少")) + "</span></td><td class=\"number-cell\">" + esc(formatAmount(record.value, !isReset)) + "</td><td>" + esc(record.reason) + "</td><td>运营管理员</td></tr>";
+    }).join("") : "<tr class=\"empty-row\"><td colspan=\"7\">暂无库存调整记录</td></tr>";
+  }
+
+  function openInventory(index, mode) {
+    var game = games[index];
+    if (!game) return;
+    inventoryGameIndex = index;
+    inventoryMode = mode;
+    document.getElementById("inventoryModalTitle").textContent = mode === "daily" ? "每日库存重置" : "库存编辑";
+    document.getElementById("inventoryModalHint").textContent = mode === "daily" ? "每天自动将库存重置为指定值，并保留独立记录。" : "编辑后的库存值将在下方显示，提交后立即生效。";
+    document.getElementById("inventoryGameName").textContent = game.name;
+    document.getElementById("inventoryGameCode").textContent = game.code;
+    document.getElementById("inventoryGameAmount").textContent = formatAmount(game.inventory, false);
+    document.getElementById("inventoryAfterAmount").textContent = formatAmount(game.inventory, false);
+    document.getElementById("inventoryAfterLabel").textContent = mode === "daily" ? "重置后库存" : "编辑后库存";
+    document.getElementById("inventoryAmountLabel").textContent = mode === "daily" ? "每日重置值" : "调整金额";
+    document.getElementById("inventoryDirectionField").hidden = mode === "daily";
+    document.getElementById("inventoryAmount").min = mode === "daily" ? "0" : "0.01";
+    document.getElementById("inventoryDirection").value = "add";
+    document.getElementById("inventoryAmount").value = mode === "daily" ? (game.dailyReset == null ? game.inventory : game.dailyReset) : "";
+    document.getElementById("inventoryReason").value = "";
+    document.getElementById("inventoryAmountError").hidden = true;
+    document.getElementById("inventoryReasonError").hidden = true;
+    updateInventoryPreview();
+    api.setLayer(document.getElementById("inventoryModal"), true);
+  }
+
+  function updateInventoryPreview() {
+    var game = games[inventoryGameIndex];
+    var input = document.getElementById("inventoryAmount");
+    var after = document.getElementById("inventoryAfterAmount");
+    if (!game || !input || !after) return;
+    var amount = Number(input.value);
+    if (!isFinite(amount) || amount < 0) {
+      after.textContent = "-";
+      return;
+    }
+    var next = inventoryMode === "daily" ? amount : game.inventory + (document.getElementById("inventoryDirection").value === "subtract" ? -amount : amount);
+    after.textContent = formatAmount(next, false);
+  }
+
+  function closeInventory() { api.setLayer(document.getElementById("inventoryModal"), false); }
+
+  function applyInventory() {
+    var amount = Number(document.getElementById("inventoryAmount").value);
+    var reason = document.getElementById("inventoryReason").value.trim();
+    var game = games[inventoryGameIndex];
+    if (!game) return;
+    var amountError = document.getElementById("inventoryAmountError");
+    var reasonError = document.getElementById("inventoryReasonError");
+    var isDailyReset = inventoryMode === "daily";
+    amountError.textContent = isFinite(amount) && (isDailyReset ? amount >= 0 : amount > 0) ? "" : (isDailyReset ? "请输入不小于 0 的重置值" : "请输入大于 0 的调整金额");
+    amountError.hidden = !amountError.textContent;
+    reasonError.textContent = reason ? "" : "请填写调整原因";
+    reasonError.hidden = !reasonError.textContent;
+    if (!amountError.hidden || !reasonError.hidden) return;
+    var before = isDailyReset ? (game.dailyReset == null ? game.inventory : game.dailyReset) : game.inventory;
+    var value = isDailyReset ? amount : (document.getElementById("inventoryDirection").value === "subtract" ? -amount : amount);
+    if (isDailyReset) game.dailyReset = amount;
+    else game.inventory += value;
+    var time = api.nowText();
+    inventoryRecords.unshift({ time: time, type: inventoryMode === "daily" ? "每日库存重置" : "库存编辑", game: game.name, value: value, reason: reason });
+    records.unshift({ time: time, type: game.type, game: game.name, action: inventoryMode === "daily" ? "每日库存重置" : "库存编辑", before: formatAmount(before, false), after: formatAmount(isDailyReset ? amount : game.inventory, false), operator: "运营管理员" });
+    renderRows();
+    renderRecords();
+    renderInventory();
+    closeInventory();
+    api.showToast((inventoryMode === "daily" ? "每日库存重置" : "库存编辑") + "已生效", false);
   }
 
   function openModule(index, module) {
@@ -284,7 +369,7 @@
     editingIndex = index;
     activeModule = module;
     editingBefore = moduleSummary(game, module);
-    document.getElementById("moduleTitle").textContent = moduleNames[module] + " / " + game.name;
+    document.getElementById("moduleTitle").textContent = module === "rtp" ? "RTP 配置" : moduleNames[module];
     document.getElementById("moduleGameName").textContent = game.name;
     document.getElementById("moduleGameCode").textContent = game.code;
     document.getElementById("moduleGameType").textContent = game.type;
@@ -358,7 +443,7 @@
     document.querySelectorAll("[data-game-type]").forEach(function (button) { button.addEventListener("click", function () { document.querySelectorAll("[data-game-type]").forEach(function (item) { item.classList.remove("is-active"); }); button.classList.add("is-active"); activeType = button.getAttribute("data-game-type"); renderRows(); }); });
     document.getElementById("gameFilterForm").addEventListener("submit", function (event) { event.preventDefault(); renderRows(); });
     document.getElementById("gameReset").addEventListener("click", function () { document.getElementById("gameName").value = ""; activeType = "全部"; document.querySelectorAll("[data-game-type]").forEach(function (button) { button.classList.toggle("is-active", button.getAttribute("data-game-type") === "全部"); }); renderRows(); });
-    document.getElementById("gameRows").addEventListener("click", function (event) { var button = event.target.closest("[data-config-module]"); if (button) openModule(Number(button.getAttribute("data-config-index")), button.getAttribute("data-config-module")); });
+    document.getElementById("gameRows").addEventListener("click", function (event) { var inventoryButton = event.target.closest("[data-inventory-index]"); if (inventoryButton) { openInventory(Number(inventoryButton.getAttribute("data-inventory-index")), inventoryButton.getAttribute("data-inventory-mode")); return; } var button = event.target.closest("[data-config-module]"); if (button) openModule(Number(button.getAttribute("data-config-index")), button.getAttribute("data-config-module")); });
     document.getElementById("gameRows").addEventListener("change", function (event) { if (event.target.matches(".game-row-check")) { games[Number(event.target.getAttribute("data-index"))].selected = event.target.checked; syncSelectionState(); } });
     document.getElementById("gameSelectAll").addEventListener("change", function (event) { document.querySelectorAll(".game-row-check").forEach(function (checkbox) { checkbox.checked = event.target.checked; games[Number(checkbox.getAttribute("data-index"))].selected = event.target.checked; }); renderRows(); });
     document.getElementById("openBatchRtp").addEventListener("click", function () { if (!games.some(function (game) { return game.selected; })) { api.showToast("请先勾选需要修改 RTP 的游戏", true); return; } openBatch(); });
@@ -366,9 +451,14 @@
     document.querySelectorAll("[data-batch-close]").forEach(function (button) { button.addEventListener("click", closeBatch); });
     document.querySelectorAll("[data-module-close]").forEach(function (button) { button.addEventListener("click", closeModule); });
     document.getElementById("applyModule").addEventListener("click", applyModule);
-    document.addEventListener("click", function (event) { var tab = event.target.closest("[data-self-tab]"); if (!tab) return; var group = tab.getAttribute("data-self-tab-group"); var target = tab.getAttribute("data-self-tab"); document.querySelectorAll("[data-self-tab-group=\"" + group + "\"]").forEach(function (item) { if (item.hasAttribute("data-self-tab")) item.classList.toggle("is-active", item === tab); if (item.hasAttribute("data-self-tab-panel")) item.hidden = item.getAttribute("data-self-tab-panel") !== target; }); });
-    document.addEventListener("keydown", function (event) { if (event.key !== "Escape") return; if (!document.getElementById("moduleModal").hidden) closeModule(); else if (!document.getElementById("batchModal").hidden) closeBatch(); });
+    document.getElementById("applyInventory").addEventListener("click", applyInventory);
+    document.getElementById("inventoryAmount").addEventListener("input", updateInventoryPreview);
+    document.getElementById("inventoryDirection").addEventListener("change", updateInventoryPreview);
+    document.querySelectorAll("[data-inventory-close]").forEach(function (button) { button.addEventListener("click", closeInventory); });
+    document.addEventListener("click", function (event) { var tab = event.target.closest("[data-self-tab]"); if (!tab || tab.tagName === "SECTION") return; var group = tab.getAttribute("data-self-tab-group"); var target = tab.getAttribute("data-self-tab"); document.querySelectorAll("[data-self-tab-group=\"" + group + "\"]").forEach(function (item) { if (item.hasAttribute("data-self-tab") && item.tagName !== "SECTION") item.classList.toggle("is-active", item === tab); if (item.hasAttribute("data-self-tab-panel") || item.tagName === "SECTION") item.hidden = (item.getAttribute("data-self-tab-panel") || item.getAttribute("data-self-tab")) !== target; }); });
+    document.addEventListener("keydown", function (event) { if (event.key !== "Escape") return; if (!document.getElementById("moduleModal").hidden) closeModule(); else if (!document.getElementById("batchModal").hidden) closeBatch(); else if (!document.getElementById("inventoryModal").hidden) closeInventory(); });
     renderRows();
     renderRecords();
+    renderInventory();
   });
 }());

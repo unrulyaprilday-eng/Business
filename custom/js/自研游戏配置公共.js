@@ -130,6 +130,13 @@
       var recordRows = document.getElementById("recordRows");
       var editingIndex = -1;
 
+      var configMeta = document.querySelector("#configModal .self-game-modal-meta");
+      if (configMeta) {
+        configMeta.className = "self-game-modal-entity";
+        var configBody = document.querySelector("#configModal .self-game-modal-body");
+        if (configBody) configBody.insertBefore(configMeta, configBody.firstChild);
+      }
+
       function filteredGames() {
         var keyword = String(nameFilter && nameFilter.value || "").trim().toLowerCase();
         return games.map(function (game, index) {
@@ -175,7 +182,7 @@
         var game = games[index];
         if (!game) return;
         editingIndex = index;
-        configTitle.textContent = options.title + " / " + game.name;
+        configTitle.textContent = options.title;
         configGameName.textContent = game.name;
         configGameCode.textContent = game.code;
         configCapability.innerHTML = options.renderCapability ? options.renderCapability(game) : "<span>基础能力由游戏服务提供</span>";
