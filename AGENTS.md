@@ -64,6 +64,7 @@ HTML 引用 `resources/css/axure_rp_page.css`、`data/styles.css`、页面 style
 - 默认不加统计卡、KPI、数据概览或摘要横条；仅用户/参考明确要求，或看板、分析、经营报表确实需要时使用。列表、配置、审核、操作、普通查询页默认不用，疑问时不加。
 - 单选框不得只靠 `accent-color`：在页面或 `cl-` 作用域内用 `appearance:none`，默认 16px 白底浅边框，选中蓝框蓝点，`:focus-visible` 用浅蓝轮廓；不混用原生与自定义外观。
 - 弹窗包含标题、关闭、表单、取消/确定；遮罩默认 `hidden`，自定义 CSS 必须有 `[hidden] { display: none !important; }`。
+- 金额、余额等数值字段默认不显示“元”等单位；单位通过字段上下文或独立币种字段表达。多币种页面必须单独展示币种。
 
 ## 编码与验证
 

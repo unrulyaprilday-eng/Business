@@ -129,13 +129,144 @@ body {
 }
 
 .point-global-config-modal {
-  width: 520px;
+  width: 600px;
 }
 
 .point-global-config-intro {
   margin: 0 0 16px;
   color: #8792a1;
   line-height: 18px;
+}
+
+.point-balance-rule {
+  margin-bottom: 18px;
+  padding: 14px 16px 12px;
+  border: 1px solid #dbe7f5;
+  border-radius: 4px;
+  background: #f8fbff;
+}
+
+.point-balance-rule-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.point-balance-rule-head h3 {
+  margin: 0 0 4px;
+  color: #303d4f;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.point-balance-rule-head p,
+.point-balance-rule-note {
+  margin: 0;
+  color: #8792a1;
+  font-size: 11px;
+  line-height: 17px;
+}
+
+.point-rule-toggle {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 7px;
+  min-height: 22px;
+  color: #606266;
+  cursor: pointer;
+}
+
+.point-rule-toggle input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.point-rule-track {
+  position: relative;
+  width: 34px;
+  height: 18px;
+  border-radius: 999px;
+  background: #cbd5e1;
+  transition: background .18s ease;
+}
+
+.point-rule-track::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, .18);
+  transition: left .18s ease;
+}
+
+.point-rule-toggle input:checked + .point-rule-track {
+  background: #2f6fed;
+}
+
+.point-rule-toggle input:checked + .point-rule-track::after {
+  left: 18px;
+}
+
+.point-rule-toggle input:focus-visible + .point-rule-track {
+  outline: 2px solid rgba(47, 111, 237, .22);
+  outline-offset: 2px;
+}
+
+.point-balance-form {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 16px;
+}
+
+.point-balance-form .cl-form-field {
+  min-width: 0;
+}
+
+.point-balance-form .cl-input {
+  padding-right: 10px;
+}
+
+.point-balance-form .cl-input:disabled {
+  background: #f1f4f8;
+  color: #a8afb9;
+  cursor: not-allowed;
+}
+
+.point-balance-rule-note {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #e5edf7;
+}
+
+.point-global-limit-rule {
+  padding-top: 16px;
+  border-top: 1px solid #e5e9f2;
+}
+
+.point-global-limit-head {
+  margin-bottom: 12px;
+}
+
+.point-global-limit-head h3 {
+  margin: 0 0 4px;
+  color: #303d4f;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.point-global-limit-head p {
+  margin: 0;
+  color: #8792a1;
+  font-size: 11px;
+  line-height: 17px;
 }
 
 .point-global-config-form {

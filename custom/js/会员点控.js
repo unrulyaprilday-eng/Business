@@ -14,6 +14,9 @@
   var queriedMember = null;
   var releasingId = null;
   var globalConfig = {
+    balanceTriggerEnabled: true,
+    balanceTriggerAmount: 100000,
+    balanceReleaseAmount: 80000,
     maxWinningAmount: 200,
     maxWinMultiplier: 200
   };
@@ -306,13 +309,22 @@
   }
 
   function saveGlobalConfig() {
+    var balanceTriggerEnabled = $("#pointBalanceTriggerEnabled").checked;
+    var balanceTriggerAmount = Number($("#pointBalanceTrigger").value);
+    var balanceReleaseAmount = Number($("#pointBalanceRelease").value);
     var maxWinningAmount = Number($("#pointMaxWinningAmount").value);
     var maxWinMultiplier = Number($("#pointMaxWinMultiplier").value);
     var error = "";
-    if (!Number.isFinite(maxWinningAmount) || maxWinningAmount < 0) {
+    if (balanceTriggerEnabled && (!Number.isFinite(balanceTriggerAmount) || balanceTriggerAmount <= 0)) {
+      error = "启用余额触发时，触发余额需填写大于0的数值。";
+    } else if (balanceTriggerEnabled && (!Number.isFinite(balanceReleaseAmount) || balanceReleaseAmount < 0)) {
+      error = "启用余额触发时，解除余额需填写不小于0的数值。";
+    } else if (balanceTriggerEnabled && balanceReleaseAmount >= balanceTriggerAmount) {
+      error = "解除余额需低于触发余额，避免反复触发。";
+    } else if (!Number.isFinite(maxWinningAmount) || maxWinningAmount < 0) {
       error = "最大中奖金额需填写不小于0的金额。";
     } else if (!Number.isFinite(maxWinMultiplier) || maxWinMultiplier < 0) {
-      error = "最大中奖励倍数需填写不小于0的倍数。";
+      error = "最大中奖倍数需填写不小于0的倍数。";
     }
     var errorElement = $("#pointGlobalConfigError");
     var saveState = $("#pointConfigSaveState");
@@ -322,6 +334,9 @@
       saveState.textContent = "未保存";
       return;
     }
+    globalConfig.balanceTriggerEnabled = balanceTriggerEnabled;
+    globalConfig.balanceTriggerAmount = balanceTriggerAmount;
+    globalConfig.balanceReleaseAmount = balanceReleaseAmount;
     globalConfig.maxWinningAmount = maxWinningAmount;
     globalConfig.maxWinMultiplier = maxWinMultiplier;
     errorElement.hidden = true;
@@ -331,8 +346,12 @@
   }
 
   function openGlobalConfig() {
+    $("#pointBalanceTriggerEnabled").checked = globalConfig.balanceTriggerEnabled;
+    $("#pointBalanceTrigger").value = globalConfig.balanceTriggerAmount;
+    $("#pointBalanceRelease").value = globalConfig.balanceReleaseAmount;
     $("#pointMaxWinningAmount").value = globalConfig.maxWinningAmount;
     $("#pointMaxWinMultiplier").value = globalConfig.maxWinMultiplier;
+    syncBalanceRuleState();
     $("#pointConfigSaveState").textContent = "已保存";
     $("#pointGlobalConfigError").hidden = true;
     setModal("global", true);
@@ -341,6 +360,15 @@
   function markGlobalConfigDirty() {
     $("#pointConfigSaveState").textContent = "未保存";
     $("#pointGlobalConfigError").hidden = true;
+  }
+
+  function syncBalanceRuleState() {
+    var enabled = $("#pointBalanceTriggerEnabled").checked;
+    $("#pointBalanceTrigger").disabled = !enabled;
+    $("#pointBalanceRelease").disabled = !enabled;
+    $("#pointBalanceTrigger").setAttribute("aria-disabled", String(!enabled));
+    $("#pointBalanceRelease").setAttribute("aria-disabled", String(!enabled));
+    $(".point-rule-toggle-text").textContent = enabled ? "启用" : "停用";
   }
 
   function confirmRelease(id) {
@@ -390,6 +418,12 @@
     $("#pointSave").addEventListener("click", saveEditor);
 
     $("#pointGlobalConfigSave").addEventListener("click", saveGlobalConfig);
+    $("#pointBalanceTriggerEnabled").addEventListener("change", function () {
+      syncBalanceRuleState();
+      markGlobalConfigDirty();
+    });
+    $("#pointBalanceTrigger").addEventListener("input", markGlobalConfigDirty);
+    $("#pointBalanceRelease").addEventListener("input", markGlobalConfigDirty);
     $("#pointMaxWinningAmount").addEventListener("input", markGlobalConfigDirty);
     $("#pointMaxWinMultiplier").addEventListener("input", markGlobalConfigDirty);
 
@@ -422,5 +456,6 @@
   }
 
   bindEvents();
+  syncBalanceRuleState();
   renderRows();
 })();
