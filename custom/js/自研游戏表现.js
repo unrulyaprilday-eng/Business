@@ -15,6 +15,8 @@
     { name: "弹珠风险台", code: "MINI-4003", type: "Mini", bet: 245800, payout: 238179, profit: 7621, players: 408, rtp: "94.0%", inventory: 520, change: 2.1, attention: "正常", note: "当日表现正常，暂无需处理事项。" },
     { name: "深海猎场·高倍房", code: "FISH-2001-H", type: "FISH", bet: 198400, payout: 192052, profit: 6348, players: 286, rtp: "96.8%", inventory: -2860, change: 0.5, attention: "需关注", note: "高倍房当日库存下降，请核查大额派奖记录。" }
   ];
+  var currentSortKey = "profit";
+  var currentSortDirection = "desc";
 
   function esc(value) {
     return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;");
@@ -37,57 +39,48 @@
   }
 
   function sortValue(row, sort) {
+    if (sort === "name") { return row.name; }
     if (sort === "bet") { return row.bet; }
+    if (sort === "payout") { return row.payout; }
     if (sort === "players") { return row.players; }
+    if (sort === "rtp") { return Number(row.rtp.replace("%", "")); }
     if (sort === "inventory") { return Math.abs(row.inventory); }
+    if (sort === "change") { return row.change; }
     return row.profit;
   }
 
   function sortLabel(sort) {
-    return { profit: "平台输赢", bet: "投注金额", players: "活跃玩家", inventory: "库存变动幅度" }[sort];
+    return { name: "游戏", profit: "平台输赢", bet: "投注金额", payout: "派彩金额", players: "活跃玩家", rtp: "RTP", inventory: "当日库存变化", change: "较昨日" }[sort];
   }
 
   function getVisibleRows() {
     var keyword = String(document.getElementById("performanceKeyword").value || "").trim().toLowerCase();
     var type = document.getElementById("performanceType").value;
-    var attention = document.getElementById("performanceAttention").value;
-    var sort = document.getElementById("performanceSort").value;
     return rows.filter(function (row) {
       return (type === "全部" || row.type === type) &&
-        (attention === "全部" || row.attention === attention) &&
         (!keyword || (row.name + " " + row.code).toLowerCase().indexOf(keyword) !== -1);
-    }).sort(function (left, right) { return sortValue(right, sort) - sortValue(left, sort); });
+    }).sort(function (left, right) {
+      var leftValue = sortValue(left, currentSortKey);
+      var rightValue = sortValue(right, currentSortKey);
+      var result = typeof leftValue === "string" ? leftValue.localeCompare(rightValue, "zh-CN") : leftValue - rightValue;
+      return currentSortDirection === "asc" ? result : -result;
+    });
   }
 
   function render() {
-    var sort = document.getElementById("performanceSort").value;
     var reportDate = document.getElementById("performanceDate").value;
     var visible = getVisibleRows();
-    document.getElementById("performanceSortHint").textContent = "数据截至 " + reportDate + " 23:00 · 按" + sortLabel(sort) + "从高到低排列";
+    document.getElementById("performanceSortHint").textContent = "数据截至 " + reportDate + " 23:00 · 按" + sortLabel(currentSortKey) + (currentSortDirection === "asc" ? "升序" : "降序") + "排列";
     document.getElementById("performanceRows").innerHTML = visible.length ? visible.map(function (row, index) {
-      return "<tr><td>" + (index + 1) + "</td><td><strong>" + esc(row.name) + "</strong><small>" + esc(row.code) + "</small></td><td><span class=\"performance-tag\">" + esc(row.type) + "</span></td><td class=\"number-cell\">" + formatNumber(row.bet) + "</td><td class=\"number-cell\">" + formatNumber(row.payout) + "</td><td class=\"number-cell is-positive\">" + formatNumber(row.profit) + "</td><td class=\"number-cell\">" + row.players.toLocaleString("en-US") + "</td><td class=\"number-cell\">" + row.rtp + "</td><td class=\"number-cell " + numberClass(row.inventory) + "\">" + signedNumber(row.inventory) + "</td><td class=\"number-cell " + numberClass(row.change) + "\">" + signedPercent(row.change) + "</td><td><span class=\"performance-status " + (row.attention === "需关注" ? "is-attention" : "is-normal") + "\">" + row.attention + "</span></td><td><button class=\"performance-row-link\" type=\"button\" data-game-code=\"" + esc(row.code) + "\">查看</button></td></tr>";
-    }).join("") : "<tr><td colspan=\"12\" style=\"text-align:center;color:#94a3b8;padding:28px\">暂无符合条件的自研游戏</td></tr>";
+      return "<tr><td>" + (index + 1) + "</td><td><strong>" + esc(row.name) + "</strong><small>" + esc(row.code) + "</small></td><td><span class=\"performance-tag\">" + esc(row.type) + "</span></td><td class=\"number-cell\">" + formatNumber(row.bet) + "</td><td class=\"number-cell\">" + formatNumber(row.payout) + "</td><td class=\"number-cell is-positive\">" + formatNumber(row.profit) + "</td><td class=\"number-cell\">" + row.players.toLocaleString("en-US") + "</td><td class=\"number-cell\">" + row.rtp + "</td><td class=\"number-cell " + numberClass(row.inventory) + "\">" + signedNumber(row.inventory) + "</td><td class=\"number-cell " + numberClass(row.change) + "\">" + signedPercent(row.change) + "</td></tr>";
+    }).join("") : "<tr><td colspan=\"10\" style=\"text-align:center;color:#94a3b8;padding:28px\">暂无符合条件的自研游戏</td></tr>";
     document.getElementById("performanceCount").textContent = "共 " + visible.length + " 条 · 每页 20 条";
   }
 
-  function showDetail(code) {
-    var row = rows.filter(function (item) { return item.code === code; })[0];
-    if (!row) { return; }
-    document.getElementById("gameDetailTitle").textContent = row.name + " · 当日明细";
-    document.getElementById("gameDetailSubtitle").textContent = document.getElementById("performanceDate").value + " 当日数据";
-    document.getElementById("gameDetailData").innerHTML = "<dt>游戏编码</dt><dd>" + esc(row.code) + "</dd><dt>游戏类型</dt><dd>" + esc(row.type) + "</dd><dt>投注金额</dt><dd>" + formatNumber(row.bet) + "</dd><dt>派彩金额</dt><dd>" + formatNumber(row.payout) + "</dd><dt>平台输赢</dt><dd class=\"is-positive\">" + formatNumber(row.profit) + "</dd><dt>活跃玩家</dt><dd>" + row.players.toLocaleString("en-US") + "</dd><dt>RTP</dt><dd>" + row.rtp + "</dd><dt>当日库存变化</dt><dd class=\"" + numberClass(row.inventory) + "\">" + signedNumber(row.inventory) + "</dd>";
-    document.getElementById("gameAttentionText").textContent = row.note;
-    document.getElementById("gameDetailModal").hidden = false;
-  }
-
-  function closeDetail() {
-    document.getElementById("gameDetailModal").hidden = true;
-  }
-
   function exportRows() {
-    var header = ["排名", "游戏名称", "游戏编码", "类型", "投注金额", "派彩金额", "平台输赢", "活跃玩家", "RTP", "当日库存变化", "较昨日", "运营关注"];
+    var header = ["排名", "游戏名称", "游戏编码", "类型", "投注金额", "派彩金额", "平台输赢", "活跃玩家", "RTP", "当日库存变化", "较昨日"];
     var content = [header].concat(getVisibleRows().map(function (row, index) {
-      return [index + 1, row.name, row.code, row.type, formatNumber(row.bet), formatNumber(row.payout), formatNumber(row.profit), row.players, row.rtp, signedNumber(row.inventory), signedPercent(row.change), row.attention];
+      return [index + 1, row.name, row.code, row.type, formatNumber(row.bet), formatNumber(row.payout), formatNumber(row.profit), row.players, row.rtp, signedNumber(row.inventory), signedPercent(row.change)];
     })).map(function (row) { return row.map(function (value) { return "\"" + String(value).replace(/\"/g, "\"\"") + "\""; }).join(","); }).join("\r\n");
     var blob = new Blob(["\ufeff" + content], { type: "text/csv;charset=utf-8" });
     var link = document.createElement("a");
@@ -114,19 +107,34 @@
       document.getElementById("performanceDate").value = "2026-08-26";
       document.getElementById("performanceKeyword").value = "";
       document.getElementById("performanceType").value = "全部";
-      document.getElementById("performanceAttention").value = "全部";
-      document.getElementById("performanceSort").value = "profit";
+      currentSortKey = "profit";
+      currentSortDirection = "desc";
+      updateSortTriggers();
       render();
     });
-    document.getElementById("performanceSort").addEventListener("change", render);
-    document.getElementById("performanceRows").addEventListener("click", function (event) {
-      var button = event.target.closest("[data-game-code]");
-      if (button) { showDetail(button.getAttribute("data-game-code")); }
-    });
-    document.getElementById("gameDetailModal").addEventListener("click", function (event) {
-      if (event.target.hasAttribute("data-close-detail")) { closeDetail(); }
+    document.querySelectorAll(".performance-sort-trigger").forEach(function (trigger) {
+      trigger.addEventListener("click", function () {
+        var key = trigger.getAttribute("data-sort-key");
+        if (key === currentSortKey) {
+          currentSortDirection = currentSortDirection === "desc" ? "asc" : "desc";
+        } else {
+          currentSortKey = key;
+          currentSortDirection = "desc";
+        }
+        updateSortTriggers();
+        render();
+      });
     });
     document.getElementById("exportPerformance").addEventListener("click", exportRows);
+    updateSortTriggers();
     render();
   });
+
+  function updateSortTriggers() {
+    document.querySelectorAll(".performance-sort-trigger").forEach(function (trigger) {
+      var active = trigger.getAttribute("data-sort-key") === currentSortKey;
+      trigger.classList.toggle("is-active", active);
+      trigger.setAttribute("data-sort-direction", active ? currentSortDirection : "");
+    });
+  }
 }());
