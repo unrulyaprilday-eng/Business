@@ -839,8 +839,15 @@
   align-items: flex-start;
   gap: 3px;
   margin-bottom: 14px;
-  padding: 0 0 12px;
+  padding-bottom: 12px;
   border-bottom: 1px solid var(--self-game-border);
+}
+
+.self-game-after-value {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
 }
 
 .self-game-current-value span {
@@ -854,16 +861,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-.self-game-after-value {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid var(--self-game-border);
-}
-
 .self-game-after-value span {
   color: var(--self-game-muted);
   font-size: 12px;
@@ -873,6 +870,16 @@
   color: var(--self-game-blue);
   font-size: 18px;
   font-variant-numeric: tabular-nums;
+}
+
+.self-game-inventory-amount-grid {
+  margin-bottom: 12px;
+}
+
+.self-game-after-value {
+  margin: 0 0 14px;
+  padding: 0 0 12px;
+  border-bottom: 1px solid var(--self-game-border);
 }
 
 .self-game-field-help {

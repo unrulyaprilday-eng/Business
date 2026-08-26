@@ -301,16 +301,16 @@
     inventoryGameIndex = index;
     inventoryMode = mode;
     document.getElementById("inventoryModalTitle").textContent = mode === "daily" ? "每日库存重置" : "库存编辑";
-    document.getElementById("inventoryModalHint").textContent = mode === "daily" ? "每天自动将库存重置为指定值，并保留独立记录。" : "编辑后的库存值将在下方显示，提交后立即生效。";
+    document.getElementById("inventoryModalHint").textContent = mode === "daily" ? "每天自动将库存重置为指定值，并保留独立记录。" : "正数增加，负数减少；提交后立即生效。";
     document.getElementById("inventoryGameName").textContent = game.name;
     document.getElementById("inventoryGameCode").textContent = game.code;
     document.getElementById("inventoryGameAmount").textContent = formatAmount(game.inventory, false);
     document.getElementById("inventoryAfterAmount").textContent = formatAmount(game.inventory, false);
-    document.getElementById("inventoryAfterLabel").textContent = mode === "daily" ? "重置后库存" : "编辑后库存";
+    document.getElementById("inventoryAfterLabel").textContent = mode === "daily" ? "重置后库存" : "调整后库存";
+    document.getElementById("inventoryAfterValue").hidden = mode === "daily";
     document.getElementById("inventoryAmountLabel").textContent = mode === "daily" ? "每日重置值" : "调整金额";
-    document.getElementById("inventoryDirectionField").hidden = mode === "daily";
-    document.getElementById("inventoryAmount").min = mode === "daily" ? "0" : "0.01";
-    document.getElementById("inventoryDirection").value = "add";
+    document.getElementById("inventoryAmount").min = mode === "daily" ? "0" : "";
+    document.getElementById("inventoryAmount").placeholder = mode === "daily" ? "请输入每日重置值" : "正数增加，负数减少";
     document.getElementById("inventoryAmount").value = mode === "daily" ? (game.dailyReset == null ? game.inventory : game.dailyReset) : "";
     document.getElementById("inventoryReason").value = "";
     document.getElementById("inventoryAmountError").hidden = true;
@@ -325,11 +325,11 @@
     var after = document.getElementById("inventoryAfterAmount");
     if (!game || !input || !after) return;
     var amount = Number(input.value);
-    if (!isFinite(amount) || amount < 0) {
+    if (!isFinite(amount) || inventoryMode === "daily" && amount < 0) {
       after.textContent = "-";
       return;
     }
-    var next = inventoryMode === "daily" ? amount : game.inventory + (document.getElementById("inventoryDirection").value === "subtract" ? -amount : amount);
+    var next = inventoryMode === "daily" ? amount : game.inventory + amount;
     after.textContent = formatAmount(next, false);
   }
 
@@ -343,13 +343,13 @@
     var amountError = document.getElementById("inventoryAmountError");
     var reasonError = document.getElementById("inventoryReasonError");
     var isDailyReset = inventoryMode === "daily";
-    amountError.textContent = isFinite(amount) && (isDailyReset ? amount >= 0 : amount > 0) ? "" : (isDailyReset ? "请输入不小于 0 的重置值" : "请输入大于 0 的调整金额");
+    amountError.textContent = isFinite(amount) && (isDailyReset ? amount >= 0 : amount !== 0) ? "" : (isDailyReset ? "请输入不小于 0 的重置值" : "请输入非 0 的调整金额");
     amountError.hidden = !amountError.textContent;
     reasonError.textContent = reason ? "" : "请填写调整原因";
     reasonError.hidden = !reasonError.textContent;
     if (!amountError.hidden || !reasonError.hidden) return;
     var before = isDailyReset ? (game.dailyReset == null ? game.inventory : game.dailyReset) : game.inventory;
-    var value = isDailyReset ? amount : (document.getElementById("inventoryDirection").value === "subtract" ? -amount : amount);
+    var value = amount;
     if (isDailyReset) game.dailyReset = amount;
     else game.inventory += value;
     var time = api.nowText();
@@ -453,7 +453,6 @@
     document.getElementById("applyModule").addEventListener("click", applyModule);
     document.getElementById("applyInventory").addEventListener("click", applyInventory);
     document.getElementById("inventoryAmount").addEventListener("input", updateInventoryPreview);
-    document.getElementById("inventoryDirection").addEventListener("change", updateInventoryPreview);
     document.querySelectorAll("[data-inventory-close]").forEach(function (button) { button.addEventListener("click", closeInventory); });
     document.addEventListener("click", function (event) { var tab = event.target.closest("[data-self-tab]"); if (!tab || tab.tagName === "SECTION") return; var group = tab.getAttribute("data-self-tab-group"); var target = tab.getAttribute("data-self-tab"); document.querySelectorAll("[data-self-tab-group=\"" + group + "\"]").forEach(function (item) { if (item.hasAttribute("data-self-tab") && item.tagName !== "SECTION") item.classList.toggle("is-active", item === tab); if (item.hasAttribute("data-self-tab-panel") || item.tagName === "SECTION") item.hidden = (item.getAttribute("data-self-tab-panel") || item.getAttribute("data-self-tab")) !== target; }); });
     document.addEventListener("keydown", function (event) { if (event.key !== "Escape") return; if (!document.getElementById("moduleModal").hidden) closeModule(); else if (!document.getElementById("batchModal").hidden) closeBatch(); else if (!document.getElementById("inventoryModal").hidden) closeInventory(); });
