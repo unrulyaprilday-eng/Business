@@ -258,7 +258,7 @@
     var targetAmount = targetAmountInput === "" ? null : Number(targetAmountInput);
     var error = "";
     if (!queriedMember || queriedMember.memberId !== memberId) error = "请先输入会员ID并查询会员。";
-    else if (!Number.isFinite(rtp) || rtp <= 0 || rtp > 200) error = "设定RTP需填写大于0且不超过200的百分比。";
+    else if (!Number.isFinite(rtp) || rtp < 50 || rtp > 200) error = "设定RTP需填写50至200之间的百分比。";
     else if (targetAmount !== null && (!Number.isFinite(targetAmount) || targetAmount <= 0)) error = "目标金额留空表示无退出条件，否则需填写大于0的金额。";
     if (error) {
       $("#pointFormError").textContent = error;
@@ -323,8 +323,8 @@
       error = "触发余额为0时，解除余额也需设为0。";
     } else if (balanceTriggerAmount > 0 && balanceReleaseAmount > 0 && balanceReleaseAmount >= balanceTriggerAmount) {
       error = "解除余额需低于触发余额，避免反复触发。";
-    } else if (!Number.isFinite(balanceRtp) || balanceRtp <= 0 || balanceRtp > 200) {
-      error = "触发RTP需填写大于0且不超过200的百分比。";
+    } else if (!Number.isFinite(balanceRtp) || balanceRtp < 50 || balanceRtp > 200) {
+      error = "设定RTP需填写50至200之间的百分比。";
     } else if (!Number.isFinite(maxWinningAmount) || maxWinningAmount < 0) {
       error = "最大中奖金额需填写不小于0的金额。";
     } else if (!Number.isFinite(maxWinMultiplier) || maxWinMultiplier < 0) {
