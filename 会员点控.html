@@ -202,33 +202,7 @@
               <button class="cl-close-btn" type="button" data-point-close="global" aria-label="关闭">×</button>
             </header>
             <div class="cl-modal-body">
-              <p class="point-global-config-intro">配置免费玩家的余额触发与解除规则；具体 RTP 仍以会员点控配置为准。</p>
-              <section class="point-balance-rule" aria-labelledby="pointBalanceRuleTitle">
-                <div class="point-balance-rule-head">
-                  <div>
-                    <h3 id="pointBalanceRuleTitle">自动点控规则</h3>
-                    <p>免费玩家余额达到触发阈值后，自动启用该会员已有的点控配置。</p>
-                  </div>
-                  <label class="point-rule-toggle" for="pointBalanceTriggerEnabled">
-                    <input id="pointBalanceTriggerEnabled" type="checkbox" checked />
-                    <span class="point-rule-track" aria-hidden="true"></span>
-                    <span class="point-rule-toggle-text">启用</span>
-                  </label>
-                </div>
-                <div class="cl-form-grid point-balance-form">
-                  <div class="cl-form-field">
-                    <label for="pointBalanceTrigger">触发余额</label>
-                    <div class="input-suffix"><input class="cl-input" id="pointBalanceTrigger" type="number" min="0.01" step="0.01" value="100000" /></div>
-                    <p class="target-help">当免费玩家余额 ≥ 此数值时进入点控。</p>
-                  </div>
-                  <div class="cl-form-field">
-                    <label for="pointBalanceRelease">解除余额</label>
-                    <div class="input-suffix"><input class="cl-input" id="pointBalanceRelease" type="number" min="0" step="0.01" value="80000" /></div>
-                    <p class="target-help">当免费玩家余额 ≤ 此数值时自动解除，需低于触发阈值。</p>
-                  </div>
-                </div>
-                <p class="point-balance-rule-note">自动解除满足任一条件即可：余额回落至解除阈值、达到会员点控目标金额；管理员也可手动解除。</p>
-              </section>
+              <p class="point-global-config-intro">配置全局中奖限制与免费玩家余额自动点控规则。</p>
               <section class="point-global-limit-rule" aria-labelledby="pointGlobalLimitTitle">
                 <div class="point-global-limit-head">
                   <div>
@@ -251,10 +225,36 @@
                   </div>
                 </div>
               </section>
+              <section class="point-balance-rule" aria-labelledby="pointBalanceRuleTitle">
+                <div class="point-balance-rule-head">
+                  <div>
+                    <h3 id="pointBalanceRuleTitle">免费玩家余额自动点控</h3>
+                    <p>免费玩家余额达到触发阈值后，自动启用该会员已有的点控配置。</p>
+                  </div>
+                  <label class="point-rule-toggle" for="pointBalanceTriggerEnabled">
+                    <input id="pointBalanceTriggerEnabled" type="checkbox" checked />
+                    <span class="point-rule-track" aria-hidden="true"></span>
+                    <span class="point-rule-toggle-text">启用</span>
+                  </label>
+                </div>
+                <div class="cl-form-grid point-balance-form">
+                  <div class="cl-form-field">
+                    <label for="pointBalanceTrigger">触发余额</label>
+                    <div class="input-suffix"><input class="cl-input" id="pointBalanceTrigger" type="number" min="0.01" step="0.01" value="100000" /></div>
+                    <p class="target-help">当免费玩家余额 ≥ 此数值时进入点控。</p>
+                  </div>
+                  <div class="cl-form-field">
+                    <label for="pointBalanceRelease">解除余额</label>
+                    <div class="input-suffix"><input class="cl-input" id="pointBalanceRelease" type="number" min="0" step="0.01" value="80000" /></div>
+                    <p class="target-help">当免费玩家余额 ≤ 此数值时自动解除，需低于触发阈值。</p>
+                  </div>
+                </div>
+                <p class="point-balance-rule-note">自动解除满足任一条件即可：余额回落至解除阈值、达到会员点控目标金额；管理员也可手动解除。</p>
+              </section>
               <p class="field-error point-global-config-error" id="pointGlobalConfigError" role="alert" hidden></p>
-              <p class="point-config-save-state" id="pointConfigSaveState" aria-live="polite">已保存</p>
             </div>
             <footer class="cl-modal-foot">
+              <p class="point-config-save-state" id="pointConfigSaveState" aria-live="polite">已保存</p>
               <button class="cl-btn" type="button" data-point-close="global">取消</button>
               <button class="cl-btn cl-btn-primary" id="pointGlobalConfigSave" type="button">保存配置</button>
             </footer>
