@@ -14,9 +14,9 @@
   var queriedMember = null;
   var releasingId = null;
   var globalConfig = {
-    balanceTriggerEnabled: true,
     balanceTriggerAmount: 100000,
     balanceReleaseAmount: 80000,
+    balanceRtp: 95,
     maxWinningAmount: 200,
     maxWinMultiplier: 200
   };
@@ -309,18 +309,22 @@
   }
 
   function saveGlobalConfig() {
-    var balanceTriggerEnabled = $("#pointBalanceTriggerEnabled").checked;
     var balanceTriggerAmount = Number($("#pointBalanceTrigger").value);
     var balanceReleaseAmount = Number($("#pointBalanceRelease").value);
+    var balanceRtp = Number($("#pointBalanceRtp").value);
     var maxWinningAmount = Number($("#pointMaxWinningAmount").value);
     var maxWinMultiplier = Number($("#pointMaxWinMultiplier").value);
     var error = "";
-    if (balanceTriggerEnabled && (!Number.isFinite(balanceTriggerAmount) || balanceTriggerAmount <= 0)) {
-      error = "启用余额触发时，触发余额需填写大于0的数值。";
-    } else if (balanceTriggerEnabled && (!Number.isFinite(balanceReleaseAmount) || balanceReleaseAmount < 0)) {
-      error = "启用余额触发时，解除余额需填写不小于0的数值。";
-    } else if (balanceTriggerEnabled && balanceReleaseAmount >= balanceTriggerAmount) {
+    if (!Number.isFinite(balanceTriggerAmount) || balanceTriggerAmount < 0) {
+      error = "触发余额需填写不小于0的数值，设为0表示不启用触发条件。";
+    } else if (!Number.isFinite(balanceReleaseAmount) || balanceReleaseAmount < 0) {
+      error = "解除余额需填写不小于0的数值，设为0表示不启用余额解除条件。";
+    } else if (balanceTriggerAmount === 0 && balanceReleaseAmount !== 0) {
+      error = "触发余额为0时，解除余额也需设为0。";
+    } else if (balanceTriggerAmount > 0 && balanceReleaseAmount > 0 && balanceReleaseAmount >= balanceTriggerAmount) {
       error = "解除余额需低于触发余额，避免反复触发。";
+    } else if (!Number.isFinite(balanceRtp) || balanceRtp <= 0 || balanceRtp > 200) {
+      error = "触发RTP需填写大于0且不超过200的百分比。";
     } else if (!Number.isFinite(maxWinningAmount) || maxWinningAmount < 0) {
       error = "最大中奖金额需填写不小于0的金额。";
     } else if (!Number.isFinite(maxWinMultiplier) || maxWinMultiplier < 0) {
@@ -334,9 +338,9 @@
       saveState.textContent = "未保存";
       return;
     }
-    globalConfig.balanceTriggerEnabled = balanceTriggerEnabled;
     globalConfig.balanceTriggerAmount = balanceTriggerAmount;
     globalConfig.balanceReleaseAmount = balanceReleaseAmount;
+    globalConfig.balanceRtp = balanceRtp;
     globalConfig.maxWinningAmount = maxWinningAmount;
     globalConfig.maxWinMultiplier = maxWinMultiplier;
     errorElement.hidden = true;
@@ -346,12 +350,12 @@
   }
 
   function openGlobalConfig() {
-    $("#pointBalanceTriggerEnabled").checked = globalConfig.balanceTriggerEnabled;
     $("#pointBalanceTrigger").value = globalConfig.balanceTriggerAmount;
     $("#pointBalanceRelease").value = globalConfig.balanceReleaseAmount;
+    $("#pointBalanceRtp").value = globalConfig.balanceRtp;
     $("#pointMaxWinningAmount").value = globalConfig.maxWinningAmount;
     $("#pointMaxWinMultiplier").value = globalConfig.maxWinMultiplier;
-    syncBalanceRuleState();
+    syncBalanceRtp();
     $("#pointConfigSaveState").textContent = "已保存";
     $("#pointGlobalConfigError").hidden = true;
     setModal("global", true);
@@ -362,13 +366,16 @@
     $("#pointGlobalConfigError").hidden = true;
   }
 
-  function syncBalanceRuleState() {
-    var enabled = $("#pointBalanceTriggerEnabled").checked;
-    $("#pointBalanceTrigger").disabled = !enabled;
-    $("#pointBalanceRelease").disabled = !enabled;
-    $("#pointBalanceTrigger").setAttribute("aria-disabled", String(!enabled));
-    $("#pointBalanceRelease").setAttribute("aria-disabled", String(!enabled));
-    $(".point-rule-toggle-text").textContent = enabled ? "启用" : "停用";
+  function syncBalanceRtp() {
+    var rtp = Number($("#pointBalanceRtp").value);
+    var direction = getDirection(rtp);
+    var hint = $("#pointBalanceRtpHint");
+    hint.className = "rtp-direction-hint direction-" + direction;
+    if (direction === "win") {
+      hint.innerHTML = "<strong>控赢</strong><span>RTP达到100%，按玩家净赢累计</span>";
+    } else {
+      hint.innerHTML = "<strong>控输</strong><span>RTP低于100%，按玩家净输累计</span>";
+    }
   }
 
   function confirmRelease(id) {
@@ -418,12 +425,12 @@
     $("#pointSave").addEventListener("click", saveEditor);
 
     $("#pointGlobalConfigSave").addEventListener("click", saveGlobalConfig);
-    $("#pointBalanceTriggerEnabled").addEventListener("change", function () {
-      syncBalanceRuleState();
-      markGlobalConfigDirty();
-    });
     $("#pointBalanceTrigger").addEventListener("input", markGlobalConfigDirty);
     $("#pointBalanceRelease").addEventListener("input", markGlobalConfigDirty);
+    $("#pointBalanceRtp").addEventListener("input", function () {
+      syncBalanceRtp();
+      markGlobalConfigDirty();
+    });
     $("#pointMaxWinningAmount").addEventListener("input", markGlobalConfigDirty);
     $("#pointMaxWinMultiplier").addEventListener("input", markGlobalConfigDirty);
 
@@ -456,6 +463,6 @@
   }
 
   bindEvents();
-  syncBalanceRuleState();
+  syncBalanceRtp();
   renderRows();
 })();

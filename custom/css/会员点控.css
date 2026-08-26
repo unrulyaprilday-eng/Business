@@ -166,58 +166,6 @@ body {
   line-height: 17px;
 }
 
-.point-rule-toggle {
-  display: inline-flex;
-  align-items: center;
-  flex: 0 0 auto;
-  gap: 7px;
-  min-height: 22px;
-  color: #606266;
-  cursor: pointer;
-}
-
-.point-rule-toggle input {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-}
-
-.point-rule-track {
-  position: relative;
-  width: 34px;
-  height: 18px;
-  border-radius: 999px;
-  background: #cbd5e1;
-  transition: background .18s ease;
-}
-
-.point-rule-track::after {
-  content: "";
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, .18);
-  transition: left .18s ease;
-}
-
-.point-rule-toggle input:checked + .point-rule-track {
-  background: #2f6fed;
-}
-
-.point-rule-toggle input:checked + .point-rule-track::after {
-  left: 18px;
-}
-
-.point-rule-toggle input:focus-visible + .point-rule-track {
-  outline: 2px solid rgba(47, 111, 237, .22);
-  outline-offset: 2px;
-}
-
 .point-balance-form {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px 16px;
@@ -225,6 +173,10 @@ body {
 
 .point-balance-form .cl-form-field {
   min-width: 0;
+}
+
+.point-balance-form .is-wide {
+  grid-column: 1 / -1;
 }
 
 .point-balance-form .cl-input {
@@ -235,6 +187,14 @@ body {
   background: #f1f4f8;
   color: #a8afb9;
   cursor: not-allowed;
+}
+
+.point-balance-rtp-field {
+  max-width: 292px;
+}
+
+.point-balance-rtp-field .cl-input {
+  padding-right: 34px;
 }
 
 .point-balance-rule-note {
@@ -281,7 +241,6 @@ body {
 
 .point-global-config-form .cl-input {
   width: 100%;
-  padding-right: 34px;
 }
 
 .point-global-config-form .input-suffix > span {
