@@ -273,6 +273,11 @@
   color: var(--self-game-danger);
 }
 
+.self-game-status-tag.is-warning {
+  background: var(--self-game-warning-soft);
+  color: var(--self-game-warning);
+}
+
 .self-game-status-tag.is-info {
   background: var(--self-game-blue-soft);
   color: var(--self-game-blue);
@@ -718,6 +723,20 @@
 
 .self-game-room-ranges-table {
   min-width: 1420px;
+}
+
+.self-game-inventory-modal.is-room {
+  width: min(980px, calc(100vw - 32px));
+}
+
+.self-game-inventory-room-table {
+  min-width: 820px;
+}
+
+.self-game-inventory-room-table input {
+  width: 126px;
+  min-width: 110px;
+  box-sizing: border-box;
 }
 
 .self-game-room-table input {

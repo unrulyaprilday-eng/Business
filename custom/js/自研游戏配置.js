@@ -4,6 +4,8 @@
   var api = window.SelfGameConfig;
   if (!api) return;
 
+  var FIXED_POKER_ROOM_COUNT = 4;
+
   var teenPattiProbabilityRows = [
     { key: "highLow", label: "10以下的高牌（包含10）", count: 4620, natural: 2090, good1: 1558, good2: 1126, good3: 701, basis: "最高牌面≤10，且不属于对子、同花或顺子" },
     { key: "highHigh", label: "10以上的高牌", count: 11820, natural: 5348, good1: 5581, good2: 5761, good3: 5889, basis: "最高牌面≥J，且不属于对子、同花或顺子" },
@@ -24,19 +26,23 @@
     { code: "FISH-2001", name: "深海猎场", type: "FISH", inventory: 44280, rtp: 95.5, updated: "2026-08-18 10:05", capability: { levels: 6, minAmount: 0.1, maxAmount: 100, step: 0.1 }, cannons: [{ level: 1, amount: 0.1 }, { level: 2, amount: 0.5 }, { level: 3, amount: 1 }, { level: 4, amount: 5 }, { level: 5, amount: 10 }, { level: 6, amount: 50 }], records: [] },
     { code: "FISH-2002", name: "极地捕鱼王", type: "FISH", inventory: 29760, rtp: 96.5, updated: "2026-08-17 14:18", capability: { levels: 5, minAmount: 0.1, maxAmount: 50, step: 0.1 }, cannons: [{ level: 1, amount: 0.1 }, { level: 2, amount: 0.2 }, { level: 3, amount: 1 }, { level: 4, amount: 5 }, { level: 5, amount: 20 }], records: [{ time: "2026-08-17 14:18", game: "极地捕鱼王", action: "更新玩法配置", before: "96.0%", after: "96.5%", operator: "运营管理员" }] },
     { code: "FISH-2003", name: "黄金海岸", type: "FISH", inventory: 18450, rtp: 94.0, updated: "2026-08-16 09:40", capability: { levels: 4, minAmount: 1, maxAmount: 100, step: 1 }, cannons: [{ level: 1, amount: 1 }, { level: 2, amount: 5 }, { level: 3, amount: 10 }, { level: 4, amount: 50 }], records: [] },
-    { code: "POK-3001", name: "极速德州", type: "Poker", rtp: 95.0, updated: "2026-08-18 08:55", capability: { roomTypes: ["低分房", "中分房", "高分房"], scoreUnit: "积分" }, rooms: [
+    { code: "POK-3001", name: "极速德州", type: "Poker", rtp: 95.0, updated: "2026-08-18 08:55", capability: { roomTypes: ["低分房", "中分房", "高分房", "VIP房"], scoreUnit: "积分" }, rooms: [
       { id: 1, code: "P-L", name: "低分房", baseScore: 1, minEntry: 100, tableNum: 3, joinTableCountLimit: 6, maxRobotNum: 3, robotNum: [1, 1, 0], minGold: 100, maxGold: 10000, exitGameMinGold: 10, exitGameMaxGold: 20000, minPlayTime: 5, maxPlayTime: 120, minPlayRound: 1, maxPlayRound: 50 },
       { id: 2, code: "P-M", name: "中分房", baseScore: 10, minEntry: 1000, tableNum: 3, joinTableCountLimit: 6, maxRobotNum: 2, robotNum: [0, 1, 1], minGold: 1000, maxGold: 50000, exitGameMinGold: 100, exitGameMaxGold: 100000, minPlayTime: 5, maxPlayTime: 180, minPlayRound: 1, maxPlayRound: 80 },
-      { id: 3, code: "P-H", name: "高分房", baseScore: 100, minEntry: 10000, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0, 1], minGold: 10000, maxGold: 500000, exitGameMinGold: 1000, exitGameMaxGold: 1000000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 100 }
+      { id: 3, code: "P-H", name: "高分房", baseScore: 100, minEntry: 10000, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0, 1], minGold: 10000, maxGold: 500000, exitGameMinGold: 1000, exitGameMaxGold: 1000000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 100 },
+      { id: 4, code: "P-VIP", name: "VIP房", baseScore: 500, minEntry: 50000, tableNum: 1, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0], minGold: 50000, maxGold: 2000000, exitGameMinGold: 5000, exitGameMaxGold: 5000000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 120 }
     ], records: [{ time: "2026-08-18 08:55", game: "极速德州", action: "更新玩法配置", before: "94.0%", after: "95.0%", operator: "运营管理员" }] },
-    { code: "POK-3002", name: "短牌扑克", type: "Poker", rtp: 94.5, updated: "2026-08-17 12:30", capability: { roomTypes: ["低分房", "高分房"], scoreUnit: "积分" }, rooms: [
+    { code: "POK-3002", name: "短牌扑克", type: "Poker", rtp: 94.5, updated: "2026-08-17 12:30", capability: { roomTypes: ["低分房", "中分房", "高分房", "VIP房"], scoreUnit: "积分" }, rooms: [
       { id: 1, code: "S-L", name: "低分房", baseScore: 2, minEntry: 200, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 2, robotNum: [1, 0], minGold: 200, maxGold: 20000, exitGameMinGold: 20, exitGameMaxGold: 40000, minPlayTime: 5, maxPlayTime: 120, minPlayRound: 1, maxPlayRound: 60 },
-      { id: 2, code: "S-H", name: "高分房", baseScore: 50, minEntry: 5000, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0, 1], minGold: 5000, maxGold: 250000, exitGameMinGold: 500, exitGameMaxGold: 500000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 100 }
+      { id: 2, code: "S-M", name: "中分房", baseScore: 10, minEntry: 1000, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0, 1], minGold: 1000, maxGold: 50000, exitGameMinGold: 100, exitGameMaxGold: 100000, minPlayTime: 5, maxPlayTime: 180, minPlayRound: 1, maxPlayRound: 80 },
+      { id: 3, code: "S-H", name: "高分房", baseScore: 50, minEntry: 5000, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0, 1], minGold: 5000, maxGold: 250000, exitGameMinGold: 500, exitGameMaxGold: 500000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 100 },
+      { id: 4, code: "S-VIP", name: "VIP房", baseScore: 200, minEntry: 20000, tableNum: 1, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0], minGold: 20000, maxGold: 1000000, exitGameMinGold: 2000, exitGameMaxGold: 2000000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 120 }
     ], records: [] },
-    { code: "TP-3001", name: "Teen Patti", type: "Poker", isTeenPatti: true, rtp: 95.0, updated: "2026-08-24 10:00", capability: { roomTypes: ["低分房", "中分房", "高分房"], scoreUnit: "积分" }, rooms: [
+    { code: "TP-3001", name: "Teen Patti", type: "Poker", isTeenPatti: true, rtp: 95.0, updated: "2026-08-24 10:00", capability: { roomTypes: ["低分房", "中分房", "高分房", "VIP房"], scoreUnit: "积分" }, rooms: [
       { id: 1, code: "TP-L", name: "低分房", baseScore: 10, minEntry: 100, tableNum: 3, joinTableCountLimit: 6, maxRobotNum: 3, robotNum: [1, 1, 0], minGold: 1000, maxGold: 100000, exitGameMinGold: 100, exitGameMaxGold: 200000, minPlayTime: 5, maxPlayTime: 120, minPlayRound: 1, maxPlayRound: 50 },
       { id: 2, code: "TP-M", name: "中分房", baseScore: 50, minEntry: 500, tableNum: 3, joinTableCountLimit: 6, maxRobotNum: 2, robotNum: [0, 1, 1], minGold: 5000, maxGold: 500000, exitGameMinGold: 500, exitGameMaxGold: 1000000, minPlayTime: 5, maxPlayTime: 180, minPlayRound: 1, maxPlayRound: 80 },
-      { id: 3, code: "TP-H", name: "高分房", baseScore: 100, minEntry: 1000, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0, 1], minGold: 10000, maxGold: 1000000, exitGameMinGold: 1000, exitGameMaxGold: 2000000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 100 }
+      { id: 3, code: "TP-H", name: "高分房", baseScore: 100, minEntry: 1000, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0, 1], minGold: 10000, maxGold: 1000000, exitGameMinGold: 1000, exitGameMaxGold: 2000000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 100 },
+      { id: 4, code: "TP-VIP", name: "VIP房", baseScore: 500, minEntry: 5000, tableNum: 1, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0], minGold: 50000, maxGold: 2000000, exitGameMinGold: 5000, exitGameMaxGold: 5000000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 120 }
     ], robotRules: {
       controlMode: "natural",
       goodModeEnabled: false,
@@ -68,6 +74,38 @@
 
   games.forEach(function (game) { records = records.concat(game.records || []); });
   games.forEach(function (game, index) { if (!isFinite(Number(game.inventory))) game.inventory = [68420, 52480, 38120, 44280, 29760, 18450, 12680, 19840, 15620, 11240, 9840, 13260][index] || 0; });
+  var pokerInventoryDefaults = {
+    "POK-3001": [
+      { inventory: 12800, dailyReset: 12000, controlEnabled: false, enterThreshold: 10000, releaseThreshold: 15000 },
+      { inventory: 8400, dailyReset: 9000, controlEnabled: false, enterThreshold: 8000, releaseThreshold: 12000 },
+      { inventory: 3200, dailyReset: 4000, controlEnabled: true, enterThreshold: 3500, releaseThreshold: 6000 },
+      { inventory: 1200, dailyReset: 1500, controlEnabled: false, enterThreshold: 1000, releaseThreshold: 2000 }
+    ],
+    "POK-3002": [
+      { inventory: 9600, dailyReset: 10000, controlEnabled: false, enterThreshold: 8000, releaseThreshold: 12000 },
+      { inventory: 5600, dailyReset: 6000, controlEnabled: false, enterThreshold: 5000, releaseThreshold: 8000 },
+      { inventory: 2800, dailyReset: 3500, controlEnabled: true, enterThreshold: 3000, releaseThreshold: 5000 },
+      { inventory: 1000, dailyReset: 1500, controlEnabled: false, enterThreshold: 800, releaseThreshold: 1800 }
+    ],
+    "TP-3001": [
+      { inventory: 18200, dailyReset: 18000, controlEnabled: false, enterThreshold: 15000, releaseThreshold: 20000 },
+      { inventory: 11400, dailyReset: 12000, controlEnabled: false, enterThreshold: 10000, releaseThreshold: 15000 },
+      { inventory: 4600, dailyReset: 5000, controlEnabled: true, enterThreshold: 4500, releaseThreshold: 8000 },
+      { inventory: 1800, dailyReset: 2200, controlEnabled: false, enterThreshold: 1500, releaseThreshold: 3000 }
+    ]
+  };
+  games.forEach(function (game) {
+    if (game.type !== "Poker") return;
+    var defaults = pokerInventoryDefaults[game.code] || [];
+    game.rooms.forEach(function (room, roomIndex) {
+      var fallback = defaults[roomIndex] || { inventory: 0, dailyReset: 0, controlEnabled: false, enterThreshold: 0, releaseThreshold: 1 };
+      if (!isFinite(Number(room.inventory))) room.inventory = fallback.inventory;
+      if (!isFinite(Number(room.dailyReset))) room.dailyReset = fallback.dailyReset;
+      if (!isFinite(Number(room.enterThreshold))) room.enterThreshold = fallback.enterThreshold;
+      if (!isFinite(Number(room.releaseThreshold))) room.releaseThreshold = fallback.releaseThreshold;
+      if (typeof room.controlEnabled !== "boolean") room.controlEnabled = fallback.controlEnabled;
+    });
+  });
   records.sort(function (a, b) { return String(b.time).localeCompare(String(a.time)); });
 
   function esc(value) { return api.esc(value); }
@@ -76,7 +114,7 @@
     if (game.type === "SLOTS") return "底分 " + game.enabledBets.join(" / ") + " · " + (game.capability.freeGamePurchase ? "Free Game 支持" : "Free Game 不支持");
     if (game.type === "FISH") return game.cannons.length + " 个炮台 · " + game.cannons[0].amount + "～" + game.cannons[game.cannons.length - 1].amount + " / 炮";
     if (game.type === "Poker") {
-      var pokerSummary = game.rooms.length + " 个房间 · 低分房底分 " + game.rooms[0].baseScore + " · 机器人上限 " + game.rooms[0].maxRobotNum + "/桌";
+      var pokerSummary = FIXED_POKER_ROOM_COUNT + " 个房间 · 低分房底分 " + game.rooms[0].baseScore + " · 机器人上限 " + game.rooms[0].maxRobotNum + "/桌";
       return game.isTeenPatti ? pokerSummary + " · " + robotRuleSummary(game) : pokerSummary;
     }
     return game.miniType + " · " + game.params.length + " 个专属参数";
@@ -199,6 +237,7 @@
     }
     if (module === "pokerRooms") {
       var roomError = "";
+      if (!game.rooms || game.rooms.length !== FIXED_POKER_ROOM_COUNT) return "房间配置数量无效";
       root.querySelectorAll(".poker-base-score, .poker-min-entry").forEach(function (input) { if (!input.value.trim() || !isFinite(Number(input.value)) || Number(input.value) <= 0) roomError = "房间底分和最低进入条件必须大于 0"; });
       return roomError;
     }
@@ -272,7 +311,7 @@
     var keyword = String(document.getElementById("gameName").value || "").trim().toLowerCase();
     var visible = games.map(function (game, index) { return { game: game, index: index }; }).filter(function (item) { var game = item.game; return (activeType === "全部" || game.type === activeType) && (!keyword || [game.name, game.code].join(" ").toLowerCase().indexOf(keyword) !== -1); });
     var rows = document.getElementById("gameRows");
-    rows.innerHTML = visible.length ? visible.map(function (item) { var game = item.game; return "<tr><td class=\"check-cell\"><input class=\"game-row-check\" type=\"checkbox\" data-index=\"" + item.index + "\"" + (game.selected ? " checked" : "") + "></td><td><span class=\"self-game-type-tag " + typeClass(game.type) + "\">" + esc(game.type) + "</span></td><td><strong class=\"self-game-name\">" + esc(game.name) + "</strong></td><td><span class=\"self-game-code\">" + esc(game.code) + "</span></td><td class=\"number-cell self-game-inventory-cell\"><strong>" + esc(formatAmount(game.inventory, false)) + "</strong><div class=\"self-game-inventory-row-actions\"><button class=\"self-game-link\" type=\"button\" data-inventory-index=\"" + item.index + "\" data-inventory-mode=\"edit\">库存编辑</button><button class=\"self-game-link\" type=\"button\" data-inventory-index=\"" + item.index + "\" data-inventory-mode=\"daily\">每日库存重置</button></div></td><td class=\"self-game-summary-cell\">" + esc(renderSummary(game)) + "</td><td class=\"number-cell\"><span class=\"self-game-rtp\">" + api.formatRtp(game.rtp) + "</span></td><td>" + esc(game.updated) + "</td><td><div class=\"self-game-config-actions\">" + renderModuleActions(game, item.index) + "</div></td></tr>"; }).join("") : "<tr class=\"empty-row\"><td colspan=\"9\">暂无符合条件的自研游戏</td></tr>";
+    rows.innerHTML = visible.length ? visible.map(function (item) { var game = item.game; var inventoryCell = game.type === "Poker" ? "<td class=\"number-cell self-game-inventory-cell\"><strong>按房间设置</strong><div class=\"self-game-inventory-row-actions\"><button class=\"self-game-link\" type=\"button\" data-inventory-index=\"" + item.index + "\" data-inventory-mode=\"room\">库存编辑</button></div></td>" : "<td class=\"number-cell self-game-inventory-cell\"><strong>" + esc(formatAmount(game.inventory, false)) + "</strong><div class=\"self-game-inventory-row-actions\"><button class=\"self-game-link\" type=\"button\" data-inventory-index=\"" + item.index + "\" data-inventory-mode=\"edit\">库存编辑</button><button class=\"self-game-link\" type=\"button\" data-inventory-index=\"" + item.index + "\" data-inventory-mode=\"daily\">每日库存重置</button></div></td>"; return "<tr><td class=\"check-cell\"><input class=\"game-row-check\" type=\"checkbox\" data-index=\"" + item.index + "\"" + (game.selected ? " checked" : "") + "></td><td><span class=\"self-game-type-tag " + typeClass(game.type) + "\">" + esc(game.type) + "</span></td><td><strong class=\"self-game-name\">" + esc(game.name) + "</strong></td><td><span class=\"self-game-code\">" + esc(game.code) + "</span></td>" + inventoryCell + "<td class=\"self-game-summary-cell\">" + esc(renderSummary(game)) + "</td><td class=\"number-cell\"><span class=\"self-game-rtp\">" + api.formatRtp(game.rtp) + "</span></td><td>" + esc(game.updated) + "</td><td><div class=\"self-game-config-actions\">" + renderModuleActions(game, item.index) + "</div></td></tr>"; }).join("") : "<tr class=\"empty-row\"><td colspan=\"9\">暂无符合条件的自研游戏</td></tr>";
     syncSelectionState();
   }
 
@@ -295,12 +334,81 @@
     }).join("") : "<tr class=\"empty-row\"><td colspan=\"7\">暂无库存调整记录</td></tr>";
   }
 
+  function roomControlState(room) {
+    var state = Boolean(room.controlEnabled);
+    if (state && Number(room.inventory) >= Number(room.releaseThreshold)) return false;
+    if (!state && Number(room.inventory) <= Number(room.enterThreshold)) return true;
+    return state;
+  }
+
+  function renderRoomInventory(game) {
+    var rows = document.getElementById("roomInventoryRows");
+    if (!rows) return;
+    rows.innerHTML = game.rooms.map(function (room, index) {
+      var controlled = roomControlState(room);
+      return "<tr><td><strong>" + esc(room.name) + "</strong><span class=\"self-game-help\">（" + esc(room.code) + "）</span></td>" +
+        "<td><input class=\"room-inventory-value\" type=\"number\" min=\"0\" step=\"0.01\" value=\"" + room.inventory + "\" data-room=\"" + index + "\"></td>" +
+        "<td><span class=\"self-game-status-tag room-control-status " + (controlled ? "is-warning" : "is-success") + "\" data-room=\"" + index + "\">" + (controlled ? "控制中" : "未控制") + "</span></td>" +
+        "<td><input class=\"room-enter-threshold\" type=\"number\" min=\"0\" step=\"0.01\" value=\"" + room.enterThreshold + "\" data-room=\"" + index + "\"></td>" +
+        "<td><input class=\"room-release-threshold\" type=\"number\" min=\"0\" step=\"0.01\" value=\"" + room.releaseThreshold + "\" data-room=\"" + index + "\"></td>" +
+        "<td><input class=\"room-daily-reset\" type=\"number\" min=\"0\" step=\"0.01\" value=\"" + room.dailyReset + "\" data-room=\"" + index + "\"></td></tr>";
+    }).join("");
+  }
+
+  function updateRoomInventoryPreview(game) {
+    var root = document.getElementById("roomInventoryPanel");
+    if (!root || root.hidden || !game) return;
+    game.rooms.forEach(function (room, index) {
+      var inventoryInput = root.querySelector(".room-inventory-value[data-room=\"" + index + "\"]");
+      var entryInput = root.querySelector(".room-enter-threshold[data-room=\"" + index + "\"]");
+      var releaseInput = root.querySelector(".room-release-threshold[data-room=\"" + index + "\"]");
+      var status = root.querySelector(".room-control-status[data-room=\"" + index + "\"]");
+      if (!inventoryInput || !entryInput || !releaseInput || !status) return;
+      var preview = { inventory: Number(inventoryInput.value), enterThreshold: Number(entryInput.value), releaseThreshold: Number(releaseInput.value), controlEnabled: room.controlEnabled };
+      var controlled = roomControlState(preview);
+      status.textContent = controlled ? "控制中" : "未控制";
+      status.className = "self-game-status-tag room-control-status " + (controlled ? "is-warning" : "is-success");
+    });
+  }
+
+  function validateRoomInventory(root, game) {
+    var message = "";
+    root.querySelectorAll(".room-inventory-value, .room-enter-threshold, .room-release-threshold, .room-daily-reset").forEach(function (input) {
+      var value = Number(input.value);
+      if (!input.value.trim() || !isFinite(value) || value < 0) message = "库存和阈值必须为不小于 0 的数字";
+    });
+    game.rooms.forEach(function (room, index) {
+      var entry = Number(root.querySelector(".room-enter-threshold[data-room=\"" + index + "\"]").value);
+      var release = Number(root.querySelector(".room-release-threshold[data-room=\"" + index + "\"]").value);
+      if (entry >= release) message = room.name + "的进入阈值必须低于解除阈值";
+    });
+    return message;
+  }
+
+  function collectRoomInventory(root, game) {
+    game.rooms.forEach(function (room, index) {
+      room.inventory = Number(root.querySelector(".room-inventory-value[data-room=\"" + index + "\"]").value);
+      room.enterThreshold = Number(root.querySelector(".room-enter-threshold[data-room=\"" + index + "\"]").value);
+      room.releaseThreshold = Number(root.querySelector(".room-release-threshold[data-room=\"" + index + "\"]").value);
+      room.dailyReset = Number(root.querySelector(".room-daily-reset[data-room=\"" + index + "\"]").value);
+      room.controlEnabled = roomControlState(room);
+    });
+  }
+
   function openInventory(index, mode) {
     var game = games[index];
     if (!game) return;
     inventoryGameIndex = index;
     inventoryMode = mode;
+    var roomMode = mode === "room";
+    var modal = document.getElementById("inventoryModal");
+    var dialog = modal.querySelector(".self-game-inventory-modal");
+    dialog.classList.toggle("is-room", roomMode);
+    document.getElementById("roomInventoryPanel").hidden = !roomMode;
+    document.getElementById("amountInventoryPanel").hidden = roomMode;
     document.getElementById("inventoryModalTitle").textContent = mode === "daily" ? "每日库存重置" : "库存编辑";
+    if (roomMode) document.getElementById("inventoryModalTitle").textContent = "按房间编辑库存";
+    if (roomMode) renderRoomInventory(game);
     document.getElementById("inventoryModalHint").textContent = mode === "daily" ? "每天自动将库存重置为指定值，并保留独立记录。" : "正数增加，负数减少；提交后立即生效。";
     document.getElementById("inventoryGameName").textContent = game.name;
     document.getElementById("inventoryGameCode").textContent = game.code;
@@ -315,8 +423,9 @@
     document.getElementById("inventoryReason").value = "";
     document.getElementById("inventoryAmountError").hidden = true;
     document.getElementById("inventoryReasonError").hidden = true;
-    updateInventoryPreview();
-    api.setLayer(document.getElementById("inventoryModal"), true);
+    document.getElementById("roomInventoryError").hidden = true;
+    if (!roomMode) updateInventoryPreview();
+    api.setLayer(modal, true);
   }
 
   function updateInventoryPreview() {
@@ -336,12 +445,37 @@
   function closeInventory() { api.setLayer(document.getElementById("inventoryModal"), false); }
 
   function applyInventory() {
-    var amount = Number(document.getElementById("inventoryAmount").value);
     var reason = document.getElementById("inventoryReason").value.trim();
     var game = games[inventoryGameIndex];
     if (!game) return;
     var amountError = document.getElementById("inventoryAmountError");
     var reasonError = document.getElementById("inventoryReasonError");
+    if (inventoryMode === "room") {
+      var roomRoot = document.getElementById("roomInventoryPanel");
+      var roomError = validateRoomInventory(roomRoot, game);
+      amountError.textContent = roomError;
+      amountError.hidden = !roomError;
+      var roomMessage = document.getElementById("roomInventoryError");
+      roomMessage.textContent = roomError;
+      roomMessage.hidden = !roomError;
+      reasonError.textContent = reason ? "" : "请填写调整原因";
+      reasonError.hidden = !reasonError.textContent;
+      if (roomError || !reason) return;
+      var roomBefore = game.rooms.map(function (room) { return room.name + " " + formatAmount(room.inventory, false); }).join("；");
+      collectRoomInventory(roomRoot, game);
+      var roomAfter = game.rooms.map(function (room) { return room.name + " " + formatAmount(room.inventory, false); }).join("；");
+      var roomTime = api.nowText();
+      game.updated = roomTime;
+      inventoryRecords.unshift({ time: roomTime, type: "房间库存配置", game: game.name, value: 0, reason: reason });
+      records.unshift({ time: roomTime, type: game.type, game: game.name, action: "按房间配置库存与控制阈值", before: roomBefore, after: roomAfter, operator: "运营管理员" });
+      renderRows();
+      renderRecords();
+      renderInventory();
+      closeInventory();
+      api.showToast("房间库存配置已生效", false);
+      return;
+    }
+    var amount = Number(document.getElementById("inventoryAmount").value);
     var isDailyReset = inventoryMode === "daily";
     amountError.textContent = isFinite(amount) && (isDailyReset ? amount >= 0 : amount !== 0) ? "" : (isDailyReset ? "请输入不小于 0 的重置值" : "请输入非 0 的调整金额");
     amountError.hidden = !amountError.textContent;
@@ -453,6 +587,7 @@
     document.getElementById("applyModule").addEventListener("click", applyModule);
     document.getElementById("applyInventory").addEventListener("click", applyInventory);
     document.getElementById("inventoryAmount").addEventListener("input", updateInventoryPreview);
+    document.getElementById("roomInventoryRows").addEventListener("input", function () { updateRoomInventoryPreview(games[inventoryGameIndex]); });
     document.querySelectorAll("[data-inventory-close]").forEach(function (button) { button.addEventListener("click", closeInventory); });
     document.addEventListener("click", function (event) { var tab = event.target.closest("[data-self-tab]"); if (!tab || tab.tagName === "SECTION") return; var group = tab.getAttribute("data-self-tab-group"); var target = tab.getAttribute("data-self-tab"); document.querySelectorAll("[data-self-tab-group=\"" + group + "\"]").forEach(function (item) { if (item.hasAttribute("data-self-tab") && item.tagName !== "SECTION") item.classList.toggle("is-active", item === tab); if (item.hasAttribute("data-self-tab-panel") || item.tagName === "SECTION") item.hidden = (item.getAttribute("data-self-tab-panel") || item.getAttribute("data-self-tab")) !== target; }); });
     document.addEventListener("keydown", function (event) { if (event.key !== "Escape") return; if (!document.getElementById("moduleModal").hidden) closeModule(); else if (!document.getElementById("batchModal").hidden) closeBatch(); else if (!document.getElementById("inventoryModal").hidden) closeInventory(); });

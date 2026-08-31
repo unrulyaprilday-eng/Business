@@ -4,17 +4,20 @@
   var api = window.SelfGameConfig;
   if (!api) return;
 
+  var FIXED_POKER_ROOM_COUNT = 4;
+
   var games = [
     {
       code: "POK-3001",
       name: "极速德州",
       rtp: 95.0,
       updated: "2026-08-18 08:55",
-      capability: { roomTypes: ["低分房", "中分房", "高分房"], scoreUnit: "积分" },
+      capability: { roomTypes: ["低分房", "中分房", "高分房", "VIP房"], scoreUnit: "积分" },
       rooms: [
         { id: 1, code: "P-L", name: "低分房", baseScore: 1, minEntry: 100, tableNum: 3, joinTableCountLimit: 6, maxRobotNum: 3, robotNum: [1, 1, 0], minGold: 100, maxGold: 10000, exitGameMinGold: 10, exitGameMaxGold: 20000, minPlayTime: 5, maxPlayTime: 120, minPlayRound: 1, maxPlayRound: 50 },
         { id: 2, code: "P-M", name: "中分房", baseScore: 10, minEntry: 1000, tableNum: 3, joinTableCountLimit: 6, maxRobotNum: 2, robotNum: [0, 1, 1], minGold: 1000, maxGold: 50000, exitGameMinGold: 100, exitGameMaxGold: 100000, minPlayTime: 5, maxPlayTime: 180, minPlayRound: 1, maxPlayRound: 80 },
-        { id: 3, code: "P-H", name: "高分房", baseScore: 100, minEntry: 10000, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0, 1], minGold: 10000, maxGold: 500000, exitGameMinGold: 1000, exitGameMaxGold: 1000000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 100 }
+        { id: 3, code: "P-H", name: "高分房", baseScore: 100, minEntry: 10000, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0, 1], minGold: 10000, maxGold: 500000, exitGameMinGold: 1000, exitGameMaxGold: 1000000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 100 },
+        { id: 4, code: "P-VIP", name: "VIP房", baseScore: 500, minEntry: 50000, tableNum: 1, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0], minGold: 50000, maxGold: 2000000, exitGameMinGold: 5000, exitGameMaxGold: 5000000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 120 }
       ],
       records: [{ time: "2026-08-18 08:55", game: "极速德州", action: "更新玩法配置", before: "94.0%", after: "95.0%", operator: "运营管理员" }]
     },
@@ -23,17 +26,19 @@
       name: "短牌扑克",
       rtp: 94.5,
       updated: "2026-08-17 12:30",
-      capability: { roomTypes: ["低分房", "高分房"], scoreUnit: "积分" },
+      capability: { roomTypes: ["低分房", "中分房", "高分房", "VIP房"], scoreUnit: "积分" },
       rooms: [
         { id: 1, code: "S-L", name: "低分房", baseScore: 2, minEntry: 200, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 2, robotNum: [1, 0], minGold: 200, maxGold: 20000, exitGameMinGold: 20, exitGameMaxGold: 40000, minPlayTime: 5, maxPlayTime: 120, minPlayRound: 1, maxPlayRound: 60 },
-        { id: 2, code: "S-H", name: "高分房", baseScore: 50, minEntry: 5000, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0, 1], minGold: 5000, maxGold: 250000, exitGameMinGold: 500, exitGameMaxGold: 500000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 100 }
+        { id: 2, code: "S-M", name: "中分房", baseScore: 10, minEntry: 1000, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0, 1], minGold: 1000, maxGold: 50000, exitGameMinGold: 100, exitGameMaxGold: 100000, minPlayTime: 5, maxPlayTime: 180, minPlayRound: 1, maxPlayRound: 80 },
+        { id: 3, code: "S-H", name: "高分房", baseScore: 50, minEntry: 5000, tableNum: 2, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0, 1], minGold: 5000, maxGold: 250000, exitGameMinGold: 500, exitGameMaxGold: 500000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 100 },
+        { id: 4, code: "S-VIP", name: "VIP房", baseScore: 200, minEntry: 20000, tableNum: 1, joinTableCountLimit: 6, maxRobotNum: 1, robotNum: [0], minGold: 20000, maxGold: 1000000, exitGameMinGold: 2000, exitGameMaxGold: 2000000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 120 }
       ],
       records: []
     }
   ];
 
   function renderSummary(game) {
-    return game.rooms.length + " 个房间 · 低分房底分 " + game.rooms[0].baseScore + " · 机器人上限 " + game.rooms[0].maxRobotNum + "/桌";
+    return FIXED_POKER_ROOM_COUNT + " 个房间 · 低分房底分 " + game.rooms[0].baseScore + " · 机器人上限 " + game.rooms[0].maxRobotNum + "/桌";
   }
 
   function renderCapability(game) {
@@ -67,6 +72,7 @@
 
   function validateFields(root, game) {
     var error = "";
+    if (!game || !game.rooms || game.rooms.length !== FIXED_POKER_ROOM_COUNT) return "房间配置数量无效";
     root.querySelectorAll(".poker-base-score, .poker-min-entry, .poker-table-num, .poker-join-limit, .poker-max-robot, .poker-range").forEach(function (input) {
       var value = Number(input.value);
       var mustBePositive = input.classList.contains("poker-base-score") || input.classList.contains("poker-min-entry") || input.classList.contains("poker-table-num") || input.classList.contains("poker-join-limit");
