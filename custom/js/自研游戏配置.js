@@ -63,6 +63,11 @@
     { code: "MINI-4002", name: "地雷宝藏", type: "Mini", miniType: "Mines", rtp: 95.5, updated: "2026-08-16 15:45", capability: { fields: ["雷区数量", "风险档位"] }, params: [{ key: "mineCount", label: "雷区数量", value: "5", unit: "个", type: "number", min: 1, max: 24, step: 1 }, { key: "riskLevel", label: "风险档位", value: "中", unit: "", type: "select", options: ["低", "中", "高"] }], records: [{ time: "2026-08-16 15:45", game: "地雷宝藏", action: "更新玩法配置", before: "95.0%", after: "95.5%", operator: "运营管理员" }] },
     { code: "MINI-4003", name: "弹珠风险台", type: "Mini", miniType: "Plinko", rtp: 94.0, updated: "2026-08-15 10:22", capability: { fields: ["风险档位", "落点行数"] }, params: [{ key: "riskLevel", label: "风险档位", value: "中", unit: "", type: "select", options: ["低", "中", "高"] }, { key: "rows", label: "落点行数", value: "12", unit: "行", type: "number", min: 8, max: 20, step: 1 }], records: [] }
   ];
+  var defaultPokerRobotRules = {
+    controlMode: "natural",
+    goodModeEnabled: false,
+    goodMode: "good1"
+  };
   var records = [];
   var activeType = "全部";
   var editingIndex = -1;
@@ -72,6 +77,9 @@
   var inventoryRecords = [];
   var inventoryGameIndex = -1;
 
+  games.forEach(function (game) {
+    if (game.type === "Poker") game.robotRules = Object.assign({}, defaultPokerRobotRules, game.robotRules || {});
+  });
   games.forEach(function (game) { records = records.concat(game.records || []); });
   games.forEach(function (game, index) { if (!isFinite(Number(game.inventory))) game.inventory = [68420, 52480, 38120, 44280, 29760, 18450, 12680, 19840, 15620, 11240, 9840, 13260][index] || 0; });
   var pokerInventoryDefaults = {
@@ -115,7 +123,7 @@
     if (game.type === "FISH") return game.cannons.length + " 个炮台 · " + game.cannons[0].amount + "～" + game.cannons[game.cannons.length - 1].amount + " / 炮";
     if (game.type === "Poker") {
       var pokerSummary = FIXED_POKER_ROOM_COUNT + " 个房间 · 低分房底分 " + game.rooms[0].baseScore + " · 机器人上限 " + game.rooms[0].maxRobotNum + "/桌";
-      return game.isTeenPatti ? pokerSummary + " · " + robotRuleSummary(game) : pokerSummary;
+      return pokerSummary + " · " + robotRuleSummary(game);
     }
     return game.miniType + " · " + game.params.length + " 个专属参数";
   }
@@ -141,7 +149,7 @@
     } else if (game.type === "Poker") {
       modules.push({ key: "pokerRooms", label: "房间配置" });
       modules.push({ key: "pokerRobots", label: "机器人配置" });
-      if (game.isTeenPatti) modules.push({ key: "robotRules", label: "游戏设定" });
+      modules.push({ key: "robotRules", label: "游戏设定" });
     } else if (game.type === "Mini") {
       modules.push({ key: "miniParams", label: "玩法参数" });
     }
