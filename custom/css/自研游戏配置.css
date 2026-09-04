@@ -725,12 +725,12 @@
   min-width: 1420px;
 }
 
-.self-game-inventory-modal.is-room {
-  width: min(980px, calc(100vw - 32px));
+.self-game-inventory-room-table {
+  min-width: 1040px;
 }
 
-.self-game-inventory-room-table {
-  min-width: 820px;
+.self-game-inventory-modal.is-room {
+  width: min(760px, calc(100vw - 32px));
 }
 
 .self-game-inventory-room-table input {
@@ -852,14 +852,25 @@
   padding: 16px 18px;
 }
 
+.self-game-inventory-value-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
 .self-game-current-value {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 3px;
-  margin-bottom: 14px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--self-game-border);
+  min-width: 0;
+  min-height: 84px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--self-game-border);
+  border-radius: 4px;
+  background: var(--self-game-soft);
 }
 
 .self-game-after-value {
@@ -867,6 +878,32 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 3px;
+  min-width: 0;
+  min-height: 84px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--self-game-border);
+  border-radius: 4px;
+  background: var(--self-game-blue-soft);
+}
+
+.self-game-inventory-offset-field {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-width: 0;
+  min-height: 84px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--self-game-border);
+  border-radius: 4px;
+  background: #fff;
+}
+
+.self-game-inventory-offset-field .self-game-input {
+  width: 100%;
+  min-width: 0;
+  margin-top: 4px;
 }
 
 .self-game-current-value span {
@@ -896,9 +933,7 @@
 }
 
 .self-game-after-value {
-  margin: 0 0 14px;
-  padding: 0 0 12px;
-  border-bottom: 1px solid var(--self-game-border);
+  margin-bottom: 0;
 }
 
 .self-game-field-help {
@@ -1082,7 +1117,8 @@
 
   .self-game-capabilities,
   .self-game-option-grid,
-  .self-game-form-grid {
+  .self-game-form-grid,
+  .self-game-inventory-value-grid {
     grid-template-columns: 1fr;
   }
 
