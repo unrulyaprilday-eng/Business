@@ -717,12 +717,75 @@
   min-width: 720px;
 }
 
+.self-game-poker-room-config-table {
+  min-width: 780px;
+  table-layout: fixed;
+}
+
+.self-game-room-rate-input {
+  width: 96px;
+  margin: 0 auto;
+}
+
+.self-game-poker-room-config-table th:nth-child(1) { width: 54px; }
+.self-game-poker-room-config-table th:nth-child(2) { width: 154px; }
+.self-game-poker-room-config-table th:nth-child(3) { width: 146px; }
+.self-game-poker-room-config-table th:nth-child(4) { width: 172px; }
+.self-game-poker-room-config-table th:nth-child(5) { width: 128px; }
+
+.self-game-poker-room-config-table td:nth-child(n + 3) {
+  text-align: center;
+}
+
+.self-game-poker-room-config-table input.poker-base-score,
+.self-game-poker-room-config-table input.poker-min-entry,
+.self-game-room-rate-input .self-game-input {
+  display: inline-block;
+  width: 104px;
+  min-width: 104px;
+  max-width: 104px;
+  box-sizing: border-box;
+}
+
+.self-game-room-rate-input .self-game-input {
+  width: 96px;
+  min-width: 96px;
+  max-width: 96px;
+}
+
 .self-game-room-robot-table {
   min-width: 920px;
 }
 
 .self-game-room-ranges-table {
-  min-width: 1420px;
+  min-width: 1540px;
+  table-layout: fixed;
+}
+
+.self-game-room-ranges-table th:first-child,
+.self-game-room-ranges-table td:first-child {
+  width: 120px;
+}
+
+.self-game-room-ranges-table th:nth-child(n + 2) {
+  width: 142px;
+}
+
+.self-game-room-ranges-table th {
+  line-height: 1.35;
+  white-space: normal;
+}
+
+.self-game-room-ranges-table td:not(:first-child) {
+  text-align: center;
+}
+
+.self-game-room-ranges-table input.poker-range {
+  display: inline-block;
+  width: 96px;
+  min-width: 96px;
+  max-width: 96px;
+  box-sizing: border-box;
 }
 
 .self-game-inventory-room-table {
