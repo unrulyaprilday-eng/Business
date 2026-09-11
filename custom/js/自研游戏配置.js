@@ -248,6 +248,7 @@
       if (!game.rooms || game.rooms.length !== FIXED_POKER_ROOM_COUNT) return "房间配置数量无效";
       root.querySelectorAll(".poker-base-score, .poker-min-entry").forEach(function (input) { if (!input.value.trim() || !isFinite(Number(input.value)) || Number(input.value) <= 0) roomError = "房间底分和最低进入条件必须大于 0"; });
       root.querySelectorAll(".poker-rake-rate").forEach(function (input) { var value = Number(input.value); if (!input.value.trim() || !isFinite(value) || value < 0 || value > 100 || Math.round(value * 10) !== value * 10) roomError = "抽水比例必须为 0～100% 之间、步长为 0.1% 的数值"; });
+      if (!roomError) game.rooms.forEach(function (room) { var entry = Number(root.querySelector(".poker-min-entry[data-room=\"" + room.code + "\"]").value); if (Number(room.minGold) < entry || Number(room.maxGold) < entry || Number(room.exitGameMinGold) < entry || Number(room.exitGameMaxGold) < entry) roomError = room.name + "的最低进入条件不能高于现有机器人金币下限，请先调整机器人配置"; });
       return roomError;
     }
     if (module === "pokerRobots") {
@@ -255,6 +256,7 @@
       root.querySelectorAll(".poker-range").forEach(function (input) { var value = Number(input.value); if (!input.value.trim() || !isFinite(value) || value < 0 || Math.floor(value) !== value) pokerError = "机器人运行人数、金币、时长和局数必须为非负整数"; });
       if (pokerError) return pokerError;
       game.rooms.forEach(function (room) { ["minRobotNum", "minGold", "exitGameMinGold", "minPlayTime", "minPlayRound"].forEach(function (minField) { var maxField = { minRobotNum: "maxRobotNum", minGold: "maxGold", exitGameMinGold: "exitGameMaxGold", minPlayTime: "maxPlayTime", minPlayRound: "maxPlayRound" }[minField]; var minValue = Number(root.querySelector("[data-field=\"" + minField + "\"][data-room=\"" + room.code + "\"]").value); var maxValue = Number(root.querySelector("[data-field=\"" + maxField + "\"][data-room=\"" + room.code + "\"]").value); if (minValue > maxValue) pokerError = room.name + "的最小值不能大于最大值"; }); });
+      game.rooms.forEach(function (room) { ["minGold", "maxGold", "exitGameMinGold", "exitGameMaxGold"].forEach(function (field) { var input = root.querySelector("[data-field=\"" + field + "\"][data-room=\"" + room.code + "\"]"); if (input && Number(input.value) < Number(room.minEntry)) pokerError = room.name + "的机器人金币值必须大于等于最低进入条件"; }); });
       return pokerError;
     }
     if (module !== "miniParams") return "";

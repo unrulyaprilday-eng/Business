@@ -85,6 +85,7 @@
     game.rooms.forEach(function (room) {
       ["minRobotNum", "minGold", "exitGameMinGold", "minPlayTime", "minPlayRound"].forEach(function (minField) { var maxField = { minRobotNum: "maxRobotNum", minGold: "maxGold", exitGameMinGold: "exitGameMaxGold", minPlayTime: "maxPlayTime", minPlayRound: "maxPlayRound" }[minField]; var minValue = Number(root.querySelector("[data-field=\"" + minField + "\"][data-room=\"" + room.code + "\"]").value); var maxValue = Number(root.querySelector("[data-field=\"" + maxField + "\"][data-room=\"" + room.code + "\"]").value); if (minValue > maxValue) error = room.name + "的最小值不能大于最大值"; });
     });
+    game.rooms.forEach(function (room) { ["minGold", "maxGold", "exitGameMinGold", "exitGameMaxGold"].forEach(function (field) { var input = root.querySelector("[data-field=\"" + field + "\"][data-room=\"" + room.code + "\"]"); if (input && Number(input.value) < Number(root.querySelector(".poker-min-entry[data-room=\"" + room.code + "\"]").value)) error = room.name + "的机器人金币值必须大于等于最低进入条件"; }); });
     return error;
   }
 
