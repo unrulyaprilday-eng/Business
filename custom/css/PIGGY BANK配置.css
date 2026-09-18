@@ -165,35 +165,35 @@ body {
 .extract-method-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  padding: 14px 20px 10px;
+  gap: 8px 16px;
+  padding: 10px 20px 8px;
 }
 
 .extract-method-card {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
-  min-height: 70px;
-  padding: 13px 14px;
-  border: 1px solid #dce4ee;
-  border-radius: 4px;
-  background: #fff;
+  min-height: 0;
+  padding: 6px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   cursor: pointer;
 }
 
 .extract-method-card.is-selected {
-  border-color: #6faaf5;
-  background: #f6faff;
+  border: 0;
+  background: transparent;
 }
 
 .extract-method-card:hover {
-  border-color: #a9c8f5;
-  background: #fbfdff;
+  border: 0;
+  background: transparent;
 }
 
 .extract-method-card.is-selected:hover {
-  border-color: #5e9cf0;
-  background: #f3f8ff;
+  border: 0;
+  background: transparent;
 }
 
 .extract-method-card input {
@@ -234,13 +234,16 @@ body {
 }
 
 .extract-method-copy {
-  display: grid;
-  gap: 6px;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 2px 8px;
 }
 
 .extract-method-copy strong {
   color: #354052;
   font-size: 14px;
+  line-height: 20px;
 }
 
 .extract-method-copy em {
@@ -273,6 +276,53 @@ body {
   align-items: center;
   gap: 12px;
   min-height: 32px;
+}
+
+.payout-method-content {
+  display: grid;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.payout-method-grid {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  width: 100%;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.payout-method-card {
+  flex: 1 1 280px;
+  min-height: 0;
+  padding: 4px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.payout-method-card.is-selected,
+.payout-method-card.is-selected:hover,
+.payout-method-card:hover {
+  border-color: transparent;
+  background: transparent;
+}
+
+.payout-method-card .custom-radio {
+  margin-top: 2px;
+}
+
+.payout-method-card .extract-method-copy {
+  gap: 2px;
+}
+
+.payout-method-note {
+  margin: 0;
+  color: #637084;
+  font-size: 12px;
+  line-height: 18px;
 }
 
 .number-field,

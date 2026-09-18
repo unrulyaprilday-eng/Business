@@ -103,24 +103,49 @@
                 </label>
               </div>
 
+              <div class="extract-setting-box piggy-payout-setting">
+                <div class="field-label">发放方式</div>
+                <div class="field-content payout-method-content">
+                  <div class="extract-method-grid payout-method-grid">
+                    <label class="extract-method-card payout-method-card is-selected" data-payout-card="manual">
+                      <input type="radio" name="payoutMethod" value="manual" checked data-payout-method/>
+                      <span class="custom-radio" aria-hidden="true"></span>
+                      <span class="extract-method-copy">
+                        <strong>手动领取</strong>
+                        <em>达到解锁条件后，由玩家主动领取，保持当前流程。</em>
+                      </span>
+                    </label>
+                    <label class="extract-method-card payout-method-card" data-payout-card="auto">
+                      <input type="radio" name="payoutMethod" value="auto" data-payout-method/>
+                      <span class="custom-radio" aria-hidden="true"></span>
+                      <span class="extract-method-copy">
+                        <strong>充值直接到账余额</strong>
+                        <em>充值成功后自动将已解锁金额转入玩家钱包余额。</em>
+                      </span>
+                    </label>
+                  </div>
+                  <p class="payout-method-note" data-payout-note>手动领取时，玩家达到最低领取金额后可主动领取。</p>
+                </div>
+              </div>
+
               <div class="extract-setting-box piggy-minimum-setting">
                 <div class="field-label">领取到余额最低金额</div>
                 <div class="field-content">
                   <div class="number-field">
-                    <input type="number" min="0.01" step="0.01" value="1.00" inputmode="decimal" aria-label="领取到余额最低金额" data-claim-minimum/>
+                    <input type="number" min="0" step="0.01" value="1.00" inputmode="decimal" aria-label="领取到余额最低金额" data-claim-minimum/>
                   </div>
-                  <p>可领取金额达到该值后，才允许转入玩家钱包余额。</p>
+                  <p>可领取金额达到该值后，才允许转入玩家钱包余额；设置为 0 表示不设最低领取门槛。</p>
                 </div>
               </div>
 
               <div class="extract-setting-box piggy-wager-multiplier-setting">
-                <div class="field-label">打码倍数</div>
+                <div class="field-label" data-wager-label>打码倍数</div>
                 <div class="field-content">
                   <div class="number-field">
                     <input type="number" min="0" step="0.01" value="1.50" inputmode="decimal" aria-label="打码倍数" data-wager-multiplier/>
                     <span>倍</span>
                   </div>
-                  <p>领取前需完成可领取金额 × 打码倍数的有效投注。</p>
+                  <p data-wager-note>领取前需完成可领取金额 × 打码倍数的有效投注。</p>
                 </div>
               </div>
 
@@ -209,7 +234,7 @@
               <strong id="piggySaveTitle">确认保存配置</strong>
               <button type="button" aria-label="关闭" data-close-save-modal>×</button>
             </header>
-            <div class="piggy-confirm-body">保存后将按当前活动状态、提取方式、最低领取金额、打码倍数和解锁比例执行。</div>
+            <div class="piggy-confirm-body">保存后将按当前活动状态、提取方式、发放方式、最低领取金额、打码倍数和解锁比例执行；自动到账的独立规则打码量按充值后余额（含充值前已有余额）计算。</div>
             <footer>
               <button class="cl-btn" type="button" data-close-save-modal>取消</button>
               <button class="cl-btn cl-btn-primary" type="button" data-confirm-save>确定</button>

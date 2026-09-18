@@ -2,6 +2,7 @@
   var defaults = {
     masterOn: true,
     method: "recharge",
+    payoutMethod: "manual",
     minimumClaimAmount: "1.00",
     wagerMultiplier: "1.50",
     vipRatios: {
@@ -54,6 +55,38 @@
     if (tag) {
       tag.textContent = "当前方式：" + (method === "wager" ? "打码按比例" : "充值");
     }
+  }
+
+  function updatePayoutDescription(payoutMethod) {
+    var note = document.querySelector("[data-payout-note]");
+    var wagerLabel = document.querySelector("[data-wager-label]");
+    var wagerNote = document.querySelector("[data-wager-note]");
+    var isAuto = payoutMethod === "auto";
+
+    if (note) {
+      note.textContent = isAuto
+        ? "充值成功后自动到账；独立规则下不经过手动领取门槛。"
+        : "手动领取时，玩家达到最低领取金额后可主动领取。";
+    }
+    if (wagerLabel) {
+      wagerLabel.textContent = isAuto ? "独立规则打码倍数" : "打码倍数";
+    }
+    if (wagerNote) {
+      wagerNote.textContent = isAuto
+        ? "充值成功后自动转入余额；独立规则下有效投注额 = 充值后余额（含充值前已有余额）× 打码倍数。"
+        : "领取前需完成可领取金额 × 打码倍数的有效投注。";
+    }
+  }
+
+  function setPayoutMethod(payoutMethod) {
+    var method = payoutMethod === "auto" ? "auto" : "manual";
+    document.querySelectorAll("[data-payout-method]").forEach(function (input) {
+      input.checked = input.value === method;
+    });
+    document.querySelectorAll("[data-payout-card]").forEach(function (card) {
+      card.classList.toggle("is-selected", card.getAttribute("data-payout-card") === method);
+    });
+    updatePayoutDescription(method);
   }
 
   function saveVipRatios(method) {
@@ -119,8 +152,8 @@
 
   function normalizeMinimumClaimAmount(input) {
     var value = Number(input.value);
-    if (!Number.isFinite(value) || value < 0.01) {
-      input.value = "0.01";
+    if (!Number.isFinite(value) || value < 0) {
+      input.value = "0.00";
       return;
     }
     input.value = value.toFixed(2);
@@ -145,6 +178,7 @@
   function captureState() {
     var masterSwitch = getMasterSwitch();
     var methodInput = document.querySelector("[data-extract-method]:checked");
+    var payoutInput = document.querySelector("[data-payout-method]:checked");
     var minimumInput = document.querySelector("[data-claim-minimum]");
     var multiplierInput = document.querySelector("[data-wager-multiplier]");
     var table = document.querySelector("[data-vip-ratio-table]");
@@ -165,6 +199,7 @@
     return {
       masterOn: !!(masterSwitch && masterSwitch.classList.contains("is-on")),
       method: method,
+      payoutMethod: payoutInput ? payoutInput.value : defaults.payoutMethod,
       minimumClaimAmount: minimumInput ? minimumInput.value : defaults.minimumClaimAmount,
       wagerMultiplier: multiplierInput ? multiplierInput.value : defaults.wagerMultiplier,
       rechargeTiers: Array.prototype.map.call(document.querySelectorAll("[data-recharge-tier]"), function (input) {
@@ -185,6 +220,7 @@
     if (multiplierInput && state.wagerMultiplier !== undefined) {
       multiplierInput.value = state.wagerMultiplier;
     }
+    setPayoutMethod(state.payoutMethod || defaults.payoutMethod);
     document.querySelectorAll("[data-recharge-tier]").forEach(function (input, index) {
       if (state.rechargeTiers[index] !== undefined) input.value = state.rechargeTiers[index];
     });
@@ -195,7 +231,7 @@
   function setEditing(next) {
     editing = next;
     var page = document.querySelector(".piggy-config-page");
-    var editables = document.querySelectorAll("[data-piggy-master-switch], [data-extract-method], [data-claim-minimum], [data-wager-multiplier], [data-recharge-tier], [data-recharge-tier-ratio], [data-vip-ratio]");
+    var editables = document.querySelectorAll("[data-piggy-master-switch], [data-extract-method], [data-payout-method], [data-claim-minimum], [data-wager-multiplier], [data-recharge-tier], [data-recharge-tier-ratio], [data-vip-ratio]");
     var editButton = document.querySelector('[data-edit-action="edit"]');
     var cancelButton = document.querySelector('[data-edit-action="cancel"]');
     var saveButton = document.querySelector('[data-edit-action="save"]');
@@ -228,6 +264,8 @@
   ready(function () {
     var selectedMethod = document.querySelector("[data-extract-method]:checked");
     setMethod(selectedMethod ? selectedMethod.value : defaults.method, true);
+    var selectedPayout = document.querySelector("[data-payout-method]:checked");
+    setPayoutMethod(selectedPayout ? selectedPayout.value : defaults.payoutMethod);
     savedState = captureState();
     setEditing(false);
 
@@ -236,6 +274,10 @@
 
       if (event.target.matches("[data-extract-method]")) {
         setMethod(event.target.value);
+      }
+
+      if (event.target.matches("[data-payout-method]")) {
+        setPayoutMethod(event.target.value);
       }
 
       if (event.target.matches("[data-recharge-tier-ratio], [data-vip-ratio]")) {
