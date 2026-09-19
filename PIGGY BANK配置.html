@@ -61,6 +61,10 @@
               <div class="piggy-breadcrumb">优惠活动 / PIGGY BANK配置</div>
               <h1>PIGGY BANK配置</h1>
               <div class="piggy-master-control">
+                <label class="piggy-activity-name">
+                  <span class="piggy-master-label">活动名称</span>
+                  <input type="text" value="PIGGY BANK" maxlength="40" aria-label="活动名称" data-activity-name/>
+                </label>
                 <span class="piggy-master-label">活动总开关</span>
                 <button class="cl-switch-button is-on" type="button" role="switch" aria-label="活动总开关" aria-checked="true" data-piggy-master-switch></button>
               </div>
@@ -234,7 +238,7 @@
               <strong id="piggySaveTitle">确认保存配置</strong>
               <button type="button" aria-label="关闭" data-close-save-modal>×</button>
             </header>
-            <div class="piggy-confirm-body">保存后将按当前活动状态、提取方式、发放方式、最低领取金额、打码倍数和解锁比例执行；自动到账的独立规则打码量按充值后余额（含充值前已有余额）计算。</div>
+            <div class="piggy-confirm-body">保存后将按当前活动名称、活动状态、提取方式、发放方式、最低领取金额、打码倍数和解锁比例执行；自动到账的独立规则打码量按充值后余额（含充值前已有余额）计算。</div>
             <footer>
               <button class="cl-btn" type="button" data-close-save-modal>取消</button>
               <button class="cl-btn cl-btn-primary" type="button" data-confirm-save>确定</button>

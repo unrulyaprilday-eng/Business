@@ -1,5 +1,6 @@
 (function () {
   var defaults = {
+    activityName: "PIGGY BANK",
     masterOn: true,
     method: "recharge",
     payoutMethod: "manual",
@@ -168,6 +169,16 @@
     input.value = value.toFixed(2);
   }
 
+  function normalizeActivityName(input) {
+    if (!input) return defaults.activityName;
+    var value = input.value.trim();
+    if (!value) {
+      value = defaults.activityName;
+    }
+    input.value = value;
+    return value;
+  }
+
   function cloneVipState(source) {
     return {
       recharge: source.recharge.slice(),
@@ -177,6 +188,7 @@
 
   function captureState() {
     var masterSwitch = getMasterSwitch();
+    var activityNameInput = document.querySelector("[data-activity-name]");
     var methodInput = document.querySelector("[data-extract-method]:checked");
     var payoutInput = document.querySelector("[data-payout-method]:checked");
     var minimumInput = document.querySelector("[data-claim-minimum]");
@@ -197,6 +209,7 @@
     }
 
     return {
+      activityName: normalizeActivityName(activityNameInput),
       masterOn: !!(masterSwitch && masterSwitch.classList.contains("is-on")),
       method: method,
       payoutMethod: payoutInput ? payoutInput.value : defaults.payoutMethod,
@@ -214,6 +227,10 @@
     vipRatioState = cloneVipState(state.vipRatios);
     var minimumInput = document.querySelector("[data-claim-minimum]");
     var multiplierInput = document.querySelector("[data-wager-multiplier]");
+    var activityNameInput = document.querySelector("[data-activity-name]");
+    if (activityNameInput) {
+      activityNameInput.value = state.activityName || defaults.activityName;
+    }
     if (minimumInput && state.minimumClaimAmount !== undefined) {
       minimumInput.value = state.minimumClaimAmount;
     }
@@ -231,7 +248,7 @@
   function setEditing(next) {
     editing = next;
     var page = document.querySelector(".piggy-config-page");
-    var editables = document.querySelectorAll("[data-piggy-master-switch], [data-extract-method], [data-payout-method], [data-claim-minimum], [data-wager-multiplier], [data-recharge-tier], [data-recharge-tier-ratio], [data-vip-ratio]");
+    var editables = document.querySelectorAll("[data-activity-name], [data-piggy-master-switch], [data-extract-method], [data-payout-method], [data-claim-minimum], [data-wager-multiplier], [data-recharge-tier], [data-recharge-tier-ratio], [data-vip-ratio]");
     var editButton = document.querySelector('[data-edit-action="edit"]');
     var cancelButton = document.querySelector('[data-edit-action="cancel"]');
     var saveButton = document.querySelector('[data-edit-action="save"]');
