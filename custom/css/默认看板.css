@@ -2754,6 +2754,27 @@ button {
   visibility: hidden;
 }
 
+.domain-metrics .metric-secondary {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 4px;
+  background: #f5f8ff;
+}
+
+.domain-metrics .metric-secondary dt {
+  color: #52627a;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.domain-metrics .metric-secondary dd {
+  margin-top: 3px;
+  color: #1f4f9b;
+  font-size: 14px;
+  line-height: 19px;
+  font-weight: 700;
+}
+
 .mini-sparkline {
   display: block;
   width: 100%;

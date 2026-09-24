@@ -386,8 +386,10 @@
 
     list.innerHTML = metrics.map(function (item) {
       var empty = item[2] === "empty";
-      var tone = item[2] && !empty ? " class=\"" + item[2] + "\"" : "";
-      return "<div" + (empty ? " class=\"metric-empty\"" : "") + "><dt>" + escapeHtml(item[0]) + "</dt><dd" + tone + ">" + escapeHtml(item[1]) + "</dd></div>";
+      var secondary = ["参与游戏人数", "首充人数", "首充金额"].indexOf(item[0]) !== -1;
+      var wrapperClass = empty ? "metric-empty" : secondary ? "metric-secondary" : "";
+      var tone = item[2] && !empty && item[2] !== "secondary" ? " class=\"" + item[2] + "\"" : "";
+      return "<div" + (wrapperClass ? " class=\"" + wrapperClass + "\"" : "") + "><dt>" + escapeHtml(item[0]) + "</dt><dd" + tone + ">" + escapeHtml(item[1]) + "</dd></div>";
     }).join("");
   }
 
