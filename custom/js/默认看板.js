@@ -9,6 +9,12 @@
   var PERIOD_DATA = {
     "今日": {
       label: "今日",
+      topMetrics: {
+        visits: "10,312",
+        players: "4,286",
+        firstChargeUsers: "386",
+        firstChargeAmount: "1,086,900.00"
+      },
       overview: {
         game: {
           headline: "今日投注额",
@@ -68,6 +74,12 @@
     },
     "昨日": {
       label: "昨日",
+      topMetrics: {
+        visits: "9,846",
+        players: "3,964",
+        firstChargeUsers: "342",
+        firstChargeAmount: "986,800.00"
+      },
       overview: {
         game: {
           headline: "昨日投注额",
@@ -127,6 +139,12 @@
     },
     "最近7日": {
       label: "最近7日",
+      topMetrics: {
+        visits: "42,860",
+        players: "18,926",
+        firstChargeUsers: "2,268",
+        firstChargeAmount: "7,206,800.00"
+      },
       overview: {
         game: {
           headline: "最近7日投注额",
@@ -186,6 +204,12 @@
     },
     "最近30日": {
       label: "最近30日",
+      topMetrics: {
+        visits: "128,640",
+        players: "64,812",
+        firstChargeUsers: "9,842",
+        firstChargeAmount: "29,246,800.00"
+      },
       overview: {
         game: {
           headline: "最近30日投注额",
@@ -361,28 +385,115 @@
     }
 
     list.innerHTML = metrics.map(function (item) {
-      var tone = item[2] ? " class=\"" + item[2] + "\"" : "";
-      return "<div><dt>" + escapeHtml(item[0]) + "</dt><dd" + tone + ">" + escapeHtml(item[1]) + "</dd></div>";
+      var empty = item[2] === "empty";
+      var tone = item[2] && !empty ? " class=\"" + item[2] + "\"" : "";
+      return "<div" + (empty ? " class=\"metric-empty\"" : "") + "><dt>" + escapeHtml(item[0]) + "</dt><dd" + tone + ">" + escapeHtml(item[1]) + "</dd></div>";
     }).join("");
   }
 
   function updateOverview(data) {
+    var selected = document.querySelectorAll("[data-scope-option]:checked");
+    var channels = [];
+    var shares = { channelA: 0.4, channelB: 0.35, channelC: 0.25 };
+    var topMetrics = data.topMetrics;
+
+    selected.forEach(function (option) {
+      var channel = option.value.indexOf("alpha-") === 0 ? "channelA" : option.value.indexOf("beta-") === 0 ? "channelB" : "channelC";
+      if (channels.indexOf(channel) === -1) channels.push(channel);
+    });
+
+    if (channels.length) {
+      var share = channels.reduce(function (sum, channel) { return sum + shares[channel]; }, 0);
+      topMetrics = {
+        visits: formatInt(Math.round(parseInt(data.topMetrics.visits.replace(/,/g, ""), 10) * share)),
+        players: formatInt(Math.round(parseInt(data.topMetrics.players.replace(/,/g, ""), 10) * share)),
+        firstChargeUsers: formatInt(Math.round(parseInt(data.topMetrics.firstChargeUsers.replace(/,/g, ""), 10) * share)),
+        firstChargeAmount: formatMoney(parseFloat(data.topMetrics.firstChargeAmount.replace(/,/g, "")) * share)
+      };
+    }
+
     [
       ["game", ".domain-game"],
       ["member", ".domain-member"],
       ["fund", ".domain-fund"],
       ["risk", ".domain-risk"]
     ].forEach(function (pair) {
-      var item = data.overview[pair[0]];
+      var source = data.overview[pair[0]];
       var card = document.querySelector(pair[1]);
+      if (!card || !source) return;
 
-      if (!card || !item) {
-        return;
+      var item = {
+        headline: source.headline,
+        value: source.value,
+        metrics: source.metrics.slice()
+      };
+
+      if (pair[0] === "game") {
+        item.metrics = item.metrics.map(function (metric) {
+          return metric[0] === "投注会员" ? ["参与游戏人数", topMetrics.players] : metric;
+        });
+      } else if (pair[0] === "member") {
+        item.headline = "每日访问人数";
+        item.value = topMetrics.visits;
+        item.metrics = item.metrics.filter(function (metric) { return metric[0] !== "首充人数"; });
+        item.metrics.push(["", "", "empty"]);
+      } else if (pair[0] === "fund") {
+        item.metrics = item.metrics.map(function (metric) {
+          if (metric[0] === "充提比") return ["首充人数", topMetrics.firstChargeUsers];
+          if (metric[0] === "充值成功率") return ["首充金额", topMetrics.firstChargeAmount];
+          return metric;
+        });
       }
 
       setText(".domain-primary-label", item.headline, card);
       setText(".domain-card-head strong", item.value, card);
       renderMetrics(card, item.metrics);
+    });
+  }
+
+  function bindScopePicker() {
+    var picker = document.querySelector("[data-scope-picker]");
+    var trigger = picker && picker.querySelector("[data-scope-trigger]");
+    var menu = picker && picker.querySelector("[data-scope-menu]");
+    var summary = picker && picker.querySelector("[data-scope-summary]");
+    var clear = picker && picker.querySelector("[data-scope-clear]");
+
+    if (!picker || !trigger || !menu) return;
+
+    function updateSelection() {
+      var selected = Array.prototype.slice.call(picker.querySelectorAll("[data-scope-option]:checked"));
+      var channels = [];
+      selected.forEach(function (option) {
+        var channel = option.value.indexOf("alpha-") === 0 ? "渠道A" : option.value.indexOf("beta-") === 0 ? "渠道B" : "渠道C";
+        if (channels.indexOf(channel) === -1) channels.push(channel);
+      });
+      summary.textContent = selected.length ? channels.join("、") + "（" + selected.length + " 个域名）" : "全部商户数据";
+      updateOverview(getPeriodData(document.querySelector(".overview-board .period-tabs button.is-active")?.textContent.trim() || "今日"));
+    }
+
+    trigger.addEventListener("click", function () {
+      var opening = menu.hidden;
+      menu.hidden = !opening;
+      trigger.setAttribute("aria-expanded", String(opening));
+    });
+    picker.querySelectorAll("[data-scope-option]").forEach(function (option) {
+      option.addEventListener("change", updateSelection);
+    });
+    clear.addEventListener("click", function () {
+      picker.querySelectorAll("[data-scope-option]").forEach(function (option) { option.checked = false; });
+      updateSelection();
+    });
+    document.addEventListener("click", function (event) {
+      if (!picker.contains(event.target)) {
+        menu.hidden = true;
+        trigger.setAttribute("aria-expanded", "false");
+      }
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        menu.hidden = true;
+        trigger.setAttribute("aria-expanded", "false");
+      }
     });
   }
 
@@ -686,6 +797,7 @@
   }
 
   ready(function () {
+    bindScopePicker();
     bindPeriodTabs();
     bindSecondaryTrendTabs();
     bindRankTabs();

@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>吕布骑狗 · SVG 动画</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+      color: #263b3c;
+      background: #e6eff0;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { width: 100%; min-height: 100%; margin: 0; }
+    button, input { font: inherit; }
+
+    .stage {
+      --gallop: .76s;
+      --drift: 9s;
+      position: relative;
+      min-height: 100vh;
+      min-height: 100svh;
+      overflow: hidden;
+      isolation: isolate;
+      background: #e6eff0;
+    }
+
+    .scene {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .masthead {
+      position: absolute;
+      z-index: 2;
+      top: 30px;
+      left: 38px;
+      pointer-events: none;
+    }
+
+    .masthead p {
+      margin: 0 0 7px;
+      color: #8b4740;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 3px;
+    }
+
+    .masthead h1 {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1.15;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .controls {
+      position: absolute;
+      z-index: 2;
+      top: 30px;
+      right: 38px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 50px;
+      padding: 6px 10px 6px 7px;
+      border: 1px solid rgba(38, 59, 60, .16);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .86);
+      box-shadow: 0 5px 18px rgba(39, 63, 58, .08);
+      backdrop-filter: blur(8px);
+    }
+
+    .motion-button {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      flex: none;
+      padding: 0;
+      border: 0;
+      border-radius: 5px;
+      color: #fff;
+      background: #315f65;
+      cursor: pointer;
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .motion-button:hover { background: #244b50; }
+    .motion-button:focus-visible,
+    .speed input:focus-visible { outline: 3px solid #73afb8; outline-offset: 3px; }
+
+    .speed {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      white-space: nowrap;
+      color: #40595b;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .speed input {
+      width: 95px;
+      margin: 0;
+      accent-color: #315f65;
+      cursor: pointer;
+    }
+
+    .speed output {
+      width: 31px;
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+    .caption {
+      position: absolute;
+      z-index: 2;
+      left: 40px;
+      bottom: 27px;
+      margin: 0;
+      color: rgba(43, 67, 66, .68);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .cloud-one { animation: cloud-drift calc(var(--drift) * 2.6) ease-in-out infinite alternate; }
+    .cloud-two { animation: cloud-drift calc(var(--drift) * 3.4) ease-in-out infinite alternate-reverse; }
+    .cloud-three { animation: cloud-drift calc(var(--drift) * 2.1) ease-in-out infinite alternate; }
+    .ground-dash { animation: track-run calc(var(--gallop) * 2.2) linear infinite; }
+    .ride { animation: body-bob var(--gallop) ease-in-out infinite; }
+    .shadow { transform-origin: 715px 675px; animation: shadow-pulse var(--gallop) ease-in-out infinite; }
+    .far-back-leg { transform-origin: 548px 550px; animation: leg-back var(--gallop) ease-in-out infinite; }
+    .far-front-leg { transform-origin: 835px 547px; animation: leg-front var(--gallop) ease-in-out infinite; }
+    .near-back-leg { transform-origin: 580px 554px; animation: leg-front var(--gallop) ease-in-out infinite; }
+    .near-front-leg { transform-origin: 864px 540px; animation: leg-back var(--gallop) ease-in-out infinite; }
+    .tail { transform-origin: 499px 500px; animation: tail-wag calc(var(--gallop) * 1.3) ease-in-out infinite; }
+    .cape { transform-origin: 691px 358px; animation: cape-flutter calc(var(--gallop) * 1.5) ease-in-out infinite; }
+    .plume-left { transform-origin: 716px 256px; animation: plume-wave calc(var(--gallop) * 2) ease-in-out infinite; }
+    .plume-right { transform-origin: 724px 255px; animation: plume-wave calc(var(--gallop) * 2) ease-in-out infinite reverse; }
+    .halberd { transform-origin: 787px 383px; animation: spear-tilt calc(var(--gallop) * 2) ease-in-out infinite; }
+    .dust-a { animation: dust-puff var(--gallop) ease-out infinite; }
+    .dust-b { animation: dust-puff var(--gallop) ease-out infinite .35s; }
+    .spark { animation: spark-fade calc(var(--gallop) * 2) ease-in-out infinite; }
+
+    .scene * { transform-box: view-box; }
+    .stage.is-paused .scene * { animation-play-state: paused !important; }
+
+    @keyframes cloud-drift { from { transform: translateX(-28px); } to { transform: translateX(38px); } }
+    @keyframes track-run { to { stroke-dashoffset: 176; } }
+    @keyframes body-bob { 0%, 100% { transform: translateY(0); } 25% { transform: translateY(8px); } 50% { transform: translateY(-7px); } 75% { transform: translateY(5px); } }
+    @keyframes shadow-pulse { 0%, 100% { transform: scaleX(1); opacity: .34; } 50% { transform: scaleX(.88); opacity: .23; } }
+    @keyframes leg-front { 0%, 100% { transform: rotate(17deg); } 50% { transform: rotate(-19deg); } }
+    @keyframes leg-back { 0%, 100% { transform: rotate(-18deg); } 50% { transform: rotate(19deg); } }
+    @keyframes tail-wag { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(8deg); } }
+    @keyframes cape-flutter { 0%, 100% { transform: rotate(-3deg) scaleX(1); } 50% { transform: rotate(3deg) scaleX(1.07); } }
+    @keyframes plume-wave { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(5deg); } }
+    @keyframes spear-tilt { 0%, 100% { transform: rotate(-1deg); } 50% { transform: rotate(2deg); } }
+    @keyframes dust-puff { 0% { transform: translate(16px, 8px) scale(.55); opacity: 0; } 25% { opacity: .55; } 100% { transform: translate(-86px, -25px) scale(1.35); opacity: 0; } }
+    @keyframes spark-fade { 0%, 100% { opacity: .45; } 50% { opacity: .95; } }
+
+    @media (max-width: 650px) {
+      .masthead { top: 23px; left: 21px; }
+      .masthead p { font-size: 10px; letter-spacing: 2px; }
+      .masthead h1 { font-size: 27px; }
+      .controls { top: auto; right: 18px; bottom: 21px; }
+      .caption { left: 21px; bottom: 86px; font-size: 11px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .stage:not(.motion-enabled) .scene * { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" id="stage">
+    <div class="masthead" aria-hidden="true">
+      <p>三国奇行录 · 其一</p>
+      <h1>吕布骑狗</h1>
+    </div>
+
+    <div class="controls" role="group" aria-label="动画控制">
+      <button class="motion-button" id="motion-button" type="button" aria-label="暂停动画" title="暂停动画">Ⅱ</button>
+      <label class="speed" for="speed">速度
+        <input id="speed" type="range" min="0.6" max="1.8" step="0.1" value="1" aria-label="动画速度">
+        <output id="speed-value" for="speed">1.0×</output>
+      </label>
+    </div>
+
+    <svg class="scene" id="scene" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 820" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="scene-title scene-desc">
+      <title id="scene-title">吕布骑狗</title>
+      <desc id="scene-desc">头戴双翎冠、身披红袍的吕布挥舞方天画戟，骑着一只奔跑的棕色大狗，经过山间古道。</desc>
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#dbeaec"/>
+          <stop offset=".58" stop-color="#f4e6d9"/>
+          <stop offset="1" stop-color="#fae5cc"/>
+        </linearGradient>
+        <linearGradient id="far-mountain" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#aec9c4"/>
+          <stop offset="1" stop-color="#c6d9cb"/>
+        </linearGradient>
+        <linearGradient id="near-mountain" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#819e99"/>
+          <stop offset="1" stop-color="#acc0a9"/>
+        </linearGradient>
+        <linearGradient id="dog-fur" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#e7a75f"/>
+          <stop offset=".55" stop-color="#ce8247"/>
+          <stop offset="1" stop-color="#b76b3d"/>
+        </linearGradient>
+        <linearGradient id="face-fur" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#edb46c"/>
+          <stop offset="1" stop-color="#c7773e"/>
+        </linearGradient>
+        <linearGradient id="armor" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#415d61"/>
+          <stop offset="1" stop-color="#20383e"/>
+        </linearGradient>
+        <linearGradient id="steel" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#f8f2dd"/>
+          <stop offset=".55" stop-color="#b8cbca"/>
+          <stop offset="1" stop-color="#8ca4a5"/>
+        </linearGradient>
+        <pattern id="paper" width="26" height="26" patternUnits="userSpaceOnUse">
+          <circle cx="3" cy="7" r=".8" fill="#fff" opacity=".15"/>
+          <circle cx="18" cy="20" r=".7" fill="#455b56" opacity=".06"/>
+        </pattern>
+      </defs>
+
+      <!-- Landscape -->
+      <rect x="-1300" y="-1600" width="4300" height="4100" fill="url(#sky)"/>
+      <circle cx="1137" cy="181" r="96" fill="#eebc92" opacity=".28"/>
+      <circle cx="1137" cy="181" r="73" fill="#f6cfaa"/>
+      <circle cx="1137" cy="181" r="72" fill="none" stroke="#d89677" stroke-opacity=".34" stroke-width="2"/>
+      <path d="M1076 181h122M1137 120v122" stroke="#fff5df" stroke-opacity=".3" stroke-width="2"/>
+
+      <g class="cloud-one" fill="#fff8e9" opacity=".82">
+        <path d="M133 192c23-22 58-25 80-7 13-13 37-11 47 4 24-10 54-2 66 18H106c-1-7 9-13 27-15Z"/>
+        <path d="M87 211h246" stroke="#d9ded8" stroke-width="2" opacity=".45"/>
+      </g>
+      <g class="cloud-two" fill="#fff9ed" opacity=".75">
+        <path d="M842 92c19-17 44-16 58-3 17-12 43-8 51 9 23-3 40 5 46 19H818c-3-12 7-22 24-25Z"/>
+        <path d="M805 124h206" stroke="#d5e0dd" stroke-width="2" opacity=".5"/>
+      </g>
+      <g class="cloud-three" fill="#fff7e8" opacity=".64">
+        <path d="M1357 295c19-20 49-23 64-9 17-14 42-9 50 9 22-4 42 5 51 21h-189c-3-11 7-19 24-21Z"/>
+      </g>
+
+      <path d="M-1300 498C-926 493-687 410-399 460-165 500-43 392 164 435c187 39 225-53 396-50 225 4 231 89 447 67 178-18 316-109 492-82 228 35 389 111 1501 55V1700H-1300Z" fill="url(#far-mountain)" opacity=".75"/>
+      <path d="M-1300 558c298 11 415-37 611-99 149-47 290 61 480 43 171-17 282-133 477-91 165 36 274 141 456 104 213-44 236-124 436-108 224 18 294 131 502 110 209-20 290-102 1338-55v1240H-1300Z" fill="url(#near-mountain)" opacity=".8"/>
+      <path d="M-1300 613c430-17 615-45 836-25 216 21 322-48 552-49 188 0 246 52 443 38 202-14 278-50 449-39 184 12 332 71 523 30 225-48 431-34 1497-13v1500H-1300Z" fill="#b7c6aa"/>
+
+      <g fill="#65877f" opacity=".62">
+        <path d="M91 552l22-81 22 81h-12l12 32H91l12-32Zm15-15h15l-8-37Z"/>
+        <path d="M138 564l18-64 20 64h-11l11 26h-39l10-26Z"/>
+        <path d="M1221 544l23-83 24 83h-13l16 38h-52l15-38Z"/>
+        <path d="M1267 554l18-65 19 65h-11l12 31h-41l12-31Z"/>
+        <path d="M1761 542l26-91 27 91h-14l14 38h-53l13-38Z"/>
+      </g>
+      <path d="M-1300 628c439-18 650 11 973-12 249-17 405 14 677 7 239-7 430-38 687-21 292 19 520 11 752-6 260-19 580 23 1211 15v1800H-1300Z" fill="#e8d5b5"/>
+      <path d="M-1300 658c428-29 679-1 956-14 294-14 440 12 724 12 225 0 425-21 665-13 337 12 491-6 775-20 274-12 685 18 1180 6" fill="none" stroke="#d4b68c" stroke-width="4" opacity=".65"/>
+      <path d="M-1300 745h4300" stroke="#c89f73" stroke-width="4" stroke-dasharray="60 116" stroke-linecap="round" opacity=".5" class="ground-dash"/>
+      <path d="M-1300 774h4300" stroke="#f6e8ca" stroke-width="3" stroke-dasharray="22 154" stroke-linecap="round" opacity=".72" class="ground-dash"/>
+      <path d="M-1300 737h4300" stroke="#c89f73" stroke-width="2" stroke-dasharray="15 161" stroke-linecap="round" opacity=".4" class="ground-dash"/>
+      <g stroke="#9ea987" stroke-width="3" stroke-linecap="round" fill="none" opacity=".75">
+        <path d="M77 639l-7-16m7 16 7-22m-5 20 12-10M233 621l-4-12m4 12 11-17M1186 622l-7-12m7 12 10-18m-3 18 14-10M1385 642l-5-15m5 15 9-18"/>
+      </g>
+      <rect x="-1300" y="-1600" width="4300" height="4100" fill="url(#paper)" pointer-events="none"/>
+
+      <!-- Moving cast -->
+      <ellipse class="shadow" cx="728" cy="683" rx="360" ry="37" fill="#8b745f" opacity=".34"/>
+      <g class="dust-a" fill="#f5e6c8" opacity=".5">
+        <ellipse cx="527" cy="658" rx="27" ry="14"/><ellipse cx="500" cy="650" rx="17" ry="10"/><ellipse cx="556" cy="652" rx="20" ry="10"/>
+      </g>
+      <g class="dust-b" fill="#f5e6c8" opacity=".5">
+        <ellipse cx="835" cy="668" rx="32" ry="15"/><ellipse cx="804" cy="659" rx="19" ry="10"/><ellipse cx="870" cy="657" rx="21" ry="10"/>
+      </g>
+
+      <g class="ride">
+        <!-- Dog: tail and far legs -->
+        <g class="tail" stroke="#6d4938" stroke-width="5" stroke-linejoin="round">
+          <path d="M514 520c-57-1-105-21-115-63-10-42 20-75 55-72 30 3 42 29 31 51-7 15-26 20-37 9 2 25 40 39 85 40l35 25Z" fill="url(#dog-fur)"/>
+          <path d="M400 439c-4-31 19-54 43-55 17 0 28 7 36 20-26-8-46 4-48 28-1 17 9 26 18 32-25-2-43-10-49-25Z" fill="#f4d9a6" stroke="none"/>
+        </g>
+        <g class="far-back-leg" stroke="#76503c" stroke-width="5" stroke-linejoin="round">
+          <path d="M528 544c-21 29-28 61-26 96l-16 35c0 11 52 14 61 4l10-52 25-62Z" fill="#a96139"/>
+          <path d="M486 674c13 6 40 8 60 3" fill="none" stroke="#f5dcb6" stroke-width="5"/>
+        </g>
+        <g class="far-front-leg" stroke="#76503c" stroke-width="5" stroke-linejoin="round">
+          <path d="M805 542c-13 33-9 66 12 98l-5 37c6 11 52 8 57-3l-9-49 6-59Z" fill="#a96139"/>
+          <path d="M815 672c13 5 36 5 53 0" fill="none" stroke="#f2d2a5" stroke-width="5"/>
+        </g>
+
+        <!-- Broad back and pale belly keep the mount visibly canine -->
+        <path d="M484 492c34-33 104-46 197-44 89 1 152 17 203 46 43 25 61 69 35 96-38 40-132 45-241 41-118-4-205-18-230-56-17-27-3-61 36-83Z" fill="url(#dog-fur)" stroke="#704c3a" stroke-width="6" stroke-linejoin="round"/>
+        <path d="M477 554c32 43 118 55 205 55 115 0 179-11 226-37-15 46-96 67-228 63-114-3-205-23-226-60-5-9-6-18-5-25Z" fill="#f5deb1"/>
+        <path d="M485 492c38-20 98-25 156-23M733 464c56 5 104 18 133 34" fill="none" stroke="#f4ca8a" stroke-width="8" stroke-linecap="round" opacity=".7"/>
+        <path d="M505 549c26 6 40 19 47 39M702 602c80-1 133-10 173-29" fill="none" stroke="#a76442" stroke-width="4" stroke-linecap="round" opacity=".45"/>
+
+        <g class="near-back-leg" stroke="#704c3a" stroke-width="6" stroke-linejoin="round">
+          <path d="M566 551c-18 28-18 61-6 92l-17 39c7 13 58 12 65 0l7-47 16-62Z" fill="url(#dog-fur)"/>
+          <path d="M545 681c17 7 45 8 61 0" fill="none" stroke="#f8dfb5" stroke-width="7"/>
+          <path d="M557 655l-8 20M584 659l-4 20" fill="none" stroke="#965638" stroke-width="3"/>
+        </g>
+        <g class="near-front-leg" stroke="#704c3a" stroke-width="6" stroke-linejoin="round">
+          <path d="M841 535c-15 25-19 64-3 94l-1 49c8 13 59 14 67 1l-12-55 9-60Z" fill="url(#dog-fur)"/>
+          <path d="M840 677c19 9 46 10 62 1" fill="none" stroke="#f8dfb5" stroke-width="7"/>
+          <path d="M853 653l-8 20M880 658l-4 20" fill="none" stroke="#965638" stroke-width="3"/>
+        </g>
+
+        <!-- Saddle and traveling harness -->
+        <path d="M574 467c40-27 136-41 197-12l23 47c-65 21-163 22-224-1Z" fill="#a44842" stroke="#674244" stroke-width="5"/>
+        <path d="M582 481c59 24 154 24 202 2" fill="none" stroke="#e8b76e" stroke-width="8" stroke-linecap="round"/>
+        <path d="M617 495l-5 68m133-65 8 67" fill="none" stroke="#684849" stroke-width="9" stroke-linecap="round"/>
+        <circle cx="611" cy="558" r="10" fill="#e6bf78" stroke="#654c40" stroke-width="3"/>
+        <circle cx="754" cy="560" r="10" fill="#e6bf78" stroke="#654c40" stroke-width="3"/>
+        <path d="M594 464c38-27 124-31 176-12l-9 22c-53-9-113-9-157 13Z" fill="#704b46" stroke="#573d3b" stroke-width="4"/>
+        <path d="M626 457c36-12 89-13 120-4" fill="none" stroke="#e1aa62" stroke-width="5" stroke-linecap="round"/>
+
+        <!-- Lü Bu: windblown cape, armor, boots, and double-feather crown -->
+        <g class="cape" stroke="#793e3d" stroke-width="5" stroke-linejoin="round">
+          <path d="M694 340c-57-24-126-23-187 3 44 12 68 23 79 37-24 17-52 26-83 37 82 4 128 18 186 42l53-83Z" fill="#bd5148"/>
+          <path d="M520 343c70-6 122 5 158 24M520 415c80-4 117 15 160 29" fill="none" stroke="#e4a46f" stroke-width="6" opacity=".9"/>
+          <path d="M554 364c29 7 52 17 70 30" fill="none" stroke="#d9795a" stroke-width="6"/>
+        </g>
+
+        <path d="M682 407c-25 30-36 69-12 97l27 20 33-15-25-43 38-38Z" fill="#394b4e" stroke="#27383d" stroke-width="6"/>
+        <path d="M676 488l-10 37 24 22 40-12-13-30Z" fill="#273e42" stroke="#1c3238" stroke-width="5"/>
+        <path d="M681 530c19 10 36 10 49 4l10 19c-18 15-47 14-66-2Z" fill="#a86748" stroke="#443c37" stroke-width="4"/>
+        <path d="M727 411c32 9 62 37 77 76l-2 39-34 9-18-41-31-28Z" fill="#3b5356" stroke="#243a3d" stroke-width="6"/>
+        <path d="M768 517l30-7 12 37-16 25-42-4-4-22Z" fill="#263d42" stroke="#203237" stroke-width="5"/>
+        <path d="M754 559c17 7 34 7 52-2l8 22c-18 13-46 14-66 2Z" fill="#aa694a" stroke="#453c37" stroke-width="4"/>
+        <path d="M669 354c4-30 30-50 69-46 37 4 58 31 52 65l-16 63-90 3-22-43Z" fill="url(#armor)" stroke="#20363b" stroke-width="6" stroke-linejoin="round"/>
+        <path d="M695 324l12 107m26-110 6 109m25-98-11 95" fill="none" stroke="#b89966" stroke-width="6" opacity=".8"/>
+        <path d="M670 359c29 19 84 26 117 2M683 401c28 17 61 19 98 6" fill="none" stroke="#d3b47a" stroke-width="7" stroke-linecap="round"/>
+        <path d="M682 430c25 14 63 15 88 2l-8 24c-27 11-53 10-77 1Z" fill="#a24844" stroke="#633d3b" stroke-width="4"/>
+        <circle cx="724" cy="378" r="21" fill="#cba86c" stroke="#314548" stroke-width="5"/>
+        <path d="M714 378h20m-10-10v20" stroke="#5a4c3e" stroke-width="4" stroke-linecap="round"/>
+        <path d="M668 339c-19 1-29 18-23 37l17 20 25-12 4-26Z" fill="#3d5557" stroke="#22393d" stroke-width="5"/>
+        <path d="M650 365l-7 15 20 14" fill="none" stroke="#d9b375" stroke-width="5"/>
+
+        <path d="M749 337c23-9 41 2 45 25l-7 20-25-6-20-26Z" fill="#415d60" stroke="#22393d" stroke-width="5"/>
+        <path d="M785 360c17 1 23 12 17 23l-17 16-21-12 8-22Z" fill="#c88b65" stroke="#70493e" stroke-width="4"/>
+        <path d="M755 370l30 9" fill="none" stroke="#d6ad77" stroke-width="6" stroke-linecap="round"/>
+
+        <path d="M701 296h36l7 31-24 17-23-16Z" fill="#c28c68" stroke="#6a4c3e" stroke-width="4"/>
+        <path d="M690 255c5-29 27-42 52-36 23 5 31 26 25 51l-14 42-27 19-28-18-15-44Z" fill="#d7a278" stroke="#6b4b3d" stroke-width="5"/>
+        <path d="M685 267c-7 11-8 26 1 39l10-3-1-27m66-12c7 8 8 21 2 32l-11 3 2-28" fill="#3c3635"/>
+        <path d="M694 280c12-8 23-9 31-4m17-2c9-5 17-4 24 1" fill="none" stroke="#433937" stroke-width="5" stroke-linecap="round"/>
+        <path d="M704 289l13 1m29-2 11-1" stroke="#273137" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="713" cy="289" r="2.5" fill="#18282c"/><circle cx="751" cy="287" r="2.5" fill="#18282c"/>
+        <path d="M732 289l-3 15 7 3m-19 7c11 8 23 7 33-3" fill="none" stroke="#845942" stroke-width="3" stroke-linecap="round"/>
+        <path d="M722 317c0 12 6 23 13 31 7-10 10-20 9-31-6 3-15 4-22 0Z" fill="#3c3433"/>
+
+        <g class="plume-left" fill="#bc4b45" stroke="#793c3c" stroke-width="4" stroke-linejoin="round">
+          <path d="M717 248c-27-68-74-91-88-166 44 31 85 77 105 158Z"/>
+          <path d="M715 240c-23-51-48-85-69-115" fill="none" stroke="#e59069" stroke-width="4"/>
+        </g>
+        <g class="plume-right" fill="#cf5c4d" stroke="#793c3c" stroke-width="4" stroke-linejoin="round">
+          <path d="M728 246c8-56 36-104 79-143-10 68-35 116-64 148Z"/>
+          <path d="M739 237c21-49 43-80 59-110" fill="none" stroke="#eda076" stroke-width="4"/>
+        </g>
+        <path d="M684 262c2-31 17-49 44-55 28-4 47 13 54 39l-15 23-79 7Z" fill="#304b4f" stroke="#21383d" stroke-width="5"/>
+        <path d="M692 265c23 10 51 11 80-2l4 20c-28 15-62 14-89 0Z" fill="#d0a86b" stroke="#775a46" stroke-width="5"/>
+        <path d="M704 232c17-11 37-12 55 0" fill="none" stroke="#c8aa72" stroke-width="6" stroke-linecap="round"/>
+        <path d="M724 217l-8-17 12-16 14 15-9 19Z" fill="#d7af70" stroke="#685644" stroke-width="4"/>
+        <circle cx="731" cy="255" r="7" fill="#8a3e3d" stroke="#e9cb8d" stroke-width="3"/>
+
+        <!-- Fangtian halberd, held above the dog's head -->
+        <g class="halberd" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M786 386 1036 132" stroke="#493d3d" stroke-width="12"/>
+          <path d="M792 380 1035 134" stroke="#c9a36d" stroke-width="5"/>
+          <path d="M1017 150c-28 6-53-5-65-23 2 34 20 58 46 63l15-23Z" fill="url(#steel)" stroke="#5c7374" stroke-width="4"/>
+          <path d="M1026 139c21-4 42-20 47-45 11 35-4 64-39 76l-22-12Z" fill="url(#steel)" stroke="#5c7374" stroke-width="4"/>
+          <path d="M1022 146c-7-24-4-52 15-83 9 29 7 56-2 80Z" fill="#eef1e7" stroke="#5c7374" stroke-width="4"/>
+          <path d="M1029 81l8-28 8 27-9-8Z" fill="#f7e8c7" stroke="#5c7374" stroke-width="3"/>
+          <path d="M1003 168c-9 25-18 39-34 51l7-35-29 13c10-22 22-35 39-45Z" fill="#c34c45" stroke="#743f3e" stroke-width="3"/>
+          <path d="M996 169c-8 22-10 43-8 58" fill="none" stroke="#e69a6d" stroke-width="3"/>
+          <circle cx="1017" cy="158" r="8" fill="#d7b77c" stroke="#6c5c4a" stroke-width="3"/>
+        </g>
+        <path d="M780 370c7-4 20 0 26 9 7 10 3 20-7 25-10 4-25-5-28-16-3-8 2-14 9-18Z" fill="#d09a70" stroke="#704d3f" stroke-width="4"/>
+        <path d="M782 381c6 8 11 11 17 11" fill="none" stroke="#a36b50" stroke-width="3" stroke-linecap="round"/>
+
+        <!-- Dog's tall ears and smiling face in the foreground -->
+        <path d="M899 455c-13-32-13-71-4-103 27 12 51 35 65 65Z" fill="#c67b45" stroke="#704b39" stroke-width="6" stroke-linejoin="round"/>
+        <path d="M909 410c-2-15-1-30 3-43 15 11 27 25 34 43Z" fill="#dfaa82"/>
+        <path d="M962 419c7-41 29-72 54-90 13 31 19 67 7 100Z" fill="#d99254" stroke="#704b39" stroke-width="6" stroke-linejoin="round"/>
+        <path d="M983 412c6-27 14-46 26-60 8 20 9 40 4 62Z" fill="#e6af85"/>
+        <path d="M852 488c18-47 61-79 123-78 65 1 113 37 114 87 1 48-43 84-106 85-59 1-102-24-128-58-12-15-15-25-3-36Z" fill="url(#face-fur)" stroke="#704b39" stroke-width="6"/>
+        <path d="M859 502c24 7 42 29 59 42 23 17 50 22 82 17 28-4 54-18 72-44-4 39-45 65-91 65-60 0-103-27-122-59Z" fill="#f7e3ba"/>
+        <path d="M963 508c22-18 61-20 89-10 26 9 42 21 53 35-7 23-35 36-69 33-35-3-67-20-73-39Z" fill="#f8e4bc" stroke="#76513f" stroke-width="4"/>
+        <path d="M981 449c10-5 22-4 30 0" fill="none" stroke="#8a573e" stroke-width="5" stroke-linecap="round"/>
+        <ellipse cx="1001" cy="466" rx="8" ry="10" fill="#2a3233"/>
+        <circle cx="1004" cy="463" r="2.5" fill="#fff"/>
+        <path d="M1008 516c10-9 24-13 39-11" fill="none" stroke="#b87755" stroke-width="4" stroke-linecap="round"/>
+        <path d="M1070 511c13-7 32-3 39 6-1 14-15 24-28 19-9-3-15-15-11-25Z" fill="#303536" stroke="#5c4a40" stroke-width="4"/>
+        <ellipse cx="1087" cy="516" rx="5" ry="3" fill="#727c78" opacity=".75"/>
+        <path d="M1063 543c-13 16-36 20-60 10" fill="none" stroke="#76513f" stroke-width="4" stroke-linecap="round"/>
+        <path d="M1043 555c0 17 6 30 18 33 12-2 17-14 15-30Z" fill="#dc7a73" stroke="#7d5545" stroke-width="3"/>
+        <path d="M1059 563v17" stroke="#ad5b5c" stroke-width="2"/>
+        <path d="M860 488c1 17 10 31 25 39" fill="none" stroke="#f0bd84" stroke-width="7" stroke-linecap="round"/>
+        <path d="M855 495c-1 25 9 51 26 65" fill="none" stroke="#36585b" stroke-width="15"/>
+        <path d="M857 494c-1 25 9 51 26 65" fill="none" stroke="#dcbb80" stroke-width="5"/>
+        <circle cx="871" cy="543" r="10" fill="#c75a49" stroke="#f2d794" stroke-width="4"/>
+      </g>
+
+      <g class="spark" fill="#fff7dc" opacity=".75">
+        <path d="M1117 390l4 10 10 4-10 4-4 10-4-10-10-4 10-4Z"/>
+        <circle cx="1151" cy="453" r="3"/><circle cx="1140" cy="372" r="2"/>
+      </g>
+    </svg>
+
+    <p class="caption">并州古道 · 飞将出行</p>
+  </main>
+
+  <script>
+    (() => {
+      const stage = document.getElementById('stage');
+      const scene = document.getElementById('scene');
+      const button = document.getElementById('motion-button');
+      const speed = document.getElementById('speed');
+      const speedValue = document.getElementById('speed-value');
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      function updateButton() {
+        const paused = stage.classList.contains('is-paused');
+        button.textContent = paused ? '▶' : 'Ⅱ';
+        button.setAttribute('aria-label', paused ? '播放动画' : '暂停动画');
+        button.title = paused ? '播放动画' : '暂停动画';
+      }
+
+      function updateViewBox() {
+        const ratio = stage.clientWidth / stage.clientHeight;
+        if (ratio < 1.2) {
+          const width = 960;
+          const height = width / ratio;
+          scene.setAttribute('viewBox', `240 ${450 - height / 2} ${width} ${height}`);
+        } else {
+          const width = Math.max(1440, 820 * ratio);
+          scene.setAttribute('viewBox', `${(1440 - width) / 2} 0 ${width} 820`);
+        }
+      }
+
+      function updateSpeed() {
+        const rate = Number(speed.value);
+        stage.style.setProperty('--gallop', `${(.76 / rate).toFixed(3)}s`);
+        stage.style.setProperty('--drift', `${(9 / rate).toFixed(3)}s`);
+        speedValue.value = `${rate.toFixed(1)}×`;
+      }
+
+      if (reducedMotion.matches) stage.classList.add('is-paused');
+      button.addEventListener('click', () => {
+        stage.classList.toggle('is-paused');
+        if (!stage.classList.contains('is-paused')) stage.classList.add('motion-enabled');
+        updateButton();
+      });
+      speed.addEventListener('input', updateSpeed);
+      window.addEventListener('resize', updateViewBox, { passive: true });
+      updateButton();
+      updateSpeed();
+      updateViewBox();
+    })();
+  </script>
+</body>
+</html>

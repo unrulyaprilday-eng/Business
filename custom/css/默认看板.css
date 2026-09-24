@@ -1,6 +1,8 @@
 html,
 body {
   margin: 0;
+  width: 100%;
+  min-width: 0;
   background: #f4f7fb;
   color: #1f2937;
   color-scheme: light;
@@ -609,6 +611,102 @@ button {
   gap: 10px;
   color: #475569;
   font-size: 13px;
+}
+
+.scope-picker {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.scope-label {
+  color: #475569;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.scope-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 150px;
+  height: 30px;
+  padding: 0 9px 0 10px;
+  border: 1px solid #d8e1ec;
+  border-radius: 5px;
+  color: #334155;
+  background: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  text-align: left;
+}
+
+.scope-chevron {
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.scope-menu {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 6px);
+  right: 0;
+  width: 276px;
+  padding: 9px 0 7px;
+  border: 1px solid #d8e1ec;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.14);
+}
+
+.scope-menu-head,
+.scope-menu-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 11px 7px;
+  color: #64748b;
+  font-size: 11px;
+}
+
+.scope-clear {
+  padding: 0;
+  border: 0;
+  color: #2563eb;
+  background: transparent;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.scope-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 0 11px;
+  color: #334155;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.scope-option:hover {
+  background: #f5f8fc;
+}
+
+.scope-option input {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: #2f6fed;
+}
+
+.scope-menu-foot {
+  justify-content: flex-start;
+  padding-top: 7px;
+  border-top: 1px solid #edf2f7;
 }
 
 .light-btn {
@@ -2647,6 +2745,15 @@ button {
   white-space: nowrap;
 }
 
+.domain-member .domain-metrics .metric-empty {
+  color: transparent;
+}
+
+.domain-member .domain-metrics .metric-empty dt,
+.domain-member .domain-metrics .metric-empty dd {
+  visibility: hidden;
+}
+
 .mini-sparkline {
   display: block;
   width: 100%;
@@ -2987,5 +3094,25 @@ button {
 
   .domain-card-head {
     grid-template-columns: 36px minmax(0, 1fr);
+  }
+
+  .scope-picker {
+    width: 100%;
+  }
+
+  .scope-trigger {
+    flex: 1;
+  }
+
+  .scope-menu {
+    right: auto;
+    left: 0;
+    width: min(276px, calc(100vw - 40px));
+  }
+}
+
+@media (min-width: 1181px) {
+  .overview-board > .domain-overview {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }

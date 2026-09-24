@@ -67,12 +67,26 @@
               <button class="light-btn" type="button">刷新</button>
             </div>
             <div class="control-right">
+              <div class="scope-picker" data-scope-picker>
+                <span class="scope-label">域名 - 渠道</span>
+                <button class="scope-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-scope-trigger>
+                  <span data-scope-summary>全部商户数据</span><span class="scope-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="scope-menu" role="listbox" aria-label="域名 - 渠道筛选" hidden data-scope-menu>
+                  <div class="scope-menu-head"><span>选择绑定关系</span><button type="button" class="scope-clear" data-scope-clear>清空</button></div>
+                  <label class="scope-option"><input type="checkbox" value="alpha-main" data-scope-option><span>alpha.example.com - 渠道A</span></label>
+                  <label class="scope-option"><input type="checkbox" value="alpha-game" data-scope-option><span>game.alpha.example.com - 渠道A</span></label>
+                  <label class="scope-option"><input type="checkbox" value="beta-main" data-scope-option><span>beta.example.com - 渠道B</span></label>
+                  <label class="scope-option"><input type="checkbox" value="gamma-main" data-scope-option><span>gamma.example.com - 渠道C</span></label>
+                  <div class="scope-menu-foot">未选择时展示商户全部数据</div>
+                </div>
+              </div>
               <span>刷新时间：</span>
               <span class="refresh-pill">每 5 分钟</span>
             </div>
           </div>
 
-          <div class="domain-overview" aria-label="运营分组">
+          <div class="domain-overview" aria-label="商户经营总览">
           <article class="domain-card domain-game">
             <div class="domain-card-head">
               <div class="domain-main">
@@ -88,7 +102,7 @@
                 <div><dt>注单数</dt><dd>32,845</dd></div>
                 <div><dt>客损</dt><dd class="positive">952,660.00</dd></div>
                 <div><dt>赢分</dt><dd>11,911,640.00</dd></div>
-                <div><dt>投注会员</dt><dd>4,286</dd></div>
+                <div><dt>参与游戏人数</dt><dd>4,286</dd></div>
               </dl>
             </div>
           </article>
@@ -98,7 +112,7 @@
                 <span class="summary-icon cyan" aria-hidden="true">
                   <svg viewBox="0 0 24 24"><path d="M16 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 20v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                 </span>
-                <div class="domain-title-block"><span class="domain-primary-label">今日活跃会员</span><strong>10,312</strong></div>
+                <div class="domain-title-block"><span class="domain-primary-label">每日访问人数</span><strong>10,312</strong></div>
               </div>
               <em class="domain-tag">用户活跃</em>
             </div>
@@ -106,8 +120,8 @@
               <dl class="domain-metrics">
                 <div><dt>新增注册</dt><dd>1,186</dd></div>
                 <div><dt>当前在线</dt><dd>1,286</dd></div>
-                <div><dt>首充人数</dt><dd>386</dd></div>
                 <div><dt>累计注册</dt><dd>486,920</dd></div>
+                <div class="metric-empty" aria-hidden="true"><dt>&nbsp;</dt><dd>&nbsp;</dd></div>
               </dl>
             </div>
           </article>
@@ -125,8 +139,8 @@
               <dl class="domain-metrics">
                 <div><dt>充值金额</dt><dd>3,268,900.00</dd></div>
                 <div><dt>提现金额</dt><dd>2,184,300.00</dd></div>
-                <div><dt>充提比</dt><dd>1.50</dd></div>
-                <div><dt>充值成功率</dt><dd>86.4%</dd></div>
+                <div><dt>首充人数</dt><dd>386</dd></div>
+                <div><dt>首充金额</dt><dd>1,086,900.00</dd></div>
               </dl>
             </div>
           </article>
