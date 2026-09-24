@@ -474,26 +474,6 @@
   }
 
   function updateOverview(data) {
-    var selected = document.querySelectorAll("[data-scope-option]:checked");
-    var channels = [];
-    var shares = { channelA: 0.4, channelB: 0.35, channelC: 0.25 };
-    var topMetrics = data.topMetrics;
-
-    selected.forEach(function (option) {
-      var channel = option.value.indexOf("alpha-") === 0 ? "channelA" : option.value.indexOf("beta-") === 0 ? "channelB" : "channelC";
-      if (channels.indexOf(channel) === -1) channels.push(channel);
-    });
-
-    if (channels.length) {
-      var share = channels.reduce(function (sum, channel) { return sum + shares[channel]; }, 0);
-      topMetrics = {
-        visits: formatInt(Math.round(parseInt(data.topMetrics.visits.replace(/,/g, ""), 10) * share)),
-        players: formatInt(Math.round(parseInt(data.topMetrics.players.replace(/,/g, ""), 10) * share)),
-        firstChargeUsers: formatInt(Math.round(parseInt(data.topMetrics.firstChargeUsers.replace(/,/g, ""), 10) * share)),
-        firstChargeAmount: formatMoney(parseFloat(data.topMetrics.firstChargeAmount.replace(/,/g, "")) * share)
-      };
-    }
-
     [
       ["game", ".domain-game"],
       ["member", ".domain-member"],
