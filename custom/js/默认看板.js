@@ -269,6 +269,86 @@
     }
   };
 
+  var AD_CHANNEL_DATA = {
+    all: {
+      visits: "10,312",
+      players: "4,286",
+      firstChargeUsers: "386",
+      firstChargeAmount: "1,086,900.00",
+      rechargeAmount: "3,268,900.00",
+      rechargeRate: "44.58%",
+      nextDayRate: "26.58%",
+      depositWithdrawDiff: "1,084,600.00"
+    },
+    AAAA: {
+      visits: "3,860",
+      players: "1,720",
+      firstChargeUsers: "158",
+      firstChargeAmount: "92,430.00",
+      rechargeAmount: "261,220.00",
+      rechargeRate: "44.58%",
+      nextDayRate: "26.58%",
+      depositWithdrawDiff: "137,360.00"
+    },
+    CCCC: {
+      visits: "2,940",
+      players: "1,204",
+      firstChargeUsers: "112",
+      firstChargeAmount: "302,470.00",
+      rechargeAmount: "607,000.00",
+      rechargeRate: "43.92%",
+      nextDayRate: "24.16%",
+      depositWithdrawDiff: "304,270.00"
+    },
+    DDDD: {
+      visits: "3,512",
+      players: "1,362",
+      firstChargeUsers: "116",
+      firstChargeAmount: "692,000.00",
+      rechargeAmount: "2,400,680.00",
+      rechargeRate: "45.14%",
+      nextDayRate: "28.47%",
+      depositWithdrawDiff: "642,970.00"
+    }
+  };
+
+  function renderAdMetrics() {
+    var channel = document.querySelector("[data-ad-channel]");
+    var date = document.querySelector("[data-ad-date]");
+    var values = AD_CHANNEL_DATA[(channel && channel.value) || "all"] || AD_CHANNEL_DATA.all;
+    var multiplier = date && date.value && date.value !== "2026-06-14" ? 0.92 : 1;
+
+    Object.keys(values).forEach(function (key) {
+      var target = document.querySelector('[data-ad-value="' + key + '"]');
+      var raw = values[key];
+      if (!target) return;
+      if (key === "rechargeRate" || key === "nextDayRate") {
+        target.textContent = multiplier === 1 ? raw : (parseFloat(raw) * multiplier).toFixed(2) + "%";
+      } else if (key === "firstChargeAmount" || key === "rechargeAmount" || key === "depositWithdrawDiff") {
+        target.textContent = formatMoney(parseFloat(raw.replace(/,/g, "")) * multiplier);
+      } else {
+        target.textContent = formatInt(parseInt(raw.replace(/,/g, ""), 10) * multiplier);
+      }
+    });
+  }
+
+  function bindAdDataFilters() {
+    var channel = document.querySelector("[data-ad-channel]");
+    var date = document.querySelector("[data-ad-date]");
+    var reset = document.querySelector("[data-ad-reset]");
+    if (!channel || !date) return;
+    channel.addEventListener("change", renderAdMetrics);
+    date.addEventListener("change", renderAdMetrics);
+    if (reset) {
+      reset.addEventListener("click", function () {
+        channel.value = "all";
+        date.value = "2026-06-14";
+        renderAdMetrics();
+      });
+    }
+    renderAdMetrics();
+  }
+
   var SECONDARY_TREND_DATA = {
     flow: {
       "最近7日": {
@@ -424,32 +504,9 @@
       var card = document.querySelector(pair[1]);
       if (!card || !source) return;
 
-      var item = {
-        headline: source.headline,
-        value: source.value,
-        metrics: source.metrics.slice()
-      };
-
-      if (pair[0] === "game") {
-        item.metrics = item.metrics.map(function (metric) {
-          return metric[0] === "投注会员" ? ["参与游戏人数", topMetrics.players] : metric;
-        });
-      } else if (pair[0] === "member") {
-        item.headline = "每日访问人数";
-        item.value = topMetrics.visits;
-        item.metrics = item.metrics.filter(function (metric) { return metric[0] !== "首充人数"; });
-        item.metrics.push(["", "", "empty"]);
-      } else if (pair[0] === "fund") {
-        item.metrics = item.metrics.map(function (metric) {
-          if (metric[0] === "充提比") return ["首充人数", topMetrics.firstChargeUsers];
-          if (metric[0] === "充值成功率") return ["首充金额", topMetrics.firstChargeAmount];
-          return metric;
-        });
-      }
-
-      setText(".domain-primary-label", item.headline, card);
-      setText(".domain-card-head strong", item.value, card);
-      renderMetrics(card, item.metrics);
+      setText(".domain-primary-label", source.headline, card);
+      setText(".domain-card-head strong", source.value, card);
+      renderMetrics(card, source.metrics);
     });
   }
 
@@ -800,6 +857,7 @@
 
   ready(function () {
     bindScopePicker();
+    bindAdDataFilters();
     bindPeriodTabs();
     bindSecondaryTrendTabs();
     bindRankTabs();

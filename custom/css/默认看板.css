@@ -603,6 +603,131 @@ button {
   margin-bottom: 0;
 }
 
+.ad-data-board {
+  padding: 14px 16px 16px;
+}
+
+.ad-data-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid #e3eaf3;
+}
+
+.ad-data-title {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.ad-data-title h2 {
+  margin: 0;
+  padding-left: 10px;
+  border-left: 2px solid #2f6fed;
+  color: #0f172a;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.ad-data-title span {
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+.ad-data-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ad-data-filters label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.ad-data-filters input,
+.ad-data-filters select {
+  height: 30px;
+  padding: 0 8px;
+  border: 1px solid #d8e1ec;
+  border-radius: 5px;
+  color: #334155;
+  background: #fff;
+  font: inherit;
+  font-size: 12px;
+}
+
+.ad-data-filters input {
+  width: 132px;
+}
+
+.ad-data-filters select {
+  min-width: 112px;
+}
+
+.ad-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ad-metric-card {
+  min-width: 0;
+  min-height: 108px;
+  padding: 13px 14px;
+  border: 1px solid #e1e8f1;
+  border-radius: 6px;
+  background: #fbfcff;
+}
+
+.ad-metric-card.is-primary {
+  border-color: #c8d9f8;
+  background: #f6f9ff;
+}
+
+.ad-metric-card span,
+.ad-metric-card em {
+  display: block;
+}
+
+.ad-metric-card span {
+  color: #64748b;
+  font-size: 12px;
+  line-height: 17px;
+}
+
+.ad-metric-card strong {
+  display: block;
+  margin: 7px 0 6px;
+  overflow: hidden;
+  color: #1f2937;
+  font-size: 21px;
+  line-height: 24px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ad-metric-card.is-primary strong {
+  color: #1d4ed8;
+}
+
+.ad-metric-card em {
+  overflow: hidden;
+  color: #94a3b8;
+  font-size: 10px;
+  font-style: normal;
+  line-height: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .control-left,
 .control-right {
   display: flex;
@@ -3129,6 +3254,25 @@ button {
     right: auto;
     left: 0;
     width: min(276px, calc(100vw - 40px));
+  }
+
+  .ad-data-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .ad-data-filters {
+    width: 100%;
+  }
+
+  .ad-metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 721px) and (max-width: 1180px) {
+  .ad-metric-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 

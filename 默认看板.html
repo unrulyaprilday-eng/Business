@@ -67,20 +67,6 @@
               <button class="light-btn" type="button">刷新</button>
             </div>
             <div class="control-right">
-              <div class="scope-picker" data-scope-picker>
-                <span class="scope-label">域名 - 渠道</span>
-                <button class="scope-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-scope-trigger>
-                  <span data-scope-summary>全部商户数据</span><span class="scope-chevron" aria-hidden="true">⌄</span>
-                </button>
-                <div class="scope-menu" role="listbox" aria-label="域名 - 渠道筛选" hidden data-scope-menu>
-                  <div class="scope-menu-head"><span>选择绑定关系</span><button type="button" class="scope-clear" data-scope-clear>清空</button></div>
-                  <label class="scope-option"><input type="checkbox" value="alpha-main" data-scope-option><span>alpha.example.com - 渠道A</span></label>
-                  <label class="scope-option"><input type="checkbox" value="alpha-game" data-scope-option><span>game.alpha.example.com - 渠道A</span></label>
-                  <label class="scope-option"><input type="checkbox" value="beta-main" data-scope-option><span>beta.example.com - 渠道B</span></label>
-                  <label class="scope-option"><input type="checkbox" value="gamma-main" data-scope-option><span>gamma.example.com - 渠道C</span></label>
-                  <div class="scope-menu-foot">未选择时展示商户全部数据</div>
-                </div>
-              </div>
               <span>刷新时间：</span>
               <span class="refresh-pill">每 5 分钟</span>
             </div>
@@ -102,7 +88,7 @@
                 <div><dt>注单数</dt><dd>32,845</dd></div>
                 <div><dt>客损</dt><dd class="positive">952,660.00</dd></div>
                 <div><dt>赢分</dt><dd>11,911,640.00</dd></div>
-                <div><dt>参与游戏人数</dt><dd>4,286</dd></div>
+                <div><dt>投注会员</dt><dd>4,286</dd></div>
               </dl>
             </div>
           </article>
@@ -112,7 +98,7 @@
                 <span class="summary-icon cyan" aria-hidden="true">
                   <svg viewBox="0 0 24 24"><path d="M16 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 20v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                 </span>
-                <div class="domain-title-block"><span class="domain-primary-label">每日访问人数</span><strong>10,312</strong></div>
+                <div class="domain-title-block"><span class="domain-primary-label">今日活跃会员</span><strong>10,312</strong></div>
               </div>
               <em class="domain-tag">用户活跃</em>
             </div>
@@ -120,8 +106,8 @@
               <dl class="domain-metrics">
                 <div><dt>新增注册</dt><dd>1,186</dd></div>
                 <div><dt>当前在线</dt><dd>1,286</dd></div>
+                <div><dt>首充人数</dt><dd>386</dd></div>
                 <div><dt>累计注册</dt><dd>486,920</dd></div>
-                <div class="metric-empty" aria-hidden="true"><dt>&nbsp;</dt><dd>&nbsp;</dd></div>
               </dl>
             </div>
           </article>
@@ -139,8 +125,8 @@
               <dl class="domain-metrics">
                 <div><dt>充值金额</dt><dd>3,268,900.00</dd></div>
                 <div><dt>提现金额</dt><dd>2,184,300.00</dd></div>
-                <div><dt>首充人数</dt><dd>386</dd></div>
-                <div><dt>首充金额</dt><dd>1,086,900.00</dd></div>
+                <div><dt>充提比</dt><dd>1.50</dd></div>
+                <div><dt>充值成功率</dt><dd>86.4%</dd></div>
               </dl>
             </div>
           </article>
@@ -163,6 +149,27 @@
               </dl>
             </div>
           </article>
+          </div>
+        </section>
+
+        <section class="board-card ad-data-board" aria-label="投放数据">
+          <div class="ad-data-head">
+            <div class="ad-data-title"><h2>投放数据</h2><span>按单日和渠道查看域名绑定后的投放表现</span></div>
+            <div class="ad-data-filters">
+              <label>日期<input type="date" value="2026-06-14" data-ad-date></label>
+              <label>渠道<select data-ad-channel aria-label="投放数据渠道"><option value="all">全部渠道</option><option value="AAAA">AAAA</option><option value="CCCC">CCCC</option><option value="DDDD">DDDD</option></select></label>
+              <button class="light-btn" type="button" data-ad-reset>重置</button>
+            </div>
+          </div>
+          <div class="ad-metric-grid" data-ad-metric-grid>
+            <article class="ad-metric-card is-primary"><span>每日访问人数</span><strong data-ad-value="visits">10,312</strong><em>当天通过域名进入平台的独立人数</em></article>
+            <article class="ad-metric-card is-primary"><span>参与游戏人数</span><strong data-ad-value="players">4,286</strong><em>当天真正进入游戏并开始游玩的独立人数</em></article>
+            <article class="ad-metric-card is-primary"><span>首充人数</span><strong data-ad-value="firstChargeUsers">386</strong><em>当天完成首次成功充值的独立玩家人数</em></article>
+            <article class="ad-metric-card is-primary"><span>首充金额</span><strong data-ad-value="firstChargeAmount">1,086,900.00</strong><em>当天首充成功订单金额总和</em></article>
+            <article class="ad-metric-card"><span>充值金额</span><strong data-ad-value="rechargeAmount">3,268,900.00</strong><em>统计日期内充值成功金额</em></article>
+            <article class="ad-metric-card"><span>充值转化率</span><strong data-ad-value="rechargeRate">44.58%</strong><em>充值人数 / 新增</em></article>
+            <article class="ad-metric-card"><span>次日复充占比</span><strong data-ad-value="nextDayRate">26.58%</strong><em>首充用户次日再次充值人数占比</em></article>
+            <article class="ad-metric-card"><span>充提差</span><strong data-ad-value="depositWithdrawDiff">1,084,600.00</strong><em>充值金额 - 提现金额</em></article>
           </div>
         </section>
 
