@@ -4,6 +4,7 @@
     <title>VIP设置</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
     <link href="data/styles.css" type="text/css" rel="stylesheet"/>
     <link href="files/VIP设置/styles.css" type="text/css" rel="stylesheet"/>
@@ -53,30 +54,51 @@
     <div id="base" class="">
       <div class="custom-page-shell vip-settings-page">
         <nav class="vip-tabs" aria-label="VIP设置标签">
-          <button class="tab-btn is-active" type="button" data-tab="level">VIP晋级条件</button>
-          <button class="tab-btn" type="button" data-tab="keep">VIP降级配置</button>
-          <button class="tab-btn" type="button" data-tab="daily">日俸禄</button>
-          <button class="tab-btn" type="button" data-tab="weekly">周俸禄</button>
-          <button class="tab-btn" type="button" data-tab="monthly">月俸禄</button>
-          <button class="tab-btn" type="button" data-tab="whale">大R等级定义</button>
+          <button class="tab-btn is-active" type="button" data-tab="level" aria-pressed="true">VIP晋级条件</button>
+          <button class="tab-btn" type="button" data-tab="keep" aria-pressed="false">VIP降级配置</button>
+          <button class="tab-btn" type="button" data-tab="daily" aria-pressed="false">日俸禄</button>
+          <button class="tab-btn" type="button" data-tab="weekly" aria-pressed="false">周俸禄</button>
+          <button class="tab-btn" type="button" data-tab="monthly" aria-pressed="false">月俸禄</button>
+          <button class="tab-btn" type="button" data-tab="whale" aria-pressed="false">大R等级定义</button>
         </nav>
         <div class="vip-actionbar">
-          <button class="btn btn-primary" type="button" data-action="edit">✎ 编辑</button>
-          <div class="vip-inline-toggle" aria-label="当前配置状态" hidden>
-            <span class="vip-toggle-title">配置开关</span>
-            <button class="feature-switch is-on" type="button" role="switch" aria-checked="true" data-action="toggle-setting" aria-label="切换当前配置状态">
-              <span class="feature-switch-track">
-                <span class="feature-switch-thumb"></span>
-              </span>
-              <span class="feature-switch-text">已开启</span>
-            </button>
-            <span class="vip-toggle-hint">开启后，当前设置生效。</span>
+          <div class="vip-config-controls">
+            <span class="vip-section-title">VIP晋级条件</span>
+            <div class="vip-inline-toggle" aria-label="当前配置状态" hidden>
+              <span class="vip-toggle-title">配置开关</span>
+              <button class="feature-switch is-on" type="button" role="switch" aria-checked="true" data-action="toggle-setting" aria-label="切换当前配置状态">
+                <span class="feature-switch-track">
+                  <span class="feature-switch-thumb"></span>
+                </span>
+                <span class="feature-switch-text">已开启</span>
+              </button>
+            </div>
+            <div class="vip-keep-period" role="group" aria-labelledby="keepPeriodLabel" hidden>
+              <span class="vip-period-title" id="keepPeriodLabel">保级周期</span>
+              <div class="vip-period-options">
+                <label class="vip-period-option"><input type="radio" name="keep-period" value="week" aria-describedby="keepPeriodHint" disabled/><span>自然周</span></label>
+                <label class="vip-period-option is-selected"><input type="radio" name="keep-period" value="month" aria-describedby="keepPeriodHint" checked disabled/><span>自然月</span></label>
+              </div>
+            </div>
           </div>
-          <button class="btn btn-primary" type="button" data-action="save" hidden>▣ 保存</button>
-          <button class="btn btn-default" type="button" data-action="cancel" hidden>× 取消</button>
+          <div class="vip-actions" aria-label="配置编辑操作">
+            <button class="btn btn-default" type="button" data-action="cancel" hidden>取消</button>
+            <button class="btn btn-primary" type="button" data-action="edit">
+              <svg class="btn-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5l3 3M4 13l-.5 3.5L7 16l9-9a2.1 2.1 0 0 0-3-3z"/></svg>
+              <span>编辑</span>
+            </button>
+            <button class="btn btn-primary" type="button" data-action="save" hidden>
+              <svg class="btn-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10l4 4 8-8"/></svg>
+              <span>保存</span>
+            </button>
+          </div>
+          <div class="vip-config-description">
+            <span class="vip-toggle-hint">按VIP等级设置累计充值、累计打码门槛及晋级奖励。</span>
+            <span class="vip-period-hint" id="keepPeriodHint" aria-live="polite" hidden>自然月：每月1日00:00至次月1日00:00，按周期内充值、打码核验保级条件。</span>
+          </div>
         </div>
         <main class="vip-table-panel">
-          <table class="vip-table" aria-label="VIP设置表格">
+          <table class="vip-table" data-tab="level" aria-label="VIP晋级条件表格">
             <thead>
               <tr>
                 <th>VIP等级</th>
@@ -107,16 +129,16 @@
         <div class="modal-mask" data-dialog="cancel" hidden>
           <section class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="cancelTitle">
             <header class="confirm-header">
-              <h2 id="cancelTitle">提示</h2>
-              <button class="dialog-close" type="button" data-dialog-close>×</button>
+              <h2 id="cancelTitle">放弃编辑</h2>
+              <button class="dialog-close" type="button" data-dialog-close aria-label="关闭弹窗">×</button>
             </header>
             <div class="confirm-body">
-              <span class="warning-icon">?</span>
-              <span>确认放弃本次编辑的内容吗?</span>
+              <span class="warning-icon" aria-hidden="true">!</span>
+              <span>本次未保存的修改将被撤销，确认放弃吗？</span>
             </div>
             <footer class="confirm-footer">
-              <button class="btn btn-default" type="button" data-dialog-close>取消</button>
-              <button class="btn btn-primary" type="button" data-action="confirm-cancel">确认</button>
+              <button class="btn btn-default" type="button" data-dialog-close>继续编辑</button>
+              <button class="btn btn-primary" type="button" data-action="confirm-cancel">放弃修改</button>
             </footer>
           </section>
         </div>

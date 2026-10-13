@@ -836,7 +836,6 @@
   }
 
   ready(function () {
-    bindScopePicker();
     bindAdDataFilters();
     bindPeriodTabs();
     bindSecondaryTrendTabs();

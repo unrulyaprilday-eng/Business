@@ -157,18 +157,34 @@
   var activeTab = "level";
   var editing = false;
   var activeInput = null;
+  var keepPeriod = "month";
+  var editSnapshot = null;
+  var tabNames = {
+    level: "VIP晋级条件",
+    keep: "VIP降级配置",
+    daily: "日俸禄",
+    weekly: "周俸禄",
+    monthly: "月俸禄",
+    whale: "大R等级定义"
+  };
+  var page = document.querySelector(".vip-settings-page");
   var table = document.querySelector(".vip-table");
   var editBtn = document.querySelector('[data-action="edit"]');
   var saveBtn = document.querySelector('[data-action="save"]');
   var cancelBtn = document.querySelector('[data-action="cancel"]');
   var modal = document.querySelector('[data-dialog="cancel"]');
+  var confirmCancelBtn = document.querySelector('[data-action="confirm-cancel"]');
+  var sectionTitle = document.querySelector(".vip-section-title");
   var toggleTitle = document.querySelector(".vip-toggle-title");
   var toggleHint = document.querySelector(".vip-toggle-hint");
   var toggleBtn = document.querySelector('[data-action="toggle-setting"]');
   var toggleText = toggleBtn ? toggleBtn.querySelector(".feature-switch-text") : null;
   var tablePanel = document.querySelector(".vip-table-panel");
+  var keepPeriodPanel = document.querySelector(".vip-keep-period");
+  var keepPeriodInputs = document.querySelectorAll('input[name="keep-period"]');
+  var keepPeriodHint = document.querySelector(".vip-period-hint");
 
-  if (!table || !editBtn || !saveBtn || !cancelBtn || !modal || !toggleTitle || !toggleHint || !toggleBtn || !toggleText || !tablePanel) {
+  if (!page || !table || !editBtn || !saveBtn || !cancelBtn || !modal || !confirmCancelBtn || !sectionTitle || !toggleTitle || !toggleHint || !toggleBtn || !toggleBtn.parentElement || !toggleText || !tablePanel || !keepPeriodPanel || !keepPeriodHint || keepPeriodInputs.length !== 2) {
     return;
   }
 
@@ -185,20 +201,50 @@
       html += "<tr" + focusClass + ">";
       row.forEach(function (cell, index) {
         var editable = editing && editableIndexes.indexOf(index) > -1 && isNumeric(cell);
-        var attrs = editable ? ' class="editable-cell" data-col="' + index + '"' : "";
+        var attrs = editable ? ' class="editable-cell" tabindex="0" data-col="' + index + '"' : "";
         html += "<td" + attrs + ">" + cell + "</td>";
       });
       html += "</tr>";
     });
 
     table.innerHTML = html + "</tbody>";
+    table.dataset.tab = activeTab;
+    table.setAttribute("aria-label", tabNames[activeTab]);
+    page.classList.toggle("is-editing", editing);
+    document.querySelectorAll(".tab-btn").forEach(function (btn) {
+      var selected = btn.dataset.tab === activeTab;
+      btn.classList.toggle("is-active", selected);
+      btn.setAttribute("aria-pressed", selected ? "true" : "false");
+    });
     renderToggleBar();
+    renderKeepPeriod();
     tablePanel.classList.toggle("is-disabled", isSwitchableTab(activeTab) && !tabMeta[activeTab].enabled);
   }
 
+  function renderKeepPeriod() {
+    keepPeriodPanel.hidden = activeTab !== "keep";
+    keepPeriodHint.hidden = activeTab !== "keep";
+    keepPeriodInputs.forEach(function (input) {
+      input.checked = input.value === keepPeriod;
+      input.disabled = !editing || activeTab !== "keep";
+      if (input.parentElement) {
+        input.parentElement.classList.toggle("is-selected", input.checked);
+      }
+    });
+    keepPeriodHint.textContent = keepPeriod === "week"
+      ? "自然周：周一00:00至下周一00:00，按周期内充值、打码核验保级条件。"
+      : "自然月：每月1日00:00至次月1日00:00，按周期内充值、打码核验保级条件。";
+  }
+
   function renderToggleBar() {
+    sectionTitle.hidden = isSwitchableTab(activeTab);
+    toggleHint.hidden = activeTab === "keep";
     if (!isSwitchableTab(activeTab)) {
       toggleBtn.parentElement.hidden = true;
+      sectionTitle.textContent = tabNames[activeTab];
+      toggleHint.textContent = activeTab === "level"
+        ? "按VIP等级设置累计充值、累计打码门槛及晋级奖励。"
+        : "按累计充值设置小R、中R和大R玩家的等级定义。";
       return;
     }
 
@@ -227,6 +273,13 @@
   }
 
   function setEditing(next) {
+    if (next && !editing) {
+      editSnapshot = {
+        tabs: JSON.parse(JSON.stringify(tabs)),
+        tabMeta: JSON.parse(JSON.stringify(tabMeta)),
+        keepPeriod: keepPeriod
+      };
+    }
     editing = next;
     editBtn.hidden = next;
     saveBtn.hidden = !next;
@@ -248,6 +301,10 @@
     cell.dataset.value = String(value);
     cell.innerHTML = '<div class="number-stepper"><input type="text" value="' + value + '"/><span class="step-controls"><button type="button" data-step="1">+</button><button type="button" data-step="-1">−</button></span></div>';
     var input = cell.querySelector("input");
+    var data = tabs[activeTab];
+    var row = data.rows[cell.parentElement.rowIndex - 1];
+    var rowLabel = activeTab === "whale" ? String(row[0]) : "VIP" + row[0];
+    input.setAttribute("aria-label", rowLabel + " " + data.headers[Number(cell.dataset.col)]);
     activeInput = { cell: cell, input: input };
     input.focus();
     input.select();
@@ -275,15 +332,15 @@
 
   function closeModal() {
     modal.hidden = true;
+    if (editing) {
+      cancelBtn.focus();
+    }
   }
 
   document.querySelectorAll(".tab-btn").forEach(function (btn) {
     btn.addEventListener("click", function () {
       commitInput();
       activeTab = btn.dataset.tab;
-      document.querySelectorAll(".tab-btn").forEach(function (item) {
-        item.classList.toggle("is-active", item === btn);
-      });
       render();
     });
   });
@@ -292,10 +349,22 @@
     setEditing(true);
   });
 
+  keepPeriodInputs.forEach(function (input) {
+    input.addEventListener("change", function () {
+      if (!editing || activeTab !== "keep" || !input.checked || (input.value !== "week" && input.value !== "month")) {
+        return;
+      }
+      commitInput();
+      keepPeriod = input.value;
+      renderKeepPeriod();
+    });
+  });
+
   toggleBtn.addEventListener("click", function () {
     if (!isSwitchableTab(activeTab)) {
       return;
     }
+    commitInput();
     tabMeta[activeTab].enabled = !tabMeta[activeTab].enabled;
     renderToggleBar();
     tablePanel.classList.toggle("is-disabled", !tabMeta[activeTab].enabled);
@@ -303,11 +372,18 @@
 
   saveBtn.addEventListener("click", function () {
     commitInput();
+    editSnapshot = null;
     setEditing(false);
+    editBtn.focus();
   });
 
   cancelBtn.addEventListener("click", function () {
+    commitInput();
     modal.hidden = false;
+    var continueBtn = modal.querySelector(".confirm-footer [data-dialog-close]") || modal.querySelector("[data-dialog-close]");
+    if (continueBtn) {
+      continueBtn.focus();
+    }
   });
 
   table.addEventListener("click", function (event) {
@@ -325,11 +401,18 @@
   });
 
   table.addEventListener("keydown", function (event) {
-    if (!activeInput) {
+    if (activeInput && activeInput.cell.contains(event.target)) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        var cell = activeInput.cell;
+        commitInput();
+        cell.focus();
+      }
       return;
     }
-    if (event.key === "Enter") {
-      commitInput();
+    if ((event.key === "Enter" || event.key === " ") && event.target.matches("td.editable-cell")) {
+      event.preventDefault();
+      openStepper(event.target);
     }
   });
 
@@ -337,9 +420,17 @@
     btn.addEventListener("click", closeModal);
   });
 
-  document.querySelector('[data-action="confirm-cancel"]').addEventListener("click", function () {
-    closeModal();
+  confirmCancelBtn.addEventListener("click", function () {
+    activeInput = null;
+    if (editSnapshot) {
+      tabs = editSnapshot.tabs;
+      tabMeta = editSnapshot.tabMeta;
+      keepPeriod = editSnapshot.keepPeriod;
+    }
+    editSnapshot = null;
+    modal.hidden = true;
     setEditing(false);
+    editBtn.focus();
   });
 
   document.addEventListener("click", function (event) {
