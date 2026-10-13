@@ -432,11 +432,6 @@ body {
   text-align: left;
 }
 
-.vip-table[data-tab="keep"] th:last-child,
-.vip-table[data-tab="keep"] td:last-child {
-  text-align: center;
-}
-
 .vip-table th:last-child,
 .vip-table td:last-child {
   border-right: 0;
