@@ -93,6 +93,7 @@ select { color: #9aa8ba; }
 
 .actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   margin-top: 20px;
   align-items: flex-start;
@@ -430,4 +431,67 @@ select { color: #9aa8ba; }
 @media (max-width: 1200px) {
   .filter-grid { grid-template-columns: repeat(3, minmax(210px, 1fr)); }
   .table-panel { max-height: none; }
+}
+
+.image-transfer-mask {
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 24px;
+}
+
+.image-transfer-modal {
+  width: 760px;
+  max-width: 100%;
+  max-height: calc(100vh - 48px);
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(18, 36, 66, .2);
+  overflow: hidden;
+}
+
+.image-import-modal { width: 960px; }
+.image-transfer-modal form { display: flex; flex-direction: column; max-height: calc(100vh - 48px); }
+.image-transfer-modal header, .image-transfer-modal footer { display: flex; align-items: center; padding: 12px 20px; gap: 10px; flex-shrink: 0; }
+.image-transfer-modal header { justify-content: space-between; border-bottom: 1px solid #e5eaf1; }
+.image-transfer-modal footer { justify-content: flex-end; border-top: 1px solid #e5eaf1; }
+.image-transfer-modal h2 { margin: 0; font-size: 15px; font-weight: 600; }
+.image-transfer-body { padding: 18px 20px; overflow: auto; }
+.image-type-field { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 14px 0; }
+.image-type-field > label { min-width: 72px; }
+.image-type-field select { width: 180px; color: #34465f; }
+.image-folder-field { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin: 14px 0; }
+.image-folder-field > span:first-child, .image-upload-field > span:first-child { min-width: 72px; }
+.image-folder-name { color: #526a87; overflow-wrap: anywhere; }
+.image-upload-field { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 18px; }
+.image-help { color: #78879a; line-height: 1.7; margin: 8px 0; }
+.image-type-field .image-help { margin: 0; }
+.image-transfer-rules { padding: 10px 12px; background: #f4f8fd; color: #526a87; border: 1px solid #e1eaf5; border-radius: 4px; line-height: 1.8; }
+.image-transfer-summary { margin: 16px 0 10px; line-height: 1.6; font-weight: 600; }
+.image-preview-scroll { max-height: 275px; overflow: auto; border: 1px solid #e5eaf1; border-radius: 4px; }
+.image-preview-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.image-preview-table th, .image-preview-table td { padding: 9px 10px; text-align: left; border-bottom: 1px solid #e8edf3; line-height: 1.6; overflow-wrap: anywhere; }
+.image-preview-table th { position: sticky; top: 0; z-index: 1; background: #f8fafc; font-weight: 600; }
+.image-preview-table tr:last-child td { border-bottom: 0; }
+.image-preview-table th:first-child { width: 13%; }
+.image-preview-table th:nth-child(2) { width: 29%; }
+.image-import-table { min-width: 630px; }
+.image-import-table th:first-child { width: 29%; }
+.image-import-table th:nth-child(2) { width: 25%; }
+.image-import-table th:nth-child(3), .image-import-table th:nth-child(4) { width: 9%; }
+.image-import-table img { width: 34px; height: 40px; object-fit: contain; vertical-align: middle; border: 1px solid #e5eaf1; background: #f8fafc; border-radius: 3px; }
+.image-match-ready { color: #268158; }
+.image-match-skip { color: #8a6b36; }
+.image-preview-subtext { display: block; color: #78879a; font-size: 11px; }
+.image-transfer-message { margin: 12px 0 0; padding: 9px 12px; background: #fff6eb; border-radius: 4px; color: #926124; line-height: 1.7; overflow-wrap: anywhere; }
+.image-transfer-message.is-success { color: #268158; background: #eef8f2; }
+.image-transfer-modal button:disabled { opacity: .5; cursor: not-allowed; }
+.image-transfer-modal :focus-visible { outline: 2px solid #b6d6ff; outline-offset: 2px; }
+.image-transfer-notice { position: fixed; left: 50%; top: 20px; transform: translateX(-50%); z-index: 30; padding: 12px 20px; background: #f0f9f4; border: 1px solid #bedfce; border-radius: 5px; color: #268158; box-shadow: 0 4px 14px rgba(18, 36, 66, .1); }
+
+@media (max-width: 640px) {
+  .image-transfer-mask { padding: 12px; }
+  .image-transfer-modal, .image-transfer-modal form { max-height: calc(100vh - 24px); }
+  .image-transfer-body { padding: 14px; }
+  .image-preview-table { min-width: 530px; }
 }

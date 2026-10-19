@@ -73,6 +73,8 @@
               </div>
             </div>
             <button class="plain-btn" type="button">同步游戏</button>
+            <button class="plain-btn" id="openImageExport" type="button">导出游戏图片</button>
+            <button class="plain-btn" id="openImageImport" type="button">导入游戏图片</button>
           </div>
         </section>
 
@@ -80,21 +82,61 @@
           <table class="data-table">
             <thead>
               <tr>
-                <th><input id="selectAllRows" type="checkbox"/></th><th>排序</th><th>游戏ID</th><th>游戏名称</th><th>供应商</th><th>厂商</th><th>游戏类型</th><th>热门开关</th><th>游戏开关</th><th>图标</th><th>激活图标</th><th>操作</th>
+                <th><input id="selectAllRows" type="checkbox"/></th><th>排序</th><th>游戏ID</th><th>游戏名称</th><th>供应商</th><th>厂商</th><th>游戏类型</th><th>热门开关</th><th>游戏开关</th><th>方形图</th><th>竖版图</th><th>操作</th>
               </tr>
             </thead>
-            <tbody id="gameRows"></tbody>
+            <tbody id="gameRows"><tr><td colspan="12">游戏列表加载中，请稍候。若未显示，请刷新页面。</td></tr></tbody>
           </table>
         </section>
 
         <footer class="pager"><span>|&lt;</span><span>&lt;&lt;</span><span>&lt;</span><strong>1</strong><span>/ 15</span><span>&gt;</span><span>&gt;&gt;</span><span>&gt;|</span><button>20条/页</button><span>共 281 条记录</span></footer>
 
+        <div class="image-transfer-notice" id="imageTransferNotice" role="status" hidden></div>
+
+        <div class="modal-mask image-transfer-mask" id="imageExportModal" hidden>
+          <section class="image-transfer-modal" role="dialog" aria-modal="true" aria-labelledby="imageExportTitle" tabindex="-1">
+            <form id="imageExportForm">
+              <header><h2 id="imageExportTitle">导出游戏图片</h2><button class="icon-close" type="button" data-image-close aria-label="关闭导出弹窗">×</button></header>
+              <div class="image-transfer-body">
+                <div class="image-type-field"><label for="exportImageVendor">选择厂商</label><select id="exportImageVendor" required><option value="">请选择厂商</option></select><span class="image-help">每次导出一个厂商</span></div>
+                <div class="image-type-field"><label for="exportImageType">图片类型</label><select id="exportImageType"><option value="icon">方形图（180×180）</option><option value="activeIcon">竖版图（320×427）</option></select></div>
+                <div class="image-folder-field"><span>保存位置</span><button class="plain-btn" id="chooseImageExportFolder" type="button">选择保存文件夹</button><span id="imageExportFolderName" class="image-folder-name">未选择文件夹</span></div>
+                <p class="image-help">导出所选厂商下已添加游戏的当前图片，与列表筛选、勾选及编辑表单无关。</p>
+                <div class="image-transfer-rules">图片逐张保存到所选文件夹，命名为「游戏ID.扩展名」，保留原图尺寸。建议方形图、竖版图分别保存到不同文件夹；同名文件会被覆盖。游戏 ID 中的文件名特殊字符会自动转义，导入时还原。</div>
+                <p class="image-transfer-summary" id="imageExportSummary" role="status">请选择厂商。</p>
+                <div class="image-preview-scroll"><table class="image-preview-table"><thead><tr><th>厂商</th><th>游戏ID</th><th>游戏名称</th></tr></thead><tbody id="imageExportRows"><tr><td colspan="3">请选择厂商查看需要导出的游戏。</td></tr></tbody></table></div>
+                <p class="image-transfer-message" id="imageExportMessage" role="status" hidden></p>
+              </div>
+              <footer><button class="plain-btn" type="button" data-image-close>取消</button><button class="primary-btn" id="confirmImageExport" type="submit" disabled>开始下载</button></footer>
+            </form>
+          </section>
+        </div>
+
+        <div class="modal-mask image-transfer-mask" id="imageImportModal" hidden>
+          <section class="image-transfer-modal image-import-modal" role="dialog" aria-modal="true" aria-labelledby="imageImportTitle" tabindex="-1">
+            <form id="imageImportForm">
+              <header><h2 id="imageImportTitle">导入游戏图片</h2><button class="icon-close" type="button" data-image-close aria-label="关闭导入弹窗">×</button></header>
+              <div class="image-transfer-body">
+                <div class="image-type-field"><label for="importImageVendor">选择厂商</label><select id="importImageVendor" required><option value="">请选择厂商</option></select><span class="image-help">每次导入一个厂商</span></div>
+                <div class="image-type-field"><label for="importImageType">替换图片类型</label><select id="importImageType"><option value="icon">方形图</option><option value="activeIcon">竖版图</option></select><span id="imageImportSizeHint" class="image-help">180×180 或等比例</span></div>
+                <div class="image-upload-field"><span>上传图片</span><button class="plain-btn" id="chooseGameImageFiles" type="button">选择图片文件</button><button class="plain-btn" id="clearGameImageFiles" type="button">清空文件</button><input id="gameImageFiles" type="file" accept=".png,.jpg,.jpeg,.gif" multiple hidden/></div>
+                <p class="image-help" id="gameImageFileSummary">可多选图片文件。支持 PNG / JPG / GIF，单张小于 100KB，每次最多 1000 张，总大小不超过 100MB。</p>
+                <div class="image-transfer-rules">按「游戏ID.扩展名」匹配所选厂商。仅覆盖匹配成功的图片；未上传、未匹配及所选范围外的游戏均保持原样。同一游戏有多个待导入文件时全部跳过，请保留一张后重新选择。</div>
+                <p class="image-transfer-summary" id="imageImportSummary" role="status">请上传需要替换的图片。</p>
+                <div class="image-preview-scroll"><table class="image-preview-table image-import-table"><thead><tr><th>文件名</th><th>游戏 / 厂商</th><th>原图</th><th>新图</th><th>匹配结果</th></tr></thead><tbody id="imageImportRows"><tr><td colspan="5">上传后预览匹配结果，确认后才会覆盖。</td></tr></tbody></table></div>
+                <p class="image-transfer-message" id="imageImportMessage" role="status" hidden></p>
+              </div>
+              <footer><button class="plain-btn" type="button" data-image-close>取消</button><button class="primary-btn" id="confirmImageImport" type="submit" disabled>确认覆盖</button></footer>
+            </form>
+          </section>
+        </div>
+
         <div class="modal-mask" id="editModal" hidden>
           <section class="edit-modal" role="dialog" aria-modal="true" aria-labelledby="editTitle">
             <header><h2 id="editTitle">编辑子游戏</h2><button class="icon-close" type="button" data-close>×</button></header>
             <div class="modal-body">
-              <label class="form-row upload-row"><span>图标</span><div><div class="image-card"><img id="modalIcon" alt="图标"/><button class="remove" type="button">×</button></div><p>请上传180*180或等比例，PNG/JPG/GIF格式小于100KB的图片</p></div></label>
-              <label class="form-row upload-row"><span>激活图标</span><div><div class="image-card tall"><img id="modalActiveIcon" alt="激活图标"/><button class="remove" type="button">×</button></div><p>请上传320*427或等比例，PNG/JPG/GIF格式小于100KB的图片</p></div></label>
+              <label class="form-row upload-row"><span>方形图</span><div><div class="image-card"><img id="modalIcon" alt="方形图"/><button class="remove" type="button">×</button></div><p>请上传180×180或等比例，PNG/JPG/GIF格式小于100KB的图片</p></div></label>
+              <label class="form-row upload-row"><span>竖版图</span><div><div class="image-card tall"><img id="modalActiveIcon" alt="竖版图"/><button class="remove" type="button">×</button></div><p>请上传320×427或等比例，PNG/JPG/GIF格式小于100KB的图片</p></div></label>
               <label class="form-row"><span>排序</span><div class="stepper"><input id="modalSort" type="number" value="1"/><button type="button">＋</button><button type="button">－</button></div></label>
               <label class="form-row switch-row"><span>热门</span><input id="modalHot" class="switch-input" type="checkbox"/><i></i><em>否</em></label>
               <label class="form-row switch-row"><span>状态</span><input id="modalStatus" class="switch-input" type="checkbox" checked/><i></i><em>启用</em></label>
