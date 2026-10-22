@@ -6,7 +6,8 @@
     "\u5206\u4eab\u6d3b\u52a8": 3,
     "\u81ea\u5b9a\u4e49\u6d3b\u52a8": 4,
     "\u8fde\u7eed\u6311\u6218": 5,
-    "\u7ea2\u5305\u96e8": 6
+    "\u7ea2\u5305\u96e8": 6,
+    "\u6708\u7b7e\u5230\u6d3b\u52a8": 7
   };
 
   var CHALLENGE_NAME_OPTIONS = [
@@ -17,6 +18,7 @@
   ];
 
   var panelStateCache = {};
+  var MONTHLY_CHECKIN_STORAGE_KEY = "promoMonthlyCheckinActivities";
 
   function ready(callback) {
     if (document.readyState === "loading") {
@@ -175,14 +177,16 @@
     var isCustom = template === "\u81ea\u5b9a\u4e49\u6d3b\u52a8";
     var isChallenge = template === "\u8fde\u7eed\u6311\u6218";
     var isRedPacket = template === "\u7ea2\u5305\u96e8";
+    var isMonthlyCheckin = template === "\u6708\u7b7e\u5230\u6d3b\u52a8";
 
     document.body.classList.toggle("relief-template-active", isRelief);
     document.body.classList.toggle("share-template-active", isShare);
     document.body.classList.toggle("custom-template-active", isCustom);
     document.body.classList.toggle("challenge-template-active", isChallenge);
     document.body.classList.toggle("red-packet-template-active", isRedPacket);
+    document.body.classList.toggle("month-checkin-template-active", isMonthlyCheckin);
     showPanelState("u6", state);
-    syncChallengeFooter(isChallenge || isRedPacket);
+    syncChallengeFooter(isChallenge || isRedPacket || isMonthlyCheckin);
   }
 
   function bindTemplateSelect(select) {
@@ -1460,6 +1464,307 @@
     });
   }
 
+  function getMonthlyCheckinRecords() {
+    try {
+      return JSON.parse(window.localStorage.getItem(MONTHLY_CHECKIN_STORAGE_KEY) || "[]");
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function setMonthlyCheckinRecords(records) {
+    try {
+      window.localStorage.setItem(MONTHLY_CHECKIN_STORAGE_KEY, JSON.stringify(records));
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  function sanitizeMonthlyCheckinHtml(html) {
+    var template = document.createElement("template");
+    var allowedTags = { P: true, BR: true, STRONG: true, B: true, EM: true, I: true, U: true, UL: true, OL: true, LI: true, A: true, H2: true, H3: true, BLOCKQUOTE: true };
+    template.innerHTML = html || "";
+    function clean(parent) {
+      Array.prototype.slice.call(parent.childNodes).forEach(function (node) {
+        var tag;
+        var href;
+        if (node.nodeType !== 1) {
+          if (node.nodeType !== 3) { node.remove(); }
+          return;
+        }
+        tag = node.tagName;
+        if (!allowedTags[tag]) {
+          if (/^(SCRIPT|STYLE|IFRAME|OBJECT|SVG|MATH)$/.test(tag)) {
+            node.remove();
+          } else {
+            clean(node);
+            while (node.firstChild) { parent.insertBefore(node.firstChild, node); }
+            node.remove();
+          }
+          return;
+        }
+        href = tag === "A" ? node.getAttribute("href") : null;
+        Array.prototype.slice.call(node.attributes).forEach(function (attribute) {
+          if (tag !== "A" || attribute.name !== "href") { node.removeAttribute(attribute.name); }
+        });
+        if (tag === "A") {
+          if (href && /^https?:\/\//i.test(href)) {
+            node.setAttribute("href", href);
+            node.setAttribute("target", "_blank");
+            node.setAttribute("rel", "noopener noreferrer");
+          } else {
+            node.removeAttribute("href");
+          }
+        }
+        clean(node);
+      });
+    }
+    clean(template.content);
+    return template.innerHTML;
+  }
+
+  function collectMonthlyCheckinRecord() {
+    return {
+      id: new URLSearchParams(window.location.search).get("monthlyCheckinId") || "monthly-checkin-" + Date.now(),
+      name: document.getElementById("monthCheckinName").value.trim(),
+      title: document.getElementById("monthCheckinTitle").value.trim(),
+      startTime: document.getElementById("monthCheckinStartTime").value,
+      endTime: document.getElementById("monthCheckinLongTerm").checked ? "" : document.getElementById("monthCheckinEndTime").value,
+      endTimeFallback: document.getElementById("monthCheckinEndTime").dataset.longTermFallback || "",
+      longTerm: document.getElementById("monthCheckinLongTerm").checked,
+      sort: document.getElementById("monthCheckinSort").value || "0",
+      enabled: document.getElementById("monthCheckinEnabled").checked,
+      resetTime: document.getElementById("monthCheckinResetTime").value,
+      dailyRewards: Array.prototype.map.call(document.querySelectorAll("#monthCheckinDailyRows tr"), function (row) {
+        return {
+          day: Number(row.getAttribute("data-day")),
+          reward: row.querySelector(".month-checkin-daily-reward").value
+        };
+      }),
+      wagerMultiple: document.getElementById("monthCheckinWagerMultiple").value,
+      chestDeposit: document.getElementById("monthCheckinChestDeposit").value,
+      milestones: Array.prototype.map.call(document.querySelectorAll("#monthCheckinMilestoneRows tr"), function (row) {
+        return {
+          count: row.querySelector(".month-checkin-milestone-count").value,
+          reward: row.querySelector(".month-checkin-milestone-reward").value
+        };
+      }),
+      retryTiers: Array.prototype.map.call(document.querySelectorAll("#monthCheckinRetryRows tr"), function (row) {
+        return { deposit: row.querySelector(".month-checkin-retry-deposit").value, retries: row.querySelector(".month-checkin-retry-count").value };
+      }),
+      doubleDeposit: document.getElementById("monthCheckinDoubleDeposit").value,
+      doubleMultiplier: document.getElementById("monthCheckinDoubleMultiplier").value,
+      bannerImage: document.getElementById("monthCheckinBannerPreview").getAttribute("src") || "",
+      detailImage: document.getElementById("monthCheckinDetailPreview").getAttribute("src") || "",
+      descriptionHtml: sanitizeMonthlyCheckinHtml(document.getElementById("monthCheckinDescription").innerHTML)
+    };
+  }
+
+  function isStrictlyIncreasing(values) {
+    return values.every(function (value, index) { return index === 0 || value > values[index - 1]; });
+  }
+
+  function validateMonthlyCheckinRecord(record) {
+    var start = new Date(record.startTime);
+    var end = record.longTerm ? null : new Date(record.endTime);
+    var milestoneCounts = record.milestones.map(function (tier) { return Number(tier.count); });
+    var retryDeposits = record.retryTiers.map(function (tier) { return Number(tier.deposit); });
+    if (record.dailyRewards.length !== 31 || !record.milestones.length || !record.retryTiers.length) {
+      return "\u8bf7\u4fdd\u7559Day 1\u81f3Day 31\u5956\u52b1\uff0c\u5e76\u81f3\u5c11\u914d\u7f6e\u4e00\u4e2a\u5b9d\u7bb1\u548c\u8865\u7b7e\u6863\u4f4d\u3002";
+    }
+    if (isNaN(start.getTime()) || (!record.longTerm && (isNaN(end.getTime()) || start >= end))) {
+      return "\u6d3b\u52a8\u7ed3\u675f\u65f6\u95f4\u5fc5\u987b\u665a\u4e8e\u5f00\u59cb\u65f6\u95f4\u3002";
+    }
+    if (!isStrictlyIncreasing(milestoneCounts) || !isStrictlyIncreasing(retryDeposits)) {
+      return "\u5b9d\u7bb1\u7d2f\u8ba1\u6b21\u6570\u548c\u8865\u7b7e\u5145\u503c\u6863\u4f4d\u9700\u4ece\u5c0f\u5230\u5927\u6392\u5217\uff0c\u4e14\u4e0d\u80fd\u91cd\u590d\u3002";
+    }
+    return "";
+  }
+
+  function saveMonthlyCheckinActivity() {
+    var form = document.getElementById("monthlyCheckinForm");
+    var record;
+    var records;
+    var index;
+    var errorMessage;
+    if (!form || !form.checkValidity()) {
+      if (form) { form.reportValidity(); }
+      return;
+    }
+    record = collectMonthlyCheckinRecord();
+    errorMessage = validateMonthlyCheckinRecord(record);
+    if (errorMessage) {
+      window.alert(errorMessage);
+      return;
+    }
+    records = getMonthlyCheckinRecords();
+    index = records.findIndex(function (item) { return item.id === record.id; });
+    if (index === -1) { records.unshift(record); } else { records[index] = record; }
+    if (!setMonthlyCheckinRecords(records)) {
+      window.alert("\u4fdd\u5b58\u5931\u8d25\uff0c\u8bf7\u68c0\u67e5\u6d4f\u89c8\u5668\u672c\u5730\u5b58\u50a8\u7a7a\u95f4\u3002");
+      return;
+    }
+    window.location.href = "\u4f18\u60e0\u6d3b\u52a8\u5217\u8868.html?monthlyCheckinSaved=1";
+  }
+
+  function createMonthlyCheckinRow(type, record) {
+    var row = document.createElement("tr");
+    record = record || {};
+    if (type === "milestone") {
+      row.innerHTML = '<td><input class="month-checkin-milestone-count" type="number" min="1" step="1" value="' + escapeHtml(record.count || "1") + '" required aria-label="\u7d2f\u8ba1\u9886\u53d6\u6b21\u6570"></td><td><input class="month-checkin-milestone-reward" type="number" min="0" step="0.01" value="' + escapeHtml(record.reward || "0") + '" required aria-label="\u5b9d\u7bb1\u5956\u52b1"></td><td><button type="button" data-month-checkin-remove-row>\u5220\u9664</button></td>';
+    } else {
+      row.innerHTML = '<td><input class="month-checkin-retry-deposit" type="number" min="1" step="1" value="' + escapeHtml(record.deposit || "1") + '" required aria-label="\u5f53\u6708\u7d2f\u8ba1\u5145\u503c\u8fbe\u5230"></td><td><input class="month-checkin-retry-count" type="number" min="1" step="1" value="' + escapeHtml(record.retries || "1") + '" required aria-label="\u8865\u7b7e\u6b21\u6570"></td><td><button type="button" data-month-checkin-remove-row>\u5220\u9664</button></td>';
+    }
+    return row;
+  }
+
+  function loadMonthlyCheckinRecord() {
+    var id = new URLSearchParams(window.location.search).get("monthlyCheckinId");
+    var record = id ? getMonthlyCheckinRecords().find(function (item) { return item.id === id; }) : null;
+    var milestoneRows = document.getElementById("monthCheckinMilestoneRows");
+    var retryRows = document.getElementById("monthCheckinRetryRows");
+    var endTimeInput = document.getElementById("monthCheckinEndTime");
+    var legacyWagerMultiple;
+    if (!record) { return; }
+    document.getElementById("monthCheckinName").value = record.name || "";
+    document.getElementById("monthCheckinTitle").value = record.title || "";
+    document.getElementById("monthCheckinStartTime").value = record.startTime || "";
+    endTimeInput.dataset.longTermFallback = record.endTimeFallback || record.endTime || endTimeInput.dataset.longTermFallback || "";
+    endTimeInput.value = record.longTerm ? "" : (record.endTime || endTimeInput.dataset.longTermFallback);
+    document.getElementById("monthCheckinLongTerm").checked = record.longTerm === true;
+    endTimeInput.disabled = record.longTerm === true;
+    document.getElementById("monthCheckinSort").value = record.sort || "0";
+    document.getElementById("monthCheckinEnabled").checked = record.enabled !== false;
+    document.getElementById("monthCheckinEnabled").closest("label").querySelector("b").textContent = record.enabled === false ? "\u5173\u95ed" : "\u5f00\u542f";
+    document.getElementById("monthCheckinResetTime").value = record.resetTime || "06:00";
+    document.getElementById("monthCheckinChestDeposit").value = record.chestDeposit || "0";
+    document.getElementById("monthCheckinDoubleDeposit").value = record.doubleDeposit || "100000000";
+    document.getElementById("monthCheckinDoubleMultiplier").value = record.doubleMultiplier || "5";
+    legacyWagerMultiple = ((record.dailyRewards || []).find(function (item) { return item.wagerMultiple; }) || {}).wagerMultiple || ((record.milestones || []).find(function (item) { return item.wagerMultiple; }) || {}).wagerMultiple;
+    document.getElementById("monthCheckinWagerMultiple").value = record.wagerMultiple || legacyWagerMultiple || "1";
+    if (record.bannerImage) { showMonthlyCheckinImage("monthCheckinBannerPreview", record.bannerImage); }
+    if (record.detailImage) { showMonthlyCheckinImage("monthCheckinDetailPreview", record.detailImage); }
+    if (typeof record.descriptionHtml === "string") {
+      document.getElementById("monthCheckinDescription").innerHTML = sanitizeMonthlyCheckinHtml(record.descriptionHtml);
+    }
+    Array.prototype.forEach.call(document.querySelectorAll("#monthCheckinDailyRows tr"), function (row) {
+      var day = Number(row.getAttribute("data-day"));
+      var saved = (record.dailyRewards || []).find(function (item) { return Number(item.day) === day; });
+      if (saved) {
+        row.querySelector(".month-checkin-daily-reward").value = saved.reward;
+      }
+    });
+    milestoneRows.innerHTML = "";
+    (record.milestones || []).forEach(function (tier) {
+      milestoneRows.appendChild(createMonthlyCheckinRow("milestone", {
+        count: tier.count,
+        reward: tier.reward
+      }));
+    });
+    retryRows.innerHTML = "";
+    (record.retryTiers || []).forEach(function (tier) { retryRows.appendChild(createMonthlyCheckinRow("retry", tier)); });
+  }
+
+  function showMonthlyCheckinImage(previewId, source) {
+    var preview = document.getElementById(previewId);
+    var removeButton = document.querySelector('[data-month-checkin-remove-image="' + previewId + '"]');
+    if (!preview) { return; }
+    preview.setAttribute("src", source);
+    preview.hidden = !source;
+    if (removeButton) { removeButton.hidden = !source; }
+  }
+
+  function bindMonthlyCheckinActivity() {
+    var root = document.getElementById("u6_state7");
+    var milestoneRows = document.getElementById("monthCheckinMilestoneRows");
+    var retryRows = document.getElementById("monthCheckinRetryRows");
+    var enabled = document.getElementById("monthCheckinEnabled");
+    var longTerm = document.getElementById("monthCheckinLongTerm");
+    var endTime = document.getElementById("monthCheckinEndTime");
+    var description = document.getElementById("monthCheckinDescription");
+    if (!root || !milestoneRows || !retryRows) { return; }
+    endTime.dataset.longTermFallback = endTime.value;
+    loadMonthlyCheckinRecord();
+    endTime.required = !longTerm.checked;
+    longTerm.addEventListener("change", function () {
+      if (longTerm.checked) {
+        if (endTime.value) { endTime.dataset.longTermFallback = endTime.value; }
+        endTime.value = "";
+        endTime.disabled = true;
+        endTime.required = false;
+      } else {
+        endTime.disabled = false;
+        endTime.required = true;
+        endTime.value = endTime.dataset.longTermFallback || "";
+      }
+    });
+    enabled.addEventListener("change", function () {
+      var textNode = enabled.closest("label").querySelector("b");
+      if (textNode) {
+        textNode.textContent = enabled.checked ? "\u5f00\u542f" : "\u5173\u95ed";
+      }
+    });
+    Array.prototype.forEach.call(root.querySelectorAll(".month-checkin-image-file"), function (input) {
+      input.addEventListener("change", function () {
+        var file = input.files && input.files[0];
+        var maxSize = input.id === "monthCheckinBannerFile" ? 512000 : 1048576;
+        var previewId = input.id === "monthCheckinBannerFile" ? "monthCheckinBannerPreview" : "monthCheckinDetailPreview";
+        var reader;
+        if (!file) { return; }
+        if (!/^image\/(png|jpeg|webp)$/.test(file.type) || file.size > maxSize) {
+          window.alert(file.size > maxSize ? "\u56fe\u7247\u8d85\u8fc7\u5141\u8bb8\u5927\u5c0f\u3002" : "\u8bf7\u9009\u62e9 JPG\u3001PNG \u6216 WebP \u56fe\u7247\u3002");
+          input.value = "";
+          return;
+        }
+        reader = new FileReader();
+        reader.onload = function () { showMonthlyCheckinImage(previewId, reader.result); };
+        reader.onerror = function () { window.alert("\u56fe\u7247\u8bfb\u53d6\u5931\u8d25\uff0c\u8bf7\u91cd\u8bd5\u3002"); };
+        reader.readAsDataURL(file);
+      });
+    });
+    Array.prototype.forEach.call(root.querySelectorAll("[data-month-checkin-command]"), function (button) {
+      button.addEventListener("mousedown", function (event) { event.preventDefault(); });
+      button.addEventListener("click", function () {
+        var command = button.getAttribute("data-month-checkin-command");
+        var url;
+        description.focus();
+        if (command === "createLink") {
+          url = window.prompt("\u8bf7\u8f93\u5165\u94fe\u63a5\u5730\u5740");
+          if (!url || !/^https?:\/\//i.test(url)) { return; }
+        }
+        document.execCommand(command, false, url || null);
+      });
+    });
+    root.addEventListener("click", function (event) {
+      var target = event.target.closest("button");
+      var row;
+      if (!target) { return; }
+      if (target.hasAttribute("data-month-checkin-upload-file")) {
+        document.getElementById(target.getAttribute("data-month-checkin-upload-file")).click();
+      } else if (target.hasAttribute("data-month-checkin-remove-image")) {
+        showMonthlyCheckinImage(target.getAttribute("data-month-checkin-remove-image"), "");
+        document.getElementById(target.getAttribute("data-month-checkin-remove-image").replace("Preview", "File")).value = "";
+      } else if (target.id === "monthCheckinAddMilestone") {
+        milestoneRows.appendChild(createMonthlyCheckinRow("milestone"));
+      } else if (target.id === "monthCheckinAddRetryTier") {
+        retryRows.appendChild(createMonthlyCheckinRow("retry"));
+      } else if (target.hasAttribute("data-month-checkin-remove-row")) {
+        row = target.closest("tr");
+        if (row && row.parentNode.querySelectorAll("tr").length > 1) { row.remove(); }
+      }
+    });
+    [document.getElementById("u4"), document.getElementById("u5"), document.getElementById("u1")].forEach(function (button, index) {
+      if (!button) { return; }
+      button.addEventListener("click", function (event) {
+        if (!document.body.classList.contains("month-checkin-template-active")) { return; }
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if (index === 0) { saveMonthlyCheckinActivity(); } else { window.location.href = "\u4f18\u60e0\u6d3b\u52a8\u5217\u8868.html"; }
+      }, true);
+    });
+  }
+
   ready(function () {
     var select = document.getElementById("u3012_input");
 
@@ -1470,6 +1775,7 @@
     bindCustomActivityJump();
     bindChallengeActivity();
     bindRedPacketActivity();
+    bindMonthlyCheckinActivity();
 
     if (select) {
       select.setAttribute("aria-label", "\u6d3b\u52a8\u6a21\u677f");
@@ -1481,6 +1787,9 @@
       }
       if (new URLSearchParams(window.location.search).has("redPacketId")) {
         select.value = "\u7ea2\u5305\u96e8";
+      }
+      if (new URLSearchParams(window.location.search).has("monthlyCheckinId")) {
+        select.value = "\u6708\u7b7e\u5230\u6d3b\u52a8";
       }
       bindTemplateSelect(select);
     }

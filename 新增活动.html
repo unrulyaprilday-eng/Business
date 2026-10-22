@@ -25434,6 +25434,173 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
             </form>
           </div>
         </div>
+        <div id="u6_state7" class="panel_state" data-label="月签到" style="visibility: hidden; display: none;" aria-hidden="true">
+          <div id="u6_state7_content" class="panel_state_content">
+            <form id="monthlyCheckinForm" class="custom-month-checkin-form" novalidate>
+              <section id="monthCheckinBasicSection" class="custom-share-section">
+                <h3>基础配置</h3>
+                <div class="custom-share-grid">
+                  <label class="custom-field required"><span>活动名称</span><input id="monthCheckinName" type="text" value="月签到活动" maxlength="40" required></label>
+                  <label class="custom-field required"><span>活动标题</span><input id="monthCheckinTitle" type="text" value="每日签到领基础奖励，充值达标可领取5倍奖励" maxlength="60" required></label>
+                  <div class="custom-field required custom-field-wide custom-time-range custom-month-checkin-time-range"><span>活动时间</span><input id="monthCheckinStartTime" type="datetime-local" value="2026-10-22T00:00" required><em>至</em><input id="monthCheckinEndTime" type="datetime-local" value="2026-12-31T23:59" required><label class="month-checkin-long-term"><input id="monthCheckinLongTerm" type="checkbox"><b>长期有效</b></label></div>
+                  <label class="custom-field"><span>活动排序</span><input id="monthCheckinSort" type="number" value="0" min="0"></label>
+                  <div class="custom-field"><span>启用状态</span><label class="red-packet-switch"><input id="monthCheckinEnabled" type="checkbox" checked><i></i><b>开启</b></label></div>
+                </div>
+              </section>
+
+              <div class="month-checkin-settings-row">
+                <section id="monthCheckinRewardSection" class="custom-share-section">
+                  <h3>奖励设置</h3>
+                  <div class="custom-share-grid month-checkin-setting-grid">
+                    <label class="custom-field"><span>活动奖励打码量倍数</span><div class="month-checkin-inline-input"><input id="monthCheckinWagerMultiple" type="number" min="0" step="0.1" value="1" required><b>×</b></div></label>
+                    <p class="month-checkin-hint">统一应用于每日签到（含补签）奖励、充值复领奖励及里程碑宝箱奖励。</p>
+                  </div>
+                </section>
+                <section id="monthCheckinPeriodSection" class="custom-share-section">
+                  <h3>签到周期</h3>
+                  <div class="month-checkin-period-row">
+                    <label class="custom-field"><span>每月重置时间</span><input id="monthCheckinResetTime" type="time" value="06:00" required></label>
+                    <p class="month-checkin-hint">每月 1 日按站点时区重置签到、补签次数及里程碑进度。</p>
+                  </div>
+                </section>
+              </div>
+
+              <section id="monthCheckinDailySection" class="custom-share-section">
+                <h3>每日签到奖励</h3>
+                <p class="month-checkin-hint">按日期配置当日首次签到奖励；实际月份不存在的日期自动忽略。截图未展示 Day 29 至 31，默认奖励为 0，请按运营方案补齐。</p>
+                <div class="month-checkin-table-wrap">
+                  <table class="month-checkin-table month-checkin-daily-table">
+                    <thead><tr><th>签到日</th><th>奖励数量</th></tr></thead>
+                    <tbody id="monthCheckinDailyRows">
+                      <tr data-day="1"><th scope="row">Day 1</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="2" required aria-label="Day 1 奖励数量"></td></tr>
+                      <tr data-day="2"><th scope="row">Day 2</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="3" required aria-label="Day 2 奖励数量"></td></tr>
+                      <tr data-day="3"><th scope="row">Day 3</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="3" required aria-label="Day 3 奖励数量"></td></tr>
+                      <tr data-day="4"><th scope="row">Day 4</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="4" required aria-label="Day 4 奖励数量"></td></tr>
+                      <tr data-day="5"><th scope="row">Day 5</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="3" required aria-label="Day 5 奖励数量"></td></tr>
+                      <tr data-day="6"><th scope="row">Day 6</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="4" required aria-label="Day 6 奖励数量"></td></tr>
+                      <tr data-day="7"><th scope="row">Day 7</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="3" required aria-label="Day 7 奖励数量"></td></tr>
+                      <tr data-day="8"><th scope="row">Day 8</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="3" required aria-label="Day 8 奖励数量"></td></tr>
+                      <tr data-day="9"><th scope="row">Day 9</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="4" required aria-label="Day 9 奖励数量"></td></tr>
+                      <tr data-day="10"><th scope="row">Day 10</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="5" required aria-label="Day 10 奖励数量"></td></tr>
+                      <tr data-day="11"><th scope="row">Day 11</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="3" required aria-label="Day 11 奖励数量"></td></tr>
+                      <tr data-day="12"><th scope="row">Day 12</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="4" required aria-label="Day 12 奖励数量"></td></tr>
+                      <tr data-day="13"><th scope="row">Day 13</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="5" required aria-label="Day 13 奖励数量"></td></tr>
+                      <tr data-day="14"><th scope="row">Day 14</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="6" required aria-label="Day 14 奖励数量"></td></tr>
+                      <tr data-day="15"><th scope="row">Day 15</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="3" required aria-label="Day 15 奖励数量"></td></tr>
+                      <tr data-day="16"><th scope="row">Day 16</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="6" required aria-label="Day 16 奖励数量"></td></tr>
+                      <tr data-day="17"><th scope="row">Day 17</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="3" required aria-label="Day 17 奖励数量"></td></tr>
+                      <tr data-day="18"><th scope="row">Day 18</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="5" required aria-label="Day 18 奖励数量"></td></tr>
+                      <tr data-day="19"><th scope="row">Day 19</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="1" required aria-label="Day 19 奖励数量"></td></tr>
+                      <tr data-day="20"><th scope="row">Day 20</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="3" required aria-label="Day 20 奖励数量"></td></tr>
+                      <tr data-day="21"><th scope="row">Day 21</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="4" required aria-label="Day 21 奖励数量"></td></tr>
+                      <tr data-day="22"><th scope="row">Day 22</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="5" required aria-label="Day 22 奖励数量"></td></tr>
+                      <tr data-day="23"><th scope="row">Day 23</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="3" required aria-label="Day 23 奖励数量"></td></tr>
+                      <tr data-day="24"><th scope="row">Day 24</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="5" required aria-label="Day 24 奖励数量"></td></tr>
+                      <tr data-day="25"><th scope="row">Day 25</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="4" required aria-label="Day 25 奖励数量"></td></tr>
+                      <tr data-day="26"><th scope="row">Day 26</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="4" required aria-label="Day 26 奖励数量"></td></tr>
+                      <tr data-day="27"><th scope="row">Day 27</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="4" required aria-label="Day 27 奖励数量"></td></tr>
+                      <tr data-day="28"><th scope="row">Day 28</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="4" required aria-label="Day 28 奖励数量"></td></tr>
+                      <tr data-day="29"><th scope="row">Day 29</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="0" required aria-label="Day 29 奖励数量"></td></tr>
+                      <tr data-day="30"><th scope="row">Day 30</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="0" required aria-label="Day 30 奖励数量"></td></tr>
+                      <tr data-day="31"><th scope="row">Day 31</th><td><input class="month-checkin-daily-reward" type="number" min="0" step="0.01" value="0" required aria-label="Day 31 奖励数量"></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section id="monthCheckinMilestoneSection" class="custom-share-section">
+                <h3>里程碑宝箱</h3>
+                <p class="month-checkin-hint">达到配置的累计签到领取次数后，可额外开启对应宝箱。</p>
+                <div class="custom-share-grid">
+                  <label class="custom-field"><span>当月累计充值门槛</span><input id="monthCheckinChestDeposit" type="number" min="0" step="1" value="0" required></label>
+                  <span class="month-checkin-hint">填写 0 表示当月累计充值达到 0 即可领取累计宝箱。</span>
+                </div>
+                <div class="month-checkin-table-wrap">
+                  <table class="month-checkin-table month-checkin-tier-table">
+                    <thead><tr><th>累计领取次数</th><th>宝箱奖励</th><th>操作</th></tr></thead>
+                    <tbody id="monthCheckinMilestoneRows">
+                      <tr><td><input class="month-checkin-milestone-count" type="number" min="1" step="1" value="1" required aria-label="累计领取次数"></td><td><input class="month-checkin-milestone-reward" type="number" min="0" step="0.01" value="100" required aria-label="宝箱奖励"></td><td><button type="button" data-month-checkin-remove-row>删除</button></td></tr>
+                      <tr><td><input class="month-checkin-milestone-count" type="number" min="1" step="1" value="2" required aria-label="累计领取次数"></td><td><input class="month-checkin-milestone-reward" type="number" min="0" step="0.01" value="1000" required aria-label="宝箱奖励"></td><td><button type="button" data-month-checkin-remove-row>删除</button></td></tr>
+                      <tr><td><input class="month-checkin-milestone-count" type="number" min="1" step="1" value="3" required aria-label="累计领取次数"></td><td><input class="month-checkin-milestone-reward" type="number" min="0" step="0.01" value="10000" required aria-label="宝箱奖励"></td><td><button type="button" data-month-checkin-remove-row>删除</button></td></tr>
+                    </tbody>
+                  </table>
+                  <button id="monthCheckinAddMilestone" class="red-packet-table-add" type="button">+ 添加宝箱档位</button>
+                </div>
+              </section>
+
+              <section id="monthCheckinRetrySection" class="custom-share-section">
+                <h3>补签</h3>
+                <p class="month-checkin-hint">按当月累计充值达到的最高档位发放补签次数；每月重置。</p>
+                <div class="month-checkin-table-wrap">
+                  <table class="month-checkin-table month-checkin-tier-table">
+                    <thead><tr><th>当月累计充值达到</th><th>补签次数</th><th>操作</th></tr></thead>
+                    <tbody id="monthCheckinRetryRows">
+                      <tr><td><input class="month-checkin-retry-deposit" type="number" min="1" step="1" value="50000000" required aria-label="当月累计充值达到"></td><td><input class="month-checkin-retry-count" type="number" min="1" step="1" value="1" required aria-label="补签次数"></td><td><button type="button" data-month-checkin-remove-row>删除</button></td></tr>
+                      <tr><td><input class="month-checkin-retry-deposit" type="number" min="1" step="1" value="60000000" required aria-label="当月累计充值达到"></td><td><input class="month-checkin-retry-count" type="number" min="1" step="1" value="2" required aria-label="补签次数"></td><td><button type="button" data-month-checkin-remove-row>删除</button></td></tr>
+                      <tr><td><input class="month-checkin-retry-deposit" type="number" min="1" step="1" value="70000000" required aria-label="当月累计充值达到"></td><td><input class="month-checkin-retry-count" type="number" min="1" step="1" value="2" required aria-label="补签次数"></td><td><button type="button" data-month-checkin-remove-row>删除</button></td></tr>
+                      <tr><td><input class="month-checkin-retry-deposit" type="number" min="1" step="1" value="500000000" required aria-label="当月累计充值达到"></td><td><input class="month-checkin-retry-count" type="number" min="1" step="1" value="3" required aria-label="补签次数"></td><td><button type="button" data-month-checkin-remove-row>删除</button></td></tr>
+                      <tr><td><input class="month-checkin-retry-deposit" type="number" min="1" step="1" value="1000000000" required aria-label="当月累计充值达到"></td><td><input class="month-checkin-retry-count" type="number" min="1" step="1" value="4" required aria-label="补签次数"></td><td><button type="button" data-month-checkin-remove-row>删除</button></td></tr>
+                      <tr><td><input class="month-checkin-retry-deposit" type="number" min="1" step="1" value="2000000000" required aria-label="当月累计充值达到"></td><td><input class="month-checkin-retry-count" type="number" min="1" step="1" value="5" required aria-label="补签次数"></td><td><button type="button" data-month-checkin-remove-row>删除</button></td></tr>
+                    </tbody>
+                  </table>
+                  <button id="monthCheckinAddRetryTier" class="red-packet-table-add" type="button">+ 添加充值档位</button>
+                </div>
+              </section>
+
+              <section id="monthCheckinRechargeSection" class="custom-share-section">
+                <h3>充值复领</h3>
+                <div class="custom-share-grid">
+                  <label class="custom-field"><span>当日累计充值门槛</span><input id="monthCheckinDoubleDeposit" type="number" min="1" step="1" value="100000000" required></label>
+                  <label class="custom-field"><span>再次领取倍数</span><div class="month-checkin-inline-input"><input id="monthCheckinDoubleMultiplier" type="number" min="1" step="0.1" value="5" required><b>×</b></div></label>
+                  <p class="month-checkin-hint month-checkin-wide">当日累计充值达到门槛，且首次领取当天签到奖励后，可再领一次“基础奖励 × 倍数”；补签奖励和之前日期的奖励不参与复领。</p>
+                </div>
+              </section>
+
+              <section id="monthCheckinContentSection" class="custom-share-section">
+                <h3>活动展示与说明</h3>
+                <div class="custom-share-grid month-checkin-content-grid">
+                  <div class="custom-upload month-checkin-image-upload">
+                    <span>活动 Banner</span>
+                    <div class="month-checkin-upload-control">
+                      <input id="monthCheckinBannerFile" class="month-checkin-image-file" type="file" accept="image/png,image/jpeg,image/webp" aria-label="上传活动 Banner" hidden>
+                      <button class="month-checkin-upload-button" type="button" data-month-checkin-upload-file="monthCheckinBannerFile">+<small>点击上传 Banner</small></button>
+                      <img id="monthCheckinBannerPreview" alt="活动 Banner 预览" hidden>
+                      <button class="month-checkin-remove-image" type="button" data-month-checkin-remove-image="monthCheckinBannerPreview" hidden>移除图片</button>
+                      <p>建议尺寸 800 × 400，支持 JPG、PNG、WebP，最大 500KB。</p>
+                    </div>
+                  </div>
+                  <div class="custom-upload month-checkin-image-upload">
+                    <span>活动内页图</span>
+                    <div class="month-checkin-upload-control">
+                      <input id="monthCheckinDetailFile" class="month-checkin-image-file" type="file" accept="image/png,image/jpeg,image/webp" aria-label="上传活动内页图" hidden>
+                      <button class="month-checkin-upload-button" type="button" data-month-checkin-upload-file="monthCheckinDetailFile">+<small>点击上传内页图</small></button>
+                      <img id="monthCheckinDetailPreview" alt="活动内页图预览" hidden>
+                      <button class="month-checkin-remove-image" type="button" data-month-checkin-remove-image="monthCheckinDetailPreview" hidden>移除图片</button>
+                      <p>支持 JPG、PNG、WebP，最大 1MB。</p>
+                    </div>
+                  </div>
+                  <div class="custom-editor month-checkin-rich-editor">
+                    <span>活动文本</span>
+                    <div class="month-checkin-editor">
+                      <div class="month-checkin-editor-toolbar" role="toolbar" aria-label="活动文本格式">
+                        <button type="button" data-month-checkin-command="bold" title="加粗"><strong>B</strong></button>
+                        <button type="button" data-month-checkin-command="italic" title="斜体"><em>I</em></button>
+                        <button type="button" data-month-checkin-command="underline" title="下划线"><u>U</u></button>
+                        <button type="button" data-month-checkin-command="insertUnorderedList" title="项目符号列表">•</button>
+                        <button type="button" data-month-checkin-command="insertOrderedList" title="编号列表">1.</button>
+                        <button type="button" data-month-checkin-command="createLink" title="插入链接">链接</button>
+                        <button type="button" data-month-checkin-command="unlink" title="移除链接">取消链接</button>
+                        <button type="button" data-month-checkin-command="undo" title="撤销">↶</button>
+                        <button type="button" data-month-checkin-command="redo" title="重做">↷</button>
+                      </div>
+                      <div id="monthCheckinDescription" class="month-checkin-editor-body" contenteditable="true" role="textbox" aria-multiline="true" aria-label="活动文本"><p>活动期间，每日登录活动页面即可领取对应签到奖励。</p><p>当日累计充值达到要求后，可额外领取一次当日签到奖励。</p></div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </form>
+          </div>
+        </div>
       </div>
 
       <!-- Unnamed (矩形) -->
@@ -25454,6 +25621,7 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
           <option class="u3012_input_option" value="拉新返金">拉新返金</option>
           <option class="u3012_input_option" value="救济金">救济金</option>
           <option class="u3012_input_option" value="签到奖励">签到奖励</option>
+          <option class="u3012_input_option" value="月签到活动">月签到</option>
           <option class="u3012_input_option" value="打码返水">打码返水</option>
           <option class="u3012_input_option" value="优惠券赠送">优惠券赠送</option>
           <option class="u3012_input_option" value="会员礼包">会员礼包</option>

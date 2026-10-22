@@ -1,6 +1,7 @@
 (function () {
   var CHALLENGE_STORAGE_KEY = 'promoChallengeActivities';
   var RED_PACKET_STORAGE_KEY = 'promoRedPacketActivities';
+  var MONTHLY_CHECKIN_STORAGE_KEY = 'promoMonthlyCheckinActivities';
 
   function escapeHtml(value) {
     return String(value || '')
@@ -39,6 +40,23 @@
   function setRedPacketRecords(records) {
     try {
       window.localStorage.setItem(RED_PACKET_STORAGE_KEY, JSON.stringify(records));
+    } catch (error) {
+      return false;
+    }
+    return true;
+  }
+
+  function getMonthlyCheckinRecords() {
+    try {
+      return JSON.parse(window.localStorage.getItem(MONTHLY_CHECKIN_STORAGE_KEY) || '[]');
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function setMonthlyCheckinRecords(records) {
+    try {
+      window.localStorage.setItem(MONTHLY_CHECKIN_STORAGE_KEY, JSON.stringify(records));
     } catch (error) {
       return false;
     }
@@ -112,6 +130,48 @@
     });
   }
 
+  function getMonthlyCheckinWagerMultiple(record) {
+    var dailyReward = ((record.dailyRewards || []).find(function (item) { return item.wagerMultiple; }) || {}).wagerMultiple;
+    var milestone = ((record.milestones || []).find(function (item) { return item.wagerMultiple; }) || {}).wagerMultiple;
+    return record.wagerMultiple || dailyReward || milestone || '1';
+  }
+
+  function renderMonthlyCheckinRows() {
+    var tbody = document.getElementById('promoActivityRows');
+    var records = getMonthlyCheckinRecords();
+    if (!tbody) { return; }
+    Array.prototype.forEach.call(tbody.querySelectorAll('[data-monthly-checkin-id]'), function (row) { row.remove(); });
+    records.slice().reverse().forEach(function (record) {
+      var row = document.createElement('tr');
+      var enabled = record.enabled !== false;
+      row.setAttribute('data-monthly-checkin-id', record.id);
+      row.innerHTML = [
+        '<td>' + escapeHtml(record.name) + '</td>',
+        '<td>-</td>',
+        '<td title="' + escapeHtml(record.title) + '">' + escapeHtml(record.title) + '</td>',
+        '<td>月签到</td>',
+        '<td>' + escapeHtml(formatTime(record.startTime)) + '</td>',
+        '<td>' + (record.longTerm ? '长期有效' : escapeHtml(formatTime(record.endTime))) + '</td>',
+        '<td>' + escapeHtml(getMonthlyCheckinWagerMultiple(record)) + '</td>',
+        '<td>-</td>',
+        '<td><button class="switch' + (enabled ? ' on' : '') + '" type="button" data-monthly-checkin-toggle aria-label="' + (enabled ? '关闭活动' : '启用活动') + '"></button></td>',
+        '<td>' + escapeHtml(record.sort || '0') + '</td>',
+        '<td>admin</td>',
+        '<td class="actions"><button type="button" data-monthly-checkin-edit>编辑</button><button class="danger" type="button" data-monthly-checkin-delete>删除</button></td>'
+      ].join('');
+      tbody.insertBefore(row, tbody.firstChild);
+    });
+  }
+
+  function updateMonthlyCheckinRecord(id, updater) {
+    var records = getMonthlyCheckinRecords().map(function (record) {
+      if (record.id === id) { updater(record); }
+      return record;
+    });
+    setMonthlyCheckinRecords(records);
+    renderMonthlyCheckinRows();
+  }
+
   function updateRecord(id, updater) {
     var records = getRecords();
     records = records.map(function (record) {
@@ -137,6 +197,7 @@
     var tbody = document.getElementById('promoActivityRows');
     renderChallengeRows();
     renderRedPacketRows();
+    renderMonthlyCheckinRows();
 
     if (createButton) {
       createButton.addEventListener('click', function () {
@@ -148,9 +209,26 @@
       tbody.addEventListener('click', function (event) {
         var challengeRow = event.target.closest('[data-challenge-id]');
         var redPacketRow = event.target.closest('[data-red-packet-id]');
+        var monthlyCheckinRow = event.target.closest('[data-monthly-checkin-id]');
         var toggle = event.target.closest('[data-challenge-toggle]');
         var redPacketToggle = event.target.closest('[data-red-packet-toggle]');
         var id;
+        if (monthlyCheckinRow) {
+          id = monthlyCheckinRow.getAttribute('data-monthly-checkin-id');
+          if (event.target.closest('[data-monthly-checkin-edit]')) {
+            window.location.href = '新增活动.html?monthlyCheckinId=' + encodeURIComponent(id);
+            return;
+          }
+          if (event.target.closest('[data-monthly-checkin-toggle]')) {
+            updateMonthlyCheckinRecord(id, function (record) { record.enabled = record.enabled === false; });
+            return;
+          }
+          if (event.target.closest('[data-monthly-checkin-delete]') && window.confirm('确定删除该月签到活动吗？删除后不可恢复。')) {
+            setMonthlyCheckinRecords(getMonthlyCheckinRecords().filter(function (record) { return record.id !== id; }));
+            renderMonthlyCheckinRows();
+          }
+          return;
+        }
         if (redPacketRow) {
           id = redPacketRow.getAttribute('data-red-packet-id');
           if (event.target.closest('.switch') && !redPacketToggle) {
@@ -196,7 +274,7 @@
     }
 
     document.querySelectorAll('.switch').forEach(function (toggle) {
-      if (toggle.closest('[data-challenge-id], [data-red-packet-id]')) { return; }
+      if (toggle.closest('[data-challenge-id], [data-red-packet-id], [data-monthly-checkin-id]')) { return; }
       toggle.addEventListener('click', function () { toggle.classList.toggle('on'); });
     });
   });

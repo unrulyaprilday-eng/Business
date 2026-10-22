@@ -53,6 +53,11 @@ body.red-packet-template-active #u6 > #u6_state6 {
   visibility: visible !important;
 }
 
+body.month-checkin-template-active #u6 > #u6_state7 {
+  display: block !important;
+  visibility: visible !important;
+}
+
 .relief-template-active #u2699,
 .relief-template-active #u2700,
 .relief-template-active #u1166,
@@ -84,7 +89,8 @@ body.relief-template-active #u1695_state4 {
 .custom-share-form,
 .custom-custom-form,
 .custom-challenge-form,
-.custom-red-packet-form {
+.custom-red-packet-form,
+.custom-month-checkin-form {
   box-sizing: border-box;
   width: 1160px;
   max-width: calc(100% - 96px);
@@ -126,11 +132,20 @@ body.relief-template-active #u1695_state4 {
   min-height: 1500px;
 }
 
+.custom-month-checkin-form {
+  width: 1280px;
+  max-width: calc(100% - 16px);
+  margin-left: 0;
+  padding: 20px 18px 112px;
+  min-height: 1500px;
+}
+
 #u6_state2_content,
 #u6_state3_content,
 #u6_state4_content,
 #u6_state5_content,
-#u6_state6_content {
+#u6_state6_content,
+#u6_state7_content {
   position: absolute !important;
   left: 0 !important;
   top: 0 !important;
@@ -144,7 +159,8 @@ body.relief-template-active #u1695_state4 {
 #u6_state3,
 #u6_state4,
 #u6_state5,
-#u6_state6 {
+#u6_state6,
+#u6_state7 {
   overflow-y: auto !important;
 }
 
@@ -169,7 +185,8 @@ body.relief-template-active #u1695_state4 {
 }
 
 body.challenge-template-active #u2,
-body.red-packet-template-active #u2 {
+body.red-packet-template-active #u2,
+body.month-checkin-template-active #u2 {
   position: fixed !important;
   z-index: 90;
   left: 8px !important;
@@ -2280,6 +2297,477 @@ body.red-packet-template-active #u6 > #u6_state6 {
 .red-packet-notes li::marker {
   color: #409eff;
   font-weight: 600;
+}
+
+#u6_state7 {
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+  width: 1441px !important;
+  height: 1173px !important;
+  border-width: 0 !important;
+  overflow: auto !important;
+  overflow-x: hidden !important;
+  background: #fff !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+.month-checkin-static {
+  font-weight: 400;
+  color: #606266;
+}
+
+.month-checkin-hint {
+  grid-column: 1 / -1;
+  margin: 0 0 8px 114px;
+  color: #909399;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.month-checkin-wide {
+  margin-top: -4px;
+}
+
+.month-checkin-table-wrap {
+  max-height: 560px;
+  margin: 14px 0 18px 114px;
+  overflow: auto;
+  border: 1px solid #ebeef5;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.month-checkin-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #303133;
+  font-size: 13px;
+  text-align: left;
+}
+
+.month-checkin-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #f5f7fa;
+}
+
+.month-checkin-table th,
+.month-checkin-table td {
+  height: 42px;
+  padding: 5px 12px;
+  border-bottom: 1px solid #ebeef5;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.month-checkin-table thead th {
+  height: 40px;
+  color: #606266;
+  font-weight: 600;
+}
+
+.month-checkin-table tbody th {
+  width: 40%;
+  color: #606266;
+  font-weight: 500;
+}
+
+.month-checkin-table input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 140px;
+  height: 30px;
+  padding: 4px 8px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  color: #303133;
+  font: 13px "Microsoft YaHei", sans-serif;
+}
+
+.month-checkin-tier-table td:last-child {
+  width: 72px;
+}
+
+.month-checkin-table button {
+  border: 0;
+  color: #409eff;
+  background: transparent;
+  font: 12px "Microsoft YaHei", sans-serif;
+  cursor: pointer;
+}
+
+.month-checkin-table button:hover {
+  color: #f56c6c;
+}
+
+.month-checkin-inline-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.month-checkin-inline-input input {
+  max-width: 160px;
+}
+
+.month-checkin-inline-input b {
+  color: #606266;
+  font-weight: 500;
+}
+
+.month-checkin-tier-table th:last-child,
+.month-checkin-tier-table td:last-child {
+  width: 64px;
+  text-align: center;
+}
+
+.custom-month-checkin-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-month-checkin-form > .custom-share-section {
+  box-sizing: border-box;
+  margin-top: 10px;
+  padding: 12px 14px 14px;
+  border-radius: 4px;
+}
+
+.custom-month-checkin-form > #monthCheckinBasicSection { order: 1; margin-top: 0; }
+.custom-month-checkin-form > .month-checkin-settings-row { order: 2; }
+.custom-month-checkin-form > #monthCheckinRechargeSection { order: 3; }
+.custom-month-checkin-form > #monthCheckinRetrySection { order: 4; }
+.custom-month-checkin-form > #monthCheckinMilestoneSection { order: 5; }
+.custom-month-checkin-form > #monthCheckinDailySection { order: 6; }
+.custom-month-checkin-form > #monthCheckinContentSection { order: 7; }
+
+.month-checkin-settings-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.month-checkin-settings-row > .custom-share-section {
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid #ebeef5;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.month-checkin-settings-row .custom-share-section > h3 {
+  margin-bottom: 8px;
+}
+
+.custom-month-checkin-form .custom-share-grid.month-checkin-setting-grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+}
+
+.month-checkin-setting-grid .custom-field {
+  grid-template-columns: 132px minmax(0, 170px);
+}
+
+.custom-month-checkin-form .month-checkin-setting-grid .month-checkin-hint {
+  grid-column: 2;
+  margin: 0;
+}
+
+.custom-month-checkin-form .custom-share-section > h3 {
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.custom-month-checkin-form .custom-share-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 20px;
+  row-gap: 10px;
+}
+
+.custom-month-checkin-form .custom-month-checkin-time-range {
+  grid-template-columns: 104px 190px 18px 190px max-content;
+  gap: 8px;
+  align-items: center;
+}
+
+.month-checkin-long-term {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #606266;
+  font-size: 12px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.month-checkin-long-term input {
+  width: auto;
+  height: auto;
+  margin: 0;
+  accent-color: #409eff;
+}
+
+.month-checkin-long-term b {
+  font-weight: 400;
+}
+
+.custom-month-checkin-form .custom-month-checkin-time-range input:disabled {
+  border-color: #ebeef5;
+  background: #f5f7fa;
+  color: #a8abb2;
+  cursor: not-allowed;
+}
+
+.month-checkin-period-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+}
+
+.month-checkin-period-row .custom-field {
+  grid-template-columns: 104px 140px;
+  width: 254px;
+}
+
+.custom-month-checkin-form .month-checkin-period-row .month-checkin-hint {
+  margin: 0;
+}
+
+.custom-month-checkin-form .month-checkin-hint {
+  margin: 0 0 8px;
+}
+
+.custom-month-checkin-form .month-checkin-table-wrap {
+  max-height: none;
+  margin: 8px 0 0;
+}
+
+.custom-month-checkin-form .month-checkin-table th,
+.custom-month-checkin-form .month-checkin-table td {
+  height: 36px;
+  padding: 4px 8px;
+}
+
+.custom-month-checkin-form .month-checkin-table thead th {
+  height: 34px;
+}
+
+.custom-month-checkin-form .month-checkin-table input {
+  min-width: 0;
+  height: 28px;
+}
+
+.month-checkin-daily-table {
+  display: block;
+}
+
+.month-checkin-daily-table thead {
+  display: none;
+}
+
+.month-checkin-daily-table tbody {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.month-checkin-daily-table tbody tr {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: center;
+  min-width: 0;
+  padding: 0 6px;
+  border-right: 1px solid #ebeef5;
+  border-bottom: 1px solid #ebeef5;
+}
+
+.month-checkin-daily-table tbody th,
+.month-checkin-daily-table tbody td {
+  height: auto;
+  padding: 3px 5px;
+  border-bottom: 0;
+}
+
+.month-checkin-daily-table tbody th {
+  width: auto;
+  font-size: 12px;
+}
+
+.month-checkin-daily-table input {
+  width: 100%;
+  padding: 3px 6px;
+}
+
+.month-checkin-daily-table tbody td {
+  grid-column: 2;
+}
+
+.month-checkin-content-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.month-checkin-image-upload {
+  grid-template-columns: 104px minmax(0, 1fr);
+  align-items: start;
+}
+
+.month-checkin-upload-control {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  min-width: 0;
+}
+
+.month-checkin-upload-control [hidden] {
+  display: none !important;
+}
+
+.month-checkin-upload-control img {
+  display: block;
+  width: min(100%, 360px);
+  max-height: 180px;
+  object-fit: contain;
+  object-position: left center;
+  border: 1px solid #ebeef5;
+  background: #f8fafc;
+}
+
+.month-checkin-upload-control .month-checkin-remove-image {
+  width: auto;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  background: #fff;
+  color: #606266;
+  font: 12px "Microsoft YaHei", sans-serif;
+  cursor: pointer;
+}
+
+.month-checkin-upload-control .month-checkin-remove-image:hover {
+  border-color: #8cc5ff;
+  color: #2879cf;
+  background: #f7fbff;
+}
+
+.month-checkin-upload-control p {
+  grid-column: 1;
+  margin: 0;
+  color: #909399;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.month-checkin-rich-editor {
+  grid-column: 1 / -1;
+  grid-template-columns: 104px minmax(0, 1fr);
+  align-items: start;
+}
+
+.month-checkin-rich-editor > span {
+  padding-top: 8px;
+}
+
+.month-checkin-editor {
+  grid-column: 2;
+  min-width: 0;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.month-checkin-editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 4px 6px;
+  border-bottom: 1px solid #e4e7ed;
+  background: #f8fafc;
+}
+
+.month-checkin-editor-toolbar button {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 26px;
+  padding: 0 4px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: #526274;
+  font: 13px "Microsoft YaHei", sans-serif;
+  line-height: 24px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.month-checkin-editor-toolbar [data-month-checkin-command="createLink"] {
+  width: 42px;
+}
+
+.month-checkin-editor-toolbar [data-month-checkin-command="unlink"] {
+  width: 64px;
+}
+
+.month-checkin-editor-toolbar button:hover,
+.month-checkin-editor-toolbar button:focus-visible {
+  border-color: #cfe1f5;
+  outline: none;
+  background: #ecf5ff;
+  color: #2879cf;
+}
+
+.month-checkin-editor-body {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 180px;
+  max-height: 360px;
+  overflow: auto;
+  padding: 10px 12px;
+  color: #303133;
+  font: 13px/1.7 "Microsoft YaHei", sans-serif;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.month-checkin-editor-body:focus {
+  outline: 2px solid rgba(64, 158, 255, 0.16);
+  outline-offset: -2px;
+}
+
+.month-checkin-editor-body p {
+  margin: 0 0 8px;
+  text-align: left;
+}
+
+.month-checkin-editor-body p:last-child { margin-bottom: 0; }
+
+@media (max-width: 900px) {
+  .custom-month-checkin-form .custom-share-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .custom-month-checkin-form .custom-month-checkin-time-range {
+    grid-template-columns: 104px minmax(130px, 1fr) 18px minmax(130px, 1fr) max-content;
+  }
+
+  .month-checkin-daily-table tbody {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .custom-month-checkin-form .month-checkin-content-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .month-checkin-settings-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .challenge-name-field > .challenge-name-picker {
