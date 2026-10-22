@@ -1535,6 +1535,8 @@
       longTerm: document.getElementById("monthCheckinLongTerm").checked,
       sort: document.getElementById("monthCheckinSort").value || "0",
       enabled: document.getElementById("monthCheckinEnabled").checked,
+      sameIpOnce: document.getElementById("monthCheckinSameIpOnce").checked,
+      sameWithdrawalAccountOnce: document.getElementById("monthCheckinWithdrawalAccountOnce").checked,
       resetTime: document.getElementById("monthCheckinResetTime").value,
       dailyRewards: Array.prototype.map.call(document.querySelectorAll("#monthCheckinDailyRows tr"), function (row) {
         return {
@@ -1637,6 +1639,12 @@
     document.getElementById("monthCheckinSort").value = record.sort || "0";
     document.getElementById("monthCheckinEnabled").checked = record.enabled !== false;
     document.getElementById("monthCheckinEnabled").closest("label").querySelector("b").textContent = record.enabled === false ? "\u5173\u95ed" : "\u5f00\u542f";
+    if (typeof record.sameIpOnce === "boolean") {
+      document.getElementById("monthCheckinSameIpOnce").checked = record.sameIpOnce;
+    } else if (record.ipClaimLimit != null) {
+      document.getElementById("monthCheckinSameIpOnce").checked = Number(record.ipClaimLimit) > 0;
+    }
+    if (typeof record.sameWithdrawalAccountOnce === "boolean") { document.getElementById("monthCheckinWithdrawalAccountOnce").checked = record.sameWithdrawalAccountOnce; }
     document.getElementById("monthCheckinResetTime").value = record.resetTime || "06:00";
     document.getElementById("monthCheckinChestDeposit").value = record.chestDeposit || "0";
     document.getElementById("monthCheckinDoubleDeposit").value = record.doubleDeposit || "100000000";

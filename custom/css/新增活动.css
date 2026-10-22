@@ -2436,12 +2436,27 @@ body.red-packet-template-active #u6 > #u6_state6 {
 }
 
 .custom-month-checkin-form > #monthCheckinBasicSection { order: 1; margin-top: 0; }
-.custom-month-checkin-form > .month-checkin-settings-row { order: 2; }
-.custom-month-checkin-form > #monthCheckinRechargeSection { order: 3; }
-.custom-month-checkin-form > #monthCheckinRetrySection { order: 4; }
-.custom-month-checkin-form > #monthCheckinMilestoneSection { order: 5; }
-.custom-month-checkin-form > #monthCheckinDailySection { order: 6; }
-.custom-month-checkin-form > #monthCheckinContentSection { order: 7; }
+.custom-month-checkin-form > #monthCheckinLimitSection { order: 2; }
+.custom-month-checkin-form > .month-checkin-settings-row { order: 3; }
+.custom-month-checkin-form > #monthCheckinRechargeSection { order: 4; }
+.custom-month-checkin-form > #monthCheckinRetrySection { order: 5; }
+.custom-month-checkin-form > #monthCheckinMilestoneSection { order: 6; }
+.custom-month-checkin-form > #monthCheckinDailySection { order: 7; }
+.custom-month-checkin-form > #monthCheckinContentSection { order: 8; }
+
+.custom-month-checkin-form > #monthCheckinLimitSection {
+  padding-top: 10px;
+  padding-bottom: 12px;
+}
+
+.custom-month-checkin-form .custom-share-grid.month-checkin-limit-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 24px;
+}
+
+.month-checkin-limit-grid .custom-field {
+  grid-template-columns: 140px minmax(0, 220px);
+}
 
 .month-checkin-settings-row {
   display: grid;
@@ -2767,6 +2782,16 @@ body.red-packet-template-active #u6 > #u6_state6 {
 
   .month-checkin-settings-row {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .custom-month-checkin-form .custom-share-grid.month-checkin-limit-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .month-checkin-limit-grid .custom-field {
+    grid-template-columns: 140px minmax(0, 1fr);
   }
 }
 
