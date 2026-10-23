@@ -1529,6 +1529,7 @@
       id: new URLSearchParams(window.location.search).get("monthlyCheckinId") || "monthly-checkin-" + Date.now(),
       name: document.getElementById("monthCheckinName").value.trim(),
       title: document.getElementById("monthCheckinTitle").value.trim(),
+      rewardTarget: getCheckedValue("activityRewardTarget7", "\u4f59\u989d"),
       startTime: document.getElementById("monthCheckinStartTime").value,
       endTime: document.getElementById("monthCheckinLongTerm").checked ? "" : document.getElementById("monthCheckinEndTime").value,
       endTimeFallback: document.getElementById("monthCheckinEndTime").dataset.longTermFallback || "",
@@ -1631,6 +1632,9 @@
     if (!record) { return; }
     document.getElementById("monthCheckinName").value = record.name || "";
     document.getElementById("monthCheckinTitle").value = record.title || "";
+    Array.prototype.forEach.call(document.querySelectorAll('input[name="activityRewardTarget7"]'), function (input) {
+      input.checked = input.value === (record.rewardTarget === "\u5b58\u94b1\u7f50" ? "\u5b58\u94b1\u7f50" : "\u4f59\u989d");
+    });
     document.getElementById("monthCheckinStartTime").value = record.startTime || "";
     endTimeInput.dataset.longTermFallback = record.endTimeFallback || record.endTime || endTimeInput.dataset.longTermFallback || "";
     endTimeInput.value = record.longTerm ? "" : (record.endTime || endTimeInput.dataset.longTermFallback);

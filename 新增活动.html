@@ -25442,6 +25442,13 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
                 <div class="custom-share-grid">
                   <label class="custom-field required"><span>活动名称</span><input id="monthCheckinName" type="text" value="月签到活动" maxlength="40" required></label>
                   <label class="custom-field required"><span>活动标题</span><input id="monthCheckinTitle" type="text" value="每日签到领基础奖励，充值达标可领取5倍奖励" maxlength="60" required></label>
+                  <div class="custom-field activity-reward-target" data-activity-reward-target="7">
+                    <span id="monthCheckinRewardTargetLabel">中奖金额目标</span>
+                    <div class="custom-radio-group" role="radiogroup" aria-labelledby="monthCheckinRewardTargetLabel">
+                      <label><input type="radio" name="activityRewardTarget7" value="余额" checked>余额</label>
+                      <label><input type="radio" name="activityRewardTarget7" value="存钱罐">存钱罐</label>
+                    </div>
+                  </div>
                   <div class="custom-field required custom-field-wide custom-time-range custom-month-checkin-time-range"><span>活动时间</span><input id="monthCheckinStartTime" type="datetime-local" value="2026-10-22T00:00" required><em>至</em><input id="monthCheckinEndTime" type="datetime-local" value="2026-12-31T23:59" required><label class="month-checkin-long-term"><input id="monthCheckinLongTerm" type="checkbox"><b>长期有效</b></label></div>
                   <label class="custom-field"><span>活动排序</span><input id="monthCheckinSort" type="number" value="0" min="0"></label>
                   <div class="custom-field"><span>启用状态</span><label class="red-packet-switch"><input id="monthCheckinEnabled" type="checkbox" checked><i></i><b>开启</b></label></div>
