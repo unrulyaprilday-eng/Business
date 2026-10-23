@@ -1930,7 +1930,7 @@ body.red-packet-template-active #u6 > #u6_state6 {
 .red-packet-time-header,
 .red-packet-time-row {
   display: grid;
-  grid-template-columns: 42px 150px 20px 80px 150px 52px;
+  grid-template-columns: 42px 150px 20px 150px 52px;
   align-items: center;
   gap: 8px;
 }
@@ -1954,7 +1954,6 @@ body.red-packet-template-active #u6 > #u6_state6 {
 }
 
 .red-packet-time-row input,
-.red-packet-time-row select,
 .red-packet-claim-rule input,
 .red-packet-tier-table input {
   box-sizing: border-box;
@@ -1969,21 +1968,10 @@ body.red-packet-template-active #u6 > #u6_state6 {
 }
 
 .red-packet-time-row input:focus,
-.red-packet-time-row select:focus,
 .red-packet-claim-rule input:focus,
 .red-packet-tier-table input:focus {
   border-color: #409eff;
   outline: none;
-}
-
-.red-packet-time-row select {
-  padding: 4px 6px;
-}
-
-.red-packet-time-row select:disabled {
-  background: #f5f7fa;
-  color: #909399;
-  cursor: not-allowed;
 }
 
 .red-packet-time-row em {

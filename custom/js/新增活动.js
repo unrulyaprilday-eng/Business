@@ -7,7 +7,8 @@
     "\u81ea\u5b9a\u4e49\u6d3b\u52a8": 4,
     "\u8fde\u7eed\u6311\u6218": 5,
     "\u7ea2\u5305\u96e8": 6,
-    "\u6708\u7b7e\u5230\u6d3b\u52a8": 7
+    "\u6708\u7b7e\u5230\u6d3b\u52a8": 7,
+    "\u5145\u503c\u9001\u91d1": 8
   };
 
   var CHALLENGE_NAME_OPTIONS = [
@@ -178,6 +179,7 @@
     var isChallenge = template === "\u8fde\u7eed\u6311\u6218";
     var isRedPacket = template === "\u7ea2\u5305\u96e8";
     var isMonthlyCheckin = template === "\u6708\u7b7e\u5230\u6d3b\u52a8";
+    var isRechargeGift = template === "\u5145\u503c\u9001\u91d1";
 
     document.body.classList.toggle("relief-template-active", isRelief);
     document.body.classList.toggle("share-template-active", isShare);
@@ -185,6 +187,7 @@
     document.body.classList.toggle("challenge-template-active", isChallenge);
     document.body.classList.toggle("red-packet-template-active", isRedPacket);
     document.body.classList.toggle("month-checkin-template-active", isMonthlyCheckin);
+    document.body.classList.toggle("recharge-gift-template-active", isRechargeGift);
     showPanelState("u6", state);
     syncChallengeFooter(isChallenge || isRedPacket || isMonthlyCheckin);
   }
@@ -1126,15 +1129,13 @@
     return String(hours).padStart(2, "0") + ":" + String(minutes).padStart(2, "0");
   }
 
-  function createRedPacketTimeRow(start, end, endDay) {
+  function createRedPacketTimeRow(start, end) {
     var row = document.createElement("div");
-    var selectedEndDay = endDay === "next" ? "next" : "same";
     row.className = "red-packet-time-row";
     row.innerHTML = [
       '<span class="red-packet-time-index"></span>',
       '<input class="red-packet-start-time" type="time" value="' + (start || "12:00") + '" aria-label="\u5f00\u59cb\u65f6\u95f4">',
       "<em>\u81f3</em>",
-      '<select class="red-packet-end-day" aria-label="\u7ed3\u675f\u65e5\u671f"><option value="same"' + (selectedEndDay === "same" ? " selected" : "") + '>\u5f53\u65e5</option><option value="next"' + (selectedEndDay === "next" ? " selected" : "") + '>\u6b21\u65e5</option></select>',
       '<input class="red-packet-end-time" type="time" value="' + (end || "13:00") + '" aria-label="\u7ed3\u675f\u65f6\u95f4">',
       '<button type="button" data-red-packet-remove-time aria-label="\u5220\u9664\u65f6\u95f4\u6bb5">\u5220\u9664</button>'
     ].join("");
@@ -1145,13 +1146,7 @@
     var rows = Array.prototype.slice.call(document.querySelectorAll("#redPacketTimeRanges .red-packet-time-row"));
     rows.forEach(function (row, index) {
       var indexNode = row.querySelector(".red-packet-time-index");
-      var endDay = row.querySelector(".red-packet-end-day");
-      var isLast = index === rows.length - 1;
       if (indexNode) { indexNode.textContent = String(index + 1); }
-      if (endDay) {
-        endDay.disabled = !isLast;
-        if (!isLast) { endDay.value = "same"; }
-      }
     });
   }
 
@@ -1160,10 +1155,10 @@
     var lastRow = rows.length ? rows[rows.length - 1] : null;
     var lastEnd = lastRow ? lastRow.querySelector(".red-packet-end-time") : null;
     var endMinutes;
-    if (!lastEnd || !lastEnd.value) { return { start: "12:00", end: "13:00", endDay: "same" }; }
+    if (!lastEnd || !lastEnd.value) { return { start: "12:00", end: "13:00" }; }
     endMinutes = parseRedPacketTime(lastEnd.value);
     if (endMinutes === null || endMinutes + 60 > 1439) { return null; }
-    return { start: lastEnd.value, end: formatRedPacketTime(endMinutes + 60), endDay: "same" };
+    return { start: lastEnd.value, end: formatRedPacketTime(endMinutes + 60) };
   }
 
   function createRedPacketTierRow(tier) {
@@ -1235,8 +1230,7 @@
       weekDays: getNamedValues("redPacketWeekDay"),
       cycleRelation: getCheckedValue("redPacketCycleRelation", "or"),
       timeRanges: Array.prototype.map.call(document.querySelectorAll("#redPacketTimeRanges .red-packet-time-row"), function (row) {
-        var endDay = row.querySelector(".red-packet-end-day");
-        return { start: row.querySelector(".red-packet-start-time").value, end: row.querySelector(".red-packet-end-time").value, endDay: endDay ? endDay.value : "same" };
+        return { start: row.querySelector(".red-packet-start-time").value, end: row.querySelector(".red-packet-end-time").value };
       }),
       wagerMultiple: document.getElementById("redPacketWagerMultiple").value,
       dailyClaimLimit: document.getElementById("redPacketDailyClaimLimit").value,
@@ -1262,53 +1256,16 @@
 
   function validateRedPacketTimeRanges(ranges) {
     var previousEnd = null;
-    var lastIndex = ranges.length - 1;
     for (var index = 0; index < ranges.length; index += 1) {
       var range = ranges[index];
       var start = parseRedPacketTime(range.start);
       var end = parseRedPacketTime(range.end);
-      var endAbsolute;
       if (start === null || end === null) { return "请完整配置每个红包时间段的开始和结束时间。"; }
-      if (index !== lastIndex && range.endDay === "next") { return "只有最后一个时间段可以选择次日结束。"; }
-      endAbsolute = end + (range.endDay === "next" ? 1440 : 0);
-      if (endAbsolute <= start) { return "时间段必须按时间先后配置，结束时间需晚于开始时间。"; }
-      if (endAbsolute - start >= 1440) { return "单个红包时间段不能达到或超过 24 小时。"; }
+      if (end <= start) { return "时间段须在当日内配置，结束时间需晚于开始时间。"; }
       if (previousEnd !== null && start < previousEnd) { return "后一时间段不能早于前一时间段结束时间，时间段之间不能重叠。"; }
-      previousEnd = endAbsolute;
+      previousEnd = end;
     }
     return "";
-  }
-
-  function isRedPacketCycleDate(date, record) {
-    var weekValue = date.getDay() === 0 ? 7 : date.getDay();
-    var monthMatch = record.monthDays.indexOf(String(date.getDate())) !== -1;
-    var weekMatch = record.weekDays.indexOf(String(weekValue)) !== -1;
-    return record.cycleRelation === "and" ? monthMatch && weekMatch : monthMatch || weekMatch;
-  }
-
-  function formatRedPacketDate(date) {
-    return date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, "0") + "-" + String(date.getDate()).padStart(2, "0");
-  }
-
-  function findRedPacketCycleConflict(record) {
-    var ranges = record.timeRanges;
-    var lastRange = ranges[ranges.length - 1];
-    var firstStart = parseRedPacketTime(ranges[0].start);
-    var crossEnd = parseRedPacketTime(lastRange.end);
-    var cursor;
-    var next;
-    var daysToCheck = 366 * 28;
-    if (!ranges.length || lastRange.endDay !== "next" || firstStart === null || crossEnd === null || crossEnd <= firstStart) { return null; }
-    cursor = new Date(new Date().getFullYear(), 0, 1, 12, 0, 0, 0);
-    for (var index = 0; index < daysToCheck; index += 1) {
-      next = new Date(cursor.getTime());
-      next.setDate(next.getDate() + 1);
-      if (isRedPacketCycleDate(cursor, record) && isRedPacketCycleDate(next, record)) {
-        return { current: formatRedPacketDate(cursor), next: formatRedPacketDate(next) };
-      }
-      cursor = next;
-    }
-    return null;
   }
 
   function saveRedPacketActivity() {
@@ -1317,7 +1274,6 @@
     var records;
     var index;
     var rangeError;
-    var cycleConflict;
     var invalidTier;
     if (!form || !form.checkValidity()) {
       if (form) { form.reportValidity(); }
@@ -1338,11 +1294,6 @@
     }
     if (!record.timeRanges.length || rangeError) {
       window.alert(rangeError || "\u8bf7\u81f3\u5c11\u914d\u7f6e\u4e00\u4e2a\u7ea2\u5305\u65f6\u95f4\u6bb5。");
-      return;
-    }
-    cycleConflict = findRedPacketCycleConflict(record);
-    if (cycleConflict) {
-      window.alert("\u5468\u671f\u4f1a\u751f\u6210\u76f8\u90bb\u6295\u653e\u65e5\uff1a" + cycleConflict.current + " \u4e0e " + cycleConflict.next + " \u7684\u8de8\u5929\u65f6\u95f4\u6bb5\u53ef\u80fd\u91cd\u53e0，\u8bf7\u8c03\u6574\u65f6\u95f4\u6bb5\u6216\u5468\u671f。");
       return;
     }
     if (!record.tiers.length || invalidTier) {
@@ -1391,7 +1342,7 @@
     timeHeader = timeRows.querySelector(".red-packet-time-header");
     timeRows.innerHTML = "";
     if (timeHeader) { timeRows.appendChild(timeHeader); }
-    (record.timeRanges || []).forEach(function (range) { timeRows.appendChild(createRedPacketTimeRow(range.start, range.end, range.endDay || "same")); });
+    (record.timeRanges || []).forEach(function (range) { timeRows.appendChild(createRedPacketTimeRow(range.start, range.end)); });
     tierRows.innerHTML = "";
     (record.tiers || []).forEach(function (tier) { tierRows.appendChild(createRedPacketTierRow(tier)); });
     syncRedPacketTimeRows();
@@ -1417,20 +1368,12 @@
       } else if (target.hasAttribute("data-red-packet-month-clear")) {
         Array.prototype.forEach.call(document.querySelectorAll('input[name="redPacketMonthDay"]'), function (input) { input.checked = false; });
       } else if (target.id === "redPacketAddTimeRange") {
-        var timeRowsList = timeRows.querySelectorAll(".red-packet-time-row");
-        var lastTimeRow = timeRowsList.length ? timeRowsList[timeRowsList.length - 1] : null;
-        var lastEndDay = lastTimeRow ? lastTimeRow.querySelector(".red-packet-end-day") : null;
-        var nextDefaults;
-        if (lastEndDay && lastEndDay.value === "next") {
-          window.alert("\u5f53\u524d\u6700\u540e\u4e00\u4e2a\u65f6\u95f4\u6bb5\u5df2\u8de8\u5929，\u8bf7\u5148\u53d6\u6d88\u6b21\u65e5\u7ed3\u675f\u518d\u6dfb\u52a0\u65b0\u65f6\u95f4\u6bb5。");
-          return;
-        }
-        nextDefaults = getNextRedPacketTimeDefaults();
+        var nextDefaults = getNextRedPacketTimeDefaults();
         if (!nextDefaults) {
           window.alert("\u5f53\u524d\u65f6\u95f4\u5df2\u63a5\u8fd1\u5f53\u65e5\u7ed3\u675f，\u8bf7\u5148\u8c03\u6574\u4e0a\u4e00\u6bb5\u65f6\u95f4\u3002");
           return;
         }
-        timeRows.appendChild(createRedPacketTimeRow(nextDefaults.start, nextDefaults.end, nextDefaults.endDay));
+        timeRows.appendChild(createRedPacketTimeRow(nextDefaults.start, nextDefaults.end));
         syncRedPacketTimeRows();
       } else if (target.id === "redPacketAddTier") {
         tierRows.appendChild(createRedPacketTierRow());
@@ -1447,7 +1390,6 @@
     root.addEventListener("change", function (event) {
       if (event.target && event.target.name === "redPacketConditionMode") { syncRedPacketConditionMode(); }
       if (event.target && event.target.id === "redPacketEnabled") { syncRedPacketEnabledLabel(); }
-      if (event.target && event.target.classList.contains("red-packet-end-day")) { syncRedPacketTimeRows(); }
     });
     syncRedPacketTimeRows();
     syncRedPacketTierIndexes();
@@ -1802,6 +1744,9 @@
       }
       if (new URLSearchParams(window.location.search).has("monthlyCheckinId")) {
         select.value = "\u6708\u7b7e\u5230\u6d3b\u52a8";
+      }
+      if (new URLSearchParams(window.location.search).has("rechargeGiftId")) {
+        select.value = "\u5145\u503c\u9001\u91d1";
       }
       bindTemplateSelect(select);
     }

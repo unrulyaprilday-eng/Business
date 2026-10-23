@@ -8,6 +8,7 @@
     <link href="data/styles.css" type="text/css" rel="stylesheet"/>
     <link href="files/新增活动/styles.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/新增活动.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/recharge-gift-activity.css" type="text/css" rel="stylesheet"/>
     <link href="https://demo.axureux.com/fontawesome/5.7.2/pro/css/all.min.css" type="text/css" rel="stylesheet" media="print" onload="this.media='all'"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
     <script src="resources/scripts/axure/axQuery.js"></script>
@@ -25372,9 +25373,9 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
                   <span>红包时间段</span>
                   <div>
                     <div id="redPacketTimeRanges" class="red-packet-time-ranges">
-                      <div class="red-packet-time-header"><span>序号</span><span>开始时间</span><i></i><span>结束日期</span><span>结束时间</span><span>操作</span></div>
-                      <div class="red-packet-time-row"><span class="red-packet-time-index">1</span><input class="red-packet-start-time" type="time" value="08:00" aria-label="开始时间"><em>至</em><select class="red-packet-end-day" aria-label="结束日期" disabled><option value="same" selected>当日</option><option value="next">次日</option></select><input class="red-packet-end-time" type="time" value="09:00" aria-label="结束时间"><button type="button" data-red-packet-remove-time aria-label="删除时间段">删除</button></div>
-                      <div class="red-packet-time-row"><span class="red-packet-time-index">2</span><input class="red-packet-start-time" type="time" value="18:00" aria-label="开始时间"><em>至</em><select class="red-packet-end-day" aria-label="结束日期"><option value="same" selected>当日</option><option value="next">次日</option></select><input class="red-packet-end-time" type="time" value="19:00" aria-label="结束时间"><button type="button" data-red-packet-remove-time aria-label="删除时间段">删除</button></div>
+                      <div class="red-packet-time-header"><span>序号</span><span>开始时间</span><i></i><span>结束时间</span><span>操作</span></div>
+                      <div class="red-packet-time-row"><span class="red-packet-time-index">1</span><input class="red-packet-start-time" type="time" value="08:00" aria-label="开始时间"><em>至</em><input class="red-packet-end-time" type="time" value="09:00" aria-label="结束时间"><button type="button" data-red-packet-remove-time aria-label="删除时间段">删除</button></div>
+                      <div class="red-packet-time-row"><span class="red-packet-time-index">2</span><input class="red-packet-start-time" type="time" value="18:00" aria-label="开始时间"><em>至</em><input class="red-packet-end-time" type="time" value="19:00" aria-label="结束时间"><button type="button" data-red-packet-remove-time aria-label="删除时间段">删除</button></div>
                     </div>
                     <button id="redPacketAddTimeRange" class="red-packet-add-button" type="button">+ 添加时间段</button>
                   </div>
@@ -25424,8 +25425,7 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
                 <ol>
                   <li>多个红包档位共同组成一个时间段的红包投放，档位按金额从高到低配置；新增时间段时均使用同一组档位。</li>
                   <li>每月与每周可选择“或 / 且”关系：“或”为任一周期命中即投放，同一日重复命中只生成一场；“且”为日期和星期同时命中才投放。</li>
-                  <li>时间段按开始时间从早到晚配置，允许首尾相接但不得重叠；只有最后一段可选“次日”，跨天部分归属开始周期日。</li>
-                  <li>跨天场次不在零点重置领取次数；如果次日也命中周期，上一场跨天时间与次日新场次不得重叠。</li>
+                  <li>红包时间段均在当日内，结束时间须晚于开始时间；按开始时间从早到晚配置，允许首尾相接但不得重叠。</li>
                   <li>“满足任意一个 / 必须全部满足 / 不限制”和“最近 N 天”是时间段通用配置，对时间段内每个档位生效；选择“不限制”时不统计最近 N 天。</li>
                   <li>充值达到、有效投注达到由每个档位分别配置，系统根据玩家在红包开始前最近 N 天的数据，从高到低判断可领取档位。</li>
                   <li>高档位红包数量不足时继续判断下一档位；同一玩家在同一时间段只能领取一次，红包发完后等待下一个时间段。</li>
@@ -25616,6 +25616,66 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
             </form>
           </div>
         </div>
+        <div id="u6_state8" class="panel_state" data-label="充值送金" style="visibility: hidden; display: none;" aria-hidden="true">
+          <div id="u6_state8_content" class="panel_state_content">
+            <section class="rg-dialog" id="rechargeGiftDialog" role="dialog" aria-modal="true" aria-labelledby="rechargeGiftDialogTitle">
+              <header class="rg-head">
+                <h2 id="rechargeGiftDialogTitle">新增活动</h2>
+                <button class="rg-close" type="button" data-rg-close aria-label="关闭">×</button>
+              </header>
+              <form id="rechargeGiftForm" class="rg-scroll" novalidate>
+                <p class="rg-error" id="rechargeGiftError" role="alert" hidden></p>
+                <div class="rg-grid">
+                  <label class="rg-field"><span class="rg-label rg-required">活动模板</span><select class="rg-control" id="rechargeGiftTemplate"><option value="充值送金">充值送金</option></select></label>
+                  <label class="rg-field"><span class="rg-label rg-required">活动名称</span><input class="rg-control" id="rechargeGiftName" maxlength="60" placeholder="请输入活动名称" required></label>
+                  <label class="rg-field"><span class="rg-label rg-required">活动标题</span><input class="rg-control" id="rechargeGiftTitle" maxlength="100" placeholder="请输入活动标题" required></label>
+                  <div class="rg-field"><span class="rg-label" id="rgTargetLabel">中奖金额目标</span><div class="rg-options" role="group" aria-labelledby="rgTargetLabel"><label><input type="radio" name="rechargeGiftTarget" value="余额" checked>余额</label><label><input type="radio" name="rechargeGiftTarget" value="存钱罐">存钱罐</label></div></div>
+                  <div class="rg-field rg-wide"><span class="rg-label rg-required" id="rgTimeLabel">活动时间</span><div class="rg-time" role="group" aria-labelledby="rgTimeLabel"><input class="rg-control" id="rechargeGiftStart" type="datetime-local" aria-label="开始时间" required><em>至</em><input class="rg-control" id="rechargeGiftEnd" type="datetime-local" aria-label="结束时间" required></div></div>
+                  <div class="rg-field rg-wide"><span class="rg-label" id="rgClaimLabel">派发方式</span><div class="rg-options" role="group" aria-labelledby="rgClaimLabel"><label><input type="radio" name="rechargeGiftClaim" value="immediate" checked>立即派发</label><label><input type="radio" name="rechargeGiftClaim" value="manual">玩家自领</label></div></div>
+                  <div class="rg-field rg-wide"><span class="rg-label">活动限制</span><div class="rg-options"><label><input type="checkbox" id="rechargeGiftFirst">完成首充</label><label><input type="checkbox" id="rechargeGiftIp">同ip只能领取一次</label></div></div>
+                  <div class="rg-field rg-wide"><span class="rg-label" id="rgMembersLabel">参与会员</span><div class="rg-members" role="group" aria-labelledby="rgMembersLabel">
+                    <div class="rg-member-tools"><button class="rg-link" type="button" data-rg-members="all">全选</button><span class="rg-muted">|</span><button class="rg-link" type="button" data-rg-members="clear">清空</button><span class="rg-muted" id="rechargeGiftMemberCount" aria-live="polite">已选 0 / 18</span></div>
+                    <div class="rg-member-list" id="rechargeGiftMembers">
+                      <button class="rg-member" type="button" aria-pressed="false" data-rg-member="全体用户">全体用户</button>
+                      <button class="rg-member" type="button" aria-pressed="false" data-rg-member="VIP1">VIP1</button><button class="rg-member" type="button" aria-pressed="false" data-rg-member="VIP2">VIP2</button><button class="rg-member" type="button" aria-pressed="false" data-rg-member="VIP3">VIP3</button><button class="rg-member" type="button" aria-pressed="false" data-rg-member="VIP4">VIP4</button><button class="rg-member" type="button" aria-pressed="false" data-rg-member="VIP5">VIP5</button><button class="rg-member" type="button" aria-pressed="false" data-rg-member="VIP6">VIP6</button><button class="rg-member" type="button" aria-pressed="false" data-rg-member="VIP7">VIP7</button><button class="rg-member" type="button" aria-pressed="false" data-rg-member="VIP8">VIP8</button><button class="rg-member" type="button" aria-pressed="false" data-rg-member="VIP9">VIP9</button><button class="rg-member" type="button" aria-pressed="false" data-rg-member="VIP10">VIP10</button><button class="rg-member" type="button" aria-pressed="false" data-rg-member="VIP11">VIP11</button><button class="rg-member" type="button" aria-pressed="false" data-rg-member="VIP12">VIP12</button><button class="rg-member" type="button" aria-pressed="false" data-rg-member="VIP13">VIP13</button><button class="rg-member" type="button" aria-pressed="false" data-rg-member="VIP14">VIP14</button><button class="rg-member" type="button" aria-pressed="false" data-rg-member="VIP15">VIP15</button><button class="rg-member" type="button" aria-pressed="false" data-rg-member="代理">代理</button><button class="rg-member" type="button" aria-pressed="false" data-rg-member="大R">大R</button>
+                    </div>
+                  </div></div>
+                  <div class="rg-field rg-wide"><span class="rg-label" id="rgRewardModeLabel">奖励类型</span><div class="rg-options" role="group" aria-labelledby="rgRewardModeLabel"><label><input type="radio" name="rechargeGiftRewardMode" value="ratio" checked>按比例</label><label><input type="radio" name="rechargeGiftRewardMode" value="amount">按金额</label></div></div>
+                  <fieldset class="rg-field rg-wide rg-reward-config" id="rechargeGiftRatioSection"><span class="rg-label">VIP等级/百分比（%）</span><div class="rg-table-wrap">
+                    <table class="rg-table"><thead><tr><th>档位</th><th><span class="rg-required">VIP等级</span></th><th><span class="rg-required">百分比（%）</span></th><th aria-label="操作"></th></tr></thead>
+                      <tbody id="rechargeGiftTiers"><tr><td><span class="rg-tier">1 - 15</span></td><td><input class="rg-control rg-vip-end" type="number" min="1" max="15" step="1" value="15" aria-label="第1档 VIP等级上限" disabled required></td><td><input class="rg-control rg-percent" type="number" min="0.01" max="100" step="0.01" placeholder="必填" aria-label="第1档百分比" required></td><td><button class="rg-delete-tier" type="button" data-rg-delete-tier hidden>删除</button></td></tr></tbody>
+                    </table><button class="rg-add-tier" type="button" id="rechargeGiftAddTier">＋ 添加档位</button>
+                  </div></fieldset>
+                  <fieldset class="rg-field rg-wide rg-reward-config" id="rechargeGiftAmountSection" hidden disabled><span class="rg-label">金额奖励</span><div class="rg-amount-config">
+                    <div class="rg-options" role="group" aria-label="充值方式"><label><input type="radio" name="rechargeGiftDepositMode" value="cumulative" checked>累计充值</label><label><input type="radio" name="rechargeGiftDepositMode" value="single">单笔充值</label></div>
+                    <p class="rg-amount-hint" id="rechargeGiftAmountHint">活动期间累计充值达到门槛，按满足的最高档赠送，不叠加档位奖励。</p>
+                    <div class="rg-table-wrap"><table class="rg-table"><thead><tr><th>档位</th><th><span class="rg-required">充值达到</span></th><th><span class="rg-required">赠送金额</span></th><th aria-label="操作"></th></tr></thead>
+                      <tbody id="rechargeGiftAmountTiers"><tr><td><span class="rg-tier rg-amount-index">1</span></td><td><input class="rg-control rg-deposit-amount" type="number" min="0.01" step="0.01" placeholder="必填" aria-label="第1档充值达到" required></td><td><input class="rg-control rg-gift-amount" type="number" min="0.01" step="0.01" placeholder="必填" aria-label="第1档赠送金额" required></td><td><button class="rg-delete-tier" type="button" data-rg-delete-amount-tier hidden>删除</button></td></tr></tbody>
+                    </table><button class="rg-add-tier" type="button" id="rechargeGiftAddAmountTier">＋ 添加档位</button></div>
+                  </div></fieldset>
+                  <div class="rg-field rg-wide"><span class="rg-label rg-required">活动Banner</span><div class="rg-upload-content">
+                    <input id="rechargeGiftBannerFile" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+                    <button class="rg-upload" id="rechargeGiftUpload" type="button" aria-label="上传活动 Banner">
+                      <span id="rechargeGiftUploadHint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M7 17H6a4 4 0 0 1-1-7.9A7 7 0 0 1 18.8 8a4.5 4.5 0 0 1-.8 9h-1M12 20V10m-4 4 4-4 4 4"/></svg><br><small>点击或拖拽上传图片</small></span>
+                      <img id="rechargeGiftBannerPreview" alt="活动 Banner 预览" hidden>
+                    </button><button class="rg-link" id="rechargeGiftRemoveBanner" type="button" hidden>移除图片</button><p>Banner 建议尺寸 800×400，支持等比例缩放，最大 500KB；支持 JPG、PNG、WebP。</p>
+                  </div></div>
+                  <label class="rg-field"><span class="rg-label rg-required">打码倍数</span><input class="rg-control" id="rechargeGiftWager" type="number" min="0" step="0.01" value="1" required></label>
+                  <label class="rg-field"><span class="rg-label">排序</span><input class="rg-control" id="rechargeGiftSort" type="number" min="0" step="1" value="0"></label>
+                  <div class="rg-field rg-wide"><span class="rg-label" id="rgDescriptionLabel">活动描述</span><div class="rg-editor">
+                    <div class="rg-editor-tools" role="toolbar" aria-label="活动描述格式">
+                      <button type="button" data-rg-command="bold" title="加粗"><b>B</b></button><button type="button" data-rg-command="underline" title="下划线"><u>U</u></button><button type="button" data-rg-command="italic" title="斜体"><i>I</i></button><button type="button" data-rg-command="strikeThrough" title="删除线"><s>S</s></button><button type="button" data-rg-command="formatBlock" data-rg-value="h3" title="标题">H</button><button type="button" data-rg-command="subscript" title="下标">x₂</button><button type="button" data-rg-command="superscript" title="上标">x²</button><button type="button" data-rg-command="formatBlock" data-rg-value="blockquote" title="引用">❞</button><button type="button" data-rg-command="insertUnorderedList" title="项目符号列表">☷</button><button type="button" data-rg-command="insertOrderedList" title="编号列表">1≡</button><button type="button" data-rg-command="removeFormat" title="清除格式">Tx</button><button type="button" data-rg-command="undo" title="撤销">↶</button><button type="button" data-rg-command="redo" title="重做">↷</button>
+                    </div>
+                    <div class="rg-editor-body" id="rechargeGiftDescription" contenteditable="true" role="textbox" aria-labelledby="rgDescriptionLabel" aria-multiline="true"></div>
+                    <div class="rg-editor-foot" id="rechargeGiftCharCount">Character Count: 0</div>
+                  </div></div>
+                </div>
+              </form>
+              <footer class="rg-foot"><button class="rg-btn" type="button" data-rg-close>取消</button><button class="rg-btn rg-primary" type="submit" form="rechargeGiftForm" id="rechargeGiftSave">确定</button></footer>
+            </section>
+          </div>
+        </div>
+
       </div>
 
       <!-- Unnamed (矩形) -->
@@ -25654,6 +25714,7 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="custom/js/og-shared-data.js"></script>
     <script src="custom/js/新增活动.js"></script>
+    <script src="custom/js/recharge-gift-activity.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
   </body>
 </html>
