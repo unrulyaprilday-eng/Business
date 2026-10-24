@@ -185,6 +185,25 @@
   max-width: 320px;
 }
 
+.self-game-ante-table {
+  table-layout: fixed;
+}
+
+.self-game-ante-table th:first-child { width: 38%; }
+.self-game-ante-table th:nth-child(2) { width: 27%; }
+
+.self-game-ante-table select {
+  width: 100%;
+  min-width: 0;
+}
+
+.self-game-ante-table select:disabled {
+  border-color: var(--self-game-border);
+  background: var(--self-game-soft);
+  color: var(--self-game-muted);
+  cursor: not-allowed;
+}
+
 .self-game-module-note {
   margin: 8px 0 0;
   color: var(--self-game-muted);

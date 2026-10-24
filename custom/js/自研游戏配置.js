@@ -27,10 +27,10 @@
     { code: "FISH-2002", name: "极地捕鱼王", type: "FISH", inventory: 29760, rtp: 96.5, updated: "2026-08-17 14:18", capability: { levels: 5, minAmount: 0.1, maxAmount: 50, step: 0.1 }, cannons: [{ level: 1, amount: 0.1 }, { level: 2, amount: 0.2 }, { level: 3, amount: 1 }, { level: 4, amount: 5 }, { level: 5, amount: 20 }], records: [{ time: "2026-08-17 14:18", game: "极地捕鱼王", action: "更新玩法配置", before: "96.0%", after: "96.5%", operator: "运营管理员" }] },
     { code: "FISH-2003", name: "黄金海岸", type: "FISH", inventory: 18450, rtp: 94.0, updated: "2026-08-16 09:40", capability: { levels: 4, minAmount: 1, maxAmount: 100, step: 1 }, cannons: [{ level: 1, amount: 1 }, { level: 2, amount: 5 }, { level: 3, amount: 10 }, { level: 4, amount: 50 }], records: [] },
     { code: "POK-3001", name: "极速德州", type: "Poker", rtp: 95.0, updated: "2026-08-18 08:55", capability: { roomTypes: ["低分房", "中分房", "高分房", "VIP房"], scoreUnit: "积分" }, rooms: [
-      { id: 1, code: "P-L", name: "低分房", baseScore: 1, minEntry: 100, rakeRate: 5, minRobotNum: 0, maxRobotNum: 3, minGold: 100, maxGold: 10000, exitGameMinGold: 10, exitGameMaxGold: 20000, minPlayTime: 5, maxPlayTime: 120, minPlayRound: 1, maxPlayRound: 50 },
-      { id: 2, code: "P-M", name: "中分房", baseScore: 10, minEntry: 1000, rakeRate: 5, minRobotNum: 0, maxRobotNum: 2, minGold: 1000, maxGold: 50000, exitGameMinGold: 100, exitGameMaxGold: 100000, minPlayTime: 5, maxPlayTime: 180, minPlayRound: 1, maxPlayRound: 80 },
-      { id: 3, code: "P-H", name: "高分房", baseScore: 100, minEntry: 10000, rakeRate: 5, minRobotNum: 0, maxRobotNum: 1, minGold: 10000, maxGold: 500000, exitGameMinGold: 1000, exitGameMaxGold: 1000000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 100 },
-      { id: 4, code: "P-VIP", name: "VIP房", baseScore: 500, minEntry: 50000, rakeRate: 5, minRobotNum: 0, maxRobotNum: 1, minGold: 50000, maxGold: 2000000, exitGameMinGold: 5000, exitGameMaxGold: 5000000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 120 }
+      { id: 1, code: "P-L", name: "低分房", baseScore: 1, minEntry: 100, rakeRate: 5, anteEnabled: false, anteMultiplier: 0.5, minRobotNum: 0, maxRobotNum: 3, minGold: 100, maxGold: 10000, exitGameMinGold: 10, exitGameMaxGold: 20000, minPlayTime: 5, maxPlayTime: 120, minPlayRound: 1, maxPlayRound: 50 },
+      { id: 2, code: "P-M", name: "中分房", baseScore: 10, minEntry: 1000, rakeRate: 5, anteEnabled: false, anteMultiplier: 0.5, minRobotNum: 0, maxRobotNum: 2, minGold: 1000, maxGold: 50000, exitGameMinGold: 100, exitGameMaxGold: 100000, minPlayTime: 5, maxPlayTime: 180, minPlayRound: 1, maxPlayRound: 80 },
+      { id: 3, code: "P-H", name: "高分房", baseScore: 100, minEntry: 10000, rakeRate: 5, anteEnabled: false, anteMultiplier: 0.5, minRobotNum: 0, maxRobotNum: 1, minGold: 10000, maxGold: 500000, exitGameMinGold: 1000, exitGameMaxGold: 1000000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 100 },
+      { id: 4, code: "P-VIP", name: "VIP房", baseScore: 500, minEntry: 50000, rakeRate: 5, anteEnabled: false, anteMultiplier: 0.5, minRobotNum: 0, maxRobotNum: 1, minGold: 50000, maxGold: 2000000, exitGameMinGold: 5000, exitGameMaxGold: 5000000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 120 }
     ], records: [{ time: "2026-08-18 08:55", game: "极速德州", action: "更新玩法配置", before: "94.0%", after: "95.0%", operator: "运营管理员" }] },
     { code: "POK-3002", name: "短牌扑克", type: "Poker", rtp: 94.5, updated: "2026-08-17 12:30", capability: { roomTypes: ["低分房", "中分房", "高分房", "VIP房"], scoreUnit: "积分" }, rooms: [
       { id: 1, code: "S-L", name: "低分房", baseScore: 2, minEntry: 200, rakeRate: 5, minRobotNum: 0, maxRobotNum: 2, minGold: 200, maxGold: 20000, exitGameMinGold: 20, exitGameMaxGold: 40000, minPlayTime: 5, maxPlayTime: 120, minPlayRound: 1, maxPlayRound: 60 },
@@ -78,7 +78,7 @@
   var inventoryGameIndex = -1;
 
   games.forEach(function (game) {
-    if (game.type === "Poker") game.robotRules = Object.assign({}, defaultPokerRobotRules, game.robotRules || {});
+    if (game.type === "Poker" && !isTexasHoldem(game)) game.robotRules = Object.assign({}, defaultPokerRobotRules, game.robotRules || {});
   });
   games.forEach(function (game) { records = records.concat(game.records || []); });
   games.forEach(function (game, index) {
@@ -120,6 +120,23 @@
   records.sort(function (a, b) { return String(b.time).localeCompare(String(a.time)); });
 
   function esc(value) { return api.esc(value); }
+
+  function isTexasHoldem(game) { return game.code === "POK-3001"; }
+
+  function anteRoomSummary(room) {
+    return room.name + "：" + (room.anteEnabled ? "前注 " + (room.anteMultiplier === 0.5 ? "0.5B（SB）" : "1B（BB）") : "无前注");
+  }
+
+  function renderTexasAnteFields(game) {
+    return [
+      "<section class=\"self-game-config-section\"><h3>前注（ANTE）</h3><p>前注跟随房间配置，各房间独立设置是否有前注及前注档位。B 为大盲，0.5B（SB）为小盲，1B（BB）为大盲；无前注时不收取前注。</p>",
+      "<table class=\"self-game-data-table self-game-ante-table\"><thead><tr><th>房间</th><th>是否有前注</th><th>前注档位</th></tr></thead><tbody>",
+      game.rooms.map(function (room) {
+        return "<tr><td><strong>" + esc(room.name) + "</strong><span class=\"self-game-help\">（" + esc(room.code) + "）</span></td><td><select class=\"self-game-select texas-ante-enabled\" data-room=\"" + room.code + "\" aria-label=\"" + esc(room.name) + "是否有前注\"><option value=\"false\"" + (!room.anteEnabled ? " selected" : "") + ">无前注</option><option value=\"true\"" + (room.anteEnabled ? " selected" : "") + ">有前注</option></select></td><td><select class=\"self-game-select texas-ante-multiplier\" data-room=\"" + room.code + "\" aria-label=\"" + esc(room.name) + "前注档位\"" + (!room.anteEnabled ? " disabled" : "") + "><option value=\"0.5\"" + (room.anteMultiplier === 0.5 ? " selected" : "") + ">0.5B（SB）</option><option value=\"1\"" + (room.anteMultiplier === 1 ? " selected" : "") + ">1B（BB）</option></select></td></tr>";
+      }).join(""),
+      "</tbody></table></section>"
+    ].join("");
+  }
 
   function renderSummary(game) {
     if (game.type === "SLOTS") return "底分 " + game.enabledBets.join(" / ") + " · " + (game.capability.freeGamePurchase ? "Free Game 支持" : "Free Game 不支持");
@@ -173,6 +190,7 @@
   var controlModeNames = { natural: "自然规则", normal: "普通控制规则", point: "点控规则" };
 
   function robotRuleSummary(game) {
+    if (isTexasHoldem(game)) return "前注按房间配置 · 已启用 " + game.rooms.filter(function (room) { return room.anteEnabled; }).length + "/" + game.rooms.length;
     if (!game.robotRules) return "游戏设定未配置";
     if (!game.robotRules.goodModeEnabled) return "自然发牌";
     return "好牌强度 " + String(game.robotRules.goodMode).replace("good", "");
@@ -192,6 +210,7 @@
   }
 
   function renderFields(game, module) {
+    if (module === "robotRules" && isTexasHoldem(game)) return renderTexasAnteFields(game);
     if (module === "robotRules") return [
       "<section class=\"self-game-config-section\"><h3>发牌模式</h3><p>自然发牌保持自然概率；好牌模式下，整桌玩家和机器人共用对应牌型分布，单局发牌仍保持随机。</p>",
       "<div class=\"self-game-form-field self-game-single-field\"><label for=\"robotDealMode\">发牌模式</label><select class=\"self-game-select\" id=\"robotDealMode\"><option value=\"natural\"" + (!game.robotRules.goodModeEnabled ? " selected" : "") + ">自然发牌</option><option value=\"good1\"" + (game.robotRules.goodModeEnabled && game.robotRules.goodMode === "good1" ? " selected" : "") + ">好牌强度 1</option><option value=\"good2\"" + (game.robotRules.goodModeEnabled && game.robotRules.goodMode === "good2" ? " selected" : "") + ">好牌强度 2</option><option value=\"good3\"" + (game.robotRules.goodModeEnabled && game.robotRules.goodMode === "good3" ? " selected" : "") + ">好牌强度 3</option></select></div></section>"
@@ -230,6 +249,16 @@
   }
 
   function validateFields(root, game, module) {
+    if (module === "robotRules" && isTexasHoldem(game)) {
+      var anteError = "";
+      if (!game.rooms || game.rooms.length !== FIXED_POKER_ROOM_COUNT) return "房间配置数量无效";
+      game.rooms.forEach(function (room) {
+        var enabled = root.querySelector(".texas-ante-enabled[data-room=\"" + room.code + "\"]");
+        var multiplier = root.querySelector(".texas-ante-multiplier[data-room=\"" + room.code + "\"]");
+        if (!enabled || ["false", "true"].indexOf(enabled.value) === -1 || !multiplier || ["0.5", "1"].indexOf(multiplier.value) === -1) anteError = room.name + "请选择是否有前注及有效档位（0.5B / 1B）";
+      });
+      return anteError;
+    }
     if (module === "rtp") {
       var parsedRtp = api.parseRtp(root.querySelector("#moduleRtp").value);
       var rtpError = root.querySelector("#moduleRtpError");
@@ -266,7 +295,12 @@
   }
 
   function collectFields(root, game, module) {
-    if (module === "robotRules") {
+    if (module === "robotRules" && isTexasHoldem(game)) {
+      game.rooms.forEach(function (room) {
+        room.anteEnabled = root.querySelector(".texas-ante-enabled[data-room=\"" + room.code + "\"]").value === "true";
+        room.anteMultiplier = Number(root.querySelector(".texas-ante-multiplier[data-room=\"" + room.code + "\"]").value);
+      });
+    } else if (module === "robotRules") {
       game.robotRules.goodMode = root.querySelector("#robotDealMode").value;
       game.robotRules.goodModeEnabled = game.robotRules.goodMode !== "natural";
     } else if (module === "rtp") {
@@ -293,7 +327,7 @@
     if (module === "fishCannons") return game.cannons.map(function (item) { return item.amount; }).join(" / ");
     if (module === "pokerRooms") return game.rooms.map(function (room) { return room.name + " " + room.baseScore + "/" + room.minEntry + "/抽水" + room.rakeRate + "%"; }).join("；");
     if (module === "pokerRobots") return game.rooms.map(function (room) { return room.name + " 机器人" + room.minRobotNum + "-" + room.maxRobotNum + "人 · 金币" + room.minGold + "-" + room.maxGold; }).join("；");
-    if (module === "robotRules") return robotRuleSummary(game);
+    if (module === "robotRules") return isTexasHoldem(game) ? game.rooms.map(anteRoomSummary).join("；") : robotRuleSummary(game);
     return game.params.map(function (param) { return param.label + "=" + param.value; }).join("；");
   }
 
@@ -590,6 +624,11 @@
     document.getElementById("batchApply").addEventListener("click", applyBatch);
     document.querySelectorAll("[data-batch-close]").forEach(function (button) { button.addEventListener("click", closeBatch); });
     document.querySelectorAll("[data-module-close]").forEach(function (button) { button.addEventListener("click", closeModule); });
+    document.getElementById("moduleFields").addEventListener("change", function (event) {
+      if (!event.target.matches(".texas-ante-enabled")) return;
+      var multiplier = this.querySelector(".texas-ante-multiplier[data-room=\"" + event.target.getAttribute("data-room") + "\"]");
+      if (multiplier) multiplier.disabled = event.target.value !== "true";
+    });
     document.getElementById("applyModule").addEventListener("click", applyModule);
     document.getElementById("applyInventory").addEventListener("click", applyInventory);
     document.getElementById("inventoryAmount").addEventListener("input", updateInventoryPreview);
