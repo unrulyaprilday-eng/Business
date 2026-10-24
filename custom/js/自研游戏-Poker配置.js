@@ -9,7 +9,7 @@
   var games = [
     {
       code: "POK-3001",
-      name: "极速德州",
+      name: "德州扑克",
       rtp: 95.0,
       updated: "2026-08-18 08:55",
       capability: { roomTypes: ["低分房", "中分房", "高分房", "VIP房"], scoreUnit: "积分" },
@@ -19,7 +19,7 @@
         { id: 3, code: "P-H", name: "高分房", baseScore: 100, minEntry: 10000, rakeRate: 5, minRobotNum: 0, maxRobotNum: 1, minGold: 10000, maxGold: 500000, exitGameMinGold: 1000, exitGameMaxGold: 1000000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 100 },
         { id: 4, code: "P-VIP", name: "VIP房", baseScore: 500, minEntry: 50000, rakeRate: 5, minRobotNum: 0, maxRobotNum: 1, minGold: 50000, maxGold: 2000000, exitGameMinGold: 5000, exitGameMaxGold: 5000000, minPlayTime: 10, maxPlayTime: 240, minPlayRound: 1, maxPlayRound: 120 }
       ],
-      records: [{ time: "2026-08-18 08:55", game: "极速德州", action: "更新玩法配置", before: "94.0%", after: "95.0%", operator: "运营管理员" }]
+      records: [{ time: "2026-08-18 08:55", game: "德州扑克", action: "更新玩法配置", before: "94.0%", after: "95.0%", operator: "运营管理员" }]
     },
     {
       code: "POK-3002",

@@ -9,7 +9,7 @@
     { code: "SLOT-1002", name: "黄金矿场", type: "SLOTS", rtp: 95.0, updated: "2026-08-17 16:20", selected: false },
     { code: "FISH-2001", name: "深海猎场", type: "FISH", rtp: 95.5, updated: "2026-08-18 10:05", selected: false },
     { code: "FISH-2002", name: "极地捕鱼王", type: "FISH", rtp: 96.5, updated: "2026-08-17 14:18", selected: false },
-    { code: "POK-3001", name: "极速德州", type: "Poker", rtp: 95.0, updated: "2026-08-18 08:55", selected: false },
+    { code: "POK-3001", name: "德州扑克", type: "Poker", rtp: 95.0, updated: "2026-08-18 08:55", selected: false },
     { code: "POK-3002", name: "短牌扑克", type: "Poker", rtp: 94.5, updated: "2026-08-17 12:30", selected: false },
     { code: "MINI-4001", name: "极速飞车", type: "Mini", rtp: 96.5, updated: "2026-08-17 17:10", selected: false },
     { code: "MINI-4002", name: "地雷宝藏", type: "Mini", rtp: 95.5, updated: "2026-08-16 15:45", selected: false }

@@ -3,7 +3,7 @@
 
   var rows = [
     { name: "星穹宝藏", code: "SLOT-1001", type: "SLOTS", bet: 2185600, payout: 2032608, profit: 152992, players: 3842, rtp: "93.0%", inventory: 12840, change: 8.2, attention: "正常", note: "当日表现正常，暂未发现需跟进的异常。" },
-    { name: "极速德州", code: "POK-3001", type: "Poker", bet: 1568400, payout: 1468268, profit: 100132, players: 2184, rtp: "93.6%", inventory: 8260, change: 5.6, attention: "正常", note: "当日表现正常，活跃玩家与平台输赢均高于昨日。" },
+    { name: "德州扑克", code: "POK-3001", type: "Poker", bet: 1568400, payout: 1468268, profit: 100132, players: 2184, rtp: "93.6%", inventory: 8260, change: 5.6, attention: "正常", note: "当日表现正常，活跃玩家与平台输赢均高于昨日。" },
     { name: "深海猎场", code: "FISH-2001", type: "FISH", bet: 1426800, payout: 1341192, profit: 85608, players: 2760, rtp: "94.0%", inventory: -9120, change: -3.1, attention: "需关注", note: "当日库存下降幅度较大，请核查高倍房派奖及活动投放情况。" },
     { name: "极速飞车", code: "MINI-4001", type: "Mini", bet: 1108200, payout: 1057632, profit: 50568, players: 1932, rtp: "95.4%", inventory: 4640, change: 1.8, attention: "正常", note: "当日表现正常，库存变动处于常规波动范围。" },
     { name: "黄金矿场", code: "SLOT-1002", type: "SLOTS", bet: 746580, payout: 716717, profit: 29863, players: 1104, rtp: "96.0%", inventory: -3850, change: -0.7, attention: "需关注", note: "RTP 接近预警阈值，建议结合奖池配置复核当日派奖。" },
