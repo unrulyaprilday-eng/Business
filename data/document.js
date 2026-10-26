@@ -968,6 +968,21 @@ $axure.loadDocument({
             ]
           }
         ]
+      },
+      {
+        "id": "independent_rules",
+        "pageName": "独立规则",
+        "type": "Folder",
+        "url": "",
+        "children": [
+          {
+            "id": "independent_vip_settings",
+            "pageName": "VIP设置",
+            "type": "Wireframe",
+            "url": "独立规则VIP设置.html",
+            "children": []
+          }
+        ]
       }
     ]
   },
