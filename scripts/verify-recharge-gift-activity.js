@@ -28,7 +28,7 @@ for (const match of html.matchAll(/<!--[\s\S]*?-->|<\/?([a-z][a-z0-9]*)\b[^>]*>/
   if (!/^(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)$/.test(tag) && !match[0].endsWith('/>')) stack.push(entry);
 }
 assert.equal(ids.get('u6_state8').parent.id, 'u6');
-assert.equal([...ids.values()].filter(item => item.parent && item.parent.id === 'u6' && /^u6_state\d+$/.test(item.id)).length, 9);
+assert.equal([...ids.values()].filter(item => item.parent && item.parent.id === 'u6' && /^u6_state\d+$/.test(item.id)).length, 10);
 for (const match of source.matchAll(/byId\('([^']+)'\)/g)) assert(ids.has(match[1]), 'missing form control: ' + match[1]);
 assert(!/\?{3,}|\ufffd/.test(html + source + css + listSource), 'invalid text encoding');
 assert(css.includes('appearance: none') && css.includes('[hidden]'), 'scoped controls/hidden styles');
@@ -187,7 +187,7 @@ amountView.save(); assert.equal(amountView.window.location.href, '');
 // Run the real list DOM-ready callback; catches missing startup rendering.
 function listHarness(initial) {
   const stored = new Map(Object.entries(initial || {}));
-  const body = { rows: [], firstChild: null, querySelectorAll() { return this.rows.slice(); }, insertBefore(row) { this.rows.unshift(row); this.firstChild = row; } };
+  const body = { rows: [], firstChild: null, querySelectorAll(selector) { return this.rows.filter(row => selector === 'tr' || row.hasAttribute(selector.slice(1, -1))); }, insertBefore(row) { this.rows.unshift(row); this.firstChild = row; } };
   const total = control();
   let readyCallback;
   const document = { addEventListener(name, callback) { readyCallback = callback; },

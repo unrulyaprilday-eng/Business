@@ -3,6 +3,89 @@
   var RED_PACKET_STORAGE_KEY = 'promoRedPacketActivities';
   var MONTHLY_CHECKIN_STORAGE_KEY = 'promoMonthlyCheckinActivities';
   var RECHARGE_GIFT_STORAGE_KEY = 'promoRechargeGiftActivities';
+  var WEEKLY_CARD_STORAGE_KEY = 'promoWeeklyCardActivities';
+  var activeActivityType = '全部类型';
+
+  function applyActivityFilter() {
+    var tbody = document.getElementById('promoActivityRows');
+    var count = 0;
+    if (!tbody) { return; }
+    Array.prototype.forEach.call(tbody.rows, function (row) {
+      var matches = activeActivityType === '全部类型' ||
+        (row.cells.length > 3 && row.cells[3].textContent.trim() === activeActivityType);
+      row.hidden = !matches;
+      if (matches) { count += 1; }
+    });
+    var paginationSpans = document.querySelectorAll('.pagination > span');
+    if (paginationSpans.length) {
+      paginationSpans[paginationSpans.length - 1].textContent = '共 ' + count + ' 条记录';
+    }
+  }
+
+  function getWeeklyCardRecords() {
+    try {
+      var records = JSON.parse(window.localStorage.getItem(WEEKLY_CARD_STORAGE_KEY) || '[]');
+      if (!Array.isArray(records) || records.some(function (record) {
+        return !record || typeof record !== 'object' || typeof record.id !== 'string' || !record.id;
+      })) { throw new Error('Invalid weekly card records'); }
+      return records;
+    } catch (error) {
+      window.alert('周卡活动数据读取失败，请检查浏览器本地存储后重试。');
+      return null;
+    }
+  }
+
+  function setWeeklyCardRecords(records) {
+    try {
+      window.localStorage.setItem(WEEKLY_CARD_STORAGE_KEY, JSON.stringify(records));
+      return true;
+    } catch (error) {
+      window.alert('周卡活动保存失败，请检查浏览器存储权限或剩余空间后重试。');
+      return false;
+    }
+  }
+
+  function renderWeeklyCardRows(records) {
+    var tbody = document.getElementById('promoActivityRows');
+    if (!tbody) { return; }
+    if (!records) { records = getWeeklyCardRecords(); }
+    if (!records) { return; }
+    Array.prototype.forEach.call(tbody.querySelectorAll('[data-weekly-card-id]'), function (row) { row.remove(); });
+    records.slice().reverse().forEach(function (record) {
+      var row = document.createElement('tr');
+      var enabled = record.enabled !== false;
+      row.setAttribute('data-weekly-card-id', record.id);
+      row.innerHTML = [
+        '<td>' + escapeHtml(record.name) + '</td>',
+        '<td>-</td>',
+        '<td title="' + escapeHtml(record.title) + '">' + escapeHtml(record.title) + '</td>',
+        '<td>周卡</td>',
+        '<td>' + escapeHtml(formatRechargeGiftTime(record.startTime)) + '</td>',
+        '<td>' + (record.longTerm ? '长期有效' : escapeHtml(formatRechargeGiftTime(record.endTime))) + '</td>',
+        '<td>' + escapeHtml(record.wagerMultiple == null ? '1' : record.wagerMultiple) + '</td>',
+        '<td>-</td>',
+        '<td><button class="switch' + (enabled ? ' on' : '') + '" type="button" data-weekly-card-toggle role="switch" aria-checked="' + enabled + '" aria-label="' + (enabled ? '关闭活动' : '启用活动') + '"></button></td>',
+        '<td>' + escapeHtml(record.sort == null ? '0' : record.sort) + '</td>',
+        '<td>admin</td>',
+        '<td class="actions"><button type="button" data-weekly-card-edit>编辑</button><button class="danger" type="button" data-weekly-card-delete>删除</button></td>'
+      ].join('');
+      tbody.insertBefore(row, tbody.firstChild);
+    });
+    applyActivityFilter();
+  }
+
+  function updateWeeklyCardRecord(id) {
+    var records = getWeeklyCardRecords();
+    if (!records) { return; }
+    var record = records.find(function (item) { return item.id === id; });
+    if (!record) {
+      window.alert('该周卡活动已不存在，请刷新列表。');
+      renderWeeklyCardRows(records);
+      return;
+    }
+    record.enabled = record.enabled === false;
+    if (setWeeklyCardRecords(records)) { renderWeeklyCardRows(records); }
+  }
 
   function getRechargeGiftRecords() {
     try {
@@ -77,10 +160,7 @@
       ].join('');
       tbody.insertBefore(row, tbody.firstChild);
     });
-    var paginationSpans = document.querySelectorAll('.pagination > span');
-    if (paginationSpans.length) {
-      paginationSpans[paginationSpans.length - 1].textContent = '共 ' + tbody.rows.length + ' 条记录';
-    }
+    applyActivityFilter();
   }
 
   function updateRechargeGiftRecord(id, field) {
@@ -97,7 +177,7 @@
   }
 
   function escapeHtml(value) {
-    return String(value || '')
+    return String(value == null ? '' : value)
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
@@ -263,6 +343,7 @@
     });
     setMonthlyCheckinRecords(records);
     renderMonthlyCheckinRows();
+    applyActivityFilter();
   }
 
   function updateRecord(id, updater) {
@@ -273,6 +354,7 @@
     });
     setRecords(records);
     renderChallengeRows();
+    applyActivityFilter();
   }
 
   function updateRedPacketRecord(id, updater) {
@@ -283,15 +365,35 @@
     });
     setRedPacketRecords(records);
     renderRedPacketRows();
+    applyActivityFilter();
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     var createButton = document.getElementById('createActivityBtn');
     var tbody = document.getElementById('promoActivityRows');
+    var typeFilter = document.getElementById('activityTypeFilter');
+    var searchButton = document.getElementById('searchActivitiesBtn');
+    var resetButton = document.getElementById('resetActivitiesBtn');
     renderChallengeRows();
     renderRedPacketRows();
     renderMonthlyCheckinRows();
     renderRechargeGiftRows();
+    renderWeeklyCardRows();
+    applyActivityFilter();
+
+    if (searchButton && typeFilter) {
+      searchButton.addEventListener('click', function () {
+        activeActivityType = typeFilter.value;
+        applyActivityFilter();
+      });
+    }
+    if (resetButton && typeFilter) {
+      resetButton.addEventListener('click', function () {
+        typeFilter.selectedIndex = 0;
+        activeActivityType = '全部类型';
+        applyActivityFilter();
+      });
+    }
 
     if (createButton) {
       createButton.addEventListener('click', function () {
@@ -305,9 +407,28 @@
         var redPacketRow = event.target.closest('[data-red-packet-id]');
         var monthlyCheckinRow = event.target.closest('[data-monthly-checkin-id]');
         var rechargeGiftRow = event.target.closest('[data-recharge-gift-id]');
+        var weeklyCardRow = event.target.closest('[data-weekly-card-id]');
         var toggle = event.target.closest('[data-challenge-toggle]');
         var redPacketToggle = event.target.closest('[data-red-packet-toggle]');
         var id;
+        if (weeklyCardRow) {
+          id = weeklyCardRow.getAttribute('data-weekly-card-id');
+          if (event.target.closest('[data-weekly-card-edit]')) {
+            window.location.href = '新增活动.html?weeklyCardId=' + encodeURIComponent(id);
+            return;
+          }
+          if (event.target.closest('[data-weekly-card-toggle]')) {
+            updateWeeklyCardRecord(id);
+            return;
+          }
+          if (event.target.closest('[data-weekly-card-delete]') && window.confirm('确定删除该周卡活动吗？删除后不可恢复。')) {
+            var weeklyCardRecords = getWeeklyCardRecords();
+            if (weeklyCardRecords && setWeeklyCardRecords(weeklyCardRecords.filter(function (record) { return record.id !== id; }))) {
+              renderWeeklyCardRows();
+            }
+          }
+          return;
+        }
         if (rechargeGiftRow) {
           id = rechargeGiftRow.getAttribute('data-recharge-gift-id');
           if (event.target.closest('[data-recharge-gift-view], [data-recharge-gift-edit]')) {
@@ -344,6 +465,7 @@
           if (event.target.closest('[data-monthly-checkin-delete]') && window.confirm('确定删除该月签到活动吗？删除后不可恢复。')) {
             setMonthlyCheckinRecords(getMonthlyCheckinRecords().filter(function (record) { return record.id !== id; }));
             renderMonthlyCheckinRows();
+            applyActivityFilter();
           }
           return;
         }
@@ -364,6 +486,7 @@
           if (event.target.closest('[data-red-packet-delete]') && window.confirm('确定删除该红包雨活动吗？删除后不可恢复。')) {
             setRedPacketRecords(getRedPacketRecords().filter(function (record) { return record.id !== id; }));
             renderRedPacketRows();
+            applyActivityFilter();
           }
           return;
         }
@@ -387,12 +510,13 @@
         if (event.target.closest('[data-challenge-delete]') && window.confirm('确定删除该连续挑战活动吗？删除后不可恢复。')) {
           setRecords(getRecords().filter(function (record) { return record.id !== id; }));
           renderChallengeRows();
+          applyActivityFilter();
         }
       });
     }
 
     document.querySelectorAll('.switch').forEach(function (toggle) {
-      if (toggle.closest('[data-challenge-id], [data-red-packet-id], [data-monthly-checkin-id], [data-recharge-gift-id]')) { return; }
+      if (toggle.closest('[data-challenge-id], [data-red-packet-id], [data-monthly-checkin-id], [data-recharge-gift-id], [data-weekly-card-id]')) { return; }
       toggle.addEventListener('click', function () { toggle.classList.toggle('on'); });
     });
   });

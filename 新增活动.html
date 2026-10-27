@@ -9,6 +9,7 @@
     <link href="files/新增活动/styles.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/新增活动.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/recharge-gift-activity.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/weekly-card-activity.css" type="text/css" rel="stylesheet"/>
     <link href="https://demo.axureux.com/fontawesome/5.7.2/pro/css/all.min.css" type="text/css" rel="stylesheet" media="print" onload="this.media='all'"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
     <script src="resources/scripts/axure/axQuery.js"></script>
@@ -25675,6 +25676,74 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
             </section>
           </div>
         </div>
+        <div id="u6_state9" class="panel_state" data-label="周卡" style="visibility: hidden; display: none;" aria-hidden="true">
+          <div id="u6_state9_content" class="panel_state_content">
+            <form id="weeklyCardForm" class="weekly-card-form" novalidate>
+              <p id="weeklyCardError" class="wc-error" role="alert" hidden></p>
+              <section class="wc-section">
+                <h3>基础配置</h3>
+                <div class="wc-grid">
+                  <label class="wc-field wc-required"><span>活动名称</span><input id="weeklyCardName" type="text" value="周卡活动" maxlength="40" required></label>
+                  <label class="wc-field wc-required"><span>活动标题</span><input id="weeklyCardTitle" type="text" value="充值即领奖励，连续7日领取周卡奖励" maxlength="60" required></label>
+                  <div class="wc-field"><span id="weeklyCardTargetLabel">中奖金额目标</span><div class="wc-options" role="radiogroup" aria-labelledby="weeklyCardTargetLabel"><label><input type="radio" name="weeklyCardRewardTarget" value="余额" checked>余额</label><label><input type="radio" name="weeklyCardRewardTarget" value="存钱罐">存钱罐</label></div></div>
+                  <div class="wc-field wc-required wc-wide wc-time-field"><span>活动时间</span><div class="wc-time-range"><input id="weeklyCardStartTime" type="datetime-local" required aria-label="活动开始时间"><em>至</em><input id="weeklyCardEndTime" type="datetime-local" required aria-label="活动结束时间"><label class="wc-check"><input id="weeklyCardLongTerm" type="checkbox">长期有效</label></div></div>
+                  <label class="wc-field"><span>活动排序</span><input id="weeklyCardSort" type="number" value="0" min="0" step="1" required></label>
+                  <div class="wc-field"><span>启用状态</span><label class="wc-check"><input id="weeklyCardEnabled" type="checkbox" checked><b id="weeklyCardEnabledText">开启</b></label></div>
+                </div>
+              </section>
+              <section class="wc-section">
+                <h3>活动限制</h3>
+                <div class="wc-grid wc-two-columns">
+                  <div class="wc-field"><span>同 IP 领取限制</span><label class="wc-check"><input id="weeklyCardSameIpOnce" type="checkbox" checked>只能领取 1 次</label></div>
+                  <div class="wc-field"><span>同提现账户</span><label class="wc-check"><input id="weeklyCardWithdrawalAccountOnce" type="checkbox" checked>只能领取 1 次</label></div>
+                </div>
+              </section>
+              <section class="wc-section">
+                <h3>奖励通用设置</h3>
+                <div class="wc-grid wc-two-columns">
+                  <label class="wc-field wc-required"><span>活动奖励打码量倍数</span><div class="wc-inline"><input id="weeklyCardWagerMultiple" type="number" min="0" step="0.1" value="1" required><b>×</b></div></label>
+                </div>
+                <p class="wc-hint">打码倍数统一应用于即时奖励和7日每日奖励。每日领取按站点时区当地自然日计算（00:00 至次日 00:00）。</p>
+              </section>
+              <section class="wc-section">
+                <div class="wc-section-head"><h3>周卡奖励配置</h3><span id="weeklyCardTierCount">已配置 1 / 7 档</span></div>
+                <p class="wc-hint">最多配置7档，充值金额按档位递增。每档独立配置充值金额、即时奖励和第1至第7日奖励；总奖励自动合计。</p>
+                <div class="wc-table-wrap"><table class="wc-table">
+                  <thead><tr><th>档位</th><th>充值金额</th><th>即时奖励</th><th>7日每日奖励</th><th>7日奖励合计</th><th>总奖励</th><th>操作</th></tr></thead>
+                  <tbody id="weeklyCardTierRows">
+                    <tr data-daily-rewards='["","","","","","",""]'>
+                      <th scope="row" class="wc-tier-index">第1档</th>
+                      <td><input class="wc-tier-deposit" type="number" min="0.01" step="0.01" placeholder="请输入充值金额" required aria-label="第1档充值金额"></td>
+                      <td><input class="wc-tier-immediate" type="number" min="0" step="0.01" placeholder="请输入即时奖励" required aria-label="第1档即时奖励"></td>
+                      <td class="wc-daily-cell"><div class="wc-daily-preview" aria-label="7日每日奖励明细">
+                        <div class="wc-day-item wc-day-first"><span>第1日 <em>当日</em></span><strong data-wc-preview-day="1" data-empty="true">—</strong></div>
+                        <div class="wc-day-item"><span>第2日</span><strong data-wc-preview-day="2" data-empty="true">—</strong></div>
+                        <div class="wc-day-item"><span>第3日</span><strong data-wc-preview-day="3" data-empty="true">—</strong></div>
+                        <div class="wc-day-item"><span>第4日</span><strong data-wc-preview-day="4" data-empty="true">—</strong></div>
+                        <div class="wc-day-item"><span>第5日</span><strong data-wc-preview-day="5" data-empty="true">—</strong></div>
+                        <div class="wc-day-item"><span>第6日</span><strong data-wc-preview-day="6" data-empty="true">—</strong></div>
+                        <div class="wc-day-item"><span>第7日</span><strong data-wc-preview-day="7" data-empty="true">—</strong></div>
+                        <div class="wc-day-actions"><button class="wc-link" type="button" data-wc-configure-days>配置7日奖励</button><small class="wc-day-status">未配置</small></div>
+                      </div></td>
+                      <td class="wc-daily-total">—</td><td class="wc-grand-total">—</td>
+                      <td><button class="wc-link wc-danger" type="button" data-wc-delete-tier disabled>删除</button></td>
+                    </tr>
+                  </tbody>
+                </table></div>
+                <button id="weeklyCardAddTier" class="wc-button wc-add" type="button">+ 添加周卡档位</button>
+                <div class="wc-rules"><strong>领取规则</strong><ol><li>充值成功后立即获得该档即时奖励，并激活周卡。</li><li>按站点时区当地自然日计算，充值当日为第1日；自充值当日起连续7个自然日，每日可领取一次对应奖励。</li><li>每日奖励需手动领取，当日未领取视为放弃，不补发；同一时间只能购买一个档位，当前周卡奖励结算后可再次购买。</li></ol></div>
+              </section>
+              <section class="wc-section">
+                <h3>活动展示与说明</h3>
+                <div class="wc-grid wc-two-columns">
+                  <div class="wc-upload"><span>活动 Banner</span><div><input id="weeklyCardBannerFile" type="file" accept="image/png,image/jpeg,image/webp" hidden><button class="wc-upload-button" type="button" data-wc-upload="Banner">+ 点击上传 Banner</button><img id="weeklyCardBannerPreview" alt="活动 Banner 预览" hidden><button class="wc-link" type="button" data-wc-remove-image="Banner" hidden>移除图片</button><p class="wc-hint">建议尺寸 800 × 400，支持 JPG、PNG、WebP，最大500KB。</p></div></div>
+                  <div class="wc-upload"><span>活动内页图</span><div><input id="weeklyCardDetailFile" type="file" accept="image/png,image/jpeg,image/webp" hidden><button class="wc-upload-button" type="button" data-wc-upload="Detail">+ 点击上传内页图</button><img id="weeklyCardDetailPreview" alt="活动内页图预览" hidden><button class="wc-link" type="button" data-wc-remove-image="Detail" hidden>移除图片</button><p class="wc-hint">支持 JPG、PNG、WebP，最大1MB。</p></div></div>
+                  <div class="wc-field wc-wide wc-description-field"><span id="weeklyCardDescriptionLabel">活动文本</span><div class="wc-editor"><div class="wc-editor-toolbar" role="toolbar" aria-label="活动文本格式"><button type="button" data-wc-command="bold" title="加粗"><b>B</b></button><button type="button" data-wc-command="italic" title="斜体"><i>I</i></button><button type="button" data-wc-command="underline" title="下划线"><u>U</u></button><button type="button" data-wc-command="insertUnorderedList" title="项目符号列表">•</button><button type="button" data-wc-command="insertOrderedList" title="编号列表">1.</button><button type="button" data-wc-command="undo" title="撤销">↶</button><button type="button" data-wc-command="redo" title="重做">↷</button></div><div id="weeklyCardDescription" class="wc-editor-body" contenteditable="true" role="textbox" aria-labelledby="weeklyCardDescriptionLabel" aria-multiline="true"><p>充值购买周卡后立即获得即时奖励。按站点时区当地自然日计算，充值当日为第1日，连续7个自然日每日可手动领取对应奖励。每日未领取奖励视为放弃。</p></div></div></div>
+                </div>
+              </section>
+            </form>
+          </div>
+        </div>
 
       </div>
 
@@ -25697,6 +25766,7 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
           <option class="u3012_input_option" value="救济金">救济金</option>
           <option class="u3012_input_option" value="签到奖励">签到奖励</option>
           <option class="u3012_input_option" value="月签到活动">月签到</option>
+          <option class="u3012_input_option" value="周卡">周卡</option>
           <option class="u3012_input_option" value="打码返水">打码返水</option>
           <option class="u3012_input_option" value="优惠券赠送">优惠券赠送</option>
           <option class="u3012_input_option" value="会员礼包">会员礼包</option>
@@ -25712,9 +25782,27 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
       </div>
     </div>
     <script src="custom/js/axure-custom-page-ready.js"></script>
+    <div id="weeklyCardDayModal" class="wc-modal-layer" hidden>
+      <section class="wc-modal" role="dialog" aria-modal="true" aria-labelledby="weeklyCardDayModalTitle">
+        <header><h3 id="weeklyCardDayModalTitle">配置7日奖励 · 第1档</h3><button class="wc-modal-close" type="button" data-wc-close-days aria-label="关闭">×</button></header>
+        <form id="weeklyCardDayForm">
+          <div class="wc-modal-body"><p class="wc-hint">按站点时区当地自然日计算，第1日为充值当日；以下为该档每日可领取金额，可逐日独立配置。</p><p id="weeklyCardDayError" class="wc-error" role="alert" hidden></p><table class="wc-table wc-days-table"><thead><tr><th>领取日</th><th>每日奖励</th></tr></thead><tbody>
+            <tr><th scope="row">第1日（充值当日）</th><td><input data-wc-day="1" type="number" min="0" step="0.01" required aria-label="第1日奖励"></td></tr>
+            <tr><th scope="row">第2日</th><td><input data-wc-day="2" type="number" min="0" step="0.01" required aria-label="第2日奖励"></td></tr>
+            <tr><th scope="row">第3日</th><td><input data-wc-day="3" type="number" min="0" step="0.01" required aria-label="第3日奖励"></td></tr>
+            <tr><th scope="row">第4日</th><td><input data-wc-day="4" type="number" min="0" step="0.01" required aria-label="第4日奖励"></td></tr>
+            <tr><th scope="row">第5日</th><td><input data-wc-day="5" type="number" min="0" step="0.01" required aria-label="第5日奖励"></td></tr>
+            <tr><th scope="row">第6日</th><td><input data-wc-day="6" type="number" min="0" step="0.01" required aria-label="第6日奖励"></td></tr>
+            <tr><th scope="row">第7日</th><td><input data-wc-day="7" type="number" min="0" step="0.01" required aria-label="第7日奖励"></td></tr>
+          </tbody></table><p class="wc-dialog-total">7日奖励合计：<output id="weeklyCardDayTotal">—</output></p></div>
+          <footer><button class="wc-button" type="button" data-wc-close-days>取消</button><button class="wc-button wc-primary" type="submit">确定</button></footer>
+        </form>
+      </section>
+    </div>
     <script src="custom/js/og-shared-data.js"></script>
     <script src="custom/js/新增活动.js"></script>
     <script src="custom/js/recharge-gift-activity.js"></script>
+    <script src="custom/js/weekly-card-activity.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
   </body>
 </html>

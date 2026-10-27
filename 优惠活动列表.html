@@ -58,7 +58,7 @@
             <button class="tab active" type="button">活动列表</button>
           </div>
           <div class="toolbar">
-            <select aria-label="全部类型">
+            <select id="activityTypeFilter" aria-label="全部类型">
               <option>全部类型</option>
               <option>拼多多</option>
               <option>打码返水</option>
@@ -66,11 +66,12 @@
               <option>游戏排行榜</option>
               <option>签到奖励</option>
               <option>月签到</option>
+              <option>周卡</option>
               <option>连续挑战</option>
               <option>红包雨</option>
             </select>
-            <button class="btn primary" type="button">搜索</button>
-            <button class="btn" type="button">重置</button>
+            <button class="btn primary" id="searchActivitiesBtn" type="button">搜索</button>
+            <button class="btn" id="resetActivitiesBtn" type="button">重置</button>
             <button class="btn primary" id="createActivityBtn" type="button">新增活动</button>
           </div>
           <div class="table-wrap">

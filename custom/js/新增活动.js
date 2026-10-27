@@ -8,7 +8,8 @@
     "\u8fde\u7eed\u6311\u6218": 5,
     "\u7ea2\u5305\u96e8": 6,
     "\u6708\u7b7e\u5230\u6d3b\u52a8": 7,
-    "\u5145\u503c\u9001\u91d1": 8
+    "\u5145\u503c\u9001\u91d1": 8,
+    "\u5468\u5361": 9
   };
 
   var CHALLENGE_NAME_OPTIONS = [
@@ -180,6 +181,7 @@
     var isRedPacket = template === "\u7ea2\u5305\u96e8";
     var isMonthlyCheckin = template === "\u6708\u7b7e\u5230\u6d3b\u52a8";
     var isRechargeGift = template === "\u5145\u503c\u9001\u91d1";
+    var isWeeklyCard = template === "\u5468\u5361";
 
     document.body.classList.toggle("relief-template-active", isRelief);
     document.body.classList.toggle("share-template-active", isShare);
@@ -188,8 +190,9 @@
     document.body.classList.toggle("red-packet-template-active", isRedPacket);
     document.body.classList.toggle("month-checkin-template-active", isMonthlyCheckin);
     document.body.classList.toggle("recharge-gift-template-active", isRechargeGift);
+    document.body.classList.toggle("weekly-card-template-active", isWeeklyCard);
     showPanelState("u6", state);
-    syncChallengeFooter(isChallenge || isRedPacket || isMonthlyCheckin);
+    syncChallengeFooter(isChallenge || isRedPacket || isMonthlyCheckin || isWeeklyCard);
   }
 
   function bindTemplateSelect(select) {
@@ -1747,6 +1750,9 @@
       }
       if (new URLSearchParams(window.location.search).has("rechargeGiftId")) {
         select.value = "\u5145\u503c\u9001\u91d1";
+      }
+      if (new URLSearchParams(window.location.search).has("weeklyCardId")) {
+        select.value = "\u5468\u5361";
       }
       bindTemplateSelect(select);
     }
