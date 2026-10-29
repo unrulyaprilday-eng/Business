@@ -240,6 +240,13 @@ $axure.loadDocument({
             "children": []
           },
           {
+            "id": "rebate_config",
+            "pageName": "返水配置",
+            "type": "Wireframe",
+            "url": "返水配置.html",
+            "children": []
+          },
+          {
             "id": "redeem_code_manage",
             "pageName": "兑换码管理",
             "type": "Wireframe",
