@@ -28,6 +28,102 @@
     var previousOverflow = "";
     var previousInert = false;
 
+    function initSettings() {
+      var form = page.querySelector('#rebateSettingsForm');
+      var cancelButton = page.querySelector('[data-cancel-settings]');
+      var editButton = page.querySelector('[data-edit-settings]');
+      var saveButton = page.querySelector('[data-save-settings]');
+      var fields = page.querySelector('[data-settings-fields]');
+      var settingsEditing = false;
+      var multipleInput = page.querySelector('#rebateWagerMultiple');
+      var timeInput = page.querySelector('#rebateResetTime');
+      var enabledButton = page.querySelector('#rebateEnabled');
+      var enabledLabel = page.querySelector('[data-enabled-label]');
+      var errorMessage = page.querySelector('[data-settings-error]');
+      if (!form || !cancelButton || !editButton || !saveButton || !fields || !multipleInput || !timeInput || !enabledButton || !enabledLabel || !errorMessage) return;
+      var storageKey = 'business.rebate.settings.v1';
+      var settings = { enabled: true, wagerMultiple: 1, resetTime: '06:00', rewardTarget: 'balance' };
+
+      function validSettings(value) {
+        return value && typeof value.enabled === 'boolean' && typeof value.wagerMultiple === 'number' && Number.isFinite(value.wagerMultiple) &&
+          value.wagerMultiple >= 0 && /^\d+(?:\.\d)?$/.test(String(value.wagerMultiple)) &&
+          typeof value.resetTime === 'string' && /^([01]\d|2[0-3]):[0-5]\d$/.test(value.resetTime) &&
+          (value.rewardTarget === 'balance' || value.rewardTarget === 'piggy-bank');
+      }
+      try {
+        var stored = JSON.parse(window.localStorage.getItem(storageKey));
+        if (stored && typeof stored === 'object' && !Array.isArray(stored) && stored.enabled === undefined) stored.enabled = true;
+        if (validSettings(stored)) settings = stored;
+      } catch (error) {
+        // Keep the visible prototype defaults if local storage cannot be read.
+      }
+      function setEnabledDraft(enabled) {
+        enabledButton.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+        enabledButton.classList.toggle('is-on', enabled);
+        enabledLabel.textContent = enabled ? '已开启' : '已关闭';
+      }
+      enabledButton.addEventListener('click', function () {
+        if (!settingsEditing) return;
+        setEnabledDraft(enabledButton.getAttribute('aria-pressed') !== 'true');
+        errorMessage.hidden = true;
+      });
+      function resetDraft() {
+        setEnabledDraft(settings.enabled);
+        multipleInput.value = settings.wagerMultiple;
+        timeInput.value = settings.resetTime;
+        form.querySelectorAll('[name="rebateRewardTarget"]').forEach(function (input) {
+          input.checked = input.value === settings.rewardTarget;
+        });
+        errorMessage.hidden = true;
+        errorMessage.textContent = '';
+      }
+      function setEditing(active) {
+        settingsEditing = active;
+        fields.disabled = !active;
+        editButton.hidden = active;
+        cancelButton.hidden = !active;
+        saveButton.hidden = !active;
+      }
+      editButton.addEventListener('click', function () {
+        resetDraft();
+        setEditing(true);
+        enabledButton.focus();
+      });
+      cancelButton.addEventListener('click', function () {
+        resetDraft();
+        setEditing(false);
+        editButton.focus();
+        showToast('已恢复上次保存的基础配置');
+      });
+      form.addEventListener('input', function () { errorMessage.hidden = true; });
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (!settingsEditing) return;
+        if (!form.reportValidity()) return;
+        var target = form.querySelector('[name="rebateRewardTarget"]:checked');
+        var draft = { enabled: enabledButton.getAttribute('aria-pressed') === 'true', wagerMultiple: multipleInput.valueAsNumber, resetTime: timeInput.value, rewardTarget: target ? target.value : '' };
+        if (!validSettings(draft)) {
+          errorMessage.textContent = '请填写非负打码倍数（最多 1 位小数）、有效的每日重置时间，并选择奖励目标。';
+          errorMessage.hidden = false;
+          return;
+        }
+        try { window.localStorage.setItem(storageKey, JSON.stringify(draft)); }
+        catch (error) {
+          errorMessage.textContent = '本浏览器无法保存配置，请允许本地存储后重试；当前修改仍保留在页面中。';
+          errorMessage.hidden = false;
+          return;
+        }
+        settings = draft;
+        resetDraft();
+        setEditing(false);
+        editButton.focus();
+        showToast('基础配置已保存至本浏览器');
+      });
+      resetDraft();
+      setEditing(false);
+    }
+    initSettings();
+
     // Keep only local text formatting; pasted or stored markup never carries scripts/attributes.
     function cleanRuleHtml(html) {
       var source = document.createElement("template");

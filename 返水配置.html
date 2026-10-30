@@ -71,10 +71,46 @@
           </nav>
 
           <section class="rebate-view" data-view-panel="config">
+            <section class="rebate-section" aria-labelledby="rebateSettingsHeading">
+              <div class="rebate-section-head">
+                <div><h2 id="rebateSettingsHeading">基础配置</h2><p>设置返水活动总开关、奖励打码要求、每日重置时间及到账目标。</p></div>
+              </div>
+              <form id="rebateSettingsForm" class="rebate-settings-form" aria-labelledby="rebateSettingsHeading">
+              <fieldset class="rebate-settings-fields" data-settings-fields disabled aria-label="基础配置字段">
+                <div class="cl-form-field">
+                  <label id="rebateEnabledLabel" for="rebateEnabled">返水总开关</label>
+                  <div class="rebate-switch-row"><button class="cl-switch-button is-on" id="rebateEnabled" type="button" aria-pressed="true" aria-labelledby="rebateEnabledLabel" aria-describedby="rebateEnabledHelp"></button><span data-enabled-label>已开启</span></div>
+                  <p class="rebate-setting-help" id="rebateEnabledHelp">统一控制返水活动启用状态，保存配置后生效；关闭后保留已有配置，可重新开启。</p>
+                </div>
+                <div class="cl-form-field">
+                  <label for="rebateWagerMultiple"><span class="cl-required">*</span>奖励打码倍数</label>
+                  <div class="rebate-input-unit"><input class="cl-input" id="rebateWagerMultiple" name="wagerMultiple" type="number" min="0" step="0.1" value="1" required aria-describedby="rebateWagerHelp"><span>×</span></div>
+                  <p class="rebate-setting-help" id="rebateWagerHelp">奖励所需打码量 = 返水奖励金额 × 打码倍数。可填 0 或正数，最多 1 位小数；0 表示无额外打码要求。</p>
+                </div>
+                <div class="cl-form-field">
+                  <label for="rebateResetTime"><span class="cl-required">*</span>每日重置时间（运营地区本地时间）</label>
+                  <input class="cl-input" id="rebateResetTime" name="resetTime" type="time" step="60" value="06:00" required aria-describedby="rebateResetHelp">
+                  <p class="rebate-setting-help" id="rebateResetHelp">采用与月签到一致的时间设置方式，按运营地区对应的站点时区解释，不按当前电脑时区换算。每天此时结束上一返水周期，开始累计新周期有效打码量。</p>
+                </div>
+                <fieldset class="rebate-target-field">
+                  <legend><span class="cl-required">*</span>奖励目标</legend>
+                  <div class="rebate-target-options">
+                    <label><input type="radio" name="rebateRewardTarget" value="balance" checked required>余额</label>
+                    <label><input type="radio" name="rebateRewardTarget" value="piggy-bank" required>存钱罐</label>
+                  </div>
+                  <p class="rebate-setting-help">返水奖励领取后发放至所选目标。</p>
+                </fieldset>
+                <p class="rebate-settings-error" data-settings-error role="alert" hidden></p>
+                <p class="rebate-settings-note">初始示例：总开关开启、1 倍、每日 06:00、余额。当前为静态原型，配置仅保存在本浏览器，不执行实际结算或发奖。</p>
+              </fieldset>
+              <footer><button class="cl-btn cl-btn-primary" type="button" data-edit-settings>编辑</button><button class="cl-btn" type="button" data-cancel-settings hidden>取消</button><button class="cl-btn cl-btn-primary" type="submit" data-save-settings hidden>保存配置</button></footer>
+            </form>
+            </section>
+
             <section class="rebate-section">
               <div class="rebate-section-head">
                 <div><h2>游戏有效打码折算比例</h2><p>有效打码量 = 单局实际投注金额 × 对应游戏类型折算比例</p></div>
-                <button class="cl-btn" type="button" data-edit-table="games">编辑比例</button>
+                <button class="cl-btn cl-btn-primary" type="button" data-edit-table="games">编辑比例</button>
               </div>
               <div class="cl-table-wrap">
                 <table class="cl-table rebate-table">
@@ -94,7 +130,7 @@
             <section class="rebate-section">
               <div class="rebate-section-head">
                 <div><h2>VIP 返水比例</h2><p>按会员 VIP 等级及周期累计有效打码量匹配对应返还比例。</p></div>
-                <button class="cl-btn" type="button" data-edit-table="vip">编辑比例</button>
+                <button class="cl-btn cl-btn-primary" type="button" data-edit-table="vip">编辑比例</button>
               </div>
               <div class="cl-table-wrap rebate-matrix-wrap">
                 <table class="cl-table rebate-table rebate-matrix">
@@ -166,7 +202,7 @@
                   </div>
                   <div class="rebate-editor-body" id="rebateActivityRules" data-rule-editor="activity" contenteditable="true" role="textbox" aria-multiline="true" aria-required="true" aria-labelledby="rebateActivityRulesLabel" aria-describedby="rebateActivityRulesHelp rebateActivityRulesError" tabindex="0">
                     <p><strong>Q: How can I get the reward?</strong></p>
-                    <p>A: Become a VIP and meet the required effective betting amount to claim the reward after 6:00 AM the next day.</p>
+                    <p>A: Become a VIP and meet the required effective betting amount to claim the reward after the next daily reset, using the configured reset time in the operating region's local time.</p>
                     <p><strong>Q: How is the reward calculated?</strong></p>
                     <p>A: Different VIP levels and effective betting amounts receive different reward rates. See the rebate rate details for the applicable rules.</p>
                   </div>
