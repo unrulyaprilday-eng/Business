@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <title>新代理配置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/新代理配置/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/tokens.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/components.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/新代理配置.css" type="text/css" rel="stylesheet"/>
+    <script defer src="custom/js/新代理配置.js"></script>
+    <script defer src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script defer src="resources/scripts/axure/axQuery.js"></script>
+    <script defer src="resources/scripts/axure/globals.js"></script>
+    <script defer src="resources/scripts/axutils.js"></script>
+    <script defer src="resources/scripts/axure/annotation.js"></script>
+    <script defer src="resources/scripts/axure/axQuery.std.js"></script>
+    <script defer src="resources/scripts/axure/doc.js"></script>
+    <script defer src="resources/scripts/messagecenter.js"></script>
+    <script defer src="resources/scripts/axure/events.js"></script>
+    <script defer src="resources/scripts/axure/recording.js"></script>
+    <script defer src="resources/scripts/axure/action.js"></script>
+    <script defer src="resources/scripts/axure/expr.js"></script>
+    <script defer src="resources/scripts/axure/geometry.js"></script>
+    <script defer src="resources/scripts/axure/flyout.js"></script>
+    <script defer src="resources/scripts/axure/model.js"></script>
+    <script defer src="resources/scripts/axure/repeater.js"></script>
+    <script defer src="resources/scripts/axure/sto.js"></script>
+    <script defer src="resources/scripts/axure/utils.temp.js"></script>
+    <script defer src="resources/scripts/axure/variables.js"></script>
+    <script defer src="resources/scripts/axure/drag.js"></script>
+    <script defer src="resources/scripts/axure/move.js"></script>
+    <script defer src="resources/scripts/axure/visibility.js"></script>
+    <script defer src="resources/scripts/axure/style.js"></script>
+    <script defer src="resources/scripts/axure/adaptive.js"></script>
+    <script defer src="resources/scripts/axure/tree.js"></script>
+    <script defer src="resources/scripts/axure/init.temp.js"></script>
+    <script defer src="resources/scripts/axure/legacy.js"></script>
+    <script defer src="resources/scripts/axure/viewer.js"></script>
+    <script defer src="resources/scripts/axure/math.js"></script>
+    <script defer src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script defer src="data/document.js"></script>
+    <script defer src="files/新代理配置/data.js"></script>
+    <script defer src="custom/js/axure-custom-page-ready.js"></script>
+    <script defer src="resources/scripts/axure/ios.js"></script>
+  </head>
+  <body class="agent-settings-document">
+    <div id="base" class="">
+      <div class="custom-page-shell agent-settings">
+        <main class="settings-main">
+          <header class="settings-page-head">
+            <div>
+              <div class="settings-breadcrumb">代理中心 / 新代理配置</div>
+              <h1>新代理配置</h1>
+              <p>邀请奖励、投注返水、充值返利及邀请里程碑配置。</p>
+            </div>
+          </header>
+
+          <section id="commonPanel" class="common-panel" aria-labelledby="commonTitle">
+            <header class="panel-head">
+              <div><h2 id="commonTitle">基础配置</h2></div>
+              <button id="editCommon" class="cl-btn cl-btn-primary" type="button">编辑</button>
+            </header>
+            <form id="commonForm" novalidate>
+              <fieldset id="commonFields" class="common-fields" disabled aria-label="基础配置字段">
+                <div class="common-group common-conditions">
+                  <h3>有效邀请</h3>
+                  <div class="condition-fields">
+                    <div class="cl-form-field">
+                      <label for="commonDeposit"><span class="cl-required">*</span>存款</label>
+                      <div class="input-unit"><input id="commonDeposit" class="cl-input" name="commonDeposit" type="number" min="0" step="any" required value="300000" aria-describedby="commonDepositHelp"><span>Rp</span></div>
+                    </div>
+                    <div class="cl-form-field">
+                      <label for="commonBet"><span class="cl-required">*</span>有效打码</label>
+                      <div class="input-unit"><input id="commonBet" class="cl-input" name="commonBet" type="number" min="0" step="any" required value="5000"><span>Rp</span></div>
+                    </div>
+                  </div>
+                  <p id="commonDepositHelp" class="field-help pending-note" hidden>请输入存款金额。</p>
+                </div>
+                <div class="common-group">
+                  <h3>结算时间</h3>
+                  <div class="cl-form-field">
+                    <label for="commonTime"><span class="cl-required">*</span>结算时间</label>
+                    <input id="commonTime" class="cl-input" name="commonTime" type="time" step="60" required value="06:00">
+                  </div>
+                  <p class="field-help">按运营地区对应的站点时区结算。</p>
+                </div>
+                <div class="common-group">
+                  <h3>返利层级</h3>
+                  <div class="cl-form-field">
+                    <label for="commonTierCount"><span class="cl-required">*</span>层级数</label>
+                    <select id="commonTierCount" class="cl-select" name="commonTierCount" required><option value="1">1 层</option><option value="2">2 层</option><option value="3">3 层</option><option value="4" selected>4 层</option></select>
+                  </div>
+                  <div id="commonTierChain" class="tier-chain">Tier 1 → Tier 2 → Tier 3 → Tier 4</div>
+                </div>
+              </fieldset>
+              <div id="commonBases" class="common-bases" hidden></div>
+              <p id="commonError" class="settings-error" role="alert" hidden></p>
+              <footer id="commonActions" class="panel-actions" hidden><button id="cancelCommon" class="cl-btn" type="button">取消</button><button id="saveCommon" class="cl-btn cl-btn-primary" type="submit">保存</button></footer>
+            </form>
+          </section>
+
+          <nav class="settings-tabs" role="tablist" aria-label="代理奖励类型">
+            <button id="inviteTab" class="settings-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="rulePanel" data-tab="invite">邀请奖励</button>
+            <button id="betTab" class="settings-tab" type="button" role="tab" aria-selected="false" aria-controls="rulePanel" data-tab="bet">投注返水</button>
+            <button id="depositTab" class="settings-tab" type="button" role="tab" aria-selected="false" aria-controls="rulePanel" data-tab="deposit">充值返利</button>
+            <button id="milestoneTab" class="settings-tab" type="button" role="tab" aria-selected="false" aria-controls="rulePanel" data-tab="milestone">邀请里程碑</button>
+          </nav>
+
+          <section id="rulePanel" class="settings-panel" role="tabpanel" aria-labelledby="inviteTab">
+            <header class="panel-head rule-panel-head">
+              <div><h2 id="sectionTitle">邀请奖励</h2><p id="sectionDescription">每成功邀请一位符合条件的好友，获得固定奖励。</p></div>
+              <div class="rule-head-actions">
+                <label class="enabled-control" for="ruleEnabled"><input id="ruleEnabled" type="checkbox" checked disabled><span id="ruleEnabledLabel">已启用</span></label>
+                <button id="editRule" class="cl-btn cl-btn-primary" type="button">编辑</button>
+              </div>
+            </header>
+            <form id="ruleForm" novalidate>
+              <fieldset id="ruleFields" disabled aria-label="奖励规则字段">
+                <div id="inviteFields" class="invite-fields">
+                  <div class="cl-form-field">
+                    <label for="inviteReward"><span class="cl-required">*</span>单人奖励</label>
+                    <div class="input-unit"><input id="inviteReward" class="cl-input" name="inviteReward" type="number" min="0" step="any" required value="60"><span>Rp</span></div>
+                  </div>
+                </div>
+                <p id="publicRuleSummary" class="rule-note">存款 ≥ 300,000 Rp · 有效打码 ≥ 5,000 Rp · 结算时间 06:00</p>
+                <div id="tierBlocks" class="tier-blocks" hidden></div>
+                <div id="milestoneTable" class="table-scroll" hidden>
+                  <table class="rules-table">
+                    <thead><tr><th scope="col">有效邀请人数</th><th scope="col">奖励金额</th><th scope="col">币种</th><th scope="col" data-edit-only hidden>操作</th></tr></thead>
+                    <tbody id="milestoneRows"><tr><td>5</td><td>0</td><td>Rp</td><td data-edit-only hidden></td></tr><tr><td>10</td><td>0</td><td>Rp</td><td data-edit-only hidden></td></tr></tbody>
+                  </table>
+                </div>
+                <div id="milestoneAddRow" class="range-add-row" hidden><button id="addMilestone" class="add-range-button" type="button">新增档位</button></div>
+              </fieldset>
+              <p id="ruleError" class="settings-error" role="alert" hidden></p>
+              <footer id="ruleActions" class="panel-actions" hidden><button id="cancelRule" class="cl-btn" type="button">取消</button><button id="saveRule" class="cl-btn cl-btn-primary" type="submit">保存</button></footer>
+            </form>
+          </section>
+        </main>
+
+        <div id="confirmDialog" class="settings-dialog" hidden>
+          <div class="dialog-mask" data-close-confirm></div>
+          <section class="dialog-panel" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmText" tabindex="-1">
+            <header class="dialog-head"><h2 id="confirmTitle">确认保存</h2><button class="dialog-close" type="button" data-close-confirm aria-label="关闭">×</button></header>
+            <p id="confirmText" class="dialog-body">确认保存当前配置？</p>
+            <footer class="dialog-foot"><button class="cl-btn" type="button" data-close-confirm>取消</button><button id="confirmAction" class="cl-btn cl-btn-primary" type="button">确定</button></footer>
+          </section>
+        </div>
+        <p id="pageToast" class="settings-toast" role="status" hidden></p>
+      </div>
+    </div>
+  </body>
+</html>

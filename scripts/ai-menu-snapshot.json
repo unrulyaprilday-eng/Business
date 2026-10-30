@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-10-26T03:25:18.243Z",
+  "savedAt": "2026-10-30T07:37:22.513Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -226,6 +226,13 @@
           "pageName": "优惠活动列表",
           "type": "Wireframe",
           "url": "优惠活动列表.html",
+          "children": []
+        },
+        {
+          "id": "rebate_config",
+          "pageName": "返水配置",
+          "type": "Wireframe",
+          "url": "返水配置.html",
           "children": []
         },
         {
@@ -634,6 +641,13 @@
           "pageName": "代理配置",
           "type": "Wireframe",
           "url": "代理中心_代理配置.html",
+          "children": []
+        },
+        {
+          "id": "agent_center_new_config",
+          "pageName": "新代理配置",
+          "type": "Wireframe",
+          "url": "新代理配置.html",
           "children": []
         },
         {

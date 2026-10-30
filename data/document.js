@@ -655,6 +655,13 @@ $axure.loadDocument({
             "children": []
           },
           {
+            "id": "agent_center_new_config",
+            "pageName": "新代理配置",
+            "type": "Wireframe",
+            "url": "新代理配置.html",
+            "children": []
+          },
+          {
             "id": "agent_claim_record",
             "pageName": "代理领取记录",
             "type": "Wireframe",
