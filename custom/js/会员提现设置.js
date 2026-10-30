@@ -1,6 +1,12 @@
 (function () {
+  function initWithdrawSettings() {
+  if (!document.querySelector(".withdraw-page") || !document.querySelector("#withdrawRows")) return;
   var currentTab = "online";
   var currentEdit = null;
+  var savedVipFreeCounts = Array.prototype.map.call(document.querySelectorAll("[data-vip-free-level]"), function (input) {
+    return input.value;
+  });
+  var pendingVipFreeCounts = savedVipFreeCounts.slice();
 
   var data = {
     online: [
@@ -73,13 +79,104 @@
   }
 
   function openModal(name) {
+    if (name === "vip-free") {
+      openVipFreeModal();
+      return;
+    }
     var modal = $('[data-modal="' + name + '"]');
+    if (name === "params" && modal && modal.classList.contains("is-hidden")) {
+      pendingVipFreeCounts = savedVipFreeCounts.slice();
+    }
     if (modal) modal.classList.remove("is-hidden");
   }
 
-  function closeModals() {
-    $all(".modal-mask").forEach(function (modal) {
-      modal.classList.add("is-hidden");
+  function closeModal(modal) {
+    if (!modal) return;
+    if (modal.getAttribute("data-modal") === "vip-free") {
+      closeVipFreeModal();
+      return;
+    }
+    if (modal.getAttribute("data-modal") === "params") {
+      closeVipFreeModal();
+      pendingVipFreeCounts = savedVipFreeCounts.slice();
+    }
+    modal.classList.add("is-hidden");
+  }
+
+  function openVipFreeModal() {
+    var mask = $('[data-modal="vip-free"]');
+    var parent = $('[data-modal="params"]');
+    if (!mask || !parent || parent.classList.contains("is-hidden")) return;
+    $all("[data-vip-free-level]").forEach(function (input, index) {
+      input.value = pendingVipFreeCounts[index];
+      input.removeAttribute("aria-invalid");
+    });
+    $("#vipFreeError").hidden = true;
+    mask.hidden = false;
+    $(".params-modal").inert = true;
+    $(".vip-free-table-wrap").scrollTop = 0;
+    $("#vipFree0").focus();
+  }
+
+  function closeVipFreeModal() {
+    var mask = $('[data-modal="vip-free"]');
+    if (!mask || mask.hidden) return;
+    mask.hidden = true;
+    $(".params-modal").inert = false;
+    $("#vipFreeTrigger").focus();
+  }
+
+  function bindVipFreeModal() {
+    var form = $("#vipFreeForm");
+    if (!form) return;
+    $all("[data-close-vip-free]").forEach(function (button) {
+      button.addEventListener("click", closeVipFreeModal);
+    });
+    form.addEventListener("input", function (event) {
+      event.target.removeAttribute("aria-invalid");
+      $("#vipFreeError").hidden = true;
+    });
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var inputs = $all("[data-vip-free-level]", form);
+      var invalid = inputs.find(function (input) {
+        var value = input.value.trim();
+        return input.validity.badInput || !/^\d+$/.test(value) || !Number.isSafeInteger(Number(value));
+      });
+      if (invalid) {
+        var error = $("#vipFreeError");
+        error.textContent = "VIP" + invalid.getAttribute("data-vip-free-level") + " 每周提现次数不能为空，请填写有效的非负整数。";
+        error.hidden = false;
+        invalid.setAttribute("aria-invalid", "true");
+        invalid.focus();
+        return;
+      }
+      pendingVipFreeCounts = inputs.map(function (input) {
+        return String(Number(input.value));
+      });
+      closeVipFreeModal();
+    });
+    $("#submitWithdrawParams").addEventListener("click", function () {
+      savedVipFreeCounts = pendingVipFreeCounts.slice();
+      closeModal($('[data-modal="params"]'));
+    });
+    document.addEventListener("keydown", function (event) {
+      if ($('[data-modal="vip-free"]').hidden) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeVipFreeModal();
+      } else if (event.key === "Tab") {
+        var controls = $all("button, input", form);
+        var first = controls[0];
+        var last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
     });
   }
 
@@ -176,7 +273,7 @@
 
     $all("[data-close], .modal-mask").forEach(function (item) {
       item.addEventListener("click", function (event) {
-        if (event.target === item || event.target.hasAttribute("data-close")) closeModals();
+        if (event.target === item || event.target.hasAttribute("data-close")) closeModal(item.closest(".modal-mask"));
       });
     });
 
@@ -187,10 +284,18 @@
 
     bindRuleMode();
     bindWithdrawReview();
+    bindVipFreeModal();
   }
 
   renderVipChecks();
   renderVipTable(vipColumnsA, 2, true);
   bindEvents();
   renderRows();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initWithdrawSettings);
+  } else {
+    initWithdrawSettings();
+  }
 })();

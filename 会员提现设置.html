@@ -292,17 +292,18 @@
                       <p class="mode-alert">启用后不遵循常规提现规则的单笔上下限和打码规则，也不受 VIP 提现限制中的单笔上下限约束。</p>
                       <div class="rule-title">
                         <strong>免费玩家提现</strong>
+                        <button class="btn vip-free-trigger" id="vipFreeTrigger" data-open-modal="vip-free" type="button">VIP免费提现次数设置</button>
                       </div>
                       <label class="form-row">
                         <span>余额提现门槛:</span>
                         <em>余额大于</em>
-                        <input value="100" type="number"/>
+                        <input value="1" min="0" step="1" type="number"/>
                         <em>后可以提现</em>
                       </label>
                       <label class="form-row long">
                         <span>打码要求:</span>
                         <em>最后一次领奖成功时，余额的</em>
-                        <input value="10" type="number"/>
+                        <input value="1" min="0" step="1" type="number"/>
                         <em>倍</em>
                       </label>
                       <label class="form-row">
@@ -318,16 +319,26 @@
                       </div>
                       <label class="form-row long">
                         <span>打码要求:</span>
-                        <em>最后一次充值成功后余额的</em>
-                        <input value="3" type="number"/>
+                        <em>最后一次充值成功时，余额的</em>
+                        <input value="1" min="0" step="1" type="number"/>
                         <em>倍</em>
                       </label>
                       <label class="form-row long">
                         <span>提现金额限制:</span>
-                        <em>下限为最后一次充值金额的</em>
-                        <input value="3" type="number"/>
+                        <em>下限为最后一次充值金额的 ×</em>
+                        <input value="0.001" min="0" step="0.001" type="number"/>
                         <em>倍</em>
                       </label>
+                      <label class="form-row long">
+                        <span>最大提现金额限制:</span>
+                        <em>上限为最后一次充值金额的 ×</em>
+                        <input value="10" min="0" step="1" type="number"/>
+                        <em>倍</em>
+                      </label>
+                      <div class="form-row">
+                        <span>提现后处理:</span>
+                        <em>提交订单后余额清零</em>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -335,9 +346,49 @@
             </div>
             <div class="modal-footer">
               <button class="btn" data-close type="button">关闭</button>
-              <button class="btn primary" data-close type="button">提交</button>
+              <button class="btn primary" id="submitWithdrawParams" type="button">提交</button>
             </div>
           </div>
+        </div>
+
+        <div class="modal-mask vip-free-mask" data-modal="vip-free" hidden>
+          <form class="modal vip-free-modal" id="vipFreeForm" role="dialog" aria-modal="true" aria-labelledby="vipFreeTitle" aria-describedby="vipFreeHelp" novalidate>
+            <div class="modal-head">
+              <strong id="vipFreeTitle">VIP免费提现次数设置</strong>
+              <button class="close-btn" data-close-vip-free type="button" aria-label="关闭VIP免费提现次数设置">×</button>
+            </div>
+            <div class="modal-body vip-free-body">
+              <p class="vip-free-help" id="vipFreeHelp">仅适用于独立提现规则下的免费玩家。各 VIP 等级的每周提现次数均为必填，填写非负整数，0 表示不可提现。确定后请在提现参数设置中提交。</p>
+              <div class="vip-free-table-wrap">
+                <table class="vip-free-table">
+                  <thead><tr><th scope="col">VIP等级</th><th scope="col">每周提现次数</th></tr></thead>
+                  <tbody>
+                    <tr><th scope="row"><label for="vipFree0">VIP0</label></th><td><input id="vipFree0" data-vip-free-level="0" type="number" min="0" step="1" value="0" required aria-label="VIP0每周提现次数"/></td></tr>
+                    <tr><th scope="row"><label for="vipFree1">VIP1</label></th><td><input id="vipFree1" data-vip-free-level="1" type="number" min="0" step="1" value="1" required aria-label="VIP1每周提现次数"/></td></tr>
+                    <tr><th scope="row"><label for="vipFree2">VIP2</label></th><td><input id="vipFree2" data-vip-free-level="2" type="number" min="0" step="1" value="1" required aria-label="VIP2每周提现次数"/></td></tr>
+                    <tr><th scope="row"><label for="vipFree3">VIP3</label></th><td><input id="vipFree3" data-vip-free-level="3" type="number" min="0" step="1" value="1" required aria-label="VIP3每周提现次数"/></td></tr>
+                    <tr><th scope="row"><label for="vipFree4">VIP4</label></th><td><input id="vipFree4" data-vip-free-level="4" type="number" min="0" step="1" value="1" required aria-label="VIP4每周提现次数"/></td></tr>
+                    <tr><th scope="row"><label for="vipFree5">VIP5</label></th><td><input id="vipFree5" data-vip-free-level="5" type="number" min="0" step="1" value="1" required aria-label="VIP5每周提现次数"/></td></tr>
+                    <tr><th scope="row"><label for="vipFree6">VIP6</label></th><td><input id="vipFree6" data-vip-free-level="6" type="number" min="0" step="1" value="2" required aria-label="VIP6每周提现次数"/></td></tr>
+                    <tr><th scope="row"><label for="vipFree7">VIP7</label></th><td><input id="vipFree7" data-vip-free-level="7" type="number" min="0" step="1" value="2" required aria-label="VIP7每周提现次数"/></td></tr>
+                    <tr><th scope="row"><label for="vipFree8">VIP8</label></th><td><input id="vipFree8" data-vip-free-level="8" type="number" min="0" step="1" value="2" required aria-label="VIP8每周提现次数"/></td></tr>
+                    <tr><th scope="row"><label for="vipFree9">VIP9</label></th><td><input id="vipFree9" data-vip-free-level="9" type="number" min="0" step="1" value="2" required aria-label="VIP9每周提现次数"/></td></tr>
+                    <tr><th scope="row"><label for="vipFree10">VIP10</label></th><td><input id="vipFree10" data-vip-free-level="10" type="number" min="0" step="1" value="2" required aria-label="VIP10每周提现次数"/></td></tr>
+                    <tr><th scope="row"><label for="vipFree11">VIP11</label></th><td><input id="vipFree11" data-vip-free-level="11" type="number" min="0" step="1" value="2" required aria-label="VIP11每周提现次数"/></td></tr>
+                    <tr><th scope="row"><label for="vipFree12">VIP12</label></th><td><input id="vipFree12" data-vip-free-level="12" type="number" min="0" step="1" value="3" required aria-label="VIP12每周提现次数"/></td></tr>
+                    <tr><th scope="row"><label for="vipFree13">VIP13</label></th><td><input id="vipFree13" data-vip-free-level="13" type="number" min="0" step="1" value="3" required aria-label="VIP13每周提现次数"/></td></tr>
+                    <tr><th scope="row"><label for="vipFree14">VIP14</label></th><td><input id="vipFree14" data-vip-free-level="14" type="number" min="0" step="1" value="3" required aria-label="VIP14每周提现次数"/></td></tr>
+                    <tr><th scope="row"><label for="vipFree15">VIP15</label></th><td><input id="vipFree15" data-vip-free-level="15" type="number" min="0" step="1" value="3" required aria-label="VIP15每周提现次数"/></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="vip-free-error" id="vipFreeError" role="alert" hidden></p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn" data-close-vip-free type="button">取消</button>
+              <button class="btn primary" type="submit">确定</button>
+            </div>
+          </form>
         </div>
 
         <div class="modal-mask is-hidden" data-modal="vip">
