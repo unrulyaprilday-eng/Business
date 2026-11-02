@@ -674,6 +674,13 @@ $axure.loadDocument({
             "pageName": "代理数据查询",
             "url": "代理数据查询.html",
             "children": []
+          },
+          {
+            "id": "agent_center_new_data_query",
+            "pageName": "新代理数据查询",
+            "type": "Wireframe",
+            "url": "新代理数据查询.html",
+            "children": []
           }
         ]
       },

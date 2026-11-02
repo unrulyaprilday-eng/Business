@@ -38,6 +38,8 @@ custom/js/页面名.js
 
 HTML 引用 `resources/css/axure_rp_page.css`、`data/styles.css`、页面 styles、自有 CSS、`data/document.js`、页面 data、`custom/js/axure-custom-page-ready.js`、`resources/scripts/axure/ios.js`；有独立交互时再引自有 JS。
 
+- Axure 脚本按相近稳定页面的顺序完整加载，保持正常同步脚本；不对 Axure runtime 使用 `defer`/`async`，不以轻量桥接代替 runtime。页面 data 和 Axure ready 初始化完成后再加载页面自有 JS，优先放在 `</body>` 前。
+
 - `#base` 保持 Axure 空容器，自定义布局放内部容器；JS 渲染表格、Tab、弹窗或编辑态时，HTML 先有首屏静态内容/空态，JS 等 DOM 就绪并保护关键节点。
 - 多 Tab 按截图顺序准备完整数据；编辑、保存、取消、确认弹窗应能回到正确状态。
 - `files/页面名/styles.css` 即使为空也必须存在并引用。
@@ -48,6 +50,7 @@ HTML 引用 `resources/css/axure_rp_page.css`、`data/styles.css`、页面 style
 - 先查 `custom/component-library/component-map.json`，再复用 `snippets/*.html`；按业务替换字段、列名、按钮和默认数据。
 - 使用组件库样式时引用 `css/tokens.css`、`css/components.css`；只有 Tabs、弹窗、筛选重置、批量选择等交互才引 `js/components.js`。
 - 组件类名保持 `cl-`，交互属性保持 `data-cl-*`；无匹配组件时先在目标页实现，确认可复用后再补组件库。不自动迁移旧页面或改无关页面。
+- 页面自行实现样式时使用页面作用域类名，不仅为复用 `cl-` 命名而加载组件库 CSS。
 
 ## 菜单与快照
 

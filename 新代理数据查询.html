@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <title>新代理数据查询</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/新代理数据查询/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/新代理数据查询.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/新代理数据查询/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body class="new-agent-report-document">
+    <div id="base" class="">
+      <div class="new-agent-report">
+        <div class="report-crumb"><span>代理中心</span><span aria-hidden="true">/</span><strong>新代理数据查询</strong></div>
+        <main class="report-main">
+          <header class="report-heading">
+            <div><h1>新代理数据查询</h1><p>查看所选时间段的代理收益及四层下级充值、有效打码。</p></div>
+          </header>
+
+          <form id="reportFilters" class="report-filters">
+            <div class="report-filter-field report-date-field">
+              <label for="dateStart">结算日期</label>
+              <div class="report-date-range"><input id="dateStart" class="report-input" type="date" value="2026-11-01"><span class="report-range-separator">至</span><input id="dateEnd" class="report-input" type="date" value="2026-11-02"></div>
+            </div>
+            <div class="report-filter-field"><label for="agentCode">代理编码</label><input id="agentCode" class="report-input" type="text" placeholder="请输入代理编码"></div>
+            <div class="report-filter-field"><label for="agentAccount">代理账号</label><input id="agentAccount" class="report-input" type="text" placeholder="请输入代理账号"></div>
+            <div class="report-filter-field"><label for="parentAgent">上级代理</label><input id="parentAgent" class="report-input" type="text" placeholder="账号或编码"></div>
+            <div class="report-filter-actions"><button class="report-btn report-btn-primary" type="submit">查询</button><button id="resetFilters" class="report-btn" type="button">重置</button><button id="exportReport" class="report-btn" type="button">导出报表</button></div>
+          </form>
+
+          <div class="report-meta"><span id="resultCount" role="status">共 5 条记录</span><span>币种：Rp</span><span>数据更新：5 分钟前</span><span>累计数据截至查询结束日</span><span>结算日按站点时区每日 06:00 切分</span></div>
+
+          <section class="report-table-frame" aria-label="新代理奖励汇总">
+            <div class="report-table-scroll">
+              <table class="report-table">
+                <colgroup>
+                  <col style="width:96px"><col style="width:118px"><col style="width:126px">
+                  <col style="width:92px"><col style="width:92px"><col style="width:86px"><col style="width:136px">
+                  <col style="width:128px"><col style="width:128px"><col style="width:128px"><col style="width:128px"><col style="width:128px"><col style="width:128px"><col style="width:128px"><col style="width:128px">
+                  <col style="width:102px"><col style="width:102px"><col style="width:110px"><col style="width:108px"><col style="width:132px"><col style="width:110px"><col style="width:112px">
+                </colgroup>
+                <thead>
+                  <tr class="report-group-head">
+                    <th class="group-fixed" rowspan="2">代理编码</th><th class="group-fixed" rowspan="2">代理账号</th><th class="group-fixed group-divider" rowspan="2">上级代理</th>
+                    <th class="group-invite group-divider" colspan="4">邀请数据</th>
+                    <th class="group-tier-1" colspan="2">一级下级</th><th class="group-tier-2" colspan="2">二级下级</th><th class="group-tier-3" colspan="2">三级下级</th><th class="group-tier-4 group-divider" colspan="2">四级下级</th>
+                    <th class="group-income group-divider" colspan="3">收益构成</th><th class="group-cumulative group-divider" colspan="4">累计截至查询结束日</th>
+                  </tr>
+                  <tr class="report-column-head">
+                    <th class="group-invite">新增直属人数</th><th class="group-invite">有效邀请人数</th><th class="group-invite">首充人数</th><th class="group-invite group-divider">首充金额</th>
+                    <th class="group-tier-1">充值金额</th><th class="group-tier-1 group-divider">有效打码</th><th class="group-tier-2">充值金额</th><th class="group-tier-2 group-divider">有效打码</th><th class="group-tier-3">充值金额</th><th class="group-tier-3 group-divider">有效打码</th><th class="group-tier-4">充值金额</th><th class="group-tier-4 group-divider">有效打码</th>
+                    <th class="group-income">邀请奖励</th><th class="group-income">里程碑奖励</th><th class="group-income group-divider">期间收益合计</th><th class="group-cumulative">累计直属人数</th><th class="group-cumulative">累计有效邀请人数</th><th class="group-cumulative">累计总下级人数</th><th class="group-cumulative group-divider">累计收益</th>
+                  </tr>
+                </thead>
+                <tbody id="reportRows">
+                  <tr data-date="2026-11-02" data-code="10004" data-account="agent" data-parent="—" data-invite="300" data-valid-invites="5" data-cumulative-valid-invites="74" data-first-deposit-count="3" data-first-deposit-amount="320000" data-bet="6320" data-deposit="11640" data-milestone="0" data-milestone-hit="true" data-milestone-earned="5" data-count1="12" data-count2="8" data-count3="0" data-count4="0" data-bet1="1500000" data-bet2="320000" data-bet3="0" data-bet4="0" data-deposit1="600000" data-deposit2="220000" data-deposit3="0" data-deposit4="0"><td>10004</td><td class="account-cell">agent</td><td>—</td><td>8</td><td>5</td><td>3</td><td>320,000</td><td>600,000</td><td>1,500,000</td><td>220,000</td><td>320,000</td><td>0</td><td>0</td><td>0</td><td>0</td><td>300</td><td>0</td><td class="total-cell">18,260</td><td>86</td><td>74</td><td>142</td><td>186,420</td></tr>
+                  <tr data-date="2026-11-02" data-code="123527" data-account="qqq345" data-parent="—" data-invite="600" data-valid-invites="10" data-cumulative-valid-invites="108" data-first-deposit-count="8" data-first-deposit-amount="1200000" data-bet="6630" data-deposit="33060" data-milestone="0" data-milestone-hit="true" data-milestone-earned="5,10" data-count1="20" data-count2="12" data-count3="5" data-count4="0" data-bet1="1500000" data-bet2="600000" data-bet3="100000" data-bet4="0" data-deposit1="1200000" data-deposit2="630000" data-deposit3="250000" data-deposit4="0"><td>123527</td><td class="account-cell">qqq345</td><td>—</td><td>12</td><td>10</td><td>8</td><td>1,200,000</td><td>1,200,000</td><td>1,500,000</td><td>630,000</td><td>600,000</td><td>250,000</td><td>100,000</td><td>0</td><td>0</td><td>600</td><td>0</td><td class="total-cell">40,290</td><td>122</td><td>108</td><td>203</td><td>415,880</td></tr>
+                  <tr data-date="2026-11-01" data-code="123528" data-account="www345" data-parent="qqq345" data-invite="180" data-valid-invites="3" data-cumulative-valid-invites="24" data-first-deposit-count="2" data-first-deposit-amount="450000" data-bet="700" data-deposit="8265" data-milestone="0" data-milestone-hit="false" data-milestone-earned="" data-count1="6" data-count2="3" data-count3="0" data-count4="0" data-bet1="320000" data-bet2="120000" data-bet3="0" data-bet4="0" data-deposit1="450000" data-deposit2="220000" data-deposit3="0" data-deposit4="0"><td>123528</td><td class="account-cell">www345</td><td>qqq345</td><td>4</td><td>3</td><td>2</td><td>450,000</td><td>450,000</td><td>320,000</td><td>220,000</td><td>120,000</td><td>0</td><td>0</td><td>0</td><td>0</td><td>180</td><td>0</td><td class="total-cell">9,145</td><td>37</td><td>24</td><td>64</td><td>53,120</td></tr>
+                  <tr data-date="2026-11-01" data-code="10005" data-account="jacky" data-parent="—" data-invite="60" data-valid-invites="1" data-cumulative-valid-invites="12" data-first-deposit-count="0" data-first-deposit-amount="0" data-bet="120" data-deposit="0" data-milestone="0" data-milestone-hit="false" data-milestone-earned="" data-count1="4" data-count2="0" data-count3="0" data-count4="0" data-bet1="120000" data-bet2="0" data-bet3="0" data-bet4="0" data-deposit1="0" data-deposit2="0" data-deposit3="0" data-deposit4="0"><td>10005</td><td class="account-cell">jacky</td><td>—</td><td>2</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>120,000</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>60</td><td>0</td><td class="total-cell">180</td><td>18</td><td>12</td><td>21</td><td>7,680</td></tr>
+                  <tr data-date="2026-11-01" data-code="123530" data-account="rrr345" data-parent="www345" data-invite="0" data-valid-invites="0" data-cumulative-valid-invites="0" data-first-deposit-count="0" data-first-deposit-amount="0" data-bet="0" data-deposit="0" data-milestone="0" data-milestone-hit="false" data-milestone-earned="" data-count1="0" data-count2="0" data-count3="0" data-count4="0" data-bet1="0" data-bet2="0" data-bet3="0" data-bet4="0" data-deposit1="0" data-deposit2="0" data-deposit3="0" data-deposit4="0"><td>123530</td><td class="account-cell">rrr345</td><td>www345</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="total-cell">0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                  <tr id="emptyRow" hidden><td colspan="22">没有符合条件的记录</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <footer class="report-pagination"><span>共 <strong id="visibleTotal">5</strong> 条</span><button type="button" disabled aria-label="上一页">‹</button><span class="current-page">1</span><button type="button" disabled aria-label="下一页">›</button><select aria-label="每页条数"><option>20 条/页</option><option>50 条/页</option><option>100 条/页</option></select></footer>
+        </main>
+
+        <p id="reportToast" class="report-toast" role="status" hidden></p>
+      </div>
+    </div>
+    <script src="custom/js/新代理数据查询.js"></script>
+  </body>
+</html>
