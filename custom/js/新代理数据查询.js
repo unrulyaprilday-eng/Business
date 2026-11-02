@@ -115,9 +115,11 @@
       row.dataset.deposit = String(depositTotal);
       row.dataset.invite = String(inviteReward);
       row.dataset.milestone = String(milestoneAmount);
-      row.cells[15].textContent = formatAmount(inviteReward);
-      row.cells[16].textContent = formatAmount(milestoneAmount);
-      row.cells[17].textContent = formatAmount(periodTotal);
+      row.cells[15].textContent = formatAmount(betTotal);
+      row.cells[16].textContent = formatAmount(depositTotal);
+      row.cells[17].textContent = formatAmount(inviteReward);
+      row.cells[18].textContent = formatAmount(milestoneAmount);
+      row.cells[19].textContent = formatAmount(periodTotal);
     }
 
     function showToast(message) {
@@ -152,7 +154,7 @@
     }
 
     function exportVisible() {
-      var headers = ["代理编码", "代理账号", "上级代理", "新增直属人数", "有效邀请人数", "首充人数", "首充金额", "一级充值金额", "一级有效打码", "二级充值金额", "二级有效打码", "三级充值金额", "三级有效打码", "四级充值金额", "四级有效打码", "邀请奖励", "里程碑奖励", "期间收益合计", "累计直属人数", "累计有效邀请人数", "累计总下级人数", "累计收益"];
+      var headers = ["代理编码", "代理账号", "上级代理", "新增直属人数", "有效邀请人数", "首充人数", "首充金额", "一级充值金额", "一级有效打码", "二级充值金额", "二级有效打码", "三级充值金额", "三级有效打码", "四级充值金额", "四级有效打码", "打码返利", "充值返利", "邀请奖励", "里程碑奖励", "时间段收益合计", "累计直属人数", "累计有效邀请人数", "累计总下级人数", "累计收益"];
       var values = rows.filter(function (row) { return !row.hidden; }).map(function (row) {
         return Array.prototype.map.call(row.cells, function (cell) { return cell.textContent.trim(); });
       });
