@@ -11,10 +11,10 @@ for (const match of html.matchAll(/(?:href|src)="([^"]+)"/g)) assert(fs.existsSy
 assert(/\[hidden\]\s*\{\s*display:\s*none\s*!important/.test(css));
 assert.equal((html.match(/id="commonTime"/g) || []).length, 1, 'one shared settlement time');
 const scriptTags = Array.from(html.matchAll(/<script\b([^>]*\bsrc="([^"]+)"[^>]*)>/g));
-assert(scriptTags.every((match) => /\bdefer\b/.test(match[1])), 'external scripts must not block HTML parsing');
-assert.equal(scriptTags[0][2], 'custom/js/' + name + '.js', 'independent business UI initializes first');
-assert.deepEqual(scriptTags.slice(1).map((match) => match[2]), ["resources/scripts/jquery-3.7.1.min.js","resources/scripts/axure/axQuery.js","resources/scripts/axure/globals.js","resources/scripts/axutils.js","resources/scripts/axure/annotation.js","resources/scripts/axure/axQuery.std.js","resources/scripts/axure/doc.js","resources/scripts/messagecenter.js","resources/scripts/axure/events.js","resources/scripts/axure/recording.js","resources/scripts/axure/action.js","resources/scripts/axure/expr.js","resources/scripts/axure/geometry.js","resources/scripts/axure/flyout.js","resources/scripts/axure/model.js","resources/scripts/axure/repeater.js","resources/scripts/axure/sto.js","resources/scripts/axure/utils.temp.js","resources/scripts/axure/variables.js","resources/scripts/axure/drag.js","resources/scripts/axure/move.js","resources/scripts/axure/visibility.js","resources/scripts/axure/style.js","resources/scripts/axure/adaptive.js","resources/scripts/axure/tree.js","resources/scripts/axure/init.temp.js","resources/scripts/axure/legacy.js","resources/scripts/axure/viewer.js","resources/scripts/axure/math.js","resources/scripts/axure/jquery.nicescroll.min.js","data/document.js","files/新代理配置/data.js","custom/js/axure-custom-page-ready.js","resources/scripts/axure/ios.js"], 'Axure dependency order is preserved');
-assert(!/<script(?![^>]*\bsrc=)[^>]*>[\s\S]*?\$axure/.test(html), 'no early inline dependency on deferred Axure');
+assert(scriptTags.every((match) => !/\b(?:defer|async)\b/.test(match[1])), 'Axure dependencies load synchronously');
+assert.equal(scriptTags[0][2], 'resources/scripts/jquery-3.7.1.min.js', 'Axure runtime initializes first');
+assert.deepEqual(scriptTags.slice(1).map((match) => match[2]), ["resources/scripts/axure/axQuery.js","resources/scripts/axure/globals.js","resources/scripts/axutils.js","resources/scripts/axure/annotation.js","resources/scripts/axure/axQuery.std.js","resources/scripts/axure/doc.js","resources/scripts/messagecenter.js","resources/scripts/axure/events.js","resources/scripts/axure/recording.js","resources/scripts/axure/action.js","resources/scripts/axure/expr.js","resources/scripts/axure/geometry.js","resources/scripts/axure/flyout.js","resources/scripts/axure/model.js","resources/scripts/axure/repeater.js","resources/scripts/axure/sto.js","resources/scripts/axure/utils.temp.js","resources/scripts/axure/variables.js","resources/scripts/axure/drag.js","resources/scripts/axure/move.js","resources/scripts/axure/visibility.js","resources/scripts/axure/style.js","resources/scripts/axure/adaptive.js","resources/scripts/axure/tree.js","resources/scripts/axure/init.temp.js","resources/scripts/axure/legacy.js","resources/scripts/axure/viewer.js","resources/scripts/axure/math.js","resources/scripts/axure/jquery.nicescroll.min.js","data/document.js","files/新代理配置/data.js","custom/js/axure-custom-page-ready.js","resources/scripts/axure/ios.js","custom/js/新代理配置.js"], 'Axure dependency order is preserved');
+assert(html.indexOf('<script type="text/javascript">') > html.indexOf('src="resources/scripts/axure/ios.js"'), 'inline Axure helpers follow the runtime');
 assert(html.indexOf('id="milestoneAddRow"') > html.indexOf('id="milestoneTable"'), 'add row belongs below table');
 const oldFiles = {
   '代理中心_代理配置.html': '220c7fcfb1316775009c392bbf638d3908b0385c41ca7ffa7d1c0d33ce6ba1a9',
@@ -137,8 +137,9 @@ ui.commonInput('commonDeposit', '300000'); ui.commonSubmit();
 assert.equal(ui.saved().common.deposit, '300000');
 assert.equal(ui.saved().common.time, '06:00');
 assert.deepEqual(ui.saved().rules.milestone.rows, [['5', '0', 'Rp'], ['10', '0', 'Rp']]);
-assert.deepEqual(ui.saved().rules.bet.tiers[3], [['0', '0', '0']]);
-assert.deepEqual(ui.saved().rules.deposit.tiers[3], [['0', '0', '0']]);
+assert.deepEqual(ui.saved().rules.bet.tiers[3], [['0', '', '0']]);
+assert.deepEqual(ui.saved().rules.deposit.tiers[3], [['0', '', '0']]);
+for (const key of ['bet', 'deposit']) assert(ui.saved().rules[key].tiers.every((rows) => rows[rows.length - 1][1] === ''), key + ' final ranges are open-ended');
 assert.equal(ui.nodes['#commonDepositHelp'].hidden, true);
 assert.equal(ui.nodes['#editRule'].disabled, false);
 assert.equal(storage['business.agent.reward-settings.v1'], 'untouched legacy setting');
@@ -176,17 +177,17 @@ ui.tab('deposit'); ui.click('confirmAction');
 assert.equal(ui.saved().rules.bet.tiers[0][0][2], '0.1', 'discard preserves previous data');
 ui.tab('bet'); ui.click('editRule');
 ui.action({ level: '3', delete: '0' });
-assert.equal(ui.nodes['#tierBlocks']._inputs.filter((input) => input.dataset.level === '3').length, 3, 'last tier row is protected');
+assert.equal(ui.nodes['#tierBlocks']._inputs.filter((input) => input.dataset.level === '3').length, 2, 'last tier row only needs a lower bound and rate');
 ui.action({ addRange: '3' });
-assert.equal(ui.nodes['#ruleError'].hidden, false);
-assert.equal(ui.nodes['#tierBlocks']._inputs.filter((input) => input.dataset.level === '3').length, 3, 'cannot append after an unbounded range');
+assert.equal(ui.nodes['#ruleError'].hidden, true);
+assert.equal(ui.nodes['#tierBlocks']._inputs.filter((input) => input.dataset.level === '3').length, 5, 'adding a range reveals the prior upper bound');
 ui.input('tierBlocks', (input) => input.dataset.level === '3' && input.dataset.row === '0' && input.dataset.column === '1', '100000');
-ui.action({ addRange: '3' });
-assert.deepEqual(ui.nodes['#tierBlocks']._inputs.filter((input) => input.dataset.level === '3' && input.dataset.row === '1').map((input) => input.value), ['100000', '0', '0']);
+assert.equal(ui.nodes['#tierBlocks']._inputs.find((input) => input.dataset.level === '3' && input.dataset.row === '1' && input.dataset.column === '0').value, '100000', 'adjacent range boundaries stay aligned');
 ui.input('tierBlocks', (input) => input.dataset.level === '3' && input.dataset.row === '1' && input.dataset.column === '2', '');
 ui.ruleSubmit(); assert.equal(ui.nodes['#ruleError'].hidden, false);
 ui.action({ level: '3', delete: '1' });
 ui.input('tierBlocks', (input) => input.dataset.level === '3' && input.dataset.column === '2', '0.05');
+assert.equal(ui.nodes['#tierBlocks']._inputs.some((input) => input.dataset.level === '3' && input.dataset.row === '0' && input.dataset.column === '1'), false, 'final range has no upper-bound input');
 const depositBefore = ui.saved().rules.deposit;
 ui.ruleSubmit();
 assert.deepEqual(ui.saved().rules.deposit, depositBefore, 'bet and deposit rates remain independent');
@@ -205,8 +206,8 @@ ui.commonSubmit();
 assert.equal(ui.saved().common.layers, 4);
 assert(ui.saved().rules.bet.tiers.every((rows) => rows.length >= 1));
 assert(ui.saved().rules.deposit.tiers.every((rows) => rows.length >= 1));
-assert.deepEqual(ui.saved().rules.bet.tiers[3], [['0', '0', '0']]);
-assert.deepEqual(ui.saved().rules.deposit.tiers[3], [['0', '0', '0']]);
+assert.deepEqual(ui.saved().rules.bet.tiers[3], [['0', '', '0']]);
+assert.deepEqual(ui.saved().rules.deposit.tiers[3], [['0', '', '0']]);
 ui.tab('invite'); ui.click('editRule');
 ui.nodes['#inviteReward'].value = '75';
 ui.nodes['#ruleForm'].fire('input', { target: ui.nodes['#inviteReward'] });
@@ -222,41 +223,45 @@ restored.tab('milestone'); assert(restored.nodes['#milestoneRows'].innerHTML.inc
 const early = boot(storage, 'interactive');
 assert.equal(early.nodes['#commonTime'].value, '18:00', 'UI initializes before deferred Axure dependencies');
 early.tab('bet'); assert(early.nodes['#tierBlocks'].innerHTML.includes('Tier 4'));
-// Zero is an unlimited upper bound in both reward types; blanks cannot be saved.
+// The final range is represented by its lower bound only in both reward types.
 for (const key of ['bet', 'deposit']) {
   const checkStorage = { ...storage }, check = boot(checkStorage);
   check.tab(key);
-  assert(check.nodes['#tierBlocks'].innerHTML.includes('0 ～ 无上限'));
+  assert(check.nodes['#tierBlocks'].innerHTML.includes(key === 'bet' ? '≥ 20,000,000' : '≥ 2,000,000'), key + ' displays the final range as an open lower bound');
   check.click('editRule');
   const upper = (input) => input.dataset.level === '3' && input.dataset.row === '0' && input.dataset.column === '1';
-  assert.equal(check.nodes['#tierBlocks']._inputs.find(upper).value, '0');
-  for (const invalid of ['', '-1']) {
-    check.input('tierBlocks', upper, invalid); check.ruleSubmit();
-    assert.equal(checkStorage[storageKey], storage[storageKey]);
-    assert.equal(check.nodes['#ruleError'].hidden, false);
-  }
+  assert.equal(check.nodes['#tierBlocks']._inputs.find(upper), undefined, key + ' final range does not ask for an upper bound');
   check.input('tierBlocks', (input) => input.dataset.level === '3' && input.dataset.row === '0' && input.dataset.column === '0', '100');
-  check.input('tierBlocks', upper, '100'); check.ruleSubmit();
-  assert.equal(check.nodes['#ruleError'].hidden, false, 'finite upper must exceed lower');
-  check.input('tierBlocks', upper, '0'); check.ruleSubmit();
-  assert.deepEqual(check.saved().rules[key].tiers[3], [['100', '0', '0']]);
+  check.ruleSubmit();
+  assert.deepEqual(check.saved().rules[key].tiers[3], [['100', '', '0']]);
+  check.click('editRule'); check.action({ addRange: '3' });
+  check.input('tierBlocks', upper, '200');
+  assert.equal(check.nodes['#tierBlocks']._inputs.find((input) => input.dataset.level === '3' && input.dataset.row === '1' && input.dataset.column === '0').value, '200');
+  check.ruleSubmit();
+  assert.deepEqual(check.saved().rules[key].tiers[3], [['100', '200', '0'], ['200', '', '0']]);
   check.click('editRule');
-  check.input('tierBlocks', (input) => input.dataset.level === '0' && input.dataset.row === '0' && input.dataset.column === '1', '0');
-  check.ruleSubmit(); assert.equal(check.nodes['#ruleError'].hidden, false, 'unlimited range must be last');
+  check.input('tierBlocks', (input) => input.dataset.level === '3' && input.dataset.row === '0' && input.dataset.column === '1', '');
+  check.ruleSubmit(); assert.equal(check.nodes['#ruleError'].hidden, false, 'a non-final range needs a finite upper bound');
+  check.input('tierBlocks', (input) => input.dataset.level === '3' && input.dataset.row === '0' && input.dataset.column === '1', '200');
+  check.ruleSubmit();
 }
 const legacyRecord = JSON.parse(storage[storageKey]);
 for (const key of ['bet', 'deposit']) {
   for (const rows of legacyRecord.rules[key].tiers) {
-    for (const row of rows) if (row[1] === '0') row[1] = '';
+    for (const row of rows) if (row[1] === '') row[1] = '0';
   }
 }
+legacyRecord.rules.deposit.tiers[0].pop();
+legacyRecord.rules.deposit.tiers[0][legacyRecord.rules.deposit.tiers[0].length - 1][1] = '2000000';
 const legacyStorage = { [storageKey]: JSON.stringify(legacyRecord) }, migrated = boot(legacyStorage);
 assert.equal(migrated.nodes['#inviteReward'].value, '75', 'migration preserves saved custom values');
 migrated.click('editCommon'); migrated.commonSubmit();
-assert.deepEqual(migrated.saved(), JSON.parse(storage[storageKey]), 'legacy blank bounds become zero without changing other settings');
+assert.equal(migrated.saved().rules.deposit.tiers[0].length, 4, 'migration preserves legacy deposit tiers');
+assert.equal(migrated.saved().rules.deposit.tiers[0][3][1], '', 'legacy finite highest range becomes open-ended');
+assert.equal(migrated.saved().rules.bet.tiers[3][0][1], '', 'legacy zero marker becomes blank');
 const axurePaths = { utils: {}, loadCurrentPage() {} };
 vm.runInNewContext(fs.readFileSync('files/' + name + '/data.js', 'utf8'), { $axure: axurePaths });
 assert.equal(axurePaths.utils.getTransparentGifPath(), 'resources/images/transparent.gif');
 assert.equal(axurePaths.utils.getOtherPath(), 'resources/Other.html');
 assert.equal(axurePaths.utils.getReloadPath(), 'resources/reload.html');
-console.log('OK: independent new page/menu, old-page hashes, shared eligibility/time/layers, no empty saves, protected base rows, inline edit/cancel, synchronized tiers, separate rates and atomic local storage');
+console.log('OK: independent new page/menu, old-page hashes, shared eligibility/time/layers, no empty saves, final ranges use lower bounds, synchronized tier boundaries, separate rates and atomic local storage');

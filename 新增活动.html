@@ -12,6 +12,7 @@
     <link href="custom/css/weekly-card-activity.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/lucky-wheel-activity.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/reward-wheel-activity.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/flash-rebate-activity.css" type="text/css" rel="stylesheet"/>
     <link href="https://demo.axureux.com/fontawesome/5.7.2/pro/css/all.min.css" type="text/css" rel="stylesheet" media="print" onload="this.media='all'"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
     <script src="resources/scripts/axure/axQuery.js"></script>
@@ -25840,6 +25841,71 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
           </div>
         </div>
 
+        <div id="u6_state11" class="panel_state" data-label="打码赠金" style="visibility: hidden; display: none;" aria-hidden="true">
+          <div id="u6_state11_content" class="panel_state_content">
+            <section class="fra-dialog" role="dialog" aria-modal="true" aria-labelledby="fraDialogTitle">
+              <header class="fra-head"><h2 id="fraDialogTitle">新增打码赠金活动 <span>Flash Rebate</span></h2><button type="button" data-fra-cancel aria-label="关闭">×</button></header>
+              <form id="flashRebateForm" class="fra-scroll" novalidate>
+                <p id="fraError" class="fra-error" role="alert" hidden></p>
+                <section class="fra-section">
+                  <h3>基础配置</h3>
+                  <div class="fra-grid">
+                    <label class="fra-field"><span>活动模板</span><input value="打码赠金（Flash Rebate）" readonly></label>
+                    <label class="fra-field fra-required"><span>活动名称</span><input id="fraName" maxlength="60" placeholder="请输入活动名称" required></label>
+                    <label class="fra-field fra-required"><span>活动标题</span><input id="fraTitle" maxlength="100" placeholder="请输入活动标题" required></label>
+                    <label class="fra-field"><span>排序</span><input id="fraSort" type="number" min="0" step="1" value="0"></label>
+                    <div class="fra-field fra-wide"><span>活动时间</span><div class="fra-time"><input id="fraStart" type="datetime-local" aria-label="开始时间" required><em>至</em><input id="fraEnd" type="datetime-local" aria-label="结束时间" required></div></div>
+                  </div>
+                </section>
+                <section class="fra-section">
+                  <div class="fra-section-title"><div><h3>游戏范围</h3><p>选择一种指定方式，范围以选中的对象为准。</p></div></div>
+                  <div class="fra-scope-switch" role="group" aria-label="游戏范围指定方式">
+                    <button type="button" data-fra-scope="type" aria-pressed="true">游戏类型</button>
+                    <button type="button" data-fra-scope="provider" aria-pressed="false">厂商</button>
+                    <button type="button" data-fra-scope="game" aria-pressed="false">具体游戏</button>
+                  </div>
+                  <div class="fra-scope-panel" data-fra-panel="type">
+                    <label class="fra-inline-field"><span>游戏类型</span><select id="fraGameType"><option value="电子">电子游戏</option><option value="捕鱼">捕鱼</option><option value="棋牌">棋牌游戏</option><option value="彩票">彩票</option><option value="体育电竞">体育电竞</option></select></label>
+                    <div class="fra-pick-head"><strong>推荐游戏</strong><span>该类型推荐度前 10 款，勾选后纳入活动</span><button type="button" data-fra-select-visible>全选当前列表</button></div>
+                    <div id="fraRecommendedGames" class="fra-choice-grid" aria-live="polite"></div>
+                  </div>
+                  <div class="fra-scope-panel" data-fra-panel="provider" hidden>
+                    <div class="fra-pick-head"><strong>选择厂商</strong><span>所选厂商旗下游戏纳入活动</span><button type="button" data-fra-select-visible>全选当前列表</button></div>
+                    <div id="fraProviders" class="fra-choice-grid"></div>
+                  </div>
+                  <div class="fra-scope-panel" data-fra-panel="game" hidden>
+                    <div class="fra-pick-head"><strong>选择游戏</strong><span>可搜索并勾选一个或多个游戏</span><input id="fraGameSearch" type="search" placeholder="搜索游戏名称或厂商" aria-label="搜索游戏名称或厂商"></div>
+                    <div id="fraGames" class="fra-choice-grid"></div>
+                  </div>
+                  <p class="fra-selection" id="fraSelectionSummary" aria-live="polite">已选择 0 款游戏</p>
+                </section>
+                <section class="fra-section">
+                  <div class="fra-section-title"><div><h3>档位奖励</h3><p>达到对应累计有效打码量后，发放该档固定金额；档位门槛须逐档递增。</p></div></div>
+                  <div class="fra-tier-wrap">
+                    <table class="fra-tier-table">
+                      <thead><tr><th>档位</th><th>累计有效打码量</th><th>固定奖励金额</th><th>操作</th></tr></thead>
+                      <tbody id="fraTierRows">
+                        <tr><td class="fra-tier-index">第1档</td><td><input data-fra-threshold type="number" min="0.01" step="0.01" placeholder="请输入打码量" required aria-label="第1档累计有效打码量"></td><td><input data-fra-reward type="number" min="0.01" step="0.01" placeholder="请输入固定金额" required aria-label="第1档固定奖励金额"></td><td><button type="button" data-fra-remove-tier disabled>删除</button></td></tr>
+                      </tbody>
+                    </table>
+                    <button id="fraAddTier" class="fra-add-tier" type="button">＋ 添加奖励档位</button>
+                  </div>
+                </section>
+                <section class="fra-section fra-rules-section">
+                  <div class="fra-section-title"><div><h3>活动规则</h3><p>规则随活动展示，统计范围受上方游戏范围限制。</p></div></div>
+                  <ol class="fra-rules">
+                    <li>仅统计活动期间内完成的有效打码量，并计入累计进度。</li>
+                    <li>活动到期或结束时，尚未领取的奖励将视为自动放弃。</li>
+                    <li>只有符合任务要求的游戏所产生的有效打码量才会被累计，其他不符合要求的游戏不计入。</li>
+                    <li>活动期间，每项任务仅可完成一次。</li>
+                  </ol>
+                </section>
+              </form>
+              <footer class="fra-foot"><button type="button" data-fra-cancel>取消</button><button class="fra-primary" type="submit" form="flashRebateForm">确定</button></footer>
+            </section>
+          </div>
+        </div>
+
       </div>
 
       <!-- Unnamed (矩形) -->
@@ -25874,6 +25940,7 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
           <option class="u3012_input_option" value="幸运转盘">幸运转盘</option>
           <option class="u3012_input_option" value="奖励转盘">奖励转盘</option>
           <option class="u3012_input_option" value="拼多多">拼多多</option>
+          <option class="u3012_input_option" value="打码赠金">打码赠金（Flash Rebate）</option>
         </select>
       </div>
     </div>
@@ -25900,6 +25967,7 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
     <script src="custom/js/recharge-gift-activity.js"></script>
     <script src="custom/js/weekly-card-activity.js"></script>
     <script src="custom/js/lucky-wheel-activity.js"></script>
+    <script src="custom/js/flash-rebate-activity.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
   </body>
 </html>

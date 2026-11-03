@@ -26,15 +26,15 @@
       rules: {
         invite: { enabled: true, reward: "60" },
         bet: { enabled: true, tiers: [
-          [["100000", "200000", "0.1"], ["200000", "500000", "0.2"], ["500000", "1000000", "0.3"], ["1000000", "20000000", "0.4"], ["20000000", "0", "0.6"]],
-          [["100000", "200000", "0.05"], ["200000", "0", "0.1"]],
-          [["100000", "0", "0.03"]], [["0", "0", "0"]]
+          [["100000", "200000", "0.1"], ["200000", "500000", "0.2"], ["500000", "1000000", "0.3"], ["1000000", "20000000", "0.4"], ["20000000", "", "0.6"]],
+          [["100000", "200000", "0.05"], ["200000", "", "0.1"]],
+          [["100000", "", "0.03"]], [["0", "", "0"]]
         ] },
         deposit: { enabled: true, tiers: [
-          [["100000", "200000", "1"], ["200000", "500000", "1.25"], ["500000", "1000000", "1.5"], ["1000000", "2000000", "2"]],
-          [["200000", "0", "1.2"]],
-          [["10000", "20000", "0.1"], ["20000", "50000", "0.25"], ["50000", "100000", "0.3"], ["100000", "200000", "0.4"], ["200000", "0", "0.6"]],
-          [["0", "0", "0"]]
+          [["100000", "200000", "1"], ["200000", "500000", "1.25"], ["500000", "1000000", "1.5"], ["1000000", "2000000", "2"], ["2000000", "", "2"]],
+          [["200000", "", "1.2"]],
+          [["10000", "20000", "0.1"], ["20000", "50000", "0.25"], ["50000", "100000", "0.3"], ["100000", "200000", "0.4"], ["200000", "", "0.6"]],
+          [["0", "", "0"]]
         ] },
         milestone: { enabled: true, rows: [["5", "0", "Rp"], ["10", "0", "Rp"]] }
       }
@@ -66,10 +66,11 @@
       if (rows.length > 100) return label + " 最多支持 100 条档位。";
       for (var i = 0; i < rows.length; i += 1) {
         var row = rows[i], prefix = label + " 第 " + (i + 1) + " 档：";
-        if (!Array.isArray(row) || row.length !== 3 || !nonnegative(row[0]) || !nonnegative(row[1]) || !nonnegative(row[2])) return prefix + "请补全金额下限、上限和比例，上限为 0 表示无上限。";
-        if (Number(row[1]) !== 0 && Number(row[1]) <= Number(row[0])) return prefix + "上限必须大于下限，或填 0 表示无上限。";
+        if (!Array.isArray(row) || row.length !== 3 || !nonnegative(row[0]) || (row[1] !== "" && !nonnegative(row[1])) || !nonnegative(row[2])) return prefix + "请补全金额下限、上限和比例；最后一档只需填写下限。";
+        if (row[1] === "" && i < rows.length - 1) return prefix + "该档已有下一档，必须填写上限。";
+        if (row[1] !== "" && Number(row[1]) <= Number(row[0])) return prefix + "上限必须大于下限。";
         if (Number(row[2]) > 100) return prefix + "比例须为 0～100。";
-        if (i > 0 && (Number(rows[i - 1][1]) === 0 || Number(row[0]) < Number(rows[i - 1][1]))) return prefix + "金额档位须递增且不能重叠，无上限档位只能在最后。";
+        if (i > 0 && (rows[i - 1][1] === "" || Number(row[0]) < Number(rows[i - 1][1]))) return prefix + "金额档位须递增且不能重叠，≥ 下限档位只能在最后。";
       }
       return "";
     }
@@ -79,8 +80,10 @@
       if (tierKeys.indexOf(key) !== -1) {
         if (!Array.isArray(rule.tiers) || rule.tiers.length !== layers) return titles[key] + " 的层级须与返利层级一致。";
         for (var level = 0; level < layers; level += 1) {
-          var issue = rangeIssue(rule.tiers[level], titles[key] + " Tier " + (level + 1));
+          var rows = rule.tiers[level];
+          var issue = rangeIssue(rows, titles[key] + " Tier " + (level + 1));
           if (issue) return issue;
+          if (rows[rows.length - 1][1] !== "") return titles[key] + " Tier " + (level + 1) + " 最后一档上限需留空，展示为 ≥ 下限。";
         }
       } else {
         if (!Array.isArray(rule.rows) || !rule.rows.length) return "邀请里程碑至少需要一条完整基础档位。";
@@ -97,13 +100,14 @@
       try {
         var record = JSON.parse(window.localStorage.getItem(storageKey));
         if (!record || record.version !== 1 || commonIssue(record.common) || !record.rules) return;
-        // Convert only previously saved blank upper bounds; live inputs remain required.
+        // Version 1 used "0" for infinity and allowed a finite final range.
         tierKeys.forEach(function (key) {
           var rule = record.rules[key];
           if (!rule || !Array.isArray(rule.tiers)) return;
           rule.tiers.forEach(function (rows) {
             if (!Array.isArray(rows)) return;
-            rows.forEach(function (row) { if (Array.isArray(row) && row[1] === "") row[1] = "0"; });
+            rows.forEach(function (row) { if (Array.isArray(row) && row[1] === "0") row[1] = ""; });
+            if (rows.length && Array.isArray(rows[rows.length - 1])) rows[rows.length - 1][1] = "";
           });
         });
         if (tierKeys.some(function (key) { return !!ruleIssue(key, record.rules[key], record.common.layers); })) return;
@@ -143,8 +147,8 @@
     }
     function ensureLayers(value) {
       tierKeys.forEach(function (key) {
-        while (value.rules[key].tiers.length < value.common.layers) value.rules[key].tiers.push([["0", "0", "0"]]);
-        value.rules[key].tiers.forEach(function (rows) { if (!rows.length) rows.push(["0", "0", "0"]); });
+        while (value.rules[key].tiers.length < value.common.layers) value.rules[key].tiers.push([["0", "", "0"]]);
+        value.rules[key].tiers.forEach(function (rows) { if (!rows.length) rows.push(["0", "", "0"]); });
       });
     }
     function editableRule() { return mode === active ? draft.rules[active] : state.rules[active]; }
@@ -160,7 +164,7 @@
       var label = milestone ? (column === 0 ? "有效邀请人数" : "奖励金额") : ["金额下限", "金额上限", "返利比例"][column];
       return "<input class='" + (milestone ? "inline-milestone-input" : "inline-range-input") + "' type='number' min='" + (milestone && column === 0 ? "1" : "0") +
         "' step='" + (milestone && column === 0 ? "1" : "any") + "'" + (!milestone && column === 2 ? " max='100'" : "") +
-        " required" + (!milestone && column === 1 ? " title='0 表示无上限'" : "") + attrs + " aria-label='" + titles[key] + (milestone ? "" : " Tier " + (level + 1)) +
+        " required" + (!milestone && column === 1 ? " placeholder='填写本档上限' title='填写后同步下一档下限'" : "") + attrs + " aria-label='" + titles[key] + (milestone ? "" : " Tier " + (level + 1)) +
         " 第 " + (row + 1) + " 档" + label + "' value='" + escapeText(value) + "'>";
     }
     function renderBases() {
@@ -171,12 +175,15 @@
         if (!tierKeys.some(function (key) { return showCommonBase(key, level); })) continue;
         var rows = tierKeys.map(function (key) {
           if (!showCommonBase(key, level)) return "<tr><td>" + titles[key] + "</td><td colspan='3'>已配置 " + state.rules[key].tiers[level].length + " 条档位</td></tr>";
-          return draft.rules[key].tiers[level].map(function (row, index) {
-            return "<tr><td>" + titles[key] + (index ? " · 第 " + (index + 1) + " 档" : "") + "</td>" +
-              row.map(function (value, column) { return "<td>" + numeric(value, key, level, index, column, true) + "</td>"; }).join("") + "</tr>";
+          var tierRows = draft.rules[key].tiers[level];
+          return tierRows.map(function (row, index) {
+            var last = index === tierRows.length - 1;
+            return "<tr><td>" + titles[key] + (index ? " · 第 " + (index + 1) + " 档" : "") + "</td><td>" + numeric(row[0], key, level, index, 0, true) +
+              "</td><td>" + (last ? "<span class='open-ended-range'>≥ 下限</span>" : numeric(row[1], key, level, index, 1, true)) +
+              "</td><td>" + numeric(row[2], key, level, index, 2, true) + "</td></tr>";
           }).join("");
         }).join("");
-        blocks.push("<article class='base-block'><h3>Tier " + (level + 1) + " · 补齐基础档位</h3><p>投注返水和充值返利各至少一条完整数据。金额下限、上限和比例必填，上限为 0 表示无上限。</p><div class='table-scroll'><table class='rules-table'><thead><tr><th>奖励类型</th><th>下限（Rp）</th><th>上限（Rp）</th><th>比例（%）</th></tr></thead><tbody>" + rows + "</tbody></table></div></article>");
+        blocks.push("<article class='base-block'><h3>Tier " + (level + 1) + " · 补齐基础档位</h3><p>投注返水和充值返利各至少一条完整数据。最后一档只需填写下限，展示为 ≥ 下限。</p><div class='table-scroll'><table class='rules-table'><thead><tr><th>奖励类型</th><th>下限（Rp）</th><th>上限（Rp）</th><th>比例（%）</th></tr></thead><tbody>" + rows + "</tbody></table></div></article>");
       }
       holder.innerHTML = blocks.join(""); holder.hidden = !blocks.length;
     }
@@ -220,12 +227,16 @@
         get("tierBlocks").innerHTML = rule.tiers.slice(0, state.common.layers).map(function (rows, level) {
           var headings = editing ? ["金额下限（Rp）", "金额上限（Rp）", "比例（%）", "操作"] : [active === "bet" ? "有效打码区间（Rp）" : "存款区间（Rp）", "比例"];
           var body = rows.map(function (row, index) {
-            if (editing) return "<tr>" + row.map(function (value, column) { return "<td>" + numeric(value, active, level, index, column, false) + "</td>"; }).join("") + "<td>" + deleteControl(index, level, rows.length) + "</td></tr>";
-            var pending = !nonnegative(row[0]) || !nonnegative(row[1]) || !nonnegative(row[2]);
-            return "<tr><td>" + (pending ? "待配置" : numberText(row[0]) + (Number(row[1]) === 0 ? " ～ 无上限" : " ～ " + numberText(row[1]))) + "</td><td>" + (pending ? "待配置" : escapeText(row[2]) + "%") + "</td></tr>";
+            if (editing) {
+              var last = index === rows.length - 1;
+              return "<tr><td>" + numeric(row[0], active, level, index, 0, false) + "</td><td>" + (last ? "<span class='open-ended-range'>≥ 下限</span>" : numeric(row[1], active, level, index, 1, false)) +
+                "</td><td>" + numeric(row[2], active, level, index, 2, false) + "</td><td>" + deleteControl(index, level, rows.length) + "</td></tr>";
+            }
+            var pending = !nonnegative(row[0]) || (row[1] !== "" && !nonnegative(row[1])) || !nonnegative(row[2]);
+            return "<tr><td>" + (pending ? "待配置" : row[1] === "" ? "≥ " + numberText(row[0]) : numberText(row[0]) + " ～ " + numberText(row[1])) + "</td><td>" + (pending ? "待配置" : escapeText(row[2]) + "%") + "</td></tr>";
           }).join("");
           return "<article class='tier-block'><div class='tier-block-head'><div><strong class='tier-block-title'>Tier " + (level + 1) + " · " + layerNames[level] +
-            "</strong><p class='tier-level-note'>" + (level === 0 ? "直属邀请关系" : "向下第 " + (level + 1) + " 层邀请关系") + " · 至少一条档位 · 上限为 0 表示无上限</p></div></div><div class='table-scroll'><table class='rules-table'><thead><tr>" +
+            "</strong><p class='tier-level-note'>" + (level === 0 ? "直属邀请关系" : "向下第 " + (level + 1) + " 层邀请关系") + " · 最后一档只需填写下限，展示为 ≥ 下限</p></div></div><div class='table-scroll'><table class='rules-table'><thead><tr>" +
             headings.map(function (label) { return "<th>" + label + "</th>"; }).join("") + "</tr></thead><tbody>" + body + "</tbody></table></div>" +
             (editing ? "<div class='range-add-row'><button class='add-range-button' type='button' data-add-range='" + level + "'>＋ 新增档位</button></div>" : "") + "</article>";
         }).join("");
@@ -316,7 +327,18 @@
       else if (input.dataset.row !== undefined) {
         var rule = draft.rules[active], index = Number(input.dataset.row), column = Number(input.dataset.column);
         var rows = active === "milestone" ? rule.rows : rule.tiers && rule.tiers[Number(input.dataset.level)];
-        if (rows && rows[index] && column >= 0 && column < (active === "milestone" ? 2 : 3)) rows[index][column] = input.value.trim();
+        if (rows && rows[index] && column >= 0 && column < (active === "milestone" ? 2 : 3)) {
+          rows[index][column] = input.value.trim();
+          if (active !== "milestone" && column === 1 && rows[index + 1]) {
+            rows[index + 1][0] = input.value.trim();
+            var nextLower = get("tierBlocks").querySelector("input[data-row='" + (index + 1) + "'][data-column='0'][data-level='" + input.dataset.level + "']");
+            if (nextLower) nextLower.value = input.value.trim();
+          } else if (active !== "milestone" && column === 0 && rows[index - 1]) {
+            rows[index - 1][1] = input.value.trim();
+            var previousUpper = get("tierBlocks").querySelector("input[data-row='" + (index - 1) + "'][data-column='1'][data-level='" + input.dataset.level + "']");
+            if (previousUpper) previousUpper.value = input.value.trim();
+          }
+        }
       }
       get("ruleError").hidden = true;
     });
@@ -327,10 +349,7 @@
       var issue = active === "milestone" ? ruleIssue(active, rule, draft.common.layers) : rangeIssue(rows, titles[active] + " Tier " + (level + 1));
       if (issue && rows.length) { setError("ruleError", issue + " 请先完善当前档位。"); return; }
       var last = rows[rows.length - 1];
-      if (active !== "milestone" && last && Number(last[1]) === 0) {
-        setError("ruleError", "最后一档上限为 0，表示无上限。请先设置大于下限的上限，再新增档位。"); return;
-      }
-      rows.push(active === "milestone" ? [String(last ? Number(last[0]) + 1 : 1), "0", "Rp"] : [last ? last[1] : "0", "0", "0"]);
+      rows.push(active === "milestone" ? [String(last ? Number(last[0]) + 1 : 1), "0", "Rp"] : [last ? last[0] : "0", "", "0"]);
       get("ruleError").hidden = true; renderRules();
       var scope = active === "milestone" ? get("milestoneRows") : get("tierBlocks");
       var field = scope.querySelector("input[data-row='" + (rows.length - 1) + "'][data-column='0']" + (active === "milestone" ? "" : "[data-level='" + level + "']"));
@@ -346,7 +365,9 @@
       var rows = active === "milestone" ? rule.rows : rule.tiers && rule.tiers[Number(button.dataset.level)];
       if (!rows || !Number.isInteger(index) || index < 0 || index >= rows.length) return;
       if (rows.length <= 1) { setError("ruleError", "至少保留一条基础档位，请修改已有数据，不能全部删除。"); return; }
-      rows.splice(index, 1); get("ruleError").hidden = true; renderRules();
+      rows.splice(index, 1);
+      if (active !== "milestone" && index === rows.length) rows[rows.length - 1][1] = "";
+      get("ruleError").hidden = true; renderRules();
     });
     get("ruleForm").addEventListener("submit", function (event) {
       event.preventDefault(); if (mode !== active) return;

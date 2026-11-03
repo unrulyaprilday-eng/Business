@@ -11,7 +11,8 @@
     "\u5145\u503c\u9001\u91d1": 8,
     "\u5468\u5361": 9,
     "\u5e78\u8fd0\u8f6c\u76d8": 10,
-    "\u5956\u52b1\u8f6c\u76d8": 10
+    "\u5956\u52b1\u8f6c\u76d8": 10,
+    "\u6253\u7801\u8d60\u91d1": 11
   };
 
   var CHALLENGE_NAME_OPTIONS = [
@@ -186,6 +187,7 @@
     var isWeeklyCard = template === "\u5468\u5361";
     var isLuckyWheel = template === "\u5e78\u8fd0\u8f6c\u76d8";
     var isRewardWheel = template === "\u5956\u52b1\u8f6c\u76d8";
+    var isFlashRebate = template === "\u6253\u7801\u8d60\u91d1";
 
     document.body.classList.toggle("relief-template-active", isRelief);
     document.body.classList.toggle("share-template-active", isShare);
@@ -197,6 +199,7 @@
     document.body.classList.toggle("weekly-card-template-active", isWeeklyCard);
     document.body.classList.toggle("lucky-wheel-template-active", isLuckyWheel || isRewardWheel);
     document.body.classList.toggle("reward-wheel-template-active", isRewardWheel);
+    document.body.classList.toggle("flash-rebate-template-active", isFlashRebate);
     showPanelState("u6", state);
     syncChallengeFooter(isChallenge || isRedPacket || isMonthlyCheckin || isWeeklyCard || isLuckyWheel || isRewardWheel);
   }
@@ -1765,6 +1768,9 @@
       }
       if (new URLSearchParams(window.location.search).has("rewardWheelId")) {
         select.value = "\u5956\u52b1\u8f6c\u76d8";
+      }
+      if (new URLSearchParams(window.location.search).has("flashRebateId")) {
+        select.value = "\u6253\u7801\u8d60\u91d1";
       }
       bindTemplateSelect(select);
     }
