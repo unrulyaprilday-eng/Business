@@ -151,7 +151,6 @@
       luckyWheelEndTime: "endTime",
       luckyWheelWagerMultiple: "wagerMultiple",
       luckyWheelSort: "sort",
-      luckyWheelBonusDepositAmount: "bonusDepositAmount",
       luckyWheelBonusDays: "bonusDays"
     };
     Object.keys(fields).forEach(function (id) {
@@ -159,6 +158,9 @@
     });
     if (record.bonusExtraMultiplier != null || record.bonusMultiplier != null) {
       byId("luckyWheelBonusExtraMultiplier").value = record.bonusExtraMultiplier == null ? record.bonusMultiplier : record.bonusExtraMultiplier;
+    }
+    if (record.bonusCumulativeDepositAmount != null || record.bonusDepositAmount != null) {
+      byId("luckyWheelBonusDepositAmount").value = record.bonusCumulativeDepositAmount == null ? record.bonusDepositAmount : record.bonusCumulativeDepositAmount;
     }
     byId("luckyWheelLongTerm").checked = record.longTerm === true;
     byId("luckyWheelBonusEnabled").checked = record.bonusEnabled === true;
@@ -174,7 +176,11 @@
     ensureWheelOption(record);
     byId("luckyWheelId").value = record.wheelId || "";
     renderBanner(record.banner || "");
-    byId("luckyWheelDescription").innerHTML = sanitizeDescription(record.descriptionHtml || "");
+    var descriptionHtml = record.descriptionHtml;
+    if (typeof descriptionHtml !== "string" || !descriptionHtml.trim()) {
+      descriptionHtml = byId("luckyWheelDescription").innerHTML;
+    }
+    byId("luckyWheelDescription").innerHTML = sanitizeDescription(descriptionHtml);
     syncLongTerm();
     syncBonusFields();
     updateCharCount();
@@ -212,7 +218,7 @@
     var wagerMultiple = Number(byId("luckyWheelWagerMultiple").value);
     var sortValue = byId("luckyWheelSort").value;
     var bonusEnabled = byId("luckyWheelBonusEnabled").checked;
-    var bonusDepositAmount = byId("luckyWheelBonusDepositAmount").value;
+    var bonusCumulativeDepositAmount = byId("luckyWheelBonusDepositAmount").value;
     var bonusExtraMultiplier = byId("luckyWheelBonusExtraMultiplier").value;
     var bonusDays = byId("luckyWheelBonusDays").value;
     var records;
@@ -224,8 +230,8 @@
       showError("请填写活动名称、标题、有效时间、转盘 ID、Banner 和有效打码倍数；活动结束时间需晚于开始时间。");
       return;
     }
-    if (bonusEnabled && (!Number.isFinite(Number(bonusDepositAmount)) || Number(bonusDepositAmount) <= 0 || !Number.isFinite(Number(bonusExtraMultiplier)) || Number(bonusExtraMultiplier) < 1 || !/^\d+$/.test(bonusDays) || Number(bonusDays) < 1)) {
-      showError("请填写大于 0 的充值门槛、不小于 1 的额外发放倍数和正整数有效天数。");
+    if (bonusEnabled && (!Number.isFinite(Number(bonusCumulativeDepositAmount)) || Number(bonusCumulativeDepositAmount) <= 0 || !Number.isFinite(Number(bonusExtraMultiplier)) || Number(bonusExtraMultiplier) < 1 || !/^\d+$/.test(bonusDays) || Number(bonusDays) < 1)) {
+      showError("请填写大于 0 的累计充值门槛、不小于 1 的额外发放倍数和正整数有效天数。");
       return;
     }
     if (sortValue !== "" && (!Number.isInteger(Number(sortValue)) || Number(sortValue) < 0)) {
@@ -255,7 +261,7 @@
       sort: sortValue === "" ? "0" : String(Number(sortValue)),
       descriptionHtml: getDescriptionHtml(),
       bonusEnabled: bonusEnabled,
-      bonusDepositAmount: bonusEnabled ? String(Number(bonusDepositAmount)) : "",
+      bonusCumulativeDepositAmount: bonusEnabled ? String(Number(bonusCumulativeDepositAmount)) : "",
       bonusExtraMultiplier: bonusEnabled ? String(Number(bonusExtraMultiplier)) : "",
       bonusDays: bonusEnabled ? String(Number(bonusDays)) : "7",
       enabled: true
@@ -383,6 +389,7 @@
       document.execCommand("insertHTML", false, sanitizeDescription(html));
       updateCharCount();
     });
+    updateCharCount();
   }
 
   function bind() {

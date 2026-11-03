@@ -25775,13 +25775,14 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
                   </section>
                   <section class="lw-section">
                     <h3>充值多倍奖励</h3>
-                    <label class="lw-bonus-toggle"><input id="luckyWheelBonusEnabled" type="checkbox">充值达到指定金额后，额外获得转盘奖励</label>
+                    <label class="lw-bonus-toggle"><input id="luckyWheelBonusEnabled" type="checkbox">累计充值达到指定金额后，额外获得转盘奖励</label>
                     <fieldset id="luckyWheelBonusFields" class="lw-bonus-fields" disabled>
-                      <span>充值金额 ≥</span><input id="luckyWheelBonusDepositAmount" type="number" min="0.01" step="0.01" placeholder="请输入充值金额" aria-label="充值金额门槛">
+                      <span>累计充值金额 ≥</span><input id="luckyWheelBonusDepositAmount" type="number" min="0.01" step="0.01" placeholder="请输入累计充值金额" aria-label="累计充值金额门槛">
                       <span>时，额外发放</span><input id="luckyWheelBonusExtraMultiplier" type="number" min="1" step="0.01" placeholder="额外倍数 N" aria-label="额外发放倍数">
                       <span>倍转盘奖励，持续</span><input id="luckyWheelBonusDays" type="number" min="1" step="1" value="7" aria-label="多倍奖励天数"><span>天</span>
                     </fieldset>
-                    <p class="lw-bonus-hint">N 表示在基础奖励之外额外发放的份数。例如 N=2 时，额外发放 2 份相同奖励；有效天数从充值达标时开始计算。</p>
+                    <p class="lw-bonus-hint">按累计充值金额计算，达标后自动开启多倍转盘；开启期间充值进度暂停累计，多倍结束后进度清零并重新累计。</p>
+                    <p class="lw-bonus-hint">有效期默认 7 天，从充值达标时开始计算。N 表示在基础奖励之外额外发放的份数，例如 N=2 时额外发放 2 份相同奖励。</p>
                   </section>
                   <section class="lw-section lw-description-section">
                     <h3>活动展示与说明</h3>
@@ -25792,7 +25793,13 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
                           <button type="button" data-lw-command="bold" title="加粗"><b>B</b></button><button type="button" data-lw-command="underline" title="下划线"><u>U</u></button><button type="button" data-lw-command="italic" title="斜体"><i>I</i></button><button type="button" data-lw-command="strikeThrough" title="删除线"><s>S</s></button><button type="button" data-lw-command="formatBlock" data-lw-value="h3" title="标题">H</button><button type="button" data-lw-command="subscript" title="下标">x₂</button><button type="button" data-lw-command="superscript" title="上标">x²</button><button type="button" data-lw-command="formatBlock" data-lw-value="blockquote" title="引用">❞</button><button type="button" data-lw-command="insertUnorderedList" title="项目符号列表">☷</button><button type="button" data-lw-command="insertOrderedList" title="编号列表">1≡</button><button type="button" data-lw-action="link" title="插入链接">↗</button><button type="button" data-lw-action="image" title="插入图片">▧</button><button type="button" data-lw-action="table" title="插入表格">▦</button><button type="button" data-lw-command="undo" title="撤销">↶</button><button type="button" data-lw-command="redo" title="重做">↷</button><button type="button" data-lw-mode="source" title="源码">‹›</button><button type="button" data-lw-mode="preview" title="预览">◉</button>
                         </div>
                         <input id="luckyWheelDescriptionImage" type="file" accept="image/png,image/jpeg,image/webp" hidden>
-                        <div id="luckyWheelDescription" class="lw-editor-body" contenteditable="true" role="textbox" aria-labelledby="luckyWheelDescriptionLabel" aria-multiline="true"></div>
+                        <div id="luckyWheelDescription" class="lw-editor-body" contenteditable="true" role="textbox" aria-labelledby="luckyWheelDescriptionLabel" aria-multiline="true">
+                          <ol>
+                            <li>The Extra Multiplier Wheel activates automatically once your cumulative deposits reach the configured threshold.</li>
+                            <li>Once activated, the Extra Multiplier Wheel can remain active for up to the configured number of days (7 days by default).</li>
+                            <li>While the Extra Multiplier Wheel is active, deposit progress will no longer accumulate. After the wheel expires, cumulative deposit progress resets to zero and starts accumulating again.</li>
+                          </ol>
+                        </div>
                         <div class="lw-editor-foot"><span id="luckyWheelCharCount">Character Count: 0</span><label><input id="luckyWheelScrollAuto" type="checkbox" checked> Scroll Auto</label></div>
                       </div>
                     </div>

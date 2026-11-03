@@ -24,10 +24,15 @@ body.lucky-wheel-template-active #u3012 {
 
 body.lucky-wheel-template-active #u6 {
   position: fixed !important;
-  inset: 12px !important;
-  width: auto !important;
+  top: 12px !important;
+  right: auto !important;
+  bottom: 12px !important;
+  left: 50% !important;
+  width: calc(100vw - 24px) !important;
+  max-width: 1280px !important;
   height: auto !important;
   overflow: hidden !important;
+  transform: translateX(-50%);
 }
 
 body.lucky-wheel-template-active #u6 > #u6_state10 {
@@ -599,7 +604,13 @@ body.lucky-wheel-template-active #u6 > #u6_state10 {
 
 @media (max-width: 760px) {
   body.lucky-wheel-template-active #u6 {
-    inset: 6px !important;
+    top: 6px !important;
+    right: 6px !important;
+    bottom: 6px !important;
+    left: 6px !important;
+    width: auto !important;
+    max-width: none !important;
+    transform: none;
   }
 
   .lw-scroll {
