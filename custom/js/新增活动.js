@@ -9,7 +9,8 @@
     "\u7ea2\u5305\u96e8": 6,
     "\u6708\u7b7e\u5230\u6d3b\u52a8": 7,
     "\u5145\u503c\u9001\u91d1": 8,
-    "\u5468\u5361": 9
+    "\u5468\u5361": 9,
+    "\u5e78\u8fd0\u8f6c\u76d8": 10
   };
 
   var CHALLENGE_NAME_OPTIONS = [
@@ -182,6 +183,7 @@
     var isMonthlyCheckin = template === "\u6708\u7b7e\u5230\u6d3b\u52a8";
     var isRechargeGift = template === "\u5145\u503c\u9001\u91d1";
     var isWeeklyCard = template === "\u5468\u5361";
+    var isLuckyWheel = template === "\u5e78\u8fd0\u8f6c\u76d8";
 
     document.body.classList.toggle("relief-template-active", isRelief);
     document.body.classList.toggle("share-template-active", isShare);
@@ -191,8 +193,9 @@
     document.body.classList.toggle("month-checkin-template-active", isMonthlyCheckin);
     document.body.classList.toggle("recharge-gift-template-active", isRechargeGift);
     document.body.classList.toggle("weekly-card-template-active", isWeeklyCard);
+    document.body.classList.toggle("lucky-wheel-template-active", isLuckyWheel);
     showPanelState("u6", state);
-    syncChallengeFooter(isChallenge || isRedPacket || isMonthlyCheckin || isWeeklyCard);
+    syncChallengeFooter(isChallenge || isRedPacket || isMonthlyCheckin || isWeeklyCard || isLuckyWheel);
   }
 
   function bindTemplateSelect(select) {
@@ -1753,6 +1756,9 @@
       }
       if (new URLSearchParams(window.location.search).has("weeklyCardId")) {
         select.value = "\u5468\u5361";
+      }
+      if (new URLSearchParams(window.location.search).has("luckyWheelId")) {
+        select.value = "\u5e78\u8fd0\u8f6c\u76d8";
       }
       bindTemplateSelect(select);
     }

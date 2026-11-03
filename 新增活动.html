@@ -10,6 +10,7 @@
     <link href="custom/css/新增活动.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/recharge-gift-activity.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/weekly-card-activity.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/lucky-wheel-activity.css" type="text/css" rel="stylesheet"/>
     <link href="https://demo.axureux.com/fontawesome/5.7.2/pro/css/all.min.css" type="text/css" rel="stylesheet" media="print" onload="this.media='all'"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
     <script src="resources/scripts/axure/axQuery.js"></script>
@@ -25745,6 +25746,64 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
           </div>
         </div>
 
+        <div id="u6_state10" class="panel_state" data-label="幸运转盘" style="visibility: hidden; display: none;" aria-hidden="true">
+          <div id="u6_state10_content" class="panel_state_content">
+            <section class="lw-dialog" role="dialog" aria-modal="true" aria-labelledby="luckyWheelDialogTitle">
+              <header class="lw-head"><h2 id="luckyWheelDialogTitle">新增活动</h2><button class="lw-close" type="button" data-lw-close aria-label="关闭">×</button></header>
+              <div class="lw-scroll">
+                <form id="luckyWheelActivityForm" class="lw-form" novalidate>
+                  <p id="luckyWheelError" class="lw-error" role="alert" hidden></p>
+                  <section class="lw-section lw-base-section">
+                    <h3>基础配置</h3>
+                    <div class="lw-grid">
+                      <label class="lw-field lw-required"><span>活动模板</span><select id="luckyWheelTemplate" required><option value="幸运转盘" selected>幸运转盘</option></select></label>
+                      <label class="lw-field lw-required"><span>活动名称</span><input id="luckyWheelName" type="text" maxlength="40" placeholder="请输入活动名称" required></label>
+                      <label class="lw-field lw-required"><span>活动标题</span><input id="luckyWheelTitle" type="text" maxlength="60" placeholder="请输入活动标题" required></label>
+                      <div class="lw-field"><span id="luckyWheelTargetLabel">中奖金额目标</span><div class="lw-options" role="radiogroup" aria-labelledby="luckyWheelTargetLabel"><label><input type="radio" name="luckyWheelRewardTarget" value="余额" checked>余额</label><label><input type="radio" name="luckyWheelRewardTarget" value="存钱罐">存钱罐</label></div></div>
+                      <div class="lw-field lw-wide lw-required"><span>活动时间</span><div class="lw-time-range"><input id="luckyWheelStartTime" type="datetime-local" aria-label="活动开始时间" required><em>至</em><input id="luckyWheelEndTime" type="datetime-local" aria-label="活动结束时间" required><label class="lw-check"><input id="luckyWheelLongTerm" type="checkbox">长期有效</label></div></div>
+                      <div class="lw-field"><span>抽奖周期</span><div class="lw-options" role="radiogroup" aria-label="抽奖周期"><label><input type="radio" name="luckyWheelDrawPeriod" value="活动期间仅一次" checked>活动期间仅一次</label><label><input type="radio" name="luckyWheelDrawPeriod" value="每日一次">每日一次</label><label><input type="radio" name="luckyWheelDrawPeriod" value="每周一次">每周一次</label></div></div>
+                      <label class="lw-field lw-required"><span>幸运转盘 ID</span><select id="luckyWheelId" required><option value="">请选择转盘</option><option value="e7664329-9bc6-4de0-b608-dfad784a">VIP抽奖</option></select></label>
+                      <div class="lw-field lw-required"><span>活动 Banner</span><div class="lw-upload-wrap">
+                        <input id="luckyWheelBannerFile" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+                        <button id="luckyWheelBannerUpload" class="lw-upload" type="button" aria-label="上传活动 Banner"><span id="luckyWheelBannerHint"><b aria-hidden="true">⇧</b><small>点击或拖拽上传图片</small></span><img id="luckyWheelBannerPreview" alt="活动 Banner 预览" hidden></button>
+                        <button id="luckyWheelBannerRemove" class="lw-link" type="button" hidden>移除图片</button>
+                        <p>Banner 建议尺寸 800 × 400，支持等比例缩放，最大 500KB。</p>
+                      </div></div>
+                      <label class="lw-field lw-required"><span>打码倍数</span><input id="luckyWheelWagerMultiple" type="number" min="0" step="0.01" value="1" required></label>
+                      <label class="lw-field"><span>排序</span><input id="luckyWheelSort" type="number" min="0" step="1" value="0"></label>
+                    </div>
+                  </section>
+                  <section class="lw-section">
+                    <h3>充值多倍奖励</h3>
+                    <label class="lw-bonus-toggle"><input id="luckyWheelBonusEnabled" type="checkbox">充值达到指定金额后，额外获得转盘奖励</label>
+                    <fieldset id="luckyWheelBonusFields" class="lw-bonus-fields" disabled>
+                      <span>充值金额 ≥</span><input id="luckyWheelBonusDepositAmount" type="number" min="0.01" step="0.01" placeholder="请输入充值金额" aria-label="充值金额门槛">
+                      <span>时，额外发放</span><input id="luckyWheelBonusExtraMultiplier" type="number" min="1" step="0.01" placeholder="额外倍数 N" aria-label="额外发放倍数">
+                      <span>倍转盘奖励，持续</span><input id="luckyWheelBonusDays" type="number" min="1" step="1" value="7" aria-label="多倍奖励天数"><span>天</span>
+                    </fieldset>
+                    <p class="lw-bonus-hint">N 表示在基础奖励之外额外发放的份数。例如 N=2 时，额外发放 2 份相同奖励；有效天数从充值达标时开始计算。</p>
+                  </section>
+                  <section class="lw-section lw-description-section">
+                    <h3>活动展示与说明</h3>
+                    <div class="lw-field lw-wide lw-description-field">
+                      <span id="luckyWheelDescriptionLabel">活动描述</span>
+                      <div class="lw-editor">
+                        <div class="lw-editor-toolbar" role="toolbar" aria-label="活动描述格式">
+                          <button type="button" data-lw-command="bold" title="加粗"><b>B</b></button><button type="button" data-lw-command="underline" title="下划线"><u>U</u></button><button type="button" data-lw-command="italic" title="斜体"><i>I</i></button><button type="button" data-lw-command="strikeThrough" title="删除线"><s>S</s></button><button type="button" data-lw-command="formatBlock" data-lw-value="h3" title="标题">H</button><button type="button" data-lw-command="subscript" title="下标">x₂</button><button type="button" data-lw-command="superscript" title="上标">x²</button><button type="button" data-lw-command="formatBlock" data-lw-value="blockquote" title="引用">❞</button><button type="button" data-lw-command="insertUnorderedList" title="项目符号列表">☷</button><button type="button" data-lw-command="insertOrderedList" title="编号列表">1≡</button><button type="button" data-lw-action="link" title="插入链接">↗</button><button type="button" data-lw-action="image" title="插入图片">▧</button><button type="button" data-lw-action="table" title="插入表格">▦</button><button type="button" data-lw-command="undo" title="撤销">↶</button><button type="button" data-lw-command="redo" title="重做">↷</button><button type="button" data-lw-mode="source" title="源码">‹›</button><button type="button" data-lw-mode="preview" title="预览">◉</button>
+                        </div>
+                        <input id="luckyWheelDescriptionImage" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+                        <div id="luckyWheelDescription" class="lw-editor-body" contenteditable="true" role="textbox" aria-labelledby="luckyWheelDescriptionLabel" aria-multiline="true"></div>
+                        <div class="lw-editor-foot"><span id="luckyWheelCharCount">Character Count: 0</span><label><input id="luckyWheelScrollAuto" type="checkbox" checked> Scroll Auto</label></div>
+                      </div>
+                    </div>
+                  </section>
+                </form>
+              </div>
+              <footer class="lw-foot"><button class="lw-button" type="button" data-lw-cancel>取消</button><button class="lw-button lw-primary" type="submit" form="luckyWheelActivityForm">确定</button></footer>
+            </section>
+          </div>
+        </div>
+
       </div>
 
       <!-- Unnamed (矩形) -->
@@ -25803,6 +25862,7 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
     <script src="custom/js/新增活动.js"></script>
     <script src="custom/js/recharge-gift-activity.js"></script>
     <script src="custom/js/weekly-card-activity.js"></script>
+    <script src="custom/js/lucky-wheel-activity.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
   </body>
 </html>

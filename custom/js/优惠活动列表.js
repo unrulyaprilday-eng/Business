@@ -4,6 +4,7 @@
   var MONTHLY_CHECKIN_STORAGE_KEY = 'promoMonthlyCheckinActivities';
   var RECHARGE_GIFT_STORAGE_KEY = 'promoRechargeGiftActivities';
   var WEEKLY_CARD_STORAGE_KEY = 'promoWeeklyCardActivities';
+  var LUCKY_WHEEL_STORAGE_KEY = 'promoLuckyWheelActivities';
   var activeActivityType = '全部类型';
 
   function applyActivityFilter() {
@@ -72,6 +73,73 @@
       tbody.insertBefore(row, tbody.firstChild);
     });
     applyActivityFilter();
+  }
+
+  function getLuckyWheelRecords() {
+    try {
+      var records = JSON.parse(window.localStorage.getItem(LUCKY_WHEEL_STORAGE_KEY) || '[]');
+      if (!Array.isArray(records) || records.some(function (record) {
+        return !record || typeof record !== 'object' || typeof record.id !== 'string' || !record.id;
+      })) { throw new Error('Invalid lucky wheel records'); }
+      return records;
+    } catch (error) {
+      window.alert('幸运转盘活动数据读取失败，请检查浏览器本地存储后重试。');
+      return null;
+    }
+  }
+
+  function setLuckyWheelRecords(records) {
+    try {
+      window.localStorage.setItem(LUCKY_WHEEL_STORAGE_KEY, JSON.stringify(records));
+      return true;
+    } catch (error) {
+      window.alert('幸运转盘活动保存失败，请检查浏览器存储权限或剩余空间后重试。');
+      return false;
+    }
+  }
+
+  function renderLuckyWheelRows(records) {
+    var tbody = document.getElementById('promoActivityRows');
+    if (!tbody) { return; }
+    if (!records) { records = getLuckyWheelRecords(); }
+    if (!records) { return; }
+    Array.prototype.forEach.call(tbody.querySelectorAll('[data-lucky-wheel-id]'), function (row) { row.remove(); });
+    records.slice().reverse().forEach(function (record) {
+      var row = document.createElement('tr');
+      var enabled = record.enabled !== false;
+      var endTime = record.longTerm ? '长期有效' : formatTime(record.endTime);
+      row.setAttribute('data-lucky-wheel-id', record.id);
+      row.innerHTML = [
+        '<td>' + escapeHtml(record.name) + '</td>',
+        '<td>-</td>',
+        '<td title="' + escapeHtml(record.title) + '">' + escapeHtml(record.title) + '</td>',
+        '<td>幸运转盘</td>',
+        '<td>' + escapeHtml(formatTime(record.startTime)) + '</td>',
+        '<td>' + escapeHtml(endTime) + '</td>',
+        '<td>' + escapeHtml(record.wagerMultiple == null ? '1' : record.wagerMultiple) + '</td>',
+        '<td>-</td>',
+        '<td><button class="switch' + (enabled ? ' on' : '') + '" type="button" data-lucky-wheel-toggle role="switch" aria-checked="' + enabled + '" aria-label="' + (enabled ? '关闭活动' : '启用活动') + '"></button></td>',
+        '<td>' + escapeHtml(record.sort == null ? '0' : record.sort) + '</td>',
+        '<td>admin</td>',
+        '<td class="actions"><button type="button" data-lucky-wheel-edit>编辑</button><button class="danger" type="button" data-lucky-wheel-delete>删除</button></td>'
+      ].join('');
+      tbody.insertBefore(row, tbody.firstChild);
+    });
+    applyActivityFilter();
+  }
+
+  function updateLuckyWheelRecord(id) {
+    var records = getLuckyWheelRecords();
+    var record;
+    if (!records) { return; }
+    record = records.find(function (item) { return item.id === id; });
+    if (!record) {
+      window.alert('该幸运转盘活动已不存在，请刷新列表。');
+      renderLuckyWheelRows(records);
+      return;
+    }
+    record.enabled = record.enabled === false;
+    if (setLuckyWheelRecords(records)) { renderLuckyWheelRows(records); }
   }
 
   function updateWeeklyCardRecord(id) {
@@ -374,11 +442,17 @@
     var typeFilter = document.getElementById('activityTypeFilter');
     var searchButton = document.getElementById('searchActivitiesBtn');
     var resetButton = document.getElementById('resetActivitiesBtn');
+    if (typeFilter && !Array.prototype.some.call(typeFilter.options, function (option) { return option.textContent.trim() === '幸运转盘'; })) {
+      var luckyWheelOption = document.createElement('option');
+      luckyWheelOption.textContent = '幸运转盘';
+      typeFilter.appendChild(luckyWheelOption);
+    }
     renderChallengeRows();
     renderRedPacketRows();
     renderMonthlyCheckinRows();
     renderRechargeGiftRows();
     renderWeeklyCardRows();
+    renderLuckyWheelRows();
     applyActivityFilter();
 
     if (searchButton && typeFilter) {
@@ -408,6 +482,7 @@
         var monthlyCheckinRow = event.target.closest('[data-monthly-checkin-id]');
         var rechargeGiftRow = event.target.closest('[data-recharge-gift-id]');
         var weeklyCardRow = event.target.closest('[data-weekly-card-id]');
+        var luckyWheelRow = event.target.closest('[data-lucky-wheel-id]');
         var toggle = event.target.closest('[data-challenge-toggle]');
         var redPacketToggle = event.target.closest('[data-red-packet-toggle]');
         var id;
@@ -425,6 +500,24 @@
             var weeklyCardRecords = getWeeklyCardRecords();
             if (weeklyCardRecords && setWeeklyCardRecords(weeklyCardRecords.filter(function (record) { return record.id !== id; }))) {
               renderWeeklyCardRows();
+            }
+          }
+          return;
+        }
+        if (luckyWheelRow) {
+          id = luckyWheelRow.getAttribute('data-lucky-wheel-id');
+          if (event.target.closest('[data-lucky-wheel-edit]')) {
+            window.location.href = '新增活动.html?luckyWheelId=' + encodeURIComponent(id);
+            return;
+          }
+          if (event.target.closest('[data-lucky-wheel-toggle]')) {
+            updateLuckyWheelRecord(id);
+            return;
+          }
+          if (event.target.closest('[data-lucky-wheel-delete]') && window.confirm('确定删除该幸运转盘活动吗？删除后不可恢复。')) {
+            var luckyWheelRecords = getLuckyWheelRecords();
+            if (luckyWheelRecords && setLuckyWheelRecords(luckyWheelRecords.filter(function (record) { return record.id !== id; }))) {
+              renderLuckyWheelRows();
             }
           }
           return;
@@ -516,7 +609,7 @@
     }
 
     document.querySelectorAll('.switch').forEach(function (toggle) {
-      if (toggle.closest('[data-challenge-id], [data-red-packet-id], [data-monthly-checkin-id], [data-recharge-gift-id], [data-weekly-card-id]')) { return; }
+      if (toggle.closest('[data-challenge-id], [data-red-packet-id], [data-monthly-checkin-id], [data-recharge-gift-id], [data-weekly-card-id], [data-lucky-wheel-id]')) { return; }
       toggle.addEventListener('click', function () { toggle.classList.toggle('on'); });
     });
   });
