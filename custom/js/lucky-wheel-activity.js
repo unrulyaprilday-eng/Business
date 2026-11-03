@@ -1,11 +1,26 @@
 (function () {
   var STORAGE_KEY = "promoLuckyWheelActivities";
+  var REWARD_STORAGE_KEY = "promoRewardWheelActivities";
   var LIST_URL = "优惠活动列表.html";
-  var editId = new URLSearchParams(window.location.search).get("luckyWheelId");
+  var query = new URLSearchParams(window.location.search);
+  var editId = query.get("rewardWheelId") || query.get("luckyWheelId");
   var invalidEdit = false;
+  var imageState = {
+    Banner: { source: "", busy: false, version: 0 },
+    Detail: { source: "", busy: false, version: 0 }
+  };
 
   function byId(id) {
     return document.getElementById(id);
+  }
+
+  function isRewardWheelType() {
+    var template = byId("u3012_input");
+    return Boolean(template && template.value === "\u5956\u52b1\u8f6c\u76d8");
+  }
+
+  function getStorageKey() {
+    return isRewardWheelType() ? REWARD_STORAGE_KEY : STORAGE_KEY;
   }
 
   function each(nodes, callback) {
@@ -13,12 +28,12 @@
   }
 
   function readRecords() {
-    var raw = window.localStorage.getItem(STORAGE_KEY);
+    var raw = window.localStorage.getItem(getStorageKey());
     var records = raw === null ? [] : JSON.parse(raw);
     if (!Array.isArray(records) || records.some(function (record) {
       return !record || typeof record !== "object" || typeof record.id !== "string" || !record.id;
     })) {
-      throw new Error("Invalid lucky wheel activities");
+      throw new Error("Invalid wheel activities");
     }
     return records;
   }
@@ -95,21 +110,83 @@
     byId("luckyWheelBonusFields").disabled = !byId("luckyWheelBonusEnabled").checked;
   }
 
-  function renderBanner(dataUrl) {
-    var preview = byId("luckyWheelBannerPreview");
-    var hint = byId("luckyWheelBannerHint");
-    var remove = byId("luckyWheelBannerRemove");
-    if (!dataUrl) {
+  function syncRewardWheelSection() {
+    var section = byId("rewardWheelChanceSection");
+    var bonusSection = byId("luckyWheelBonusSection");
+    var idLabel = byId("luckyWheelIdLabel");
+    var rewardWheel = isRewardWheelType();
+    if (section) { section.hidden = !rewardWheel; }
+    if (bonusSection) { bonusSection.hidden = rewardWheel; }
+    if (idLabel) { idLabel.textContent = rewardWheel ? "奖励转盘 ID" : "幸运转盘 ID"; }
+  }
+
+  function syncRewardChanceRules() {
+    var enabledMethods = [];
+    each(document.querySelectorAll("#rewardWheelChanceSection [data-reward-rule]"), function (row) {
+      var countInput = row.querySelector("[data-reward-count]");
+      var thresholdInput = row.querySelector("[data-reward-threshold]");
+      var disabled = countInput.value.trim() !== "" && Number(countInput.value) === 0;
+      row.classList.toggle("is-disabled", disabled);
+      thresholdInput.disabled = disabled;
+      thresholdInput.setAttribute("aria-disabled", disabled ? "true" : "false");
+      row.querySelector("[data-reward-disabled-label]").hidden = !disabled;
+      if (countInput.value.trim() !== "" && Number(countInput.value) > 0) {
+        enabledMethods.push(row.querySelector("th[scope='row']").textContent.trim());
+      }
+    });
+    byId("rewardWheelMethodList").textContent = enabledMethods.length ? enabledMethods.join("、") : "无额外获次方式";
+  }
+
+  function renderWheelImage(kind, dataUrl) {
+    var state = imageState[kind];
+    var preview = byId("luckyWheel" + kind + "Preview");
+    var hint = byId("luckyWheel" + kind + "Hint");
+    var remove = byId("luckyWheel" + kind + "Remove");
+    state.source = dataUrl || "";
+    if (!state.source) {
       preview.removeAttribute("src");
       preview.hidden = true;
       hint.hidden = false;
       remove.hidden = true;
       return;
     }
-    preview.src = dataUrl;
+    preview.src = state.source;
     preview.hidden = false;
     hint.hidden = true;
     remove.hidden = false;
+  }
+
+  function uploadWheelImage(kind, file) {
+    if (!file) { return; }
+    var state = imageState[kind];
+    var version = ++state.version;
+    var maxSize = kind === "Banner" ? 500 * 1024 : 1024 * 1024;
+    if (!/^image\/(png|jpeg|webp)$/.test(file.type) || file.size > maxSize) {
+      state.busy = false;
+      showError(kind === "Banner" ? "请上传 JPG、PNG 或 WebP 图片，Banner 最大 500KB。" : "请上传 JPG、PNG 或 WebP 图片，活动内页图最大 1MB。");
+      return;
+    }
+    state.busy = true;
+    var reader = new FileReader();
+    function failImage() {
+      if (version !== state.version) { return; }
+      state.busy = false;
+      showError("图片读取失败，请更换有效图片后重试。");
+    }
+    reader.onerror = failImage;
+    reader.onload = function () {
+      if (version !== state.version) { return; }
+      var image = new Image();
+      image.onerror = failImage;
+      image.onload = function () {
+        if (version !== state.version) { return; }
+        state.busy = false;
+        renderWheelImage(kind, reader.result);
+        clearError();
+      };
+      image.src = reader.result;
+    };
+    reader.readAsDataURL(file);
   }
 
   function ensureWheelOption(record) {
@@ -135,7 +212,10 @@
       select.appendChild(option);
     });
     select.value = source.value || "幸运转盘";
-    source.addEventListener("change", function () { select.value = source.value; });
+    source.addEventListener("change", function () {
+      select.value = source.value;
+      syncRewardWheelSection();
+    });
     select.addEventListener("change", function () {
       if (source.value === select.value) { return; }
       source.value = select.value;
@@ -175,14 +255,24 @@
     });
     ensureWheelOption(record);
     byId("luckyWheelId").value = record.wheelId || "";
-    renderBanner(record.banner || "");
+    renderWheelImage("Banner", record.banner || record.bannerImage || "");
+    renderWheelImage("Detail", record.detailImage || "");
     var descriptionHtml = record.descriptionHtml;
     if (typeof descriptionHtml !== "string" || !descriptionHtml.trim()) {
       descriptionHtml = byId("luckyWheelDescription").innerHTML;
     }
     byId("luckyWheelDescription").innerHTML = sanitizeDescription(descriptionHtml);
+    byId("rewardWheelDefaultCount").value = record.defaultChances == null ? "1" : record.defaultChances;
+    byId("rewardWheelDepositThreshold").value = record.depositThreshold || "";
+    byId("rewardWheelDepositChances").value = record.depositChances == null ? "1" : record.depositChances;
+    byId("rewardWheelTurnoverThreshold").value = record.turnoverThreshold || "";
+    byId("rewardWheelTurnoverChances").value = record.turnoverChances == null ? "1" : record.turnoverChances;
+    byId("rewardWheelInviteThreshold").value = record.inviteThreshold == null ? "1" : record.inviteThreshold;
+    byId("rewardWheelInviteChances").value = record.inviteChances == null ? "1" : record.inviteChances;
+    syncRewardChanceRules();
     syncLongTerm();
     syncBonusFields();
+    syncRewardWheelSection();
     updateCharCount();
   }
 
@@ -204,7 +294,7 @@
 
   function makeId() {
     if (window.crypto && typeof window.crypto.randomUUID === "function") { return window.crypto.randomUUID(); }
-    return "lucky-wheel-" + Date.now() + "-" + Math.random().toString(36).slice(2, 9);
+    return (isRewardWheelType() ? "reward-wheel-" : "lucky-wheel-") + Date.now() + "-" + Math.random().toString(36).slice(2, 9);
   }
 
   function saveActivity() {
@@ -214,18 +304,29 @@
     var endTime = byId("luckyWheelEndTime").value;
     var longTerm = byId("luckyWheelLongTerm").checked;
     var wheelSelect = byId("luckyWheelId");
-    var banner = byId("luckyWheelBannerPreview").getAttribute("src") || "";
+    var banner = imageState.Banner.source;
+    var detailImage = imageState.Detail.source;
     var wagerMultiple = Number(byId("luckyWheelWagerMultiple").value);
     var sortValue = byId("luckyWheelSort").value;
     var bonusEnabled = byId("luckyWheelBonusEnabled").checked;
     var bonusCumulativeDepositAmount = byId("luckyWheelBonusDepositAmount").value;
     var bonusExtraMultiplier = byId("luckyWheelBonusExtraMultiplier").value;
     var bonusDays = byId("luckyWheelBonusDays").value;
+    var rewardWheel = isRewardWheelType();
+    var defaultChances = byId("rewardWheelDefaultCount").value;
+    var depositThreshold = byId("rewardWheelDepositThreshold").value;
+    var depositChances = byId("rewardWheelDepositChances").value;
+    var turnoverThreshold = byId("rewardWheelTurnoverThreshold").value;
+    var turnoverChances = byId("rewardWheelTurnoverChances").value;
+    var inviteThreshold = byId("rewardWheelInviteThreshold").value;
+    var inviteChances = byId("rewardWheelInviteChances").value;
+    var storageKey = getStorageKey();
     var records;
     var record;
     var existingIndex;
 
     if (invalidEdit) { showError("无法编辑该活动，请返回列表重新打开。"); return; }
+    if (imageState.Banner.busy || imageState.Detail.busy) { showError("图片仍在读取，请完成后再保存。"); return; }
     if (!name || !title || !startTime || (!longTerm && !endTime) || (!longTerm && startTime >= endTime) || !wheelSelect.value || !banner || byId("luckyWheelWagerMultiple").value === "" || !Number.isFinite(wagerMultiple) || wagerMultiple < 0) {
       showError("请填写活动名称、标题、有效时间、转盘 ID、Banner 和有效打码倍数；活动结束时间需晚于开始时间。");
       return;
@@ -238,15 +339,24 @@
       showError("排序请输入大于等于 0 的整数。");
       return;
     }
+    var validNonnegativeInteger = function (value) { return /^\d+$/.test(value) && Number(value) >= 0; };
+    if (rewardWheel && (defaultChances === "" || !validNonnegativeInteger(defaultChances) ||
+        !validNonnegativeInteger(depositChances) || (Number(depositChances) > 0 && (!Number.isFinite(Number(depositThreshold)) || Number(depositThreshold) <= 0)) ||
+        !validNonnegativeInteger(turnoverChances) || (Number(turnoverChances) > 0 && (!Number.isFinite(Number(turnoverThreshold)) || Number(turnoverThreshold) <= 0)) ||
+        !validNonnegativeInteger(inviteChances) || (Number(inviteChances) > 0 && (!/^\d+$/.test(inviteThreshold) || Number(inviteThreshold) < 1)))) {
+      showError("增加次数需为大于或等于 0 的整数；启用充值或打码时须填写正数门槛，启用邀请时须填写正整数人数。");
+      return;
+    }
 
     try {
       records = readRecords();
     } catch (error) {
-      showError("幸运转盘活动数据读取失败，请检查浏览器本地存储后重试。");
+      showError((rewardWheel ? "奖励转盘" : "幸运转盘") + "活动数据读取失败，请检查浏览器本地存储后重试。");
       return;
     }
     record = {
       id: editId || makeId(),
+      activityType: rewardWheel ? "奖励转盘" : "幸运转盘",
       name: name,
       title: title,
       startTime: startTime,
@@ -257,6 +367,7 @@
       wheelId: wheelSelect.value,
       wheelName: wheelSelect.options[wheelSelect.selectedIndex].textContent,
       banner: banner,
+      detailImage: detailImage,
       wagerMultiple: String(wagerMultiple),
       sort: sortValue === "" ? "0" : String(Number(sortValue)),
       descriptionHtml: getDescriptionHtml(),
@@ -264,6 +375,13 @@
       bonusCumulativeDepositAmount: bonusEnabled ? String(Number(bonusCumulativeDepositAmount)) : "",
       bonusExtraMultiplier: bonusEnabled ? String(Number(bonusExtraMultiplier)) : "",
       bonusDays: bonusEnabled ? String(Number(bonusDays)) : "7",
+      defaultChances: rewardWheel ? String(Number(defaultChances)) : undefined,
+      depositThreshold: rewardWheel && Number(depositChances) > 0 ? String(Number(depositThreshold)) : (rewardWheel ? "" : undefined),
+      depositChances: rewardWheel ? String(Number(depositChances)) : undefined,
+      turnoverThreshold: rewardWheel && Number(turnoverChances) > 0 ? String(Number(turnoverThreshold)) : (rewardWheel ? "" : undefined),
+      turnoverChances: rewardWheel ? String(Number(turnoverChances)) : undefined,
+      inviteThreshold: rewardWheel && Number(inviteChances) > 0 ? String(Number(inviteThreshold)) : (rewardWheel ? "" : undefined),
+      inviteChances: rewardWheel ? String(Number(inviteChances)) : undefined,
       enabled: true
     };
     existingIndex = records.findIndex(function (item) { return item.id === record.id; });
@@ -272,12 +390,12 @@
       records[existingIndex] = record;
     }
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+      window.localStorage.setItem(storageKey, JSON.stringify(records));
     } catch (error) {
-      showError("幸运转盘活动保存失败，请检查浏览器存储权限或剩余空间后重试。");
+      showError((rewardWheel ? "奖励转盘" : "幸运转盘") + "活动保存失败，请检查浏览器存储权限或剩余空间后重试。");
       return;
     }
-    window.location.href = LIST_URL + "?luckyWheelSaved=1";
+    window.location.href = LIST_URL + (rewardWheel ? "?rewardWheelSaved=1" : "?luckyWheelSaved=1");
   }
 
   function closeForm() {
@@ -397,6 +515,7 @@
     if (!form || form.getAttribute("data-lw-bound") === "true") { return; }
     form.setAttribute("data-lw-bound", "true");
     bindTemplateSelect();
+    syncRewardWheelSection();
     byId("luckyWheelLongTerm").addEventListener("change", syncLongTerm);
     byId("luckyWheelBonusEnabled").addEventListener("change", syncBonusFields);
     byId("luckyWheelBannerUpload").addEventListener("click", function () { byId("luckyWheelBannerFile").click(); });
@@ -443,10 +562,10 @@
       try {
         var record = readRecords().find(function (item) { return item.id === editId; });
         if (record) { fillForm(record); }
-        else { invalidEdit = true; showError("该幸运转盘活动已不存在，请返回列表刷新后重试。"); }
+        else { invalidEdit = true; showError("该转盘活动已不存在，请返回列表刷新后重试。"); }
       } catch (error) {
         invalidEdit = true;
-        showError("幸运转盘活动数据读取失败，请检查浏览器本地存储后重试。");
+        showError((isRewardWheelType() ? "奖励转盘" : "幸运转盘") + "活动数据读取失败，请检查浏览器本地存储后重试。");
       }
     }
     [byId("u4"), byId("u5"), byId("u1")].forEach(function (button, index) {

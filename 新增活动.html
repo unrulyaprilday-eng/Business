@@ -11,6 +11,7 @@
     <link href="custom/css/recharge-gift-activity.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/weekly-card-activity.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/lucky-wheel-activity.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/reward-wheel-activity.css" type="text/css" rel="stylesheet"/>
     <link href="https://demo.axureux.com/fontawesome/5.7.2/pro/css/all.min.css" type="text/css" rel="stylesheet" media="print" onload="this.media='all'"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
     <script src="resources/scripts/axure/axQuery.js"></script>
@@ -25762,18 +25763,26 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
                       <div class="lw-field"><span id="luckyWheelTargetLabel">中奖金额目标</span><div class="lw-options" role="radiogroup" aria-labelledby="luckyWheelTargetLabel"><label><input type="radio" name="luckyWheelRewardTarget" value="余额" checked>余额</label><label><input type="radio" name="luckyWheelRewardTarget" value="存钱罐">存钱罐</label></div></div>
                       <div class="lw-field lw-wide lw-required"><span>活动时间</span><div class="lw-time-range"><input id="luckyWheelStartTime" type="datetime-local" aria-label="活动开始时间" required><em>至</em><input id="luckyWheelEndTime" type="datetime-local" aria-label="活动结束时间" required><label class="lw-check"><input id="luckyWheelLongTerm" type="checkbox">长期有效</label></div></div>
                       <div class="lw-field"><span>抽奖周期</span><div class="lw-options" role="radiogroup" aria-label="抽奖周期"><label><input type="radio" name="luckyWheelDrawPeriod" value="活动期间仅一次" checked>活动期间仅一次</label><label><input type="radio" name="luckyWheelDrawPeriod" value="每日一次">每日一次</label><label><input type="radio" name="luckyWheelDrawPeriod" value="每周一次">每周一次</label></div></div>
-                      <label class="lw-field lw-required"><span>幸运转盘 ID</span><select id="luckyWheelId" required><option value="">请选择转盘</option><option value="e7664329-9bc6-4de0-b608-dfad784a">VIP抽奖</option></select></label>
-                      <div class="lw-field lw-required"><span>活动 Banner</span><div class="lw-upload-wrap">
-                        <input id="luckyWheelBannerFile" type="file" accept="image/png,image/jpeg,image/webp" hidden>
-                        <button id="luckyWheelBannerUpload" class="lw-upload" type="button" aria-label="上传活动 Banner"><span id="luckyWheelBannerHint"><b aria-hidden="true">⇧</b><small>点击或拖拽上传图片</small></span><img id="luckyWheelBannerPreview" alt="活动 Banner 预览" hidden></button>
-                        <button id="luckyWheelBannerRemove" class="lw-link" type="button" hidden>移除图片</button>
-                        <p>Banner 建议尺寸 800 × 400，支持等比例缩放，最大 500KB。</p>
-                      </div></div>
+                      <label class="lw-field lw-required"><span id="luckyWheelIdLabel">幸运转盘 ID</span><select id="luckyWheelId" required><option value="">请选择转盘</option><option value="e7664329-9bc6-4de0-b608-dfad784a">VIP抽奖</option></select></label>
                       <label class="lw-field lw-required"><span>打码倍数</span><input id="luckyWheelWagerMultiple" type="number" min="0" step="0.01" value="1" required></label>
                       <label class="lw-field"><span>排序</span><input id="luckyWheelSort" type="number" min="0" step="1" value="0"></label>
                     </div>
                   </section>
-                  <section class="lw-section">
+                  <section id="rewardWheelChanceSection" class="lw-section rw-chance-section" hidden>
+                    <h3>抽奖次数配置</h3>
+                    <div class="rw-default-chances"><label for="rewardWheelDefaultCount">参与活动默认次数</label><input id="rewardWheelDefaultCount" type="number" min="0" step="1" value="1"><span>次</span></div>
+                    <div class="rw-rule-wrap"><table class="rw-rule-table">
+                      <thead><tr><th>获取方式</th><th>达成条件</th><th>增加次数</th></tr></thead>
+                      <tbody>
+                        <tr data-reward-rule="deposit"><th scope="row">充值</th><td>每累计充值达到 <input id="rewardWheelDepositThreshold" data-reward-threshold type="number" min="0.01" step="0.01" placeholder="请输入金额"> 时</td><td>增加 <input id="rewardWheelDepositChances" data-reward-count type="number" min="0" step="1" value="1"> 次 <small class="rw-rule-disabled" data-reward-disabled-label hidden>未启用</small></td></tr>
+                        <tr data-reward-rule="turnover"><th scope="row">打码</th><td>每累计有效打码达到 <input id="rewardWheelTurnoverThreshold" data-reward-threshold type="number" min="0.01" step="0.01" placeholder="请输入金额"> 时</td><td>增加 <input id="rewardWheelTurnoverChances" data-reward-count type="number" min="0" step="1" value="1"> 次 <small class="rw-rule-disabled" data-reward-disabled-label hidden>未启用</small></td></tr>
+                        <tr data-reward-rule="invite"><th scope="row">成功邀请</th><td>每成功邀请 <input id="rewardWheelInviteThreshold" data-reward-threshold type="number" min="1" step="1" value="1"> 人</td><td>增加 <input id="rewardWheelInviteChances" data-reward-count type="number" min="0" step="1" value="1"> 次 <small class="rw-rule-disabled" data-reward-disabled-label hidden>未启用</small></td></tr>
+                      </tbody>
+                    </table></div>
+                    <p class="rw-chance-hint">达到设定的充值金额、有效打码金额或成功邀请人数后增加抽奖次数；增加次数设为 0 时关闭该方式。</p>
+                    <p class="rw-method-preview">前端展示方式：<strong data-reward-method-list>充值、打码、成功邀请</strong></p>
+                  </section>
+                  <section id="luckyWheelBonusSection" class="lw-section">
                     <h3>充值多倍奖励</h3>
                     <label class="lw-bonus-toggle"><input id="luckyWheelBonusEnabled" type="checkbox">累计充值达到指定金额后，额外获得转盘奖励</label>
                     <fieldset id="luckyWheelBonusFields" class="lw-bonus-fields" disabled>
@@ -25786,6 +25795,26 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
                   </section>
                   <section class="lw-section lw-description-section">
                     <h3>活动展示与说明</h3>
+                    <div class="rw-image-grid">
+                      <div class="lw-field lw-required rw-image-field">
+                        <span>活动 Banner</span>
+                        <div class="lw-upload-wrap">
+                          <input id="luckyWheelBannerFile" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+                          <button id="luckyWheelBannerUpload" class="lw-upload" type="button" aria-label="上传活动 Banner"><span id="luckyWheelBannerHint"><b aria-hidden="true">⇧</b><small>点击或拖拽上传图片</small></span><img id="luckyWheelBannerPreview" alt="活动 Banner 预览" hidden></button>
+                          <button id="luckyWheelBannerRemove" class="lw-link" type="button" hidden>移除图片</button>
+                          <p>建议尺寸 800 × 400，支持 JPG、PNG、WebP，最大 500KB。</p>
+                        </div>
+                      </div>
+                      <div class="lw-field rw-image-field">
+                        <span>活动内页图</span>
+                        <div class="lw-upload-wrap">
+                          <input id="luckyWheelDetailFile" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+                          <button id="luckyWheelDetailUpload" class="lw-upload" type="button" aria-label="上传活动内页图"><span id="luckyWheelDetailHint"><b aria-hidden="true">⇧</b><small>点击或拖拽上传图片</small></span><img id="luckyWheelDetailPreview" alt="活动内页图预览" hidden></button>
+                          <button id="luckyWheelDetailRemove" class="lw-link" type="button" hidden>移除图片</button>
+                          <p>支持 JPG、PNG、WebP，最大 1MB。</p>
+                        </div>
+                      </div>
+                    </div>
                     <div class="lw-field lw-wide lw-description-field">
                       <span id="luckyWheelDescriptionLabel">活动描述</span>
                       <div class="lw-editor">
@@ -25843,6 +25872,7 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
           <option class="u3012_input_option" value="连续挑战">连续挑战</option>
           <option class="u3012_input_option" value="红包雨">红包雨</option>
           <option class="u3012_input_option" value="幸运转盘">幸运转盘</option>
+          <option class="u3012_input_option" value="奖励转盘">奖励转盘</option>
           <option class="u3012_input_option" value="拼多多">拼多多</option>
         </select>
       </div>

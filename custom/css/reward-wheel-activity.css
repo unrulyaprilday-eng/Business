@@ -1,0 +1,142 @@
+[hidden] {
+  display: none !important;
+}
+
+.rw-chance-section {
+  color: #4d5f80;
+}
+
+.rw-default-chances {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px 106px;
+}
+
+.rw-default-chances input,
+.rw-rule-table input {
+  box-sizing: border-box;
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid #d4deef;
+  border-radius: 6px;
+  background: #fff;
+  color: #4d5f80;
+  font: inherit;
+}
+
+.rw-default-chances input {
+  width: 112px;
+}
+
+.rw-rule-wrap {
+  margin-left: 106px;
+  overflow-x: auto;
+  border: 1px solid #e0e7f3;
+}
+
+.rw-rule-table {
+  width: 100%;
+  min-width: 780px;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.rw-rule-table th,
+.rw-rule-table td {
+  height: 46px;
+  padding: 6px 12px;
+  border: 1px solid #e8edf5;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.rw-rule-table thead th {
+  height: 34px;
+  background: #f5f7fb;
+  color: #596b88;
+  font-weight: 600;
+}
+
+.rw-rule-table tbody th {
+  width: 120px;
+  background: #fbfcfe;
+  font-weight: 500;
+}
+
+.rw-rule-table input {
+  width: 128px;
+  margin: 0 5px;
+}
+
+.rw-rule-table td:last-child input {
+  width: 88px;
+}
+
+.rw-default-chances input:focus,
+.rw-rule-table input:focus {
+  border-color: #7395ff;
+  outline: 2px solid #edf2ff;
+}
+
+.rw-chance-hint {
+  margin: 10px 0 0 106px;
+  color: #8591a5;
+  line-height: 20px;
+}
+
+.rw-method-preview {
+  margin: 8px 0 0 106px;
+  color: #68778d;
+}
+
+.rw-method-preview strong {
+  color: #3264d8;
+  font-weight: 600;
+}
+
+.rw-rule-table tr.is-disabled {
+  background: #f7f8fa;
+  color: #9aa4b2;
+}
+
+.rw-rule-table tr.is-disabled input {
+  background: #f1f2f4;
+  color: #a6afbb;
+  cursor: not-allowed;
+}
+
+.rw-rule-disabled {
+  margin-left: 4px;
+  color: #9aa4b2;
+  font-size: 11px;
+}
+
+.rw-image-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 32px;
+  margin-bottom: 28px;
+}
+
+.rw-image-field {
+  align-items: start;
+}
+
+.rw-image-field > span:first-child {
+  padding-top: 8px;
+}
+
+@media (max-width: 760px) {
+  .rw-default-chances,
+  .rw-rule-wrap,
+  .rw-chance-hint,
+  .rw-method-preview {
+    margin-left: 0;
+  }
+
+  .rw-image-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+}
