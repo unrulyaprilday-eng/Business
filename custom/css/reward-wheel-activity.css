@@ -100,7 +100,7 @@
   color: #9aa4b2;
 }
 
-.rw-rule-table tr.is-disabled input {
+.rw-rule-table tr.is-disabled [data-reward-threshold] {
   background: #f1f2f4;
   color: #a6afbb;
   cursor: not-allowed;

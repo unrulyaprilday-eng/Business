@@ -516,37 +516,35 @@
     form.setAttribute("data-lw-bound", "true");
     bindTemplateSelect();
     syncRewardWheelSection();
+    syncRewardChanceRules();
     byId("luckyWheelLongTerm").addEventListener("change", syncLongTerm);
     byId("luckyWheelBonusEnabled").addEventListener("change", syncBonusFields);
-    byId("luckyWheelBannerUpload").addEventListener("click", function () { byId("luckyWheelBannerFile").click(); });
-    byId("luckyWheelBannerRemove").addEventListener("click", function () {
-      byId("luckyWheelBannerFile").value = "";
-      renderBanner("");
-      clearError();
+    each(form.querySelectorAll("[data-reward-count]"), function (input) {
+      input.addEventListener("input", syncRewardChanceRules);
+      input.addEventListener("change", syncRewardChanceRules);
     });
-    byId("luckyWheelBannerFile").addEventListener("change", function () {
-      var file = this.files && this.files[0];
-      var reader;
-      if (!file) { return; }
-      if (!/^image\/(png|jpeg|webp)$/.test(file.type) || file.size > 500 * 1024) {
-        showError(file.size > 500 * 1024 ? "Banner 图片不能超过 500KB。" : "请使用 PNG、JPG 或 WebP 图片。");
-        this.value = "";
-        return;
-      }
-      reader = new FileReader();
-      reader.onload = function () { renderBanner(reader.result); clearError(); };
-      reader.onerror = function () { showError("Banner 图片读取失败，请重试。"); };
-      reader.readAsDataURL(file);
-    });
-    byId("luckyWheelBannerUpload").addEventListener("dragover", function (event) { event.preventDefault(); });
-    byId("luckyWheelBannerUpload").addEventListener("drop", function (event) {
-      var file = event.dataTransfer && event.dataTransfer.files[0];
-      event.preventDefault();
-      if (!file) { return; }
-      var transfer = new DataTransfer();
-      transfer.items.add(file);
-      byId("luckyWheelBannerFile").files = transfer.files;
-      byId("luckyWheelBannerFile").dispatchEvent(new Event("change", { bubbles: true }));
+    ["Banner", "Detail"].forEach(function (kind) {
+      var input = byId("luckyWheel" + kind + "File");
+      var upload = byId("luckyWheel" + kind + "Upload");
+      var remove = byId("luckyWheel" + kind + "Remove");
+      upload.addEventListener("click", function () { input.click(); });
+      upload.addEventListener("dragover", function (event) { event.preventDefault(); });
+      upload.addEventListener("drop", function (event) {
+        var file = event.dataTransfer && event.dataTransfer.files[0];
+        event.preventDefault();
+        if (file) { uploadWheelImage(kind, file); }
+      });
+      input.addEventListener("change", function () {
+        uploadWheelImage(kind, input.files && input.files[0]);
+        input.value = "";
+      });
+      remove.addEventListener("click", function () {
+        imageState[kind].version++;
+        imageState[kind].busy = false;
+        input.value = "";
+        renderWheelImage(kind, "");
+        clearError();
+      });
     });
     form.addEventListener("submit", function (event) { event.preventDefault(); saveActivity(); });
     form.addEventListener("input", clearError);
