@@ -4,46 +4,254 @@
   var STORAGE_KEY = 'promoFlashRebateActivities';
   var LIST_URL = '优惠活动列表.html';
   var MAX_TIERS = 10;
-  var GAME_TYPES = {
-    '电子': [
-      ['Gates of Olympus', 'Pragmatic Play'], ['Sweet Bonanza', 'Pragmatic Play'], ['Starlight Princess', 'Pragmatic Play'], ['Sugar Rush', 'Pragmatic Play'], ['Mahjong Ways 2', 'PG Soft'],
-      ['Fortune Tiger', 'PG Soft'], ['Lucky Neko', 'PG Soft'], ['Treasures of Aztec', 'PG Soft'], ['Wild Ape #1', 'JILI'], ['Dragon Hatch', 'JDB']
-    ],
-    '捕鱼': [
-      ['Ocean King 3', 'JILI'], ['Mega Fishing', 'JDB'], ['Fishing War', 'CQ9'], ['Royal Fishing', 'JILI'], ['Dragon Fishing', 'JDB'],
-      ['Ocean Monster', 'JILI'], ['Fishing God', 'CQ9'], ['Golden Toad', 'JDB'], ['Happy Fishing', 'JILI'], ['King of Fishing', 'Habanero']
-    ],
-    '棋牌': [
-      ['Mahjong Ways', 'PG Soft'], ['Mahjong Ways 2', 'PG Soft'], ['Texas Hold’em', 'JILI'], ['Dragon Tiger', 'JDB'], ['Baccarat Deluxe', 'Habanero'],
-      ['Andar Bahar', 'JILI'], ['Sic Bo', 'CQ9'], ['Teen Patti', 'JDB'], ['Golden Baccarat', 'Habanero'], ['Bull Fight', 'JILI']
-    ],
-    '彩票': [
-      ['Lucky Keno', 'JILI'], ['Keno 5', 'JDB'], ['Speed Lottery', 'CQ9'], ['Lucky Numbers', 'Habanero'], ['Bingo 88', 'JILI'],
-      ['Golden Keno', 'JDB'], ['Super Lotto', 'CQ9'], ['Quick Pick', 'JILI'], ['Number Match', 'Habanero'], ['Daily Draw', 'JDB']
-    ],
-    '体育电竞': [
-      ['Football Studio', 'Evolution'], ['Penalty Shootout', 'JILI'], ['Basketball Star', 'JDB'], ['Virtual Football', 'Pragmatic Play'], ['Esports Battle', 'JILI'],
-      ['Racing League', 'CQ9'], ['Boxing King', 'JDB'], ['Sports Roulette', 'Evolution'], ['Cyber Goal', 'Habanero'], ['Virtual Cup', 'Pragmatic Play']
-    ]
+  var selectedGames = {};
+  var imageState = {
+    Banner: { source: '', busy: false, version: 0 },
+    Detail: { source: '', busy: false, version: 0 }
   };
-  var PROVIDERS = ['Pragmatic Play', 'PG Soft', 'JILI', 'JDB', 'CQ9', 'Habanero', 'Evolution'];
+  var descriptionImageBusy = false;
+  var descriptionImageVersion = 0;
+  var GAME_CATALOG = [
+    { id: 'slot-yellowbat::tigerboom', name: 'Tiger Boom' },
+    { id: '60096', name: 'Crash Touchdown' },
+    { id: 'wg_3025', name: 'Black Myth: Wukong' },
+    { id: 'wg_3032', name: 'Mahjong Ways 2' },
+    { id: 'wg_3031', name: 'Fortune Tiger' },
+    { id: 'wg_3029', name: 'Mahjong Ways' },
+    { id: 'wg_3028', name: "Dragon's Treasure2" }
+  ].map(function (game) { return { id: game.id, name: game.name, key: game.id }; });
 
   function byId(id) { return document.getElementById(id); }
   function all(selector, root) { return Array.prototype.slice.call((root || document).querySelectorAll(selector)); }
   function escapeHtml(value) {
     return String(value == null ? '' : value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
-  function gameKey(item) { return item[0] + '|' + item[1]; }
-  function allGames() {
-    var seen = {};
-    return Object.keys(GAME_TYPES).reduce(function (games, type) {
-      GAME_TYPES[type].forEach(function (item) {
-        var key = gameKey(item);
-        if (!seen[key]) { games.push({ name: item[0], provider: item[1], type: type, key: key }); seen[key] = true; }
+  function sanitizeDescription(html) {
+    var template = document.createElement('template');
+    var allowedTags = 'P BR DIV SPAN STRONG B EM I U S DEL H1 H2 H3 H4 H5 H6 BLOCKQUOTE UL OL LI A IMG TABLE THEAD TBODY TR TD TH'.split(' ');
+    var removedTags = 'SCRIPT STYLE IFRAME OBJECT EMBED SVG MATH LINK META'.split(' ');
+    template.innerHTML = String(html || '');
+    Array.prototype.forEach.call(template.content.querySelectorAll('*'), function (element) {
+      var tag = element.tagName;
+      var parent = element.parentNode;
+      if (!parent) { return; }
+      if (removedTags.indexOf(tag) !== -1) { parent.removeChild(element); return; }
+      if (allowedTags.indexOf(tag) === -1) {
+        while (element.firstChild) { parent.insertBefore(element.firstChild, element); }
+        parent.removeChild(element);
+        return;
+      }
+      Array.prototype.slice.call(element.attributes).forEach(function (attribute) {
+        var name = attribute.name.toLowerCase();
+        var value = attribute.value.trim();
+        var allowed = (tag === 'A' && name === 'href') ||
+          (tag === 'IMG' && (name === 'src' || name === 'alt' || name === 'title')) ||
+          ((tag === 'TD' || tag === 'TH') && (name === 'colspan' || name === 'rowspan'));
+        if (!allowed || /^\s*javascript:/i.test(value)) { element.removeAttribute(attribute.name); return; }
+        if (tag === 'A' && name === 'href' && !/^(https?:\/\/|mailto:|\/|\.\.?\/|#)/i.test(value)) { element.removeAttribute(attribute.name); return; }
+        if (tag === 'IMG' && name === 'src' && !/^data:image\/(png|jpeg|webp);base64,/i.test(value)) { element.removeAttribute(attribute.name); }
       });
-      return games;
-    }, []);
+    });
+    return template.innerHTML;
   }
+  function getDescriptionHtml() {
+    var editor = byId('fraDescription');
+    return sanitizeDescription(editor.classList.contains('is-source') ? editor.textContent : editor.innerHTML);
+  }
+  function updateDescriptionCount() {
+    var editor = byId('fraDescription');
+    if (!editor) { return; }
+    var text = editor.classList.contains('is-source') ? editor.textContent : editor.innerText;
+    byId('fraDescriptionCharCount').textContent = '字符数：' + String(text || '').replace(/\s/g, '').length;
+  }
+  function renderActivityImage(kind, dataUrl) {
+    var state = imageState[kind];
+    var prefix = 'fra' + kind;
+    var preview = byId(prefix + 'Preview');
+    var hint = byId(prefix + 'Hint');
+    var remove = byId(prefix + 'Remove');
+    state.source = dataUrl || '';
+    if (!state.source) {
+      preview.removeAttribute('src');
+      preview.hidden = true;
+      hint.hidden = false;
+      remove.hidden = true;
+      return;
+    }
+    preview.src = state.source;
+    preview.hidden = false;
+    hint.hidden = true;
+    remove.hidden = false;
+  }
+  function uploadActivityImage(kind, file) {
+    if (!file) { return; }
+    var state = imageState[kind];
+    var version = ++state.version;
+    var maxSize = kind === 'Banner' ? 500 * 1024 : 1024 * 1024;
+    if (!/^image\/(png|jpeg|webp)$/.test(file.type) || file.size > maxSize) {
+      state.busy = false;
+      setError(kind === 'Banner' ? '请上传 JPG、PNG 或 WebP 图片，Banner 最大 500KB。' : '请上传 JPG、PNG 或 WebP 图片，活动内页图最大 1MB。');
+      return;
+    }
+    state.busy = true;
+    var reader = new FileReader();
+    function failImage() {
+      if (version !== state.version) { return; }
+      state.busy = false;
+      setError('图片读取失败，请更换有效图片后重试。');
+    }
+    reader.onerror = failImage;
+    reader.onload = function () {
+      if (version !== state.version) { return; }
+      var image = new Image();
+      image.onerror = failImage;
+      image.onload = function () {
+        if (version !== state.version) { return; }
+        state.busy = false;
+        renderActivityImage(kind, reader.result);
+        clearError();
+      };
+      image.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+  function bindActivityImages(form) {
+    ['Banner', 'Detail'].forEach(function (kind) {
+      var prefix = 'fra' + kind;
+      var input = byId(prefix + 'File');
+      var upload = byId(prefix + 'Upload');
+      var remove = byId(prefix + 'Remove');
+      upload.addEventListener('click', function () { input.click(); });
+      upload.addEventListener('dragover', function (event) { event.preventDefault(); });
+      upload.addEventListener('drop', function (event) {
+        var file = event.dataTransfer && event.dataTransfer.files[0];
+        event.preventDefault();
+        if (file) { uploadActivityImage(kind, file); }
+      });
+      input.addEventListener('change', function () {
+        uploadActivityImage(kind, input.files && input.files[0]);
+        input.value = '';
+      });
+      remove.addEventListener('click', function () {
+        imageState[kind].version += 1;
+        imageState[kind].busy = false;
+        input.value = '';
+        renderActivityImage(kind, '');
+        clearError();
+      });
+    });
+  }
+  function insertDescriptionImage(file, editor) {
+    if (!file) { return; }
+    var version = ++descriptionImageVersion;
+    if (!/^image\/(png|jpeg|webp)$/.test(file.type) || file.size > 1024 * 1024) {
+      descriptionImageBusy = false;
+      setError(file.size > 1024 * 1024 ? '描述图片不能超过 1MB。' : '请使用 PNG、JPG 或 WebP 图片。');
+      return;
+    }
+    descriptionImageBusy = true;
+    var reader = new FileReader();
+    reader.onload = function () {
+      if (version !== descriptionImageVersion) { return; }
+      descriptionImageBusy = false;
+      editor.focus();
+      document.execCommand('insertImage', false, reader.result);
+      updateDescriptionCount();
+      clearError();
+    };
+    reader.onerror = function () {
+      if (version !== descriptionImageVersion) { return; }
+      descriptionImageBusy = false;
+      setError('图片读取失败，请重试。');
+    };
+    reader.readAsDataURL(file);
+  }
+  function bindDescriptionEditor(form) {
+    var editor = byId('fraDescription');
+    var imageInput = byId('fraDescriptionImage');
+    var sourceMode = false;
+    var previewMode = false;
+    Array.prototype.forEach.call(form.querySelectorAll('[data-fra-command]'), function (button) {
+      button.addEventListener('mousedown', function (event) { event.preventDefault(); });
+      button.addEventListener('click', function () {
+        if (sourceMode || previewMode) { return; }
+        editor.focus();
+        document.execCommand(button.getAttribute('data-fra-command'), false, button.getAttribute('data-fra-value') || null);
+        updateDescriptionCount();
+      });
+    });
+    Array.prototype.forEach.call(form.querySelectorAll('[data-fra-action]'), function (button) {
+      button.addEventListener('mousedown', function (event) { event.preventDefault(); });
+      button.addEventListener('click', function () {
+        if (sourceMode || previewMode) { return; }
+        var action = button.getAttribute('data-fra-action');
+        if (action === 'link') {
+          var url = window.prompt('请输入链接地址');
+          if (!url || !/^(https?:\/\/|mailto:)/i.test(url)) { return; }
+          editor.focus();
+          document.execCommand('createLink', false, url);
+        } else if (action === 'image') {
+          imageInput.click();
+        } else if (action === 'table') {
+          editor.focus();
+          document.execCommand('insertHTML', false, '<table><tbody><tr><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td></tr></tbody></table><p><br></p>');
+        }
+        updateDescriptionCount();
+      });
+    });
+    Array.prototype.forEach.call(form.querySelectorAll('[data-fra-mode]'), function (button) {
+      button.addEventListener('mousedown', function (event) { event.preventDefault(); });
+      button.addEventListener('click', function () {
+        var mode = button.getAttribute('data-fra-mode');
+        if (mode === 'source') {
+          if (previewMode) {
+            previewMode = false;
+            editor.classList.remove('is-preview');
+            editor.setAttribute('contenteditable', 'true');
+          }
+          if (sourceMode) {
+            editor.innerHTML = sanitizeDescription(editor.textContent);
+            editor.classList.remove('is-source');
+            sourceMode = false;
+          } else {
+            editor.textContent = editor.innerHTML;
+            editor.classList.add('is-source');
+            sourceMode = true;
+          }
+          editor.setAttribute('contenteditable', 'true');
+          button.setAttribute('aria-pressed', String(sourceMode));
+          var previewButton = form.querySelector('[data-fra-mode="preview"]');
+          if (previewButton) { previewButton.setAttribute('aria-pressed', 'false'); }
+        } else {
+          if (sourceMode) {
+            editor.innerHTML = sanitizeDescription(editor.textContent);
+            editor.classList.remove('is-source');
+            sourceMode = false;
+            form.querySelector('[data-fra-mode="source"]').setAttribute('aria-pressed', 'false');
+          }
+          previewMode = !previewMode;
+          editor.classList.toggle('is-preview', previewMode);
+          editor.setAttribute('contenteditable', String(!previewMode));
+          button.setAttribute('aria-pressed', String(previewMode));
+        }
+        updateDescriptionCount();
+      });
+    });
+    imageInput.addEventListener('change', function () {
+      insertDescriptionImage(imageInput.files && imageInput.files[0], editor);
+      imageInput.value = '';
+    });
+    editor.addEventListener('input', updateDescriptionCount);
+    editor.addEventListener('paste', function (event) {
+      var html = event.clipboardData && event.clipboardData.getData('text/html');
+      if (!html || sourceMode || previewMode) { return; }
+      event.preventDefault();
+      document.execCommand('insertHTML', false, sanitizeDescription(html));
+      updateDescriptionCount();
+    });
+    updateDescriptionCount();
+  }
+  function allGames() { return GAME_CATALOG.slice(); }
   function readRecords() {
     try {
       var records = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || '[]');
@@ -63,68 +271,53 @@
     node.scrollIntoView({ block: 'nearest' });
   }
   function clearError() { var node = byId('fraError'); if (node) { node.hidden = true; } }
-  function makeChoice(item, selected, kind) {
-    var key = kind === 'provider' ? item : item.key;
-    var title = kind === 'provider' ? item : item.name;
-    var detail = kind === 'provider' ? '厂商' : item.provider + ' · ' + item.type;
-    return '<label class="fra-choice"><input type="checkbox" data-fra-selected data-fra-key="' + escapeHtml(key) + '" ' + (selected.indexOf(key) >= 0 ? 'checked' : '') + '><span class="fra-choice-copy"><strong>' + escapeHtml(title) + '</strong><small>' + escapeHtml(detail) + '</small></span></label>';
+  function syncLongTerm() {
+    var longTerm = byId('fraLongTerm').checked;
+    byId('fraEnd').disabled = longTerm;
+    byId('fraEnd').required = !longTerm;
   }
-  function selectedKeys(container) {
-    return all('[data-fra-selected]:checked', container).map(function (input) { return input.getAttribute('data-fra-key'); });
+  function makeChoice(item) {
+    var key = item.key;
+    var added = Boolean(selectedGames[key]);
+    return '<div class="fra-choice"><span class="fra-choice-copy"><strong>' + escapeHtml(item.name) + '</strong><small>ID：' + escapeHtml(item.id) + '</small></span><button type="button" data-fra-add-game="' + escapeHtml(key) + '" ' + (added ? 'disabled' : '') + '>' + (added ? '已添加' : '添加') + '</button></div>';
   }
-  function selectedList(scope) {
-    var node = scope === 'type' ? byId('fraRecommendedGames') : (scope === 'provider' ? byId('fraProviders') : byId('fraGames'));
-    return node ? selectedKeys(node) : [];
-  }
-  function renderRecommended(selected) {
-    var type = byId('fraGameType').value;
-    byId('fraRecommendedGames').innerHTML = GAME_TYPES[type].map(function (item) {
-      return makeChoice({ name: item[0], provider: item[1], type: type, key: gameKey(item) }, selected || [], 'game');
-    }).join('');
-  }
-  function renderProviders(selected) {
-    byId('fraProviders').innerHTML = PROVIDERS.map(function (provider) { return makeChoice(provider, selected || [], 'provider'); }).join('');
-  }
-  function renderGames(selected) {
+  function renderGames() {
     var query = byId('fraGameSearch').value.trim().toLowerCase();
-    var games = allGames().filter(function (item) { return !query || (item.name + ' ' + item.provider + ' ' + item.type).toLowerCase().indexOf(query) >= 0; });
-    byId('fraGames').innerHTML = games.map(function (item) { return makeChoice(item, selected || [], 'game'); }).join('');
-  }
-  function currentScope() {
-    var active = document.querySelector('[data-fra-scope][aria-pressed="true"]');
-    return active ? active.getAttribute('data-fra-scope') : 'type';
+    var container = byId('fraGames');
+    if (!query) {
+      container.innerHTML = '<p class="fra-empty-selection">输入游戏名称或 ID 搜索。</p>';
+      return;
+    }
+    var games = allGames().filter(function (item) {
+      return (item.name + ' ' + item.id).toLowerCase().indexOf(query) >= 0;
+    });
+    container.innerHTML = games.map(function (item) { return makeChoice(item); }).join('') || '<p class="fra-empty-selection">没有匹配的游戏。</p>';
   }
   function syncSelectionSummary() {
-    var scope = currentScope();
-    var count = selectedList(scope).length;
-    var label = scope === 'provider' ? '个厂商' : '款游戏';
-    byId('fraSelectionSummary').textContent = '已选择 ' + count + ' ' + label;
+    var count = Object.keys(selectedGames).length;
+    byId('fraSelectionSummary').textContent = '已添加 ' + count + ' 款游戏';
+    renderSelectedGames();
   }
-  function setScope(scope, selection) {
-    all('[data-fra-scope]').forEach(function (button) { button.setAttribute('aria-pressed', String(button.getAttribute('data-fra-scope') === scope)); });
-    all('[data-fra-panel]').forEach(function (panel) { panel.hidden = panel.getAttribute('data-fra-panel') !== scope; });
-    if (scope === 'type') { renderRecommended(selection || []); }
-    if (scope === 'provider') { renderProviders(selection || []); }
-    if (scope === 'game') { renderGames(selection || []); }
-    syncSelectionSummary();
-  }
-  function getScopeData() {
-    var scope = currentScope();
-    var selected = selectedList(scope);
-    var all = allGames();
-    var names;
-    var label;
-    if (scope === 'provider') {
-      names = selected.slice();
-      label = '厂商：' + (names.join('、') || '未选择');
-    } else {
-      names = selected.map(function (key) {
-        var found = all.find(function (item) { return item.key === key; });
-        return found ? found.name : key.split('|')[0];
-      });
-      label = (scope === 'type' ? byId('fraGameType').selectedOptions[0].textContent + '：' : '游戏：') + (names.join('、') || '未选择');
+  function renderSelectedGames() {
+    var container = byId('fraSelectedGames');
+    var games = Object.keys(selectedGames).map(function (key) { return selectedGames[key]; });
+    if (!container) { return; }
+    if (!games.length) {
+      container.innerHTML = '<p class="fra-empty-selection">请从上方游戏列表添加游戏。</p>';
+      return;
     }
-    return { scope: scope, scopeLabel: label, gameType: scope === 'type' ? byId('fraGameType').value : '', selectedIds: selected, selectedNames: names };
+    container.innerHTML = games.map(function (game) {
+      return '<article class="fra-selected-game" data-fra-selected-game="' + escapeHtml(game.key) + '">' +
+        '<div class="fra-selected-game-head"><span class="fra-game-number">' + escapeHtml(game.name) + '</span><button type="button" data-fra-remove-game="' + escapeHtml(game.key) + '" title="移除游戏" aria-label="移除 ' + escapeHtml(game.name) + '">移除</button><small>ID：' + escapeHtml(game.id || '-') + '</small></div>' +
+        '<label><span>配套文字</span><textarea data-fra-copy="' + escapeHtml(game.key) + '" maxlength="500" rows="2" placeholder="请输入该游戏专属的活动文案">' + escapeHtml(game.text || '') + '</textarea></label>' +
+        '</article>';
+    }).join('');
+  }
+  function getSelectedGameData() {
+    var games = Object.keys(selectedGames).map(function (key) { return selectedGames[key]; });
+    var names = games.map(function (game) { return game.name; });
+    var label = '游戏：' + (names.join('、') || '未选择');
+    return { scopeLabel: label, selectedIds: games.map(function (game) { return game.id || game.key; }), selectedNames: names, selectedGames: games };
   }
   function createTierRow(tier, index) {
     tier = tier || {};
@@ -162,15 +355,39 @@
     byId('fraTitle').value = record.title || '';
     byId('fraStart').value = record.startTime || '';
     byId('fraEnd').value = record.endTime || '';
+    byId('fraLongTerm').checked = record.longTerm === true;
+    byId('fraWagerMultiple').value = record.wagerMultiple == null ? '1' : record.wagerMultiple;
     byId('fraSort').value = record.sort == null ? '0' : record.sort;
-    byId('fraGameType').value = record.gameType || '电子';
-    setScope(record.scope || 'type', record.selectedIds || []);
+    selectedGames = {};
+    var storedGames = Array.isArray(record.selectedGames) ? record.selectedGames : [];
+    if (!storedGames.length && Array.isArray(record.selectedIds)) {
+      var catalog = allGames();
+      storedGames = record.selectedIds.reduce(function (games, key, index) {
+        var directMatch = catalog.find(function (game) { return game.id === key || game.key === key || game.name === (record.selectedNames || [])[index]; });
+        if (directMatch) { games.push(directMatch); }
+        return games;
+      }, []);
+    }
+    storedGames.forEach(function (game) {
+      var name = game.name || String(game.key || '').split('|')[0];
+      var catalogGame = allGames().find(function (item) { return item.id === game.id || item.name === name; });
+      var id = catalogGame ? catalogGame.id : (game.id || '');
+      var key = catalogGame ? catalogGame.key : (game.key || id || name);
+      if (name) { selectedGames[key] = { key: key, id: id, name: name, text: game.text || '' }; }
+    });
+    renderActivityImage('Banner', record.banner || record.bannerImage || '');
+    renderActivityImage('Detail', record.detailImage || '');
+    if (typeof record.descriptionHtml === 'string') {
+      byId('fraDescription').innerHTML = sanitizeDescription(record.descriptionHtml);
+    }
+    updateDescriptionCount();
     renderTiers(record.tiers);
   }
   function collectRecord(existing) {
-    var scopeData = getScopeData();
+    var scopeData = getSelectedGameData();
     var startTime = byId('fraStart').value;
     var endTime = byId('fraEnd').value;
+    var wagerMultiple = byId('fraWagerMultiple').value.trim();
     var sort = Number(byId('fraSort').value || 0);
     var record = {
       id: existing ? existing.id : 'flash-rebate-' + Date.now(),
@@ -179,26 +396,34 @@
       template: '打码赠金',
       startTime: startTime,
       endTime: endTime,
+      longTerm: byId('fraLongTerm').checked,
+      wagerMultiple: wagerMultiple,
       sort: sort,
       enabled: existing ? existing.enabled !== false : true,
       createdAt: existing ? existing.createdAt : new Date().toISOString(),
-      scope: scopeData.scope,
       scopeLabel: scopeData.scopeLabel,
-      gameType: scopeData.gameType,
       selectedIds: scopeData.selectedIds,
       selectedNames: scopeData.selectedNames,
-      tiers: readTiers()
+      selectedGames: scopeData.selectedGames,
+      tiers: readTiers(),
+      banner: imageState.Banner.source,
+      detailImage: imageState.Detail.source,
+      descriptionHtml: getDescriptionHtml()
     };
     return record;
   }
   function validateRecord(record) {
+    if (imageState.Banner.busy || imageState.Detail.busy || descriptionImageBusy) { setError('图片仍在读取，请完成后再保存。'); return false; }
     if (!record.name) { setError('请输入活动名称。', byId('fraName')); return false; }
     if (!record.title) { setError('请输入活动标题。', byId('fraTitle')); return false; }
     if (!record.startTime) { setError('请选择活动开始时间。', byId('fraStart')); return false; }
-    if (!record.endTime) { setError('请选择活动结束时间。', byId('fraEnd')); return false; }
-    if (new Date(record.endTime) <= new Date(record.startTime)) { setError('活动结束时间必须晚于开始时间。', byId('fraEnd')); return false; }
-    if (!Number.isFinite(record.sort) || record.sort < 0) { setError('排序不能小于 0。', byId('fraSort')); return false; }
-    if (!record.selectedIds.length) { setError(record.scope === 'provider' ? '请至少选择一个厂商。' : '请至少选择一个游戏。'); return false; }
+    if (!record.longTerm && !record.endTime) { setError('请选择活动结束时间，或勾选长期有效。', byId('fraEnd')); return false; }
+    if (!record.longTerm && new Date(record.endTime) <= new Date(record.startTime)) { setError('活动结束时间必须晚于开始时间。', byId('fraEnd')); return false; }
+    var wagerMultiple = Number(record.wagerMultiple);
+    if (record.wagerMultiple === '' || !Number.isFinite(wagerMultiple) || wagerMultiple < 0) { setError('请输入大于或等于 0 的打码倍数。', byId('fraWagerMultiple')); return false; }
+    if (!Number.isInteger(record.sort) || record.sort < 0) { setError('排序请输入大于或等于 0 的整数。', byId('fraSort')); return false; }
+    record.wagerMultiple = String(wagerMultiple);
+    if (!record.selectedIds.length) { setError('请至少添加一款游戏。'); return false; }
     if (!record.tiers.length) { setError('请至少配置一个奖励档位。', byId('fraAddTier')); return false; }
     for (var index = 0; index < record.tiers.length; index += 1) {
       var tier = record.tiers[index];
@@ -229,22 +454,36 @@
     var existing = editId ? records.find(function (record) { return record.id === editId; }) : null;
     if (editId && !existing) { setError('该打码赠金活动不存在或已删除。'); return; }
     if (existing) { populateForm(existing); }
-    else { setScope('type'); }
-    all('[data-fra-scope]').forEach(function (button) {
-      button.addEventListener('click', function () {
-        clearError();
-        setScope(button.getAttribute('data-fra-scope'));
-      });
+    syncLongTerm();
+    syncSelectionSummary();
+    byId('fraGameSearch').addEventListener('input', renderGames);
+    renderGames();
+    bindActivityImages(form);
+    bindDescriptionEditor(form);
+    byId('fraLongTerm').addEventListener('change', function () { syncLongTerm(); clearError(); });
+    form.addEventListener('input', function (event) {
+      var copyKey = event.target.getAttribute('data-fra-copy');
+      if (copyKey && selectedGames[copyKey]) { selectedGames[copyKey].text = event.target.value; }
+      clearError();
     });
-    byId('fraGameType').addEventListener('change', function () { renderRecommended([]); syncSelectionSummary(); });
-    byId('fraGameSearch').addEventListener('input', function () { renderGames(selectedList('game')); });
-    form.addEventListener('change', function (event) {
-      if (event.target.matches('[data-fra-selected]')) { syncSelectionSummary(); clearError(); }
-    });
-    form.addEventListener('input', clearError);
     form.addEventListener('click', function (event) {
       var removeButton = event.target.closest('[data-fra-remove-tier]');
-      if (event.target.closest('#fraAddTier')) {
+      var removeGameButton = event.target.closest('[data-fra-remove-game]');
+      var addGameButton = event.target.closest('[data-fra-add-game]');
+      if (addGameButton) {
+        var key = addGameButton.getAttribute('data-fra-add-game');
+        var game = allGames().find(function (item) { return item.key === key; });
+        if (game && !selectedGames[key]) {
+          selectedGames[key] = { key: game.key, id: game.id, name: game.name, text: '' };
+          renderGames();
+          syncSelectionSummary();
+        }
+        clearError();
+      } else if (removeGameButton) {
+        delete selectedGames[removeGameButton.getAttribute('data-fra-remove-game')];
+        renderGames();
+        syncSelectionSummary();
+      } else if (event.target.closest('#fraAddTier')) {
         clearError();
         var rows = byId('fraTierRows');
         if (rows.children.length < MAX_TIERS) {
@@ -258,15 +497,6 @@
       }
     });
     document.addEventListener('click', function (event) {
-      var selectButton = event.target.closest('[data-fra-select-visible]');
-      if (selectButton) {
-        var panel = selectButton.closest('[data-fra-panel]');
-        var checkboxes = all('[data-fra-selected]', panel);
-        var shouldCheck = checkboxes.some(function (input) { return !input.checked; });
-        checkboxes.forEach(function (input) { input.checked = shouldCheck; });
-        selectButton.textContent = shouldCheck ? '取消全选' : '全选当前列表';
-        syncSelectionSummary();
-      }
       if (event.target.closest('[data-fra-cancel]') && document.body.classList.contains('flash-rebate-template-active')) {
         event.preventDefault();
         window.location.href = LIST_URL;
@@ -307,7 +537,7 @@
         '<td title="' + escapeHtml(record.title) + '">' + escapeHtml(record.title) + '</td>',
         '<td>打码赠金</td>',
         '<td>' + escapeHtml(formatTime(record.startTime)) + '</td>',
-        '<td>' + escapeHtml(formatTime(record.endTime)) + '</td>',
+        '<td>' + escapeHtml(record.longTerm ? '长期有效' : formatTime(record.endTime)) + '</td>',
         '<td>-</td><td><span class="switch on" aria-label="活动可见"></span></td>',
         '<td><button class="switch' + (enabled ? ' on' : '') + '" type="button" data-fra-toggle role="switch" aria-checked="' + enabled + '" aria-label="' + (enabled ? '关闭活动' : '启用活动') + '"></button></td>',
         '<td>' + escapeHtml(record.sort == null ? '0' : record.sort) + '</td><td>admin</td>',

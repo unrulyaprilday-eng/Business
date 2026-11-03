@@ -25853,31 +25853,20 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
                     <label class="fra-field"><span>活动模板</span><input value="打码赠金（Flash Rebate）" readonly></label>
                     <label class="fra-field fra-required"><span>活动名称</span><input id="fraName" maxlength="60" placeholder="请输入活动名称" required></label>
                     <label class="fra-field fra-required"><span>活动标题</span><input id="fraTitle" maxlength="100" placeholder="请输入活动标题" required></label>
+                    <div class="fra-field fra-wide fra-required"><span>活动时间</span><div class="fra-time-control"><div class="fra-time"><input id="fraStart" type="datetime-local" aria-label="开始时间" required><em>至</em><input id="fraEnd" type="datetime-local" aria-label="结束时间" required></div><label class="fra-long-term"><input id="fraLongTerm" type="checkbox">长期有效</label></div></div>
+                    <label class="fra-field fra-required"><span>打码倍数</span><input id="fraWagerMultiple" type="number" min="0" step="0.01" value="1" required></label>
                     <label class="fra-field"><span>排序</span><input id="fraSort" type="number" min="0" step="1" value="0"></label>
-                    <div class="fra-field fra-wide"><span>活动时间</span><div class="fra-time"><input id="fraStart" type="datetime-local" aria-label="开始时间" required><em>至</em><input id="fraEnd" type="datetime-local" aria-label="结束时间" required></div></div>
                   </div>
                 </section>
                 <section class="fra-section">
-                  <div class="fra-section-title"><div><h3>游戏范围</h3><p>选择一种指定方式，范围以选中的对象为准。</p></div></div>
-                  <div class="fra-scope-switch" role="group" aria-label="游戏范围指定方式">
-                    <button type="button" data-fra-scope="type" aria-pressed="true">游戏类型</button>
-                    <button type="button" data-fra-scope="provider" aria-pressed="false">厂商</button>
-                    <button type="button" data-fra-scope="game" aria-pressed="false">具体游戏</button>
+                  <div class="fra-section-title"><div><h3>活动游戏</h3><p>搜索游戏并逐个添加；每款游戏可配置自己的展示文案。</p></div></div>
+                  <div class="fra-game-search"><input id="fraGameSearch" type="search" placeholder="输入游戏名称或 ID 搜索" aria-label="输入游戏名称或 ID 搜索"></div>
+                  <div id="fraGames" class="fra-choice-grid" aria-live="polite"><p class="fra-empty-selection">输入游戏名称或 ID 搜索。</p></div>
+                  <p class="fra-selection" id="fraSelectionSummary" aria-live="polite">已添加 0 款游戏</p>
+                  <div class="fra-selected-games">
+                    <div class="fra-pick-head"><strong>已选游戏及配套文字</strong><span>每款游戏可填写独立展示文案</span></div>
+                    <div id="fraSelectedGames" class="fra-selected-game-list"><p class="fra-empty-selection">请从上方游戏列表添加游戏。</p></div>
                   </div>
-                  <div class="fra-scope-panel" data-fra-panel="type">
-                    <label class="fra-inline-field"><span>游戏类型</span><select id="fraGameType"><option value="电子">电子游戏</option><option value="捕鱼">捕鱼</option><option value="棋牌">棋牌游戏</option><option value="彩票">彩票</option><option value="体育电竞">体育电竞</option></select></label>
-                    <div class="fra-pick-head"><strong>推荐游戏</strong><span>该类型推荐度前 10 款，勾选后纳入活动</span><button type="button" data-fra-select-visible>全选当前列表</button></div>
-                    <div id="fraRecommendedGames" class="fra-choice-grid" aria-live="polite"></div>
-                  </div>
-                  <div class="fra-scope-panel" data-fra-panel="provider" hidden>
-                    <div class="fra-pick-head"><strong>选择厂商</strong><span>所选厂商旗下游戏纳入活动</span><button type="button" data-fra-select-visible>全选当前列表</button></div>
-                    <div id="fraProviders" class="fra-choice-grid"></div>
-                  </div>
-                  <div class="fra-scope-panel" data-fra-panel="game" hidden>
-                    <div class="fra-pick-head"><strong>选择游戏</strong><span>可搜索并勾选一个或多个游戏</span><input id="fraGameSearch" type="search" placeholder="搜索游戏名称或厂商" aria-label="搜索游戏名称或厂商"></div>
-                    <div id="fraGames" class="fra-choice-grid"></div>
-                  </div>
-                  <p class="fra-selection" id="fraSelectionSummary" aria-live="polite">已选择 0 款游戏</p>
                 </section>
                 <section class="fra-section">
                   <div class="fra-section-title"><div><h3>档位奖励</h3><p>达到对应累计有效打码量后，发放该档固定金额；档位门槛须逐档递增。</p></div></div>
@@ -25891,14 +25880,39 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
                     <button id="fraAddTier" class="fra-add-tier" type="button">＋ 添加奖励档位</button>
                   </div>
                 </section>
-                <section class="fra-section fra-rules-section">
-                  <div class="fra-section-title"><div><h3>活动规则</h3><p>规则随活动展示，统计范围受上方游戏范围限制。</p></div></div>
-                  <ol class="fra-rules">
-                    <li>仅统计活动期间内完成的有效打码量，并计入累计进度。</li>
-                    <li>活动到期或结束时，尚未领取的奖励将视为自动放弃。</li>
-                    <li>只有符合任务要求的游戏所产生的有效打码量才会被累计，其他不符合要求的游戏不计入。</li>
-                    <li>活动期间，每项任务仅可完成一次。</li>
-                  </ol>
+                <section class="fra-section fra-description-section">
+                  <h3>活动展示与说明</h3>
+                  <div class="fra-common-image-grid">
+                    <div class="fra-common-image-field">
+                      <span>活动 Banner</span>
+                      <div class="lw-upload-wrap">
+                        <input id="fraBannerFile" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+                        <button id="fraBannerUpload" class="lw-upload" type="button" aria-label="上传活动 Banner"><span id="fraBannerHint"><b aria-hidden="true">⇧</b><small>点击或拖拽上传图片</small></span><img id="fraBannerPreview" alt="活动 Banner 预览" hidden></button>
+                        <button id="fraBannerRemove" class="lw-link" type="button" hidden>移除图片</button>
+                        <p>建议尺寸 800 × 400，支持 JPG、PNG、WebP，最大 500KB。</p>
+                      </div>
+                    </div>
+                    <div class="fra-common-image-field">
+                      <span>活动内页图</span>
+                      <div class="lw-upload-wrap">
+                        <input id="fraDetailFile" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+                        <button id="fraDetailUpload" class="lw-upload" type="button" aria-label="上传活动内页图"><span id="fraDetailHint"><b aria-hidden="true">⇧</b><small>点击或拖拽上传图片</small></span><img id="fraDetailPreview" alt="活动内页图预览" hidden></button>
+                        <button id="fraDetailRemove" class="lw-link" type="button" hidden>移除图片</button>
+                        <p>支持 JPG、PNG、WebP，最大 1MB。</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="fra-common-description-field">
+                    <span id="fraDescriptionLabel">文字说明</span>
+                    <div class="lw-editor">
+                      <div class="lw-editor-toolbar" role="toolbar" aria-label="活动描述格式">
+                        <button type="button" data-fra-command="bold" title="加粗"><b>B</b></button><button type="button" data-fra-command="underline" title="下划线"><u>U</u></button><button type="button" data-fra-command="italic" title="斜体"><i>I</i></button><button type="button" data-fra-command="strikeThrough" title="删除线"><s>S</s></button><button type="button" data-fra-command="formatBlock" data-fra-value="h3" title="标题">H</button><button type="button" data-fra-command="subscript" title="下标">x₂</button><button type="button" data-fra-command="superscript" title="上标">x²</button><button type="button" data-fra-command="formatBlock" data-fra-value="blockquote" title="引用">❞</button><button type="button" data-fra-command="insertUnorderedList" title="项目符号列表">☷</button><button type="button" data-fra-command="insertOrderedList" title="编号列表">1≡</button><button type="button" data-fra-action="link" title="插入链接">↗</button><button type="button" data-fra-action="image" title="插入图片">▧</button><button type="button" data-fra-action="table" title="插入表格">▦</button><button type="button" data-fra-command="undo" title="撤销">↶</button><button type="button" data-fra-command="redo" title="重做">↷</button><button type="button" data-fra-mode="source" title="源码" aria-pressed="false">‹›</button><button type="button" data-fra-mode="preview" title="预览" aria-pressed="false">◉</button>
+                      </div>
+                      <input id="fraDescriptionImage" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+                      <div id="fraDescription" class="lw-editor-body" contenteditable="true" role="textbox" aria-labelledby="fraDescriptionLabel" aria-multiline="true"><ol><li>Only the effective coding volume completed within the activity duration will be calculated into the cumulative progress</li><li>When the activity expires or ends, if there are rewards that have not been received, it will be deemed that the rewards have been automatically waived</li><li>Only unique games corresponding to the task will accumulate effective coding volume, and other non-task corresponding games will not be counted</li><li>Each task can only be completed once during the activity duration.</li></ol></div>
+                      <div class="lw-editor-foot"><span id="fraDescriptionCharCount">字符数：0</span></div>
+                    </div>
+                  </div>
                 </section>
               </form>
               <footer class="fra-foot"><button type="button" data-fra-cancel>取消</button><button class="fra-primary" type="submit" form="flashRebateForm">确定</button></footer>
