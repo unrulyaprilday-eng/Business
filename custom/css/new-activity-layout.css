@@ -1,0 +1,360 @@
+/* Layout-only overrides for the existing Axure activity templates. */
+body.activity-layout-unified {
+  --activity-max-width: 1280px;
+  --activity-gap: 12px;
+  --activity-padding: 24px;
+  --activity-header-height: 54px;
+  --activity-selector-height: 60px;
+  --activity-footer-height: 60px;
+  --activity-width: min(var(--activity-max-width), calc(100vw - var(--activity-gap) * 2));
+  --activity-left: max(var(--activity-gap), calc((100vw - var(--activity-max-width)) / 2));
+  width: auto !important;
+  min-width: 0 !important;
+  height: 100vh;
+  margin: 0 !important;
+  overflow: hidden;
+  background: #f2f4f8;
+  text-align: left;
+}
+
+body.activity-layout-unified #base {
+  position: fixed;
+  inset: 0;
+  width: auto;
+  height: auto;
+  transform: none;
+}
+
+/* Shared selector strip stays in one place when the active template changes. */
+body.activity-layout-unified #base::before {
+  content: "";
+  position: fixed;
+  z-index: 3;
+  left: var(--activity-left);
+  top: calc(var(--activity-gap) + var(--activity-header-height));
+  width: var(--activity-width);
+  height: var(--activity-selector-height);
+  box-sizing: border-box;
+  background: #fff;
+  border-bottom: 1px solid #e6ebf2;
+  pointer-events: none;
+}
+
+body.activity-layout-unified #u3011 {
+  display: flex !important;
+  position: fixed !important;
+  z-index: 4;
+  left: calc(var(--activity-left) + var(--activity-padding)) !important;
+  top: calc(var(--activity-gap) + var(--activity-header-height) + (var(--activity-selector-height) - 34px) / 2) !important;
+  width: 104px !important;
+  height: 34px !important;
+  color: #566172;
+}
+
+body.activity-layout-unified #u3011_div {
+  width: 100%;
+  height: 100%;
+}
+
+body.activity-layout-unified #u3012 {
+  display: block !important;
+  position: fixed !important;
+  z-index: 4;
+  left: calc(var(--activity-left) + var(--activity-padding) + 116px) !important;
+  top: calc(var(--activity-gap) + var(--activity-header-height) + (var(--activity-selector-height) - 34px) / 2) !important;
+  width: 240px !important;
+  height: 34px !important;
+}
+
+body.activity-layout-unified #u3012_div,
+body.activity-layout-unified #u3012_input {
+  box-sizing: border-box;
+  width: 240px !important;
+  height: 34px !important;
+  border-radius: 4px !important;
+}
+
+/* Keep the existing title/close controls, including the dialog-style titles. */
+body.activity-layout-unified #u0,
+body.activity-layout-unified :is(.rg-head, .lw-head, .fra-head) {
+  position: fixed !important;
+  z-index: 5;
+  top: var(--activity-gap) !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: var(--activity-left) !important;
+  box-sizing: border-box;
+  width: var(--activity-width) !important;
+  height: var(--activity-header-height) !important;
+  min-height: 0;
+  margin: 0;
+  padding: 0 var(--activity-padding);
+  border: 0;
+  border-bottom: 1px solid #e6ebf2;
+  border-radius: 8px 8px 0 0;
+  background: #fff;
+  color: #303848;
+  transform: none;
+}
+
+body.activity-layout-unified #u0_div {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px 8px 0 0;
+  background: #fff;
+  filter: none;
+}
+
+body.activity-layout-unified #u0 .text {
+  padding: 0 var(--activity-padding);
+  font-size: 14px;
+}
+
+body.activity-layout-unified :is(.rg-head, .lw-head, .fra-head) h2 {
+  font-size: 14px;
+  color: #303848;
+}
+
+body.activity-layout-unified #u1 {
+  position: fixed !important;
+  z-index: 6;
+  left: auto !important;
+  right: calc(var(--activity-left) + var(--activity-padding)) !important;
+  top: calc(var(--activity-gap) + (var(--activity-header-height) - 30px) / 2) !important;
+  width: 30px !important;
+  height: 30px !important;
+}
+
+body.activity-layout-unified #u1_div {
+  width: 100%;
+  height: 100%;
+}
+
+/* The common frame replaces the previous 1441px/full-screen/offset canvases. */
+body.activity-layout-unified #u6 {
+  position: fixed !important;
+  z-index: 1;
+  top: calc(var(--activity-gap) + var(--activity-header-height) + var(--activity-selector-height)) !important;
+  right: auto !important;
+  bottom: calc(var(--activity-gap) + var(--activity-footer-height)) !important;
+  left: var(--activity-left) !important;
+  width: var(--activity-width) !important;
+  max-width: var(--activity-max-width) !important;
+  height: auto !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  background: #fff;
+  transform: none !important;
+  contain: none;
+}
+
+body.activity-layout-unified #u6 > .panel_state {
+  position: absolute !important;
+  inset: 0 !important;
+  box-sizing: border-box;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: auto !important;
+  border: 0;
+  border-radius: 0;
+  background: #fff !important;
+  transform: none;
+  contain: none;
+  scrollbar-width: thin;
+  scrollbar-color: #c0cbd9 #f8fafc;
+}
+
+body.activity-layout-unified #u6 > .panel_state > .panel_state_content {
+  position: relative !important;
+  inset: auto !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 100%;
+  content-visibility: visible;
+  contain-intrinsic-size: none;
+  contain: none;
+  transform: none;
+}
+
+/* Preserve absolute-positioned Axure content; only move its outer origin. */
+body.activity-layout-unified #u6 > :is(#u6_state0, #u6_state1) > .panel_state_content {
+  top: var(--activity-padding) !important;
+  left: var(--activity-padding) !important;
+  width: calc(100% - var(--activity-padding) * 2) !important;
+  min-width: 1120px;
+  min-height: 1400px;
+}
+
+body.activity-layout-unified :is(.custom-share-form, .custom-custom-form, .custom-challenge-form, .custom-red-packet-form, .custom-month-checkin-form, .weekly-card-form, .rf-form) {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: var(--activity-padding);
+  background: #fff;
+  color: #303848;
+  font-family: "Microsoft YaHei", Arial, sans-serif;
+  font-size: 13px;
+  content-visibility: visible;
+  contain-intrinsic-size: none;
+}
+
+/* Dialog-style templates share the frame while retaining their own controls. */
+body.activity-layout-unified #u6 > :is(#u6_state8, #u6_state10, #u6_state11) {
+  overflow: visible !important;
+  border-radius: 0;
+}
+
+body.activity-layout-unified #u6 > :is(#u6_state8, #u6_state10, #u6_state11) > .panel_state_content {
+  height: 100% !important;
+  min-height: 0;
+}
+
+body.activity-layout-unified :is(.rg-dialog, .lw-dialog, .fra-dialog) {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: visible;
+}
+
+body.activity-layout-unified :is(.rg-scroll, .lw-scroll, .fra-scroll) {
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 0;
+  padding: var(--activity-padding);
+  scrollbar-width: thin;
+  scrollbar-color: #c0cbd9 #f8fafc;
+}
+
+body.activity-layout-unified .lw-form {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body.activity-layout-unified :is(.custom-share-section, .wc-section, .lw-section, .fra-section, .rf-section) {
+  box-sizing: border-box;
+  margin: 0 0 20px;
+  padding: 16px;
+  border: 1px solid #e6ebf2;
+  border-radius: 6px;
+  background: #fff;
+}
+
+body.activity-layout-unified :is(.custom-share-section, .wc-section, .lw-section, .fra-section) > h3 {
+  margin: 0 0 14px;
+  color: #303848;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+body.activity-layout-unified :is(.custom-share-grid, .wc-grid, .rg-grid, .lw-grid, .fra-grid, .rf-grid) {
+  max-width: none;
+  column-gap: 24px;
+  row-gap: 16px;
+}
+
+body.activity-layout-unified :is(.custom-field, .wc-field, .rg-field, .lw-field, .fra-field, .rf-field) > :is(input:not([type="radio"]):not([type="checkbox"]):not([type="file"]), select) {
+  box-sizing: border-box;
+  height: 34px;
+  border-radius: 4px;
+}
+
+/* Align existing action bars; no buttons are added, removed, or rebound. */
+body.activity-layout-unified #u2,
+body.activity-layout-unified :is(.rg-foot, .lw-foot, .fra-foot, .rf-actions) {
+  position: fixed !important;
+  z-index: 5;
+  top: auto !important;
+  right: auto !important;
+  bottom: var(--activity-gap) !important;
+  left: var(--activity-left) !important;
+  box-sizing: border-box;
+  width: var(--activity-width) !important;
+  height: var(--activity-footer-height) !important;
+  min-height: 0;
+  margin: 0;
+  padding: 12px var(--activity-padding);
+  border: 0;
+  border-top: 1px solid #e6ebf2;
+  border-radius: 0 0 8px 8px;
+  background: #fff;
+  transform: none;
+}
+
+body.activity-layout-unified :is(.rg-foot, .lw-foot, .fra-foot, .rf-actions) {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+body.activity-layout-unified :is(.rg-foot, .lw-foot, .fra-foot, .rf-actions) > button {
+  height: 34px;
+  min-width: 80px;
+  border-radius: 4px;
+}
+
+body.activity-layout-unified #rfSubmit { order: 2; }
+body.activity-layout-unified #rfCancel { order: 1; }
+
+body.activity-layout-unified #u3 {
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+body.activity-layout-unified #u3_div {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border-radius: 0 0 8px 8px;
+  box-shadow: none;
+}
+
+body.activity-layout-unified :is(#u4, #u5) {
+  top: calc((var(--activity-footer-height) - 34px) / 2) !important;
+  left: auto !important;
+  width: 80px !important;
+  height: 34px !important;
+}
+
+body.activity-layout-unified #u4 { right: var(--activity-padding) !important; }
+body.activity-layout-unified #u5 { right: calc(var(--activity-padding) + 88px) !important; }
+
+body.activity-layout-unified :is(#u4_div, #u5_div) {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+}
+
+@media (max-width: 760px) {
+  body.activity-layout-unified {
+    --activity-gap: 8px;
+    --activity-padding: 16px;
+    --activity-header-height: 48px;
+    --activity-selector-height: 56px;
+    --activity-footer-height: 56px;
+  }
+
+  body.activity-layout-unified #u3011,
+  body.activity-layout-unified #u3011_div { width: 80px !important; }
+
+  body.activity-layout-unified #u3012 {
+    left: calc(var(--activity-left) + var(--activity-padding) + 92px) !important;
+    width: min(240px, calc(100vw - 140px)) !important;
+  }
+
+  body.activity-layout-unified #u3012_div,
+  body.activity-layout-unified #u3012_input { width: 100% !important; }
+
+  body.activity-layout-unified :is(.custom-share-grid, .rg-grid, .lw-grid, .fra-grid, .rf-grid) {
+    column-gap: 16px;
+    row-gap: 14px;
+  }
+}
