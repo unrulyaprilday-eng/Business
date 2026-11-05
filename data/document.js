@@ -297,13 +297,6 @@ $axure.loadDocument({
             "children": []
           },
           {
-            "id": "ticket_usage_record",
-            "pageName": "票券使用记录",
-            "type": "Wireframe",
-            "url": "优惠活动-票券使用记录.html",
-            "children": []
-          },
-          {
             "id": "promotion_global_config",
             "pageName": "全局配置",
             "type": "Wireframe",

@@ -50,6 +50,41 @@
   <body>
     <div id="base" class="">
       <div class="custom-page-shell ticket-center-page">
+        <nav class="ticket-center-tabs" role="tablist" aria-label="票券中心功能">
+          <button class="ticket-center-tab active" type="button" role="tab" aria-selected="true" data-ticket-tab="tasks">票券任务</button>
+          <button class="ticket-center-tab" type="button" role="tab" aria-selected="false" data-ticket-tab="settings">票券设置</button>
+          <button class="ticket-center-tab" type="button" role="tab" aria-selected="false" data-ticket-tab="usage">使用记录</button>
+        </nav>
+        <section class="ticket-center-panel" data-ticket-panel="tasks">
+          <div class="inline-task-page">
+            <div class="task-page-form">
+              <section class="task-config-section" aria-labelledby="taskConfigHeading">
+                <div class="task-config-heading"><div><h2 id="taskConfigHeading">任务奖励</h2><p>各类别可设置多个门槛档，每档关联一张优惠券。</p></div><button class="task-button primary" id="addTierButton" type="button">新增奖励档</button></div>
+                <div class="task-type-tabs" role="tablist" aria-label="任务类别">
+                  <button class="task-type-tab active" type="button" role="tab" aria-selected="true" data-task-type="recharge_total">累计充值</button>
+                  <button class="task-type-tab" type="button" role="tab" aria-selected="false" data-task-type="wager">游戏任务</button>
+                  <button class="task-type-tab" type="button" role="tab" aria-selected="false" data-task-type="recharge_single">单次充值</button>
+                  <button class="task-type-tab" type="button" role="tab" aria-selected="false" data-task-type="login_total">累计登录</button>
+                </div>
+                <p class="coupon-empty-hint" id="couponEmptyHint" hidden>暂无启用中的优惠券，请先到<a href="票券中心.html?tab=settings">票券设置</a>配置。</p>
+                <div class="tier-table-wrap"><table class="tier-table"><thead><tr><th id="taskConditionHeading">累计充值条件</th><th>奖励优惠券</th><th>券规则</th><th>操作</th></tr></thead><tbody id="taskTierRows"><tr class="empty-row"><td colspan="4">当前类别暂无奖励档</td></tr></tbody></table></div>
+              </section>
+            </div>
+          </div>
+          <div class="task-tier-modal-mask" id="tierModal" hidden>
+            <section class="task-tier-modal" role="dialog" aria-modal="true" aria-labelledby="tierModalTitle">
+              <header class="task-tier-modal-header"><h2 id="tierModalTitle">新增奖励档</h2><button class="task-tier-close" type="button" data-close-tier-modal aria-label="关闭">×</button></header>
+              <div class="task-tier-modal-body">
+                <label class="task-field" id="tierWagerMetricField" hidden><span>游戏条件</span><select id="tierWagerMetric"><option value="wager">打码</option><option value="game_count">游戏次数</option></select></label>
+                <label class="task-field"><span id="tierConditionLabel">累计充值</span><span class="task-input-unit"><span id="tierConditionOperator">≥</span><input id="tierConditionValue" type="number" min="0.01" step="0.01" placeholder="请输入门槛"/><span id="tierConditionUnit">金额</span></span></label>
+                <label class="task-field"><span>奖励优惠券</span><select id="tierRewardCoupon"><option value="">请选择优惠券</option></select></label>
+              </div>
+              <p class="task-form-error tier-modal-error" id="tierFormError" role="alert" hidden></p>
+              <footer class="task-tier-modal-footer"><button class="task-button" type="button" data-close-tier-modal>取消</button><button class="task-button primary" id="saveTier" type="button">确定</button></footer>
+            </section>
+          </div>
+        </section>
+        <section class="ticket-center-panel" data-ticket-panel="settings" hidden>
         <form class="ticket-toolbar">
           <input class="search-input" type="text" placeholder="请输入票券名称"/>
           <button class="primary-btn" type="button">搜索</button>
@@ -73,10 +108,10 @@
               </tr>
             </thead>
             <tbody id="ticketRows">
-              <tr data-status="enabled" data-type="金蛋">
-                <td title="ba7ce604-fff5-4106-9a89">ba7ce604-fff5-4106-...</td>
-                <td>金蛋</td>
-                <td>金蛋活动</td>
+              <tr data-id="CPN-20261104-001" data-status="enabled" data-type="优惠百分比">
+                <td title="CPN-20261104-001">CPN-20261104-001</td>
+                <td>优惠百分比</td>
+                <td>新客优惠券</td>
                 <td>长期</td>
                 <td>0</td>
                 <td>0</td>
@@ -87,10 +122,10 @@
                   <button class="link-btn action-edit" type="button">修改</button>
                 </td>
               </tr>
-              <tr data-status="enabled" data-type="金蛋">
-                <td title="049cf302-0ea9-4ec3-b301">049cf302-0ea9-4ec3...</td>
-                <td>金蛋</td>
-                <td>金蛋1</td>
+              <tr data-id="CPN-20261104-002" data-status="enabled" data-type="充值固定优惠券">
+                <td title="CPN-20261104-002">CPN-20261104-002</td>
+                <td>充值固定优惠券</td>
+                <td>满额赠送券</td>
                 <td>长期</td>
                 <td>0</td>
                 <td>17</td>
@@ -101,10 +136,10 @@
                   <button class="link-btn action-edit" type="button">修改</button>
                 </td>
               </tr>
-              <tr data-status="enabled" data-type="随机红包">
-                <td title="c04a2acf-9dd5-41f2-a774">c04a2acf-9dd5-41f2...</td>
-                <td>随机红包</td>
-                <td>随机红包</td>
+              <tr data-id="CPN-20261104-003" data-status="enabled" data-type="充值百分比优惠券">
+                <td title="CPN-20261104-003">CPN-20261104-003</td>
+                <td>充值百分比优惠券</td>
+                <td>充值比例赠送券</td>
                 <td>长期</td>
                 <td>1</td>
                 <td>17</td>
@@ -115,10 +150,10 @@
                   <button class="link-btn action-edit" type="button">修改</button>
                 </td>
               </tr>
-              <tr data-status="stopped" data-type="充值优惠券">
-                <td title="c1e6e4e7-a6d5-428f-a1b9">c1e6e4e7-a6d5-428...</td>
-                <td>充值优惠券</td>
-                <td>充值优惠券1</td>
+              <tr data-id="CPN-20261104-004" data-status="stopped" data-type="优惠百分比">
+                <td title="CPN-20261104-004">CPN-20261104-004</td>
+                <td>优惠百分比</td>
+                <td>停用优惠券</td>
                 <td>1天</td>
                 <td>0</td>
                 <td>0</td>
@@ -159,9 +194,9 @@
               <form class="ticket-form">
                 <div class="form-row type-row">
                   <span class="form-label">票券类型</span>
-                  <label><input type="radio" name="ticketType" value="优惠百分比" checked/> 优惠百分比</label>
-                  <label><input type="radio" name="ticketType" value="随机红包"/> 随机红包</label>
-                  <label><input type="radio" name="ticketType" value="金蛋"/> 金蛋</label>
+                  <label><input type="radio" name="ticketType" value="percent" checked/> 优惠百分比</label>
+                  <label><input type="radio" name="ticketType" value="recharge_fixed"/> 充值固定优惠券</label>
+                  <label><input type="radio" name="ticketType" value="recharge_percent"/> 充值百分比优惠券</label>
                 </div>
 
                 <h3>票券信息</h3>
@@ -191,44 +226,58 @@
                 <div class="form-grid" data-panel="percent">
                   <div class="form-row compact">
                     <label class="form-label required">优惠值</label>
-                    <div class="number-input"><input type="text" value="0"/><span>＋<br/>－</span></div>
+                    <div class="number-input"><input id="discountValue" type="number" min="0.01" step="0.01" value="0"/><span>＋<br/>－</span></div>
                   </div>
                   <div class="form-row compact">
                     <label class="form-label required">打码量倍数</label>
-                    <div class="number-input"><input type="text" value="0"/><span>＋<br/>－</span></div>
+                    <div class="number-input"><input id="percentWagerLegacy" type="number" min="0" step="0.01" value="0"/><span>＋<br/>－</span></div>
                   </div>
                 </div>
 
-                <div class="amount-panel" data-panel="random" hidden>
+                <div class="amount-panel recharge-panel" data-panel="recharge-fixed" hidden>
                   <div class="form-row compact">
-                    <label class="form-label">稽核倍数要求</label>
-                    <div class="number-input"><input type="text" value="0"/><span>＋<br/>－</span></div>
+                    <label class="form-label required">充值金额门槛</label>
+                    <div class="number-input"><input id="rechargeThresholdFixed" type="number" min="0.01" step="0.01" placeholder="充值金额大于等于"/><span>≥</span></div>
                   </div>
-                  <p class="rule-note">注：单个中奖概率范围：0-100%，总中奖概率100%。</p>
-                  <div class="prob-table random-table">
-                    <div class="prob-head"><span>最小金额</span><span>最大金额</span><span>中奖概率</span></div>
-                    <div class="prob-row"><input placeholder="最小金额"/><input placeholder="最大金额"/><input placeholder="概率%"/></div>
+                  <div class="form-row compact">
+                    <label class="form-label required">固定赠送金额</label>
+                    <div class="number-input"><input id="fixedBonus" type="number" min="0.01" step="0.01" placeholder="请输入赠送金额"/><span>＋<br/>－</span></div>
                   </div>
-                  <button class="round-add" type="button">＋</button>
+                  <div class="form-row compact">
+                    <label class="form-label required">打码量倍数</label>
+                    <div class="number-input"><input id="fixedWagerMultiple" type="number" min="0" step="0.01" value="0"/><span>＋<br/>－</span></div>
+                  </div>
+                  <p class="rule-note">充值成功金额达到门槛后，赠送固定金额。</p>
                 </div>
 
-                <div class="amount-panel" data-panel="gold" hidden>
+                <div class="amount-panel recharge-panel" data-panel="recharge-percent" hidden>
                   <div class="form-row compact">
-                    <label class="form-label">稽核倍数要求</label>
-                    <div class="number-input"><input type="text" value="0"/><span>＋<br/>－</span></div>
+                    <label class="form-label required">充值金额门槛</label>
+                    <div class="number-input"><input id="rechargeThresholdPercent" type="number" min="0.01" step="0.01" placeholder="充值金额大于等于"/><span>≥</span></div>
                   </div>
-                  <p class="rule-note">注：单个中奖概率范围：0-100%，总中奖概率100%。</p>
-                  <div class="prob-table gold-table">
-                    <div class="prob-head"><span>奖励金额</span><span>中奖概率</span></div>
-                    <div class="prob-row"><input placeholder="金额"/><input placeholder="概率%"/></div>
+                  <div class="form-row compact">
+                    <label class="form-label required">赠送比例</label>
+                    <div class="number-input"><input id="bonusRate" type="number" min="0.01" max="100" step="0.01" placeholder="请输入比例"/><span>%</span></div>
                   </div>
-                  <button class="round-add" type="button">＋</button>
+                  <div class="form-row compact">
+                    <label class="form-label required">单次赠送上限</label>
+                    <div class="number-input"><input id="maxBonus" type="number" min="0.01" step="0.01" placeholder="请输入最高赠送金额"/><span>封顶</span></div>
+                  </div>
+                  <div class="form-row compact">
+                    <label class="form-label required">打码量倍数</label>
+                    <div class="number-input"><input id="percentWagerMultiple" type="number" min="0" step="0.01" value="0"/><span>＋<br/>－</span></div>
+                  </div>
+                  <p class="rule-note">赠送金额 = 充值金额 × 赠送比例，且不超过单次赠送上限。</p>
                 </div>
 
                 <div class="form-row radio-row required-line">
                   <label class="form-label required">有效期</label>
-                  <label><input type="radio" name="validity" checked/> 长期</label>
-                  <label><input type="radio" name="validity"/> 领取票券后</label>
+                  <label><input type="radio" name="validity" value="long" checked/> 长期</label>
+                  <label><input type="radio" name="validity" value="after_claim"/> 领取票券后</label>
+                </div>
+                <div class="form-row compact" data-valid-days hidden>
+                  <label class="form-label required">有效天数</label>
+                  <div class="number-input"><input id="validityDays" type="number" min="1" step="1" placeholder="领取后有效天数"/><span>天</span></div>
                 </div>
                 <div class="form-row compact">
                   <label class="form-label">充值限制</label>
@@ -242,7 +291,7 @@
             </div>
             <div class="modal-footer">
               <button class="plain-btn" type="button" data-close="ticketModal">取消</button>
-              <button class="primary-btn" type="button" data-close="ticketModal">确定</button>
+              <button class="primary-btn" type="button" id="saveTicket">确定</button>
             </div>
           </div>
         </div>
@@ -263,10 +312,15 @@
             </div>
           </div>
         </div>
+        </section>
+        <section class="ticket-frame-panel" data-ticket-panel="usage" hidden>
+          <iframe title="使用记录" data-ticket-frame="usage" data-src="优惠活动-票券使用记录.html"></iframe>
+        </section>
       </div>
     </div>
-    <script src="custom/js/票券中心.js"></script>
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/票券中心.js"></script>
+    <script src="custom/js/优惠券任务.js"></script>
   </body>
 </html>

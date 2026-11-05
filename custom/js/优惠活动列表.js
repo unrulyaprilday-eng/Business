@@ -3,6 +3,7 @@
   var RED_PACKET_STORAGE_KEY = 'promoRedPacketActivities';
   var MONTHLY_CHECKIN_STORAGE_KEY = 'promoMonthlyCheckinActivities';
   var RECHARGE_GIFT_STORAGE_KEY = 'promoRechargeGiftActivities';
+  var COUPON_TASK_STORAGE_KEY = 'promoCouponTaskActivities';
   var WEEKLY_CARD_STORAGE_KEY = 'promoWeeklyCardActivities';
   var LUCKY_WHEEL_STORAGE_KEY = 'promoLuckyWheelActivities';
   var REWARD_WHEEL_STORAGE_KEY = 'promoRewardWheelActivities';
@@ -363,6 +364,83 @@
     }
   }
 
+  function getCouponTaskRecords() {
+    try {
+      var records = JSON.parse(window.localStorage.getItem(COUPON_TASK_STORAGE_KEY) || '[]');
+      if (!Array.isArray(records) || records.some(function (record) {
+        return !record || typeof record !== 'object' || typeof record.id !== 'string' || !record.id;
+      })) { return []; }
+      return records.slice(0, 1);
+    } catch (error) {
+      window.alert('优惠券任务活动数据读取失败，请检查浏览器本地存储后重试。');
+      return [];
+    }
+  }
+
+  function setCouponTaskRecords(records) {
+    try {
+      window.localStorage.setItem(COUPON_TASK_STORAGE_KEY, JSON.stringify(records));
+      return true;
+    } catch (error) {
+      window.alert('优惠券任务活动保存失败，请检查浏览器存储权限或剩余空间后重试。');
+      return false;
+    }
+  }
+
+  function getCouponTaskSummary(record) {
+    var labels = {
+      recharge_total: '累计充值',
+      wager: '打码',
+      recharge_single: '单次充值',
+      login_total: '累计登录'
+    };
+    var tasks = Array.isArray(record.tasks) ? record.tasks : (record.taskType ? [record] : []);
+    var counts = {};
+    tasks.forEach(function (task) { counts[task.taskType] = (counts[task.taskType] || 0) + 1; });
+    var categories = Object.keys(labels).filter(function (type) { return counts[type]; }).map(function (type) {
+      return labels[type] + ' ' + counts[type] + '档';
+    });
+    return tasks.length + ' 个任务档' + (categories.length ? '：' + categories.join('、') : '');
+  }
+
+  function renderCouponTaskRows(records) {
+    var tbody = document.getElementById('promoActivityRows');
+    if (!tbody) { return; }
+    records = records || getCouponTaskRecords();
+    Array.prototype.forEach.call(tbody.querySelectorAll('[data-coupon-task-id]'), function (row) { row.remove(); });
+    records.slice(0, 1).forEach(function (record) {
+      var tasks = Array.isArray(record.tasks) ? record.tasks : (record.taskType ? [record] : []);
+      var row = document.createElement('tr');
+      var enabled = record.enabled !== false;
+      row.setAttribute('data-coupon-task-id', record.id);
+      row.innerHTML = [
+        '<td>' + escapeHtml(record.name) + '</td>',
+        '<td>-</td>',
+        '<td title="' + escapeHtml(getCouponTaskSummary(record)) + '">' + escapeHtml(getCouponTaskSummary(record)) + '</td>',
+        '<td>优惠券任务（' + tasks.length + '档）</td>',
+        '<td>' + escapeHtml(formatRechargeGiftTime(record.startTime)) + '</td>',
+        '<td>' + escapeHtml(formatRechargeGiftTime(record.endTime)) + '</td>',
+        '<td>' + escapeHtml(record.wagerMultiple == null ? '-' : record.wagerMultiple) + '</td>',
+        '<td><span class="switch on" aria-label="活动可见"></span></td>',
+        '<td><button class="switch' + (enabled ? ' on' : '') + '" type="button" data-coupon-task-toggle aria-label="' + (enabled ? '关闭活动' : '启用活动') + '"></button></td>',
+        '<td>' + escapeHtml(record.sort || '0') + '</td>',
+        '<td>admin</td>',
+        '<td class="actions"><a href="票券中心.html?tab=tasks" data-coupon-task-edit>编辑</a></td>'
+      ].join('');
+      tbody.insertBefore(row, tbody.firstChild);
+    });
+    applyActivityFilter();
+  }
+
+  function updateCouponTaskRecord(id, updater) {
+    var records = getCouponTaskRecords();
+    records = records.map(function (record) {
+      if (record.id === id) { updater(record); }
+      return record;
+    });
+    if (setCouponTaskRecords(records)) { renderCouponTaskRows(records); }
+  }
+
   function setMonthlyCheckinRecords(records) {
     try {
       window.localStorage.setItem(MONTHLY_CHECKIN_STORAGE_KEY, JSON.stringify(records));
@@ -527,6 +605,7 @@
     renderWeeklyCardRows();
     renderLuckyWheelRows();
     renderRewardWheelRows();
+    renderCouponTaskRows();
     applyActivityFilter();
 
     if (searchButton && typeFilter) {
@@ -558,9 +637,23 @@
         var weeklyCardRow = event.target.closest('[data-weekly-card-id]');
         var luckyWheelRow = event.target.closest('[data-lucky-wheel-id]');
         var rewardWheelRow = event.target.closest('[data-reward-wheel-id]');
+        var couponTaskRow = event.target.closest('[data-coupon-task-id]');
         var toggle = event.target.closest('[data-challenge-toggle]');
         var redPacketToggle = event.target.closest('[data-red-packet-toggle]');
         var id;
+        if (couponTaskRow) {
+          id = couponTaskRow.getAttribute('data-coupon-task-id');
+          if (event.target.closest('[data-coupon-task-edit]')) {
+            event.preventDefault();
+            window.location.href = '票券中心.html?tab=tasks';
+            return;
+          }
+          if (event.target.closest('[data-coupon-task-toggle]')) {
+            updateCouponTaskRecord(id, function (record) { record.enabled = record.enabled === false; });
+            return;
+          }
+          return;
+        }
         if (weeklyCardRow) {
           id = weeklyCardRow.getAttribute('data-weekly-card-id');
           if (event.target.closest('[data-weekly-card-edit]')) {
@@ -702,7 +795,7 @@
     }
 
     document.querySelectorAll('.switch').forEach(function (toggle) {
-      if (toggle.closest('[data-challenge-id], [data-red-packet-id], [data-monthly-checkin-id], [data-recharge-gift-id], [data-weekly-card-id], [data-lucky-wheel-id], [data-reward-wheel-id]')) { return; }
+      if (toggle.closest('[data-challenge-id], [data-red-packet-id], [data-monthly-checkin-id], [data-recharge-gift-id], [data-weekly-card-id], [data-lucky-wheel-id], [data-reward-wheel-id], [data-coupon-task-id]')) { return; }
       toggle.addEventListener('click', function () { toggle.classList.toggle('on'); });
     });
   });
