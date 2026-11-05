@@ -276,6 +276,13 @@ $axure.loadDocument({
             ]
           },
           {
+            "id": "deposit_bank",
+            "pageName": "存款银行",
+            "type": "Wireframe",
+            "url": "存款银行.html",
+            "children": []
+          },
+          {
             "id": "novs01",
             "pageName": "新增活动",
             "type": "Wireframe",

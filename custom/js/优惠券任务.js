@@ -11,12 +11,19 @@
     wager: { condition: '打码', unit: '金额', integer: false, placeholder: '请输入打码门槛' },
     game_count: { condition: '游戏次数', unit: '次', integer: true, placeholder: '请输入游戏次数' }
   };
+  var RECHARGE_PERIODS = {
+    day: '自然日',
+    week: '自然周',
+    month: '自然月'
+  };
   var records = [];
   var coupons = [];
   var editorActivity = null;
   var activeTaskType = 'recharge_total';
   var activeGameCondition = 'wager';
   var editingTierId = '';
+  var resetPeriodDraft = 'day';
+  var isEditingResetPeriod = false;
 
   function byId(id) {
     return document.getElementById(id);
@@ -37,6 +44,48 @@
 
   function getGameCondition(condition) {
     return GAME_CONDITIONS[condition] || GAME_CONDITIONS.wager;
+  }
+
+  function getRechargePeriod(period) {
+    return RECHARGE_PERIODS[period] ? period : 'day';
+  }
+
+  function getActivityResetPeriod(activity) {
+    if (activity && RECHARGE_PERIODS[activity.resetPeriod]) { return activity.resetPeriod; }
+    var tasks = activity && Array.isArray(activity.tasks) ? activity.tasks : [];
+    var legacyTask = tasks.find(function (task) { return RECHARGE_PERIODS[task.rechargePeriod]; });
+    return legacyTask ? legacyTask.rechargePeriod : 'day';
+  }
+
+  function renderResetPeriod() {
+    var period = getRechargePeriod(editorActivity.resetPeriod);
+    Array.prototype.forEach.call(document.querySelectorAll('[name="taskResetPeriod"]'), function (input) {
+      input.checked = input.value === period;
+      input.disabled = !isEditingResetPeriod;
+    });
+  }
+
+  function renderFeatureToggle() {
+    var enabled = editorActivity.enabled !== false;
+    var toggle = byId('taskFeatureToggle');
+    toggle.classList.toggle('on', enabled);
+    toggle.setAttribute('aria-checked', enabled ? 'true' : 'false');
+    toggle.setAttribute('aria-label', enabled ? '关闭优惠券任务功能' : '启用优惠券任务功能');
+  }
+
+  function openResetPeriodEditor() {
+    resetPeriodDraft = getRechargePeriod(editorActivity.resetPeriod);
+    isEditingResetPeriod = true;
+    renderResetPeriod();
+    byId('editTaskResetPeriod').hidden = true;
+    byId('taskResetPeriodEditActions').hidden = false;
+  }
+
+  function closeResetPeriodEditor() {
+    isEditingResetPeriod = false;
+    byId('editTaskResetPeriod').hidden = false;
+    byId('taskResetPeriodEditActions').hidden = true;
+    renderResetPeriod();
   }
 
   function normalizeActivity(record) {
@@ -311,6 +360,7 @@
       enabled: editorActivity.enabled !== false,
       singleRewardLimit: editorActivity.singleRewardLimit !== false,
       visible: true,
+      resetPeriod: getActivityResetPeriod(editorActivity),
       tasks: editorActivity.tasks.slice(),
       createdAt: existing ? existing.createdAt : new Date().toISOString()
     };
@@ -374,6 +424,9 @@
     editorActivity = activity ? JSON.parse(JSON.stringify(activity)) : {
       id: '', name: '', startTime: '', endTime: '', sort: '0', enabled: true, singleRewardLimit: true, tasks: []
     };
+    editorActivity.resetPeriod = getActivityResetPeriod(editorActivity);
+    renderFeatureToggle();
+    closeResetPeriodEditor();
     activeTaskType = 'recharge_total';
     Array.prototype.forEach.call(document.querySelectorAll('[data-task-type]'), function (button) {
       var active = button.getAttribute('data-task-type') === activeTaskType;
@@ -388,6 +441,22 @@
     records = readRecords();
     openActivityEditor(records[0] || null);
     byId('saveTier').addEventListener('click', saveTier);
+    byId('taskFeatureToggle').addEventListener('click', function () {
+      editorActivity.enabled = editorActivity.enabled === false;
+      persistTaskActivity();
+      renderFeatureToggle();
+    });
+    byId('editTaskResetPeriod').addEventListener('click', openResetPeriodEditor);
+    byId('saveTaskResetPeriod').addEventListener('click', function () {
+      var selected = document.querySelector('[name="taskResetPeriod"]:checked');
+      editorActivity.resetPeriod = getRechargePeriod(selected && selected.value);
+      persistTaskActivity();
+      closeResetPeriodEditor();
+    });
+    byId('cancelTaskResetPeriod').addEventListener('click', function () {
+      editorActivity.resetPeriod = resetPeriodDraft;
+      closeResetPeriodEditor();
+    });
     byId('tierWagerMetric').addEventListener('change', function () {
       activeGameCondition = this.value === 'game_count' ? 'game_count' : 'wager';
       updateTierCondition();

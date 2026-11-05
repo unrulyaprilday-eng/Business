@@ -115,7 +115,25 @@ body {
 .task-config-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0 10px; }
 .task-config-heading h2 { margin: 0; color: #303c4d; font-size: 15px; font-weight: 600; }
 .task-config-heading p { margin: 0; color: #7b8797; font-size: 12px; }
+.task-feature-row { display: flex; align-items: center; gap: 8px; margin-top: 7px; color: #536174; }
+.task-feature-toggle { position: relative; width: 36px; height: 20px; flex: 0 0 auto; padding: 0; border: 0; border-radius: 10px; background: #aeb8c5; cursor: pointer; }
+.task-feature-toggle span { position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: #fff; transition: transform 0.15s ease; }
+.task-feature-toggle.on { background: #3688df; }
+.task-feature-toggle.on span { transform: translateX(16px); }
+.task-feature-toggle:focus-visible { outline: 2px solid rgba(54, 136, 223, 0.35); outline-offset: 2px; }
 .task-type-tabs { display: flex; gap: 2px; border-bottom: 1px solid #d9e0e9; }
+.task-reset-period { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; min-height: 36px; margin: 8px 0 12px; padding: 5px 8px; border: 1px solid #dfe5ec; border-radius: 4px; background: #fbfcfe; color: #354052; }
+.task-reset-period-label { margin-right: 2px; color: #536174; }
+.task-reset-period-editor { display: inline-flex; align-items: center; gap: 12px; min-height: 30px; padding: 0 8px; border: 1px solid #e1e6ed; border-radius: 4px; background: #fff; }
+.task-reset-period-editor[hidden] { display: none !important; }
+.task-reset-period-editor label { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.task-reset-period-editor input[type="radio"] { appearance: none; width: 16px; height: 16px; margin: 0; border: 1px solid #b8c3d1; border-radius: 50%; background: #fff; cursor: pointer; }
+.task-reset-period-editor input[type="radio"]:checked { border: 5px solid #409eff; }
+.task-reset-period-editor input[type="radio"]:focus-visible { outline: 3px solid #c8e2ff; outline-offset: 1px; }
+.task-reset-period-editor input[type="radio"]:disabled { cursor: default; }
+.task-reset-actions { display: flex; flex: 0 0 112px; justify-content: flex-end; }
+.task-reset-actions > span { display: flex; gap: 5px; }
+.task-reset-actions > span[hidden] { display: none !important; }
 .task-type-tab { position: relative; min-height: 38px; padding: 0 16px; border: 0; background: transparent; color: #647184; font: inherit; cursor: pointer; }
 .task-type-tab.active { color: #287bd0; }
 .task-type-tab.active::after { position: absolute; right: 10px; bottom: -1px; left: 10px; height: 2px; background: #3688df; content: ""; }

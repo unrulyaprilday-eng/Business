@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <title>存款银行</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="resources/css/axure_rp_page.css" rel="stylesheet">
+    <link href="data/styles.css" rel="stylesheet">
+    <link href="files/存款银行/styles.css" rel="stylesheet">
+    <link href="custom/css/存款银行.css" rel="stylesheet">
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/存款银行/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script>
+      $axure.utils.getTransparentGifPath = function () { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function () { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function () { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell deposit-bank-page">
+        <main class="db-main">
+          <div class="db-breadcrumb">优惠活动 / 存款银行</div>
+          <h1>存款银行</h1>
+          <div class="db-panel">
+            <nav class="db-tabs" role="tablist" aria-label="存款银行管理">
+              <button class="db-tab" id="bank-tab-config" type="button" role="tab" aria-selected="true" aria-controls="bank-config-panel" data-bank-tab="config">配置</button>
+              <button class="db-tab" id="bank-tab-logs" type="button" role="tab" aria-selected="false" aria-controls="bank-log-panel" tabindex="-1" data-bank-tab="logs">日志</button>
+            </nav>
+            <section class="db-content" id="bank-config-panel" role="tabpanel" aria-labelledby="bank-tab-config">
+              <section class="db-section">
+                <div class="db-section-head">
+                  <div class="db-heading"><h2>基础配置</h2><span class="db-tag db-success" data-bank-value="enabled">启用</span></div>
+                  <button class="db-button" type="button" id="bank-edit-rules">编辑配置</button>
+                </div>
+                <dl class="db-rules">
+                  <div class="db-rule"><dt>币种</dt><dd>IDR</dd></div>
+                  <div class="db-rule"><dt>结算周期</dt><dd>每小时</dd></div>
+                  <div class="db-rule"><dt>收益复投</dt><dd>结算后自动计入本金</dd></div>
+                  <div class="db-rule"><dt>最低转入金额</dt><dd data-bank-value="minimumDeposit">10,000</dd></div>
+                  <div class="db-rule"><dt>最低计息余额</dt><dd data-bank-value="minimumBalance">10,000</dd></div>
+                  <div class="db-rule"><dt>最低结算收益</dt><dd data-bank-value="minimumInterest">1</dd></div>
+                  <div class="db-rule"><dt>有效存放时长</dt><dd><span data-bank-value="holdingMinutes">40</span> 分钟</dd></div>
+                  <div class="db-rule"><dt>未登录停止计息</dt><dd>超过 <span data-bank-value="inactiveDays">3</span> 天</dd></div>
+                  <div class="db-rule"><dt>转出金额限制</dt><dd>不设最低金额</dd></div>
+                </dl>
+                <p class="db-note">有效存款口径：当前银行内符合计息条件的余额，不是累计充值金额。原规则未明确“40分钟”的起算点，本原型暂按当个结算周期内实际存放时长展示，待业务确认。最低转入金额为示例配置；修改仅保存在当前浏览器。</p>
+              </section>
+              <section class="db-section">
+                <div class="db-section-head">
+                  <div><h2>VIP 年利率配置</h2><span class="db-muted">按有效存款金额命中的最高档位，匹配当前VIP等级的年利率</span></div>
+                  <button class="db-button db-primary" type="button" id="bank-add-tier">新增档位</button>
+                </div>
+                <div class="db-table-wrap">
+                  <table class="db-table">
+                    <thead><tr><th>有效存款金额下限（含）</th><th class="db-num">VIP0 年利率</th><th class="db-num">VIP1 年利率</th><th class="db-num">VIP2 年利率</th><th>操作</th></tr></thead>
+                    <tbody id="bank-tier-rows">
+                      <tr><td>≥ 1<span class="db-range-label">低于 100,000</span></td><td class="db-num">99.99%</td><td class="db-num">105%</td><td class="db-num">110%</td><td><button class="db-link" type="button" data-bank-edit="0">编辑</button><span class="db-muted">基础档位</span></td></tr>
+                      <tr><td>≥ 100,000<span class="db-range-label">无上限</span></td><td class="db-num">101%</td><td class="db-num">103%</td><td class="db-num">105%</td><td><button class="db-link" type="button" data-bank-edit="1">编辑</button><button class="db-link db-danger" type="button" data-bank-delete="1">删除</button></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="db-muted">金额与最低计息余额分别校验：基础档位下限为1，不代表存入1即可计息。命中档位后整笔使用该档利率，不分段计算。</p>
+                <div class="db-notice" id="bank-rate-warning" role="status">当前示例沿用截图利率，存在高金额档位利率降低的情况，与“存得越多，利率越高”的规则不一致，请核对后配置。</div>
+              </section>
+              <section class="db-section">
+                <div class="db-section-head"><h2>结算与流水规则</h2></div>
+                <div class="db-formula"><span>每小时收益</span><strong>有效计息余额 × 年利率 ÷ 365 ÷ 24</strong><span class="db-muted">收益达到最低结算值后入账，并参与下一周期计息</span></div>
+                <ol class="db-text-rules">
+                  <li>转入、转出优先处理最近结算点未能产生利息的资金；当期有效存放时长不足时，该部分不计息。</li>
+                  <li>输入金额超过可转入的钱包余额或可转出的银行余额时，按对应账户全部可用余额处理。</li>
+                  <li>低于最低计息余额不计息；当次收益低于最低结算收益时不入账。</li>
+                  <li>存款后连续未登录超过配置天数，停止后续计息。</li>
+                  <li>前台流水展示最近15天、约100条记录；后台日志可按会员、事件及时间查询。</li>
+                </ol>
+              </section>
+            </section>
+            <section class="db-content" id="bank-log-panel" role="tabpanel" aria-labelledby="bank-tab-logs" hidden>
+              <div class="db-section-head db-section"><h2>银行流水</h2><span class="db-muted">存入、取出及利息入账记录</span></div>
+              <div class="db-table-wrap"><table class="db-table"><thead><tr><th>流水号</th><th>会员账号</th><th>币种</th><th>事件</th><th>变动金额</th><th>银行余额</th><th>时间</th></tr></thead><tbody><tr><td colspan="7" class="db-empty">流水数据加载后显示；暂无可展示记录</td></tr></tbody></table></div>
+            </section>
+          </div>
+        </main>
+        <div class="db-modal-layer" id="bank-modal" hidden>
+          <form class="db-modal" id="bank-modal-form" role="dialog" aria-modal="true" aria-labelledby="bank-modal-title">
+            <header class="db-modal-head"><h2 id="bank-modal-title">编辑配置</h2><button class="db-close" type="button" data-bank-close aria-label="关闭">×</button></header>
+            <div class="db-modal-body"><div id="bank-modal-body"></div><p class="db-error" id="bank-modal-error" role="alert"></p></div>
+            <footer class="db-modal-foot"><button class="db-button" type="button" data-bank-close>取消</button><button class="db-button db-primary" type="submit" id="bank-modal-save">确定</button></footer>
+          </form>
+        </div>
+        <div class="db-toast" id="bank-toast" role="status" hidden></div>
+      </div>
+    </div>
+    <script src="custom/js/deposit-bank-logs.js"></script>
+    <script src="custom/js/存款银行.js"></script>
+  </body>
+</html>

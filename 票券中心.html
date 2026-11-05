@@ -59,7 +59,16 @@
           <div class="inline-task-page">
             <div class="task-page-form">
               <section class="task-config-section" aria-labelledby="taskConfigHeading">
-                <div class="task-config-heading"><div><h2 id="taskConfigHeading">任务奖励</h2><p>各类别可设置多个门槛档，每档关联一张优惠券。</p></div><button class="task-button primary" id="addTierButton" type="button">新增奖励档</button></div>
+                <div class="task-config-heading"><div><h2 id="taskConfigHeading">任务奖励</h2><div class="task-feature-row"><label for="taskFeatureToggle">本功能总开关</label><button class="task-feature-toggle on" id="taskFeatureToggle" type="button" role="switch" aria-checked="true" aria-label="优惠券任务功能启用"><span></span></button></div><p>各类别可设置多个门槛档，每档关联一张优惠券。</p></div><button class="task-button primary" id="addTierButton" type="button">新增奖励档</button></div>
+                <div class="task-reset-period">
+                  <span class="task-reset-period-label">统一重置时间</span>
+                  <div class="task-reset-period-editor" id="taskResetPeriodEditor" role="group" aria-label="统一重置时间">
+                    <label><input type="radio" name="taskResetPeriod" value="day" checked/>自然日</label>
+                    <label><input type="radio" name="taskResetPeriod" value="week"/>自然周</label>
+                    <label><input type="radio" name="taskResetPeriod" value="month"/>自然月</label>
+                  </div>
+                  <div class="task-reset-actions"><button class="task-button" id="editTaskResetPeriod" type="button">编辑</button><span id="taskResetPeriodEditActions" hidden><button class="task-button primary" id="saveTaskResetPeriod" type="button">保存</button><button class="task-button" id="cancelTaskResetPeriod" type="button">取消</button></span></div>
+                </div>
                 <div class="task-type-tabs" role="tablist" aria-label="任务类别">
                   <button class="task-type-tab active" type="button" role="tab" aria-selected="true" data-task-type="recharge_total">累计充值</button>
                   <button class="task-type-tab" type="button" role="tab" aria-selected="false" data-task-type="wager">游戏任务</button>
