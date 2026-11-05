@@ -71,38 +71,56 @@
                   <div class="db-rule"><dt>结算周期</dt><dd>每小时</dd></div>
                   <div class="db-rule"><dt>收益复投</dt><dd>结算后自动计入本金</dd></div>
                   <div class="db-rule"><dt>最低转入金额</dt><dd data-bank-value="minimumDeposit">10,000</dd></div>
-                  <div class="db-rule"><dt>最低计息余额</dt><dd data-bank-value="minimumBalance">10,000</dd></div>
+                  <div class="db-rule"><dt>取款到余额打码量倍数</dt><dd><span data-bank-value="withdrawWagerMultiplier">1</span> 倍</dd></div>
                   <div class="db-rule"><dt>最低结算收益</dt><dd data-bank-value="minimumInterest">1</dd></div>
                   <div class="db-rule"><dt>有效存放时长</dt><dd><span data-bank-value="holdingMinutes">40</span> 分钟</dd></div>
                   <div class="db-rule"><dt>未登录停止计息</dt><dd>超过 <span data-bank-value="inactiveDays">3</span> 天</dd></div>
                   <div class="db-rule"><dt>转出金额限制</dt><dd>不设最低金额</dd></div>
                 </dl>
-                <p class="db-note">有效存款口径：当前银行内符合计息条件的余额，不是累计充值金额。原规则未明确“40分钟”的起算点，本原型暂按当个结算周期内实际存放时长展示，待业务确认。最低转入金额为示例配置；修改仅保存在当前浏览器。</p>
+                <p class="db-note">每小时结算时检查存放时长，达到配置的有效存放时长才参与本次计息；不足则本次不计息。收益按当前符合计息条件的累计银行余额计算。</p>
               </section>
               <section class="db-section">
                 <div class="db-section-head">
-                  <div><h2>VIP 年利率配置</h2><span class="db-muted">按有效存款金额命中的最高档位，匹配当前VIP等级的年利率</span></div>
-                  <button class="db-button db-primary" type="button" id="bank-add-tier">新增档位</button>
+                  <div><h2>VIP 年利率配置</h2><span class="db-muted">各当前VIP等级分别配置年利率</span></div>
                 </div>
+                <form class="db-activation-editor" id="bank-activation-form" novalidate>
+                  <div class="db-activation-copy"><strong>利息生效金额</strong><span class="db-muted">累计银行余额达到此金额后开始计息</span></div>
+                  <label class="db-activation-input"><span class="db-sr-only">利息生效金额</span><input id="bank-activation-amount" type="number" min="1" step="0.01" value="10000" required><span>IDR</span></label>
+                  <button class="db-button db-primary" type="submit">保存金额</button>
+                  <p class="db-error db-activation-error" id="bank-activation-error" role="alert" hidden>请输入大于0的生效金额</p>
+                </form>
+                <p class="db-muted db-demo-note">演示数据：下方年利率为逐级递增的示例值，可按实际业务配置。</p>
                 <div class="db-table-wrap">
                   <table class="db-table">
-                    <thead><tr><th>有效存款金额下限（含）</th><th class="db-num">VIP0 年利率</th><th class="db-num">VIP1 年利率</th><th class="db-num">VIP2 年利率</th><th>操作</th></tr></thead>
+                    <thead><tr><th>VIP等级</th><th>年利率</th><th>操作</th></tr></thead>
                     <tbody id="bank-tier-rows">
-                      <tr><td>≥ 1<span class="db-range-label">低于 100,000</span></td><td class="db-num">99.99%</td><td class="db-num">105%</td><td class="db-num">110%</td><td><button class="db-link" type="button" data-bank-edit="0">编辑</button><span class="db-muted">基础档位</span></td></tr>
-                      <tr><td>≥ 100,000<span class="db-range-label">无上限</span></td><td class="db-num">101%</td><td class="db-num">103%</td><td class="db-num">105%</td><td><button class="db-link" type="button" data-bank-edit="1">编辑</button><button class="db-link db-danger" type="button" data-bank-delete="1">删除</button></td></tr>
+                      <tr><td>VIP1</td><td class="db-num">99.99%</td><td><button class="db-link" type="button" data-bank-edit="1">编辑</button></td></tr>
+                      <tr><td>VIP2</td><td class="db-num">101%</td><td><button class="db-link" type="button" data-bank-edit="2">编辑</button></td></tr>
+                      <tr><td>VIP3</td><td class="db-num">103%</td><td><button class="db-link" type="button" data-bank-edit="3">编辑</button></td></tr>
+                      <tr><td>VIP4</td><td class="db-num">105%</td><td><button class="db-link" type="button" data-bank-edit="4">编辑</button></td></tr>
+                      <tr><td>VIP5</td><td class="db-num">107%</td><td><button class="db-link" type="button" data-bank-edit="5">编辑</button></td></tr>
+                      <tr><td>VIP6</td><td class="db-num">109%</td><td><button class="db-link" type="button" data-bank-edit="6">编辑</button></td></tr>
+                      <tr><td>VIP7</td><td class="db-num">111%</td><td><button class="db-link" type="button" data-bank-edit="7">编辑</button></td></tr>
+                      <tr><td>VIP8</td><td class="db-num">113%</td><td><button class="db-link" type="button" data-bank-edit="8">编辑</button></td></tr>
+                      <tr><td>VIP9</td><td class="db-num">115%</td><td><button class="db-link" type="button" data-bank-edit="9">编辑</button></td></tr>
+                      <tr><td>VIP10</td><td class="db-num">117%</td><td><button class="db-link" type="button" data-bank-edit="10">编辑</button></td></tr>
+                      <tr><td>VIP11</td><td class="db-num">119%</td><td><button class="db-link" type="button" data-bank-edit="11">编辑</button></td></tr>
+                      <tr><td>VIP12</td><td class="db-num">121%</td><td><button class="db-link" type="button" data-bank-edit="12">编辑</button></td></tr>
+                      <tr><td>VIP13</td><td class="db-num">123%</td><td><button class="db-link" type="button" data-bank-edit="13">编辑</button></td></tr>
+                      <tr><td>VIP14</td><td class="db-num">125%</td><td><button class="db-link" type="button" data-bank-edit="14">编辑</button></td></tr>
+                      <tr><td>VIP15</td><td class="db-num">127%</td><td><button class="db-link" type="button" data-bank-edit="15">编辑</button></td></tr>
                     </tbody>
                   </table>
                 </div>
-                <p class="db-muted">金额与最低计息余额分别校验：基础档位下限为1，不代表存入1即可计息。命中档位后整笔使用该档利率，不分段计算。</p>
-                <div class="db-notice" id="bank-rate-warning" role="status">当前示例沿用截图利率，存在高金额档位利率降低的情况，与“存得越多，利率越高”的规则不一致，请核对后配置。</div>
+                <p class="db-muted">达到统一的利息生效金额后，按当前VIP等级套用对应年利率；所有存入金额合并为累计余额，不按单笔分别计息。</p>
               </section>
               <section class="db-section">
                 <div class="db-section-head"><h2>结算与流水规则</h2></div>
                 <div class="db-formula"><span>每小时收益</span><strong>有效计息余额 × 年利率 ÷ 365 ÷ 24</strong><span class="db-muted">收益达到最低结算值后入账，并参与下一周期计息</span></div>
                 <ol class="db-text-rules">
-                  <li>转入、转出优先处理最近结算点未能产生利息的资金；当期有效存放时长不足时，该部分不计息。</li>
+                  <li>转入、转出优先处理最近结算点未能产生利息的资金；每小时结算时检查存放时长，达到配置时长才参与本次计息。</li>
                   <li>输入金额超过可转入的钱包余额或可转出的银行余额时，按对应账户全部可用余额处理。</li>
-                  <li>低于最低计息余额不计息；当次收益低于最低结算收益时不入账。</li>
+                  <li>累计余额低于利息生效金额不计息；当次收益低于最低结算收益时不入账。</li>
                   <li>存款后连续未登录超过配置天数，停止后续计息。</li>
                   <li>前台流水展示最近15天、约100条记录；后台日志可按会员、事件及时间查询。</li>
                 </ol>

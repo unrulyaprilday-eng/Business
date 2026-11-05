@@ -23,9 +23,9 @@
   function makeRecords() {
     var today = new Date(2026, 10, 5, 23, 59, 59);
     var people = [
-      { account: 'luna88', id: 'MB10086', vip: 'VIP2', balance: 1250000, lastAssociation: '' },
-      { account: 'mike_21', id: 'MB10231', vip: 'VIP1', balance: 680000, lastAssociation: '' },
-      { account: 'sunny520', id: 'MB10917', vip: 'VIP0', balance: 320000, lastAssociation: '' }
+      { account: 'luna88', id: 'MB10086', vip: 'VIP2', balance: 1250000 },
+      { account: 'mike_21', id: 'MB10231', vip: 'VIP1', balance: 680000 },
+      { account: 'sunny520', id: 'MB10917', vip: 'VIP0', balance: 320000 }
     ];
     var records = [];
     var sequence = 0;
@@ -47,29 +47,23 @@
       var amount = entry[2] || 0;
       var before = person.balance;
       var rate = { VIP0: 101, VIP1: 103, VIP2: 105 }[person.vip];
-      var principal = before;
-      var related = '';
       sequence += 1;
       var recordNo = 'BK' + String(100000 + sequence);
       if (type === 'deposit') {
         person.balance = round2(before + amount);
-        person.lastAssociation = recordNo;
       } else if (type === 'withdraw') {
         amount = Math.min(amount, person.balance);
         person.balance = round2(before - amount);
-        person.lastAssociation = recordNo;
       } else {
-        amount = round2(principal * (rate / 100) / 365 / 24);
+        amount = round2(before * (rate / 100) / 365 / 24);
         person.balance = round2(before + amount);
-        related = person.lastAssociation;
       }
       var daysAgo = 14 - Math.floor(index / 2);
       var happened = new Date(today.getFullYear(), today.getMonth(), today.getDate() - daysAgo, 9 + index % 2, 0, 0);
       records.push({
         no: recordNo, account: person.account, memberId: person.id, vip: person.vip,
         type: type, amount: type === 'withdraw' ? -amount : amount, before: before, after: person.balance,
-        rate: rate, time: localDateTime(happened), timestamp: happened.getTime(), principal: principal,
-        related: related, period: '1小时', currency: 'IDR'
+        rate: rate, time: localDateTime(happened), timestamp: happened.getTime(), currency: 'IDR'
       });
     });
     return records.sort(function (a, b) { return b.timestamp - a.timestamp; });
@@ -91,7 +85,7 @@
     if (!panel || panel.dataset.dbLogsReady === 'true') return;
     panel.dataset.dbLogsReady = 'true';
     var records = makeRecords();
-    var state = { query: '', vip: '', type: '', from: '', to: '', page: 1, size: 10, visible: records.slice(), returnFocus: null };
+    var state = { query: '', vip: '', type: '', from: '', to: '', page: 1, size: 10, visible: records.slice() };
     var typeNames = { interest: '利息', deposit: '存入', withdraw: '取出' };
     panel.innerHTML = [
       '<div class="db-section-head"><div><h3>银行流水</h3><div class="db-muted">前台展示最近15天、约100条记录；后台支持筛选查询。</div></div>',
@@ -103,19 +97,14 @@
       '<label class="db-field">发生日期<input name="from" type="date"></label><label class="db-field">至<input name="to" type="date"></label>',
       '<div class="db-error db-log-date-error" data-role="date-error" role="alert" aria-live="polite" hidden>开始日期不能晚于结束日期</div>',
       '<div class="db-filter-actions"><button class="db-button db-primary" type="submit">查询</button><button class="db-button" type="reset">重置</button></div></form>',
-      '<div class="db-table-wrap"><table class="db-table db-log-table"><thead><tr><th>流水号</th><th>会员账号 / ID</th><th>VIP等级</th><th>币种</th><th>事件</th><th>变动金额</th><th>变动前银行余额</th><th>变动后银行余额</th><th>年利率</th><th>发生时间</th><th>操作</th></tr></thead><tbody data-role="rows"></tbody></table></div>',
+      '<div class="db-table-wrap"><table class="db-table db-log-table"><thead><tr><th>流水号</th><th>会员账号 / ID</th><th>VIP等级</th><th>币种</th><th>事件</th><th>变动金额</th><th>变动前银行余额</th><th>变动后银行余额</th><th>年利率</th><th>发生时间</th></tr></thead><tbody data-role="rows"></tbody></table></div>',
       '<div class="db-log-empty db-empty" data-role="empty" hidden>暂无符合条件的银行流水</div>',
-      '<div class="db-pagination" data-role="pagination"></div>',
-      '<div class="db-modal-layer" data-role="modal" hidden><section class="db-modal db-log-modal" role="dialog" aria-modal="true" aria-labelledby="db-log-modal-title" tabindex="-1">',
-      '<header class="db-modal-head"><h2 id="db-log-modal-title">流水详情</h2><button type="button" class="db-close" data-action="close" aria-label="关闭">×</button></header>',
-      '<div class="db-modal-body" data-role="detail"></div><footer class="db-modal-foot"><button type="button" class="db-button" data-action="cancel">关闭</button></footer></section></div>'
+      '<div class="db-pagination" data-role="pagination"></div>'
     ].join('');
     var filter = panel.querySelector('[data-role="filter"]');
     var rows = panel.querySelector('[data-role="rows"]');
     var empty = panel.querySelector('[data-role="empty"]');
     var pagination = panel.querySelector('[data-role="pagination"]');
-    var layer = panel.querySelector('[data-role="modal"]');
-    var detail = panel.querySelector('[data-role="detail"]');
     var dateError = panel.querySelector('[data-role="date-error"]');
 
     function applyFilter() {
@@ -138,43 +127,17 @@
       rows.innerHTML = pageRows.map(function (row) {
         var tagClass = row.type === 'interest' ? 'db-success' : (row.type === 'deposit' ? 'db-tag' : 'db-warning');
         var amountClass = row.amount < 0 ? 'db-num db-log-negative' : 'db-num db-log-positive';
-        return '<tr><td>' + escapeHtml(row.no) + '</td><td>' + escapeHtml(row.account) + '<span class="db-log-sub">' + escapeHtml(row.memberId) + '</span></td><td>' + escapeHtml(row.vip) + '</td><td>IDR</td><td><span class="db-tag ' + tagClass + '">' + typeNames[row.type] + '</span></td><td class="' + amountClass + '">' + (row.amount > 0 ? '+' : '') + money(row.amount) + '</td><td class="db-num">' + money(row.before) + '</td><td class="db-num">' + money(row.after) + '</td><td>' + (row.type === 'interest' ? row.rate.toFixed(2) + '%' : '—') + '</td><td>' + escapeHtml(row.time) + '</td><td><button type="button" class="db-link" data-action="detail" data-id="' + escapeHtml(row.no) + '">详情</button></td></tr>';
+        return '<tr><td>' + escapeHtml(row.no) + '</td><td>' + escapeHtml(row.account) + '<span class="db-log-sub">' + escapeHtml(row.memberId) + '</span></td><td>' + escapeHtml(row.vip) + '</td><td>IDR</td><td><span class="db-tag ' + tagClass + '">' + typeNames[row.type] + '</span></td><td class="' + amountClass + '">' + (row.amount > 0 ? '+' : '') + money(row.amount) + '</td><td class="db-num">' + money(row.before) + '</td><td class="db-num">' + money(row.after) + '</td><td>' + (row.type === 'interest' ? row.rate.toFixed(2) + '%' : '—') + '</td><td>' + escapeHtml(row.time) + '</td></tr>';
       }).join('');
       empty.hidden = state.visible.length > 0;
       panel.querySelector('.db-table-wrap').hidden = state.visible.length === 0;
       pagination.innerHTML = '<span class="db-muted">共 ' + state.visible.length + ' 条</span><label>每页 <select data-role="size">' + PAGE_SIZES.map(function (size) { return '<option value="' + size + '"' + (size === state.size ? ' selected' : '') + '>' + size + '</option>'; }).join('') + '</select> 条</label><button type="button" class="db-button" data-action="prev"' + (state.page <= 1 ? ' disabled' : '') + '>上一页</button><span>' + state.page + ' / ' + pages + '</span><button type="button" class="db-button" data-action="next"' + (state.page >= pages ? ' disabled' : '') + '>下一页</button>';
     }
 
-    function showDetails(row, trigger) {
-      state.returnFocus = trigger;
-      var principal = row.principal;
-      var hourly = round2(principal * (row.rate / 100) / 365 / 24);
-      var sections = [
-        '<div class="db-log-detail-grid"><div><span>流水号</span><strong>' + escapeHtml(row.no) + '</strong></div><div><span>会员</span><strong>' + escapeHtml(row.account) + ' / ' + escapeHtml(row.memberId) + '</strong></div><div><span>VIP等级</span><strong>' + escapeHtml(row.vip) + '</strong></div><div><span>币种</span><strong>' + row.currency + '</strong></div><div><span>事件</span><strong>' + typeNames[row.type] + '</strong></div><div><span>变动金额</span><strong>' + (row.amount > 0 ? '+' : '') + money(row.amount) + '</strong></div><div><span>发生时间</span><strong>' + escapeHtml(row.time) + '</strong></div>'
-      ];
-      if (row.type === 'interest') {
-        sections.push('<div class="db-log-detail-wide"><span>利息计算</span><strong>' + money(principal) + ' × ' + row.rate.toFixed(2) + '% ÷ 365 ÷ 24 = ' + money(hourly) + ' / 小时</strong><small>本金、年利率与每小时周期按流水记录计算，实际收益保留2位小数。</small></div><div class="db-log-detail-wide"><span>关联流水</span><strong>' + (row.related || '—') + '</strong><small>该利息流水关联最近的银行存取记录。</small></div>');
-      } else {
-        sections.push('<div class="db-log-detail-wide"><span>存取关联</span><strong>' + (row.type === 'deposit' ? '存入后计息本金 ' + money(row.after) : '取出前计息本金 ' + money(row.before)) + '</strong><small>' + (row.type === 'deposit' ? '存入金额计入银行本金；后续利息按更新后的本金计算。' : '取出金额从银行余额与计息本金中扣除。') + '</small></div>');
-      }
-      sections.push('<div><span>变动前余额</span><strong>' + money(row.before) + '</strong></div><div><span>变动后余额</span><strong>' + money(row.after) + '</strong></div></div>');
-      detail.innerHTML = sections.join('');
-      layer.hidden = false;
-      panel.querySelector('.db-log-modal').focus();
-      panel.querySelector('[data-action="close"]').focus();
-    }
-
-    function closeDetails() {
-      if (layer.hidden) return;
-      layer.hidden = true;
-      if (state.returnFocus && state.returnFocus.isConnected) state.returnFocus.focus();
-      state.returnFocus = null;
-    }
-
     function exportCsv() {
-      var headers = ['流水号', '会员账号', '会员ID', 'VIP等级', '币种', '事件', '变动金额', '变动前银行余额', '变动后银行余额', '年利率', '发生时间', '操作详情'];
+      var headers = ['流水号', '会员账号', '会员ID', 'VIP等级', '币种', '事件', '变动金额', '变动前银行余额', '变动后银行余额', '年利率', '发生时间'];
       var lines = [headers].concat(state.visible.map(function (row) {
-        return [row.no, row.account, row.memberId, row.vip, row.currency, typeNames[row.type], row.amount.toFixed(2), row.before.toFixed(2), row.after.toFixed(2), row.rate.toFixed(2) + '%', row.time, row.type === 'interest' ? ('本金 ' + row.principal.toFixed(2) + '; 年利率 ' + row.rate.toFixed(2) + '%; 周期 1小时; 实际收益 ' + row.amount.toFixed(2) + '; 关联 ' + row.related) : (row.type === 'deposit' ? '银行存入' : '银行取出')];
+        return [row.no, row.account, row.memberId, row.vip, row.currency, typeNames[row.type], row.amount.toFixed(2), row.before.toFixed(2), row.after.toFixed(2), row.type === 'interest' ? row.rate.toFixed(2) + '%' : '', row.time];
       }));
       var csv = '\uFEFF' + lines.map(function (line) { return line.map(csvCell).join(','); }).join('\r\n');
       var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
@@ -227,31 +190,9 @@
       var button = event.target.closest('[data-action]');
       if (!button || !panel.contains(button)) return;
       var action = button.dataset.action;
-      if (action === 'detail') {
-        var row = records.find(function (item) { return item.no === button.dataset.id; });
-        if (row) showDetails(row, button);
-      } else if (action === 'close' || action === 'cancel') closeDetails();
-      else if (action === 'prev' && state.page > 1) { state.page -= 1; render(); }
+      if (action === 'prev' && state.page > 1) { state.page -= 1; render(); }
       else if (action === 'next' && state.page < Math.ceil(state.visible.length / state.size)) { state.page += 1; render(); }
       else if (action === 'export') exportCsv();
-    });
-    layer.addEventListener('click', function (event) { if (event.target === layer) closeDetails(); });
-    panel.addEventListener('keydown', function (event) {
-      if (layer.hidden) return;
-      if (event.key === 'Escape') {
-        closeDetails();
-      } else if (event.key === 'Tab') {
-        var closeButtons = panel.querySelectorAll('.db-log-modal [data-action="close"], .db-log-modal [data-action="cancel"]');
-        var first = closeButtons[0];
-        var last = closeButtons[closeButtons.length - 1];
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault();
-          last.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault();
-          first.focus();
-        }
-      }
     });
     render();
   }
