@@ -208,7 +208,7 @@
     } else {
       record.discountValue = numericValue("discountValue");
       if (!(record.discountValue > 0) || !(record.wagerMultiple >= 0)) {
-        window.alert("优惠值须大于0，打码倍数须大于或等于0。"); return;
+        window.alert("优惠百分比须大于0，打码倍数须大于或等于0。"); return;
       }
     }
     if (editingId) {

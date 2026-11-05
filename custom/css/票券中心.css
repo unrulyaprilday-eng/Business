@@ -557,6 +557,11 @@ h3 {
   column-gap: 60px;
 }
 
+.ticket-form .ticket-discount-note {
+  grid-column: 1 / -1;
+  margin: 0 0 18px 92px;
+}
+
 .compact {
   align-items: center;
 }
@@ -585,6 +590,17 @@ h3 {
   color: #6f7c8d;
   line-height: 14px;
   text-align: center;
+}
+
+.ticket-form .number-input .ticket-percent-unit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  flex: 0 0 30px;
+  border-radius: 0 2px 2px 0;
+  font-size: 12px;
+  line-height: 1;
 }
 
 .amount-panel {

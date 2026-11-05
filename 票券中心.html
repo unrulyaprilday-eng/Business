@@ -234,13 +234,14 @@
                 <h3>设置金额及流水</h3>
                 <div class="form-grid" data-panel="percent">
                   <div class="form-row compact">
-                    <label class="form-label required">优惠值</label>
-                    <div class="number-input"><input id="discountValue" type="number" min="0.01" step="0.01" value="0"/><span>＋<br/>－</span></div>
+                    <label class="form-label required" for="discountValue">优惠百分比</label>
+                    <div class="number-input"><input id="discountValue" type="number" min="0.01" step="0.01" value="0" aria-describedby="discountPercentNote"/><span class="ticket-percent-unit">%</span></div>
                   </div>
                   <div class="form-row compact">
                     <label class="form-label required">打码量倍数</label>
                     <div class="number-input"><input id="percentWagerLegacy" type="number" min="0" step="0.01" value="0"/><span>＋<br/>－</span></div>
                   </div>
+                  <p class="rule-note ticket-discount-note" id="discountPercentNote">实际支付金额 = 充值金额 ×（1 - 优惠百分比）。</p>
                 </div>
 
                 <div class="amount-panel recharge-panel" data-panel="recharge-fixed" hidden>
@@ -266,7 +267,7 @@
                   </div>
                   <div class="form-row compact">
                     <label class="form-label required">赠送比例</label>
-                    <div class="number-input"><input id="bonusRate" type="number" min="0.01" max="100" step="0.01" placeholder="请输入比例"/><span>%</span></div>
+                    <div class="number-input"><input id="bonusRate" type="number" min="0.01" max="100" step="0.01" placeholder="请输入比例"/><span class="ticket-percent-unit">%</span></div>
                   </div>
                   <div class="form-row compact">
                     <label class="form-label required">单次赠送上限</label>
