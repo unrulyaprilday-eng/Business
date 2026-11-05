@@ -25770,18 +25770,41 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
                     </div>
                   </section>
                   <section id="rewardWheelChanceSection" class="lw-section rw-chance-section" hidden>
-                    <h3>抽奖次数配置</h3>
+                    <h3>奖励配置</h3>
                     <div class="rw-default-chances"><label for="rewardWheelDefaultCount">参与活动默认次数</label><input id="rewardWheelDefaultCount" type="number" min="0" step="1" value="1"><span>次</span></div>
-                    <div class="rw-rule-wrap"><table class="rw-rule-table">
-                      <thead><tr><th>获取方式</th><th>达成条件</th><th>增加次数</th></tr></thead>
-                      <tbody>
-                        <tr data-reward-rule="deposit"><th scope="row">充值</th><td>每累计充值达到 <input id="rewardWheelDepositThreshold" data-reward-threshold type="number" min="0.01" step="0.01" placeholder="请输入金额"> 时</td><td>增加 <input id="rewardWheelDepositChances" data-reward-count type="number" min="0" step="1" value="1"> 次 <small class="rw-rule-disabled" data-reward-disabled-label hidden>未启用</small></td></tr>
-                        <tr data-reward-rule="turnover"><th scope="row">打码</th><td>每累计有效打码达到 <input id="rewardWheelTurnoverThreshold" data-reward-threshold type="number" min="0.01" step="0.01" placeholder="请输入金额"> 时</td><td>增加 <input id="rewardWheelTurnoverChances" data-reward-count type="number" min="0" step="1" value="1"> 次 <small class="rw-rule-disabled" data-reward-disabled-label hidden>未启用</small></td></tr>
-                        <tr data-reward-rule="invite"><th scope="row">成功邀请</th><td>每成功邀请 <input id="rewardWheelInviteThreshold" data-reward-threshold type="number" min="1" step="1" value="1"> 人</td><td>增加 <input id="rewardWheelInviteChances" data-reward-count type="number" min="0" step="1" value="1"> 次 <small class="rw-rule-disabled" data-reward-disabled-label hidden>未启用</small></td></tr>
-                      </tbody>
-                    </table></div>
-                    <p class="rw-chance-hint">达到设定的充值金额、有效打码金额或成功邀请人数后增加抽奖次数；增加次数设为 0 时关闭该方式。</p>
-                    <p class="rw-method-preview">前端展示方式：<strong id="rewardWheelMethodList">充值、打码、成功邀请</strong></p>
+                    <div id="rewardWheelPanelTurnover" class="rw-task-panel" data-reward-task="turnover" role="group" aria-labelledby="rewardWheelHeadingTurnover">
+                      <div class="rw-task-toolbar"><h4 id="rewardWheelHeadingTurnover">打码任务</h4><label class="lw-check"><input type="checkbox" data-reward-enabled checked aria-label="启用打码任务">启用</label><span class="rw-task-status" data-reward-status>已配置 6 档</span><button class="lw-button" type="button" data-reward-add-tier>+ 新增档位</button></div>
+                      <div class="rw-rule-wrap"><table class="rw-rule-table">
+                        <thead><tr><th scope="col">档位</th><th scope="col">累计有效打码金额 ≥</th><th scope="col">增加抽奖次数</th><th scope="col">操作</th></tr></thead>
+                        <tbody>
+                          <tr data-reward-tier><th scope="row">第 1 档</th><td><input data-reward-threshold type="number" min="0.01" step="0.01" value="1000000" aria-label="打码第1档门槛"></td><td><input data-reward-count type="number" min="1" step="1" value="1" aria-label="打码第1档增加次数"> 次</td><td><button class="lw-link rw-delete-tier" type="button" data-reward-delete-tier>删除</button></td></tr>
+                          <tr data-reward-tier><th scope="row">第 2 档</th><td><input data-reward-threshold type="number" min="0.01" step="0.01" value="5000000" aria-label="打码第2档门槛"></td><td><input data-reward-count type="number" min="1" step="1" value="2" aria-label="打码第2档增加次数"> 次</td><td><button class="lw-link rw-delete-tier" type="button" data-reward-delete-tier>删除</button></td></tr>
+                          <tr data-reward-tier><th scope="row">第 3 档</th><td><input data-reward-threshold type="number" min="0.01" step="0.01" value="10000000" aria-label="打码第3档门槛"></td><td><input data-reward-count type="number" min="1" step="1" value="3" aria-label="打码第3档增加次数"> 次</td><td><button class="lw-link rw-delete-tier" type="button" data-reward-delete-tier>删除</button></td></tr>
+                          <tr data-reward-tier><th scope="row">第 4 档</th><td><input data-reward-threshold type="number" min="0.01" step="0.01" value="20000000" aria-label="打码第4档门槛"></td><td><input data-reward-count type="number" min="1" step="1" value="4" aria-label="打码第4档增加次数"> 次</td><td><button class="lw-link rw-delete-tier" type="button" data-reward-delete-tier>删除</button></td></tr>
+                          <tr data-reward-tier><th scope="row">第 5 档</th><td><input data-reward-threshold type="number" min="0.01" step="0.01" value="50000000" aria-label="打码第5档门槛"></td><td><input data-reward-count type="number" min="1" step="1" value="5" aria-label="打码第5档增加次数"> 次</td><td><button class="lw-link rw-delete-tier" type="button" data-reward-delete-tier>删除</button></td></tr>
+                          <tr data-reward-tier><th scope="row">第 6 档</th><td><input data-reward-threshold type="number" min="0.01" step="0.01" value="100000000" aria-label="打码第6档门槛"></td><td><input data-reward-count type="number" min="1" step="1" value="10" aria-label="打码第6档增加次数"> 次</td><td><button class="lw-link rw-delete-tier" type="button" data-reward-delete-tier>删除</button></td></tr>
+                        </tbody>
+                      </table></div>
+                      <p class="rw-chance-hint">按累计有效打码金额配置门槛，每个档位独立设置增加的抽奖次数。</p>
+                    </div>
+                    <div id="rewardWheelPanelDeposit" class="rw-task-panel" data-reward-task="deposit" role="group" aria-labelledby="rewardWheelHeadingDeposit">
+                      <div class="rw-task-toolbar"><h4 id="rewardWheelHeadingDeposit">充值任务</h4><label class="lw-check"><input type="checkbox" data-reward-enabled checked aria-label="启用充值任务">启用</label><span class="rw-task-status" data-reward-status>已配置 1 档</span><button class="lw-button" type="button" data-reward-add-tier>+ 新增档位</button></div>
+                      <div class="rw-rule-wrap"><table class="rw-rule-table">
+                        <thead><tr><th scope="col">档位</th><th scope="col">累计充值金额 ≥</th><th scope="col">增加抽奖次数</th><th scope="col">操作</th></tr></thead>
+                        <tbody><tr data-reward-tier><th scope="row">第 1 档</th><td><input data-reward-threshold type="number" min="0.01" step="0.01" placeholder="请输入充值金额" aria-label="充值第1档门槛"></td><td><input data-reward-count type="number" min="1" step="1" value="1" aria-label="充值第1档增加次数"> 次</td><td><button class="lw-link rw-delete-tier" type="button" data-reward-delete-tier disabled>删除</button></td></tr></tbody>
+                      </table></div>
+                      <p class="rw-chance-hint">按累计充值成功金额配置门槛，每个档位独立设置增加的抽奖次数。</p>
+                    </div>
+                    <div id="rewardWheelPanelInvite" class="rw-task-panel" data-reward-task="invite" role="group" aria-labelledby="rewardWheelHeadingInvite">
+                      <div class="rw-task-toolbar"><h4 id="rewardWheelHeadingInvite">邀请任务</h4><label class="lw-check"><input type="checkbox" data-reward-enabled checked aria-label="启用邀请任务">启用</label><span class="rw-task-status" data-reward-status>已配置 1 档</span><button class="lw-button" type="button" data-reward-add-tier>+ 新增档位</button></div>
+                      <div class="rw-rule-wrap"><table class="rw-rule-table">
+                        <thead><tr><th scope="col">档位</th><th scope="col">累计成功邀请人数 ≥</th><th scope="col">增加抽奖次数</th><th scope="col">操作</th></tr></thead>
+                        <tbody><tr data-reward-tier><th scope="row">第 1 档</th><td><input data-reward-threshold type="number" min="1" step="1" value="1" aria-label="邀请第1档门槛"></td><td><input data-reward-count type="number" min="1" step="1" value="1" aria-label="邀请第1档增加次数"> 次</td><td><button class="lw-link rw-delete-tier" type="button" data-reward-delete-tier disabled>删除</button></td></tr></tbody>
+                      </table></div>
+                      <p class="rw-chance-hint">按累计成功邀请人数配置门槛，人数须为正整数。</p>
+                    </div>
+                    <p class="rw-chance-hint">各任务按上方抽奖周期累计，每档每周期奖励一次，各档奖励可叠加。门槛须从小到大且不重复，增加次数须为正整数；关闭任务后保留档位配置，不展示该任务。</p>
+                    <p class="rw-method-preview">前端展示任务：<strong id="rewardWheelMethodList">打码任务、充值任务、邀请任务</strong></p>
                   </section>
                   <section id="luckyWheelBonusSection" class="lw-section">
                     <h3>充值多倍奖励</h3>

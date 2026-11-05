@@ -5,6 +5,7 @@
   var query = new URLSearchParams(window.location.search);
   var editId = query.get("rewardWheelId") || query.get("luckyWheelId");
   var invalidEdit = false;
+  var rewardTaskNames = { turnover: "打码", deposit: "充值", invite: "邀请" };
   var imageState = {
     Banner: { source: "", busy: false, version: 0 },
     Detail: { source: "", busy: false, version: 0 }
@@ -122,19 +123,127 @@
 
   function syncRewardChanceRules() {
     var enabledMethods = [];
-    each(document.querySelectorAll("#rewardWheelChanceSection [data-reward-rule]"), function (row) {
-      var countInput = row.querySelector("[data-reward-count]");
-      var thresholdInput = row.querySelector("[data-reward-threshold]");
-      var disabled = countInput.value.trim() !== "" && Number(countInput.value) === 0;
-      row.classList.toggle("is-disabled", disabled);
-      thresholdInput.disabled = disabled;
-      thresholdInput.setAttribute("aria-disabled", disabled ? "true" : "false");
-      row.querySelector("[data-reward-disabled-label]").hidden = !disabled;
-      if (countInput.value.trim() !== "" && Number(countInput.value) > 0) {
-        enabledMethods.push(row.querySelector("th[scope='row']").textContent.trim());
-      }
+    each(document.querySelectorAll("#rewardWheelChanceSection [data-reward-task]"), function (panel) {
+      var type = panel.getAttribute("data-reward-task");
+      var enabled = panel.querySelector("[data-reward-enabled]").checked;
+      var rows = panel.querySelectorAll("[data-reward-tier]");
+      panel.classList.toggle("is-disabled", !enabled);
+      panel.querySelector("[data-reward-add-tier]").disabled = !enabled;
+      panel.querySelector("[data-reward-status]").textContent = enabled ? "已配置 " + rows.length + " 档" : "已关闭，保留档位配置";
+      each(rows, function (row, index) {
+        var threshold = row.querySelector("[data-reward-threshold]");
+        var count = row.querySelector("[data-reward-count]");
+        row.querySelector("th[scope='row']").textContent = "第 " + (index + 1) + " 档";
+        threshold.disabled = !enabled;
+        count.disabled = !enabled;
+        threshold.setAttribute("aria-label", rewardTaskNames[type] + "第" + (index + 1) + "档门槛");
+        count.setAttribute("aria-label", rewardTaskNames[type] + "第" + (index + 1) + "档增加次数");
+        row.querySelector("[data-reward-delete-tier]").disabled = !enabled || rows.length === 1;
+      });
+      if (enabled) { enabledMethods.push(rewardTaskNames[type] + "任务"); }
     });
     byId("rewardWheelMethodList").textContent = enabledMethods.length ? enabledMethods.join("、") : "无额外获次方式";
+  }
+
+  function fillRewardTasks(record) {
+    each(document.querySelectorAll("#rewardWheelChanceSection [data-reward-task]"), function (panel) {
+      var type = panel.getAttribute("data-reward-task");
+      var task;
+      if (record.chanceTasks != null) {
+        task = record.chanceTasks[type];
+        if (!task || typeof task.enabled !== "boolean" || !Array.isArray(task.tiers) || !task.tiers.length || task.tiers.some(function (tier) {
+          return !tier || tier.threshold == null || tier.chances == null;
+        })) { throw new Error("Invalid reward tiers"); }
+      } else {
+        // Upgrade existing single-rule activities without replacing their configured values.
+        var oldChances = record[type + "Chances"];
+        var oldThreshold = record[type + "Threshold"];
+        task = {
+          enabled: oldChances == null || Number(oldChances) !== 0,
+          tiers: [{ threshold: oldThreshold == null ? (type === "invite" ? "1" : "") : oldThreshold,
+            chances: oldChances == null || Number(oldChances) === 0 ? "1" : oldChances }]
+        };
+      }
+      var tbody = panel.querySelector("tbody");
+      var template = tbody.querySelector("[data-reward-tier]").cloneNode(true);
+      tbody.textContent = "";
+      task.tiers.forEach(function (tier) {
+        var row = template.cloneNode(true);
+        row.querySelector("[data-reward-threshold]").value = tier.threshold;
+        row.querySelector("[data-reward-count]").value = tier.chances;
+        tbody.appendChild(row);
+      });
+      panel.querySelector("[data-reward-enabled]").checked = task.enabled;
+    });
+    syncRewardChanceRules();
+  }
+
+  function collectRewardTasks() {
+    var tasks = {};
+    var panels = document.querySelectorAll("#rewardWheelChanceSection [data-reward-task]");
+    var failure = null;
+    each(panels, function (panel) {
+      var type = panel.getAttribute("data-reward-task");
+      var enabled = panel.querySelector("[data-reward-enabled]").checked;
+      var previous = 0;
+      var tiers = [];
+      each(panel.querySelectorAll("[data-reward-tier]"), function (row, index) {
+        var thresholdInput = row.querySelector("[data-reward-threshold]");
+        var countInput = row.querySelector("[data-reward-count]");
+        var threshold = thresholdInput.value.trim();
+        var chances = countInput.value.trim();
+        var label = rewardTaskNames[type] + "任务第 " + (index + 1) + " 档：";
+        if (enabled && !failure) {
+          if (!/^(?:\d+)(?:\.\d{1,2})?$/.test(threshold) || !Number.isFinite(Number(threshold)) || Number(threshold) <= 0 || Number(threshold) > Number.MAX_SAFE_INTEGER ||
+              (type === "invite" && (!/^\d+$/.test(threshold) || !Number.isSafeInteger(Number(threshold))))) {
+            failure = { type: type, input: thresholdInput, message: label + (type === "invite" ? "邀请人数须为正整数。" : "金额须大于 0，最多保留两位小数。") };
+          } else if (Number(threshold) <= previous) {
+            failure = { type: type, input: thresholdInput, message: label + "门槛须大于上一档，不能重复。" };
+          } else if (!/^\d+$/.test(chances) || !Number.isSafeInteger(Number(chances)) || Number(chances) <= 0) {
+            failure = { type: type, input: countInput, message: label + "增加次数须为正整数。" };
+          }
+        }
+        previous = Number(threshold);
+        tiers.push({ threshold: enabled ? String(Number(threshold)) : threshold, chances: enabled ? String(Number(chances)) : chances });
+      });
+      tasks[type] = { enabled: enabled, tiers: tiers };
+    });
+    if (failure) {
+      showError(failure.message);
+      failure.input.focus();
+      return null;
+    }
+    return tasks;
+  }
+
+  function bindRewardTasks() {
+    var section = byId("rewardWheelChanceSection");
+    if (!section) { return; }
+    section.addEventListener("click", function (event) {
+      var add = event.target.closest("[data-reward-add-tier]");
+      var remove = event.target.closest("[data-reward-delete-tier]");
+      if ((!add && !remove) || (add || remove).disabled) { return; }
+      var panel = (add || remove).closest("[data-reward-task]");
+      var tbody = panel.querySelector("tbody");
+      var focusInput;
+      if (add) {
+        var row = tbody.querySelector("[data-reward-tier]").cloneNode(true);
+        focusInput = row.querySelector("[data-reward-threshold]");
+        focusInput.value = "";
+        row.querySelector("[data-reward-count]").value = "1";
+        tbody.appendChild(row);
+      } else if (tbody.querySelectorAll("[data-reward-tier]").length > 1) {
+        tbody.removeChild(remove.closest("[data-reward-tier]"));
+        focusInput = panel.querySelector("[data-reward-add-tier]");
+      }
+      syncRewardChanceRules();
+      clearError();
+      if (focusInput) { focusInput.focus(); }
+    });
+    section.addEventListener("change", function (event) {
+      if (event.target.matches("[data-reward-enabled]")) { syncRewardChanceRules(); }
+    });
+    syncRewardChanceRules();
   }
 
   function renderWheelImage(kind, dataUrl) {
@@ -263,13 +372,7 @@
     }
     byId("luckyWheelDescription").innerHTML = sanitizeDescription(descriptionHtml);
     byId("rewardWheelDefaultCount").value = record.defaultChances == null ? "1" : record.defaultChances;
-    byId("rewardWheelDepositThreshold").value = record.depositThreshold || "";
-    byId("rewardWheelDepositChances").value = record.depositChances == null ? "1" : record.depositChances;
-    byId("rewardWheelTurnoverThreshold").value = record.turnoverThreshold || "";
-    byId("rewardWheelTurnoverChances").value = record.turnoverChances == null ? "1" : record.turnoverChances;
-    byId("rewardWheelInviteThreshold").value = record.inviteThreshold == null ? "1" : record.inviteThreshold;
-    byId("rewardWheelInviteChances").value = record.inviteChances == null ? "1" : record.inviteChances;
-    syncRewardChanceRules();
+    if (isRewardWheelType()) { fillRewardTasks(record); }
     syncLongTerm();
     syncBonusFields();
     syncRewardWheelSection();
@@ -314,12 +417,8 @@
     var bonusDays = byId("luckyWheelBonusDays").value;
     var rewardWheel = isRewardWheelType();
     var defaultChances = byId("rewardWheelDefaultCount").value;
-    var depositThreshold = byId("rewardWheelDepositThreshold").value;
-    var depositChances = byId("rewardWheelDepositChances").value;
-    var turnoverThreshold = byId("rewardWheelTurnoverThreshold").value;
-    var turnoverChances = byId("rewardWheelTurnoverChances").value;
-    var inviteThreshold = byId("rewardWheelInviteThreshold").value;
-    var inviteChances = byId("rewardWheelInviteChances").value;
+    bonusEnabled = !rewardWheel && bonusEnabled;
+    var chanceTasks;
     var storageKey = getStorageKey();
     var records;
     var record;
@@ -331,7 +430,7 @@
       showError("请填写活动名称、标题、有效时间、转盘 ID、Banner 和有效打码倍数；活动结束时间需晚于开始时间。");
       return;
     }
-    if (bonusEnabled && (!Number.isFinite(Number(bonusCumulativeDepositAmount)) || Number(bonusCumulativeDepositAmount) <= 0 || !Number.isFinite(Number(bonusExtraMultiplier)) || Number(bonusExtraMultiplier) < 1 || !/^\d+$/.test(bonusDays) || Number(bonusDays) < 1)) {
+    if (!rewardWheel && bonusEnabled && (!Number.isFinite(Number(bonusCumulativeDepositAmount)) || Number(bonusCumulativeDepositAmount) <= 0 || !Number.isFinite(Number(bonusExtraMultiplier)) || Number(bonusExtraMultiplier) < 1 || !/^\d+$/.test(bonusDays) || Number(bonusDays) < 1)) {
       showError("请填写大于 0 的累计充值门槛、不小于 1 的额外发放倍数和正整数有效天数。");
       return;
     }
@@ -339,13 +438,14 @@
       showError("排序请输入大于等于 0 的整数。");
       return;
     }
-    var validNonnegativeInteger = function (value) { return /^\d+$/.test(value) && Number(value) >= 0; };
-    if (rewardWheel && (defaultChances === "" || !validNonnegativeInteger(defaultChances) ||
-        !validNonnegativeInteger(depositChances) || (Number(depositChances) > 0 && (!Number.isFinite(Number(depositThreshold)) || Number(depositThreshold) <= 0)) ||
-        !validNonnegativeInteger(turnoverChances) || (Number(turnoverChances) > 0 && (!Number.isFinite(Number(turnoverThreshold)) || Number(turnoverThreshold) <= 0)) ||
-        !validNonnegativeInteger(inviteChances) || (Number(inviteChances) > 0 && (!/^\d+$/.test(inviteThreshold) || Number(inviteThreshold) < 1)))) {
-      showError("增加次数需为大于或等于 0 的整数；启用充值或打码时须填写正数门槛，启用邀请时须填写正整数人数。");
+    if (rewardWheel && (!/^\d+$/.test(defaultChances) || !Number.isSafeInteger(Number(defaultChances)))) {
+      showError("参与活动默认次数须为大于或等于 0 的整数。");
+      byId("rewardWheelDefaultCount").focus();
       return;
+    }
+    if (rewardWheel) {
+      chanceTasks = collectRewardTasks();
+      if (!chanceTasks) { return; }
     }
 
     try {
@@ -376,12 +476,8 @@
       bonusExtraMultiplier: bonusEnabled ? String(Number(bonusExtraMultiplier)) : "",
       bonusDays: bonusEnabled ? String(Number(bonusDays)) : "7",
       defaultChances: rewardWheel ? String(Number(defaultChances)) : undefined,
-      depositThreshold: rewardWheel && Number(depositChances) > 0 ? String(Number(depositThreshold)) : (rewardWheel ? "" : undefined),
-      depositChances: rewardWheel ? String(Number(depositChances)) : undefined,
-      turnoverThreshold: rewardWheel && Number(turnoverChances) > 0 ? String(Number(turnoverThreshold)) : (rewardWheel ? "" : undefined),
-      turnoverChances: rewardWheel ? String(Number(turnoverChances)) : undefined,
-      inviteThreshold: rewardWheel && Number(inviteChances) > 0 ? String(Number(inviteThreshold)) : (rewardWheel ? "" : undefined),
-      inviteChances: rewardWheel ? String(Number(inviteChances)) : undefined,
+      chanceTasks: rewardWheel ? chanceTasks : undefined,
+      chanceRewardMode: rewardWheel ? "each-tier-once-per-period" : undefined,
       enabled: true
     };
     existingIndex = records.findIndex(function (item) { return item.id === record.id; });
@@ -516,13 +612,9 @@
     form.setAttribute("data-lw-bound", "true");
     bindTemplateSelect();
     syncRewardWheelSection();
-    syncRewardChanceRules();
+    bindRewardTasks();
     byId("luckyWheelLongTerm").addEventListener("change", syncLongTerm);
     byId("luckyWheelBonusEnabled").addEventListener("change", syncBonusFields);
-    each(form.querySelectorAll("[data-reward-count]"), function (input) {
-      input.addEventListener("input", syncRewardChanceRules);
-      input.addEventListener("change", syncRewardChanceRules);
-    });
     ["Banner", "Detail"].forEach(function (kind) {
       var input = byId("luckyWheel" + kind + "File");
       var upload = byId("luckyWheel" + kind + "Upload");
