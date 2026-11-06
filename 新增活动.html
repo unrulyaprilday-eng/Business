@@ -13,7 +13,6 @@
     <link href="custom/css/lucky-wheel-activity.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/reward-wheel-activity.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/flash-rebate-activity.css" type="text/css" rel="stylesheet"/>
-    <link href="custom/css/relief-fund-activity.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/special-pack-activity.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/new-activity-layout.css" type="text/css" rel="stylesheet"/>
     <link href="https://demo.axureux.com/fontawesome/5.7.2/pro/css/all.min.css" type="text/css" rel="stylesheet" media="print" onload="this.media='all'"/>
@@ -24905,121 +24904,8 @@
             </div>
           </div>
         </div>
-        <div id="u6_state2" class="panel_state" data-label="救济金" style="visibility: visible; display: block;" aria-hidden="false">
-          <div id="u6_state2_content" class="panel_state_content">
-            <form id="reliefFundForm" class="rf-form" novalidate>
-              <section class="rf-section" aria-labelledby="rfBasicHeading">
-                <div class="rf-section-heading"><h3 id="rfBasicHeading">基础信息</h3><span>救济金 · Rescue Funds</span></div>
-                <div class="rf-grid">
-                  <label class="rf-field"><span class="rf-required">活动名称</span><input id="rfName" type="text" value="救济金" maxlength="60" required></label>
-                  <label class="rf-field"><span class="rf-required">活动标题</span><input id="rfTitle" type="text" value="Rescue Funds" maxlength="100" required></label>
-                  <div class="rf-field rf-wide"><span class="rf-required">活动时间</span><div class="rf-date-range"><input id="rfStart" type="datetime-local" aria-label="活动开始时间" required><span>至</span><input id="rfEnd" type="datetime-local" aria-label="活动结束时间" required><label class="rf-long-term"><input id="rfLongTerm" type="checkbox">长期有效</label></div></div>
-                  <div class="rf-field" data-activity-reward-target="2"><span>奖励入账账户</span><div class="rf-radio-group"><label><input type="radio" name="activityRewardTarget2" value="余额" checked>余额</label><label><input type="radio" name="activityRewardTarget2" value="存钱罐">存钱罐</label></div></div>
-                  <label class="rf-field"><span>打码倍数</span><input id="rfWager" class="rf-short-input" type="number" min="0" step="0.1" value="1" required></label>
-                  <label class="rf-field"><span>排序</span><input id="rfSort" class="rf-short-input" type="number" min="0" step="1" value="0" required></label>
-                </div>
-              </section>
-
-              <section class="rf-section" aria-labelledby="rfRulesHeading">
-                <div class="rf-section-heading"><h3 id="rfRulesHeading">VIP 奖励配置</h3></div>
-                <div class="rf-table-toolbar"><p>按每档最大等级自动划分区间；充值门槛、亏损门槛及奖励金额均跟随商户金币。</p></div>
-                <div class="rf-table-wrap">
-                  <table class="rf-table" id="rfTierTable">
-                    <thead><tr><th scope="col">档位</th><th scope="col"><span class="rf-required">最大 VIP 等级</span></th><th scope="col"><span class="rf-required">充值门槛</span></th><th scope="col"><span class="rf-required">亏损门槛</span></th><th scope="col"><span class="rf-required">亏损返还比例（%）</span></th><th scope="col"><span class="rf-required">奖励上限</span></th><th scope="col"><span class="rf-sr-only">删除档位</span></th></tr></thead>
-                    <tbody id="rfTierRows">
-                      <tr data-rf-index="0" data-rf-vip="0" data-deposit="20000" data-loss="20000" data-rate="2" data-cap="88990000">
-                        <th scope="row"><span class="rf-tier-badge" data-rf-range>0</span></th>
-                        <td><input class="rf-tier-input rf-max-vip" data-rf-field="vip" type="number" min="0" max="1" step="1" value="0" required aria-label="第1档最大VIP等级"><small class="rf-field-error" data-rf-error="vip" hidden></small></td>
-                        <td><input class="rf-tier-input" data-rf-field="deposit" type="number" min="0" step="0.01" value="20000" placeholder="必填" required aria-label="第1档充值门槛"><small class="rf-field-error" data-rf-error="deposit" hidden></small></td>
-                        <td><input class="rf-tier-input" data-rf-field="loss" type="number" min="0" step="0.01" value="20000" placeholder="必填" required aria-label="第1档亏损门槛"><small class="rf-field-error" data-rf-error="loss" hidden></small></td>
-                        <td><input class="rf-tier-input" data-rf-field="rate" type="number" min="0.01" max="100" step="0.01" value="2" placeholder="必填" required aria-label="第1档亏损返还比例"><small class="rf-field-error" data-rf-error="rate" hidden></small></td>
-                        <td><input class="rf-tier-input" data-rf-field="cap" type="number" min="0.01" step="0.01" value="88990000" placeholder="必填" required aria-label="第1档奖励上限"><small class="rf-field-error" data-rf-error="cap" hidden></small></td>
-                        <td><button type="button" data-rf-delete="0" class="rf-delete-tier" aria-label="删除第1档" title="删除档位"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M9 6V4h6v2M5 6l1 15h12l1-15M10 10v7M14 10v7"/></svg></button></td>
-                      </tr>
-                      <tr data-rf-index="1" data-rf-vip="2" data-deposit="50000" data-loss="50000" data-rate="2" data-cap="88990000">
-                        <th scope="row"><span class="rf-tier-badge" data-rf-range>1 – 2</span></th>
-                        <td><input class="rf-tier-input rf-max-vip" data-rf-field="vip" type="number" min="1" max="3" step="1" value="2" required aria-label="第2档最大VIP等级"><small class="rf-field-error" data-rf-error="vip" hidden></small></td>
-                        <td><input class="rf-tier-input" data-rf-field="deposit" type="number" min="0" step="0.01" value="50000" placeholder="必填" required aria-label="第2档充值门槛"><small class="rf-field-error" data-rf-error="deposit" hidden></small></td>
-                        <td><input class="rf-tier-input" data-rf-field="loss" type="number" min="0" step="0.01" value="50000" placeholder="必填" required aria-label="第2档亏损门槛"><small class="rf-field-error" data-rf-error="loss" hidden></small></td>
-                        <td><input class="rf-tier-input" data-rf-field="rate" type="number" min="0.01" max="100" step="0.01" value="2" placeholder="必填" required aria-label="第2档亏损返还比例"><small class="rf-field-error" data-rf-error="rate" hidden></small></td>
-                        <td><input class="rf-tier-input" data-rf-field="cap" type="number" min="0.01" step="0.01" value="88990000" placeholder="必填" required aria-label="第2档奖励上限"><small class="rf-field-error" data-rf-error="cap" hidden></small></td>
-                        <td><button type="button" data-rf-delete="1" class="rf-delete-tier" aria-label="删除第2档" title="删除档位"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M9 6V4h6v2M5 6l1 15h12l1-15M10 10v7M14 10v7"/></svg></button></td>
-                      </tr>
-                      <tr data-rf-index="2" data-rf-vip="4" data-deposit="50000" data-loss="50000" data-rate="3" data-cap="88990000">
-                        <th scope="row"><span class="rf-tier-badge" data-rf-range>3 – 4</span></th>
-                        <td><input class="rf-tier-input rf-max-vip" data-rf-field="vip" type="number" min="3" max="14" step="1" value="4" required aria-label="第3档最大VIP等级"><small class="rf-field-error" data-rf-error="vip" hidden></small></td>
-                        <td><input class="rf-tier-input" data-rf-field="deposit" type="number" min="0" step="0.01" value="50000" placeholder="必填" required aria-label="第3档充值门槛"><small class="rf-field-error" data-rf-error="deposit" hidden></small></td>
-                        <td><input class="rf-tier-input" data-rf-field="loss" type="number" min="0" step="0.01" value="50000" placeholder="必填" required aria-label="第3档亏损门槛"><small class="rf-field-error" data-rf-error="loss" hidden></small></td>
-                        <td><input class="rf-tier-input" data-rf-field="rate" type="number" min="0.01" max="100" step="0.01" value="3" placeholder="必填" required aria-label="第3档亏损返还比例"><small class="rf-field-error" data-rf-error="rate" hidden></small></td>
-                        <td><input class="rf-tier-input" data-rf-field="cap" type="number" min="0.01" step="0.01" value="88990000" placeholder="必填" required aria-label="第3档奖励上限"><small class="rf-field-error" data-rf-error="cap" hidden></small></td>
-                        <td><button type="button" data-rf-delete="2" class="rf-delete-tier" aria-label="删除第3档" title="删除档位"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M9 6V4h6v2M5 6l1 15h12l1-15M10 10v7M14 10v7"/></svg></button></td>
-                      </tr>
-                      <tr data-rf-index="3" data-rf-vip="15" data-deposit="50000" data-loss="50000" data-rate="4" data-cap="88990000">
-                        <th scope="row"><span class="rf-tier-badge" data-rf-range>5 – 15</span></th>
-                        <td><input class="rf-tier-input rf-max-vip" data-rf-field="vip" type="number" value="15" disabled aria-label="末档自动覆盖至VIP15" title="末档自动适配最高VIP等级"><small class="rf-field-error" data-rf-error="vip" hidden></small></td>
-                        <td><input class="rf-tier-input" data-rf-field="deposit" type="number" min="0" step="0.01" value="50000" placeholder="必填" required aria-label="第4档充值门槛"><small class="rf-field-error" data-rf-error="deposit" hidden></small></td>
-                        <td><input class="rf-tier-input" data-rf-field="loss" type="number" min="0" step="0.01" value="50000" placeholder="必填" required aria-label="第4档亏损门槛"><small class="rf-field-error" data-rf-error="loss" hidden></small></td>
-                        <td><input class="rf-tier-input" data-rf-field="rate" type="number" min="0.01" max="100" step="0.01" value="4" placeholder="必填" required aria-label="第4档亏损返还比例"><small class="rf-field-error" data-rf-error="rate" hidden></small></td>
-                        <td><input class="rf-tier-input" data-rf-field="cap" type="number" min="0.01" step="0.01" value="88990000" placeholder="必填" required aria-label="第4档奖励上限"><small class="rf-field-error" data-rf-error="cap" hidden></small></td>
-                        <td><button type="button" data-rf-delete="3" class="rf-delete-tier" aria-label="删除第4档" title="删除档位"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M9 6V4h6v2M5 6l1 15h12l1-15M10 10v7M14 10v7"/></svg></button></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <button id="rfAddTier" class="rf-add-tier" type="button"><span aria-hidden="true">＋</span> 添加档位</button>
-                </div>
-                <p id="rfTierTableMessage" class="rf-message" role="alert" hidden></p>
-                <p class="rf-help">每档起始等级自动接续上一档最大等级 + 1；末档固定覆盖至最高 VIP 15。新增、删除档位后自动补齐区间。奖励数值为可编辑示例。</p>
-              </section>
-
-              <section class="rf-section" aria-labelledby="rfContentHeading">
-                <div class="rf-section-heading"><h3 id="rfContentHeading">活动图片与规则文案</h3><span>玩家端展示内容</span></div>
-                <div class="rf-media-grid">
-                  <div class="rf-media-field"><label for="rfBannerFile">活动 Banner</label><input id="rfBannerFile" type="file" accept="image/png,image/jpeg,image/webp" hidden><button class="rf-upload" id="rfBannerUpload" type="button"><span id="rfBannerHint"><b>+</b>点击或拖拽上传 Banner</span><img id="rfBannerPreview" alt="活动 Banner 预览" hidden></button><button id="rfBannerRemove" class="rf-text-button rf-danger" type="button" hidden>移除 Banner</button><p class="rf-help">建议 800 × 400；JPG / PNG / WebP，最大 500KB。</p></div>
-                  <div class="rf-media-field"><label for="rfDetailFiles">活动详情图片</label><input id="rfDetailFiles" type="file" accept="image/png,image/jpeg,image/webp" multiple hidden><div class="rf-detail-images" id="rfDetailImages"></div><button class="rf-upload rf-detail-upload" id="rfDetailUpload" type="button"><span><b>+</b>点击或拖拽上传图片</span></button><p class="rf-help">最多 5 张；JPG / PNG / WebP，每张最大 1MB。</p></div>
-                </div>
-                <p id="rfImageMessage" class="rf-message" role="status" hidden></p>
-                <div class="rf-editor-heading"><span id="rfDescriptionLabel" class="rf-required">活动规则</span><button id="rfPreviewRules" class="rf-text-button" type="button">预览规则</button></div>
-                <div class="rf-editor-shell">
-                  <div class="rf-rich-toolbar" role="toolbar" aria-label="规则文本格式"><button type="button" data-rf-command="bold" aria-label="加粗" title="加粗"><b>B</b></button><button type="button" data-rf-command="italic" aria-label="斜体" title="斜体"><i>I</i></button><button type="button" data-rf-command="underline" aria-label="下划线" title="下划线"><u>U</u></button><span class="rf-toolbar-divider"></span><button type="button" data-rf-command="insertUnorderedList" title="无序列表">• 列表</button><button type="button" data-rf-command="insertOrderedList" title="有序列表">1. 列表</button><span class="rf-toolbar-divider"></span><button type="button" data-rf-command="undo">撤销</button><button type="button" data-rf-command="redo">重做</button><button id="rfSyncRuleTable" class="rf-sync-table" type="button">同步档位表格</button></div>
-                  <div id="rfDescription" class="rf-rule-editor" contenteditable="true" role="textbox" aria-multiline="true" aria-labelledby="rfDescriptionLabel" lang="en" spellcheck="false">
-                    <h3>Rules</h3>
-                    <p>1. Players with higher deposits and losses can apply for rescue bonuses the next day</p>
-                    <p>2.The rescue funds will be reviewed and distributed by customer service.</p>
-                    <p>3.Losses refer to your daily:</p>
-                    <p>Losses = Game Bets - System Rewards - Game Winnings</p>
-                    <p>Below are the participation requirements and rebate values for the rescue funds activity:</p>
-                    <table><thead><tr><th>VIP Level</th><th>Rescue Fund<br>Percentage</th><th>Deposit<br>requirements</th><th>Loss Conditions</th><th>Maximum<br>Amount</th></tr></thead><tbody>
-                      <tr><td>0</td><td>2%</td><td>20K</td><td>20K</td><td>88.99M</td></tr>
-                      <tr><td>1</td><td>2%</td><td>50K</td><td>50K</td><td>88.99M</td></tr>
-                      <tr><td>2</td><td>2%</td><td>50K</td><td>50K</td><td>88.99M</td></tr>
-                      <tr><td>3</td><td>3%</td><td>50K</td><td>50K</td><td>88.99M</td></tr>
-                      <tr><td>4</td><td>3%</td><td>50K</td><td>50K</td><td>88.99M</td></tr>
-                      <tr><td>5</td><td>4%</td><td>50K</td><td>50K</td><td>88.99M</td></tr>
-                      <tr><td>6</td><td>4%</td><td>50K</td><td>50K</td><td>88.99M</td></tr>
-                    </tbody></table><p><br></p>
-                  </div>
-                </div>
-                <p class="rf-help">示例包含图 1、图 2 的英文规则、亏损公式与可见 VIP 表格，可直接编辑；点击“同步档位表格”可按上方配置更新表格。</p>
-              </section>
-              <p id="rfFormMessage" class="rf-message" role="status" hidden></p>
-              <div class="rf-actions"><button id="rfSubmit" class="rf-button rf-primary" type="submit">保存配置</button><button id="rfCancel" class="rf-button" type="button">取消</button></div>
-            </form>
-            <aside class="rf-rule-notes" aria-label="救济金规则说明">
-              <details>
-                <summary>规则说明</summary>
-                <dl class="rf-rule-details">
-                  <div><dt>统计周期</dt><dd>每日统计，按站点时区划分今日 / 昨日。</dd></div>
-                  <div><dt>申请时间</dt><dd>次日申请昨日救济金。</dd></div>
-                  <div><dt>参与条件</dt><dd>当日充值 ≥ 充值门槛，且当日亏损 ≥ 亏损门槛。</dd></div>
-                  <div><dt>派发方式</dt><dd>客服审核后派发。</dd></div>
-                  <div><dt>亏损计算</dt><dd>当日亏损 = 游戏投注金额 − 系统奖励 − 游戏中奖金额。</dd></div>
-                  <div><dt>奖励计算</dt><dd>救济金 = 当日亏损 × 对应 VIP 返还比例，不超过该等级奖励上限。<span>仅正亏损且同时满足两项门槛时可申请。</span></dd></div>
-                </dl>
-              </details>
-            </aside>
-          </div>
-        </div>
-        <div id="u6_state3" class="panel_state" data-label="分享活动" style="visibility: hidden; display: none;" aria-hidden="true">
+        <div id="u6_state2" class="panel_state" data-label="已迁移" style="visibility: hidden; display: none;" aria-hidden="true"><div id="u6_state2_content" class="panel_state_content"></div></div>
+        <div id="u6_state3" class="panel_state" data-label="分享活动" style="visibility: visible; display: block;" aria-hidden="false">
           <div id="u6_state3_content" class="panel_state_content">
             <div class="custom-share-form">
               <div class="custom-share-section">
@@ -25947,26 +25833,21 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
               </section>
               <section class="sp-section">
                 <h3>礼包配置</h3>
-                <p class="sp-hint">各类型独立开启，前台仅展示已开启类型；各档按礼包金额从小到大展示，同一类型的礼包金额不可重复。金额跟随商户金币，最多保留 2 位小数。</p>
-                <div class="sp-tabs" role="tablist" aria-label="礼包类型">
-                  <button id="specialPackTabDaily" class="sp-tab" type="button" role="tab" aria-selected="true" aria-controls="specialPackPanelDaily" data-sp-tab="daily">每日礼包 <span data-sp-status="daily">已开启</span></button>
-                  <button id="specialPackTabWeekly" class="sp-tab" type="button" role="tab" aria-selected="false" aria-controls="specialPackPanelWeekly" tabindex="-1" data-sp-tab="weekly">每周礼包 <span data-sp-status="weekly">未开启</span></button>
-                  <button id="specialPackTabMonthly" class="sp-tab" type="button" role="tab" aria-selected="false" aria-controls="specialPackPanelMonthly" tabindex="-1" data-sp-tab="monthly">每月礼包 <span data-sp-status="monthly">未开启</span></button>
-                </div>
-                <section id="specialPackPanelDaily" class="sp-cycle" role="tabpanel" aria-labelledby="specialPackTabDaily" data-sp-panel="daily">
-                  <div class="sp-toolbar"><label class="sp-check"><input type="checkbox" data-sp-enabled="daily" checked>开启每日礼包</label><button class="sp-button sp-primary" type="button" data-sp-add="daily">+ 新增档位</button></div>
+                <p class="sp-hint">档位直接在表格内填写和修改，底部添加、行尾删除，随活动统一保存。同类型礼包金额不可重复，保存后按金额从小到大展示。金额跟随商户金币，最多保留 2 位小数。</p>
+                <section id="specialPackPanelDaily" class="sp-cycle" aria-labelledby="specialPackHeadingDaily" data-sp-panel="daily">
+                  <div class="sp-toolbar"><h4 id="specialPackHeadingDaily">每日礼包 <span data-sp-status="daily">已开启</span></h4><label class="sp-check"><input type="checkbox" data-sp-enabled="daily" checked>开启每日礼包</label></div>
                   <p class="sp-hint">每人每档每日限购 1 次，次日重置；关闭类型会保留已配置档位。</p>
-                  <div class="sp-table-wrap"><table class="sp-table"><thead><tr><th scope="col">礼包金额</th><th scope="col">折后售价</th><th scope="col">状态</th><th scope="col">操作</th></tr></thead><tbody data-sp-rows="daily"><tr><td class="sp-empty" colspan="4">暂无档位，请新增每日礼包档位。</td></tr></tbody></table></div>
+                  <div class="sp-table-wrap"><table class="sp-table"><thead><tr><th scope="col">档位</th><th scope="col"><span class="sp-required-label">礼包金额</span></th><th scope="col"><span class="sp-required-label">折后售价</span></th><th scope="col">状态</th><th scope="col"><span class="sp-sr-only">删除档位</span></th></tr></thead><tbody data-sp-rows="daily"><tr><td class="sp-empty" colspan="5">暂无档位，请新增每日礼包档位。</td></tr></tbody></table><button class="sp-add-tier" type="button" data-sp-add="daily"><span aria-hidden="true">＋</span> 添加档位</button></div>
                 </section>
-                <section id="specialPackPanelWeekly" class="sp-cycle" role="tabpanel" aria-labelledby="specialPackTabWeekly" data-sp-panel="weekly" hidden>
-                  <div class="sp-toolbar"><label class="sp-check"><input type="checkbox" data-sp-enabled="weekly">开启每周礼包</label><button class="sp-button sp-primary" type="button" data-sp-add="weekly">+ 新增档位</button></div>
+                <section id="specialPackPanelWeekly" class="sp-cycle" aria-labelledby="specialPackHeadingWeekly" data-sp-panel="weekly">
+                  <div class="sp-toolbar"><h4 id="specialPackHeadingWeekly">每周礼包 <span data-sp-status="weekly">未开启</span></h4><label class="sp-check"><input type="checkbox" data-sp-enabled="weekly">开启每周礼包</label></div>
                   <p class="sp-hint">每人每档每周限购 1 次，下周重置；关闭类型会保留已配置档位。</p>
-                  <div class="sp-table-wrap"><table class="sp-table"><thead><tr><th scope="col">礼包金额</th><th scope="col">折后售价</th><th scope="col">状态</th><th scope="col">操作</th></tr></thead><tbody data-sp-rows="weekly"><tr><td class="sp-empty" colspan="4">暂无档位，请新增每周礼包档位。</td></tr></tbody></table></div>
+                  <div class="sp-table-wrap"><table class="sp-table"><thead><tr><th scope="col">档位</th><th scope="col"><span class="sp-required-label">礼包金额</span></th><th scope="col"><span class="sp-required-label">折后售价</span></th><th scope="col">状态</th><th scope="col"><span class="sp-sr-only">删除档位</span></th></tr></thead><tbody data-sp-rows="weekly"><tr><td class="sp-empty" colspan="5">暂无档位，请新增每周礼包档位。</td></tr></tbody></table><button class="sp-add-tier" type="button" data-sp-add="weekly"><span aria-hidden="true">＋</span> 添加档位</button></div>
                 </section>
-                <section id="specialPackPanelMonthly" class="sp-cycle" role="tabpanel" aria-labelledby="specialPackTabMonthly" data-sp-panel="monthly" hidden>
-                  <div class="sp-toolbar"><label class="sp-check"><input type="checkbox" data-sp-enabled="monthly">开启每月礼包</label><button class="sp-button sp-primary" type="button" data-sp-add="monthly">+ 新增档位</button></div>
+                <section id="specialPackPanelMonthly" class="sp-cycle" aria-labelledby="specialPackHeadingMonthly" data-sp-panel="monthly">
+                  <div class="sp-toolbar"><h4 id="specialPackHeadingMonthly">每月礼包 <span data-sp-status="monthly">未开启</span></h4><label class="sp-check"><input type="checkbox" data-sp-enabled="monthly">开启每月礼包</label></div>
                   <p class="sp-hint">每人每档每月限购 1 次，下月重置；关闭类型会保留已配置档位。</p>
-                  <div class="sp-table-wrap"><table class="sp-table"><thead><tr><th scope="col">礼包金额</th><th scope="col">折后售价</th><th scope="col">状态</th><th scope="col">操作</th></tr></thead><tbody data-sp-rows="monthly"><tr><td class="sp-empty" colspan="4">暂无档位，请新增每月礼包档位。</td></tr></tbody></table></div>
+                  <div class="sp-table-wrap"><table class="sp-table"><thead><tr><th scope="col">档位</th><th scope="col"><span class="sp-required-label">礼包金额</span></th><th scope="col"><span class="sp-required-label">折后售价</span></th><th scope="col">状态</th><th scope="col"><span class="sp-sr-only">删除档位</span></th></tr></thead><tbody data-sp-rows="monthly"><tr><td class="sp-empty" colspan="5">暂无档位，请新增每月礼包档位。</td></tr></tbody></table><button class="sp-add-tier" type="button" data-sp-add="monthly"><span aria-hidden="true">＋</span> 添加档位</button></div>
                 </section>
               </section>
               <section class="sp-section">
@@ -25999,7 +25880,6 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
           <option class="u3012_input_option" value="首充奖励">首充奖励</option>
           <option class="u3012_input_option" value="充值送金">充值送金</option>
           <option class="u3012_input_option" value="拉新返金">拉新返金</option>
-          <option class="u3012_input_option" selected value="救济金">救济金</option>
           <option class="u3012_input_option" value="签到奖励">签到奖励</option>
           <option class="u3012_input_option" value="月签到活动">月签到</option>
           <option class="u3012_input_option" value="周卡">周卡</option>
@@ -26009,7 +25889,7 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
           <option class="u3012_input_option" value="会员礼包">会员礼包</option>
           <option class="u3012_input_option" value="游戏排行榜">游戏排行榜</option>
           <option class="u3012_input_option" value="充值排行榜">充值排行榜</option>
-          <option class="u3012_input_option" value="分享活动">分享活动</option>
+          <option class="u3012_input_option" selected value="分享活动">分享活动</option>
           <option class="u3012_input_option" value="自定义活动">自定义活动</option>
           <option class="u3012_input_option" value="连续挑战">连续挑战</option>
           <option class="u3012_input_option" value="红包雨">红包雨</option>
@@ -26021,13 +25901,6 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
       </div>
     </div>
     <script src="custom/js/axure-custom-page-ready.js"></script>
-    <div id="rfPreviewModal" class="rf-modal-layer" hidden>
-      <section class="rf-modal rf-preview-modal" role="dialog" aria-modal="true" aria-labelledby="rfPreviewTitle">
-        <header><h3 id="rfPreviewTitle">Rules</h3><button class="rf-modal-close" type="button" data-rf-close aria-label="关闭">×</button></header>
-        <div class="rf-modal-body"><div id="rfPreviewCopy" class="rf-rule-editor rf-preview-copy" lang="en"></div><p class="rf-help">所有金额均跟随商户金币。</p></div>
-        <footer><button class="rf-button rf-primary" type="button" data-rf-close>关闭预览</button></footer>
-      </section>
-    </div>
     <div id="weeklyCardDayModal" class="wc-modal-layer" hidden>
       <section class="wc-modal" role="dialog" aria-modal="true" aria-labelledby="weeklyCardDayModalTitle">
         <header><h3 id="weeklyCardDayModalTitle">配置7日奖励 · 第1档</h3><button class="wc-modal-close" type="button" data-wc-close-days aria-label="关闭">×</button></header>
@@ -26046,28 +25919,11 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
       </section>
     </div>
     <script src="custom/js/og-shared-data.js"></script>
-    <div id="specialPackTierModal" class="sp-modal-layer" hidden>
-      <section class="sp-modal" role="dialog" aria-modal="true" aria-labelledby="specialPackTierModalTitle">
-        <header><h3 id="specialPackTierModalTitle">新增礼包档位</h3><button class="sp-modal-close" type="button" data-sp-close aria-label="关闭">×</button></header>
-        <form id="specialPackTierForm" novalidate>
-          <div class="sp-modal-body">
-            <p id="specialPackTierError" class="sp-error" role="alert" hidden></p>
-            <label class="sp-field sp-required"><span>礼包金额</span><input id="specialPackTierAmount" type="number" min="0.01" step="0.01" placeholder="请输入礼包金额" required></label>
-            <label class="sp-field sp-required"><span>折后售价</span><input id="specialPackTierPrice" type="number" min="0.01" step="0.01" placeholder="请输入折后售价" required></label>
-            <div class="sp-field"><span>状态</span><label class="sp-check"><input id="specialPackTierEnabled" type="checkbox" checked>启用</label></div>
-            <p class="sp-hint">礼包金额作为划线原价，折后售价须小于礼包金额。</p>
-            <div class="sp-preview" aria-label="金额展示预览"><span>礼包金额 <strong id="specialPackPreviewAmount">—</strong></span><span>售价 <strong id="specialPackPreviewPrice">—</strong> <del id="specialPackPreviewOriginal">—</del></span></div>
-          </div>
-          <footer><button class="sp-button" type="button" data-sp-close>取消</button><button class="sp-button sp-primary" type="submit">确定</button></footer>
-        </form>
-      </section>
-    </div>
     <script src="custom/js/新增活动.js"></script>
     <script src="custom/js/recharge-gift-activity.js"></script>
     <script src="custom/js/weekly-card-activity.js"></script>
     <script src="custom/js/lucky-wheel-activity.js"></script>
     <script src="custom/js/flash-rebate-activity.js"></script>
-    <script src="custom/js/relief-fund-activity.js"></script>
     <script src="custom/js/special-pack-activity.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
   </body>

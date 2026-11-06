@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>救济金</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/救济金/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/relief-fund-activity.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/relief-fund-approval.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/救济金.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/救济金/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return "resources/images/transparent.gif"; };
+      $axure.utils.getOtherPath = function() { return "resources/Other.html"; };
+      $axure.utils.getReloadPath = function() { return "resources/reload.html"; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class=""></div>
+    <main class="rescue-page">
+      <header class="rescue-titlebar"><span>运营中心</span><span>/</span><h1>救济金</h1></header>
+      <div class="rescue-content">
+        <nav class="rescue-tabs" role="tablist" aria-label="救济金管理">
+          <button id="rfConfigTab" type="button" role="tab" aria-controls="rfConfigPanel" aria-selected="true" data-rescue-panel="rfConfigPanel">活动配置</button>
+          <button id="rfApprovalTab" type="button" role="tab" aria-controls="rfApprovalPanel" aria-selected="false" tabindex="-1" data-rescue-panel="rfApprovalPanel">申请审批</button>
+        </nav>
+        <section id="rfConfigPanel" role="tabpanel" aria-labelledby="rfConfigTab">
+            <form id="reliefFundForm" class="rf-form" data-editing="false" novalidate>
+              <div class="rescue-config-heading"><div><h2>救济金活动配置</h2><p>配置参与条件、VIP 奖励与玩家端展示内容。</p></div><div class="rescue-config-tools"><button id="rfPreviewRules" class="rf-button" type="button">规则文本配置</button><button id="rfEditConfig" class="rf-button rf-primary" type="button">编辑</button></div></div>
+              <fieldset id="rfConfigFields" class="rescue-config-fields" disabled>
+              <section class="rf-section" aria-labelledby="rfBasicHeading">
+                <div class="rf-section-heading"><h3 id="rfBasicHeading">基础信息</h3><span>救济金 · Rescue Funds</span></div>
+                <div class="rf-grid">
+                  <div class="rf-field rf-wide"><span class="rf-required">活动时间</span><div class="rf-date-range"><input id="rfStart" type="datetime-local" aria-label="活动开始时间" required><span>至</span><input id="rfEnd" type="datetime-local" aria-label="活动结束时间" required><label class="rf-long-term"><input id="rfLongTerm" type="checkbox">长期有效</label></div></div>
+                  <div class="rf-field" data-activity-reward-target="2"><span>奖励入账账户</span><div class="rf-radio-group"><label><input type="radio" name="activityRewardTarget2" value="余额" checked>余额</label><label><input type="radio" name="activityRewardTarget2" value="存钱罐">存钱罐</label></div></div>
+                  <label class="rf-field"><span>打码倍数</span><input id="rfWager" class="rf-short-input" type="number" min="0" step="0.1" value="1" required></label>
+                </div>
+              </section>
+
+              <section class="rf-section" aria-labelledby="rfRulesHeading">
+                <div class="rf-section-heading"><h3 id="rfRulesHeading">VIP 奖励配置</h3></div>
+                <div class="rf-table-toolbar"><p>按每档最大等级自动划分区间；充值门槛、亏损门槛及奖励金额均跟随商户金币。</p></div>
+                <div class="rf-table-wrap">
+                  <table class="rf-table" id="rfTierTable">
+                    <thead><tr><th scope="col">档位</th><th scope="col"><span class="rf-required">最大 VIP 等级</span></th><th scope="col"><span class="rf-required">充值门槛</span></th><th scope="col"><span class="rf-required">亏损门槛</span></th><th scope="col"><span class="rf-required">亏损返还比例（%）</span></th><th scope="col"><span class="rf-required">奖励上限</span></th><th scope="col"><span class="rf-sr-only">删除档位</span></th></tr></thead>
+                    <tbody id="rfTierRows">
+                      <tr data-rf-index="0" data-rf-vip="0" data-deposit="20000" data-loss="20000" data-rate="2" data-cap="88990000">
+                        <th scope="row"><span class="rf-tier-badge" data-rf-range>0</span></th>
+                        <td><input class="rf-tier-input rf-max-vip" data-rf-field="vip" type="number" min="0" max="1" step="1" value="0" required aria-label="第1档最大VIP等级"><small class="rf-field-error" data-rf-error="vip" hidden></small></td>
+                        <td><input class="rf-tier-input" data-rf-field="deposit" type="number" min="0" step="0.01" value="20000" placeholder="必填" required aria-label="第1档充值门槛"><small class="rf-field-error" data-rf-error="deposit" hidden></small></td>
+                        <td><input class="rf-tier-input" data-rf-field="loss" type="number" min="0" step="0.01" value="20000" placeholder="必填" required aria-label="第1档亏损门槛"><small class="rf-field-error" data-rf-error="loss" hidden></small></td>
+                        <td><input class="rf-tier-input" data-rf-field="rate" type="number" min="0.01" max="100" step="0.01" value="2" placeholder="必填" required aria-label="第1档亏损返还比例"><small class="rf-field-error" data-rf-error="rate" hidden></small></td>
+                        <td><input class="rf-tier-input" data-rf-field="cap" type="number" min="0.01" step="0.01" value="88990000" placeholder="必填" required aria-label="第1档奖励上限"><small class="rf-field-error" data-rf-error="cap" hidden></small></td>
+                        <td><button type="button" data-rf-delete="0" class="rf-delete-tier" aria-label="删除第1档" title="删除档位"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M9 6V4h6v2M5 6l1 15h12l1-15M10 10v7M14 10v7"/></svg></button></td>
+                      </tr>
+                      <tr data-rf-index="1" data-rf-vip="2" data-deposit="50000" data-loss="50000" data-rate="2" data-cap="88990000">
+                        <th scope="row"><span class="rf-tier-badge" data-rf-range>1 – 2</span></th>
+                        <td><input class="rf-tier-input rf-max-vip" data-rf-field="vip" type="number" min="1" max="3" step="1" value="2" required aria-label="第2档最大VIP等级"><small class="rf-field-error" data-rf-error="vip" hidden></small></td>
+                        <td><input class="rf-tier-input" data-rf-field="deposit" type="number" min="0" step="0.01" value="50000" placeholder="必填" required aria-label="第2档充值门槛"><small class="rf-field-error" data-rf-error="deposit" hidden></small></td>
+                        <td><input class="rf-tier-input" data-rf-field="loss" type="number" min="0" step="0.01" value="50000" placeholder="必填" required aria-label="第2档亏损门槛"><small class="rf-field-error" data-rf-error="loss" hidden></small></td>
+                        <td><input class="rf-tier-input" data-rf-field="rate" type="number" min="0.01" max="100" step="0.01" value="2" placeholder="必填" required aria-label="第2档亏损返还比例"><small class="rf-field-error" data-rf-error="rate" hidden></small></td>
+                        <td><input class="rf-tier-input" data-rf-field="cap" type="number" min="0.01" step="0.01" value="88990000" placeholder="必填" required aria-label="第2档奖励上限"><small class="rf-field-error" data-rf-error="cap" hidden></small></td>
+                        <td><button type="button" data-rf-delete="1" class="rf-delete-tier" aria-label="删除第2档" title="删除档位"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M9 6V4h6v2M5 6l1 15h12l1-15M10 10v7M14 10v7"/></svg></button></td>
+                      </tr>
+                      <tr data-rf-index="2" data-rf-vip="4" data-deposit="50000" data-loss="50000" data-rate="3" data-cap="88990000">
+                        <th scope="row"><span class="rf-tier-badge" data-rf-range>3 – 4</span></th>
+                        <td><input class="rf-tier-input rf-max-vip" data-rf-field="vip" type="number" min="3" max="14" step="1" value="4" required aria-label="第3档最大VIP等级"><small class="rf-field-error" data-rf-error="vip" hidden></small></td>
+                        <td><input class="rf-tier-input" data-rf-field="deposit" type="number" min="0" step="0.01" value="50000" placeholder="必填" required aria-label="第3档充值门槛"><small class="rf-field-error" data-rf-error="deposit" hidden></small></td>
+                        <td><input class="rf-tier-input" data-rf-field="loss" type="number" min="0" step="0.01" value="50000" placeholder="必填" required aria-label="第3档亏损门槛"><small class="rf-field-error" data-rf-error="loss" hidden></small></td>
+                        <td><input class="rf-tier-input" data-rf-field="rate" type="number" min="0.01" max="100" step="0.01" value="3" placeholder="必填" required aria-label="第3档亏损返还比例"><small class="rf-field-error" data-rf-error="rate" hidden></small></td>
+                        <td><input class="rf-tier-input" data-rf-field="cap" type="number" min="0.01" step="0.01" value="88990000" placeholder="必填" required aria-label="第3档奖励上限"><small class="rf-field-error" data-rf-error="cap" hidden></small></td>
+                        <td><button type="button" data-rf-delete="2" class="rf-delete-tier" aria-label="删除第3档" title="删除档位"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M9 6V4h6v2M5 6l1 15h12l1-15M10 10v7M14 10v7"/></svg></button></td>
+                      </tr>
+                      <tr data-rf-index="3" data-rf-vip="15" data-deposit="50000" data-loss="50000" data-rate="4" data-cap="88990000">
+                        <th scope="row"><span class="rf-tier-badge" data-rf-range>5 – 15</span></th>
+                        <td><input class="rf-tier-input rf-max-vip" data-rf-field="vip" type="number" value="15" disabled aria-label="末档自动覆盖至VIP15" title="末档自动适配最高VIP等级"><small class="rf-field-error" data-rf-error="vip" hidden></small></td>
+                        <td><input class="rf-tier-input" data-rf-field="deposit" type="number" min="0" step="0.01" value="50000" placeholder="必填" required aria-label="第4档充值门槛"><small class="rf-field-error" data-rf-error="deposit" hidden></small></td>
+                        <td><input class="rf-tier-input" data-rf-field="loss" type="number" min="0" step="0.01" value="50000" placeholder="必填" required aria-label="第4档亏损门槛"><small class="rf-field-error" data-rf-error="loss" hidden></small></td>
+                        <td><input class="rf-tier-input" data-rf-field="rate" type="number" min="0.01" max="100" step="0.01" value="4" placeholder="必填" required aria-label="第4档亏损返还比例"><small class="rf-field-error" data-rf-error="rate" hidden></small></td>
+                        <td><input class="rf-tier-input" data-rf-field="cap" type="number" min="0.01" step="0.01" value="88990000" placeholder="必填" required aria-label="第4档奖励上限"><small class="rf-field-error" data-rf-error="cap" hidden></small></td>
+                        <td><button type="button" data-rf-delete="3" class="rf-delete-tier" aria-label="删除第4档" title="删除档位"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M9 6V4h6v2M5 6l1 15h12l1-15M10 10v7M14 10v7"/></svg></button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <button id="rfAddTier" class="rf-add-tier" type="button"><span aria-hidden="true">＋</span> 添加档位</button>
+                </div>
+                <p id="rfTierTableMessage" class="rf-message" role="alert" hidden></p>
+                <p class="rf-help">每档起始等级自动接续上一档最大等级 + 1；末档固定覆盖至最高 VIP 15。新增、删除档位后自动补齐区间。奖励数值为可编辑示例。</p>
+              </section>
+
+
+              </fieldset>
+              <p id="rfFormMessage" class="rf-message" role="status" hidden></p>
+              <div id="rfConfigActions" class="rf-actions" role="group" aria-label="配置编辑操作" hidden><button id="rfCancel" class="rf-button" type="button" hidden>取消</button><button id="rfSubmit" class="rf-button rf-primary" type="submit" hidden>保存配置</button></div>
+            </form>
+            <aside class="rf-rule-notes" aria-label="救济金规则说明">
+              <details>
+                <summary>规则说明</summary>
+                <dl class="rf-rule-details">
+                  <div><dt>统计周期</dt><dd>每日统计，按站点时区划分今日 / 昨日。</dd></div>
+                  <div><dt>申请时间</dt><dd>次日申请昨日救济金。</dd></div>
+                  <div><dt>参与条件</dt><dd>当日充值 ≥ 充值门槛，且当日亏损 ≥ 亏损门槛。</dd></div>
+                  <div><dt>派发方式</dt><dd>玩家主动申请；符合自动审批金额规则的申请自动通过，其余人工审批，通过后直接发放，无须再次领取。</dd></div>
+                  <div><dt>亏损计算</dt><dd>当日亏损 = 游戏投注金额 − 系统奖励 − 游戏中奖金额。</dd></div>
+                  <div><dt>奖励计算</dt><dd>救济金 = 当日亏损 × 对应 VIP 返还比例，不超过该等级奖励上限。<span>仅正亏损且同时满足两项门槛时可申请。</span></dd></div>
+                </dl>
+              </details>
+            </aside>
+
+        </section>
+        <section id="rfApprovalPanel" class="rfa-panel" role="tabpanel" aria-labelledby="rfApprovalTab" hidden>
+  <section class="rfa-rule" aria-labelledby="rfaRuleTitle">
+    <header class="rfa-rule-head"><h2 id="rfaRuleTitle">自动审批配置</h2><button id="rfaRuleEdit" class="rfa-btn" type="button" aria-controls="rfaRuleForm" aria-expanded="false">编辑</button></header>
+    <dl id="rfaRuleSummary" class="rfa-rule-summary"><div><dt>按金额自动审批</dt><dd id="rfaSavedStatus">关闭</dd></div><div><dt>金额上限（商户金币）</dt><dd id="rfaSavedLimit">未设置</dd></div></dl>
+    <form id="rfaRuleForm" class="rfa-rule-form" hidden>
+      <div class="rfa-switch-field"><span id="rfaSwitchLabel">按金额自动审批</span><button id="rfaAutoSwitch" class="rfa-switch" type="button" role="switch" aria-checked="false" aria-labelledby="rfaSwitchLabel" disabled></button><span id="rfaSwitchText">关闭</span></div>
+      <label class="rfa-field" for="rfaLimit">自动审批金额上限（商户金币）<input id="rfaLimit" type="text" inputmode="decimal" placeholder="请输入金额上限" maxlength="14" disabled></label>
+      <div class="rfa-rule-actions"><button id="rfaRuleSave" class="rfa-btn rfa-primary" type="submit" disabled>保存</button><button id="rfaRuleCancel" class="rfa-btn" type="button" disabled>取消</button></div>
+    </form>
+    <p class="rfa-hint">开启后，新申请金额小于或等于上限时自动审批通过并直接发放，超过上限的申请进入人工审批。关闭后全部进入人工审批。规则保存后仅对新申请生效，不处理历史待审批记录。</p>
+    <p id="rfaRuleMessage" class="rfa-message" role="status" aria-live="polite"></p>
+  </section>
+  <form id="rfaFilterForm" class="rfa-filters">
+    <label class="rfa-field" for="rfaAccount">会员账号<input id="rfaAccount" type="search" placeholder="请输入会员账号"></label>
+    <label class="rfa-field" for="rfaStatus">审批状态<select id="rfaStatus"><option value="">全部状态</option><option value="pending">待审批</option><option value="paid">已发放</option><option value="rejected">已拒绝</option></select></label>
+    <label class="rfa-field" for="rfaDateField">日期类型<select id="rfaDateField"><option value="statisticsDate">数据日期</option><option value="time">申请日期</option></select></label>
+    <label class="rfa-field" for="rfaDateFrom">开始日期<input id="rfaDateFrom" type="date"></label><span class="rfa-date-separator">至</span><label class="rfa-field" for="rfaDateTo"><span class="rfa-visually-hidden">结束日期</span><input id="rfaDateTo" type="date"></label>
+    <button class="rfa-btn rfa-primary" type="submit">查询</button><button class="rfa-btn" type="reset">重置</button>
+  </form>
+  <p class="rfa-data-hint">数据日期按站点时区统计，表示本次申请对应的统计日，非申请提交日；充值、亏损、打码量和游戏次数均取该日快照。历史记录缺失的数据展示为“—”。</p>
+  <p id="rfaListMessage" class="rfa-message" role="status" aria-live="polite"></p>
+  <div class="rfa-table-wrap"><table class="rfa-table"><thead><tr><th>申请单号</th><th>会员账号</th><th>会员等级</th><th>数据日期</th><th class="rfa-num">当日充值</th><th class="rfa-num">当日亏损</th><th class="rfa-num">当日打码量</th><th class="rfa-num">游戏次数</th><th class="rfa-num">申请金额</th><th>币种</th><th>申请时间</th><th>审批状态</th><th>审批方式</th><th>操作</th></tr></thead><tbody id="rfaRows"><tr><td class="rfa-empty" colspan="14">暂无申请记录，请在页面初始化后查询。</td></tr></tbody></table></div>
+  <div class="rfa-pagination"><span id="rfaCount">共 0 条</span><button id="rfaPrev" class="rfa-btn" type="button" disabled>上一页</button><span id="rfaPage">1 / 1</span><button id="rfaNext" class="rfa-btn" type="button" disabled>下一页</button><span>每页 5 条</span></div>
+  <div id="rfaModal" class="rfa-modal-layer" hidden>
+    <section class="rfa-modal" role="dialog" aria-modal="true" aria-labelledby="rfaModalTitle" tabindex="-1">
+      <header class="rfa-modal-head"><h2 id="rfaModalTitle">审批申请</h2><button class="rfa-close" data-rfa-close type="button" aria-label="关闭">×</button></header>
+      <form id="rfaDecisionForm"><div class="rfa-modal-body"><dl id="rfaDetail" class="rfa-detail"></dl><p id="rfaDecisionHint" class="rfa-hint"></p><label id="rfaReasonField" class="rfa-field" for="rfaReason" hidden>拒绝理由 <span class="rfa-required">*</span><textarea id="rfaReason" maxlength="200" placeholder="请输入拒绝理由，最多200字"></textarea></label><p id="rfaModalMessage" class="rfa-message" role="alert"></p></div><footer class="rfa-modal-foot"><button class="rfa-btn" type="button" data-rfa-close>取消</button><button id="rfaConfirm" class="rfa-btn rfa-primary" type="submit">确定</button></footer></form>
+    </section>
+  </div>
+</section>
+      </div>
+    </main>
+    <div id="rfPreviewModal" class="rf-modal-layer" hidden>
+      <section class="rf-modal rf-preview-modal" role="dialog" aria-modal="true" aria-labelledby="rfPreviewTitle">
+        <header><h3 id="rfPreviewTitle">规则文本配置</h3><button class="rf-modal-close" type="button" data-rf-close aria-label="关闭">×</button></header>
+        <div class="rf-modal-body">
+          <p class="rf-help">玩家端展示的活动规则；可同步已保存的 VIP 档位表格。</p>
+          <fieldset id="rfRuleFields" class="rescue-config-fields">
+                <div class="rf-editor-heading"><span id="rfDescriptionLabel" class="rf-required">活动规则</span></div>
+                <div class="rf-editor-shell">
+                  <div class="rf-rich-toolbar" role="toolbar" aria-label="规则文本格式"><button type="button" data-rf-command="bold" aria-label="加粗" title="加粗"><b>B</b></button><button type="button" data-rf-command="italic" aria-label="斜体" title="斜体"><i>I</i></button><button type="button" data-rf-command="underline" aria-label="下划线" title="下划线"><u>U</u></button><span class="rf-toolbar-divider"></span><button type="button" data-rf-command="insertUnorderedList" title="无序列表">• 列表</button><button type="button" data-rf-command="insertOrderedList" title="有序列表">1. 列表</button><span class="rf-toolbar-divider"></span><button type="button" data-rf-command="undo">撤销</button><button type="button" data-rf-command="redo">重做</button><button id="rfSyncRuleTable" class="rf-sync-table" type="button">同步档位表格</button></div>
+                  <div id="rfDescription" class="rf-rule-editor" contenteditable="true" aria-readonly="false" role="textbox" aria-multiline="true" aria-labelledby="rfDescriptionLabel" lang="en" spellcheck="false">
+                    <h3>Rules</h3>
+                    <p>1. Players with higher deposits and losses can apply for rescue bonuses the next day</p>
+                    <p>2.Rescue fund applications are reviewed automatically within the configured amount limit; all other applications require manual review. Approved funds are credited directly without another claim.</p>
+                    <p>3.Losses refer to your daily:</p>
+                    <p>Losses = Game Bets - System Rewards - Game Winnings</p>
+                    <p>Below are the participation requirements and rebate values for the rescue funds activity:</p>
+                    <table><thead><tr><th>VIP Level</th><th>Rescue Fund<br>Percentage</th><th>Deposit<br>requirements</th><th>Loss Conditions</th><th>Maximum<br>Amount</th></tr></thead><tbody>
+                      <tr><td>0</td><td>2%</td><td>20K</td><td>20K</td><td>88.99M</td></tr>
+                      <tr><td>1</td><td>2%</td><td>50K</td><td>50K</td><td>88.99M</td></tr>
+                      <tr><td>2</td><td>2%</td><td>50K</td><td>50K</td><td>88.99M</td></tr>
+                      <tr><td>3</td><td>3%</td><td>50K</td><td>50K</td><td>88.99M</td></tr>
+                      <tr><td>4</td><td>3%</td><td>50K</td><td>50K</td><td>88.99M</td></tr>
+                      <tr><td>5</td><td>4%</td><td>50K</td><td>50K</td><td>88.99M</td></tr>
+                      <tr><td>6</td><td>4%</td><td>50K</td><td>50K</td><td>88.99M</td></tr>
+                    </tbody></table><p><br></p>
+                  </div>
+                </div>
+                <p class="rf-help">包含英文规则、亏损公式与 VIP 表格，可直接编辑；点击“同步档位表格”可按上方配置更新表格。</p>
+
+          </fieldset>
+          <p id="rfRuleMessage" class="rf-message" role="status" hidden></p>
+        </div>
+        <footer><button id="rfRuleCancel" class="rf-button" type="button" data-rf-close>取消</button><button id="rfRuleSave" class="rf-button rf-primary" type="button">保存规则</button></footer>
+      </section>
+    </div>
+
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/relief-fund-activity.js"></script>
+    <script src="custom/js/relief-fund-approval.js"></script>
+    <script src="custom/js/救济金.js"></script>
+  </body>
+</html>

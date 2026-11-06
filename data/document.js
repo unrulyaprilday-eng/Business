@@ -283,6 +283,13 @@ $axure.loadDocument({
             "children": []
           },
           {
+            "id": "operation_rescue_funds",
+            "pageName": "救济金",
+            "type": "Wireframe",
+            "url": "救济金.html",
+            "children": []
+          },
+          {
             "id": "novs01",
             "pageName": "新增活动",
             "type": "Wireframe",

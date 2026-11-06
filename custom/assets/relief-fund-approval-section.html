@@ -1,0 +1,30 @@
+<section id="rfApprovalPanel" class="rfa-panel" role="tabpanel" aria-labelledby="rfApprovalTab" hidden>
+  <section class="rfa-rule" aria-labelledby="rfaRuleTitle">
+    <header class="rfa-rule-head"><h2 id="rfaRuleTitle">自动审批配置</h2><button id="rfaRuleEdit" class="rfa-btn" type="button" aria-controls="rfaRuleForm" aria-expanded="false">编辑</button></header>
+    <dl id="rfaRuleSummary" class="rfa-rule-summary"><div><dt>按金额自动审批</dt><dd id="rfaSavedStatus">关闭</dd></div><div><dt>金额上限（商户金币）</dt><dd id="rfaSavedLimit">未设置</dd></div></dl>
+    <form id="rfaRuleForm" class="rfa-rule-form" hidden>
+      <div class="rfa-switch-field"><span id="rfaSwitchLabel">按金额自动审批</span><button id="rfaAutoSwitch" class="rfa-switch" type="button" role="switch" aria-checked="false" aria-labelledby="rfaSwitchLabel" disabled></button><span id="rfaSwitchText">关闭</span></div>
+      <label class="rfa-field" for="rfaLimit">自动审批金额上限（商户金币）<input id="rfaLimit" type="text" inputmode="decimal" placeholder="请输入金额上限" maxlength="14" disabled></label>
+      <div class="rfa-rule-actions"><button id="rfaRuleSave" class="rfa-btn rfa-primary" type="submit" disabled>保存</button><button id="rfaRuleCancel" class="rfa-btn" type="button" disabled>取消</button></div>
+    </form>
+    <p class="rfa-hint">开启后，新申请金额小于或等于上限时自动审批通过并直接发放，超过上限的申请进入人工审批。关闭后全部进入人工审批。规则保存后仅对新申请生效，不处理历史待审批记录。</p>
+    <p id="rfaRuleMessage" class="rfa-message" role="status" aria-live="polite"></p>
+  </section>
+  <form id="rfaFilterForm" class="rfa-filters">
+    <label class="rfa-field" for="rfaAccount">会员账号<input id="rfaAccount" type="search" placeholder="请输入会员账号"></label>
+    <label class="rfa-field" for="rfaStatus">审批状态<select id="rfaStatus"><option value="">全部状态</option><option value="pending">待审批</option><option value="paid">已发放</option><option value="rejected">已拒绝</option></select></label>
+    <label class="rfa-field" for="rfaDateField">日期类型<select id="rfaDateField"><option value="statisticsDate">数据日期</option><option value="time">申请日期</option></select></label>
+    <label class="rfa-field" for="rfaDateFrom">开始日期<input id="rfaDateFrom" type="date"></label><span class="rfa-date-separator">至</span><label class="rfa-field" for="rfaDateTo"><span class="rfa-visually-hidden">结束日期</span><input id="rfaDateTo" type="date"></label>
+    <button class="rfa-btn rfa-primary" type="submit">查询</button><button class="rfa-btn" type="reset">重置</button>
+  </form>
+  <p class="rfa-data-hint">数据日期按站点时区统计，表示本次申请对应的统计日，非申请提交日；充值、亏损、打码量和游戏次数均取该日快照。历史记录缺失的数据展示为“—”。</p>
+  <p id="rfaListMessage" class="rfa-message" role="status" aria-live="polite"></p>
+  <div class="rfa-table-wrap"><table class="rfa-table"><thead><tr><th>申请单号</th><th>会员账号</th><th>会员等级</th><th>数据日期</th><th class="rfa-num">当日充值</th><th class="rfa-num">当日亏损</th><th class="rfa-num">当日打码量</th><th class="rfa-num">游戏次数</th><th class="rfa-num">申请金额</th><th>币种</th><th>申请时间</th><th>审批状态</th><th>审批方式</th><th>操作</th></tr></thead><tbody id="rfaRows"><tr><td class="rfa-empty" colspan="14">暂无申请记录，请在页面初始化后查询。</td></tr></tbody></table></div>
+  <div class="rfa-pagination"><span id="rfaCount">共 0 条</span><button id="rfaPrev" class="rfa-btn" type="button" disabled>上一页</button><span id="rfaPage">1 / 1</span><button id="rfaNext" class="rfa-btn" type="button" disabled>下一页</button><span>每页 5 条</span></div>
+  <div id="rfaModal" class="rfa-modal-layer" hidden>
+    <section class="rfa-modal" role="dialog" aria-modal="true" aria-labelledby="rfaModalTitle" tabindex="-1">
+      <header class="rfa-modal-head"><h2 id="rfaModalTitle">审批申请</h2><button class="rfa-close" data-rfa-close type="button" aria-label="关闭">×</button></header>
+      <form id="rfaDecisionForm"><div class="rfa-modal-body"><dl id="rfaDetail" class="rfa-detail"></dl><p id="rfaDecisionHint" class="rfa-hint"></p><label id="rfaReasonField" class="rfa-field" for="rfaReason" hidden>拒绝理由 <span class="rfa-required">*</span><textarea id="rfaReason" maxlength="200" placeholder="请输入拒绝理由，最多200字"></textarea></label><p id="rfaModalMessage" class="rfa-message" role="alert"></p></div><footer class="rfa-modal-foot"><button class="rfa-btn" type="button" data-rfa-close>取消</button><button id="rfaConfirm" class="rfa-btn rfa-primary" type="submit">确定</button></footer></form>
+    </section>
+  </div>
+</section>

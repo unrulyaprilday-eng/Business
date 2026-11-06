@@ -1,0 +1,36 @@
+body { margin: 0; background: #f5f7fa; }
+.rescue-page { color: #303848; font: 13px/1.6 "Microsoft YaHei", Arial, sans-serif; text-align: left; }
+.rescue-page *, .rescue-page *::before, .rescue-page *::after { box-sizing: border-box; }
+.rescue-page [hidden], .rf-modal-layer[hidden] { display: none !important; }
+.rescue-titlebar { display: flex; align-items: center; gap: 12px; height: 54px; padding: 0 24px; background: #fff; border-bottom: 1px solid #e5eaf1; color: #8390a0; }
+.rescue-titlebar h1 { margin: 0; color: #303848; font-size: 14px; font-weight: 600; }
+.rescue-content { margin: 18px 24px; padding: 0 24px 24px; background: #fff; border: 1px solid #e5eaf1; border-radius: 6px; }
+.rescue-tabs { display: flex; gap: 28px; border-bottom: 1px solid #e5eaf1; margin-bottom: 22px; }
+.rescue-tabs button { border: 0; border-bottom: 2px solid transparent; padding: 16px 2px 13px; color: #697688; background: transparent; cursor: pointer; font: inherit; }
+.rescue-tabs button[aria-selected="true"] { color: #409eff; border-bottom-color: #409eff; font-weight: 600; }
+.rescue-tabs button:focus-visible { outline: 2px solid #bdd6f1; outline-offset: 2px; }
+.rescue-page .rf-form { margin: 0; padding-top: 0; width: 1080px; max-width: 100%; }
+.rescue-page .rf-rule-notes { width: 1080px; max-width: 100%; margin: 0; }
+.rescue-config-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 20px; margin-bottom: 22px; border-bottom: 1px solid #e8ecf2; }
+.rescue-config-heading h2 { margin: 0; font-size: 16px; font-weight: 600; }
+.rescue-config-heading p { margin: 5px 0 0; color: #8390a0; font-size: 12px; }
+.rescue-config-tools { display: flex; align-items: center; gap: 10px; }
+.rescue-config-fields { border: 0; margin: 0; padding: 0; min-width: 0; }
+.rescue-page .rf-form[data-editing="false"] .rf-rich-toolbar,
+.rescue-page .rf-form[data-editing="false"] .rf-add-tier,
+.rescue-page .rf-form[data-editing="false"] .rf-delete-tier { display: none; }
+.rescue-page .rf-form[data-editing="false"] input:disabled { color: #475467; background: #f8fafc; cursor: default; opacity: 1; -webkit-text-fill-color: #475467; }
+.rescue-page .rf-form[data-editing="false"] input[type="number"] { appearance: textfield; -moz-appearance: textfield; }
+.rescue-page .rf-form[data-editing="false"] input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.rescue-page .rf-form[data-editing="false"] .rf-required::before { display: none; }
+.rescue-page .rf-form[data-editing="false"] .rf-rule-editor { background: #fafbfd; }
+.rescue-page .rf-form[data-editing="false"] .rf-editor-shell { border-color: #e5eaf1; }
+.rescue-page .rf-form[data-editing="true"] { padding-bottom: 100px; }
+.rescue-page .rf-actions { position: fixed; bottom: 0; left: var(--rescue-action-left, 49px); width: var(--rescue-action-width, min(1080px, calc(100% - 98px))); z-index: 100; display: flex; justify-content: flex-end; align-items: center; gap: 12px; margin: 0; padding: 14px 24px; border: 1px solid #e5eaf1; border-bottom: 0; border-radius: 6px 6px 0 0; background: #fff; box-shadow: 0 -4px 16px rgba(31, 41, 55, .08); }
+#rfConfigPanel[hidden] .rf-actions { display: none; }
+.rf-preview-modal .rf-rule-editor { max-height: 48vh; min-height: 240px; overflow: auto; }
+.rf-preview-modal .rf-help { margin-top: 0; }
+.rf-modal-layer[data-editing="false"] .rf-rich-toolbar { display: none; }
+.rf-modal-layer[data-editing="false"] .rf-required::before { display: none; }
+.rf-modal-layer[data-editing="false"] .rf-rule-editor { background: #fafbfd; }
+@media (max-width: 700px) { .rescue-content { margin: 12px; padding: 0 14px 18px; } .rescue-titlebar { padding: 0 16px; } .rescue-page .rf-actions { left: var(--rescue-action-left, 27px); width: var(--rescue-action-width, calc(100% - 54px)); padding: 12px 14px; } }

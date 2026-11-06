@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-11-04T10:03:04.304Z",
+  "savedAt": "2026-11-06T07:22:02.817Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -263,6 +263,20 @@
               "children": []
             }
           ]
+        },
+        {
+          "id": "deposit_bank",
+          "pageName": "存款银行",
+          "type": "Wireframe",
+          "url": "存款银行.html",
+          "children": []
+        },
+        {
+          "id": "operation_rescue_funds",
+          "pageName": "救济金",
+          "type": "Wireframe",
+          "url": "救济金.html",
+          "children": []
         },
         {
           "id": "novs01",

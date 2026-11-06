@@ -7,10 +7,9 @@
   var tiers = [];
   var activeModal = null;
   var returnFocus = null;
-  var banner = '';
-  var details = [];
-  var uploadPending = false;
-  var fields = ['Name', 'Title', 'Start', 'End', 'Wager', 'Sort'];
+  var fields = ['Start', 'End', 'Wager'];
+  var ruleEditing = false;
+  var ruleSnapshot = '';
   var tierFields = ['vip', 'deposit', 'loss', 'rate', 'cap'];
   var tierLabels = { vip: '最大 VIP 等级', deposit: '充值门槛', loss: '亏损门槛', rate: '亏损返还比例', cap: '奖励上限' };
   var originalRuleTable = '';
@@ -60,7 +59,6 @@
     button.disabled = tierStart(tiers.length - 1) >= MAX_VIP;
     button.title = button.disabled ? '末档已仅剩最高等级，请先调小前一档最大等级再添加。' : '在末档前添加新档位，末档自动补齐剩余等级。';
   }
-  function isImageSource(value) { return typeof value === 'string' && /^data:image\/(png|jpeg|webp);base64,[a-z0-9+/=]+$/i.test(value); }
   function renderTiers() {
     byId('rfTierRows').innerHTML = tiers.map(function (tier, index) {
       var bounds = tierBounds(index);
@@ -157,6 +155,10 @@
   }
   function closeModal() {
     if (!activeModal) { return; }
+    if (activeModal.id === 'rfPreviewModal' && ruleEditing) {
+      byId('rfDescription').innerHTML = ruleSnapshot;
+      setRuleEditing(false);
+    }
     activeModal.hidden = true;
     activeModal = null;
     if (returnFocus && document.documentElement.contains(returnFocus)) { returnFocus.focus(); }
@@ -184,8 +186,18 @@
   }
   function plainTextHtml(text) { return String(text).split(/\n\s*\n/).map(function (paragraph) { return '<p>' + escapeHtml(paragraph).replace(/\n/g, '<br>') + '</p>'; }).join(''); }
   function previewRules(trigger) {
-    byId('rfPreviewCopy').innerHTML = sanitizeDescription(byId('rfDescription').innerHTML);
+    ruleSnapshot = byId('rfDescription').innerHTML;
+    setRuleEditing(true);
+    message('rfRuleMessage', '');
     openModal('rfPreviewModal', trigger);
+    byId('rfDescription').focus();
+  }
+  function setRuleEditing(editing) {
+    ruleEditing = editing;
+    byId('rfRuleFields').disabled = !editing;
+    byId('rfDescription').contentEditable = String(editing);
+    byId('rfDescription').setAttribute('aria-readonly', String(!editing));
+    byId('rfPreviewModal').setAttribute('data-editing', String(editing));
   }
   function syncRuleTable() {
     if (!requireValidTiers()) { return; }
@@ -217,81 +229,6 @@
     editor.addEventListener('drop', function (event) { event.preventDefault(); });
     byId('rfSyncRuleTable').addEventListener('click', syncRuleTable);
   }
-  function renderImages() {
-    var image = byId('rfBannerPreview');
-    image.hidden = !banner;
-    if (banner) { image.src = banner; } else { image.removeAttribute('src'); }
-    byId('rfBannerHint').hidden = Boolean(banner);
-    byId('rfBannerRemove').hidden = !banner;
-    var container = byId('rfDetailImages');
-    container.textContent = '';
-    details.forEach(function (source, index) {
-      var item = document.createElement('div');
-      item.className = 'rf-image-item';
-      var img = document.createElement('img');
-      img.src = source;
-      img.alt = '活动详情图片 ' + (index + 1);
-      var remove = document.createElement('button');
-      remove.type = 'button';
-      remove.className = 'rf-text-button rf-danger';
-      remove.textContent = '移除';
-      remove.setAttribute('data-rf-remove-image', String(index));
-      item.appendChild(img);
-      item.appendChild(remove);
-      container.appendChild(item);
-    });
-    byId('rfDetailUpload').hidden = details.length >= 5;
-  }
-  function readImage(file) {
-    return new Promise(function (resolve, reject) {
-      var reader = new FileReader();
-      reader.onerror = function () { reject(new Error('图片读取失败，请重新选择。')); };
-      reader.onload = function () {
-        if (!isImageSource(reader.result)) { reject(new Error('图片格式无效，请使用 JPG、PNG 或 WebP。')); return; }
-        var img = new Image();
-        img.onload = function () { resolve(reader.result); };
-        img.onerror = function () { reject(new Error('图片无法打开，请更换有效图片。')); };
-        img.src = reader.result;
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-  function uploadImages(kind, fileList) {
-    var files = Array.prototype.slice.call(fileList || []);
-    if (!files.length) { return; }
-    if (uploadPending) { message('rfImageMessage', '图片正在读取，请稍候。'); return; }
-    if (kind === 'banner' && files.length !== 1) { message('rfImageMessage', 'Banner 仅支持上传一张图片。'); return; }
-    if (kind === 'detail' && details.length + files.length > 5) { message('rfImageMessage', '活动详情最多上传 5 张图片。'); return; }
-    var maxBytes = kind === 'banner' ? 500 * 1024 : 1024 * 1024;
-    if (files.some(function (file) { return !/^image\/(png|jpeg|webp)$/.test(file.type) || file.size > maxBytes; })) {
-      message('rfImageMessage', '请使用 JPG、PNG 或 WebP；' + (kind === 'banner' ? 'Banner 最大 500KB。' : '详情图片每张最大 1MB。'));
-      return;
-    }
-    uploadPending = true;
-    byId('rfSubmit').disabled = true;
-    message('rfImageMessage', '');
-    Promise.all(files.map(readImage)).then(function (sources) {
-      if (kind === 'banner') { banner = sources[0]; } else { details = details.concat(sources); }
-      renderImages();
-      message('rfFormMessage', '');
-    }).catch(function (error) { message('rfImageMessage', error.message); }).then(function () {
-      uploadPending = false;
-      byId('rfSubmit').disabled = false;
-    });
-  }
-  function bindUpload(kind, buttonId, inputId) {
-    var button = byId(buttonId);
-    var input = byId(inputId);
-    button.addEventListener('click', function () { if (!uploadPending) { input.click(); } });
-    button.addEventListener('dragover', function (event) { event.preventDefault(); button.classList.add('is-dragover'); });
-    button.addEventListener('dragleave', function () { button.classList.remove('is-dragover'); });
-    button.addEventListener('drop', function (event) {
-      event.preventDefault();
-      button.classList.remove('is-dragover');
-      uploadImages(kind, event.dataTransfer && event.dataTransfer.files);
-    });
-    input.addEventListener('change', function () { uploadImages(kind, input.files); input.value = ''; });
-  }
   function syncLongTerm() {
     var longTerm = byId('rfLongTerm').checked;
     byId('rfEnd').disabled = longTerm;
@@ -299,10 +236,10 @@
     message('rfFormMessage', '');
   }
   function collectRecord() {
-    var record = { version: 2, type: '救济金', currencySource: 'merchantCoins', vipMode: 'maximum', maxVip: MAX_VIP, tiers: tiers, banner: banner, details: details,
+    var record = { version: 2, type: '救济金', currencySource: 'merchantCoins', vipMode: 'maximum', maxVip: MAX_VIP, tiers: tiers,
       rewardBasis: 'dailyLoss', lossFormula: 'gameBets-systemRewards-gameWinnings',
       qualification: 'depositAndLoss', statisticsPeriod: 'siteCalendarDay',
-      applicationTiming: 'nextDay', distribution: 'customerServiceReview' };
+      applicationTiming: 'nextDay', distribution: 'approvalThenDirectCredit' };
     fields.forEach(function (name) { record[name.toLowerCase()] = byId('rf' + name).value.trim(); });
     record.longTerm = byId('rfLongTerm').checked;
     if (record.longTerm) { record.end = ''; }
@@ -329,23 +266,22 @@
       all('input[name="activityRewardTarget2"]', byId('reliefFundForm')).forEach(function (input) { input.checked = input.value === (record.target === '存钱罐' ? '存钱罐' : '余额'); });
       if (isValidTiers(restoredTiers)) { tiers = restoredTiers; }
       if (typeof record.description === 'string' && record.description.trim()) {
-        byId('rfDescription').innerHTML = record.version === 1 ? '<h3>Rules</h3>' + plainTextHtml(record.description) + originalRuleTable : sanitizeDescription(record.description);
+        var description = record.description.replace('The rescue funds will be reviewed and distributed by customer service.', 'Rescue fund applications are reviewed automatically within the configured amount limit; all other applications require manual review. Approved funds are credited directly without another claim.');
+        byId('rfDescription').innerHTML = record.version === 1 ? '<h3>Rules</h3>' + plainTextHtml(description) + originalRuleTable : sanitizeDescription(description);
       }
-      banner = isImageSource(record.banner) ? record.banner : '';
-      details = Array.isArray(record.details) ? record.details.filter(isImageSource).slice(0, 5) : [];
       renderTiers();
-      renderImages();
     } catch (error) { /* Keep the static example when local storage is unavailable. */ }
   }
   function saveConfiguration(event) {
     event.preventDefault();
+    var editFields = byId('rfConfigFields');
+    if (editFields && editFields.disabled) { return; }
     message('rfFormMessage', '');
-    if (uploadPending) { message('rfFormMessage', '请等待图片读取完成后保存。'); return; }
     var form = byId('reliefFundForm');
     if (!requireValidTiers()) { return; }
     if (!form.reportValidity()) { return; }
     var record = collectRecord();
-    if (!record.name || !record.title || !byId('rfDescription').textContent.trim()) { message('rfFormMessage', '请填写活动名称、活动标题和活动规则。'); return; }
+    if (!byId('rfDescription').textContent.trim()) { message('rfFormMessage', '请先在规则文本配置中填写活动规则。'); return; }
     if (!record.start) {
       message('rfFormMessage', '请选择活动开始时间。');
       byId('rfStart').focus();
@@ -359,8 +295,8 @@
     if (!isValidTiers(tiers)) { message('rfFormMessage', '请检查 VIP 档位，最大等级须递增且末档须覆盖至 VIP ' + MAX_VIP + '。'); return; }
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(record));
-      message('rfFormMessage', '示例配置已保存在当前浏览器，再次打开救济金模板可继续编辑。', true);
-    } catch (error) { message('rfFormMessage', '配置保存失败，浏览器存储可能不可用或空间不足，请减少图片后重试。'); }
+      message('rfFormMessage', '配置已保存在当前浏览器，再次打开救济金页面可继续编辑。', true);
+    } catch (error) { message('rfFormMessage', '配置保存失败，浏览器存储可能不可用或空间不足，请重试。'); }
   }
   function init() {
     var form = byId('reliefFundForm');
@@ -389,23 +325,77 @@
       if (!activeModal) { return; }
       if (event.key === 'Escape') { event.preventDefault(); closeModal(); return; }
       if (event.key !== 'Tab') { return; }
-      var controls = all('button:not([disabled]), input:not([disabled])', activeModal);
+      var controls = all('button, input, [contenteditable="true"]', activeModal).filter(function (node) { return !node.matches(':disabled') && node.getClientRects().length; });
       var first = controls[0];
       var last = controls[controls.length - 1];
       if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
     });
-    byId('u3012_input').addEventListener('change', closeModal);
-    bindUpload('banner', 'rfBannerUpload', 'rfBannerFile');
-    bindUpload('detail', 'rfDetailUpload', 'rfDetailFiles');
-    byId('rfBannerRemove').addEventListener('click', function () { if (!uploadPending) { banner = ''; renderImages(); message('rfFormMessage', ''); } });
-    byId('rfDetailImages').addEventListener('click', function (event) {
-      var remove = event.target.closest('[data-rf-remove-image]');
-      if (remove && !uploadPending) { details.splice(Number(remove.getAttribute('data-rf-remove-image')), 1); renderImages(); message('rfFormMessage', ''); }
-    });
+    var templateSelect = byId('u3012_input');
+    if (templateSelect) { templateSelect.addEventListener('change', closeModal); }
     form.addEventListener('input', function () { message('rfFormMessage', ''); });
     form.addEventListener('submit', saveConfiguration);
-    byId('rfCancel').addEventListener('click', function () { window.location.href = '优惠活动列表.html'; });
+    var initialState = {
+      fields: fields.map(function (name) { return byId('rf' + name).value; }),
+      longTerm: byId('rfLongTerm').checked,
+      target: form.querySelector('input[name="activityRewardTarget2"]:checked').value,
+      tiers: JSON.parse(JSON.stringify(tiers)),
+      description: byId('rfDescription').innerHTML
+    };
+    function setEditing(editing) {
+      var editFields = byId('rfConfigFields');
+      if (!editFields) { return; }
+      editFields.disabled = !editing;
+      form.setAttribute('data-editing', String(editing));
+      byId('rfPreviewRules').disabled = editing;
+      byId('rfEditConfig').hidden = editing;
+      byId('rfConfigActions').hidden = !editing;
+      byId('rfCancel').hidden = !editing;
+      byId('rfSubmit').hidden = !editing;
+    }
+    var editButton = byId('rfEditConfig');
+    if (editButton) {
+      editButton.addEventListener('click', function () { message('rfFormMessage', ''); setEditing(true); byId('rfStart').focus(); });
+      setEditing(false);
+    }
+    form.addEventListener('submit', function () {
+      if (byId('rfFormMessage').classList.contains('is-success')) {
+        initialState = { fields: fields.map(function (name) { return byId('rf' + name).value; }), longTerm: byId('rfLongTerm').checked,
+          target: form.querySelector('input[name="activityRewardTarget2"]:checked').value,
+          tiers: JSON.parse(JSON.stringify(tiers)), description: byId('rfDescription').innerHTML };
+        setEditing(false);
+        if (editButton) { editButton.focus(); }
+      }
+    });
+    byId('rfRuleSave').addEventListener('click', function () {
+      if (!ruleEditing) { return; }
+      if (!byId('rfDescription').textContent.trim()) { message('rfRuleMessage', '请填写活动规则。'); return; }
+      try {
+        var record = collectRecord();
+        // The entry is disabled during activity editing, so the remaining fields are saved values.
+        record.description = sanitizeDescription(byId('rfDescription').innerHTML);
+        record.descriptionFormat = 'html';
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(record));
+        byId('rfDescription').innerHTML = record.description;
+        initialState.description = record.description;
+        ruleSnapshot = record.description;
+        setRuleEditing(false);
+        closeModal();
+        message('rfFormMessage', '规则文本已保存。', true);
+      } catch (error) { message('rfRuleMessage', '保存失败，浏览器存储不可用或空间不足，请重试。'); }
+    });
+    byId('rfCancel').addEventListener('click', function () {
+      fields.forEach(function (name, index) { byId('rf' + name).value = initialState.fields[index]; });
+      byId('rfLongTerm').checked = initialState.longTerm;
+      all('input[name="activityRewardTarget2"]', form).forEach(function (input) { input.checked = input.value === initialState.target; });
+      tiers = JSON.parse(JSON.stringify(initialState.tiers));
+      byId('rfDescription').innerHTML = initialState.description;
+      syncLongTerm(); renderTiers();
+      message('rfTierTableMessage', '');
+      message('rfFormMessage', '已取消修改，恢复上次保存的配置。', true);
+      setEditing(false);
+      if (editButton) { editButton.focus(); }
+    });
   }
   if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
 })();

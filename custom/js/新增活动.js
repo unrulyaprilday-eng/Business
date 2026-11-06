@@ -2,7 +2,6 @@
   var TEMPLATE_TO_STATE = {
     "\u6253\u7801\u8fd4\u6c34": 0,
     "\u62fc\u591a\u591a": 1,
-    "\u6551\u6d4e\u91d1": 2,
     "\u5206\u4eab\u6d3b\u52a8": 3,
     "\u81ea\u5b9a\u4e49\u6d3b\u52a8": 4,
     "\u8fde\u7eed\u6311\u6218": 5,

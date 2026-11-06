@@ -6,7 +6,7 @@ const fs = require('fs');
 const vm = require('vm');
 const path = require('path');
 const root = path.resolve(__dirname, '..');
-const html = fs.readFileSync(path.join(root, '新增活动.html'), 'utf8');
+const html = fs.readFileSync(path.join(root, '救济金.html'), 'utf8');
 const script = fs.readFileSync(path.join(root, 'custom/js/relief-fund-activity.js'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'custom/css/relief-fund-activity.css'), 'utf8');
 new vm.Script(script);
@@ -15,7 +15,7 @@ for (const text of [html, script, css]) { assert(!/\?{3,}|\uFFFD/.test(text), 'I
 const editor = html.match(/<div id="rfDescription"[^>]*>([\s\S]*?)\n\s*<\/div>/)[1];
 const referenceTable = editor.match(/<table>[\s\S]*?<\/table>/)[0];
 assert(html.includes('id="rfDescription" class="rf-rule-editor" contenteditable="true"'));
-for (const text of ['Rules', 'Players with higher deposits and losses', 'reviewed and distributed by customer service.', 'Losses refer to your daily:', 'Losses = Game Bets - System Rewards - Game Winnings', 'Below are the participation requirements and rebate values for the rescue funds activity:', 'VIP Level', 'Rescue Fund', 'Percentage', 'Deposit', 'requirements', 'Loss Conditions', 'Maximum', 'Amount']) {
+for (const text of ['Rules', 'Players with higher deposits and losses', 'all other applications require manual review.', 'Losses refer to your daily:', 'Losses = Game Bets - System Rewards - Game Winnings', 'Below are the participation requirements and rebate values for the rescue funds activity:', 'VIP Level', 'Rescue Fund', 'Percentage', 'Deposit', 'requirements', 'Loss Conditions', 'Maximum', 'Amount']) {
   assert(editor.includes(text), 'Missing reference copy: ' + text);
 }
 const referenceRows = Array.from(referenceTable.matchAll(/<tr><td>(\d+)<\/td><td>(\d+)%<\/td><td>([^<]+)<\/td><td>([^<]+)<\/td><td>([^<]+)<\/td><\/tr>/g), match => match.slice(1));
@@ -23,6 +23,8 @@ assert.deepEqual(referenceRows, [0, 1, 2, 3, 4, 5, 6].map(vip => [String(vip), v
 
 assert(!html.includes('id="rfTierModal"'), 'Tier editing must not open a modal');
 assert(!script.includes('openTier('));
+assert(!/id="rf(?:Name|Title|Sort)"/.test(html), 'Removed activity identity and sort fields');
+assert(html.indexOf('id="rfDescription"') > html.indexOf('id="rfPreviewModal"'), 'Rule editor lives only inside modal');
 assert(html.indexOf('id="rfAddTier"') > html.indexOf('id="rfTierRows"'), 'Add button belongs below the rows');
 
 const nodes = new Map();
@@ -82,10 +84,20 @@ const context = {
   window: { localStorage: { getItem() { return stored; }, setItem() { storageWrites += 1; } } }
 };
 const marker = "  if (document.readyState === 'loading')";
-const expose = "  globalThis.probe = { set(items) { tiers = items; }, get() { return tiers; }, ranges() { return tiers.map(function (tier, index) { return [tierStart(index), tier.vip]; }); }, valid: requireValidTiers, render: renderTiers, update: updateTierInput, add: addTier, remove: deleteTier, save: saveConfiguration, sync: syncRuleTable, restore: restoreRecord, syncLongTerm: syncLongTerm, original(html) { originalRuleTable = html; } };\n";
+const expose = "  globalThis.probe = { set(items) { tiers = items; }, get() { return tiers; }, ranges() { return tiers.map(function (tier, index) { return [tierStart(index), tier.vip]; }); }, valid: requireValidTiers, render: renderTiers, update: updateTierInput, add: addTier, remove: deleteTier, save: saveConfiguration, sync: syncRuleTable, restore: restoreRecord, syncLongTerm: syncLongTerm, preview: previewRules, editRules: setRuleEditing, close: closeModal, original(html) { originalRuleTable = html; } };\n";
 assert(script.includes(marker));
 vm.runInNewContext(script.replace(marker, expose + marker), context);
 const probe = context.probe;
+node('rfPreviewModal').id = 'rfPreviewModal';
+node('rfDescription').innerHTML = '<p>Saved rules</p>';
+probe.preview(node('rfPreviewRules'));
+assert.equal(node('rfRuleFields').disabled, false, 'Rule configuration opens directly in edit mode');
+probe.editRules(true);
+assert.equal(node('rfRuleFields').disabled, false);
+node('rfDescription').innerHTML = '<p>Unsaved rules</p>';
+probe.close();
+assert.equal(node('rfDescription').innerHTML, '<p>Saved rules</p>', 'Close rolls back unsaved rule text');
+assert.equal(node('rfRuleFields').disabled, true);
 const clone = value => JSON.parse(JSON.stringify(value));
 const base = [0, 2, 4, 15].map((vip, index) => ({ vip, deposit: index ? 50000 : 20000, loss: index ? 50000 : 20000, rate: [2, 2, 3, 4][index], cap: 88990000 }));
 function edit(index, key, value) { const input = rows[index].inputs[key]; input.value = String(value); probe.update({ target: input }); }
@@ -150,7 +162,7 @@ assert.equal(probe.get().length, 16); assert.equal(node('rfAddTier').disabled, t
 probe.original(referenceTable);
 stored = JSON.stringify({ version: 1, name: 'Saved draft', tiers: [0, 1, 2, 3, 4, 5].map(vip => ({ ...base[Math.min(vip, 3)], vip })), description: 'Existing English rules', details: [] });
 probe.restore();
-assert.equal(node('rfName').value, 'Saved draft'); assert(probe.valid());
+assert(probe.valid());
 assert.equal(probe.get()[probe.get().length - 1].vip, 15);
 assert(node('rfDescription').innerHTML.includes('Existing English rules'));
 assert(node('rfDescription').innerHTML.includes('88.99M'));

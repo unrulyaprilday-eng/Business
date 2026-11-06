@@ -8,9 +8,6 @@
   var original = null;
   var invalidEdit = false;
   var cycles = { daily: { enabled: true, tiers: [] }, weekly: { enabled: false, tiers: [] }, monthly: { enabled: false, tiers: [] } };
-  var activeCycle = 'daily';
-  var editing = null;
-  var returnFocus = null;
   var imageState = { Banner: { source: '', busy: false, version: 0 }, Detail: { source: '', busy: false, version: 0 } };
 
   function byId(id) { return document.getElementById(id); }
@@ -30,12 +27,6 @@
     var fraction = String(cents % 100).padStart(2, '0').replace(/0+$/, '');
     return String(Math.floor(cents / 100)) + (fraction ? '.' + fraction : '');
   }
-  function formatAmount(value) {
-    var cents = amountCents(value);
-    if (cents === null) { return '—'; }
-    var parts = money(cents).split('.');
-    return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',') + (parts[1] ? '.' + parts[1] : '');
-  }
   function sortedTiers(tiers) { return tiers.slice().sort(function (a, b) { return amountCents(a.amount) - amountCents(b.amount); }); }
   function validateTier(tier, tiers, excludeId) {
     var amount = amountCents(tier.amount);
@@ -50,91 +41,86 @@
     if (!Array.isArray(records) || records.some(function (item) { return !item || typeof item.id !== 'string' || !item.id; })) { throw new Error('Invalid special-pack storage'); }
     return records;
   }
-  function selectCycle(key, focus) {
-    if (CYCLES.indexOf(key) < 0) { return; }
-    activeCycle = key;
-    all('[data-sp-tab]').forEach(function (tab) {
-      var selected = tab.getAttribute('data-sp-tab') === key;
-      tab.setAttribute('aria-selected', String(selected));
-      tab.tabIndex = selected ? 0 : -1;
-      if (selected && focus) { tab.focus(); }
+  function tierFieldError(key, tier, field) {
+    var value = amountCents(tier[field]);
+    if (value === null) { return '必填，须大于 0，最多 2 位小数'; }
+    if (field === 'amount' && cycles[key].tiers.some(function (item) { return item.id !== tier.id && amountCents(item.amount) === value; })) { return '同类型礼包金额不可重复'; }
+    if (field === 'price' && amountCents(tier.amount) !== null && value >= amountCents(tier.amount)) { return '折后售价须小于礼包金额'; }
+    return '';
+  }
+  function syncTierErrors(key) {
+    var body = document.querySelector('[data-sp-rows="' + key + '"]');
+    all('[data-sp-tier-id]', body).forEach(function (row) {
+      var tier = cycles[key].tiers.find(function (item) { return item.id === row.getAttribute('data-sp-tier-id'); });
+      var invalid = false;
+      ['amount', 'price'].forEach(function (field) {
+        var input = row.querySelector('[data-sp-field="' + field + '"]');
+        var note = row.querySelector('[data-sp-field-error="' + field + '"]');
+        var error = tierFieldError(key, tier, field);
+        input.setAttribute('aria-invalid', String(Boolean(error)));
+        note.textContent = error; note.hidden = !error;
+        invalid = invalid || Boolean(error);
+      });
+      row.classList.toggle('sp-tier-invalid', invalid);
     });
-    all('[data-sp-panel]').forEach(function (panel) { panel.hidden = panel.getAttribute('data-sp-panel') !== key; });
+  }
+  function createTierRow(key, tier, index) {
+    var row = document.createElement('tr');
+    row.setAttribute('data-sp-tier-id', tier.id);
+    var numberCell = document.createElement('th'), badge = document.createElement('span');
+    numberCell.setAttribute('scope', 'row'); badge.className = 'sp-tier-badge'; badge.textContent = '第' + (index + 1) + '档';
+    numberCell.appendChild(badge); row.appendChild(numberCell);
+    ['amount', 'price'].forEach(function (field) {
+      var cell = document.createElement('td'), input = document.createElement('input'), note = document.createElement('small');
+      input.type = 'number'; input.min = '0.01'; input.step = '0.01'; input.value = tier[field];
+      input.className = 'sp-tier-input'; input.placeholder = '必填';
+      input.setAttribute('aria-required', 'true');
+      input.setAttribute('aria-label', LABELS[key] + '第' + (index + 1) + '档' + (field === 'amount' ? '礼包金额' : '折后售价'));
+      input.setAttribute('data-sp-field', field);
+      note.id = 'sp-error-' + key + '-' + tier.id + '-' + field;
+      note.className = 'sp-field-error'; note.setAttribute('data-sp-field-error', field); note.hidden = true;
+      input.setAttribute('aria-describedby', note.id);
+      input.addEventListener('input', function () { tier[field] = input.value; syncTierErrors(key); clearError(); });
+      cell.appendChild(input); cell.appendChild(note); row.appendChild(cell);
+    });
+    var status = document.createElement('td'), label = document.createElement('label'), enabled = document.createElement('input');
+    label.className = 'sp-check'; enabled.type = 'checkbox'; enabled.checked = tier.enabled;
+    enabled.setAttribute('aria-label', LABELS[key] + '第' + (index + 1) + '档启用');
+    enabled.addEventListener('change', function () { tier.enabled = enabled.checked; clearError(); });
+    label.appendChild(enabled);
+    var statusText = document.createElement('span'); statusText.textContent = '启用'; label.appendChild(statusText);
+    status.appendChild(label); row.appendChild(status);
+    var actions = document.createElement('td'), button = document.createElement('button');
+    button.type = 'button'; button.className = 'sp-delete-tier'; button.title = '删除档位';
+    button.setAttribute('data-sp-delete', key); button.setAttribute('aria-label', '删除第' + (index + 1) + '档');
+    button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M9 6V4h6v2M5 6l1 15h12l1-15M10 10v7M14 10v7"/></svg>';
+    actions.appendChild(button); row.appendChild(actions); return row;
   }
   function renderCycle(key) {
-    var cycle = cycles[key];
-    var body = document.querySelector('[data-sp-rows="' + key + '"]');
+    var cycle = cycles[key], body = document.querySelector('[data-sp-rows="' + key + '"]');
     body.textContent = '';
-    cycle.tiers = sortedTiers(cycle.tiers);
     if (!cycle.tiers.length) {
-      var emptyRow = document.createElement('tr');
-      var emptyCell = document.createElement('td');
-      emptyCell.colSpan = 4;
-      emptyCell.className = 'sp-empty';
-      emptyCell.textContent = '暂无档位，请新增' + LABELS[key] + '档位。';
-      emptyRow.appendChild(emptyCell); body.appendChild(emptyRow);
+      var row = document.createElement('tr'), cell = document.createElement('td');
+      cell.colSpan = 5; cell.className = 'sp-empty'; cell.textContent = '暂无档位，请点击下方添加档位。';
+      row.appendChild(cell); body.appendChild(row);
     }
-    cycle.tiers.forEach(function (tier) {
-      var row = document.createElement('tr');
-      row.setAttribute('data-sp-tier-id', tier.id);
-      [formatAmount(tier.amount), formatAmount(tier.price)].forEach(function (text) {
-        var cell = document.createElement('td'); cell.textContent = text; row.appendChild(cell);
-      });
-      var status = document.createElement('td');
-      var tag = document.createElement('span');
-      tag.className = 'sp-tag' + (tier.enabled ? '' : ' is-disabled'); tag.textContent = tier.enabled ? '启用' : '停用'; status.appendChild(tag); row.appendChild(status);
-      var actions = document.createElement('td');
-      ['edit', 'delete'].forEach(function (action) {
-        var button = document.createElement('button');
-        button.type = 'button'; button.className = 'sp-link' + (action === 'delete' ? ' sp-danger' : '');
-        button.setAttribute('data-sp-' + action, key); button.textContent = action === 'edit' ? '编辑' : '删除'; actions.appendChild(button);
-      });
-      row.appendChild(actions); body.appendChild(row);
-    });
-    var statusText = document.querySelector('[data-sp-status="' + key + '"]');
-    statusText.textContent = cycle.enabled ? '已开启' : '未开启';
-    statusText.setAttribute('data-enabled', String(cycle.enabled));
+    cycle.tiers.forEach(function (tier, index) { body.appendChild(createTierRow(key, tier, index)); });
+    var status = document.querySelector('[data-sp-status="' + key + '"]');
+    status.textContent = cycle.enabled ? '已开启' : '未开启'; status.setAttribute('data-enabled', String(cycle.enabled));
     document.querySelector('[data-sp-enabled="' + key + '"]').checked = cycle.enabled;
+    syncTierErrors(key);
   }
-  function syncPreview() {
-    var amount = formatAmount(byId('specialPackTierAmount').value);
-    byId('specialPackPreviewAmount').textContent = amount;
-    byId('specialPackPreviewOriginal').textContent = amount;
-    byId('specialPackPreviewPrice').textContent = formatAmount(byId('specialPackTierPrice').value);
+  function focusTier(key, id) {
+    var body = document.querySelector('[data-sp-rows="' + key + '"]');
+    var row = all('[data-sp-tier-id]', body).find(function (item) { return item.getAttribute('data-sp-tier-id') === id; });
+    if (row) { (row.querySelector('[aria-invalid="true"]') || row.querySelector('[data-sp-field="amount"]')).focus(); }
   }
-  function openTier(key, id, trigger) {
-    var tier = id ? cycles[key].tiers.find(function (item) { return item.id === id; }) : null;
-    if (id && !tier) { return; }
-    editing = { cycle: key, id: id || null };
-    returnFocus = trigger;
-    byId('specialPackTierModalTitle').textContent = (tier ? '编辑档位 · ' : '新增档位 · ') + LABELS[key];
-    byId('specialPackTierAmount').value = tier ? tier.amount : '';
-    byId('specialPackTierPrice').value = tier ? tier.price : '';
-    byId('specialPackTierEnabled').checked = tier ? tier.enabled : true;
-    message('specialPackTierError', ''); syncPreview();
-    byId('specialPackTierModal').hidden = false; byId('base').inert = true;
-    byId('specialPackTierAmount').focus();
+  function addTier(key) {
+    var tier = { id: uid('pack-tier'), amount: '', price: '', enabled: true };
+    cycles[key].tiers.push(tier); renderCycle(key); focusTier(key, tier.id);
   }
-  function closeTier() {
-    byId('specialPackTierModal').hidden = true; byId('base').inert = false; editing = null;
-    if (returnFocus && returnFocus.isConnected) { returnFocus.focus(); }
-    else { document.querySelector('[data-sp-add="' + activeCycle + '"]').focus(); }
-    returnFocus = null;
-  }
-  function confirmTier(event) {
-    event.preventDefault();
-    if (!editing) { return; }
-    var tier = { id: editing.id || uid('pack-tier'), amount: byId('specialPackTierAmount').value, price: byId('specialPackTierPrice').value, enabled: byId('specialPackTierEnabled').checked };
-    var cycle = cycles[editing.cycle];
-    var error = validateTier(tier, cycle.tiers, editing.id);
-    if (error) { message('specialPackTierError', error); return; }
-    tier.amount = money(amountCents(tier.amount)); tier.price = money(amountCents(tier.price));
-    if (editing.id) {
-      var index = cycle.tiers.findIndex(function (item) { return item.id === editing.id; });
-      if (index < 0) { message('specialPackTierError', '该档位已不存在，请关闭后重试。'); return; }
-      cycle.tiers[index] = tier;
-    } else { cycle.tiers.push(tier); }
-    renderCycle(editing.cycle); closeTier(); clearError();
+  function collectCycles() {
+    return JSON.parse(JSON.stringify(cycles));
   }
   function sanitizeDescription(html) {
     var template = document.createElement('template');
@@ -164,7 +150,7 @@
       sort: byId('specialPackSort').value, enabled: byId('specialPackEnabled').checked, wagerMultiple: byId('specialPackWagerMultiple').value,
       rewardTarget: target ? target.value : '余额', currency: 'merchant',
       sameIpOnce: byId('specialPackSameIpOnce').checked, sameWithdrawalAccountOnce: byId('specialPackWithdrawalAccountOnce').checked,
-      cycles: JSON.parse(JSON.stringify(cycles)),
+      cycles: collectCycles(),
       bannerImage: imageState.Banner.source, detailImage: imageState.Detail.source, descriptionHtml: sanitizeDescription(byId('specialPackDescription').innerHTML)
     };
   }
@@ -199,13 +185,25 @@
   }
   function saveActivity() {
     if (invalidEdit) { return fail('未能载入原活动，请返回活动列表后重新打开。'); }
-    if (editing) { return; }
     if (imageState.Banner.busy || imageState.Detail.busy) { return fail('图片正在读取，请稍后保存。'); }
     if (!byId('specialPackForm').reportValidity()) { return; }
     var record = collectRecord();
     var error = validateRecord(record);
-    if (error) { return fail(error); }
-    CYCLES.forEach(function (key) { record.cycles[key].tiers = sortedTiers(record.cycles[key].tiers); });
+    if (error) {
+      for (var c = 0; c < CYCLES.length; c++) {
+        var key = CYCLES[c];
+        var invalid = cycles[key].tiers.find(function (tier) {
+          return Boolean(validateTier(tier, cycles[key].tiers, tier.id));
+        });
+        if (invalid) { syncTierErrors(key); focusTier(key, invalid.id); break; }
+      }
+      return fail(error);
+    }
+    CYCLES.forEach(function (key) {
+      record.cycles[key].tiers = sortedTiers(record.cycles[key].tiers).map(function (tier) {
+        return { id: tier.id, amount: money(amountCents(tier.amount)), price: money(amountCents(tier.price)), enabled: tier.enabled };
+      });
+    });
     try {
       var records = getRecords();
       var index = records.findIndex(function (item) { return item.id === record.id; });
@@ -258,7 +256,7 @@
     all('input[name="specialPackRewardTarget"]').forEach(function (input) { input.checked = input.value === (original.rewardTarget || '余额'); });
     byId('specialPackEndTime').dataset.longTermFallback = original.endTimeFallback || original.endTime || '';
     cycles = JSON.parse(JSON.stringify(original.cycles));
-    activeCycle = CYCLES.find(function (key) { return cycles[key].enabled; }) || 'daily';
+    CYCLES.forEach(function (key) { cycles[key].tiers = sortedTiers(cycles[key].tiers); });
     ['Banner', 'Detail'].forEach(function (kind) {
       var source = original[kind === 'Banner' ? 'bannerImage' : 'detailImage'];
       if (typeof source === 'string' && /^data:image\/(png|jpeg|webp);base64,[a-z0-9+/=]+$/i.test(source)) { setImage(kind, source); }
@@ -267,9 +265,9 @@
   }
   function ready() {
     var form = byId('specialPackForm');
-    if (!form || form.getAttribute('data-sp-bound') === 'true' || !byId('specialPackTierModal')) { return; }
+    if (!form || form.getAttribute('data-sp-bound') === 'true') { return; }
     form.setAttribute('data-sp-bound', 'true');
-    loadActivity(); syncLongTerm(); CYCLES.forEach(renderCycle); selectCycle(activeCycle);
+    loadActivity(); syncLongTerm(); CYCLES.forEach(renderCycle);
     byId('specialPackEnabledText').textContent = byId('specialPackEnabled').checked ? '开启' : '关闭';
     byId('specialPackLongTerm').addEventListener('change', syncLongTerm);
     byId('specialPackEnabled').addEventListener('change', function () { byId('specialPackEnabledText').textContent = this.checked ? '开启' : '关闭'; });
@@ -282,29 +280,14 @@
     form.addEventListener('click', function (event) {
       var button = event.target.closest('button');
       if (!button) { return; }
-      if (button.hasAttribute('data-sp-tab')) { selectCycle(button.getAttribute('data-sp-tab')); }
-      if (button.hasAttribute('data-sp-add')) { openTier(button.getAttribute('data-sp-add'), null, button); }
-      if (button.hasAttribute('data-sp-edit')) { openTier(button.getAttribute('data-sp-edit'), button.closest('tr').getAttribute('data-sp-tier-id'), button); }
+      if (button.hasAttribute('data-sp-add')) { addTier(button.getAttribute('data-sp-add')); }
       if (button.hasAttribute('data-sp-delete')) {
         var key = button.getAttribute('data-sp-delete'), id = button.closest('tr').getAttribute('data-sp-tier-id');
-        var tier = cycles[key].tiers.find(function (item) { return item.id === id; });
-        if (tier && window.confirm('确认删除' + LABELS[key] + '中礼包金额为 ' + formatAmount(tier.amount) + ' 的档位？')) {
-          cycles[key].tiers = cycles[key].tiers.filter(function (item) { return item.id !== id; }); renderCycle(key); clearError();
-          document.querySelector('[data-sp-add="' + key + '"]').focus();
-        }
+        cycles[key].tiers = cycles[key].tiers.filter(function (tier) { return tier.id !== id; });
+        renderCycle(key); clearError(); document.querySelector('[data-sp-add="' + key + '"]').focus();
       }
       if (button.hasAttribute('data-sp-upload')) { byId('specialPack' + button.getAttribute('data-sp-upload') + 'File').click(); }
       if (button.hasAttribute('data-sp-remove-image')) { var kind = button.getAttribute('data-sp-remove-image'); imageState[kind].version++; imageState[kind].busy = false; setImage(kind, ''); }
-    });
-    all('[data-sp-tab]').forEach(function (tab) {
-      tab.addEventListener('keydown', function (event) {
-        var index = CYCLES.indexOf(activeCycle);
-        if (event.key === 'ArrowRight') { index = (index + 1) % 3; }
-        else if (event.key === 'ArrowLeft') { index = (index + 2) % 3; }
-        else if (event.key === 'Home') { index = 0; }
-        else if (event.key === 'End') { index = 2; } else { return; }
-        event.preventDefault(); selectCycle(CYCLES[index], true);
-      });
     });
     ['Banner', 'Detail'].forEach(function (kind) {
       var input = byId('specialPack' + kind + 'File');
@@ -316,16 +299,6 @@
     });
     byId('specialPackDescription').addEventListener('paste', function (event) {
       event.preventDefault(); if (event.clipboardData) { document.execCommand('insertText', false, event.clipboardData.getData('text/plain')); }
-    });
-    byId('specialPackTierForm').addEventListener('input', function () { message('specialPackTierError', ''); syncPreview(); });
-    byId('specialPackTierForm').addEventListener('submit', confirmTier);
-    all('[data-sp-close]').forEach(function (button) { button.addEventListener('click', closeTier); });
-    byId('specialPackTierModal').addEventListener('keydown', function (event) {
-      if (event.key === 'Escape') { event.preventDefault(); closeTier(); }
-      if (event.key !== 'Tab') { return; }
-      var focusable = all('button:not([disabled]), input:not([disabled])', this), first = focusable[0], last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
     });
     ['u4', 'u5', 'u1'].forEach(function (id, index) {
       var button = byId(id); if (!button) { return; }
