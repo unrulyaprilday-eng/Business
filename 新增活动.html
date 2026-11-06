@@ -14,6 +14,7 @@
     <link href="custom/css/reward-wheel-activity.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/flash-rebate-activity.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/relief-fund-activity.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/special-pack-activity.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/new-activity-layout.css" type="text/css" rel="stylesheet"/>
     <link href="https://demo.axureux.com/fontawesome/5.7.2/pro/css/all.min.css" type="text/css" rel="stylesheet" media="print" onload="this.media='all'"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
@@ -25926,6 +25927,60 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
           </div>
         </div>
 
+        <div id="u6_state12" class="panel_state" data-label="特惠礼包" style="visibility: hidden; display: none;" aria-hidden="true">
+          <div id="u6_state12_content" class="panel_state_content">
+            <form id="specialPackForm" class="sp-form" novalidate>
+              <p id="specialPackError" class="sp-error" role="alert" hidden></p>
+              <section class="sp-section">
+                <h3>基础配置</h3>
+                <div class="sp-grid">
+                  <label class="sp-field sp-required"><span>活动名称</span><input id="specialPackName" maxlength="40" placeholder="请输入活动名称" required></label>
+                  <label class="sp-field sp-required"><span>活动标题</span><input id="specialPackTitle" maxlength="60" placeholder="请输入活动标题" required></label>
+                  <div class="sp-field sp-wide sp-required"><span>活动时间</span><div class="sp-time"><input id="specialPackStartTime" type="datetime-local" required aria-label="活动开始时间"><em>至</em><input id="specialPackEndTime" type="datetime-local" required aria-label="活动结束时间"><label class="sp-check"><input id="specialPackLongTerm" type="checkbox">长期有效</label></div></div>
+                  <label class="sp-field sp-required"><span>打码倍数</span><input id="specialPackWagerMultiple" type="number" min="0" step="0.01" value="1" required></label>
+                  <div class="sp-field"><span id="specialPackTargetLabel">金额目标</span><div class="sp-options" role="radiogroup" aria-labelledby="specialPackTargetLabel"><label><input type="radio" name="specialPackRewardTarget" value="余额" checked>余额</label><label><input type="radio" name="specialPackRewardTarget" value="存钱罐">存钱罐</label></div></div>
+                  <label class="sp-field"><span>活动排序</span><input id="specialPackSort" type="number" min="0" step="1" value="0" required></label>
+                  <div class="sp-field"><span>启用状态</span><label class="sp-check"><input id="specialPackEnabled" type="checkbox" checked><b id="specialPackEnabledText">开启</b></label></div>
+                  <div class="sp-field"><span>同 IP 限制</span><label class="sp-check"><input id="specialPackSameIpOnce" type="checkbox">每档每周期限购 1 次</label></div>
+                  <div class="sp-field"><span>同提现账户</span><label class="sp-check"><input id="specialPackWithdrawalAccountOnce" type="checkbox">每档每周期限购 1 次</label></div>
+                </div>
+              </section>
+              <section class="sp-section">
+                <h3>礼包配置</h3>
+                <p class="sp-hint">各类型独立开启，前台仅展示已开启类型；各档按礼包金额从小到大展示，同一类型的礼包金额不可重复。金额跟随商户金币，最多保留 2 位小数。</p>
+                <div class="sp-tabs" role="tablist" aria-label="礼包类型">
+                  <button id="specialPackTabDaily" class="sp-tab" type="button" role="tab" aria-selected="true" aria-controls="specialPackPanelDaily" data-sp-tab="daily">每日礼包 <span data-sp-status="daily">已开启</span></button>
+                  <button id="specialPackTabWeekly" class="sp-tab" type="button" role="tab" aria-selected="false" aria-controls="specialPackPanelWeekly" tabindex="-1" data-sp-tab="weekly">每周礼包 <span data-sp-status="weekly">未开启</span></button>
+                  <button id="specialPackTabMonthly" class="sp-tab" type="button" role="tab" aria-selected="false" aria-controls="specialPackPanelMonthly" tabindex="-1" data-sp-tab="monthly">每月礼包 <span data-sp-status="monthly">未开启</span></button>
+                </div>
+                <section id="specialPackPanelDaily" class="sp-cycle" role="tabpanel" aria-labelledby="specialPackTabDaily" data-sp-panel="daily">
+                  <div class="sp-toolbar"><label class="sp-check"><input type="checkbox" data-sp-enabled="daily" checked>开启每日礼包</label><button class="sp-button sp-primary" type="button" data-sp-add="daily">+ 新增档位</button></div>
+                  <p class="sp-hint">每人每档每日限购 1 次，次日重置；关闭类型会保留已配置档位。</p>
+                  <div class="sp-table-wrap"><table class="sp-table"><thead><tr><th scope="col">礼包金额</th><th scope="col">折后售价</th><th scope="col">状态</th><th scope="col">操作</th></tr></thead><tbody data-sp-rows="daily"><tr><td class="sp-empty" colspan="4">暂无档位，请新增每日礼包档位。</td></tr></tbody></table></div>
+                </section>
+                <section id="specialPackPanelWeekly" class="sp-cycle" role="tabpanel" aria-labelledby="specialPackTabWeekly" data-sp-panel="weekly" hidden>
+                  <div class="sp-toolbar"><label class="sp-check"><input type="checkbox" data-sp-enabled="weekly">开启每周礼包</label><button class="sp-button sp-primary" type="button" data-sp-add="weekly">+ 新增档位</button></div>
+                  <p class="sp-hint">每人每档每周限购 1 次，下周重置；关闭类型会保留已配置档位。</p>
+                  <div class="sp-table-wrap"><table class="sp-table"><thead><tr><th scope="col">礼包金额</th><th scope="col">折后售价</th><th scope="col">状态</th><th scope="col">操作</th></tr></thead><tbody data-sp-rows="weekly"><tr><td class="sp-empty" colspan="4">暂无档位，请新增每周礼包档位。</td></tr></tbody></table></div>
+                </section>
+                <section id="specialPackPanelMonthly" class="sp-cycle" role="tabpanel" aria-labelledby="specialPackTabMonthly" data-sp-panel="monthly" hidden>
+                  <div class="sp-toolbar"><label class="sp-check"><input type="checkbox" data-sp-enabled="monthly">开启每月礼包</label><button class="sp-button sp-primary" type="button" data-sp-add="monthly">+ 新增档位</button></div>
+                  <p class="sp-hint">每人每档每月限购 1 次，下月重置；关闭类型会保留已配置档位。</p>
+                  <div class="sp-table-wrap"><table class="sp-table"><thead><tr><th scope="col">礼包金额</th><th scope="col">折后售价</th><th scope="col">状态</th><th scope="col">操作</th></tr></thead><tbody data-sp-rows="monthly"><tr><td class="sp-empty" colspan="4">暂无档位，请新增每月礼包档位。</td></tr></tbody></table></div>
+                </section>
+              </section>
+              <section class="sp-section">
+                <h3>通用配置</h3>
+                <div class="sp-grid">
+                  <div class="sp-upload"><span>活动 Banner</span><div><input id="specialPackBannerFile" type="file" accept="image/png,image/jpeg,image/webp" hidden><button class="sp-upload-button" type="button" data-sp-upload="Banner">+ 点击上传 Banner</button><img id="specialPackBannerPreview" alt="活动 Banner 预览" hidden><button class="sp-link" type="button" data-sp-remove-image="Banner" hidden>移除图片</button><p class="sp-hint">建议尺寸 800 × 400，支持 JPG、PNG、WebP，最大 500KB。</p></div></div>
+                  <div class="sp-upload"><span>活动内页图</span><div><input id="specialPackDetailFile" type="file" accept="image/png,image/jpeg,image/webp" hidden><button class="sp-upload-button" type="button" data-sp-upload="Detail">+ 点击上传内页图</button><img id="specialPackDetailPreview" alt="活动内页图预览" hidden><button class="sp-link" type="button" data-sp-remove-image="Detail" hidden>移除图片</button><p class="sp-hint">支持 JPG、PNG、WebP，最大 1MB。</p></div></div>
+                  <div class="sp-field sp-wide sp-description-field"><span id="specialPackDescriptionLabel">活动文本</span><div class="sp-editor"><div class="sp-editor-toolbar" role="toolbar" aria-label="活动文本格式"><button type="button" data-sp-command="bold" title="加粗"><b>B</b></button><button type="button" data-sp-command="italic" title="斜体"><i>I</i></button><button type="button" data-sp-command="underline" title="下划线"><u>U</u></button><button type="button" data-sp-command="insertUnorderedList" title="项目符号列表">•</button><button type="button" data-sp-command="insertOrderedList" title="编号列表">1.</button><button type="button" data-sp-command="undo" title="撤销">↶</button><button type="button" data-sp-command="redo" title="重做">↷</button></div><div id="specialPackDescription" class="sp-editor-body" contenteditable="true" role="textbox" aria-labelledby="specialPackDescriptionLabel" aria-multiline="true"><ol><li>以优惠售价购买特惠礼包，获得对应礼包金额。</li><li>每种类型下的每档礼包，每人每周期限购一次。</li><li>每日、每周、每月礼包分别于次日、下周、下月重置购买次数。</li></ol></div></div></div>
+                </div>
+              </section>
+            </form>
+          </div>
+        </div>
+
       </div>
 
       <!-- Unnamed (矩形) -->
@@ -25948,6 +26003,7 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
           <option class="u3012_input_option" value="签到奖励">签到奖励</option>
           <option class="u3012_input_option" value="月签到活动">月签到</option>
           <option class="u3012_input_option" value="周卡">周卡</option>
+          <option class="u3012_input_option" value="特惠礼包">特惠礼包</option>
           <option class="u3012_input_option" value="打码返水">打码返水</option>
           <option class="u3012_input_option" value="优惠券赠送">优惠券赠送</option>
           <option class="u3012_input_option" value="会员礼包">会员礼包</option>
@@ -25990,12 +26046,29 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
       </section>
     </div>
     <script src="custom/js/og-shared-data.js"></script>
+    <div id="specialPackTierModal" class="sp-modal-layer" hidden>
+      <section class="sp-modal" role="dialog" aria-modal="true" aria-labelledby="specialPackTierModalTitle">
+        <header><h3 id="specialPackTierModalTitle">新增礼包档位</h3><button class="sp-modal-close" type="button" data-sp-close aria-label="关闭">×</button></header>
+        <form id="specialPackTierForm" novalidate>
+          <div class="sp-modal-body">
+            <p id="specialPackTierError" class="sp-error" role="alert" hidden></p>
+            <label class="sp-field sp-required"><span>礼包金额</span><input id="specialPackTierAmount" type="number" min="0.01" step="0.01" placeholder="请输入礼包金额" required></label>
+            <label class="sp-field sp-required"><span>折后售价</span><input id="specialPackTierPrice" type="number" min="0.01" step="0.01" placeholder="请输入折后售价" required></label>
+            <div class="sp-field"><span>状态</span><label class="sp-check"><input id="specialPackTierEnabled" type="checkbox" checked>启用</label></div>
+            <p class="sp-hint">礼包金额作为划线原价，折后售价须小于礼包金额。</p>
+            <div class="sp-preview" aria-label="金额展示预览"><span>礼包金额 <strong id="specialPackPreviewAmount">—</strong></span><span>售价 <strong id="specialPackPreviewPrice">—</strong> <del id="specialPackPreviewOriginal">—</del></span></div>
+          </div>
+          <footer><button class="sp-button" type="button" data-sp-close>取消</button><button class="sp-button sp-primary" type="submit">确定</button></footer>
+        </form>
+      </section>
+    </div>
     <script src="custom/js/新增活动.js"></script>
     <script src="custom/js/recharge-gift-activity.js"></script>
     <script src="custom/js/weekly-card-activity.js"></script>
     <script src="custom/js/lucky-wheel-activity.js"></script>
     <script src="custom/js/flash-rebate-activity.js"></script>
     <script src="custom/js/relief-fund-activity.js"></script>
+    <script src="custom/js/special-pack-activity.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
   </body>
 </html>

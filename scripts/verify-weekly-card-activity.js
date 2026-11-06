@@ -182,6 +182,10 @@ const panel = Object.assign(control(), { id: 'u6', children: states });
 const classes = new Set();
 const coreWindow = { location: { search: '' } };
 const coreDocument = { readyState: 'loading', addEventListener() {}, querySelector() { return null; }, getElementById(id) { return id === 'u6' ? panel : null; }, body: { classList: { toggle(name, active) { if (active) classes.add(name); else classes.delete(name); } } } };
+Object.defineProperty(coreDocument.body, 'className', {
+  get() { return [...classes].join(' '); },
+  set(value) { classes.clear(); value.split(/\s+/).filter(Boolean).forEach(name => classes.add(name)); }
+});
 vm.runInNewContext(core.replace('  ready(function () {', '  window.testCore = { setTemplateState };\n  ready(function () {'), { window: coreWindow, document: coreDocument, URLSearchParams });
 coreWindow.testCore.setTemplateState('周卡');
 assert.equal(states[9].style.display, 'block'); assert.equal(states[7].style.display, 'none'); assert(classes.has('weekly-card-template-active'));
@@ -191,6 +195,8 @@ assert.equal(states[9].style.display, 'none'); assert.equal(states[7].style.disp
 // Run list startup and real edit/toggle/delete handlers using persisted form output.
 const stored = new Map([[key, JSON.stringify([existing])], ['promoRechargeGiftActivities', '[]']]);
 const listNodes = { promoActivityRows: control(), activityTypeFilter: control('全部类型'), searchActivitiesBtn: control(), resetActivitiesBtn: control(), createActivityBtn: control() };
+listNodes.activityTypeFilter.options = [...listHtml.matchAll(/<option[^>]*>([^<]*)<\/option>/g)].map(match => ({ textContent: match[1] }));
+listNodes.activityTypeFilter.appendChild = option => listNodes.activityTypeFilter.options.push(option);
 const body = listNodes.promoActivityRows; body.rows = [];
 body.querySelectorAll = selector => body.rows.filter(item => selector === 'tr' || item.attributes[selector.slice(1, -1)] != null);
 body.insertBefore = item => { body.rows.unshift(item); body.firstChild = body.rows[0]; };

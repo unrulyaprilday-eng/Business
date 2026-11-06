@@ -5,6 +5,7 @@
   var RECHARGE_GIFT_STORAGE_KEY = 'promoRechargeGiftActivities';
   var COUPON_TASK_STORAGE_KEY = 'promoCouponTaskActivities';
   var WEEKLY_CARD_STORAGE_KEY = 'promoWeeklyCardActivities';
+  var SPECIAL_PACK_STORAGE_KEY = 'promoSpecialPackActivities';
   var LUCKY_WHEEL_STORAGE_KEY = 'promoLuckyWheelActivities';
   var REWARD_WHEEL_STORAGE_KEY = 'promoRewardWheelActivities';
   var activeActivityType = '全部类型';
@@ -23,6 +24,71 @@
     if (paginationSpans.length) {
       paginationSpans[paginationSpans.length - 1].textContent = '共 ' + count + ' 条记录';
     }
+  }
+
+  function getSpecialPackRecords() {
+    try {
+      var records = JSON.parse(window.localStorage.getItem(SPECIAL_PACK_STORAGE_KEY) || '[]');
+      if (!Array.isArray(records) || records.some(function (record) {
+        return !record || typeof record !== 'object' || typeof record.id !== 'string' || !record.id;
+      })) { throw new Error('Invalid special pack records'); }
+      return records;
+    } catch (error) {
+      window.alert('特惠礼包活动数据读取失败，请检查浏览器本地存储后重试。');
+      return null;
+    }
+  }
+
+  function setSpecialPackRecords(records) {
+    try {
+      window.localStorage.setItem(SPECIAL_PACK_STORAGE_KEY, JSON.stringify(records));
+      return true;
+    } catch (error) {
+      window.alert('特惠礼包活动保存失败，请检查浏览器存储权限或剩余空间后重试。');
+      return false;
+    }
+  }
+
+  function renderSpecialPackRows(records) {
+    var tbody = document.getElementById('promoActivityRows');
+    if (!tbody) { return; }
+    if (!records) { records = getSpecialPackRecords(); }
+    if (!records) { return; }
+    Array.prototype.forEach.call(tbody.querySelectorAll('[data-special-pack-id]'), function (row) { row.remove(); });
+    records.slice().reverse().forEach(function (record) {
+      var row = document.createElement('tr');
+      var enabled = record.enabled !== false;
+      row.setAttribute('data-special-pack-id', record.id);
+      row.innerHTML = [
+        '<td>' + escapeHtml(record.name) + '</td>',
+        '<td>-</td>',
+        '<td title="' + escapeHtml(record.title) + '">' + escapeHtml(record.title) + '</td>',
+        '<td>特惠礼包</td>',
+        '<td>' + escapeHtml(formatRechargeGiftTime(record.startTime)) + '</td>',
+        '<td>' + (record.longTerm ? '长期有效' : escapeHtml(formatRechargeGiftTime(record.endTime))) + '</td>',
+        '<td>' + escapeHtml(record.wagerMultiple == null ? '1' : record.wagerMultiple) + '</td>',
+        '<td>-</td>',
+        '<td><button class="switch' + (enabled ? ' on' : '') + '" type="button" data-special-pack-toggle role="switch" aria-checked="' + enabled + '" aria-label="' + (enabled ? '关闭活动' : '启用活动') + '"></button></td>',
+        '<td>' + escapeHtml(record.sort == null ? '0' : record.sort) + '</td>',
+        '<td>admin</td>',
+        '<td class="actions"><button type="button" data-special-pack-edit>编辑</button><button class="danger" type="button" data-special-pack-delete>删除</button></td>'
+      ].join('');
+      tbody.insertBefore(row, tbody.firstChild);
+    });
+    applyActivityFilter();
+  }
+
+  function updateSpecialPackRecord(id) {
+    var records = getSpecialPackRecords();
+    if (!records) { return; }
+    var record = records.find(function (item) { return item.id === id; });
+    if (!record) {
+      window.alert('该特惠礼包活动已不存在，请刷新列表。');
+      renderSpecialPackRows(records);
+      return;
+    }
+    record.enabled = record.enabled === false;
+    if (setSpecialPackRecords(records)) { renderSpecialPackRows(records); }
   }
 
   function getWeeklyCardRecords() {
@@ -603,6 +669,7 @@
     renderMonthlyCheckinRows();
     renderRechargeGiftRows();
     renderWeeklyCardRows();
+    renderSpecialPackRows();
     renderLuckyWheelRows();
     renderRewardWheelRows();
     renderCouponTaskRows();
@@ -635,6 +702,7 @@
         var monthlyCheckinRow = event.target.closest('[data-monthly-checkin-id]');
         var rechargeGiftRow = event.target.closest('[data-recharge-gift-id]');
         var weeklyCardRow = event.target.closest('[data-weekly-card-id]');
+        var specialPackRow = event.target.closest('[data-special-pack-id]');
         var luckyWheelRow = event.target.closest('[data-lucky-wheel-id]');
         var rewardWheelRow = event.target.closest('[data-reward-wheel-id]');
         var couponTaskRow = event.target.closest('[data-coupon-task-id]');
@@ -651,6 +719,24 @@
           if (event.target.closest('[data-coupon-task-toggle]')) {
             updateCouponTaskRecord(id, function (record) { record.enabled = record.enabled === false; });
             return;
+          }
+          return;
+        }
+        if (specialPackRow) {
+          id = specialPackRow.getAttribute('data-special-pack-id');
+          if (event.target.closest('[data-special-pack-edit]')) {
+            window.location.href = '新增活动.html?template=' + encodeURIComponent('特惠礼包') + '&specialPackId=' + encodeURIComponent(id);
+            return;
+          }
+          if (event.target.closest('[data-special-pack-toggle]')) {
+            updateSpecialPackRecord(id);
+            return;
+          }
+          if (event.target.closest('[data-special-pack-delete]') && window.confirm('确定删除该特惠礼包活动吗？删除后不可恢复。')) {
+            var specialPackRecords = getSpecialPackRecords();
+            if (specialPackRecords && setSpecialPackRecords(specialPackRecords.filter(function (record) { return record.id !== id; }))) {
+              renderSpecialPackRows();
+            }
           }
           return;
         }
@@ -795,7 +881,7 @@
     }
 
     document.querySelectorAll('.switch').forEach(function (toggle) {
-      if (toggle.closest('[data-challenge-id], [data-red-packet-id], [data-monthly-checkin-id], [data-recharge-gift-id], [data-weekly-card-id], [data-lucky-wheel-id], [data-reward-wheel-id], [data-coupon-task-id]')) { return; }
+      if (toggle.closest('[data-challenge-id], [data-red-packet-id], [data-monthly-checkin-id], [data-recharge-gift-id], [data-weekly-card-id], [data-special-pack-id], [data-lucky-wheel-id], [data-reward-wheel-id], [data-coupon-task-id]')) { return; }
       toggle.addEventListener('click', function () { toggle.classList.toggle('on'); });
     });
   });

@@ -28,7 +28,9 @@ for (const match of html.matchAll(/<!--[\s\S]*?-->|<\/?([a-z][a-z0-9]*)\b[^>]*>/
   if (!/^(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)$/.test(tag) && !match[0].endsWith('/>')) stack.push(entry);
 }
 assert.equal(ids.get('u6_state8').parent.id, 'u6');
-assert.equal([...ids.values()].filter(item => item.parent && item.parent.id === 'u6' && /^u6_state\d+$/.test(item.id)).length, 10);
+const panelStates = [...ids.values()].filter(item => item.parent && item.parent.id === 'u6' && /^u6_state\d+$/.test(item.id));
+assert(panelStates.length >= 9, 'recharge gift state must exist alongside the original templates');
+assert.deepEqual(panelStates.map(item => item.id), panelStates.map((_, index) => 'u6_state' + index), 'template state indices must stay contiguous');
 for (const match of source.matchAll(/byId\('([^']+)'\)/g)) assert(ids.has(match[1]), 'missing form control: ' + match[1]);
 assert(!/\?{3,}|\ufffd/.test(html + source + css + listSource), 'invalid text encoding');
 assert(css.includes('appearance: none') && css.includes('[hidden]'), 'scoped controls/hidden styles');

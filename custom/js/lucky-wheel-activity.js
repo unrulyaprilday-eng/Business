@@ -322,6 +322,8 @@
     });
     select.value = source.value || "幸运转盘";
     source.addEventListener("change", function () {
+      // Other activities do not need to update this hidden form.
+      if (source.value !== "幸运转盘" && source.value !== "奖励转盘") { return; }
       select.value = source.value;
       syncRewardWheelSection();
     });

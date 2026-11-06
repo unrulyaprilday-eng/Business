@@ -12,7 +12,8 @@
     "\u5468\u5361": 9,
     "\u5e78\u8fd0\u8f6c\u76d8": 10,
     "\u5956\u52b1\u8f6c\u76d8": 10,
-    "\u6253\u7801\u8d60\u91d1": 11
+    "\u6253\u7801\u8d60\u91d1": 11,
+    "\u7279\u60e0\u793c\u5305": 12
   };
 
   var CHALLENGE_NAME_OPTIONS = [
@@ -44,7 +45,7 @@
 
   function setText(id, text) {
     var node = document.querySelector("#" + id + "_text span");
-    if (node) {
+    if (node && node.textContent !== text) {
       node.textContent = text;
     }
   }
@@ -188,20 +189,30 @@
     var isLuckyWheel = template === "\u5e78\u8fd0\u8f6c\u76d8";
     var isRewardWheel = template === "\u5956\u52b1\u8f6c\u76d8";
     var isFlashRebate = template === "\u6253\u7801\u8d60\u91d1";
+    var isSpecialPack = template === "\u7279\u60e0\u793c\u5305";
 
-    document.body.classList.toggle("relief-template-active", isRelief);
-    document.body.classList.toggle("share-template-active", isShare);
-    document.body.classList.toggle("custom-template-active", isCustom);
-    document.body.classList.toggle("challenge-template-active", isChallenge);
-    document.body.classList.toggle("red-packet-template-active", isRedPacket);
-    document.body.classList.toggle("month-checkin-template-active", isMonthlyCheckin);
-    document.body.classList.toggle("recharge-gift-template-active", isRechargeGift);
-    document.body.classList.toggle("weekly-card-template-active", isWeeklyCard);
-    document.body.classList.toggle("lucky-wheel-template-active", isLuckyWheel || isRewardWheel);
-    document.body.classList.toggle("reward-wheel-template-active", isRewardWheel);
-    document.body.classList.toggle("flash-rebate-template-active", isFlashRebate);
+    // Change the template classes together, preserving the shared frame classes.
+    var templateClasses = {
+      "relief-template-active": isRelief,
+      "share-template-active": isShare,
+      "custom-template-active": isCustom,
+      "challenge-template-active": isChallenge,
+      "red-packet-template-active": isRedPacket,
+      "month-checkin-template-active": isMonthlyCheckin,
+      "recharge-gift-template-active": isRechargeGift,
+      "weekly-card-template-active": isWeeklyCard,
+      "lucky-wheel-template-active": isLuckyWheel || isRewardWheel,
+      "reward-wheel-template-active": isRewardWheel,
+      "flash-rebate-template-active": isFlashRebate,
+      "special-pack-template-active": isSpecialPack
+    };
+    var previousClasses = document.body.className;
+    var nextClasses = previousClasses.split(/\s+/).filter(function (name) {
+      return name && !Object.prototype.hasOwnProperty.call(templateClasses, name);
+    }).concat(Object.keys(templateClasses).filter(function (name) { return templateClasses[name]; })).join(" ");
+    if (previousClasses !== nextClasses) { document.body.className = nextClasses; }
     showPanelState("u6", state);
-    syncChallengeFooter(isChallenge || isRedPacket || isMonthlyCheckin || isWeeklyCard || isLuckyWheel || isRewardWheel);
+    syncChallengeFooter(isChallenge || isRedPacket || isMonthlyCheckin || isWeeklyCard || isLuckyWheel || isRewardWheel || isSpecialPack);
   }
 
   function bindTemplateSelect(select) {
@@ -1771,6 +1782,9 @@
       }
       if (new URLSearchParams(window.location.search).has("flashRebateId")) {
         select.value = "\u6253\u7801\u8d60\u91d1";
+      }
+      if (new URLSearchParams(window.location.search).has("specialPackId") || new URLSearchParams(window.location.search).get("template") === "\u7279\u60e0\u793c\u5305") {
+        select.value = "\u7279\u60e0\u793c\u5305";
       }
       bindTemplateSelect(select);
     }
