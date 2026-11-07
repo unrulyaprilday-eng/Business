@@ -7,7 +7,7 @@
   var tiers = [];
   var activeModal = null;
   var returnFocus = null;
-  var fields = ['Start', 'End', 'Wager'];
+  var fields = ['Wager'];
   var ruleEditing = false;
   var ruleSnapshot = '';
   var tierFields = ['vip', 'deposit', 'loss', 'rate', 'cap'];
@@ -229,20 +229,12 @@
     editor.addEventListener('drop', function (event) { event.preventDefault(); });
     byId('rfSyncRuleTable').addEventListener('click', syncRuleTable);
   }
-  function syncLongTerm() {
-    var longTerm = byId('rfLongTerm').checked;
-    byId('rfEnd').disabled = longTerm;
-    byId('rfEnd').required = !longTerm;
-    message('rfFormMessage', '');
-  }
   function collectRecord() {
     var record = { version: 2, type: '救济金', currencySource: 'merchantCoins', vipMode: 'maximum', maxVip: MAX_VIP, tiers: tiers,
       rewardBasis: 'dailyLoss', lossFormula: 'gameBets-systemRewards-gameWinnings',
       qualification: 'depositAndLoss', statisticsPeriod: 'siteCalendarDay',
       applicationTiming: 'nextDay', distribution: 'approvalThenDirectCredit' };
     fields.forEach(function (name) { record[name.toLowerCase()] = byId('rf' + name).value.trim(); });
-    record.longTerm = byId('rfLongTerm').checked;
-    if (record.longTerm) { record.end = ''; }
     record.description = sanitizeDescription(byId('rfDescription').innerHTML);
     record.descriptionFormat = 'html';
     record.target = byId('reliefFundForm').querySelector('input[name="activityRewardTarget2"]:checked').value;
@@ -261,8 +253,6 @@
         var value = record[name.toLowerCase()];
         if (typeof value === 'string') { byId('rf' + name).value = value; }
       });
-      byId('rfLongTerm').checked = record.longTerm === true;
-      syncLongTerm();
       all('input[name="activityRewardTarget2"]', byId('reliefFundForm')).forEach(function (input) { input.checked = input.value === (record.target === '存钱罐' ? '存钱罐' : '余额'); });
       if (isValidTiers(restoredTiers)) { tiers = restoredTiers; }
       if (typeof record.description === 'string' && record.description.trim()) {
@@ -282,16 +272,6 @@
     if (!form.reportValidity()) { return; }
     var record = collectRecord();
     if (!byId('rfDescription').textContent.trim()) { message('rfFormMessage', '请先在规则文本配置中填写活动规则。'); return; }
-    if (!record.start) {
-      message('rfFormMessage', '请选择活动开始时间。');
-      byId('rfStart').focus();
-      return;
-    }
-    if (!record.longTerm && (!record.end || record.start >= record.end)) {
-      message('rfFormMessage', '活动结束时间必须晚于开始时间。');
-      byId('rfEnd').focus();
-      return;
-    }
     if (!isValidTiers(tiers)) { message('rfFormMessage', '请检查 VIP 档位，最大等级须递增且末档须覆盖至 VIP ' + MAX_VIP + '。'); return; }
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(record));
@@ -307,9 +287,7 @@
       return { vip: Number(row.getAttribute('data-rf-vip')), deposit: Number(row.getAttribute('data-deposit')), loss: Number(row.getAttribute('data-loss')), rate: Number(row.getAttribute('data-rate')), cap: Number(row.getAttribute('data-cap')) };
     });
     restoreRecord();
-    syncLongTerm();
     renderTiers();
-    byId('rfLongTerm').addEventListener('change', syncLongTerm);
     byId('rfAddTier').addEventListener('click', addTier);
     byId('rfTierRows').addEventListener('click', function (event) {
       var remove = event.target.closest('[data-rf-delete]');
@@ -337,7 +315,6 @@
     form.addEventListener('submit', saveConfiguration);
     var initialState = {
       fields: fields.map(function (name) { return byId('rf' + name).value; }),
-      longTerm: byId('rfLongTerm').checked,
       target: form.querySelector('input[name="activityRewardTarget2"]:checked').value,
       tiers: JSON.parse(JSON.stringify(tiers)),
       description: byId('rfDescription').innerHTML
@@ -355,12 +332,12 @@
     }
     var editButton = byId('rfEditConfig');
     if (editButton) {
-      editButton.addEventListener('click', function () { message('rfFormMessage', ''); setEditing(true); byId('rfStart').focus(); });
+      editButton.addEventListener('click', function () { message('rfFormMessage', ''); setEditing(true); byId('rfWager').focus(); });
       setEditing(false);
     }
     form.addEventListener('submit', function () {
       if (byId('rfFormMessage').classList.contains('is-success')) {
-        initialState = { fields: fields.map(function (name) { return byId('rf' + name).value; }), longTerm: byId('rfLongTerm').checked,
+        initialState = { fields: fields.map(function (name) { return byId('rf' + name).value; }),
           target: form.querySelector('input[name="activityRewardTarget2"]:checked').value,
           tiers: JSON.parse(JSON.stringify(tiers)), description: byId('rfDescription').innerHTML };
         setEditing(false);
@@ -386,11 +363,10 @@
     });
     byId('rfCancel').addEventListener('click', function () {
       fields.forEach(function (name, index) { byId('rf' + name).value = initialState.fields[index]; });
-      byId('rfLongTerm').checked = initialState.longTerm;
       all('input[name="activityRewardTarget2"]', form).forEach(function (input) { input.checked = input.value === initialState.target; });
       tiers = JSON.parse(JSON.stringify(initialState.tiers));
       byId('rfDescription').innerHTML = initialState.description;
-      syncLongTerm(); renderTiers();
+      renderTiers();
       message('rfTierTableMessage', '');
       message('rfFormMessage', '已取消修改，恢复上次保存的配置。', true);
       setEditing(false);

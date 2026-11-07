@@ -240,6 +240,13 @@ $axure.loadDocument({
             "children": []
           },
           {
+            "id": "seven_day_benefits_config",
+            "pageName": "七日福利",
+            "type": "Wireframe",
+            "url": "七日福利.html",
+            "children": []
+          },
+          {
             "id": "rebate_config",
             "pageName": "返水配置",
             "type": "Wireframe",

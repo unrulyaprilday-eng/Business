@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>七日福利</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/七日福利/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/tokens.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/components.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/七日福利.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/七日福利/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/七日福利.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell seven-day-config-page">
+        <main class="seven-day-main">
+          <header class="seven-day-head">
+            <div>
+              <div class="seven-day-breadcrumb">优惠活动 / 七日福利</div>
+              <h1>七日福利</h1>
+              <p class="seven-day-intro">玩家注册后连续 7 天参与，周期结束后未领取奖励自动失效。</p>
+              <div class="seven-day-master-row">
+                <span class="seven-day-master-label">活动总开关</span>
+                <button class="cl-switch-button is-on" type="button" role="switch" aria-label="七日福利活动总开关" aria-checked="true" data-seven-master-switch></button>
+                <span class="seven-day-status-text" data-seven-status>已开启</span>
+              </div>
+            </div>
+            <div class="seven-day-head-actions">
+              <button class="cl-btn cl-btn-primary" type="button" data-seven-edit="edit">编辑配置</button>
+            </div>
+          </header>
+
+          <section class="seven-day-overview" aria-labelledby="sevenDayOverviewTitle">
+            <div class="seven-day-section-head">
+              <div>
+                <h2 id="sevenDayOverviewTitle">周期与发放规则</h2>
+                <p>七日活动以玩家注册时间为起点，每位玩家独立计算。</p>
+              </div>
+              <span class="seven-day-readonly-tag" data-seven-readonly>已保存配置</span>
+            </div>
+            <div class="seven-day-overview-grid">
+              <label class="seven-day-field">
+                <span>活动周期</span>
+                <div class="seven-day-static-value" data-seven-field="cycle">注册后 7 日</div>
+              </label>
+              <label class="seven-day-field">
+                <span>计时方式</span>
+                <div class="seven-day-static-value" data-seven-field="timer">按注册时间起算</div>
+              </label>
+              <label class="seven-day-field">
+                <span>到期规则</span>
+                <div class="seven-day-static-value" data-seven-field="expire">第 7 日 23:59:59 后失效</div>
+              </label>
+              <label class="seven-day-field">
+                <span>奖励发放</span>
+                <div class="seven-day-static-value" data-seven-field="claim">玩家手动领取</div>
+              </label>
+            </div>
+          </section>
+
+          <section class="seven-day-modules" aria-labelledby="sevenDayModulesTitle">
+            <div class="seven-day-section-head modules-head">
+              <div>
+                <h2 id="sevenDayModulesTitle">福利模块</h2>
+                <p>各模块独立控制，关闭后不再向新注册玩家展示或累计。</p>
+              </div>
+              <span class="seven-day-module-count">5 个模块</span>
+            </div>
+            <div class="seven-day-module-grid">
+              <article class="benefit-module" data-module="depositChallenge" data-enabled="true">
+                <header class="benefit-module-head"><div class="benefit-module-title"><span class="benefit-module-index">01</span><div><h3>充值挑战</h3><p>充值后解锁多档打码目标和奖励</p></div><button class="cl-switch-button is-on" type="button" role="switch" aria-checked="true" aria-label="充值挑战开关" data-module-switch></button></div><button class="cl-btn benefit-module-head-edit" type="button" data-module-edit="depositChallenge">编辑挑战</button></header>
+                <div class="benefit-module-body"><div class="benefit-config-row"><span>解锁充值条件</span><strong data-module-value="unlock">累计充值 Rp 100,000</strong></div><div class="benefit-reward-table" data-module-table="depositChallenge"><div class="benefit-reward-row is-head"><span>打码目标</span><span>奖励</span></div><div class="benefit-reward-row"><span data-module-value="tier1Target">打码 Rp 1,000,000</span><strong data-module-value="tier1Reward">Rp 1,000</strong></div><div class="benefit-reward-row"><span data-module-value="tier2Target">打码 Rp 2,000,000</span><strong data-module-value="tier2Reward">Rp 2,000</strong></div><div class="benefit-reward-row"><span data-module-value="tier3Target">打码 Rp 5,000,000</span><strong data-module-value="tier3Reward">Rp 5,000</strong></div></div><button class="benefit-add-row" type="button" data-add-row="depositChallenge">＋ 增加档位</button><div class="module-meta"><span class="module-status enabled">启用中</span><span>解锁后累计，档位分别领取</span></div></div>
+              </article>
+
+              <article class="benefit-module" data-module="tasks" data-enabled="true">
+                <header class="benefit-module-head"><div class="benefit-module-title"><span class="benefit-module-index">02</span><div><h3>福利任务</h3><p>完成投注、充值、邀请等新手任务</p></div><button class="cl-switch-button is-on" type="button" role="switch" aria-checked="true" aria-label="福利任务开关" data-module-switch></button></div><button class="cl-btn benefit-module-head-edit" type="button" data-module-edit="tasks">编辑任务</button></header>
+                <div class="benefit-module-body">
+                  <div class="benefit-config-row"><span>币种</span><strong>IDR</strong></div>
+                  <div class="benefit-reward-table" data-module-table="tasks">
+                    <div class="benefit-reward-row is-head"><span>任务类型</span><span>目标值</span><span>奖励金额</span></div>
+                    <div class="benefit-reward-row"><span data-task-type="wager">有效打码</span><span>50000</span><strong>5000</strong></div>
+                    <div class="benefit-reward-row"><span data-task-type="deposit">充值</span><span>50000</span><strong>5000</strong></div>
+                    <div class="benefit-reward-row"><span data-task-type="login">每日登录</span><span>7</span><strong>10000</strong></div>
+                    <div class="benefit-reward-row"><span data-task-type="invite">邀请好友</span><span>1</span><strong>10000</strong></div>
+                  </div>
+                  <p class="benefit-task-error" data-task-error role="alert" id="sevenDayTaskError" hidden></p>
+                  <button class="benefit-add-row" type="button" data-add-row="tasks">＋ 增加任务</button>
+                  <div class="module-meta"><span class="module-status enabled">启用中</span><span>任务完成后手动领取</span></div>
+                </div>
+              </article>
+
+              <article class="benefit-module" data-module="checkin" data-enabled="true">
+                <header class="benefit-module-head"><div class="benefit-module-title"><span class="benefit-module-index">03</span><div><h3>七日签到</h3><p>连续登录 7 天，按天领取签到奖励</p></div><button class="cl-switch-button is-on" type="button" role="switch" aria-checked="true" aria-label="七日签到开关" data-module-switch></button></div><button class="cl-btn benefit-module-head-edit" type="button" data-module-edit="checkin">编辑奖励</button></header>
+                <div class="benefit-module-body">
+                  <div class="benefit-config-row"><span>币种</span><strong>IDR</strong></div>
+                  <div class="benefit-reward-table benefit-checkin-table" data-module-table="checkin" data-fixed-rows="7">
+                    <div class="benefit-reward-row is-head"><span>签到日</span><span>奖励金额</span></div>
+                    <div class="benefit-reward-row"><span>Day 1</span><strong data-module-value="day1">1000</strong></div>
+                    <div class="benefit-reward-row"><span>Day 2</span><strong data-module-value="day2">2000</strong></div>
+                    <div class="benefit-reward-row"><span>Day 3</span><strong data-module-value="day3">3000</strong></div>
+                    <div class="benefit-reward-row"><span>Day 4</span><strong data-module-value="day4">4000</strong></div>
+                    <div class="benefit-reward-row"><span>Day 5</span><strong data-module-value="day5">5000</strong></div>
+                    <div class="benefit-reward-row"><span>Day 6</span><strong data-module-value="day6">6000</strong></div>
+                    <div class="benefit-reward-row"><span>Day 7</span><strong data-module-value="day7">7000</strong></div>
+                  </div>
+                  <div class="module-meta"><span class="module-status enabled">启用中</span><span>固定 7 天，漏签不可补签，过期不可领取</span></div>
+                </div>
+              </article>
+
+              <article class="benefit-module" data-module="activityPack" data-enabled="true">
+                <header class="benefit-module-head"><div class="benefit-module-title"><span class="benefit-module-index">04</span><div><h3>活动礼包</h3><p>充值达标礼包与七日特惠礼包合并管理</p></div><button class="cl-switch-button is-on" type="button" role="switch" aria-checked="true" aria-label="活动礼包开关" data-module-switch></button></div><button class="cl-btn benefit-module-head-edit" type="button" data-module-edit="activityPack">编辑礼包</button></header>
+                <div class="benefit-module-body"><div class="benefit-reward-table" data-module-table="activityPack"><div class="benefit-reward-row is-head"><span>礼包类型</span><span>配置内容</span></div><div class="benefit-reward-row"><span>充值礼包</span><strong data-module-value="rechargeReward">充值 Rp 50,000，赠 Rp 20,000 + 1 张加赠券</strong></div><div class="benefit-reward-row"><span>特惠礼包</span><strong data-module-value="specialReward">售价 Rp 50,000，额外赠送 Rp 20,000（40%）</strong></div></div><button class="benefit-add-row" type="button" data-add-row="activityPack">＋ 增加礼包</button><div class="module-meta"><span class="module-status enabled">启用中</span><span>充值礼包限领 1 次，特惠礼包限购 1 次</span></div></div>
+              </article>
+
+              <article class="benefit-module" data-module="bindAccount" data-enabled="true">
+                <header class="benefit-module-head"><div class="benefit-module-title"><span class="benefit-module-index">05</span><div><h3>绑定账号</h3><p>完成正式账号绑定，获得安全奖励</p></div><button class="cl-switch-button is-on" type="button" role="switch" aria-checked="true" aria-label="绑定账号开关" data-module-switch></button></div><button class="cl-btn benefit-module-head-edit" type="button" data-module-edit="bindAccount">编辑奖励</button></header>
+                <div class="benefit-module-body"><div class="benefit-config-row"><span>完成条件</span><strong data-module-value="condition">注册后 7 日内绑定正式账号</strong></div><div class="benefit-reward-table" data-module-table="bindAccount" data-fixed-rows="1"><div class="benefit-reward-row is-head"><span>奖励内容</span><span>领取方式</span></div><div class="benefit-reward-row"><strong data-module-value="reward">Rp 1,000 活动奖金</strong><span data-module-value="claim">绑定后手动领取</span></div></div><div class="module-meta"><span class="module-status enabled">启用中</span><span>仅 1 个绑定奖励，绑定后立即解锁领取</span></div></div>
+              </article>
+            </div>
+          </section>
+        </main>
+
+        <div class="seven-day-save-bar" data-seven-save-bar hidden>
+          <span data-seven-dirty>编辑中的配置尚未保存</span>
+          <div><button class="cl-btn" type="button" data-seven-edit="cancel">取消</button><button class="cl-btn cl-btn-primary" type="button" data-seven-edit="save">保存配置</button></div>
+        </div>
+
+        <div class="seven-day-toast" role="status" aria-live="polite" data-seven-toast></div>
+      </div>
+    </div>
+  </body>
+</html>

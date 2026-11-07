@@ -84,7 +84,7 @@ const context = {
   window: { localStorage: { getItem() { return stored; }, setItem() { storageWrites += 1; } } }
 };
 const marker = "  if (document.readyState === 'loading')";
-const expose = "  globalThis.probe = { set(items) { tiers = items; }, get() { return tiers; }, ranges() { return tiers.map(function (tier, index) { return [tierStart(index), tier.vip]; }); }, valid: requireValidTiers, render: renderTiers, update: updateTierInput, add: addTier, remove: deleteTier, save: saveConfiguration, sync: syncRuleTable, restore: restoreRecord, syncLongTerm: syncLongTerm, preview: previewRules, editRules: setRuleEditing, close: closeModal, original(html) { originalRuleTable = html; } };\n";
+const expose = "  globalThis.probe = { set(items) { tiers = items; }, get() { return tiers; }, ranges() { return tiers.map(function (tier, index) { return [tierStart(index), tier.vip]; }); }, valid: requireValidTiers, render: renderTiers, update: updateTierInput, add: addTier, remove: deleteTier, save: saveConfiguration, sync: syncRuleTable, restore: restoreRecord, preview: previewRules, editRules: setRuleEditing, close: closeModal, original(html) { originalRuleTable = html; } };\n";
 assert(script.includes(marker));
 vm.runInNewContext(script.replace(marker, expose + marker), context);
 const probe = context.probe;
@@ -160,27 +160,12 @@ assert.equal(probe.get().length, 16); assert.equal(node('rfAddTier').disabled, t
 
 // Previous drafts and the reference rich-text table survive this interaction change.
 probe.original(referenceTable);
-stored = JSON.stringify({ version: 1, name: 'Saved draft', tiers: [0, 1, 2, 3, 4, 5].map(vip => ({ ...base[Math.min(vip, 3)], vip })), description: 'Existing English rules', details: [] });
+stored = JSON.stringify({ version: 1, name: 'Saved draft', start: '2026-11-01T00:00', end: '2026-12-31T23:59', longTerm: true, tiers: [0, 1, 2, 3, 4, 5].map(vip => ({ ...base[Math.min(vip, 3)], vip })), description: 'Existing English rules', details: [] });
 probe.restore();
 assert(probe.valid());
 assert.equal(probe.get()[probe.get().length - 1].vip, 15);
 assert(node('rfDescription').innerHTML.includes('Existing English rules'));
 assert(node('rfDescription').innerHTML.includes('88.99M'));
-assert.equal(node('rfLongTerm').checked, false, 'Older drafts retain a finite activity period');
-node('rfEnd').value = '2026-12-31T23:59';
-node('rfLongTerm').checked = true;
-probe.syncLongTerm();
-assert.equal(node('rfEnd').disabled, true);
-assert.equal(node('rfEnd').required, false);
-node('rfLongTerm').checked = false;
-probe.syncLongTerm();
-assert.equal(node('rfEnd').disabled, false);
-assert.equal(node('rfEnd').required, true);
-assert.equal(node('rfEnd').value, '2026-12-31T23:59', 'Toggling preserves the entered end time');
-stored = JSON.stringify({ ...JSON.parse(stored), longTerm: true, end: '' });
-probe.restore();
-assert.equal(node('rfLongTerm').checked, true);
-assert.equal(node('rfEnd').disabled, true);
-assert.equal(node('rfEnd').required, false);
-console.log('PASS: long-term toggle, finite-period restoration, saved long-term state.');
-console.log('PASS: inline add/edit/delete, required/range/amount validation, incomplete-save guard, VIP15 coverage, draft preservation, rich text, UTF-8.');
+assert(!/id="rf(?:Start|End|LongTerm)"/.test(html), 'Rescue fund has no activity date range');
+assert(!/record\.(?:start|end|longTerm)/.test(script), 'Date range is not part of rescue fund validation or persistence');
+console.log('PASS: no activity date range; inline add/edit/delete, amount validation, incomplete-save guard, VIP15 coverage, legacy draft compatibility, rich text, UTF-8.');
