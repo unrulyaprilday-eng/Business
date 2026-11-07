@@ -7,12 +7,12 @@ const source = fs.readFileSync(`custom/js/${pageName}.js`, "utf8");
 const marker = "  ready(function () {";
 assert.equal(source.split(marker).length, 2);
 const instrumented = source.replace(marker,
-  "  globalThis.taskRules = { duplicateTaskRows, taskValueError, migrateTaskRows, normalizeFixedRows, validRewardAmount, packValueError, migratePackRows };\n" + marker);
+  "  globalThis.taskRules = { duplicateTaskRows, taskValueError, migrateTaskRows, normalizeFixedRows, validRewardAmount, packValueError, migratePackRows, migrateBindingRows, migrateChallengeAmounts };\n" + marker);
 const context = {
   document: { readyState: "loading", addEventListener() {} }
 };
 vm.runInNewContext(instrumented, context);
-const { duplicateTaskRows, taskValueError, migrateTaskRows, normalizeFixedRows, validRewardAmount, packValueError, migratePackRows } = context.taskRules;
+const { duplicateTaskRows, taskValueError, migrateTaskRows, normalizeFixedRows, validRewardAmount, packValueError, migratePackRows, migrateBindingRows, migrateChallengeAmounts } = context.taskRules;
 const duplicates = (rows) => Array.from(duplicateTaskRows(rows));
 
 assert.deepEqual(duplicates([["wager", "50000", "5000"], ["wager", "50000.00", "5000.00"]]), [0, 1]);
@@ -52,7 +52,7 @@ assert.deepEqual(migrateTaskRows({ modules: { tasks: { rows: [typedRow] } } }).m
 
 const defaults = { modules: {
   checkin: { rows: Array.from({ length: 7 }, (_, index) => [`Day ${index + 1}`, String(index + 1)]) },
-  bindAccount: { rows: [["1000", "manual"]] }
+  bindAccount: { rows: [["1000"]] }
 } };
 const oldRows = { modules: {
   checkin: { rows: [["Day 1", "100"], ["Day 3", "300"], ["Day 8", "800"]] },
@@ -63,10 +63,10 @@ assert.deepEqual(Array.from(fixed.modules.checkin.rows, (row) => Array.from(row)
   ["Day 1", "100"], ["Day 2", "2"], ["Day 3", "300"], ["Day 4", "4"],
   ["Day 5", "5"], ["Day 6", "6"], ["Day 7", "7"]
 ]);
-assert.deepEqual(Array.from(fixed.modules.bindAccount.rows, (row) => Array.from(row)), [["2000", "manual"]]);
+assert.deepEqual(Array.from(fixed.modules.bindAccount.rows, (row) => Array.from(row)), [["2000"]]);
 const emptyFixed = normalizeFixedRows({ modules: { checkin: { rows: [] }, bindAccount: { rows: [] } } }, defaults);
 assert.equal(emptyFixed.modules.checkin.rows.length, 7);
-assert.deepEqual(Array.from(emptyFixed.modules.bindAccount.rows[0]), ["1000", "manual"]);
+assert.deepEqual(Array.from(emptyFixed.modules.bindAccount.rows[0]), ["1000"]);
 assert.equal(defaults.modules.checkin.rows[0][1], "1");
 const legacyReward = normalizeFixedRows({ modules: {
   checkin: { rows: [["Day 6", "Rp 6,000"], ["Day 7", "\u4fdd\u9669\u7bb1\u793c\u5305"]] },
@@ -94,4 +94,26 @@ assert.deepEqual(Array.from(numericPacks.modules.activityPack.rows, (row) => Arr
 assert.equal(numericPacks.modules.activityPack.enabled, false);
 assert.deepEqual(numericPacks.modules.checkin.rows, [["Day 1", "1000"]]);
 
-console.log("OK: task duplicates, numeric validation, fixed rewards, pack amounts and saved config migration");
+const oldBinding = migrateBindingRows({ modules: {
+  bindAccount: { enabled: false, settings: ["old condition"], rows: [["Rp 1,234.50 \u6d3b\u52a8\u5956\u91d1", "manual"]] },
+  tasks: { rows: [["deposit", "50", "5"]] }
+} });
+assert.deepEqual(Array.from(oldBinding.modules.bindAccount.rows[0]), ["1234.50"]);
+assert.equal(oldBinding.modules.bindAccount.settings.length, 0);
+assert.equal(oldBinding.modules.bindAccount.enabled, false);
+assert.deepEqual(oldBinding.modules.tasks.rows, [["deposit", "50", "5"]]);
+const oldUnlock = migrateChallengeAmounts({ modules: { depositChallenge: { settings: ["\u7d2f\u8ba1\u5145\u503c Rp 100,000"] } } });
+assert.equal(oldUnlock.modules.depositChallenge.settings[0], "100000");
+const typedUnlock = migrateChallengeAmounts({ modules: { depositChallenge: { settings: ["100000.50"] } } });
+assert.equal(typedUnlock.modules.depositChallenge.settings[0], "100000.50");
+const oldChallenge = migrateChallengeAmounts({ modules: { depositChallenge: { enabled: false, rows: [
+  ["\u6253\u7801 Rp 1,000,000", "Rp 1,000"],
+  ["\u7d2f\u8ba1\u6253\u7801 \u2265 2,000,000", "2000"],
+  ["5000000.50", "5000.25"]
+] } } });
+assert.deepEqual(Array.from(oldChallenge.modules.depositChallenge.rows, (row) => Array.from(row)), [
+  ["1000000", "1000"], ["2000000", "2000"], ["5000000.50", "5000.25"]
+]);
+assert.equal(oldChallenge.modules.depositChallenge.enabled, false);
+
+console.log("OK: task duplicates, numeric validation, fixed rewards, pack, binding and recharge config migration");

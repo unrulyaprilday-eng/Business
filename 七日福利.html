@@ -111,13 +111,22 @@
             <div class="seven-day-module-grid">
               <article class="benefit-module" data-module="depositChallenge" data-enabled="true">
                 <header class="benefit-module-head"><div class="benefit-module-title"><span class="benefit-module-index">01</span><div><h3>充值挑战</h3><p>充值后解锁多档打码目标和奖励</p></div><button class="cl-switch-button is-on" type="button" role="switch" aria-checked="true" aria-label="充值挑战开关" data-module-switch></button></div><button class="cl-btn benefit-module-head-edit" type="button" data-module-edit="depositChallenge">编辑挑战</button></header>
-                <div class="benefit-module-body"><div class="benefit-config-row"><span>解锁充值条件</span><strong data-module-value="unlock">累计充值 Rp 100,000</strong></div><div class="benefit-reward-table" data-module-table="depositChallenge"><div class="benefit-reward-row is-head"><span>打码目标</span><span>奖励</span></div><div class="benefit-reward-row"><span data-module-value="tier1Target">打码 Rp 1,000,000</span><strong data-module-value="tier1Reward">Rp 1,000</strong></div><div class="benefit-reward-row"><span data-module-value="tier2Target">打码 Rp 2,000,000</span><strong data-module-value="tier2Reward">Rp 2,000</strong></div><div class="benefit-reward-row"><span data-module-value="tier3Target">打码 Rp 5,000,000</span><strong data-module-value="tier3Reward">Rp 5,000</strong></div></div><button class="benefit-add-row" type="button" data-add-row="depositChallenge">＋ 增加档位</button><div class="module-meta"><span class="module-status enabled">启用中</span><span>解锁后累计，档位分别领取</span></div></div>
+                <div class="benefit-module-body">
+                  <div class="benefit-config-row"><span>解锁充值条件</span><span class="benefit-unlock-condition"><span>充值 ≥</span><strong data-module-value="unlock">100000</strong></span></div>
+                  <div class="benefit-reward-table" data-module-table="depositChallenge">
+                    <div class="benefit-reward-row is-head"><span>累计打码 ≥</span><span>奖励金额</span></div>
+                    <div class="benefit-reward-row"><span data-module-value="tier1Target">1000000</span><strong data-module-value="tier1Reward">1000</strong></div>
+                    <div class="benefit-reward-row"><span data-module-value="tier2Target">2000000</span><strong data-module-value="tier2Reward">2000</strong></div>
+                    <div class="benefit-reward-row"><span data-module-value="tier3Target">5000000</span><strong data-module-value="tier3Reward">5000</strong></div>
+                  </div>
+                  <button class="benefit-add-row" type="button" data-add-row="depositChallenge">＋ 增加档位</button>
+                  <div class="module-meta"><span class="module-status enabled">启用中</span><span>解锁后累计，档位分别领取</span></div>
+                </div>
               </article>
 
               <article class="benefit-module" data-module="tasks" data-enabled="true">
                 <header class="benefit-module-head"><div class="benefit-module-title"><span class="benefit-module-index">02</span><div><h3>福利任务</h3><p>完成投注、充值、邀请等新手任务</p></div><button class="cl-switch-button is-on" type="button" role="switch" aria-checked="true" aria-label="福利任务开关" data-module-switch></button></div><button class="cl-btn benefit-module-head-edit" type="button" data-module-edit="tasks">编辑任务</button></header>
                 <div class="benefit-module-body">
-                  <div class="benefit-config-row"><span>币种</span><strong>IDR</strong></div>
                   <div class="benefit-reward-table" data-module-table="tasks">
                     <div class="benefit-reward-row is-head"><span>任务类型</span><span>目标值</span><span>奖励金额</span></div>
                     <div class="benefit-reward-row"><span data-task-type="wager">有效打码</span><span>50000</span><strong>5000</strong></div>
@@ -134,7 +143,6 @@
               <article class="benefit-module" data-module="checkin" data-enabled="true">
                 <header class="benefit-module-head"><div class="benefit-module-title"><span class="benefit-module-index">03</span><div><h3>七日签到</h3><p>连续登录 7 天，按天领取签到奖励</p></div><button class="cl-switch-button is-on" type="button" role="switch" aria-checked="true" aria-label="七日签到开关" data-module-switch></button></div><button class="cl-btn benefit-module-head-edit" type="button" data-module-edit="checkin">编辑奖励</button></header>
                 <div class="benefit-module-body">
-                  <div class="benefit-config-row"><span>币种</span><strong>IDR</strong></div>
                   <div class="benefit-reward-table benefit-checkin-table" data-module-table="checkin" data-fixed-rows="7">
                     <div class="benefit-reward-row is-head"><span>签到日</span><span>奖励金额</span></div>
                     <div class="benefit-reward-row"><span>Day 1</span><strong data-module-value="day1">1000</strong></div>
@@ -152,7 +160,6 @@
               <article class="benefit-module" data-module="activityPack" data-enabled="true">
                 <header class="benefit-module-head"><div class="benefit-module-title"><span class="benefit-module-index">04</span><div><h3>活动礼包</h3><p>按充值金额档位配置赠送金额</p></div><button class="cl-switch-button is-on" type="button" role="switch" aria-checked="true" aria-label="活动礼包开关" data-module-switch></button></div><button class="cl-btn benefit-module-head-edit" type="button" data-module-edit="activityPack">编辑礼包</button></header>
                 <div class="benefit-module-body">
-                  <div class="benefit-config-row"><span>币种</span><strong>IDR</strong></div>
                   <div class="benefit-reward-table" data-module-table="activityPack">
                     <div class="benefit-reward-row is-head"><span>基础金额（充值金额）</span><span>赠送金额</span></div>
                     <div class="benefit-reward-row"><span>50000</span><strong>20000</strong></div>
@@ -166,8 +173,6 @@
               <article class="benefit-module" data-module="bindAccount" data-enabled="true">
                 <header class="benefit-module-head"><div class="benefit-module-title"><span class="benefit-module-index">05</span><div><h3>绑定账号</h3><p>完成正式账号绑定，获得安全奖励</p></div><button class="cl-switch-button is-on" type="button" role="switch" aria-checked="true" aria-label="绑定账号开关" data-module-switch></button></div><button class="cl-btn benefit-module-head-edit" type="button" data-module-edit="bindAccount">编辑奖励</button></header>
                 <div class="benefit-module-body">
-                  <div class="benefit-config-row"><span>完成条件</span><strong data-module-value="condition">注册后 7 日内绑定正式账号</strong></div>
-                  <div class="benefit-config-row"><span>币种</span><strong>IDR</strong></div>
                   <div class="benefit-reward-table" data-module-table="bindAccount" data-fixed-rows="1">
                     <div class="benefit-reward-row is-head"><span>奖励金额</span></div>
                     <div class="benefit-reward-row"><strong data-module-value="reward">1000</strong></div>

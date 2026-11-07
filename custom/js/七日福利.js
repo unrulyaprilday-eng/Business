@@ -19,9 +19,26 @@
   function migrateBindingRows(state) {
     var binding = state && state.modules && state.modules.bindAccount;
     if (!binding || !Array.isArray(binding.rows)) return state;
+    binding.settings = [];
     binding.rows = binding.rows.map(function (row) {
       if (!Array.isArray(row) || row.length < 1 || row.length > 2 || typeof row[0] !== "string") return row;
       return [bindingAmount(row[0])];
+    });
+    return state;
+  }
+
+  function migrateChallengeAmounts(state) {
+    var challenge = state && state.modules && state.modules.depositChallenge;
+    if (!challenge) return state;
+    if (Array.isArray(challenge.settings) && typeof challenge.settings[0] === "string") {
+      challenge.settings[0] = challenge.settings[0].replace(/^(?:累计)?充值\s*(?:≥|>=)?\s*(?:Rp\s*)?/i, "").replace(/,/g, "").trim();
+    }
+    if (Array.isArray(challenge.rows)) challenge.rows = challenge.rows.map(function (row) {
+      if (!Array.isArray(row) || row.length !== 2 || !row.every(function (value) { return typeof value === "string"; })) return row;
+      return [
+        row[0].replace(/^(?:累计|有效)?(?:打码|投注)\s*(?:≥|>=)?\s*(?:Rp\s*)?/i, "").replace(/,/g, "").trim(),
+        row[1].replace(/^Rp\s*/i, "").replace(/,/g, "").trim()
+      ];
     });
     return state;
   }
@@ -188,7 +205,7 @@
         row.appendChild(day);
       } else {
         var cell = inlineCell(value, name + "：" + headings[index].textContent, index === 1 || id === "bindAccount");
-        if (id === "checkin" || id === "activityPack" || id === "bindAccount") {
+        if (id === "checkin" || id === "activityPack" || id === "bindAccount" || id === "depositChallenge") {
           var amountInput = query("input", cell);
           amountInput.type = "number";
           amountInput.min = id === "activityPack" && index === 0 ? "0.01" : "0";
@@ -359,6 +376,13 @@
   function beginEditing() { if (!editing) setEditing(true); }
 
   function validate() {
+    var unlock = query('[data-module="depositChallenge"] .benefit-config-row [data-inline-value]');
+    if (unlock && !validRewardAmount(unlock.value)) {
+      unlock.setAttribute("aria-invalid", "true");
+      unlock.focus();
+      message("解锁充值金额必须是非负金额，最多保留两位小数。", true);
+      return false;
+    }
     var invalidFixed = Object.keys(fixedRowCounts).find(function (id) {
       return all('[data-module-table="' + id + '"] [data-tier-row]').length !== fixedRowCounts[id];
     });
@@ -366,13 +390,14 @@
       message(invalidFixed === "checkin" ? "七日签到必须固定配置 7 天奖励。" : "绑定账号只能配置 1 个奖励。", true);
       return false;
     }
-    var invalidAmount = all('[data-module-table="checkin"] [data-inline-value], [data-module-table="bindAccount"] [data-inline-value]').find(function (input) {
+    var invalidAmount = all('[data-module-table="checkin"] [data-inline-value], [data-module-table="bindAccount"] [data-inline-value], [data-module-table="depositChallenge"] [data-inline-value]').find(function (input) {
       return !validRewardAmount(input.value);
     });
     if (invalidAmount) {
       invalidAmount.setAttribute("aria-invalid", "true");
       invalidAmount.focus();
-      var name = invalidAmount.closest('[data-module-table]').getAttribute("data-module-table") === "checkin" ? "签到奖励" : "绑定奖励";
+      var id = invalidAmount.closest('[data-module-table]').getAttribute("data-module-table");
+      var name = id === "checkin" ? "签到奖励" : id === "bindAccount" ? "绑定奖励" : "打码目标和奖励";
       message(name + "必须是非负金额，最多保留两位小数。", true);
       return false;
     }
@@ -421,11 +446,19 @@
     all(".benefit-config-row [data-module-value]").forEach(function (element) {
       var card = element.closest("[data-module]");
       var label = query("h3", card).textContent + "：" + element.previousElementSibling.textContent;
-      element.parentNode.replaceChild(inlineCell(element.textContent, label, false), element);
+      var cell = inlineCell(element.textContent, label, false);
+      if (card.getAttribute("data-module") === "depositChallenge") {
+        var input = query("input", cell);
+        input.type = "number";
+        input.min = "0";
+        input.step = "0.01";
+        input.value = element.textContent;
+      }
+      element.parentNode.replaceChild(cell, element);
     });
     savedState = captureState();
     try {
-      var stored = migrateBindingRows(migratePackRows(migrateTaskRows(JSON.parse(window.localStorage.getItem(storageKey) || "null"))));
+      var stored = migrateChallengeAmounts(migrateBindingRows(migratePackRows(migrateTaskRows(JSON.parse(window.localStorage.getItem(storageKey) || "null")))));
       if (validState(stored)) savedState = normalizeFixedRows(stored, savedState);
     } catch (error) { /* Defaults remain available when storage cannot be read. */ }
     restoreState(savedState);

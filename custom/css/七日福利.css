@@ -78,6 +78,9 @@ body {
 .benefit-module-body { padding: 13px 15px 11px; }
 .benefit-config-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 0 0 10px; color: #8290a3; }
 .benefit-config-row strong { color: #334155; font-weight: 600; text-align: right; }
+.benefit-unlock-condition { display: inline-flex; align-items: center; gap: 8px; color: #334155; }
+.benefit-unlock-condition > span:first-child { white-space: nowrap; }
+.is-editing .benefit-unlock-condition > .benefit-inline-cell { width: 150px; }
 .benefit-reward-table { overflow: hidden; border: 1px solid #e3ebf7; border-radius: 4px; background: #f7faff; }
 .benefit-reward-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(130px, auto); align-items: center; gap: 12px; min-height: 34px; padding: 6px 10px; color: #65758b; border-top: 1px solid #e6eef8; }
 .benefit-reward-row:first-child { border-top: 0; }
