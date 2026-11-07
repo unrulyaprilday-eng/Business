@@ -12,10 +12,43 @@
     return value.replace(/^Rp\s*/i, "").replace(/,/g, "").trim();
   }
 
+  function bindingAmount(value) {
+    return value.replace(/^Rp\s*/i, "").replace(/,/g, "").replace(/\s*活动奖金$/, "").trim();
+  }
+
+  function migrateBindingRows(state) {
+    var binding = state && state.modules && state.modules.bindAccount;
+    if (!binding || !Array.isArray(binding.rows)) return state;
+    binding.rows = binding.rows.map(function (row) {
+      if (!Array.isArray(row) || row.length < 1 || row.length > 2 || typeof row[0] !== "string") return row;
+      return [bindingAmount(row[0])];
+    });
+    return state;
+  }
+
   function validRewardAmount(value) {
     var amount = Number(value);
     return value.trim() !== "" && Number.isFinite(amount) && amount >= 0 &&
       Math.abs(amount * 100 - Math.round(amount * 100)) <= 0.00001;
+  }
+
+  function packValueError(row) {
+    if (!validRewardAmount(row[0]) || Number(row[0]) <= 0) return "礼包基础金额必须大于 0，最多保留两位小数。";
+    if (!validRewardAmount(row[1])) return "礼包赠送金额必须是非负金额，最多保留两位小数。";
+    return "";
+  }
+
+  function migratePackRows(state) {
+    var packs = state && state.modules && state.modules.activityPack;
+    if (!packs || !Array.isArray(packs.rows)) return state;
+    packs.rows = packs.rows.map(function (row) {
+      if (!Array.isArray(row) || row.length !== 2 || !row.every(function (value) { return typeof value === "string"; })) return row;
+      if (!/礼包/.test(row[0])) return row;
+      var base = row[1].match(/(?:充值|售价)\s*(?:Rp\s*)?([0-9][0-9,]*(?:\.[0-9]+)?)/i);
+      var bonus = row[1].match(/(?:额外赠送|赠送|赠)\s*(?:Rp\s*)?([0-9][0-9,]*(?:\.[0-9]+)?)/i);
+      return [base ? base[1].replace(/,/g, "") : "", bonus ? bonus[1].replace(/,/g, "") : ""];
+    });
+    return state;
   }
 
   function normalizeFixedRows(state, defaults) {
@@ -28,7 +61,7 @@
           var stored = item.rows.find(function (entry) { return entry[0].trim().toLowerCase() === day.toLowerCase(); });
           return [day, stored ? checkinAmount(stored[1], row[1]) : row[1]];
         });
-      } else item.rows = [item.rows.length ? item.rows[0].slice() : fallback[0].slice()];
+      } else item.rows = [[bindingAmount(item.rows.length ? item.rows[0][0] : fallback[0][0])]];
     });
     return state;
   }
@@ -154,11 +187,11 @@
         day.textContent = "Day " + (all("[data-tier-row]", table).length + 1);
         row.appendChild(day);
       } else {
-        var cell = inlineCell(value, name + "：" + headings[index].textContent, index === 1);
-        if (id === "checkin") {
+        var cell = inlineCell(value, name + "：" + headings[index].textContent, index === 1 || id === "bindAccount");
+        if (id === "checkin" || id === "activityPack" || id === "bindAccount") {
           var amountInput = query("input", cell);
           amountInput.type = "number";
-          amountInput.min = "0";
+          amountInput.min = id === "activityPack" && index === 0 ? "0.01" : "0";
           amountInput.step = "0.01";
           amountInput.value = value;
         }
@@ -286,7 +319,8 @@
       return item && typeof item.enabled === "boolean" && Array.isArray(item.settings) &&
         item.settings.length === settingCount && item.settings.every(function (value) { return typeof value === "string"; }) &&
         Array.isArray(item.rows) && item.rows.every(function (row) {
-          var count = card.getAttribute("data-module") === "tasks" ? 3 : 2;
+          var id = card.getAttribute("data-module");
+          var count = id === "tasks" ? 3 : id === "bindAccount" ? 1 : 2;
           return Array.isArray(row) && row.length === count && row.every(function (value) { return typeof value === "string"; });
         });
     });
@@ -332,13 +366,26 @@
       message(invalidFixed === "checkin" ? "七日签到必须固定配置 7 天奖励。" : "绑定账号只能配置 1 个奖励。", true);
       return false;
     }
-    var invalidAmount = all('[data-module-table="checkin"] [data-inline-value]').find(function (input) {
+    var invalidAmount = all('[data-module-table="checkin"] [data-inline-value], [data-module-table="bindAccount"] [data-inline-value]').find(function (input) {
       return !validRewardAmount(input.value);
     });
     if (invalidAmount) {
       invalidAmount.setAttribute("aria-invalid", "true");
       invalidAmount.focus();
-      message("签到奖励必须是非负金额，最多保留两位小数。", true);
+      var name = invalidAmount.closest('[data-module-table]').getAttribute("data-module-table") === "checkin" ? "签到奖励" : "绑定奖励";
+      message(name + "必须是非负金额，最多保留两位小数。", true);
+      return false;
+    }
+    var invalidPack = all('[data-module-table="activityPack"] [data-tier-row]').find(function (row) {
+      return !!packValueError(all("[data-inline-value]", row).map(function (input) { return input.value; }));
+    });
+    if (invalidPack) {
+      var controls = all("[data-inline-value]", invalidPack);
+      var values = controls.map(function (input) { return input.value; });
+      var invalidControl = controls[validRewardAmount(values[0]) && Number(values[0]) > 0 ? 1 : 0];
+      invalidControl.setAttribute("aria-invalid", "true");
+      invalidControl.focus();
+      message(packValueError(values), true);
       return false;
     }
     var invalidTask = syncTaskErrors();
@@ -378,7 +425,7 @@
     });
     savedState = captureState();
     try {
-      var stored = migrateTaskRows(JSON.parse(window.localStorage.getItem(storageKey) || "null"));
+      var stored = migrateBindingRows(migratePackRows(migrateTaskRows(JSON.parse(window.localStorage.getItem(storageKey) || "null"))));
       if (validState(stored)) savedState = normalizeFixedRows(stored, savedState);
     } catch (error) { /* Defaults remain available when storage cannot be read. */ }
     restoreState(savedState);

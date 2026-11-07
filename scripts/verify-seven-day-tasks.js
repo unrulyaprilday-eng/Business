@@ -7,12 +7,12 @@ const source = fs.readFileSync(`custom/js/${pageName}.js`, "utf8");
 const marker = "  ready(function () {";
 assert.equal(source.split(marker).length, 2);
 const instrumented = source.replace(marker,
-  "  globalThis.taskRules = { duplicateTaskRows, taskValueError, migrateTaskRows, normalizeFixedRows, validRewardAmount };\n" + marker);
+  "  globalThis.taskRules = { duplicateTaskRows, taskValueError, migrateTaskRows, normalizeFixedRows, validRewardAmount, packValueError, migratePackRows };\n" + marker);
 const context = {
   document: { readyState: "loading", addEventListener() {} }
 };
 vm.runInNewContext(instrumented, context);
-const { duplicateTaskRows, taskValueError, migrateTaskRows, normalizeFixedRows, validRewardAmount } = context.taskRules;
+const { duplicateTaskRows, taskValueError, migrateTaskRows, normalizeFixedRows, validRewardAmount, packValueError, migratePackRows } = context.taskRules;
 const duplicates = (rows) => Array.from(duplicateTaskRows(rows));
 
 assert.deepEqual(duplicates([["wager", "50000", "5000"], ["wager", "50000.00", "5000.00"]]), [0, 1]);
@@ -77,4 +77,21 @@ assert.equal(legacyReward.modules.checkin.rows[6][1], "7");
 for (const value of ["0", "7000", "7.01"]) assert.equal(validRewardAmount(value), true);
 for (const value of ["", "-1", "1.001", "NaN", "Infinity", "gift"]) assert.equal(validRewardAmount(value), false);
 
-console.log("OK: task duplicates, numeric validation, saved task migration, fixed 7-day amounts and single binding reward");
+for (const row of [["1000000", "150000"], ["0.01", "0"], ["50000.00", "20000.50"]]) assert.equal(packValueError(row), "");
+for (const row of [["0", "100"], ["-1", "100"], ["100", "-1"], ["100", "1.001"], ["", "10"], ["10", "gift"]]) assert.notEqual(packValueError(row), "");
+const oldPacks = { modules: {
+  activityPack: { enabled: false, rows: [
+    ["\u5145\u503c\u793c\u5305", "\u5145\u503c Rp 50,000\uff0c\u8d60 Rp 20,000 + 1 \u5f20\u52a0\u8d60\u5238"],
+    ["\u7279\u60e0\u793c\u5305", "\u552e\u4ef7 Rp 1,000,000\uff0c\u989d\u5916\u8d60\u9001 Rp 150,000\uff0815%\uff09"],
+    ["100000", "10000"]
+  ] },
+  checkin: { rows: [["Day 1", "1000"]] }
+} };
+const numericPacks = migratePackRows(oldPacks);
+assert.deepEqual(Array.from(numericPacks.modules.activityPack.rows, (row) => Array.from(row)), [
+  ["50000", "20000"], ["1000000", "150000"], ["100000", "10000"]
+]);
+assert.equal(numericPacks.modules.activityPack.enabled, false);
+assert.deepEqual(numericPacks.modules.checkin.rows, [["Day 1", "1000"]]);
+
+console.log("OK: task duplicates, numeric validation, fixed rewards, pack amounts and saved config migration");

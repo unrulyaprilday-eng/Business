@@ -150,13 +150,30 @@
               </article>
 
               <article class="benefit-module" data-module="activityPack" data-enabled="true">
-                <header class="benefit-module-head"><div class="benefit-module-title"><span class="benefit-module-index">04</span><div><h3>活动礼包</h3><p>充值达标礼包与七日特惠礼包合并管理</p></div><button class="cl-switch-button is-on" type="button" role="switch" aria-checked="true" aria-label="活动礼包开关" data-module-switch></button></div><button class="cl-btn benefit-module-head-edit" type="button" data-module-edit="activityPack">编辑礼包</button></header>
-                <div class="benefit-module-body"><div class="benefit-reward-table" data-module-table="activityPack"><div class="benefit-reward-row is-head"><span>礼包类型</span><span>配置内容</span></div><div class="benefit-reward-row"><span>充值礼包</span><strong data-module-value="rechargeReward">充值 Rp 50,000，赠 Rp 20,000 + 1 张加赠券</strong></div><div class="benefit-reward-row"><span>特惠礼包</span><strong data-module-value="specialReward">售价 Rp 50,000，额外赠送 Rp 20,000（40%）</strong></div></div><button class="benefit-add-row" type="button" data-add-row="activityPack">＋ 增加礼包</button><div class="module-meta"><span class="module-status enabled">启用中</span><span>充值礼包限领 1 次，特惠礼包限购 1 次</span></div></div>
+                <header class="benefit-module-head"><div class="benefit-module-title"><span class="benefit-module-index">04</span><div><h3>活动礼包</h3><p>按充值金额档位配置赠送金额</p></div><button class="cl-switch-button is-on" type="button" role="switch" aria-checked="true" aria-label="活动礼包开关" data-module-switch></button></div><button class="cl-btn benefit-module-head-edit" type="button" data-module-edit="activityPack">编辑礼包</button></header>
+                <div class="benefit-module-body">
+                  <div class="benefit-config-row"><span>币种</span><strong>IDR</strong></div>
+                  <div class="benefit-reward-table" data-module-table="activityPack">
+                    <div class="benefit-reward-row is-head"><span>基础金额（充值金额）</span><span>赠送金额</span></div>
+                    <div class="benefit-reward-row"><span>50000</span><strong>20000</strong></div>
+                    <div class="benefit-reward-row"><span>1000000</span><strong>150000</strong></div>
+                  </div>
+                  <button class="benefit-add-row" type="button" data-add-row="activityPack">＋ 增加档位</button>
+                  <div class="module-meta"><span class="module-status enabled">启用中</span><span>赠送金额在基础金额之外额外发放</span></div>
+                </div>
               </article>
 
               <article class="benefit-module" data-module="bindAccount" data-enabled="true">
                 <header class="benefit-module-head"><div class="benefit-module-title"><span class="benefit-module-index">05</span><div><h3>绑定账号</h3><p>完成正式账号绑定，获得安全奖励</p></div><button class="cl-switch-button is-on" type="button" role="switch" aria-checked="true" aria-label="绑定账号开关" data-module-switch></button></div><button class="cl-btn benefit-module-head-edit" type="button" data-module-edit="bindAccount">编辑奖励</button></header>
-                <div class="benefit-module-body"><div class="benefit-config-row"><span>完成条件</span><strong data-module-value="condition">注册后 7 日内绑定正式账号</strong></div><div class="benefit-reward-table" data-module-table="bindAccount" data-fixed-rows="1"><div class="benefit-reward-row is-head"><span>奖励内容</span><span>领取方式</span></div><div class="benefit-reward-row"><strong data-module-value="reward">Rp 1,000 活动奖金</strong><span data-module-value="claim">绑定后手动领取</span></div></div><div class="module-meta"><span class="module-status enabled">启用中</span><span>仅 1 个绑定奖励，绑定后立即解锁领取</span></div></div>
+                <div class="benefit-module-body">
+                  <div class="benefit-config-row"><span>完成条件</span><strong data-module-value="condition">注册后 7 日内绑定正式账号</strong></div>
+                  <div class="benefit-config-row"><span>币种</span><strong>IDR</strong></div>
+                  <div class="benefit-reward-table" data-module-table="bindAccount" data-fixed-rows="1">
+                    <div class="benefit-reward-row is-head"><span>奖励金额</span></div>
+                    <div class="benefit-reward-row"><strong data-module-value="reward">1000</strong></div>
+                  </div>
+                  <div class="module-meta"><span class="module-status enabled">启用中</span><span>仅 1 个绑定奖励，绑定后立即解锁领取</span></div>
+                </div>
               </article>
             </div>
           </section>
