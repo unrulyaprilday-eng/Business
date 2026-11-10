@@ -4,27 +4,14 @@
   var storageKey = "business.seven-day-benefits.inline.v1";
   var editing = false;
   var savedState;
+  var legacyBinding;
+  var hasLegacyBinding = false;
   var page;
-  var fixedRowCounts = { checkin: 7, bindAccount: 1 };
+  var fixedRowCounts = { checkin: 7 };
 
   function checkinAmount(value, fallback) {
     if (value === "保险箱礼包") return fallback;
     return value.replace(/^Rp\s*/i, "").replace(/,/g, "").trim();
-  }
-
-  function bindingAmount(value) {
-    return value.replace(/^Rp\s*/i, "").replace(/,/g, "").replace(/\s*活动奖金$/, "").trim();
-  }
-
-  function migrateBindingRows(state) {
-    var binding = state && state.modules && state.modules.bindAccount;
-    if (!binding || !Array.isArray(binding.rows)) return state;
-    binding.settings = [];
-    binding.rows = binding.rows.map(function (row) {
-      if (!Array.isArray(row) || row.length < 1 || row.length > 2 || typeof row[0] !== "string") return row;
-      return [bindingAmount(row[0])];
-    });
-    return state;
   }
 
   function migrateChallengeAmounts(state) {
@@ -78,7 +65,7 @@
           var stored = item.rows.find(function (entry) { return entry[0].trim().toLowerCase() === day.toLowerCase(); });
           return [day, stored ? checkinAmount(stored[1], row[1]) : row[1]];
         });
-      } else item.rows = [[bindingAmount(item.rows.length ? item.rows[0][0] : fallback[0][0])]];
+      }
     });
     return state;
   }
@@ -204,8 +191,8 @@
         day.textContent = "Day " + (all("[data-tier-row]", table).length + 1);
         row.appendChild(day);
       } else {
-        var cell = inlineCell(value, name + "：" + headings[index].textContent, index === 1 || id === "bindAccount");
-        if (id === "checkin" || id === "activityPack" || id === "bindAccount" || id === "depositChallenge") {
+        var cell = inlineCell(value, name + "：" + headings[index].textContent, index === 1);
+        if (id === "checkin" || id === "activityPack" || id === "depositChallenge") {
           var amountInput = query("input", cell);
           amountInput.type = "number";
           amountInput.min = id === "activityPack" && index === 0 ? "0.01" : "0";
@@ -337,7 +324,7 @@
         item.settings.length === settingCount && item.settings.every(function (value) { return typeof value === "string"; }) &&
         Array.isArray(item.rows) && item.rows.every(function (row) {
           var id = card.getAttribute("data-module");
-          var count = id === "tasks" ? 3 : id === "bindAccount" ? 1 : 2;
+          var count = id === "tasks" ? 3 : 2;
           return Array.isArray(row) && row.length === count && row.every(function (value) { return typeof value === "string"; });
         });
     });
@@ -387,17 +374,17 @@
       return all('[data-module-table="' + id + '"] [data-tier-row]').length !== fixedRowCounts[id];
     });
     if (invalidFixed) {
-      message(invalidFixed === "checkin" ? "七日签到必须固定配置 7 天奖励。" : "绑定账号只能配置 1 个奖励。", true);
+      message("七日签到必须固定配置 7 天奖励。", true);
       return false;
     }
-    var invalidAmount = all('[data-module-table="checkin"] [data-inline-value], [data-module-table="bindAccount"] [data-inline-value], [data-module-table="depositChallenge"] [data-inline-value]').find(function (input) {
+    var invalidAmount = all('[data-module-table="checkin"] [data-inline-value], [data-module-table="depositChallenge"] [data-inline-value]').find(function (input) {
       return !validRewardAmount(input.value);
     });
     if (invalidAmount) {
       invalidAmount.setAttribute("aria-invalid", "true");
       invalidAmount.focus();
       var id = invalidAmount.closest('[data-module-table]').getAttribute("data-module-table");
-      var name = id === "checkin" ? "签到奖励" : id === "bindAccount" ? "绑定奖励" : "打码目标和奖励";
+      var name = id === "checkin" ? "签到奖励" : "打码目标和奖励";
       message(name + "必须是非负金额，最多保留两位小数。", true);
       return false;
     }
@@ -458,7 +445,13 @@
     });
     savedState = captureState();
     try {
-      var stored = migrateChallengeAmounts(migrateBindingRows(migratePackRows(migrateTaskRows(JSON.parse(window.localStorage.getItem(storageKey) || "null")))));
+      var stored = JSON.parse(window.localStorage.getItem(storageKey) || "null");
+      // Keep the historical binding payload unchanged for the global configuration migration.
+      if (stored && stored.modules && Object.prototype.hasOwnProperty.call(stored.modules, "bindAccount")) {
+        hasLegacyBinding = true;
+        legacyBinding = stored.modules.bindAccount;
+      }
+      stored = migrateChallengeAmounts(migratePackRows(migrateTaskRows(stored)));
       if (validState(stored)) savedState = normalizeFixedRows(stored, savedState);
     } catch (error) { /* Defaults remain available when storage cannot be read. */ }
     restoreState(savedState);
@@ -477,6 +470,7 @@
         if (value === "cancel") { restoreState(savedState); setEditing(false); }
         if (value === "save" && editing && validate()) {
           var next = captureState();
+          if (hasLegacyBinding) next.modules.bindAccount = legacyBinding;
           try { window.localStorage.setItem(storageKey, JSON.stringify(next)); }
           catch (error) { message("保存失败，请检查浏览器存储空间后重试。", true); return; }
           savedState = next;

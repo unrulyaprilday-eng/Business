@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <title>全局配置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/活动全局配置/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/tokens.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/components.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/活动全局配置.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/活动全局配置/data.js"></script>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <main class="custom-page-shell activity-global-page">
+        <div class="ag-main">
+          <header class="ag-heading">
+            <div><div class="ag-breadcrumb">优惠活动 / 全局配置</div><h1>全局配置</h1></div>
+            <div class="ag-heading-actions"><span class="ag-saved" data-ag-mode>已保存配置</span><button class="cl-btn cl-btn-primary" type="button" data-ag-action="edit" disabled>编辑</button></div>
+          </header>
+          <form data-ag-form novalidate>
+            <section class="ag-section" aria-labelledby="bindingTitle">
+              <div class="ag-section-head"><h2 id="bindingTitle">绑定奖励</h2><div class="ag-switch"><button class="cl-switch-button is-on" type="button" role="switch" aria-label="绑定奖励开关" aria-checked="true" data-ag-switch="bindingEnabled" disabled></button><span data-ag-switch-text="bindingEnabled">开启</span></div></div>
+              <div class="ag-section-body">
+                <label class="ag-field" for="bindingReward"><span>奖励金额</span><span class="ag-value"><strong data-ag-display="bindingReward">1000</strong><input id="bindingReward" class="cl-input" data-ag-field="bindingReward" type="number" min="0.01" step="0.01" value="1000" required disabled hidden/><span class="ag-currency">IDR</span></span></label>
+                <p class="ag-note">首次完成绑定手机或邮箱后可领取，每个账号限领一次。</p>
+              </div>
+            </section>
+            <section class="ag-section" aria-labelledby="updateTitle">
+              <div class="ag-section-head"><h2 id="updateTitle">更新奖励</h2><div class="ag-switch"><button class="cl-switch-button" type="button" role="switch" aria-label="更新奖励开关" aria-checked="false" data-ag-switch="updateEnabled" disabled></button><span data-ag-switch-text="updateEnabled">关闭</span></div></div>
+              <div class="ag-section-body">
+                <!-- 静态原型使用示例版本；实际版本跟随客户端发布信息，不作为奖励配置保存。 -->
+                <div class="ag-field"><span>当前最新版本</span><div class="ag-value"><strong data-ag-latest-version>V1.2.3</strong><span class="ag-auto">自动同步</span></div></div>
+                <label class="ag-field" for="updateReward"><span>奖励金额</span><span class="ag-value"><strong data-ag-display="updateReward">777</strong><input id="updateReward" class="cl-input" data-ag-field="updateReward" type="number" min="0.01" step="0.01" value="777" required disabled hidden/><span class="ag-currency">IDR</span></span></label>
+                <p class="ag-note">更新到最新版本即可领取奖励。</p>
+              </div>
+            </section>
+            <p class="ag-error" data-ag-error role="alert" hidden></p>
+          </form>
+        </div>
+        <div class="ag-save-bar" data-ag-save-bar hidden><span>编辑中的配置尚未保存</span><div><button class="cl-btn" type="button" data-ag-action="cancel">取消</button><button class="cl-btn cl-btn-primary" type="button" data-ag-action="save">保存</button></div></div>
+        <div class="ag-toast" data-ag-toast role="status" aria-live="polite" hidden></div>
+      </main>
+    </div>
+    <script src="custom/js/活动全局配置.js"></script>
+  </body>
+</html>

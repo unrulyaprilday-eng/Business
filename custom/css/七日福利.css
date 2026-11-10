@@ -96,9 +96,6 @@ body {
 .is-editing .seven-day-delete-tier { display: block; }
 .is-editing .benefit-reward-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 32px; }
 .seven-day-config-page.is-editing [data-fixed-rows] .benefit-reward-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-.seven-day-config-page [data-module-table="bindAccount"] { max-width: 240px; }
-.seven-day-config-page [data-module-table="bindAccount"] .benefit-reward-row { grid-template-columns: minmax(0, 1fr); }
-.seven-day-config-page [data-module-table="bindAccount"] .benefit-reward-row strong { text-align: left; }
 .is-editing .benefit-config-row > .benefit-inline-cell { width: min(65%, 330px); }
 .benefit-add-row { display: none; width: 100%; margin: 8px 0 0; padding: 6px 0; color: #2f6fed; background: transparent; border: 1px dashed #9dbcf4; border-radius: 4px; font: inherit; text-align: center; }
 .seven-day-config-page.is-editing .benefit-add-row { display: block; }

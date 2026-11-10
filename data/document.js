@@ -233,6 +233,13 @@ $axure.loadDocument({
         "url": "",
         "children": [
           {
+            "id": "activity_global_config",
+            "pageName": "全局配置",
+            "type": "Wireframe",
+            "url": "活动全局配置.html",
+            "children": []
+          },
+          {
             "id": "promotion_activity_list",
             "pageName": "优惠活动列表",
             "type": "Wireframe",
@@ -315,13 +322,6 @@ $axure.loadDocument({
             "pageName": "票券中心",
             "type": "Wireframe",
             "url": "票券中心.html",
-            "children": []
-          },
-          {
-            "id": "promotion_global_config",
-            "pageName": "全局配置",
-            "type": "Wireframe",
-            "url": "全局配置.html",
             "children": []
           },
           {
@@ -1015,6 +1015,13 @@ $axure.loadDocument({
             "pageName": "VIP设置",
             "type": "Wireframe",
             "url": "独立规则VIP设置.html",
+            "children": []
+          },
+          {
+            "id": "promotion_global_config",
+            "pageName": "全局配置",
+            "type": "Wireframe",
+            "url": "全局配置.html",
             "children": []
           }
         ]
