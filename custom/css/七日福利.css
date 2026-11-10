@@ -101,8 +101,10 @@ body {
 .seven-day-config-page.is-editing .benefit-add-row { display: block; }
 .benefit-add-row:disabled { color: #94a3b8; border-color: #d5deea; background: #fafbfd; cursor: not-allowed; }
 .benefit-add-row:not(:disabled):hover { background: #f4f8ff; }
-.seven-day-config-page [data-module-table="tasks"] .benefit-reward-row { grid-template-columns: minmax(0, .9fr) minmax(0, 1.05fr) minmax(0, 1fr); gap: 8px; }
-.seven-day-config-page.is-editing [data-module-table="tasks"] .benefit-reward-row { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr) 32px; gap: 6px; }
+.seven-day-config-page [data-module-table="tasks"] .benefit-reward-row { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 8px; }
+.seven-day-config-page.is-editing [data-module-table="tasks"] .benefit-reward-row { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) 32px; gap: 6px; }
+.seven-day-config-page [data-module="tasks"] [data-task-total-reward-row] { align-items: center; flex-wrap: wrap; gap: 8px 12px; }
+.seven-day-config-page.is-editing [data-module="tasks"] [data-task-total-reward-row] > .benefit-inline-cell { flex: 0 1 180px; width: 180px; max-width: 100%; }
 .seven-day-config-page [data-module-table="tasks"] .benefit-task-type { text-align: left; }
 .seven-day-config-page [data-module-table="tasks"] .benefit-task-target { min-width: 0; }
 .seven-day-config-page.is-editing [data-module-table="tasks"] .benefit-task-target { display: flex; align-items: center; gap: 4px; }

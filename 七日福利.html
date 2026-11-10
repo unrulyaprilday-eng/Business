@@ -125,18 +125,19 @@
               </article>
 
               <article class="benefit-module" data-module="tasks" data-enabled="true">
-                <header class="benefit-module-head"><div class="benefit-module-title"><span class="benefit-module-index">02</span><div><h3>福利任务</h3><p>完成投注、充值、邀请等新手任务</p></div><button class="cl-switch-button is-on" type="button" role="switch" aria-checked="true" aria-label="福利任务开关" data-module-switch></button></div><button class="cl-btn benefit-module-head-edit" type="button" data-module-edit="tasks">编辑任务</button></header>
+                <header class="benefit-module-head"><div class="benefit-module-title"><span class="benefit-module-index">02</span><div><h3>福利任务</h3><p>全部任务完成后，统一领取一次奖励</p></div><button class="cl-switch-button is-on" type="button" role="switch" aria-checked="true" aria-label="福利任务开关" data-module-switch></button></div><button class="cl-btn benefit-module-head-edit" type="button" data-module-edit="tasks">编辑任务</button></header>
                 <div class="benefit-module-body">
+                  <div class="benefit-config-row" data-task-total-reward-row><span>全部完成奖励金额</span><strong data-module-value="totalReward">10000</strong></div>
                   <div class="benefit-reward-table" data-module-table="tasks">
-                    <div class="benefit-reward-row is-head"><span>任务类型</span><span>目标值</span><span>奖励金额</span></div>
-                    <div class="benefit-reward-row"><span data-task-type="wager">有效打码</span><span>50000</span><strong>5000</strong></div>
-                    <div class="benefit-reward-row"><span data-task-type="deposit">充值</span><span>50000</span><strong>5000</strong></div>
-                    <div class="benefit-reward-row"><span data-task-type="login">每日登录</span><span>7</span><strong>10000</strong></div>
-                    <div class="benefit-reward-row"><span data-task-type="invite">邀请好友</span><span>1</span><strong>10000</strong></div>
+                    <div class="benefit-reward-row is-head"><span>任务类型</span><span>目标值</span></div>
+                    <div class="benefit-reward-row"><span data-task-type="wager">有效打码</span><span>50000</span></div>
+                    <div class="benefit-reward-row"><span data-task-type="deposit">充值</span><span>50000</span></div>
+                    <div class="benefit-reward-row"><span data-task-type="login">每日登录</span><span>7</span></div>
+                    <div class="benefit-reward-row"><span data-task-type="invite">邀请好友</span><span>1</span></div>
                   </div>
                   <p class="benefit-task-error" data-task-error role="alert" id="sevenDayTaskError" hidden></p>
                   <button class="benefit-add-row" type="button" data-add-row="tasks">＋ 增加任务</button>
-                  <div class="module-meta"><span class="module-status enabled">启用中</span><span>任务完成后手动领取</span></div>
+                  <div class="module-meta"><span class="module-status enabled">启用中</span><span>单项任务不发奖，全部完成后手动领取</span></div>
                 </div>
               </article>
 

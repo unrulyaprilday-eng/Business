@@ -79,11 +79,10 @@
   function duplicateTaskRows(rows) {
     var groups = Object.create(null);
     rows.forEach(function (row, index) {
-      if (!taskTypes[row[0]] || !row[1].trim() || !row[2].trim()) return;
+      if (!taskTypes[row[0]] || !row[1].trim()) return;
       var target = Number(row[1]);
-      var reward = Number(row[2]);
-      if (!Number.isFinite(target) || !Number.isFinite(reward)) return;
-      var key = JSON.stringify([row[0], target, reward]);
+      if (!Number.isFinite(target)) return;
+      var key = JSON.stringify([row[0], target]);
       if (!groups[key]) groups[key] = [];
       groups[key].push(index);
     });
@@ -95,27 +94,27 @@
   function taskValueError(row) {
     var type = taskTypes[row[0]];
     if (!type) return "请选择任务类型。";
-    if (!row[1].trim() || !row[2].trim()) return "请填写目标值和奖励金额。";
+    if (!row[1].trim()) return "请填写目标值。";
     var target = Number(row[1]);
-    var reward = Number(row[2]);
     if (!Number.isFinite(target) || target <= 0) return "目标值必须大于 0。";
     if (type.step === "1" && !Number.isInteger(target)) return "登录天数和邀请人数必须是整数。";
     if (type.max && target > Number(type.max)) return "七日活动的登录目标不能超过 7 天。";
-    if (!Number.isFinite(reward) || reward < 0) return "奖励金额不能小于 0。";
-    if (Math.abs(reward * 100 - Math.round(reward * 100)) > 0.00001 ||
-        (type.step !== "1" && Math.abs(target * 100 - Math.round(target * 100)) > 0.00001)) return "金额最多保留两位小数。";
+    if (type.step !== "1" && Math.abs(target * 100 - Math.round(target * 100)) > 0.00001) return "金额最多保留两位小数。";
     return "";
   }
 
-  function migrateTaskRows(state) {
+  function migrateTaskRows(state, defaultReward) {
     var tasks = state && state.modules && state.modules.tasks;
     if (!tasks || !Array.isArray(tasks.rows)) return state;
+    tasks.completionMode = "all";
+    if (Array.isArray(tasks.settings) && tasks.settings.length === 0) tasks.settings = [defaultReward || "10000"];
     tasks.rows = tasks.rows.map(function (row) {
-      if (!Array.isArray(row) || row.length !== 2 || !row.every(function (value) { return typeof value === "string"; })) return row;
+      if (!Array.isArray(row) || (row.length !== 2 && row.length !== 3) || !row.every(function (value) { return typeof value === "string"; })) return row;
+      if (row.length === 3) return row.slice(0, 2);
+      if (taskTypes[row[0]] || row[0] === "") return row;
       var type = /投注|打码/.test(row[0]) ? "wager" : /充值/.test(row[0]) ? "deposit" : /登录/.test(row[0]) ? "login" : /邀请/.test(row[0]) ? "invite" : "";
       var target = row[0].replace(/,/g, "").match(/\d+(?:\.\d+)?/);
-      var reward = row[1].replace(/,/g, "").match(/\d+(?:\.\d+)?/);
-      return [type, target ? target[0] : "", reward ? reward[0] : ""];
+      return [type, target ? target[0] : ""];
     });
     return state;
   }
@@ -244,22 +243,16 @@
     typeCell.appendChild(select);
     row.appendChild(typeCell);
     row.appendChild(inlineCell(values[1], "福利任务：目标值", false));
-    row.appendChild(inlineCell(values[2], "福利任务：奖励金额", true));
     var targetCell = row.children[1];
     targetCell.classList.add("benefit-task-target");
     var unit = document.createElement("span");
     unit.className = "benefit-task-unit";
     targetCell.appendChild(unit);
     var targetInput = query("input", targetCell);
-    var rewardInput = query("input", row.children[2]);
     targetInput.type = "number";
-    rewardInput.type = "number";
-    rewardInput.min = "0";
-    rewardInput.step = "0.01";
     // Assign after changing the type so legacy numeric strings keep their value.
     targetInput.value = values[1];
-    rewardInput.value = values[2];
-    [targetInput, rewardInput].forEach(function (input) { input.setAttribute("aria-describedby", "sevenDayTaskError"); });
+    targetInput.setAttribute("aria-describedby", "sevenDayTaskError");
     function updateType() {
       var type = taskTypes[select.value];
       display.textContent = type ? type.label : "请选择类型";
@@ -292,7 +285,7 @@
       if ((error || duplicate) && !firstInvalid) firstInvalid = query("[data-inline-value]", row);
       if (error && !text) text = "第 " + (index + 1) + " 个任务：" + error;
     });
-    if (duplicates.length) text = "第 " + duplicates.map(function (index) { return index + 1; }).join("、") + " 个任务的类型、目标值和奖励相同，请修改或删除重复项。";
+    if (duplicates.length) text = "第 " + duplicates.map(function (index) { return index + 1; }).join("、") + " 个任务的类型和目标值相同，请修改或删除重复项。";
     var notice = query("[data-task-error]");
     notice.textContent = text;
     notice.hidden = !text || !editing;
@@ -311,6 +304,7 @@
           });
         })
       };
+      if (card.getAttribute("data-module") === "tasks") modules.tasks.completionMode = "all";
     });
     return { masterOn: query("[data-seven-master-switch]").getAttribute("aria-checked") === "true", modules: modules };
   }
@@ -323,9 +317,7 @@
       return item && typeof item.enabled === "boolean" && Array.isArray(item.settings) &&
         item.settings.length === settingCount && item.settings.every(function (value) { return typeof value === "string"; }) &&
         Array.isArray(item.rows) && item.rows.every(function (row) {
-          var id = card.getAttribute("data-module");
-          var count = id === "tasks" ? 3 : 2;
-          return Array.isArray(row) && row.length === count && row.every(function (value) { return typeof value === "string"; });
+          return Array.isArray(row) && row.length === 2 && row.every(function (value) { return typeof value === "string"; });
         });
     });
   }
@@ -363,6 +355,12 @@
   function beginEditing() { if (!editing) setEditing(true); }
 
   function validate() {
+    var totalReward = query('[data-task-total-reward-row] [data-inline-value]');
+    if (!totalReward || !validRewardAmount(totalReward.value)) {
+      if (totalReward) { totalReward.setAttribute("aria-invalid", "true"); totalReward.focus(); }
+      message("全部完成奖励金额必须是非负金额，最多保留两位小数。", true);
+      return false;
+    }
     var unlock = query('[data-module="depositChallenge"] .benefit-config-row [data-inline-value]');
     if (unlock && !validRewardAmount(unlock.value)) {
       unlock.setAttribute("aria-invalid", "true");
@@ -434,7 +432,7 @@
       var card = element.closest("[data-module]");
       var label = query("h3", card).textContent + "：" + element.previousElementSibling.textContent;
       var cell = inlineCell(element.textContent, label, false);
-      if (card.getAttribute("data-module") === "depositChallenge") {
+      if (card.getAttribute("data-module") === "depositChallenge" || card.getAttribute("data-module") === "tasks") {
         var input = query("input", cell);
         input.type = "number";
         input.min = "0";
@@ -451,7 +449,7 @@
         hasLegacyBinding = true;
         legacyBinding = stored.modules.bindAccount;
       }
-      stored = migrateChallengeAmounts(migratePackRows(migrateTaskRows(stored)));
+      stored = migrateChallengeAmounts(migratePackRows(migrateTaskRows(stored, savedState.modules.tasks.settings[0])));
       if (validState(stored)) savedState = normalizeFixedRows(stored, savedState);
     } catch (error) { /* Defaults remain available when storage cannot be read. */ }
     restoreState(savedState);
@@ -485,7 +483,7 @@
         if (!editing || fixedRowCounts[add.getAttribute("data-add-row")]) return;
         var table = query('[data-module-table="' + add.getAttribute("data-add-row") + '"]');
         if (table) {
-          var values = table.getAttribute("data-module-table") === "tasks" ? ["", "", ""] : ["", ""];
+          var values = ["", ""];
           query("[data-inline-value]", appendRow(table, values)).focus();
         }
         return;
