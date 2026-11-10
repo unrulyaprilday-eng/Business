@@ -14,6 +14,7 @@
     <link href="custom/css/reward-wheel-activity.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/flash-rebate-activity.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/special-pack-activity.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/bargain-activity.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/new-activity-layout.css" type="text/css" rel="stylesheet"/>
     <link href="https://demo.axureux.com/fontawesome/5.7.2/pro/css/all.min.css" type="text/css" rel="stylesheet" media="print" onload="this.media='all'"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
@@ -25862,6 +25863,78 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
           </div>
         </div>
 
+        <div id="u6_state13" class="panel_state" data-label="砍一刀" style="visibility: hidden; display: none;" aria-hidden="true">
+          <div id="u6_state13_content" class="panel_state_content">
+            <form id="bargainForm" class="ba-form" novalidate>
+              <p id="bargainError" class="ba-error" role="alert" hidden></p>
+              <section class="ba-section">
+                <h3>基础配置</h3>
+                <div class="ba-grid">
+                  <label class="ba-field ba-required"><span>活动名称</span><input id="bargainName" maxlength="40" placeholder="请输入活动名称" required></label>
+                  <label class="ba-field ba-required"><span>活动标题</span><input id="bargainTitle" maxlength="60" placeholder="请输入活动标题" required></label>
+                  <div class="ba-field ba-wide ba-required"><span>活动时间</span><div class="ba-time"><input id="bargainStartTime" type="datetime-local" required aria-label="活动开始时间"><em>至</em><input id="bargainEndTime" type="datetime-local" required aria-label="活动结束时间"><label class="ba-check"><input id="bargainLongTerm" type="checkbox">长期有效</label></div></div>
+                  <div class="ba-field ba-wide"><span>注册后倒计时</span><label class="ba-check"><input id="bargainRegistrationCountdownEnabled" type="checkbox" aria-controls="bargainRegistrationCountdownFields" aria-expanded="false">启用</label></div>
+                  <div id="bargainRegistrationCountdownFields" class="ba-field ba-wide" hidden><span>倒计时时长</span><div class="ba-duration" role="group" aria-label="注册后倒计时时长"><label><input id="bargainRegistrationCountdownDays" type="number" min="0" step="1" value="1" aria-label="倒计时天数" disabled><span>天</span></label><label><input id="bargainRegistrationCountdownHours" type="number" min="0" max="23" step="1" value="0" aria-label="倒计时小时数" disabled><span>小时</span></label></div></div>
+                  <p id="bargainRegistrationCountdownHint" class="ba-hint ba-countdown-hint ba-wide" aria-live="polite">未设置玩家个人倒计时，玩家参与仅受活动有效期限制。启用后从玩家注册时间开始计算。</p>
+                  <label class="ba-field ba-required"><span>打码倍数</span><input id="bargainWagerMultiple" type="number" min="0" step="0.01" value="1" required></label>
+                  <div class="ba-field"><span id="bargainTargetLabel">奖励金额目标</span><div class="ba-options" role="radiogroup" aria-labelledby="bargainTargetLabel"><label><input type="radio" name="bargainRewardTarget" value="余额" checked>余额</label><label><input type="radio" name="bargainRewardTarget" value="存钱罐">存钱罐</label></div></div>
+                  <label class="ba-field"><span>活动排序</span><input id="bargainSort" type="number" min="0" step="1" value="0" required></label>
+                  <div class="ba-field"><span>启用状态</span><label class="ba-check"><input id="bargainEnabled" type="checkbox" checked><span id="bargainEnabledText">开启</span></label></div>
+                </div>
+              </section>
+              <section class="ba-section">
+                <h3>奖励与砍刀进度</h3>
+                <div class="ba-grid">
+                  <label class="ba-field ba-required"><span>最终奖励金额</span><input id="bargainRewardAmount" type="number" min="0.01" step="0.01" placeholder="进度达到 100% 时获得" required></label>
+                  <label class="ba-field ba-required"><span>初始百分比</span><span class="ba-inline"><input id="bargainInitialPercent" type="number" min="0" max="99.99" step="0.01" value="85" aria-describedby="bargainProgressHint" required><span>%</span></span></label>
+                  <label class="ba-field ba-required"><span>获奖总刀数</span><span class="ba-inline"><input id="bargainTotalCuts" type="number" min="3" step="1" value="20" aria-describedby="bargainProgressHint" required><span>刀</span></span></label>
+                  <div class="ba-field"><span>初始赠送合计</span><span id="bargainInitialCuts" class="ba-gift-value" aria-live="polite">2 刀（由下方两项任务合计）</span></div>
+                </div>
+                <p id="bargainProgressHint" class="ba-rule-note" aria-live="polite">官方赠送和精英玩家赠送共提供 2 刀，全部使用后进度达到 85%；获奖总刀数包含这些赠送刀数，还需使用 18 刀达到 100% 并领取最终奖励。</p>
+                <p id="bargainProgressCurveHint" class="ba-hint">进度按渐近曲线增长：初始赠送任务所赠刀数使用后达到初始百分比，后续每刀提升的百分比逐步递减，越接近目标增幅越小；达到获奖总刀数时，最后一刀补足至 100%。</p>
+              </section>
+              <section class="ba-section">
+                <h3>初始赠送任务</h3>
+                <div class="ba-table-wrap"><table class="ba-table"><thead><tr><th scope="col">任务名称</th><th scope="col">领取说明</th><th scope="col">赠送刀数</th><th scope="col">操作</th></tr></thead><tbody id="bargainInitialRows">
+                  <tr><td>官方赠送</td><td>初始赠送，每轮领取一次</td><td>1 刀</td><td><span class="ba-hint">加载后可编辑</span></td></tr>
+                  <tr><td>精英玩家赠送</td><td>初始赠送，每轮领取一次</td><td>1 刀</td><td><span class="ba-hint">加载后可编辑</span></td></tr>
+                </tbody></table></div>
+                <p class="ba-hint">分别配置两项任务的赠送刀数；初始赠送合计由这两项任务计算，全部使用后达到上方配置的初始百分比。</p>
+              </section>
+              <section class="ba-section">
+                <div class="ba-toolbar"><h3>个人任务</h3><button class="ba-button" type="button" data-ba-add="personal">+ 添加个人任务</button></div>
+                <div class="ba-table-wrap"><table class="ba-table"><thead><tr><th scope="col">任务类型</th><th scope="col">完成条件</th><th scope="col">赠送刀数</th><th scope="col">操作</th></tr></thead><tbody id="bargainPersonalRows">
+                  <tr><td>完成充值<span class="ba-tag">默认</span></td><td>累计完成充值 3 次</td><td>1 刀</td><td><span class="ba-hint">加载后可编辑</span></td></tr>
+                  <tr><td>完成打码<span class="ba-tag">默认</span></td><td>累计完成打码 3 次</td><td>1 刀</td><td><span class="ba-hint">加载后可编辑</span></td></tr>
+                  <tr><td>累计充值</td><td>累计充值达到 50000</td><td>3 刀</td><td><span class="ba-hint">加载后可编辑</span></td></tr>
+                  <tr><td>累计打码</td><td>累计打码达到 100000</td><td>5 刀</td><td><span class="ba-hint">加载后可编辑</span></td></tr>
+                  <tr><td>登录赠送</td><td>登录活动</td><td>1 刀</td><td><span class="ba-hint">加载后可编辑</span></td></tr>
+                </tbody></table></div>
+                <p class="ba-hint">完成充值、完成打码为默认任务，可编辑达标次数和赠送刀数。还可添加累计充值、累计打码、登录、绑定手机、绑定邮箱及下载 / 使用官方 App 任务；每轮每项任务达标后赠送一次。</p>
+              </section>
+              <section class="ba-section">
+                <div class="ba-toolbar"><h3>邀请任务</h3><button class="ba-button" type="button" data-ba-add="invitation">+ 添加邀请任务</button></div>
+                <div class="ba-table-wrap"><table class="ba-table"><thead><tr><th scope="col">任务</th><th scope="col">被邀请人完成条件（全部满足）</th><th scope="col">赠送刀数</th><th scope="col">操作</th></tr></thead><tbody id="bargainInvitationRows">
+                  <tr><td>邀请任务 1</td><td>绑定手机</td><td>1 刀</td><td><span class="ba-hint">加载后可编辑</span></td></tr>
+                  <tr><td>邀请任务 2</td><td>绑定邮箱</td><td>1 刀</td><td><span class="ba-hint">加载后可编辑</span></td></tr>
+                  <tr><td>邀请任务 3</td><td>累计充值达到 50000</td><td>3 刀</td><td><span class="ba-hint">加载后可编辑</span></td></tr>
+                  <tr><td>邀请任务 4</td><td>累计打码达到 100000</td><td>5 刀</td><td><span class="ba-hint">加载后可编辑</span></td></tr>
+                  <tr><td>邀请任务 5</td><td>绑定手机 + 绑定邮箱</td><td>2 刀</td><td><span class="ba-hint">加载后可编辑</span></td></tr>
+                  <tr><td>邀请任务 6</td><td>绑定手机 + 绑定邮箱 + 累计充值达到 50000 + 累计打码达到 100000</td><td>8 刀</td><td><span class="ba-hint">加载后可编辑</span></td></tr>
+                </tbody></table></div>
+                <p class="ba-hint">绑定手机、绑定邮箱、累计充值、累计打码可任意组合，共 15 种非空组合。被邀请人满足同一任务的全部条件后，邀请人获得配置刀数；同一好友在同一任务中仅计一次。</p>
+              </section>
+              <section class="ba-section">
+                <h3>通用配置</h3>
+                <div class="ba-grid">
+                  <div class="ba-upload"><span>活动 Banner</span><div><input id="bargainBannerFile" type="file" accept="image/png,image/jpeg,image/webp" hidden><button class="ba-upload-button" type="button" data-ba-upload="Banner" aria-label="上传或更换活动 Banner"><span id="bargainBannerPlaceholder" class="ba-upload-placeholder"><b aria-hidden="true">＋</b><span>点击上传 Banner</span></span><img id="bargainBannerPreview" alt="活动 Banner 预览" hidden></button><button class="ba-link" type="button" data-ba-remove-image="Banner" hidden>移除图片</button><p class="ba-hint">建议尺寸 800 × 400；支持 JPG、PNG、WebP，最大 500KB。点击图片可更换。</p></div></div>
+                  <div class="ba-upload"><span>活动内页图</span><div><input id="bargainDetailFile" type="file" accept="image/png,image/jpeg,image/webp" hidden><button class="ba-upload-button" type="button" data-ba-upload="Detail" aria-label="上传或更换活动内页图"><span id="bargainDetailPlaceholder" class="ba-upload-placeholder"><b aria-hidden="true">＋</b><span>点击上传内页图</span></span><img id="bargainDetailPreview" alt="活动内页图预览" hidden></button><button class="ba-link" type="button" data-ba-remove-image="Detail" hidden>移除图片</button><p class="ba-hint">支持 JPG、PNG、WebP，最大 1MB。点击图片可更换。</p></div></div>
+                  <div class="ba-field ba-wide ba-description-field"><span id="bargainDescriptionLabel">活动文本</span><div><div class="ba-editor"><div class="ba-editor-toolbar" role="toolbar" aria-label="活动文本格式"><button type="button" data-ba-command="bold" title="加粗" aria-label="加粗"><b>B</b></button><button type="button" data-ba-command="italic" title="斜体" aria-label="斜体"><i>I</i></button><button type="button" data-ba-command="underline" title="下划线" aria-label="下划线"><u>U</u></button><button type="button" data-ba-command="insertUnorderedList" title="项目符号列表" aria-label="项目符号列表">•</button><button type="button" data-ba-command="insertOrderedList" title="编号列表" aria-label="编号列表">1.</button><button type="button" data-ba-command="undo" title="撤销" aria-label="撤销">↶</button><button type="button" data-ba-command="redo" title="重做" aria-label="重做">↷</button></div><div id="bargainDescription" class="ba-editor-body" contenteditable="true" role="textbox" aria-labelledby="bargainDescriptionLabel" aria-describedby="bargainDescriptionHint" aria-multiline="true"><ol><li>完成官方赠送和精英玩家赠送任务，获得配置的初始赠送刀数，使用后达到配置的初始进度。</li><li>完成个人任务或邀请好友完成指定条件，获得更多砍刀次数。</li><li>进度按渐近曲线增长，后续每刀提升的百分比逐步递减；达到获奖总刀数时，最后一刀补足至 100%。</li><li>进度达到 100% 后，可领取最终奖励。</li></ol></div></div><p id="bargainDescriptionHint" class="ba-hint">最多 4000 字，支持加粗、斜体、下划线及列表格式。</p></div></div>
+                </div>
+              </section>
+            </form>
+          </div>
+        </div>
       </div>
 
       <!-- Unnamed (矩形) -->
@@ -25884,6 +25957,7 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
           <option class="u3012_input_option" value="月签到活动">月签到</option>
           <option class="u3012_input_option" value="周卡">周卡</option>
           <option class="u3012_input_option" value="特惠礼包">特惠礼包</option>
+          <option class="u3012_input_option" value="砍一刀">砍一刀</option>
           <option class="u3012_input_option" value="打码返水">打码返水</option>
           <option class="u3012_input_option" value="优惠券赠送">优惠券赠送</option>
           <option class="u3012_input_option" value="会员礼包">会员礼包</option>
@@ -25918,6 +25992,28 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
         </form>
       </section>
     </div>
+    <div id="bargainTaskModal" class="ba-modal" hidden>
+      <section class="ba-dialog" role="dialog" aria-modal="true" aria-labelledby="bargainTaskModalTitle">
+        <header class="ba-modal-head"><h2 id="bargainTaskModalTitle">添加个人任务</h2><button class="ba-close" type="button" data-ba-close aria-label="关闭任务弹窗">×</button></header>
+        <form id="bargainTaskForm" novalidate>
+          <div class="ba-modal-body">
+            <p id="bargainTaskError" class="ba-error" role="alert" hidden></p>
+            <div id="bargainGiftTaskField" class="ba-field" hidden><span>任务名称</span><span id="bargainGiftTaskName" class="ba-gift-value"></span></div>
+            <label id="bargainTaskTypeField" class="ba-field ba-required"><span>任务类型</span><select id="bargainTaskType"><option value="depositCount">完成充值</option><option value="wagerCount">完成打码</option><option value="depositAmount">累计充值</option><option value="wagerAmount">累计打码</option><option value="login">登录赠送</option><option value="phone">绑定手机</option><option value="email">绑定邮箱</option><option value="app">下载 / 使用官方 App</option></select></label>
+            <label id="bargainTaskThresholdField" class="ba-field ba-required"><span id="bargainTaskThresholdLabel">达标次数</span><input id="bargainTaskThreshold" type="number" min="1" step="1" value="1" required></label>
+            <fieldset id="bargainInviteConditions" class="ba-conditions" hidden><legend>好友完成条件（至少选择一项）</legend>
+              <div class="ba-condition"><label class="ba-check"><input type="checkbox" data-ba-condition="phone">绑定手机</label><span class="ba-hint">好友完成手机绑定</span></div>
+              <div class="ba-condition"><label class="ba-check"><input type="checkbox" data-ba-condition="email">绑定邮箱</label><span class="ba-hint">好友完成邮箱绑定</span></div>
+              <div class="ba-condition"><label class="ba-check"><input type="checkbox" data-ba-condition="depositAmount">累计充值</label><input id="bargainInviteDeposit" type="number" min="0.01" step="0.01" placeholder="请输入累计充值门槛" aria-label="好友累计充值门槛" disabled></div>
+              <div class="ba-condition"><label class="ba-check"><input type="checkbox" data-ba-condition="wagerAmount">累计打码</label><input id="bargainInviteWager" type="number" min="0.01" step="0.01" placeholder="请输入累计打码门槛" aria-label="好友累计打码门槛" disabled></div>
+              <p class="ba-hint">勾选的条件需由同一位好友全部完成；未勾选条件不参与本任务判断。</p>
+            </fieldset>
+            <label class="ba-field ba-required"><span>赠送刀数</span><span class="ba-inline"><input id="bargainTaskRewardCuts" type="number" min="1" step="1" value="1" required><span>刀</span></span></label>
+          </div>
+          <footer class="ba-modal-foot"><button class="ba-button" type="button" data-ba-close>取消</button><button class="ba-button ba-primary" type="submit">确定</button></footer>
+        </form>
+      </section>
+    </div>
     <script src="custom/js/og-shared-data.js"></script>
     <script src="custom/js/新增活动.js"></script>
     <script src="custom/js/recharge-gift-activity.js"></script>
@@ -25925,6 +26021,7 @@ OG 标题、描述、图片与内链在 OG管理 中统一维护。
     <script src="custom/js/lucky-wheel-activity.js"></script>
     <script src="custom/js/flash-rebate-activity.js"></script>
     <script src="custom/js/special-pack-activity.js"></script>
+    <script src="custom/js/bargain-activity.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
   </body>
 </html>

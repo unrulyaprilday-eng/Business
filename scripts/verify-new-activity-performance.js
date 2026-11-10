@@ -19,7 +19,7 @@ function node(id) {
   Object.defineProperty(result, 'textContent', { get() { return text; }, set(value) { writes++; text = value; } });
   return result;
 }
-const states = Array.from({ length: 13 }, (_, index) => node('u6_state' + index));
+const states = Array.from({ length: 14 }, (_, index) => node('u6_state' + index));
 const panel = Object.assign(node('u6'), { children: states });
 const footer = { '#u4_text span': node('u4'), '#u5_text span': node('u5') };
 let classWrites = 0;
@@ -51,6 +51,9 @@ assert(bodyClass.includes('lucky-wheel-template-active') && !bodyClass.includes(
 window.switchTest.setTemplateState('特惠礼包');
 assert.equal(states[12].style.display, 'block');
 assert.equal(footer['#u4_text span'].textContent, '保存');
+window.switchTest.setTemplateState('\u780d\u4e00\u5200');
+assert.equal(states[13].style.display, 'block');
+assert(bodyClass.includes('bargain-template-active'));
 
 // Run the actual wheel dropdown handler to ensure unrelated selections do no work.
 const wheel = fs.readFileSync('custom/js/lucky-wheel-activity.js', 'utf8');

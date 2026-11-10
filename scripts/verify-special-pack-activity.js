@@ -30,7 +30,7 @@ assert.equal(stack.length, 0, 'All HTML tags close');
 const actualState = domIds.get('u6_state12');
 assert(actualState && actualState.parent === domIds.get('u6'), 'special pack state must directly belong to u6');
 const actualStates = domIds.get('u6').children.filter(node => /\bpanel_state\b/.test(node.token));
-assert.equal(actualStates.length, 13); assert.equal(actualStates[12], actualState, 'special pack is the thirteenth direct panel state');
+assert.equal(actualStates.length, 14); assert.equal(actualStates[12], actualState, 'special pack is the thirteenth direct panel state');
 assert.equal(domIds.get('specialPackForm').parent.id, 'u6_state12_content');
 assert(!domIds.has('specialPackTierModal'), 'tiers use inline editing without a modal');
 for (const suffix of ['Daily', 'Weekly', 'Monthly']) {

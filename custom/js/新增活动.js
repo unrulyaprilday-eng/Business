@@ -12,7 +12,8 @@
     "\u5e78\u8fd0\u8f6c\u76d8": 10,
     "\u5956\u52b1\u8f6c\u76d8": 10,
     "\u6253\u7801\u8d60\u91d1": 11,
-    "\u7279\u60e0\u793c\u5305": 12
+    "\u7279\u60e0\u793c\u5305": 12,
+    "\u780d\u4e00\u5200": 13
   };
 
   var CHALLENGE_NAME_OPTIONS = [
@@ -189,6 +190,7 @@
     var isRewardWheel = template === "\u5956\u52b1\u8f6c\u76d8";
     var isFlashRebate = template === "\u6253\u7801\u8d60\u91d1";
     var isSpecialPack = template === "\u7279\u60e0\u793c\u5305";
+    var isBargain = template === "\u780d\u4e00\u5200";
 
     // Change the template classes together, preserving the shared frame classes.
     var templateClasses = {
@@ -203,7 +205,8 @@
       "lucky-wheel-template-active": isLuckyWheel || isRewardWheel,
       "reward-wheel-template-active": isRewardWheel,
       "flash-rebate-template-active": isFlashRebate,
-      "special-pack-template-active": isSpecialPack
+      "special-pack-template-active": isSpecialPack,
+      "bargain-template-active": isBargain
     };
     var previousClasses = document.body.className;
     var nextClasses = previousClasses.split(/\s+/).filter(function (name) {
@@ -211,7 +214,7 @@
     }).concat(Object.keys(templateClasses).filter(function (name) { return templateClasses[name]; })).join(" ");
     if (previousClasses !== nextClasses) { document.body.className = nextClasses; }
     showPanelState("u6", state);
-    syncChallengeFooter(isChallenge || isRedPacket || isMonthlyCheckin || isWeeklyCard || isLuckyWheel || isRewardWheel || isSpecialPack);
+    syncChallengeFooter(isChallenge || isRedPacket || isMonthlyCheckin || isWeeklyCard || isLuckyWheel || isRewardWheel || isSpecialPack || isBargain);
   }
 
   function bindTemplateSelect(select) {
@@ -1784,6 +1787,9 @@
       }
       if (new URLSearchParams(window.location.search).has("specialPackId") || new URLSearchParams(window.location.search).get("template") === "\u7279\u60e0\u793c\u5305") {
         select.value = "\u7279\u60e0\u793c\u5305";
+      }
+      if (new URLSearchParams(window.location.search).has("bargainId") || new URLSearchParams(window.location.search).get("template") === "\u780d\u4e00\u5200") {
+        select.value = "\u780d\u4e00\u5200";
       }
       bindTemplateSelect(select);
     }

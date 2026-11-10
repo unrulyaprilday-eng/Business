@@ -6,6 +6,7 @@
   var COUPON_TASK_STORAGE_KEY = 'promoCouponTaskActivities';
   var WEEKLY_CARD_STORAGE_KEY = 'promoWeeklyCardActivities';
   var SPECIAL_PACK_STORAGE_KEY = 'promoSpecialPackActivities';
+  var BARGAIN_STORAGE_KEY = 'promoBargainActivities';
   var LUCKY_WHEEL_STORAGE_KEY = 'promoLuckyWheelActivities';
   var REWARD_WHEEL_STORAGE_KEY = 'promoRewardWheelActivities';
   var activeActivityType = '全部类型';
@@ -24,6 +25,74 @@
     if (paginationSpans.length) {
       paginationSpans[paginationSpans.length - 1].textContent = '共 ' + count + ' 条记录';
     }
+  }
+
+  function getBargainRecords() {
+    try {
+      var records = JSON.parse(window.localStorage.getItem(BARGAIN_STORAGE_KEY) || '[]');
+      var ids = new Set();
+      if (!Array.isArray(records) || records.some(function (record) {
+        if (!record || typeof record !== 'object' || typeof record.id !== 'string' || !record.id || ids.has(record.id)) { return true; }
+        ids.add(record.id); return false;
+      })) { throw new Error('Invalid bargain records'); }
+      return records;
+    } catch (error) {
+      window.alert('砍一刀活动数据读取失败，请检查浏览器本地存储后重试。');
+      return null;
+    }
+  }
+
+  function setBargainRecords(records) {
+    try {
+      window.localStorage.setItem(BARGAIN_STORAGE_KEY, JSON.stringify(records));
+      return true;
+    } catch (error) {
+      window.alert('砍一刀活动保存失败，请检查浏览器存储权限或剩余空间后重试。');
+      return false;
+    }
+  }
+
+  function renderBargainRows(records) {
+    var tbody = document.getElementById('promoActivityRows');
+    if (!tbody) { return; }
+    if (!records) { records = getBargainRecords(); }
+    if (!records) { return; }
+    Array.prototype.forEach.call(tbody.querySelectorAll('[data-bargain-id]'), function (row) { row.remove(); });
+    records.slice().reverse().forEach(function (record) {
+      var row = document.createElement('tr');
+      var enabled = record.enabled !== false;
+      row.setAttribute('data-bargain-id', record.id);
+      row.innerHTML = [
+        '<td>' + escapeHtml(record.name) + '</td>',
+        '<td>-</td>',
+        '<td title="' + escapeHtml(record.title) + '">' + escapeHtml(record.title) + '</td>',
+        '<td>砍一刀</td>',
+        '<td>' + escapeHtml(formatRechargeGiftTime(record.startTime)) + '</td>',
+        '<td>' + (record.longTerm ? '长期有效' : escapeHtml(formatRechargeGiftTime(record.endTime))) + '</td>',
+        '<td>' + escapeHtml(record.wagerMultiple == null ? '1' : record.wagerMultiple) + '</td>',
+        '<td>-</td>',
+        '<td><button class="switch' + (enabled ? ' on' : '') + '" type="button" data-bargain-toggle role="switch" aria-checked="' + enabled + '" aria-label="' + (enabled ? '关闭活动' : '启用活动') + '"></button></td>',
+        '<td>' + escapeHtml(record.sort == null ? '0' : record.sort) + '</td>',
+        '<td>admin</td>',
+        '<td class="actions"><button type="button" data-bargain-edit>编辑</button><button class="danger" type="button" data-bargain-delete>删除</button></td>'
+      ].join('');
+      tbody.insertBefore(row, tbody.firstChild);
+    });
+    applyActivityFilter();
+  }
+
+  function updateBargainRecord(id) {
+    var records = getBargainRecords();
+    if (!records) { return; }
+    var record = records.find(function (item) { return item.id === id; });
+    if (!record) {
+      window.alert('该砍一刀活动已不存在，请刷新列表。');
+      renderBargainRows(records);
+      return;
+    }
+    record.enabled = record.enabled === false;
+    record.updatedAt = new Date().toISOString();
+    if (setBargainRecords(records)) { renderBargainRows(records); }
   }
 
   function getSpecialPackRecords() {
@@ -670,10 +739,18 @@
     renderRechargeGiftRows();
     renderWeeklyCardRows();
     renderSpecialPackRows();
+    renderBargainRows();
     renderLuckyWheelRows();
     renderRewardWheelRows();
     renderCouponTaskRows();
     applyActivityFilter();
+
+    if (window.addEventListener) {
+      window.addEventListener('storage', function (event) {
+        if (event.storageArea && event.storageArea !== window.localStorage) { return; }
+        if (event.key === BARGAIN_STORAGE_KEY || event.key === null) { renderBargainRows(); }
+      });
+    }
 
     if (searchButton && typeFilter) {
       searchButton.addEventListener('click', function () {
@@ -703,6 +780,7 @@
         var rechargeGiftRow = event.target.closest('[data-recharge-gift-id]');
         var weeklyCardRow = event.target.closest('[data-weekly-card-id]');
         var specialPackRow = event.target.closest('[data-special-pack-id]');
+        var bargainRow = event.target.closest('[data-bargain-id]');
         var luckyWheelRow = event.target.closest('[data-lucky-wheel-id]');
         var rewardWheelRow = event.target.closest('[data-reward-wheel-id]');
         var couponTaskRow = event.target.closest('[data-coupon-task-id]');
@@ -719,6 +797,24 @@
           if (event.target.closest('[data-coupon-task-toggle]')) {
             updateCouponTaskRecord(id, function (record) { record.enabled = record.enabled === false; });
             return;
+          }
+          return;
+        }
+        if (bargainRow) {
+          id = bargainRow.getAttribute('data-bargain-id');
+          if (event.target.closest('[data-bargain-edit]')) {
+            window.location.href = '新增活动.html?template=' + encodeURIComponent('砍一刀') + '&bargainId=' + encodeURIComponent(id);
+            return;
+          }
+          if (event.target.closest('[data-bargain-toggle]')) {
+            updateBargainRecord(id);
+            return;
+          }
+          if (event.target.closest('[data-bargain-delete]') && window.confirm('确定删除该砍一刀活动吗？删除后不可恢复。')) {
+            var bargainRecords = getBargainRecords();
+            if (bargainRecords && setBargainRecords(bargainRecords.filter(function (record) { return record.id !== id; }))) {
+              renderBargainRows();
+            }
           }
           return;
         }
@@ -881,7 +977,7 @@
     }
 
     document.querySelectorAll('.switch').forEach(function (toggle) {
-      if (toggle.closest('[data-challenge-id], [data-red-packet-id], [data-monthly-checkin-id], [data-recharge-gift-id], [data-weekly-card-id], [data-special-pack-id], [data-lucky-wheel-id], [data-reward-wheel-id], [data-coupon-task-id]')) { return; }
+      if (toggle.closest('[data-challenge-id], [data-red-packet-id], [data-monthly-checkin-id], [data-recharge-gift-id], [data-weekly-card-id], [data-special-pack-id], [data-bargain-id], [data-lucky-wheel-id], [data-reward-wheel-id], [data-coupon-task-id]')) { return; }
       toggle.addEventListener('click', function () { toggle.classList.toggle('on'); });
     });
   });

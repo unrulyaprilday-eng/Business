@@ -1,0 +1,93 @@
+/* Only the bargain template and its task editor use these rules. */
+body.bargain-template-active #u6 > #u6_state13 { display: block !important; visibility: visible !important; }
+.ba-form, .ba-form *, .ba-modal, .ba-modal * { box-sizing: border-box; }
+.ba-form { width: 100%; margin: 0; padding: var(--activity-padding, 24px); color: #303848; background: #fff; text-align: left; font: 13px/1.6 "Microsoft YaHei", Arial, sans-serif; }
+.ba-form [hidden], .ba-modal[hidden], .ba-modal [hidden] { display: none !important; }
+.ba-section { margin: 0 0 20px; padding: 16px; border: 1px solid #e6ebf2; border-radius: 6px; background: #fff; }
+.ba-section h3 { margin: 0 0 14px; color: #303848; font-size: 14px; font-weight: 600; }
+.ba-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 480px)); gap: 16px 24px; }
+.ba-field { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 12px; align-items: center; min-width: 0; margin: 0; }
+.ba-field > span { color: #606b7c; text-align: right; }
+.ba-field > .ba-gift-value { color: #303848; text-align: left; }
+.ba-required > span::before { content: "*"; margin-right: 4px; color: #e65f65; }
+.ba-wide { grid-column: 1 / -1; }
+.ba-form input:not([type="checkbox"]):not([type="radio"]), .ba-form textarea, .ba-modal input:not([type="checkbox"]), .ba-modal select { width: 100%; min-width: 0; height: 34px; padding: 4px 10px; border: 1px solid #dcdfe6; border-radius: 4px; background: #fff; color: #303848; font: inherit; }
+.ba-form textarea { height: 112px; resize: vertical; }
+.ba-form input:disabled, .ba-modal input:disabled { background: #f5f7fa !important; color: #909399 !important; }
+.ba-form :is(input, button, textarea):focus-visible, .ba-modal :is(input, select, button):focus-visible { outline: 2px solid #c6dfff; outline-offset: 2px; }
+.ba-options, .ba-check { display: flex; align-items: center; gap: 8px; }
+.ba-options { flex-wrap: wrap; gap: 20px; }
+.ba-check, .ba-options label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.ba-form input[type="radio"], .ba-form input[type="checkbox"], .ba-modal input[type="checkbox"] { appearance: none; -webkit-appearance: none; position: relative; flex: 0 0 16px; width: 16px; height: 16px; margin: 0; padding: 0; border: 1px solid #dcdfe6; border-radius: 3px; background: #fff; cursor: pointer; }
+.ba-form input[type="radio"] { border-radius: 50%; }
+.ba-form input[type="radio"]:checked { border-color: #409eff; }
+.ba-form input[type="radio"]:checked::after { content: ""; position: absolute; inset: 4px; border-radius: 50%; background: #409eff; }
+.ba-form input[type="checkbox"]:checked, .ba-modal input[type="checkbox"]:checked { border-color: #409eff; background: #409eff; }
+.ba-form input[type="checkbox"]:checked::after, .ba-modal input[type="checkbox"]:checked::after { content: ""; position: absolute; left: 5px; top: 2px; width: 4px; height: 8px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.ba-time { display: grid; grid-template-columns: minmax(0, 210px) 16px minmax(0, 210px) max-content; gap: 8px; align-items: center; justify-content: start; }
+.ba-time em { color: #909399; font-style: normal; }
+.ba-time .ba-check { margin-left: 4px; }
+.ba-duration { display: grid; grid-template-columns: max-content max-content; align-items: center; justify-content: start; gap: 16px; }
+.ba-duration > label { display: grid; grid-template-columns: 88px max-content; align-items: center; gap: 8px; margin: 0; white-space: nowrap; }
+.ba-form .ba-duration input[type="number"] { width: 88px; max-width: 88px; }
+.ba-duration > label > span { white-space: nowrap; }
+.ba-form .ba-countdown-hint { margin: -8px 0 0 124px; }
+.ba-inline { display: flex; align-items: center; gap: 8px; }
+.ba-inline > input { max-width: 200px; }
+.ba-hint { margin: 8px 0 0; color: #8b94a3; font-size: 12px; line-height: 1.7; }
+.ba-rule-note { max-width: 100%; margin: 14px 0 0; padding: 9px 12px; border: 1px solid #e6edf6; border-radius: 4px; color: #62758e; background: #f8fafd; }
+.ba-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; max-width: 920px; margin-bottom: 10px; }
+.ba-toolbar h3 { margin-bottom: 0; }
+.ba-table-wrap { max-width: 920px; overflow-x: auto; border: 1px solid #e6ebf2; border-radius: 4px; }
+.ba-table { width: 100%; min-width: 650px; border-collapse: collapse; color: #303848; font: inherit; }
+.ba-table th, .ba-table td { padding: 10px 12px; border-bottom: 1px solid #ebeef5; text-align: left; vertical-align: middle; }
+.ba-table th { background: #f5f7fa; color: #606b7c; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.ba-table th:first-child { width: 175px; }
+.ba-table th:nth-last-child(2) { width: 100px; text-align: right; }
+.ba-table td:nth-last-child(2) { text-align: right; font-variant-numeric: tabular-nums; }
+.ba-table th:last-child { width: 110px; }
+.ba-table tbody tr:last-child td { border-bottom: 0; }
+.ba-table .ba-empty { padding: 24px 12px; text-align: center; color: #929baa; }
+.ba-tag { display: inline-block; margin-left: 6px; padding: 0 5px; border-radius: 3px; background: #eef4fa; color: #6583a5; font-size: 11px; }
+.ba-button { height: 32px; padding: 0 14px; border: 1px solid #dcdfe6; border-radius: 4px; background: #fff; color: #606b7c; font: inherit; cursor: pointer; }
+.ba-button:hover { border-color: #a0cfff; color: #3688df; background: #ecf5ff; }
+.ba-button.ba-primary { border-color: #409eff; background: #409eff; color: #fff; }
+.ba-link { padding: 0; border: 0; color: #409eff; background: transparent; font: inherit; cursor: pointer; }
+.ba-link + .ba-link { margin-left: 14px; }
+.ba-link.ba-danger { color: #e65f65; }
+.ba-upload { display: grid; grid-template-columns: 112px minmax(0, 1fr); align-items: start; gap: 12px; min-width: 0; }
+.ba-upload > span { padding-top: 8px; color: #606b7c; text-align: right; }
+.ba-upload-button { display: flex; align-items: center; justify-content: center; width: 240px; max-width: 100%; height: 120px; padding: 3px; overflow: hidden; border: 1px dashed #cdd7e4; border-radius: 4px; background: #fafcff; color: #8795a8; font: inherit; cursor: pointer; }
+.ba-upload-button:hover { border-color: #409eff; background: #f5faff; }
+.ba-upload-placeholder { display: grid; justify-items: center; gap: 4px; }
+.ba-upload-placeholder b { font-size: 24px; font-weight: 400; line-height: 1; }
+.ba-upload-button img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.ba-upload .ba-link { margin-top: 6px; }
+.ba-description-field { align-items: start; }
+.ba-description-field > span { padding-top: 8px; }
+.ba-editor { max-width: 920px; min-width: 0; overflow: hidden; border: 1px solid #dcdfe6; border-radius: 4px; }
+.ba-editor-toolbar { display: flex; flex-wrap: wrap; gap: 4px; padding: 5px 8px; border-bottom: 1px solid #ebeef5; background: #f7f8fa; }
+.ba-editor-toolbar button { min-width: 28px; height: 26px; padding: 0 7px; border: 0; border-radius: 3px; background: transparent; color: #606b7c; cursor: pointer; }
+.ba-editor-toolbar button:hover { background: #e8eff8; }
+.ba-editor-body { min-height: 160px; max-height: 420px; padding: 12px; overflow-y: auto; overflow-wrap: anywhere; line-height: 1.8; }
+.ba-editor-body:focus-visible { outline: 2px solid #c6dfff; outline-offset: -2px; }
+.ba-editor-body p, .ba-editor-body div { margin: 0 0 8px; }
+.ba-editor-body ol, .ba-editor-body ul { margin: 0; padding-left: 22px; }
+.ba-error { margin: 0 0 14px; padding: 9px 12px; border: 1px solid #fde2e2; border-radius: 4px; background: #fef0f0; color: #c45656; }
+.ba-modal { position: fixed; z-index: 11000; inset: 0; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(28, 40, 60, .38); color: #303848; text-align: left; font: 13px/1.6 "Microsoft YaHei", Arial, sans-serif; }
+.ba-dialog { display: flex; flex-direction: column; width: 540px; max-width: 100%; max-height: calc(100vh - 40px); overflow: hidden; border-radius: 6px; background: #fff; box-shadow: 0 12px 32px rgba(28, 40, 60, .16); }
+.ba-dialog > form { display: flex; flex-direction: column; min-height: 0; }
+.ba-modal-head, .ba-modal-foot { flex-shrink: 0; }
+.ba-modal-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid #ebeef5; }
+.ba-modal-head h2 { margin: 0; font-size: 15px; font-weight: 600; }
+.ba-close { width: 28px; height: 28px; border: 0; background: transparent; color: #909399; font-size: 22px; cursor: pointer; }
+.ba-modal-body { min-height: 0; padding: 20px; overflow-y: auto; }
+.ba-modal-body > .ba-field { margin-bottom: 18px; }
+.ba-modal-foot { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid #ebeef5; }
+.ba-conditions { margin: 0 0 18px; padding: 12px; border: 1px solid #e6ebf2; border-radius: 4px; }
+.ba-conditions legend { padding: 0 6px; color: #606b7c; }
+.ba-condition { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 10px; align-items: center; margin: 10px 0; }
+.ba-condition .ba-check { min-height: 32px; }
+@media (max-width: 900px) { .ba-grid { grid-template-columns: minmax(0, 1fr); } .ba-field { max-width: 600px; } .ba-wide { max-width: none; } }
+@media (max-width: 760px) { .ba-time { grid-template-columns: minmax(0, 210px); } .ba-time em { display: none; } .ba-time .ba-check { margin-left: 0; } .ba-modal .ba-field { grid-template-columns: 96px minmax(0, 1fr); } }
+@media (max-width: 520px) { .ba-duration { grid-template-columns: max-content; row-gap: 8px; } }
