@@ -9,7 +9,6 @@
     wagerCount: { label: '完成打码', kind: 'count', prefix: '累计完成打码 ', suffix: ' 次' },
     depositAmount: { label: '累计充值', kind: 'amount', prefix: '累计充值达到 ', suffix: '' },
     wagerAmount: { label: '累计打码', kind: 'amount', prefix: '累计打码达到 ', suffix: '' },
-    login: { label: '登录赠送', kind: 'once', prefix: '登录活动' },
     phone: { label: '绑定手机', kind: 'once', prefix: '完成手机绑定' },
     email: { label: '绑定邮箱', kind: 'once', prefix: '完成邮箱绑定' },
     app: { label: '下载 / 使用官方 App', kind: 'once', prefix: '下载 / 使用官方 App' }
@@ -22,8 +21,7 @@
     { id: 'default-deposit', type: 'depositCount', threshold: '3', rewardCuts: 1, isDefault: true },
     { id: 'default-wager', type: 'wagerCount', threshold: '3', rewardCuts: 1, isDefault: true },
     { id: 'deposit-tier-1', type: 'depositAmount', threshold: '50000', rewardCuts: 3 },
-    { id: 'wager-tier-1', type: 'wagerAmount', threshold: '100000', rewardCuts: 5 },
-    { id: 'login-gift', type: 'login', threshold: '1', rewardCuts: 1 }
+    { id: 'wager-tier-1', type: 'wagerAmount', threshold: '100000', rewardCuts: 5 }
   ];
   var invitationTasks = [
     { id: 'invite-phone', conditions: [{ type: 'phone' }], rewardCuts: 1 },
@@ -63,6 +61,7 @@
   }
   function normalizeRecord(record) {
     var normalized = copy(record);
+    if (Array.isArray(normalized.personalTasks)) { normalized.personalTasks = normalized.personalTasks.filter(function (task) { return !task || task.type !== 'login'; }); }
     if (!Object.prototype.hasOwnProperty.call(normalized, 'initialTasks')) { normalized.initialTasks = defaultInitialTasks(); }
     if (!Object.prototype.hasOwnProperty.call(normalized, 'registrationCountdown')) { normalized.registrationCountdown = { enabled: false, days: 0, hours: 0 }; }
     var cuts = initialCutsFor(normalized.initialTasks);
@@ -197,7 +196,7 @@
     if (kind === 'personal') {
       var meta = Object.prototype.hasOwnProperty.call(TYPES, task.type) ? TYPES[task.type] : null;
       if (!meta || (meta.kind === 'amount' ? decimalHundredths(task.threshold, false) === null : !isInteger(task.threshold, 1))) { return '请填写有效的达标条件；金额须大于 0 且最多 2 位小数，次数须为正整数。'; }
-      if (meta.kind === 'once' && Number(task.threshold) !== 1) { return '绑定、登录及 App 任务仅需完成一次。'; }
+      if (meta.kind === 'once' && Number(task.threshold) !== 1) { return '绑定及 App 任务仅需完成一次。'; }
       if (tasks.some(function (item) { return personalSignature(item) === personalSignature(task); })) { return '已存在相同类型及达标条件的个人任务。'; }
       return '';
     }
