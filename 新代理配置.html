@@ -98,6 +98,16 @@
                   </div>
                   <div id="commonTierChain" class="tier-chain">Tier 1 → Tier 2 → Tier 3 → Tier 4</div>
                 </div>
+                <div class="common-group common-binding">
+                  <div class="common-binding-row">
+                    <label id="commonAllowManualBindTitle" for="commonAllowManualBind">允许补绑上级</label>
+                    <label class="enabled-control" for="commonAllowManualBind">
+                      <input id="commonAllowManualBind" name="commonAllowManualBind" type="checkbox" role="switch" aria-labelledby="commonAllowManualBindTitle" aria-describedby="commonAllowManualBindHelp">
+                      <span id="commonAllowManualBindLabel" aria-hidden="true">已关闭</span>
+                    </label>
+                  </div>
+                  <p id="commonAllowManualBindHelp" class="field-help">开启后，注册时未绑定上级的玩家，可手动输入上级 ID，建立代理关系。</p>
+                </div>
               </fieldset>
               <div id="commonBases" class="common-bases" hidden></div>
               <p id="commonError" class="settings-error" role="alert" hidden></p>

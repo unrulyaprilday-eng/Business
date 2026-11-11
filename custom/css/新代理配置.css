@@ -17,6 +17,11 @@
 .common-fields { display: grid; grid-template-columns: minmax(350px, 1.65fr) minmax(170px, 1fr) minmax(210px, 1fr); gap: 22px 26px; padding-top: 15px !important; border-top: 1px solid #edf0f3 !important; }
 .common-group { min-width: 0; }
 .common-group h3 { margin: 0 0 12px; color: #354459; font-size: 13px; font-weight: 600; }
+.common-binding { grid-column: 1 / -1; padding-top: 14px; border-top: 1px solid #edf0f3; }
+.common-binding-row { display: flex; align-items: center; gap: 20px; }
+.common-binding-row > label { color: #354459; font-weight: 500; }
+.agent-settings .common-binding input[type="checkbox"]:disabled { border-color: #c4ccd6; background: #c4ccd6; opacity: .7; }
+.agent-settings .common-binding input[type="checkbox"]:disabled:checked { border-color: #3489e5; background: #3489e5; }
 .condition-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .agent-settings .settings-form-field { display: grid; gap: 7px; align-content: start; }
 .agent-settings .settings-form-field > label { color: #354459; font-size: 13px; font-weight: 500; }

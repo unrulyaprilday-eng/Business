@@ -8,7 +8,7 @@
     var page = document.querySelector(".agent-settings");
     if (!page) return;
     function get(id) { return page.querySelector("#" + id); }
-    var ids = ["commonPanel", "commonForm", "commonFields", "commonDeposit", "commonBet", "commonTime", "commonTierCount", "commonTierChain", "commonBases", "commonError", "editCommon", "commonActions", "cancelCommon", "rulePanel", "ruleForm", "ruleFields", "editRule", "ruleEnabled", "ruleEnabledLabel", "inviteFields", "inviteReward", "publicRuleSummary", "tierBlocks", "milestoneTable", "milestoneRows", "milestoneAddRow", "addMilestone", "ruleError", "ruleActions", "cancelRule", "confirmDialog", "confirmTitle", "confirmText", "confirmAction", "pageToast"];
+    var ids = ["commonPanel", "commonForm", "commonFields", "commonDeposit", "commonBet", "commonTime", "commonTierCount", "commonTierChain", "commonAllowManualBind", "commonAllowManualBindLabel", "commonBases", "commonError", "editCommon", "commonActions", "cancelCommon", "rulePanel", "ruleForm", "ruleFields", "editRule", "ruleEnabled", "ruleEnabledLabel", "inviteFields", "inviteReward", "publicRuleSummary", "tierBlocks", "milestoneTable", "milestoneRows", "milestoneAddRow", "addMilestone", "ruleError", "ruleActions", "cancelRule", "confirmDialog", "confirmTitle", "confirmText", "confirmAction", "pageToast"];
     if (ids.some(function (id) { return !get(id); })) return;
     var keys = ["invite", "bet", "deposit", "milestone"];
     var tierKeys = ["bet", "deposit"];
@@ -22,7 +22,7 @@
     var layerNames = ["一级下级", "二级下级", "三级下级", "四级下级"];
     var storageKey = "business.new-agent-config.v1";
     var state = {
-      common: { deposit: "300000", bet: "5000", time: "06:00", layers: 4 },
+      common: { deposit: "300000", bet: "5000", time: "06:00", layers: 4, allowManualBind: false },
       rules: {
         invite: { enabled: true, reward: "60" },
         bet: { enabled: true, tiers: [
@@ -59,6 +59,7 @@
       if (!nonnegative(common.bet)) return "请填写有效打码，不能为空。";
       if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(common.time)) return "请选择结算时间。";
       if (!Number.isInteger(common.layers) || common.layers < 1 || common.layers > 4) return "请选择 1～4 级返利层级。";
+      if (typeof common.allowManualBind !== "boolean") return "请选择是否允许补绑上级。";
       return "";
     }
     function rangeIssue(rows, label) {
@@ -99,7 +100,9 @@
     function load() {
       try {
         var record = JSON.parse(window.localStorage.getItem(storageKey));
-        if (!record || record.version !== 1 || commonIssue(record.common) || !record.rules) return;
+        if (!record || record.version !== 1 || !record.common || !record.rules) return;
+        if (record.common.allowManualBind === undefined) record.common.allowManualBind = false;
+        if (commonIssue(record.common)) return;
         // Version 1 used "0" for infinity and allowed a finite final range.
         tierKeys.forEach(function (key) {
           var rule = record.rules[key];
@@ -193,6 +196,8 @@
       get("commonBet").value = value.bet;
       get("commonTime").value = value.time;
       get("commonTierCount").value = String(value.layers);
+      get("commonAllowManualBind").checked = value.allowManualBind;
+      get("commonAllowManualBindLabel").textContent = value.allowManualBind ? "已开启" : "已关闭";
       get("commonFields").disabled = mode !== "common";
       get("editCommon").hidden = mode === "common";
       get("editCommon").disabled = !!mode && mode !== "common";
@@ -292,6 +297,12 @@
       var value = Number(get("commonTierCount").value);
       if (!Number.isInteger(value) || value < 1 || value > 4) return;
       draft.common.layers = value; ensureLayers(draft); get("commonError").hidden = true; renderCommon();
+    });
+    get("commonAllowManualBind").addEventListener("change", function () {
+      if (mode !== "common") { get("commonAllowManualBind").checked = state.common.allowManualBind; return; }
+      draft.common.allowManualBind = get("commonAllowManualBind").checked;
+      get("commonAllowManualBindLabel").textContent = draft.common.allowManualBind ? "已开启" : "已关闭";
+      get("commonError").hidden = true;
     });
     get("cancelCommon").addEventListener("click", function () { if (mode === "common") { draft = null; mode = null; clearErrors(); render(); } });
     get("commonForm").addEventListener("submit", function (event) {
