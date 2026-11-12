@@ -17,7 +17,6 @@ html, body { margin: 0; background: #f4f7fb; }
 .activity-global-page .ag-value { display: flex; align-items: center; gap: 10px; min-height: 34px; }
 .activity-global-page .ag-value strong { font-weight: 500; }
 .activity-global-page .ag-currency { color: #8b97a6; font-size: 12px; }
-.activity-global-page .ag-auto { color: #6c88ac; font-size: 12px; background: #f0f5fc; border-radius: 4px; padding: 1px 7px; }
 .activity-global-page .cl-input { width: 180px; max-width: 100%; height: 34px; }
 .activity-global-page .cl-switch-button:disabled { cursor: default; opacity: 1; }
 .activity-global-page .ag-note { margin: 2px 0 0; color: #8693a5; font-size: 12px; }

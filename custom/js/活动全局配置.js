@@ -8,6 +8,7 @@
     bindingEnabled: true,
     bindingReward: "1000",
     updateEnabled: false,
+    updateVersion: "V1.2.3",
     updateReward: "777"
   };
   var saved;
@@ -21,16 +22,19 @@
       bindingEnabled: value.bindingEnabled,
       bindingReward: value.bindingReward,
       updateEnabled: value.updateEnabled,
+      updateVersion: value.updateVersion === undefined ? defaults.updateVersion : value.updateVersion,
       updateReward: value.updateReward
     };
   }
   function query(selector) { return page.querySelector(selector); }
   function all(selector) { return Array.prototype.slice.call(page.querySelectorAll(selector)); }
   function amount(value) { return typeof value === "string" && /^\d{1,12}(?:\.\d{1,2})?$/.test(value); }
+  function version(value) { return typeof value === "string" && value.length <= 64 && !/\s/.test(value); }
   function validState(value) {
     return value && value.schemaVersion === 1 &&
       typeof value.bindingEnabled === "boolean" && typeof value.updateEnabled === "boolean" &&
       amount(value.bindingReward) && amount(value.updateReward) &&
+      (value.updateVersion === undefined || (version(value.updateVersion) && (!value.updateEnabled || value.updateVersion.length > 0))) &&
       (!value.bindingEnabled || Number(value.bindingReward) > 0) &&
       (!value.updateEnabled || Number(value.updateReward) > 0);
   }
@@ -76,6 +80,7 @@
       input.value = draft[key];
       input.disabled = !editing;
       input.hidden = !editing;
+      if (key === "updateVersion") input.required = draft.updateEnabled;
       var display = query('[data-ag-display="' + key + '"]');
       display.textContent = draft[key] || "未配置";
       display.hidden = editing;
@@ -91,6 +96,10 @@
   }
 
   function validate() {
+    if (!version(draft.updateVersion) || (draft.updateEnabled && !draft.updateVersion)) {
+      notice("开启更新奖励时须填写版本号，最多 64 个字符，不能包含空格。", "updateVersion");
+      return false;
+    }
     var fields = [["bindingReward", "绑定奖励金额", draft.bindingEnabled], ["updateReward", "更新奖励金额", draft.updateEnabled]];
     for (var index = 0; index < fields.length; index++) {
       var item = fields[index];

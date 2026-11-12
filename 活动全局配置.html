@@ -70,10 +70,9 @@
             <section class="ag-section" aria-labelledby="updateTitle">
               <div class="ag-section-head"><h2 id="updateTitle">更新奖励</h2><div class="ag-switch"><button class="cl-switch-button" type="button" role="switch" aria-label="更新奖励开关" aria-checked="false" data-ag-switch="updateEnabled" disabled></button><span data-ag-switch-text="updateEnabled">关闭</span></div></div>
               <div class="ag-section-body">
-                <!-- 静态原型使用示例版本；实际版本跟随客户端发布信息，不作为奖励配置保存。 -->
-                <div class="ag-field"><span>当前最新版本</span><div class="ag-value"><strong data-ag-latest-version>V1.2.3</strong><span class="ag-auto">自动同步</span></div></div>
+                <label class="ag-field" for="updateVersion"><span>奖励版本号</span><span class="ag-value"><strong data-ag-display="updateVersion">V1.2.3</strong><input id="updateVersion" class="cl-input" data-ag-field="updateVersion" type="text" maxlength="64" value="V1.2.3" placeholder="例如 V1.2.3" aria-describedby="updateNote" disabled hidden/></span></label>
                 <label class="ag-field" for="updateReward"><span>奖励金额</span><span class="ag-value"><strong data-ag-display="updateReward">777</strong><input id="updateReward" class="cl-input" data-ag-field="updateReward" type="number" min="0.01" step="0.01" value="777" required disabled hidden/><span class="ag-currency">IDR</span></span></label>
-                <p class="ag-note">更新到最新版本即可领取奖励。</p>
+                <p id="updateNote" class="ag-note">手动填写本次更新奖励对应的版本号，玩家更新到该版本后即可领取奖励。</p>
               </div>
             </section>
             <p class="ag-error" data-ag-error role="alert" hidden></p>
