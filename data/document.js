@@ -705,6 +705,13 @@ $axure.loadDocument({
         "url": "",
         "children": [
           {
+            "id": "placement_channel_management",
+            "pageName": "新渠道管理",
+            "type": "Wireframe",
+            "url": "新渠道管理.html",
+            "children": []
+          },
+          {
             "id": "ad_spend_data",
             "pageName": "广告消耗数据",
             "type": "Wireframe",

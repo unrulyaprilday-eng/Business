@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-11-10T07:43:20.097Z",
+  "savedAt": "2026-11-12T11:47:58.412Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -693,6 +693,13 @@
       "type": "Folder",
       "url": "",
       "children": [
+        {
+          "id": "placement_channel_management",
+          "pageName": "新渠道管理",
+          "type": "Wireframe",
+          "url": "新渠道管理.html",
+          "children": []
+        },
         {
           "id": "ad_spend_data",
           "pageName": "广告消耗数据",

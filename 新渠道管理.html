@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <title>新渠道管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" rel="stylesheet"/>
+    <link href="data/styles.css" rel="stylesheet"/>
+    <link href="files/新渠道管理/styles.css" rel="stylesheet"/>
+    <link href="custom/css/新渠道管理.css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/新渠道管理/data.js"></script>
+    <script>
+      $axure.utils.getTransparentGifPath = function () { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function () { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function () { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body class="cm-body" data-axure-page-id="placement_channel_management">
+    <div id="base" class=""></div>
+    <main id="cm-app" class="cm-page">
+      <header class="cm-page-header">
+        <div><div class="cm-muted">投放管理 / 新渠道管理</div><h1>新渠道管理</h1></div>
+        <div class="cm-actions"><button type="button" class="cm-btn" data-cm-action="help">使用说明</button></div>
+      </header>
+      <nav class="cm-tabs" role="tablist" aria-label="新渠道管理功能">
+        <button type="button" role="tab" aria-selected="true" aria-controls="cm-channels" class="is-active" data-cm-view="channels">渠道与链接</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="cm-packages" data-cm-view="packages">包管理</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="cm-reports" data-cm-view="promotion">推广数据</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="cm-reports" data-cm-view="retention">留存统计</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="cm-reports" data-cm-view="conversion">分类转化</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="cm-reports" data-cm-view="updates">APP 更新统计</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="cm-reports" data-cm-view="roi">ROI 统计</button>
+      </nav>
+      <section id="cm-channels" class="cm-panel" role="tabpanel" aria-label="渠道与链接">
+        <form id="cm-channel-filter" class="cm-filter">
+          <label class="cm-field"><span>渠道搜索</span><input class="cm-input" name="keyword" placeholder="渠道名称 / ID / 编码"/></label>
+          <label class="cm-field"><span>媒体</span><select class="cm-input" name="media"><option value="">全部媒体</option><option>Facebook</option><option>TikTok</option><option>Google</option><option>自然流量</option></select></label>
+          <label class="cm-field"><span>推广类型</span><select class="cm-input" name="type"><option value="">全部类型</option><option value="link">普通渠道链接</option><option value="pwa">PWA 快捷 APP</option><option value="trial">游戏试玩链接</option><option value="channel">独立渠道包</option><option value="native">原生马甲包</option><option value="download">下载站</option></select></label>
+          <label class="cm-field"><span>状态</span><select class="cm-input" name="status"><option value="">全部状态</option><option value="enabled">启用</option><option value="disabled">停用</option></select></label>
+          <div class="cm-actions"><button class="cm-btn primary" type="submit">查询</button><button class="cm-btn" type="reset">重置</button><button class="cm-link" type="button" data-cm-action="advanced" aria-expanded="false">更多筛选 ▾</button></div>
+          <div id="cm-advanced" class="cm-advanced" hidden>
+            <label class="cm-field"><span>币种</span><select class="cm-input" name="currency"><option value="">全部币种</option><option>INR</option><option>USD</option></select></label>
+            <label class="cm-field"><span>下载入口</span><select class="cm-input" name="show"><option value="">全部</option><option value="yes">展示</option><option value="no">隐藏</option></select></label>
+            <label class="cm-field"><span>下载弹窗</span><select class="cm-input" name="popup"><option value="">全部</option><option value="yes">开启</option><option value="no">关闭</option></select></label>
+            <label class="cm-field"><span>创建时间</span><span class="cm-inline"><input class="cm-input" type="date" name="start"/><span>至</span><input class="cm-input" type="date" name="end"/></span></label>
+          </div>
+        </form>
+        <div class="cm-toolbar">
+          <div class="cm-actions"><button type="button" class="cm-btn primary" data-cm-action="add">＋ 新增渠道</button><button type="button" class="cm-btn" data-cm-action="batch-add">批量新增</button><button type="button" class="cm-btn" data-cm-action="global">新渠道默认配置</button></div>
+          <div class="cm-actions"><button type="button" class="cm-btn" data-cm-action="refresh">刷新</button><button type="button" class="cm-btn" data-cm-action="export">导出渠道</button></div>
+        </div>
+        <div class="cm-table-wrap">
+          <table class="cm-table cm-channel-table">
+            <thead><tr><th><input class="cm-check" type="checkbox" id="cm-select-all" aria-label="选择当前页渠道"/></th><th>渠道名称 / ID</th><th>媒体 / 推广类型</th><th>币种 / 语言</th><th>推广入口 / 广告链接</th><th>关联包</th><th>下载策略</th><th>状态</th><th>创建时间</th><th class="cm-sticky-action">操作</th></tr></thead>
+            <tbody id="cm-channel-rows">
+              <tr><td><input class="cm-check" type="checkbox" aria-label="选择 Facebook 印度主渠道"/></td><td><div class="cm-cell-title">Facebook 印度主渠道</div><div class="cm-cell-sub">CH1001 · AAAA</div></td><td>Facebook<div class="cm-cell-sub">普通渠道链接</div></td><td>INR<div class="cm-cell-sub">English</div></td><td>大厅<div class="cm-cell-sub">homepageads</div></td><td>Android 原生包<div class="cm-cell-sub">PWA 快捷入口</div></td><td>展示入口 · 开启提醒<div class="cm-cell-sub">不强制下载</div></td><td><span class="cm-badge green">启用</span></td><td>2026-11-01</td><td class="cm-sticky-action"><div class="cm-actions"><button type="button" class="cm-link">预览</button><button type="button" class="cm-link">编辑</button><button type="button" class="cm-link">报表</button></div></td></tr>
+              <tr><td colspan="10" class="cm-muted">其余渠道及配置将在页面初始化后显示。</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="cm-channel-footer" class="cm-table-footer"><span class="cm-muted">共 6 个渠道</span></div>
+        <div id="cm-batch-bar" class="cm-batch-bar" hidden><span id="cm-selected-count">已选择 0 个渠道</span><button type="button" class="cm-btn small" data-cm-action="batch-enable">批量启用</button><button type="button" class="cm-btn small" data-cm-action="batch-disable">批量停用</button><button type="button" class="cm-btn small" data-cm-action="batch-download">批量下载策略</button><button type="button" class="cm-link" data-cm-action="clear-selection">取消选择</button></div>
+      </section>
+      <section id="cm-packages" class="cm-panel" role="tabpanel" aria-label="包管理" hidden><div class="cm-empty">包列表正在准备，请稍候。</div></section>
+      <section id="cm-reports" class="cm-panel" role="tabpanel" aria-label="渠道统计" hidden><div class="cm-empty">请选择统计视图查看数据。</div></section>
+      <noscript><p class="cm-note">启用 JavaScript 后可使用渠道配置、包管理和报表筛选。</p></noscript>
+    </main>
+    <div id="cm-modal" class="cm-modal" hidden>
+      <section class="cm-dialog" role="dialog" aria-modal="true" aria-labelledby="cm-modal-title">
+        <header class="cm-dialog-header"><h2 id="cm-modal-title">渠道配置</h2><button class="cm-modal-close" type="button" data-cm-close aria-label="关闭弹窗">×</button></header>
+        <form id="cm-modal-form"><div id="cm-modal-content" class="cm-dialog-body"></div><footer class="cm-dialog-footer"><span id="cm-form-status" class="cm-form-status cm-error" role="alert"></span><button class="cm-btn" type="button" data-cm-close>取消</button><button class="cm-btn primary" type="submit" id="cm-modal-submit">保存</button></footer></form>
+      </section>
+    </div>
+    <div id="cm-toast" class="cm-toast" role="status" hidden></div>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/channel-management-packages.js"></script>
+    <script src="custom/js/channel-management-reports.js"></script>
+    <script src="custom/js/新渠道管理.js"></script>
+  </body>
+</html>
