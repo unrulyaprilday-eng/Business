@@ -3,6 +3,44 @@
   var card = document.querySelector(".modal-card");
   var title = document.getElementById("modalTitle");
   var body = document.getElementById("modalBody");
+  var customerServiceCard = document.getElementById('customerServiceCard');
+  if (!mask || !card || !title || !body || !customerServiceCard) {
+    return;
+  }
+  var submitButton = mask.querySelector('.modal-actions .blue-btn');
+  var customerServiceIcon = customerServiceCard.querySelector('.customer-service');
+  var defaultCustomerServiceIcon = customerServiceIcon.innerHTML;
+  var customerServiceStorageKey = 'business.site-app.customer-service.v1';
+  var customerServiceConfig = { sort: 3, enabled: true, image: '' };
+  var customerServiceDraft = null;
+
+  function validServiceImage(value) {
+    return typeof value === 'string' && /^data:image\/(png|jpeg|gif|webp);base64,[A-Za-z0-9+/]+=*$/.test(value);
+  }
+
+  function customerServiceImageMarkup(value) {
+    return value ? '<img src="' + value + '" alt="客服"/>' : defaultCustomerServiceIcon;
+  }
+
+  function renderCustomerService() {
+    document.getElementById('customerServiceSortValue').textContent = customerServiceConfig.sort;
+    customerServiceCard.querySelector('header input').checked = customerServiceConfig.enabled;
+    customerServiceIcon.innerHTML = customerServiceImageMarkup(customerServiceConfig.image);
+  }
+
+  try {
+    var savedService = JSON.parse(localStorage.getItem(customerServiceStorageKey));
+    if (savedService && Number.isSafeInteger(savedService.sort) && savedService.sort >= 0 && typeof savedService.enabled === 'boolean') {
+      customerServiceConfig = {
+        sort: savedService.sort,
+        enabled: savedService.enabled,
+        image: validServiceImage(savedService.image) ? savedService.image : ''
+      };
+    }
+  } catch (error) {
+    // Keep the default card available when local storage is unavailable.
+  }
+  renderCustomerService();
 
   function row(label, field, required) {
     return '<div class="form-row"><label>' + (required ? '<em>*</em>' : '') + label + '</label><div>' + field + '</div></div>';
@@ -59,6 +97,50 @@
     ].join('');
   }
 
+  function customerServiceForm() {
+    customerServiceDraft = { image: customerServiceConfig.image, loading: false };
+    return [
+      row('位置', '<span class="readonly-value">右</span>', false),
+      row('排序', '<input id="customerServiceSort" type="number" min="0" step="1" value="' + customerServiceConfig.sort + '" aria-label="排序" required/>', true),
+      row('图片', '<div class="service-image-upload"><span class="service-image-preview" id="customerServiceImagePreview">' + customerServiceImageMarkup(customerServiceDraft.image) + '</span><button class="ghost-btn" type="button" data-service-pick-image>更换图片</button><input id="customerServiceImageInput" type="file" accept="image/png,image/jpeg,image/gif,image/webp" hidden/></div><p class="service-image-hint">支持 PNG、JPG、GIF、WebP，500KB 以内</p>', false),
+      row('启用状态', '<label class="switch"><input id="customerServiceEnabled" type="checkbox" aria-label="启用状态"' + (customerServiceConfig.enabled ? ' checked' : '') + '/><i></i></label>', false),
+      '<p class="service-form-error" id="customerServiceError" role="alert" hidden></p>'
+    ].join('');
+  }
+
+  function showCustomerServiceError(message) {
+    var errorNode = document.getElementById('customerServiceError');
+    errorNode.textContent = message;
+    errorNode.hidden = !message;
+  }
+
+  function saveCustomerService() {
+    if (!customerServiceDraft || customerServiceDraft.loading) {
+      return;
+    }
+    var sortField = document.getElementById('customerServiceSort');
+    var sort = Number(sortField.value);
+    if (!sortField.value.trim() || !Number.isSafeInteger(sort) || sort < 0) {
+      showCustomerServiceError('请输入大于或等于 0 的整数排序。');
+      sortField.focus();
+      return;
+    }
+    var nextConfig = {
+      sort: sort,
+      enabled: document.getElementById('customerServiceEnabled').checked,
+      image: customerServiceDraft.image
+    };
+    try {
+      localStorage.setItem(customerServiceStorageKey, JSON.stringify(nextConfig));
+    } catch (error) {
+      showCustomerServiceError('保存失败，请检查浏览器存储空间或权限后重试。');
+      return;
+    }
+    customerServiceConfig = nextConfig;
+    renderCustomerService();
+    closeModal();
+  }
+
   function basicForm(kind) {
     if (kind.indexOf('OG 参数') !== -1) {
       return [
@@ -77,7 +159,13 @@
   function openModal(modalTitle) {
     title.textContent = modalTitle;
     card.className = 'modal-card';
-    if (modalTitle.indexOf('侧滑项') !== -1) {
+    customerServiceDraft = null;
+    submitButton.disabled = false;
+    submitButton.textContent = modalTitle.indexOf('客服弹窗') !== -1 ? '保存' : '提交';
+    if (modalTitle.indexOf('客服弹窗') !== -1) {
+      card.className = 'modal-card customer-service-modal';
+      body.innerHTML = customerServiceForm();
+    } else if (modalTitle.indexOf('侧滑项') !== -1) {
       body.innerHTML = sideForm();
     } else if (modalTitle.indexOf('快捷操作') !== -1) {
       body.innerHTML = shortcutForm();
@@ -92,7 +180,56 @@
 
   function closeModal() {
     mask.hidden = true;
+    customerServiceDraft = null;
+    submitButton.disabled = false;
   }
+
+  document.addEventListener('change', function (event) {
+    if (event.target.id !== 'customerServiceImageInput' || !customerServiceDraft) {
+      return;
+    }
+    var file = event.target.files[0];
+    event.target.value = '';
+    if (!file) {
+      return;
+    }
+    if (!/^image\/(png|jpeg|gif|webp)$/.test(file.type) || file.size > 500 * 1024) {
+      showCustomerServiceError('请选择 500KB 以内的 PNG、JPG、GIF 或 WebP 图片。');
+      return;
+    }
+    var activeDraft = customerServiceDraft;
+    var reader = new FileReader();
+    activeDraft.loading = true;
+    submitButton.disabled = true;
+    showCustomerServiceError('');
+    function finishImageLoad(message, imageData) {
+      if (customerServiceDraft !== activeDraft) {
+        return;
+      }
+      activeDraft.loading = false;
+      submitButton.disabled = false;
+      showCustomerServiceError(message);
+      if (imageData) {
+        activeDraft.image = imageData;
+        document.getElementById('customerServiceImagePreview').innerHTML = customerServiceImageMarkup(imageData);
+      }
+    }
+    reader.onerror = function () {
+      finishImageLoad('图片读取失败，请重新选择。');
+    };
+    reader.onload = function () {
+      var imageData = reader.result;
+      if (!validServiceImage(imageData)) {
+        finishImageLoad('图片读取失败，请重新选择。');
+        return;
+      }
+      var image = new Image();
+      image.onload = function () { finishImageLoad('', imageData); };
+      image.onerror = function () { finishImageLoad('图片无法显示，请更换有效图片。'); };
+      image.src = imageData;
+    };
+    reader.readAsDataURL(file);
+  });
 
   function setPanelEditing(panel, editing) {
     panel.classList.toggle('is-editing', editing);
@@ -111,6 +248,16 @@
   }
 
   document.addEventListener('click', function (event) {
+    if (event.target.closest('[data-service-pick-image]')) {
+      if (customerServiceDraft && !customerServiceDraft.loading) {
+        document.getElementById('customerServiceImageInput').click();
+      }
+      return;
+    }
+    if (event.target === submitButton && customerServiceDraft) {
+      saveCustomerService();
+      return;
+    }
     var editButton = event.target.closest('[data-edit-panel]');
     if (editButton) {
       setPanelEditing(editButton.closest('.inline-config-panel'), true);

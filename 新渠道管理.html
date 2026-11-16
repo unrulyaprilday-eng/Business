@@ -47,23 +47,10 @@
       $axure.utils.getReloadPath = function () { return 'resources/reload.html'; };
     </script>
   </head>
-  <body class="cm-body" data-axure-page-id="placement_channel_management">
+  <body class="cm-body" data-axure-page-id="placement_channel_management" data-cm-page="channels">
     <div id="base" class=""></div>
-    <main id="cm-app" class="cm-page">
-      <header class="cm-page-header">
-        <div><div class="cm-muted">投放管理 / 新渠道管理</div><h1>新渠道管理</h1></div>
-        <div class="cm-actions"><button type="button" class="cm-btn" data-cm-action="help">使用说明</button></div>
-      </header>
-      <nav class="cm-tabs" role="tablist" aria-label="新渠道管理功能">
-        <button type="button" role="tab" aria-selected="true" aria-controls="cm-channels" class="is-active" data-cm-view="channels">渠道与链接</button>
-        <button type="button" role="tab" aria-selected="false" aria-controls="cm-packages" data-cm-view="packages">包管理</button>
-        <button type="button" role="tab" aria-selected="false" aria-controls="cm-reports" data-cm-view="promotion">推广数据</button>
-        <button type="button" role="tab" aria-selected="false" aria-controls="cm-reports" data-cm-view="retention">留存统计</button>
-        <button type="button" role="tab" aria-selected="false" aria-controls="cm-reports" data-cm-view="conversion">分类转化</button>
-        <button type="button" role="tab" aria-selected="false" aria-controls="cm-reports" data-cm-view="updates">APP 更新统计</button>
-        <button type="button" role="tab" aria-selected="false" aria-controls="cm-reports" data-cm-view="roi">ROI 统计</button>
-      </nav>
-      <section id="cm-channels" class="cm-panel" role="tabpanel" aria-label="渠道与链接">
+    <main id="cm-app" class="cm-page"><header class="cm-page-header"><div><div class="cm-muted">投放管理 / 新渠道管理</div><h1>新渠道管理</h1></div><div class="cm-actions"><a class="cm-btn" data-cm-target="spend" href="广告消耗数据.html">广告消耗</a><a class="cm-btn" data-cm-target="promotion" href="渠道报表.html">渠道报表</a><button type="button" class="cm-btn" data-cm-action="help">使用说明</button></div></header><nav class="cm-tabs" role="tablist" aria-label="新渠道管理功能"><button type="button" role="tab" aria-selected="true" aria-controls="cm-channels" class="is-active" data-cm-view="channels">渠道与链接</button><button type="button" role="tab" aria-selected="false" aria-controls="cm-packages" data-cm-view="packages">包管理</button><button type="button" role="tab" aria-selected="false" aria-controls="cm-reports" data-cm-view="updates">APP 更新统计</button></nav>
+<section id="cm-channels" class="cm-panel" role="tabpanel" aria-label="渠道与链接">
         <form id="cm-channel-filter" class="cm-filter">
           <label class="cm-field"><span>渠道搜索</span><input class="cm-input" name="keyword" placeholder="渠道名称 / ID / 编码"/></label>
           <label class="cm-field"><span>媒体</span><select class="cm-input" name="media"><option value="">全部媒体</option><option>Facebook</option><option>TikTok</option><option>Google</option><option>自然流量</option></select></label>
@@ -93,10 +80,10 @@
         <div id="cm-channel-footer" class="cm-table-footer"><span class="cm-muted">共 6 个渠道</span></div>
         <div id="cm-batch-bar" class="cm-batch-bar" hidden><span id="cm-selected-count">已选择 0 个渠道</span><button type="button" class="cm-btn small" data-cm-action="batch-enable">批量启用</button><button type="button" class="cm-btn small" data-cm-action="batch-disable">批量停用</button><button type="button" class="cm-btn small" data-cm-action="batch-download">批量下载策略</button><button type="button" class="cm-link" data-cm-action="clear-selection">取消选择</button></div>
       </section>
-      <section id="cm-packages" class="cm-panel" role="tabpanel" aria-label="包管理" hidden><div class="cm-empty">包列表正在准备，请稍候。</div></section>
-      <section id="cm-reports" class="cm-panel" role="tabpanel" aria-label="渠道统计" hidden><div class="cm-empty">请选择统计视图查看数据。</div></section>
-      <noscript><p class="cm-note">启用 JavaScript 后可使用渠道配置、包管理和报表筛选。</p></noscript>
-    </main>
+<section id="cm-packages" class="cm-panel" role="tabpanel" aria-label="包管理" hidden><div class="cm-empty">暂无包，请在初始化后新增或筛选。</div></section>
+<section id="cm-spend" class="cm-panel" aria-label="广告消耗数据" hidden><form class="cm-filter"><label class="cm-field"><span>渠道</span><select class="cm-input" disabled><option>渠道列表将在初始化后显示</option></select></label><button type="button" class="cm-btn primary" disabled>查询</button></form><div class="cm-empty">暂无查询结果，可在初始化后录入或导入消耗。</div></section>
+<section id="cm-reports" class="cm-panel" role="tabpanel" aria-label="统计报表" hidden><div class="cm-empty">暂无查询结果，请选择日期、渠道和币种后查询。</div></section>
+<noscript><p class="cm-note">请启用 JavaScript 以使用筛选、配置、导出和页面联动。</p></noscript></main>
     <div id="cm-modal" class="cm-modal" hidden>
       <section class="cm-dialog" role="dialog" aria-modal="true" aria-labelledby="cm-modal-title">
         <header class="cm-dialog-header"><h2 id="cm-modal-title">渠道配置</h2><button class="cm-modal-close" type="button" data-cm-close aria-label="关闭弹窗">×</button></header>
@@ -106,8 +93,11 @@
     <div id="cm-toast" class="cm-toast" role="status" hidden></div>
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/placement-landing-catalog.js"></script>
     <script src="custom/js/channel-management-packages.js"></script>
+    <script src="custom/js/channel-management-links.js"></script>
     <script src="custom/js/channel-management-reports.js"></script>
+    <script src="custom/js/placement-spend.js"></script>
     <script src="custom/js/新渠道管理.js"></script>
   </body>
 </html>

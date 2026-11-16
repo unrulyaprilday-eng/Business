@@ -21,9 +21,11 @@ const injection = `
     validateThresholds: validateThresholds, validPackage: validPackage,
     saveState: saveState, editor: editor, globalConfig: globalConfig,
     newChannel: newChannel, closeModal: closeModal, csvDownload: csvDownload,
-    onAction: onAction, confirmStatus: confirmStatus,
+    onAction: onAction, confirmStatus: confirmStatus, normalizeState: normalizeState, channelDetail: channelDetail,
+    go: go, navigateUrl: navigateUrl, safeReturnUrl: safeReturnUrl, normalizedContext: normalizedContext, init: init, navigateContext: navigateContext,
+    currentContext: function () { return clone(currentContext); },
     snapshot: function () { return clone(state); },
-    reset: function () { state = makeSeed(); selected.clear(); filters = {}; },
+    reset: function () { state = normalizeState(makeSeed()); selected.clear(); filters = {}; currentView = 'channels'; currentContext = {}; viewContexts = {}; },
     captureDialogs: function (capture) { dialog = capture; },
     suppressRendering: function () { renderChannels = function () {}; toast = function () {}; }
   };
@@ -44,6 +46,7 @@ const nodes = {
 const documentMock = {
   readyState: 'loading',
   addEventListener() {},
+  querySelectorAll() { return []; },
   contains() { return false; },
   getElementById(id) {
     assert.ok(nodes[id], 'Unexpected DOM dependency: ' + id);
@@ -78,6 +81,7 @@ const context = {
   },
   FormData: FormDataMock,
   Blob,
+  URLSearchParams,
   URL: {createObjectURL(blob) { lastBlob = blob; return 'blob:core-test'; }, revokeObjectURL() {}},
   navigator: {},
   console
@@ -173,7 +177,7 @@ test('Axure runtime order matches the stable report page and custom modules load
   }
   const scripts = scriptTags(html).map(match => match[2]);
   assert.ok(scripts.indexOf('data/document.js') < scripts.indexOf('files/' + pageName + '/data.js'));
-  const requiredTail = ['custom/js/axure-custom-page-ready.js', 'resources/scripts/axure/ios.js', 'custom/js/channel-management-packages.js', 'custom/js/channel-management-reports.js', 'custom/js/' + pageName + '.js'];
+  const requiredTail = ['custom/js/axure-custom-page-ready.js', 'resources/scripts/axure/ios.js', 'custom/js/placement-landing-catalog.js', 'custom/js/channel-management-packages.js', 'custom/js/channel-management-links.js', 'custom/js/channel-management-reports.js', 'custom/js/placement-spend.js', 'custom/js/' + pageName + '.js'];
   assert.deepEqual(scripts.slice(-requiredTail.length), requiredTail);
   assert.ok(html.indexOf('id="cm-modal"') < html.indexOf('src="custom/js/axure-custom-page-ready.js"'));
 });
@@ -291,6 +295,141 @@ test('Legacy package channel codes normalize in memory without writing local sto
   saved.set(storageKey, JSON.stringify(legacy));
   assert.equal(core.loadState().packages.find(pkg => pkg.id === 'PK1003').channelCode, 'EXPLICIT');
   assert.equal(writeCount, 0);
+});
+
+test('Legacy links migrate once with stable IDs and preserve independent links and history aliases', () => {
+  const legacy = plain(core.makeSeed());
+  saved.set(storageKey, JSON.stringify(legacy));
+  const migrated = core.loadState(), first = migrated.channels[0];
+  assert.equal(first.links.length, 1);
+  assert.equal(first.links[0].id, 'LK-CH1001-MAIN');
+  assert.equal(first.links[0].legacy, true);
+  assert.equal(first.links[0].inheritConfig, true);
+  assert.equal(first.links[0].linkName, first.linkName);
+  const historyName = first.linkName;
+  first.links[0].linkName = 'edited-main';
+  first.links.push({id: 'LK-NEW', linkName: 'new-link', legacy: false});
+  core.normalizeState(migrated);
+  assert.equal(first.links.length, 2);
+  assert.equal(first.links[0].linkName, 'edited-main');
+  assert.equal(first.linkName, historyName, 'editing a link must not rewrite legacy history aliases');
+  first.links = [];
+  core.normalizeState(migrated);
+  assert.equal(first.links.length, 0, 'deleted links must not reappear during normalization');
+  assert.equal(writeCount, 0);
+});
+
+test('Page navigation uses relative target pages and preserves the complete shared query', () => {
+  const values = {start: '2026-11-01', end: '2026-11-12', channelId: 'CH1001', media: 'Facebook', link: 'LK-CH1001-MAIN', currency: 'INR', packageId: 'PK1001', version: '2.4.0', period: 'day', source: 'funds', scene: 'download', promotionMetrics: 'funds', classify: 'link', breakdown: 'channel', metrics: 'firstPay', category: 'recharge', group: 'channel', returnView: 'roi', returnUrl: '投放数据报表.html?view=roi&currency=INR'};
+  for (const [view, file] of Object.entries({channels: '新渠道管理.html', packages: '新渠道管理.html', updates: '新渠道管理.html', spend: '广告消耗数据.html', daily: '投放数据报表.html', roi: '投放数据报表.html', promotion: '渠道报表.html', conversion: '渠道报表.html', retention: '渠道报表.html', detail: '渠道报表明细.html'})) {
+    const address = core.navigateUrl(view, values);
+    assert.equal(address.split('?')[0], file);
+    const params = new URLSearchParams(address.split('?')[1]);
+    assert.equal(params.get('view'), view);
+    assert.equal(params.get('channel'), 'CH1001');
+    assert.equal(params.get('package'), 'PK1001');
+    assert.equal(params.get('link'), 'LK-CH1001-MAIN');
+    for (const key of ['start', 'end', 'media', 'currency', 'version', 'period', 'source', 'scene', 'promotionMetrics', 'classify', 'breakdown', 'metrics', 'category', 'group', 'returnView', 'returnUrl']) assert.equal(params.get(key), values[key], key);
+  }
+  for (const unsafe of ['https://example.test/', '//example.test/', '../新渠道管理.html', 'javascript:alert(1)', '新渠道管理.html\\evil', '%2e%2e/新渠道管理.html']) assert.equal(core.safeReturnUrl(unsafe), false, unsafe);
+  assert.equal(new URLSearchParams(core.navigateUrl('detail', {returnUrl: '//evil.test', returnView: 'unknown'}).split('?')[1]).has('returnUrl'), false);
+  context.window.location = {href: '新渠道管理.html'};
+  core.go('promotion', values);
+  assert.ok(context.window.location.href.startsWith('渠道报表.html?'));
+  assert.equal(new URLSearchParams(context.window.location.href.split('?')[1]).get('end'), values.end);
+});
+
+test('Each page bootstraps its own view and keeps external context and normalized module filters', () => {
+  const originalPackages = context.window.CMPackages, originalReports = context.window.CMReports, originalSpend = context.window.CMSpend, originalApi = context.window.CM;
+  const renderCalls = [], urls = [];
+  context.history = {replaceState(_state, _title, url) { urls.push(url); }};
+  context.window.CMPackages = {init() {}, render(value) { renderCalls.push({view: 'packages', context: plain(value)}); }};
+  context.window.CMReports = {init() {}, render(view, value) { renderCalls.push({view, context: plain(value)}); context.window.CM.navigateContext({start: value.start, end: '2026-11-11', link: value.link, source: value.source, promotionMetrics: 'funds'}); }};
+  context.window.CMSpend = {init() {}, render(value) { renderCalls.push({view: 'spend', context: plain(value)}); context.window.CM.navigateContext({end: '2026-11-11'}); }};
+  for (const id of ['cm-app', 'cm-modal', 'cm-channel-filter', 'cm-channels', 'cm-packages', 'cm-spend', 'cm-reports']) {
+    nodes[id] = Object.assign(nodes[id] || {}, {addEventListener() {}});
+  }
+  nodes['cm-channel-filter'].elements = {keyword: {value: ''}};
+  try {
+    for (const [pageType, view] of [['channels', 'updates'], ['spend', 'spend'], ['placement', 'daily'], ['reports', 'retention'], ['detail', 'detail']]) {
+      documentMock.body.dataset = {cmPage: pageType};
+      context.window.location = {search: '?view=' + view + '&start=2026-11-01&end=2026-11-12&channel=CH1001&link=LK-CH1001-MAIN&source=funds&currency=INR&promotionMetrics=funds&entry=add'};
+      core.init();
+      const call = renderCalls[renderCalls.length - 1];
+      assert.equal(call.view, view);
+      assert.equal(call.context.channelId, 'CH1001');
+      assert.equal(call.context.link, 'LK-CH1001-MAIN');
+      assert.equal(call.context.start, '2026-11-01');
+      assert.equal(call.context.currency, 'INR');
+      assert.equal(call.context.source, 'funds');
+      const params = new URLSearchParams(urls[urls.length - 1].split('?')[1]);
+      assert.equal(params.get('end'), '2026-11-11', 'outer navigation must not overwrite normalized module filters');
+      if (view === 'spend') assert.equal(params.has('entry'), false, 'spend entry opens only once');
+    }
+    // Switching report tabs keeps each view's filter context and never navigates away.
+    documentMock.body.dataset = {cmPage: 'reports'};
+    context.window.location = {search: '?view=promotion&channel=CH1001&link=LK-CH1001-MAIN&start=2026-11-01'};
+    core.init();
+    context.window.CM.go('conversion', {link: 'new-link'});
+    context.window.CM.go('promotion');
+    assert.equal(core.currentContext().link, 'LK-CH1001-MAIN', 'returning to a view restores its prior link filter');
+    context.window.CM.go('conversion');
+    assert.equal(core.currentContext().link, 'new-link', 'new link aliases override old inherited link IDs');
+  } finally {
+    context.window.CMPackages = originalPackages; context.window.CMReports = originalReports; context.window.CMSpend = originalSpend; context.window.CM = originalApi;
+    delete documentMock.body.dataset;
+  }
+});
+
+test('Entity drill-ins clear conflicting remembered filters while preserving the active dates', () => {
+  const originalPackages = context.window.CMPackages, originalReports = context.window.CMReports, originalLinks = context.window.CMLinks, originalApi = context.window.CM;
+  context.window.CMReports = {init() {}, render() {}};
+  for (const id of ['cm-app', 'cm-modal', 'cm-channel-filter', 'cm-channels', 'cm-packages', 'cm-spend', 'cm-reports']) nodes[id] = Object.assign(nodes[id] || {}, {addEventListener() {}});
+  nodes['cm-channel-filter'].elements = {keyword: {value: ''}};
+  context.window.location = {search: '?view=channels&start=2026-11-03&end=2026-11-09&channel=CH1003&media=Google&currency=USD&link=search-brand-03&package=PK1001&version=2.4.0&source=native&scene=app&category=native'};
+  documentMock.body.dataset = {cmPage: 'channels'};
+  const linksSource = fs.readFileSync(path.join(projectRoot, 'custom/js/channel-management-links.js'), 'utf8');
+  const packagesSource = fs.readFileSync(packagesPath, 'utf8');
+  try {
+    vm.runInContext(linksSource.replace('  window.CMLinks =', '  window.__entityLinkAction = action;\n  window.CMLinks ='), context);
+    vm.runInContext(packagesSource.replace('  window.CMPackages =', '  window.__entityPackageReport = packageReport;\n  window.__entityPackageChannel = function (id) { filters.channelId = id; };\n  window.CMPackages ='), context);
+    core.init();
+    const dirty = {channelId: 'CH1003', media: 'Google', currency: 'USD', link: 'search-brand-03', packageId: 'PK1001', version: '2.4.0', source: 'native', scene: 'app', category: 'native'};
+    function assertRoute(view, channelId, linkId, packageId) {
+      const params = new URLSearchParams(context.window.location.href.split('?')[1]);
+      assert.equal(params.get('view'), view);
+      assert.equal(params.get('start'), '2026-11-03');
+      assert.equal(params.get('end'), '2026-11-09');
+      assert.equal(params.get('channel') || '', channelId);
+      assert.equal(params.get('link') || '', linkId);
+      assert.equal(params.get('package') || '', packageId);
+      for (const key of ['media', 'currency', 'version', 'source', 'scene']) assert.equal(params.has(key), false, key + ' must not conflict with the chosen entity');
+      assert.equal(params.get('category'), 'all');
+    }
+    core.onAction('report', 'CH1001');
+    assertRoute('promotion', 'CH1001', '', '');
+    context.window.CM.navigateContext(dirty);
+    context.window.__entityLinkAction('CH1002', 'report', 'LK-CH1002-MAIN');
+    assertRoute('promotion', 'CH1002', 'LK-CH1002-MAIN', '');
+    context.window.CM.navigateContext(dirty);
+    core.channelDetail('CH1001');
+    let click;
+    const conversion = {dataset: {detailTarget: 'conversion'}, addEventListener(_name, callback) { click = callback; }};
+    capturedDialog.onOpen({querySelectorAll(selector) { return selector === '[data-detail-target]' ? [conversion] : []; }});
+    click();
+    assertRoute('conversion', 'CH1001', '', '');
+    context.window.CM.navigateContext(dirty);
+    context.window.__entityPackageChannel('');
+    context.window.__entityPackageReport('PK1002');
+    assertRoute('conversion', '', '', 'PK1002');
+    context.window.CM.navigateContext(dirty);
+    context.window.__entityPackageChannel('CH1002');
+    context.window.__entityPackageReport('PK1003');
+    assertRoute('conversion', 'CH1002', '', 'PK1003');
+  } finally {
+    context.window.CMPackages = originalPackages; context.window.CMReports = originalReports; context.window.CMLinks = originalLinks; context.window.CM = originalApi;
+    delete documentMock.body.dataset;
+  }
 });
 
 test('Downloads require published coverage and native content for forced APP use', () => {

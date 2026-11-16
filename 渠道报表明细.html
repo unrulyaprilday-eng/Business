@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
   <head>
     <title>渠道报表明细</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
-    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
-    <link href="files/渠道报表明细/styles.css" type="text/css" rel="stylesheet"/>
-    <link href="custom/css/渠道报表.css" type="text/css" rel="stylesheet"/>
+    <link href="resources/css/axure_rp_page.css" rel="stylesheet"/>
+    <link href="data/styles.css" rel="stylesheet"/>
+    <link href="files/渠道报表明细/styles.css" rel="stylesheet"/>
+    <link href="custom/css/新渠道管理.css" rel="stylesheet"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
     <script src="resources/scripts/axure/axQuery.js"></script>
     <script src="resources/scripts/axure/globals.js"></script>
@@ -41,294 +41,63 @@
     <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
     <script src="data/document.js"></script>
     <script src="files/渠道报表明细/data.js"></script>
-    <script type="text/javascript">
-      $axure.utils.getTransparentGifPath = function() { return "resources/images/transparent.gif"; };
-      $axure.utils.getOtherPath = function() { return "resources/Other.html"; };
-      $axure.utils.getReloadPath = function() { return "resources/reload.html"; };
+    <script>
+      $axure.utils.getTransparentGifPath = function () { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function () { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function () { return 'resources/reload.html'; };
     </script>
   </head>
-  <body>
-    <div id="base" class="">
-      <div class="custom-page-shell channel-report-page">
-        <form class="report-toolbar" id="reportToolbar">
-          <label class="date-range">
-            <span class="calendar-icon">▣</span>
-            <input type="text" value="2026-06-07" aria-label="开始日期"/>
-            <span>-</span>
-            <input type="text" value="2026-06-14" aria-label="结束日期"/>
-          </label>
-          <select class="filter-select" aria-label="渠道">
-            <option>AAAA</option>
-            <option>CCCC</option>
-            <option>DDDD</option>
-          </select>
-          <select class="filter-select" aria-label="媒体">
-            <option>全部媒体</option>
-            <option>Facebook</option>
-            <option>TikTok</option>
-            <option>Google</option>
-          </select>
-          <select class="filter-select" aria-label="广告链接">
-            <option>全部广告链接</option>
-            <option>homepageads</option>
-            <option>feed-video-01</option>
-            <option>search-brand-03</option>
-          </select>
-          <button class="primary-btn" type="button" id="searchBtn">查询</button>
-          <button class="plain-btn" type="reset" id="resetBtn">重置</button>
-          <button class="primary-btn wide-btn" type="button" id="exportBtn">导出数据</button>
-          <a class="plain-btn nav-link-btn" href="渠道报表.html">返回汇总</a>
-        </form>
-
-        <div class="update-tip">
-          数据更新时间：实时；当前页面按单渠道拆分每日明细，用于查看渠道流量、注册、付费与投注走势。次日、3日、7日复充占比按首充用户在对应周期内产生再次充值的人数占比计算。
-        </div>
-
-        <div class="detail-context" id="detailContext">
-          <strong>渠道来源：</strong>AAAA&nbsp;&nbsp;&nbsp;<strong>媒体来源：</strong>Facebook/TikTok&nbsp;&nbsp;&nbsp;<strong>广告链接：</strong>homepageads 等&nbsp;&nbsp;&nbsp;<strong>日期范围：</strong>2026-06-07 - 2026-06-14
-        </div>
-
-        <section>
-          <div class="report-table-card">
-            <div class="table-scroll">
-              <table class="report-table">
-                <thead>
-                  <tr>
-                    <th class="name-col">日期</th>
-                    <th class="number-col">访问人数</th>
-                    <th class="number-col">新增</th>
-                    <th class="rate-col">注册转化率</th>
-                    <th class="number-col">PWA安装数</th>
-                    <th class="number-col">首充人数</th>
-                    <th class="money-col">首充金额</th>
-                    <th class="rate-col">访问-首充转化率</th>
-                    <th class="rate-col">注册-首充转化率</th>
-                    <th class="rate-col">次日复充占比</th>
-                    <th class="rate-col">3日复充占比</th>
-                    <th class="rate-col">7日复充占比</th>
-                    <th class="number-col">充值人数</th>
-                    <th class="money-col">充值金额</th>
-                    <th class="number-col">充值次数</th>
-                    <th class="money-col">人均充值</th>
-                    <th class="money-col">提现金额</th>
-                    <th class="money-col">充提差</th>
-                    <th class="money-col">有效投注额</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>2026-06-14</td>
-                    <td>612</td>
-                    <td>181</td>
-                    <td>29.58%</td>
-                    <td>136</td>
-                    <td>26</td>
-                    <td>15,320.00</td>
-                    <td>4.25%</td>
-                    <td>14.36%</td>
-                    <td>28.00%</td>
-                    <td>41.20%</td>
-                    <td>55.60%</td>
-                    <td>82</td>
-                    <td>41,620.00</td>
-                    <td>198</td>
-                    <td>507.56</td>
-                    <td>20,440.00</td>
-                    <td class="positive">21,180.00</td>
-                    <td>98,240.00</td>
-                  </tr>
-                  <tr>
-                    <td>2026-06-13</td>
-                    <td>588</td>
-                    <td>174</td>
-                    <td>29.59%</td>
-                    <td>128</td>
-                    <td>24</td>
-                    <td>13,860.00</td>
-                    <td>4.08%</td>
-                    <td>13.79%</td>
-                    <td>26.09%</td>
-                    <td>40.00%</td>
-                    <td>54.10%</td>
-                    <td>77</td>
-                    <td>39,240.00</td>
-                    <td>184</td>
-                    <td>509.61</td>
-                    <td>18,930.00</td>
-                    <td class="positive">20,310.00</td>
-                    <td>92,540.00</td>
-                  </tr>
-                  <tr>
-                    <td>2026-06-12</td>
-                    <td>564</td>
-                    <td>168</td>
-                    <td>29.79%</td>
-                    <td>121</td>
-                    <td>22</td>
-                    <td>12,680.00</td>
-                    <td>3.90%</td>
-                    <td>13.10%</td>
-                    <td>24.50%</td>
-                    <td>39.30%</td>
-                    <td>52.60%</td>
-                    <td>72</td>
-                    <td>35,820.00</td>
-                    <td>171</td>
-                    <td>497.50</td>
-                    <td>17,360.00</td>
-                    <td class="positive">18,460.00</td>
-                    <td>85,720.00</td>
-                  </tr>
-                  <tr>
-                    <td>2026-06-11</td>
-                    <td>541</td>
-                    <td>157</td>
-                    <td>29.02%</td>
-                    <td>114</td>
-                    <td>21</td>
-                    <td>11,920.00</td>
-                    <td>3.88%</td>
-                    <td>13.38%</td>
-                    <td>23.81%</td>
-                    <td>37.50%</td>
-                    <td>53.30%</td>
-                    <td>69</td>
-                    <td>34,260.00</td>
-                    <td>165</td>
-                    <td>496.52</td>
-                    <td>16,280.00</td>
-                    <td class="positive">17,980.00</td>
-                    <td>80,160.00</td>
-                  </tr>
-                  <tr>
-                    <td>2026-06-10</td>
-                    <td>520</td>
-                    <td>149</td>
-                    <td>28.65%</td>
-                    <td>108</td>
-                    <td>19</td>
-                    <td>10,840.00</td>
-                    <td>3.65%</td>
-                    <td>12.75%</td>
-                    <td>22.20%</td>
-                    <td>35.80%</td>
-                    <td>51.10%</td>
-                    <td>64</td>
-                    <td>32,180.00</td>
-                    <td>153</td>
-                    <td>502.81</td>
-                    <td>15,030.00</td>
-                    <td class="positive">17,150.00</td>
-                    <td>75,520.00</td>
-                  </tr>
-                  <tr>
-                    <td>2026-06-09</td>
-                    <td>509</td>
-                    <td>145</td>
-                    <td>28.49%</td>
-                    <td>102</td>
-                    <td>18</td>
-                    <td>9,920.00</td>
-                    <td>3.54%</td>
-                    <td>12.41%</td>
-                    <td>20.40%</td>
-                    <td>34.10%</td>
-                    <td>49.80%</td>
-                    <td>58</td>
-                    <td>29,860.00</td>
-                    <td>141</td>
-                    <td>514.83</td>
-                    <td>13,980.00</td>
-                    <td class="positive">15,880.00</td>
-                    <td>69,960.00</td>
-                  </tr>
-                  <tr>
-                    <td>2026-06-08</td>
-                    <td>492</td>
-                    <td>138</td>
-                    <td>28.05%</td>
-                    <td>92</td>
-                    <td>15</td>
-                    <td>8,240.00</td>
-                    <td>3.05%</td>
-                    <td>10.87%</td>
-                    <td>18.70%</td>
-                    <td>31.60%</td>
-                    <td>47.20%</td>
-                    <td>43</td>
-                    <td>24,620.00</td>
-                    <td>118</td>
-                    <td>572.56</td>
-                    <td>11,840.00</td>
-                    <td class="positive">12,780.00</td>
-                    <td>58,340.00</td>
-                  </tr>
-                  <tr>
-                    <td>2026-06-07</td>
-                    <td>434</td>
-                    <td>114</td>
-                    <td>26.27%</td>
-                    <td>63</td>
-                    <td>13</td>
-                    <td>9,650.00</td>
-                    <td>3.00%</td>
-                    <td>11.40%</td>
-                    <td>17.30%</td>
-                    <td>29.10%</td>
-                    <td>43.80%</td>
-                    <td>37</td>
-                    <td>23,620.00</td>
-                    <td>114</td>
-                    <td>638.38</td>
-                    <td>10,000.00</td>
-                    <td class="positive">13,620.00</td>
-                    <td>31,880.00</td>
-                  </tr>
-                  <tr class="summary-row">
-                    <td>汇总</td>
-                    <td>4,260</td>
-                    <td>1,226</td>
-                    <td>28.78%</td>
-                    <td>864</td>
-                    <td>158</td>
-                    <td>92,430.00</td>
-                    <td>3.71%</td>
-                    <td>12.89%</td>
-                    <td>22.63%</td>
-                    <td>35.74%</td>
-                    <td>49.04%</td>
-                    <td>502</td>
-                    <td>261,220.00</td>
-                    <td>1,244</td>
-                    <td>520.36</td>
-                    <td>123,860.00</td>
-                    <td class="positive">137,360.00</td>
-                    <td>592,360.00</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+  <body class="cm-body" data-axure-page-id="channel_report_detail" data-cm-page="detail">
+    <div id="base" class=""></div>
+    <main id="cm-app" class="cm-page"><header class="cm-page-header"><div><div class="cm-muted">投放管理 / 渠道报表明细</div><h1>渠道报表明细</h1></div><div class="cm-actions"><a class="cm-btn" data-cm-target="channels" href="新渠道管理.html">渠道管理</a><a class="cm-btn" data-cm-target="spend" href="广告消耗数据.html">维护消耗</a><a class="cm-btn" href="渠道报表.html" id="cm-detail-back">返回汇总</a><button type="button" class="cm-btn" data-cm-action="help">使用说明</button></div></header>
+<section id="cm-channels" hidden class="cm-panel" role="tabpanel" aria-label="渠道与链接">
+        <form id="cm-channel-filter" class="cm-filter">
+          <label class="cm-field"><span>渠道搜索</span><input class="cm-input" name="keyword" placeholder="渠道名称 / ID / 编码"/></label>
+          <label class="cm-field"><span>媒体</span><select class="cm-input" name="media"><option value="">全部媒体</option><option>Facebook</option><option>TikTok</option><option>Google</option><option>自然流量</option></select></label>
+          <label class="cm-field"><span>推广类型</span><select class="cm-input" name="type"><option value="">全部类型</option><option value="link">普通渠道链接</option><option value="pwa">PWA 快捷 APP</option><option value="trial">游戏试玩链接</option><option value="channel">独立渠道包</option><option value="native">原生马甲包</option><option value="download">下载站</option></select></label>
+          <label class="cm-field"><span>状态</span><select class="cm-input" name="status"><option value="">全部状态</option><option value="enabled">启用</option><option value="disabled">停用</option></select></label>
+          <div class="cm-actions"><button class="cm-btn primary" type="submit">查询</button><button class="cm-btn" type="reset">重置</button><button class="cm-link" type="button" data-cm-action="advanced" aria-expanded="false">更多筛选 ▾</button></div>
+          <div id="cm-advanced" class="cm-advanced" hidden>
+            <label class="cm-field"><span>币种</span><select class="cm-input" name="currency"><option value="">全部币种</option><option>INR</option><option>USD</option></select></label>
+            <label class="cm-field"><span>下载入口</span><select class="cm-input" name="show"><option value="">全部</option><option value="yes">展示</option><option value="no">隐藏</option></select></label>
+            <label class="cm-field"><span>下载弹窗</span><select class="cm-input" name="popup"><option value="">全部</option><option value="yes">开启</option><option value="no">关闭</option></select></label>
+            <label class="cm-field"><span>创建时间</span><span class="cm-inline"><input class="cm-input" type="date" name="start"/><span>至</span><input class="cm-input" type="date" name="end"/></span></label>
           </div>
-        </section>
-
-        <section class="field-explanation">
-          <h3>字段说明</h3>
-          <dl>
-            <dt>注册转化率</dt><dd>新增 / 访问人数，用于衡量流量进入注册环节的效率。</dd>
-            <dt>访问-首充转化率</dt><dd>首充人数 / 访问人数，用于衡量渠道从访问到首充的整体转化表现。</dd>
-            <dt>注册-首充转化率</dt><dd>首充人数 / 新增，用于衡量注册用户完成首充的能力。</dd>
-            <dt>次日复充占比</dt><dd>首充用户在首充后次日再次充值的人数占比。</dd>
-            <dt>3日复充占比</dt><dd>首充用户在首充后3日内再次充值的人数占比。</dd>
-            <dt>7日复充占比</dt><dd>首充用户在首充后7日内再次充值的人数占比。</dd>
-            <dt>人均充值</dt><dd>充值金额 / 充值人数，用于衡量付费深度。</dd>
-            <dt>充提差</dt><dd>充值金额 - 提现金额，用于观察该批用户的资金沉淀情况。</dd>
-            <dt>有效投注额</dt><dd>统计周期内符合有效规则的投注金额，用于衡量用户真实参与度和活跃质量。</dd>
-          </dl>
-        </section>
-      </div>
+        </form>
+        <div class="cm-toolbar">
+          <div class="cm-actions"><button type="button" class="cm-btn primary" data-cm-action="add">＋ 新增渠道</button><button type="button" class="cm-btn" data-cm-action="batch-add">批量新增</button><button type="button" class="cm-btn" data-cm-action="global">新渠道默认配置</button></div>
+          <div class="cm-actions"><button type="button" class="cm-btn" data-cm-action="refresh">刷新</button><button type="button" class="cm-btn" data-cm-action="export">导出渠道</button></div>
+        </div>
+        <div class="cm-table-wrap">
+          <table class="cm-table cm-channel-table">
+            <thead><tr><th><input class="cm-check" type="checkbox" id="cm-select-all" aria-label="选择当前页渠道"/></th><th>渠道名称 / ID</th><th>媒体 / 推广类型</th><th>币种 / 语言</th><th>推广入口 / 广告链接</th><th>关联包</th><th>下载策略</th><th>状态</th><th>创建时间</th><th class="cm-sticky-action">操作</th></tr></thead>
+            <tbody id="cm-channel-rows">
+              <tr><td><input class="cm-check" type="checkbox" aria-label="选择 Facebook 印度主渠道"/></td><td><div class="cm-cell-title">Facebook 印度主渠道</div><div class="cm-cell-sub">CH1001 · AAAA</div></td><td>Facebook<div class="cm-cell-sub">普通渠道链接</div></td><td>INR<div class="cm-cell-sub">English</div></td><td>大厅<div class="cm-cell-sub">homepageads</div></td><td>Android 原生包<div class="cm-cell-sub">PWA 快捷入口</div></td><td>展示入口 · 开启提醒<div class="cm-cell-sub">不强制下载</div></td><td><span class="cm-badge green">启用</span></td><td>2026-11-01</td><td class="cm-sticky-action"><div class="cm-actions"><button type="button" class="cm-link">预览</button><button type="button" class="cm-link">编辑</button><button type="button" class="cm-link">报表</button></div></td></tr>
+              <tr><td colspan="10" class="cm-muted">其余渠道及配置将在页面初始化后显示。</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="cm-channel-footer" class="cm-table-footer"><span class="cm-muted">共 6 个渠道</span></div>
+        <div id="cm-batch-bar" class="cm-batch-bar" hidden><span id="cm-selected-count">已选择 0 个渠道</span><button type="button" class="cm-btn small" data-cm-action="batch-enable">批量启用</button><button type="button" class="cm-btn small" data-cm-action="batch-disable">批量停用</button><button type="button" class="cm-btn small" data-cm-action="batch-download">批量下载策略</button><button type="button" class="cm-link" data-cm-action="clear-selection">取消选择</button></div>
+      </section>
+<section id="cm-packages" class="cm-panel" role="tabpanel" aria-label="包管理" hidden><div class="cm-empty">暂无包，请在初始化后新增或筛选。</div></section>
+<section id="cm-spend" class="cm-panel" aria-label="广告消耗数据" hidden><form class="cm-filter"><label class="cm-field"><span>渠道</span><select class="cm-input" disabled><option>渠道列表将在初始化后显示</option></select></label><button type="button" class="cm-btn primary" disabled>查询</button></form><div class="cm-empty">暂无查询结果，可在初始化后录入或导入消耗。</div></section>
+<section id="cm-reports" class="cm-panel" role="tabpanel" aria-label="统计报表"><div class="cm-empty">请从渠道报表选择渠道查看明细；也可使用筛选条件查询。</div></section>
+<noscript><p class="cm-note">请启用 JavaScript 以使用筛选、配置、导出和页面联动。</p></noscript></main>
+    <div id="cm-modal" class="cm-modal" hidden>
+      <section class="cm-dialog" role="dialog" aria-modal="true" aria-labelledby="cm-modal-title">
+        <header class="cm-dialog-header"><h2 id="cm-modal-title">渠道配置</h2><button class="cm-modal-close" type="button" data-cm-close aria-label="关闭弹窗">×</button></header>
+        <form id="cm-modal-form"><div id="cm-modal-content" class="cm-dialog-body"></div><footer class="cm-dialog-footer"><span id="cm-form-status" class="cm-form-status cm-error" role="alert"></span><button class="cm-btn" type="button" data-cm-close>取消</button><button class="cm-btn primary" type="submit" id="cm-modal-submit">保存</button></footer></form>
+      </section>
     </div>
+    <div id="cm-toast" class="cm-toast" role="status" hidden></div>
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
-    <script src="custom/js/渠道报表.js"></script>
+    <script src="custom/js/placement-landing-catalog.js"></script>
+    <script src="custom/js/channel-management-packages.js"></script>
+    <script src="custom/js/channel-management-links.js"></script>
+    <script src="custom/js/channel-management-reports.js"></script>
+    <script src="custom/js/placement-spend.js"></script>
+    <script src="custom/js/新渠道管理.js"></script>
   </body>
 </html>

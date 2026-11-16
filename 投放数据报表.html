@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
   <head>
     <title>投放数据报表</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
-    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
-    <link href="files/投放数据报表/styles.css" type="text/css" rel="stylesheet"/>
-    <link href="custom/css/投放数据报表.css" type="text/css" rel="stylesheet"/>
+    <link href="resources/css/axure_rp_page.css" rel="stylesheet"/>
+    <link href="data/styles.css" rel="stylesheet"/>
+    <link href="files/投放数据报表/styles.css" rel="stylesheet"/>
+    <link href="custom/css/新渠道管理.css" rel="stylesheet"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
     <script src="resources/scripts/axure/axQuery.js"></script>
     <script src="resources/scripts/axure/globals.js"></script>
@@ -41,239 +41,63 @@
     <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
     <script src="data/document.js"></script>
     <script src="files/投放数据报表/data.js"></script>
-    <script type="text/javascript">
-      $axure.utils.getTransparentGifPath = function() { return "resources/images/transparent.gif"; };
-      $axure.utils.getOtherPath = function() { return "resources/Other.html"; };
-      $axure.utils.getReloadPath = function() { return "resources/reload.html"; };
+    <script>
+      $axure.utils.getTransparentGifPath = function () { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function () { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function () { return 'resources/reload.html'; };
     </script>
   </head>
-  <body>
-    <div id="base" class="">
-      <div class="custom-page-shell placement-report-page">
-        <form class="report-toolbar" id="reportToolbar">
-          <label class="date-range">
-            <span class="calendar-icon">▣</span>
-            <input type="text" value="2026-06-05" aria-label="开始日期"/>
-            <span>-</span>
-            <input type="text" value="2026-06-11" aria-label="结束日期"/>
-          </label>
-          <button class="primary-btn" type="button" id="searchBtn">搜索</button>
-          <button class="plain-btn" type="reset" id="resetBtn">重置</button>
-          <button class="primary-btn wide-btn" type="button" id="exportBtn">导出表格</button>
-        </form>
-
-        <div class="update-tip">
-          数据更新时间：实时；总计数据为下面查询数据总和，不做去重；未达到对应回收周期的 ROI 字段不展示数值，显示 --。
-        </div>
-
-        <section class="report-table-card">
-          <div class="table-scroll">
-            <table class="report-table">
-              <thead>
-                <tr>
-                  <th class="date-col">日期</th>
-                  <th class="money-col">
-                    <div class="th-label">
-                      <span>消耗金额<br/>(本地币)</span>
-                      <button class="tip-trigger" type="button" data-tip="根据录入的美金成本 USDT，按本地币汇率换算后展示。">?</button>
-                    </div>
-                  </th>
-                  <th>注册人数</th>
-                  <th>
-                    <div class="th-label">
-                      <span>当日注册充值人数</span>
-                      <button class="tip-trigger" type="button" data-tip="首充人数，非必须当日注册。比如 A 用户昨天注册、今天首次充值，则今天计入 1 人。">?</button>
-                    </div>
-                  </th>
-                  <th>
-                    <div class="th-label">
-                      <span>新增充值人数</span>
-                      <button class="tip-trigger" type="button" data-tip="截止到当前时间的首充人数汇总。">?</button>
-                    </div>
-                  </th>
-                  <th>
-                    <div class="th-label">
-                      <span>注册成本</span>
-                      <button class="tip-trigger" type="button" data-tip="消耗金额 / 当日注册人数。">?</button>
-                    </div>
-                  </th>
-                  <th>
-                    <div class="th-label">
-                      <span>充值成本</span>
-                      <button class="tip-trigger" type="button" data-tip="消耗金额 / 新增充值人数。">?</button>
-                    </div>
-                  </th>
-                  <th>累计充值金额</th>
-                  <th>累计提现金额</th>
-                  <th>
-                    <div class="th-label">
-                      <span>当日ROI</span>
-                      <button class="tip-trigger" type="button" data-tip="当日ROI = （投放当日累计充值金额 - 投放当日累计提现金额）/ 消耗金额">?</button>
-                    </div>
-                  </th>
-                  <th>
-                    <div class="th-label">
-                      <span>3日ROI</span>
-                      <button class="tip-trigger" type="button" data-tip="3日ROI = （投放后3日内累计充值金额 - 投放后3日内累计提现金额）/ 消耗金额">?</button>
-                    </div>
-                  </th>
-                  <th>
-                    <div class="th-label">
-                      <span>7日ROI</span>
-                      <button class="tip-trigger" type="button" data-tip="7日ROI = （投放后7日内累计充值金额 - 投放后7日内累计提现金额）/ 消耗金额">?</button>
-                    </div>
-                  </th>
-                  <th>
-                    <div class="th-label">
-                      <span>15日ROI</span>
-                      <button class="tip-trigger" type="button" data-tip="15日ROI = （投放后15日内累计充值金额 - 投放后15日内累计提现金额）/ 消耗金额">?</button>
-                    </div>
-                  </th>
-                  <th>
-                    <div class="th-label">
-                      <span>30日ROI</span>
-                      <button class="tip-trigger" type="button" data-tip="30日ROI = （投放后30日内累计充值金额 - 投放后30日内累计提现金额）/ 消耗金额">?</button>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>2026-06-11</td>
-                  <td>24,860.00</td>
-                  <td>426</td>
-                  <td>58</td>
-                  <td>81</td>
-                  <td>58.36</td>
-                  <td>306.91</td>
-                  <td>18,720.00</td>
-                  <td>6,340.00</td>
-                  <td class="negative">-49.56%</td>
-                  <td class="placeholder">--</td>
-                  <td class="placeholder">--</td>
-                  <td class="placeholder">--</td>
-                  <td class="placeholder">--</td>
-                </tr>
-                <tr>
-                  <td>2026-06-10</td>
-                  <td>22,430.00</td>
-                  <td>398</td>
-                  <td>64</td>
-                  <td>92</td>
-                  <td>56.36</td>
-                  <td>243.80</td>
-                  <td>25,610.00</td>
-                  <td>8,930.00</td>
-                  <td>74.37%</td>
-                  <td class="placeholder">--</td>
-                  <td class="placeholder">--</td>
-                  <td class="placeholder">--</td>
-                  <td class="placeholder">--</td>
-                </tr>
-                <tr>
-                  <td>2026-06-09</td>
-                  <td>20,780.00</td>
-                  <td>372</td>
-                  <td>51</td>
-                  <td>76</td>
-                  <td>55.86</td>
-                  <td>273.42</td>
-                  <td>21,480.00</td>
-                  <td>6,120.00</td>
-                  <td>73.92%</td>
-                  <td>124.35%</td>
-                  <td class="placeholder">--</td>
-                  <td class="placeholder">--</td>
-                  <td class="placeholder">--</td>
-                </tr>
-                <tr>
-                  <td>2026-06-08</td>
-                  <td>18,960.00</td>
-                  <td>351</td>
-                  <td>47</td>
-                  <td>69</td>
-                  <td>54.02</td>
-                  <td>274.78</td>
-                  <td>17,360.00</td>
-                  <td>5,540.00</td>
-                  <td>62.34%</td>
-                  <td>108.97%</td>
-                  <td class="placeholder">--</td>
-                  <td class="placeholder">--</td>
-                  <td class="placeholder">--</td>
-                </tr>
-                <tr>
-                  <td>2026-06-07</td>
-                  <td>17,440.00</td>
-                  <td>336</td>
-                  <td>44</td>
-                  <td>63</td>
-                  <td>51.90</td>
-                  <td>276.83</td>
-                  <td>15,830.00</td>
-                  <td>4,210.00</td>
-                  <td>66.17%</td>
-                  <td>112.58%</td>
-                  <td class="placeholder">--</td>
-                  <td class="placeholder">--</td>
-                  <td class="placeholder">--</td>
-                </tr>
-                <tr>
-                  <td>2026-06-06</td>
-                  <td>16,520.00</td>
-                  <td>318</td>
-                  <td>39</td>
-                  <td>59</td>
-                  <td>51.95</td>
-                  <td>280.00</td>
-                  <td>13,920.00</td>
-                  <td>3,940.00</td>
-                  <td>60.41%</td>
-                  <td>102.18%</td>
-                  <td class="placeholder">--</td>
-                  <td class="placeholder">--</td>
-                  <td class="placeholder">--</td>
-                </tr>
-                <tr>
-                  <td>2026-06-05</td>
-                  <td>15,680.00</td>
-                  <td>301</td>
-                  <td>36</td>
-                  <td>54</td>
-                  <td>52.09</td>
-                  <td>290.37</td>
-                  <td>12,840.00</td>
-                  <td>3,780.00</td>
-                  <td>57.78%</td>
-                  <td>96.54%</td>
-                  <td>142.17%</td>
-                  <td class="placeholder">--</td>
-                  <td class="placeholder">--</td>
-                </tr>
-                <tr class="summary-row">
-                  <td>合计</td>
-                  <td>136,670.00</td>
-                  <td>2,502</td>
-                  <td>339</td>
-                  <td>494</td>
-                  <td>54.62</td>
-                  <td>276.66</td>
-                  <td>125,760.00</td>
-                  <td>38,860.00</td>
-                  <td class="placeholder">--</td>
-                  <td class="placeholder">--</td>
-                  <td class="placeholder">--</td>
-                  <td class="placeholder">--</td>
-                  <td class="placeholder">--</td>
-                </tr>
-              </tbody>
-            </table>
+  <body class="cm-body" data-axure-page-id="placement_data_report" data-cm-page="placement">
+    <div id="base" class=""></div>
+    <main id="cm-app" class="cm-page"><header class="cm-page-header"><div><div class="cm-muted">投放管理 / 投放数据报表</div><h1>投放数据报表</h1></div><div class="cm-actions"><a class="cm-btn" data-cm-target="channels" href="新渠道管理.html">渠道管理</a><a class="cm-btn" data-cm-target="spend" href="广告消耗数据.html">维护消耗</a><button type="button" class="cm-btn" data-cm-action="help">使用说明</button></div></header><nav class="cm-tabs" role="tablist" aria-label="投放数据报表功能"><button type="button" role="tab" aria-selected="true" aria-controls="cm-reports" class="is-active" data-cm-view="daily">每日投放</button><button type="button" role="tab" aria-selected="false" aria-controls="cm-reports" data-cm-view="roi">批次回收</button></nav>
+<section id="cm-channels" hidden class="cm-panel" role="tabpanel" aria-label="渠道与链接">
+        <form id="cm-channel-filter" class="cm-filter">
+          <label class="cm-field"><span>渠道搜索</span><input class="cm-input" name="keyword" placeholder="渠道名称 / ID / 编码"/></label>
+          <label class="cm-field"><span>媒体</span><select class="cm-input" name="media"><option value="">全部媒体</option><option>Facebook</option><option>TikTok</option><option>Google</option><option>自然流量</option></select></label>
+          <label class="cm-field"><span>推广类型</span><select class="cm-input" name="type"><option value="">全部类型</option><option value="link">普通渠道链接</option><option value="pwa">PWA 快捷 APP</option><option value="trial">游戏试玩链接</option><option value="channel">独立渠道包</option><option value="native">原生马甲包</option><option value="download">下载站</option></select></label>
+          <label class="cm-field"><span>状态</span><select class="cm-input" name="status"><option value="">全部状态</option><option value="enabled">启用</option><option value="disabled">停用</option></select></label>
+          <div class="cm-actions"><button class="cm-btn primary" type="submit">查询</button><button class="cm-btn" type="reset">重置</button><button class="cm-link" type="button" data-cm-action="advanced" aria-expanded="false">更多筛选 ▾</button></div>
+          <div id="cm-advanced" class="cm-advanced" hidden>
+            <label class="cm-field"><span>币种</span><select class="cm-input" name="currency"><option value="">全部币种</option><option>INR</option><option>USD</option></select></label>
+            <label class="cm-field"><span>下载入口</span><select class="cm-input" name="show"><option value="">全部</option><option value="yes">展示</option><option value="no">隐藏</option></select></label>
+            <label class="cm-field"><span>下载弹窗</span><select class="cm-input" name="popup"><option value="">全部</option><option value="yes">开启</option><option value="no">关闭</option></select></label>
+            <label class="cm-field"><span>创建时间</span><span class="cm-inline"><input class="cm-input" type="date" name="start"/><span>至</span><input class="cm-input" type="date" name="end"/></span></label>
           </div>
-        </section>
-      </div>
+        </form>
+        <div class="cm-toolbar">
+          <div class="cm-actions"><button type="button" class="cm-btn primary" data-cm-action="add">＋ 新增渠道</button><button type="button" class="cm-btn" data-cm-action="batch-add">批量新增</button><button type="button" class="cm-btn" data-cm-action="global">新渠道默认配置</button></div>
+          <div class="cm-actions"><button type="button" class="cm-btn" data-cm-action="refresh">刷新</button><button type="button" class="cm-btn" data-cm-action="export">导出渠道</button></div>
+        </div>
+        <div class="cm-table-wrap">
+          <table class="cm-table cm-channel-table">
+            <thead><tr><th><input class="cm-check" type="checkbox" id="cm-select-all" aria-label="选择当前页渠道"/></th><th>渠道名称 / ID</th><th>媒体 / 推广类型</th><th>币种 / 语言</th><th>推广入口 / 广告链接</th><th>关联包</th><th>下载策略</th><th>状态</th><th>创建时间</th><th class="cm-sticky-action">操作</th></tr></thead>
+            <tbody id="cm-channel-rows">
+              <tr><td><input class="cm-check" type="checkbox" aria-label="选择 Facebook 印度主渠道"/></td><td><div class="cm-cell-title">Facebook 印度主渠道</div><div class="cm-cell-sub">CH1001 · AAAA</div></td><td>Facebook<div class="cm-cell-sub">普通渠道链接</div></td><td>INR<div class="cm-cell-sub">English</div></td><td>大厅<div class="cm-cell-sub">homepageads</div></td><td>Android 原生包<div class="cm-cell-sub">PWA 快捷入口</div></td><td>展示入口 · 开启提醒<div class="cm-cell-sub">不强制下载</div></td><td><span class="cm-badge green">启用</span></td><td>2026-11-01</td><td class="cm-sticky-action"><div class="cm-actions"><button type="button" class="cm-link">预览</button><button type="button" class="cm-link">编辑</button><button type="button" class="cm-link">报表</button></div></td></tr>
+              <tr><td colspan="10" class="cm-muted">其余渠道及配置将在页面初始化后显示。</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="cm-channel-footer" class="cm-table-footer"><span class="cm-muted">共 6 个渠道</span></div>
+        <div id="cm-batch-bar" class="cm-batch-bar" hidden><span id="cm-selected-count">已选择 0 个渠道</span><button type="button" class="cm-btn small" data-cm-action="batch-enable">批量启用</button><button type="button" class="cm-btn small" data-cm-action="batch-disable">批量停用</button><button type="button" class="cm-btn small" data-cm-action="batch-download">批量下载策略</button><button type="button" class="cm-link" data-cm-action="clear-selection">取消选择</button></div>
+      </section>
+<section id="cm-packages" class="cm-panel" role="tabpanel" aria-label="包管理" hidden><div class="cm-empty">暂无包，请在初始化后新增或筛选。</div></section>
+<section id="cm-spend" class="cm-panel" aria-label="广告消耗数据" hidden><form class="cm-filter"><label class="cm-field"><span>渠道</span><select class="cm-input" disabled><option>渠道列表将在初始化后显示</option></select></label><button type="button" class="cm-btn primary" disabled>查询</button></form><div class="cm-empty">暂无查询结果，可在初始化后录入或导入消耗。</div></section>
+<section id="cm-reports" class="cm-panel" role="tabpanel" aria-label="统计报表"><div class="cm-empty">暂无查询结果，请选择日期、渠道和币种后查询。</div></section>
+<noscript><p class="cm-note">请启用 JavaScript 以使用筛选、配置、导出和页面联动。</p></noscript></main>
+    <div id="cm-modal" class="cm-modal" hidden>
+      <section class="cm-dialog" role="dialog" aria-modal="true" aria-labelledby="cm-modal-title">
+        <header class="cm-dialog-header"><h2 id="cm-modal-title">渠道配置</h2><button class="cm-modal-close" type="button" data-cm-close aria-label="关闭弹窗">×</button></header>
+        <form id="cm-modal-form"><div id="cm-modal-content" class="cm-dialog-body"></div><footer class="cm-dialog-footer"><span id="cm-form-status" class="cm-form-status cm-error" role="alert"></span><button class="cm-btn" type="button" data-cm-close>取消</button><button class="cm-btn primary" type="submit" id="cm-modal-submit">保存</button></footer></form>
+      </section>
     </div>
-    <script src="custom/js/投放数据报表.js"></script>
+    <div id="cm-toast" class="cm-toast" role="status" hidden></div>
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/placement-landing-catalog.js"></script>
+    <script src="custom/js/channel-management-packages.js"></script>
+    <script src="custom/js/channel-management-links.js"></script>
+    <script src="custom/js/channel-management-reports.js"></script>
+    <script src="custom/js/placement-spend.js"></script>
+    <script src="custom/js/新渠道管理.js"></script>
   </body>
 </html>

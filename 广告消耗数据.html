@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
   <head>
     <title>广告消耗数据</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
-    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
-    <link href="files/广告消耗数据/styles.css" type="text/css" rel="stylesheet"/>
-    <link href="custom/css/广告消耗数据.css" type="text/css" rel="stylesheet"/>
+    <link href="resources/css/axure_rp_page.css" rel="stylesheet"/>
+    <link href="data/styles.css" rel="stylesheet"/>
+    <link href="files/广告消耗数据/styles.css" rel="stylesheet"/>
+    <link href="custom/css/新渠道管理.css" rel="stylesheet"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
     <script src="resources/scripts/axure/axQuery.js"></script>
     <script src="resources/scripts/axure/globals.js"></script>
@@ -41,177 +41,63 @@
     <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
     <script src="data/document.js"></script>
     <script src="files/广告消耗数据/data.js"></script>
-    <script type="text/javascript">
-      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
-      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
-      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    <script>
+      $axure.utils.getTransparentGifPath = function () { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function () { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function () { return 'resources/reload.html'; };
     </script>
   </head>
-  <body>
-    <div id="base" class="">
-      <div class="custom-page-shell ad-spend-shell">
-        <div class="page-crumb">
-          <span>投放管理</span>
-          <i>/</i>
-          <strong>广告消耗数据</strong>
-        </div>
-
-        <main class="page-main">
-          <form class="filter-bar" id="spendFilter" aria-label="筛选条件">
-            <label class="range-field">
-              <span class="date-control">
-                <input id="filterStartDate" type="date" aria-label="开始日期"/>
-                <span class="date-placeholder">请选择</span>
-              </span>
-              <span>至</span>
-              <span class="date-control">
-                <input id="filterEndDate" type="date" aria-label="结束日期"/>
-                <span class="date-placeholder">请选择</span>
-              </span>
-            </label>
-            <label class="inline-field">
-              <span>渠道</span>
-              <select id="filterChannel">
-                <option>请选择渠道</option>
-                <option>Facebook测试</option>
-                <option>adjust测试</option>
-                <option>Google UAC</option>
-                <option>TikTok Ads</option>
-              </select>
-            </label>
-            <button class="primary-btn" type="submit">搜索</button>
-            <button class="plain-btn" type="reset">重置</button>
-            <button class="primary-btn entry-btn" type="button" data-entry-action="add">新增渠道消耗</button>
-          </form>
-
-          <section class="table-card" aria-label="广告消耗数据列表">
-            <div class="table-scroll">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>消耗日期</th>
-                    <th>渠道名称</th>
-                    <th>渠道编码</th>
-                    <th>消耗金额(USDT)</th>
-                    <th>备注</th>
-                    <th>操作人</th>
-                    <th>最后更新时间</th>
-                    <th>操作</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr data-row-id="row-1" data-channel="Facebook测试" data-channel-code="101102" data-date="2026-07-13" data-amount="1000" data-remark="7月品牌推广消耗" data-user="Admin" data-time="2026-07-14T13:41:21.487398+08:00">
-                    <td>2026-07-13</td>
-                    <td class="channel-cell">Facebook测试</td>
-                    <td class="code-cell">101102</td>
-                    <td class="amount-cell">1000</td>
-                    <td class="remark-cell">7月品牌推广消耗</td>
-                    <td class="user-cell">Admin</td>
-                    <td class="time-cell">2026-07-14T13:41:21.487398+08:00</td>
-                    <td class="action-cell"><button class="link-btn" type="button" data-entry-action="edit" data-row-id="row-1">编辑</button><button class="link-btn danger-link" type="button" data-entry-action="delete" data-row-id="row-1">删除</button></td>
-                  </tr>
-                  <tr data-row-id="row-2" data-channel="adjust测试" data-channel-code="101101" data-date="2026-07-01" data-amount="111" data-remark="归因链路测试消耗" data-user="操作员" data-time="2026-07-02T13:46:42.161814+08:00">
-                    <td>2026-07-01</td>
-                    <td class="channel-cell">adjust测试</td>
-                    <td class="code-cell">101101</td>
-                    <td class="amount-cell">111</td>
-                    <td class="remark-cell">归因链路测试消耗</td>
-                    <td class="user-cell">操作员</td>
-                    <td class="time-cell">2026-07-02T13:46:42.161814+08:00</td>
-                    <td class="action-cell"><button class="link-btn" type="button" data-entry-action="edit" data-row-id="row-2">编辑</button><button class="link-btn danger-link" type="button" data-entry-action="delete" data-row-id="row-2">删除</button></td>
-                  </tr>
-                  <tr data-row-id="row-3" data-channel="Google UAC" data-channel-code="101103" data-date="2026-06-25" data-amount="856.75" data-remark="安卓端应用拉新投放" data-user="Admin" data-time="2026-06-26T09:18:35.682410+08:00">
-                    <td>2026-06-25</td>
-                    <td class="channel-cell">Google UAC</td>
-                    <td class="code-cell">101103</td>
-                    <td class="amount-cell">856.75</td>
-                    <td class="remark-cell">安卓端应用拉新投放</td>
-                    <td class="user-cell">Admin</td>
-                    <td class="time-cell">2026-06-26T09:18:35.682410+08:00</td>
-                    <td class="action-cell"><button class="link-btn" type="button" data-entry-action="edit" data-row-id="row-3">编辑</button><button class="link-btn danger-link" type="button" data-entry-action="delete" data-row-id="row-3">删除</button></td>
-                  </tr>
-                  <tr data-row-id="row-4" data-channel="TikTok Ads" data-channel-code="101104" data-date="2026-06-18" data-amount="2360.50" data-remark="短视频素材放量测试" data-user="操作员" data-time="2026-06-19T16:27:08.315206+08:00">
-                    <td>2026-06-18</td>
-                    <td class="channel-cell">TikTok Ads</td>
-                    <td class="code-cell">101104</td>
-                    <td class="amount-cell">2360.50</td>
-                    <td class="remark-cell">短视频素材放量测试</td>
-                    <td class="user-cell">操作员</td>
-                    <td class="time-cell">2026-06-19T16:27:08.315206+08:00</td>
-                    <td class="action-cell"><button class="link-btn" type="button" data-entry-action="edit" data-row-id="row-4">编辑</button><button class="link-btn danger-link" type="button" data-entry-action="delete" data-row-id="row-4">删除</button></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="pager">
-              <button type="button" disabled>首页</button>
-              <button type="button" disabled>上一页</button>
-              <input type="text" value="1" aria-label="当前页"/>
-              <span>/ 1</span>
-              <button type="button" disabled>下一页</button>
-              <button type="button" disabled>尾页</button>
-              <select>
-                <option>20条/页</option>
-                <option>50条/页</option>
-              </select>
-              <span id="recordCount">共 4 条记录</span>
-            </div>
-          </section>
-        </main>
-
-        <div class="modal-mask" id="entryModal" hidden>
-          <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="entryModalTitle">
-            <div class="modal-head">
-              <h3 id="entryModalTitle">新增渠道消耗</h3>
-              <button class="modal-close" type="button" data-close-modal="entryModal" aria-label="关闭">×</button>
-            </div>
-            <div class="modal-body">
-              <div class="form-grid">
-                <label class="form-row" id="entryChannelRow">
-                  <span><em>*</em> 渠道名称:</span>
-                  <select id="entryChannel">
-                    <option>Facebook测试</option>
-                    <option>adjust测试</option>
-                    <option>Google UAC</option>
-                    <option>TikTok Ads</option>
-                  </select>
-                </label>
-                <label class="form-row" id="entryCodeRow">
-                  <span><em>*</em> 渠道编码:</span>
-                  <input id="entryCode" type="text" placeholder="请输入渠道编码"/>
-                </label>
-                <label class="form-row" id="entryAmountRow">
-                  <span><em>*</em> 消耗金额（USDT）:</span>
-                  <input id="entryAmount" type="text" placeholder="请输入消耗金额"/>
-                </label>
-                <label class="form-row" id="entryDateRow">
-                  <span><em>*</em> 消耗日期:</span>
-                  <input id="entryDate" type="date"/>
-                </label>
-                <label class="form-row textarea-row" id="entryRemarkRow">
-                  <span>备注:</span>
-                  <div class="textarea-wrap">
-                    <textarea id="entryRemark" maxlength="100" placeholder="请输入备注"></textarea>
-                    <div class="textarea-count"><span id="remarkCount">0</span> / 100</div>
-                  </div>
-                </label>
-              </div>
-            </div>
-            <div class="modal-foot">
-              <div class="modal-actions">
-                <button class="plain-btn" type="button" data-close-modal="entryModal">取消</button>
-                <button class="primary-btn" type="button" id="entrySubmit">提交</button>
-              </div>
-            </div>
+  <body class="cm-body" data-axure-page-id="ad_spend_data" data-cm-page="spend">
+    <div id="base" class=""></div>
+    <main id="cm-app" class="cm-page"><header class="cm-page-header"><div><div class="cm-muted">投放管理 / 广告消耗数据</div><h1>广告消耗数据</h1></div><div class="cm-actions"><a class="cm-btn" data-cm-target="channels" href="新渠道管理.html">渠道管理</a><a class="cm-btn" data-cm-target="daily" href="投放数据报表.html">投放报表</a><button type="button" class="cm-btn" data-cm-action="help">使用说明</button></div></header>
+<section id="cm-channels" hidden class="cm-panel" role="tabpanel" aria-label="渠道与链接">
+        <form id="cm-channel-filter" class="cm-filter">
+          <label class="cm-field"><span>渠道搜索</span><input class="cm-input" name="keyword" placeholder="渠道名称 / ID / 编码"/></label>
+          <label class="cm-field"><span>媒体</span><select class="cm-input" name="media"><option value="">全部媒体</option><option>Facebook</option><option>TikTok</option><option>Google</option><option>自然流量</option></select></label>
+          <label class="cm-field"><span>推广类型</span><select class="cm-input" name="type"><option value="">全部类型</option><option value="link">普通渠道链接</option><option value="pwa">PWA 快捷 APP</option><option value="trial">游戏试玩链接</option><option value="channel">独立渠道包</option><option value="native">原生马甲包</option><option value="download">下载站</option></select></label>
+          <label class="cm-field"><span>状态</span><select class="cm-input" name="status"><option value="">全部状态</option><option value="enabled">启用</option><option value="disabled">停用</option></select></label>
+          <div class="cm-actions"><button class="cm-btn primary" type="submit">查询</button><button class="cm-btn" type="reset">重置</button><button class="cm-link" type="button" data-cm-action="advanced" aria-expanded="false">更多筛选 ▾</button></div>
+          <div id="cm-advanced" class="cm-advanced" hidden>
+            <label class="cm-field"><span>币种</span><select class="cm-input" name="currency"><option value="">全部币种</option><option>INR</option><option>USD</option></select></label>
+            <label class="cm-field"><span>下载入口</span><select class="cm-input" name="show"><option value="">全部</option><option value="yes">展示</option><option value="no">隐藏</option></select></label>
+            <label class="cm-field"><span>下载弹窗</span><select class="cm-input" name="popup"><option value="">全部</option><option value="yes">开启</option><option value="no">关闭</option></select></label>
+            <label class="cm-field"><span>创建时间</span><span class="cm-inline"><input class="cm-input" type="date" name="start"/><span>至</span><input class="cm-input" type="date" name="end"/></span></label>
           </div>
+        </form>
+        <div class="cm-toolbar">
+          <div class="cm-actions"><button type="button" class="cm-btn primary" data-cm-action="add">＋ 新增渠道</button><button type="button" class="cm-btn" data-cm-action="batch-add">批量新增</button><button type="button" class="cm-btn" data-cm-action="global">新渠道默认配置</button></div>
+          <div class="cm-actions"><button type="button" class="cm-btn" data-cm-action="refresh">刷新</button><button type="button" class="cm-btn" data-cm-action="export">导出渠道</button></div>
         </div>
-
-      </div>
+        <div class="cm-table-wrap">
+          <table class="cm-table cm-channel-table">
+            <thead><tr><th><input class="cm-check" type="checkbox" id="cm-select-all" aria-label="选择当前页渠道"/></th><th>渠道名称 / ID</th><th>媒体 / 推广类型</th><th>币种 / 语言</th><th>推广入口 / 广告链接</th><th>关联包</th><th>下载策略</th><th>状态</th><th>创建时间</th><th class="cm-sticky-action">操作</th></tr></thead>
+            <tbody id="cm-channel-rows">
+              <tr><td><input class="cm-check" type="checkbox" aria-label="选择 Facebook 印度主渠道"/></td><td><div class="cm-cell-title">Facebook 印度主渠道</div><div class="cm-cell-sub">CH1001 · AAAA</div></td><td>Facebook<div class="cm-cell-sub">普通渠道链接</div></td><td>INR<div class="cm-cell-sub">English</div></td><td>大厅<div class="cm-cell-sub">homepageads</div></td><td>Android 原生包<div class="cm-cell-sub">PWA 快捷入口</div></td><td>展示入口 · 开启提醒<div class="cm-cell-sub">不强制下载</div></td><td><span class="cm-badge green">启用</span></td><td>2026-11-01</td><td class="cm-sticky-action"><div class="cm-actions"><button type="button" class="cm-link">预览</button><button type="button" class="cm-link">编辑</button><button type="button" class="cm-link">报表</button></div></td></tr>
+              <tr><td colspan="10" class="cm-muted">其余渠道及配置将在页面初始化后显示。</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="cm-channel-footer" class="cm-table-footer"><span class="cm-muted">共 6 个渠道</span></div>
+        <div id="cm-batch-bar" class="cm-batch-bar" hidden><span id="cm-selected-count">已选择 0 个渠道</span><button type="button" class="cm-btn small" data-cm-action="batch-enable">批量启用</button><button type="button" class="cm-btn small" data-cm-action="batch-disable">批量停用</button><button type="button" class="cm-btn small" data-cm-action="batch-download">批量下载策略</button><button type="button" class="cm-link" data-cm-action="clear-selection">取消选择</button></div>
+      </section>
+<section id="cm-packages" class="cm-panel" role="tabpanel" aria-label="包管理" hidden><div class="cm-empty">暂无包，请在初始化后新增或筛选。</div></section>
+<section id="cm-spend" class="cm-panel" aria-label="广告消耗数据"><form class="cm-filter"><label class="cm-field"><span>渠道</span><select class="cm-input" disabled><option>渠道列表将在初始化后显示</option></select></label><button type="button" class="cm-btn primary" disabled>查询</button></form><div class="cm-empty">暂无查询结果，可在初始化后录入或导入消耗。</div></section>
+<section id="cm-reports" class="cm-panel" role="tabpanel" aria-label="统计报表" hidden><div class="cm-empty">暂无查询结果，请选择日期、渠道和币种后查询。</div></section>
+<noscript><p class="cm-note">请启用 JavaScript 以使用筛选、配置、导出和页面联动。</p></noscript></main>
+    <div id="cm-modal" class="cm-modal" hidden>
+      <section class="cm-dialog" role="dialog" aria-modal="true" aria-labelledby="cm-modal-title">
+        <header class="cm-dialog-header"><h2 id="cm-modal-title">渠道配置</h2><button class="cm-modal-close" type="button" data-cm-close aria-label="关闭弹窗">×</button></header>
+        <form id="cm-modal-form"><div id="cm-modal-content" class="cm-dialog-body"></div><footer class="cm-dialog-footer"><span id="cm-form-status" class="cm-form-status cm-error" role="alert"></span><button class="cm-btn" type="button" data-cm-close>取消</button><button class="cm-btn primary" type="submit" id="cm-modal-submit">保存</button></footer></form>
+      </section>
     </div>
-
+    <div id="cm-toast" class="cm-toast" role="status" hidden></div>
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
-    <script src="custom/js/广告消耗数据.js"></script>
+    <script src="custom/js/placement-landing-catalog.js"></script>
+    <script src="custom/js/channel-management-packages.js"></script>
+    <script src="custom/js/channel-management-links.js"></script>
+    <script src="custom/js/channel-management-reports.js"></script>
+    <script src="custom/js/placement-spend.js"></script>
+    <script src="custom/js/新渠道管理.js"></script>
   </body>
 </html>

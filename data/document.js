@@ -731,13 +731,6 @@ $axure.loadDocument({
             "type": "Wireframe",
             "url": "渠道报表.html",
             "children": []
-          },
-          {
-            "id": "channel_report_detail",
-            "pageName": "渠道报表明细",
-            "type": "Wireframe",
-            "url": "渠道报表明细.html",
-            "children": []
           }
         ]
       },
@@ -1030,6 +1023,42 @@ $axure.loadDocument({
             "type": "Wireframe",
             "url": "全局配置.html",
             "children": []
+          },
+          {
+            "id": "original_placement_management",
+            "pageName": "投放管理（原版）",
+            "type": "Folder",
+            "url": "",
+            "children": [
+              {
+                "id": "original_placement_1",
+                "pageName": "原版广告消耗数据",
+                "type": "Wireframe",
+                "url": "原版广告消耗数据.html",
+                "children": []
+              },
+              {
+                "id": "original_placement_2",
+                "pageName": "原版投放数据报表",
+                "type": "Wireframe",
+                "url": "原版投放数据报表.html",
+                "children": []
+              },
+              {
+                "id": "original_placement_3",
+                "pageName": "原版渠道报表",
+                "type": "Wireframe",
+                "url": "原版渠道报表.html",
+                "children": []
+              },
+              {
+                "id": "original_placement_4",
+                "pageName": "原版渠道报表明细",
+                "type": "Wireframe",
+                "url": "原版渠道报表明细.html",
+                "children": []
+              }
+            ]
           }
         ]
       }

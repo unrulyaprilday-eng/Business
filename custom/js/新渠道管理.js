@@ -5,7 +5,10 @@
   var DEST_NAMES = {lobby: '大厅', register: '注册页', activity: '活动页', trial: '试玩页', download: '下载站', landing: '落地中转页'};
   var PACKAGE_TYPES = {pwa: 'PWA 快捷 APP', fast: '极速 APP', native: '原生 APP'};
   var state, currentView = 'channels', page = 1, pageSize = 10, selected = new Set(), modalOptions, modalOrigin, toastTimer;
-  var filters = {}, fieldSerial = 0, silentFilterReset = false;
+  var filters = {}, fieldSerial = 0, silentFilterReset = false, viewContexts = {}, currentContext = {};
+  var VIEW_PAGES = {channels: '新渠道管理.html', packages: '新渠道管理.html', updates: '新渠道管理.html', spend: '广告消耗数据.html', daily: '投放数据报表.html', roi: '投放数据报表.html', promotion: '渠道报表.html', conversion: '渠道报表.html', retention: '渠道报表.html', detail: '渠道报表明细.html'};
+  var PAGE_VIEWS = {channels: ['channels', 'packages', 'updates'], spend: ['spend'], placement: ['daily', 'roi'], reports: ['promotion', 'conversion', 'retention'], detail: ['detail']};
+  var QUERY_KEYS = ['start', 'end', 'channel', 'media', 'link', 'currency', 'package', 'version', 'period', 'source', 'scene', 'promotionMetrics', 'classify', 'breakdown', 'metrics', 'category', 'group', 'returnView', 'returnUrl', 'entry'];
   function clone(value) { return JSON.parse(JSON.stringify(value)); }
   function esc(value) { return String(value == null ? '' : value).replace(/[&<>"']/g, function (c) { return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]; }); }
   function today() { return '2026-11-12'; }
@@ -40,6 +43,9 @@
     ], global: {domain: 'm.play-demo.com', language: 'English', currency: 'INR', show: true, popup: true, phone: 'follow', email: 'follow', maskLinks: false, rechargeApp: false, rechargeCount: 3}};
   }
   function normalizeState(next) {
+    next.channels.forEach(function (channel) {
+      if (!Array.isArray(channel.links)) channel.links = [{id: 'LK-' + channel.id + '-MAIN', legacy: true, linkName: channel.linkName, media: channel.media, domain: channel.domain, landing: channel.landing, destination: channel.destination, tracking: clone(channel.tracking || defaultTracking(channel.media)), status: 'enabled', inheritConfig: true, createdAt: channel.createdAt}];
+    });
     next.packages.forEach(function (pkg) {
       if (pkg.type !== 'channel' || pkg.channelCode) return;
       var codes = next.channels.filter(function (c) { return (c.packageIds || []).includes(pkg.id); }).map(function (c) { return c.code; }).filter(function (value, i, all) { return value && all.indexOf(value) === i; });
@@ -50,10 +56,10 @@
   function loadState() {
     try { var raw = localStorage.getItem(STORAGE_KEY); if (raw) { var parsed = JSON.parse(raw); if (parsed.schemaVersion === 1 && Array.isArray(parsed.channels) && Array.isArray(parsed.packages) && Array.isArray(parsed.spend) && parsed.global) return normalizeState(parsed); } }
     catch (error) { window.setTimeout(function () { toast('无法读取本机保存的数据，当前使用初始演示数据。'); }, 100); }
-    return makeSeed();
+    return normalizeState(makeSeed());
   }
   function saveState(next) {
-    var serialized = JSON.stringify(next);
+    var serialized = JSON.stringify(normalizeState(clone(next)));
     try { localStorage.setItem(STORAGE_KEY, serialized); } catch (error) { throw new Error('保存失败，请检查浏览器存储权限；当前输入已保留。'); }
     state = JSON.parse(serialized);
   }
@@ -105,7 +111,8 @@
   function validPackage(pkg) { return pkg.status === 'published' && pkg.versions.some(function (v) { return v.version === pkg.currentVersion && v.status === 'published'; }); }
   function checkDownload(channel, packageList) {
     var source = {channels: state ? state.channels : [], packages: packageList};
-    return window.CMPackages.validateBindings(channel, channel.packageIds, source);
+    var problem = window.CMPackages.validateBindings(channel, channel.packageIds, source);
+    return problem || (window.CMLinks ? window.CMLinks.validateChannel(channel, source) : '');
   }
   function promotionUrl(channel) {
     var paths = {lobby: '/', register: '/register', activity: '/promotions', trial: '/trial', download: '/download', landing: '/landing'};
@@ -113,6 +120,8 @@
     if (channel.destination === 'landing') url += '&template=' + encodeURIComponent(channel.landing);
     return url;
   }
+  function mainLink(channel) { return (channel.links || []).find(function (link) { return link.legacy; }) || (channel.links || [])[0]; }
+  function channelPromotionUrl(channel) { var link = mainLink(channel); return link && window.CMLinks ? window.CMLinks.url(channel, link) : Array.isArray(channel.links) ? '' : promotionUrl(channel); }
   function filteredChannels() {
     return state.channels.filter(function (c) { return (!filters.keyword || (c.name + ' ' + c.id + ' ' + c.code).toLowerCase().includes(filters.keyword.toLowerCase())) && (!filters.media || filters.media === c.media) && (!filters.type || filters.type === c.type) && (!filters.status || filters.status === c.status) && (!filters.currency || filters.currency === c.currency) && (!filters.show || (filters.show === 'yes') === c.download.show) && (!filters.popup || (filters.popup === 'yes') === c.download.popup) && (!filters.start || c.createdAt >= filters.start) && (!filters.end || c.createdAt <= filters.end); });
   }
@@ -121,9 +130,10 @@
     var list = filteredChannels(); page = Math.max(1, Math.min(page, Math.ceil(list.length / pageSize) || 1));
     var visible = list.slice((page - 1) * pageSize, page * pageSize);
     document.getElementById('cm-channel-rows').innerHTML = visible.length ? visible.map(function (c) {
+      var primary = mainLink(c), count = (c.links || []).length;
       var names = c.packageIds.map(function (id) { var p = state.packages.find(function (item) { return item.id === id; }); return p ? esc(p.name) + ' <span class="cm-muted">' + esc(p.currentVersion || '未发布') + '</span>' : ''; }).filter(Boolean);
       var force = c.download.force === 'none' ? '不强制下载' : c.download.force === 'remind' ? '强制提醒 · 仍可使用网页' : '下载后仅允许 APP';
-      return '<tr><td><input class="cm-check" type="checkbox" data-cm-select="' + c.id + '" aria-label="选择' + esc(c.name) + '"' + (selected.has(c.id) ? ' checked' : '') + '></td><td><div class="cm-cell-title">' + rowButton('detail', esc(c.name), c.id) + '</div><div class="cm-cell-sub">' + esc(c.id + ' · ' + c.code) + '</div></td><td>' + esc(c.media) + '<div class="cm-cell-sub">' + TYPE_NAMES[c.type] + '</div></td><td>' + esc(c.currency) + '<div class="cm-cell-sub">' + esc(c.language) + '</div></td><td><div class="cm-cell-title">' + DEST_NAMES[c.destination] + ' ' + rowButton('copy-link', '复制链接', c.id) + '</div><div class="cm-cell-sub">' + esc(c.linkName) + '</div></td><td>' + (names.length ? names.join('<br>') : '<span class="cm-muted">未关联</span>') + '</td><td>' + (c.download.show ? '展示入口' : '隐藏入口') + ' · ' + (c.download.popup ? '开启提醒' : '关闭提醒') + '<div class="cm-cell-sub">' + force + '</div></td><td><span class="cm-badge ' + (c.status === 'enabled' ? 'green' : 'gray') + '">' + (c.status === 'enabled' ? '启用' : '停用') + '</span></td><td>' + esc(c.createdAt) + '</td><td class="cm-sticky-action"><div class="cm-actions">' + rowButton('edit', '编辑', c.id) + rowButton('bind', '包配置', c.id) + rowButton('report', '报表', c.id) + rowButton('toggle', c.status === 'enabled' ? '停用' : '启用', c.id) + '</div></td></tr>';
+      return '<tr><td><input class="cm-check" type="checkbox" data-cm-select="' + c.id + '" aria-label="选择' + esc(c.name) + '"' + (selected.has(c.id) ? ' checked' : '') + '></td><td><div class="cm-cell-title">' + rowButton('detail', esc(c.name), c.id) + '</div><div class="cm-cell-sub">' + esc(c.id + ' · ' + c.code) + '</div></td><td>' + esc(c.media) + '<div class="cm-cell-sub">' + TYPE_NAMES[c.type] + '</div></td><td>' + esc(c.currency) + '<div class="cm-cell-sub">' + esc(c.language) + '</div></td><td><div class="cm-cell-title">' + count + ' 条推广链接 ' + (primary ? rowButton('copy-link', '复制主链接', c.id) : '') + '</div><div class="cm-cell-sub">' + esc(primary ? primary.linkName : '未配置链接') + '</div></td><td>' + (names.length ? names.join('<br>') : '<span class="cm-muted">未关联</span>') + '</td><td>' + (c.download.show ? '展示入口' : '隐藏入口') + ' · ' + (c.download.popup ? '开启提醒' : '关闭提醒') + '<div class="cm-cell-sub">' + force + '</div></td><td><span class="cm-badge ' + (c.status === 'enabled' ? 'green' : 'gray') + '">' + (c.status === 'enabled' ? '启用' : '停用') + '</span></td><td>' + esc(c.createdAt) + '</td><td class="cm-sticky-action"><div class="cm-actions">' + rowButton('edit', '编辑', c.id) + rowButton('links', '推广链接', c.id) + rowButton('bind', '包配置', c.id) + rowButton('report', '报表', c.id) + rowButton('toggle', c.status === 'enabled' ? '停用' : '启用', c.id) + '</div></td></tr>';
     }).join('') : '<tr><td colspan="10"><div class="cm-empty">没有符合条件的渠道，请调整筛选条件或新增渠道。</div></td></tr>';
     document.getElementById('cm-channel-footer').innerHTML = '<span class="cm-muted">共 ' + list.length + ' 个渠道</span><div class="cm-pagination"><label>每页 <select class="cm-input" id="cm-page-size">' + options([10, 20, 50], pageSize) + '</select> 条</label><button type="button" class="cm-btn small" data-cm-action="prev"' + (page <= 1 ? ' disabled' : '') + '>上一页</button><span>' + page + ' / ' + Math.max(1, Math.ceil(list.length / pageSize)) + '</span><button type="button" class="cm-btn small" data-cm-action="next"' + (page * pageSize >= list.length ? ' disabled' : '') + '>下一页</button></div>';
     document.querySelectorAll('#cm-channel-rows .cm-cell-title, #cm-channel-rows .cm-cell-sub').forEach(function (node) { node.title = node.textContent; });
@@ -205,6 +215,7 @@
       channel.currency = saved ? saved.currency : values.currency;
       channel.id = saved ? saved.id : 'CH' + Date.now().toString(36).toUpperCase();
       channel.packageIds = Array.from(form.querySelectorAll('[name=packageIds]:checked')).map(function (x) { return x.value; });
+      if (channel.status !== 'disabled' && channel.packageIds.some(function (id) { var pkg = state.packages.find(function (item) { return item.id === id; }); return pkg && pkg.type === 'channel' && (!saved || saved.packageIds.indexOf(id) === -1); })) return invalid('绑定新的独立渠道包前，请先停用渠道；保存绑定后再启用。', 'promotion');
       channel.download = parseDownload(form);
       if (!validateThresholds(channel.download)) return invalid('下载提醒条件必须为有效的非负整数。', 'download', 'dl_days');
       var dlError = checkDownload(channel, state.packages); if (dlError) return invalid(dlError, /关联|绑定|专属|生效包|缺少/.test(dlError) ? 'promotion' : 'download');
@@ -213,6 +224,13 @@
       if (channel.tracking.provider !== '无' && (!values.registerEvent || !values.firstPayEvent || !values.repeatPayEvent)) return invalid('请补全注册、首充及复充事件标识。', 'tracking', 'registerEvent');
       if (values.region === 'yes' && !/^[A-Za-z]{2}(?:\s*,\s*[A-Za-z]{2})*$/.test(values.countries || '')) return invalid('开启地区限制后，请填写两位国家代码，例如 IN, US。', 'tracking', 'countries');
       channel.restrictions = {phone: values.phone, email: values.email, region: values.region === 'yes', countries: (values.countries || '').toUpperCase(), masked: values.masked === 'yes'};
+      var primary = mainLink(channel);
+      if (primary) {
+        ['media', 'domain', 'landing', 'destination', 'linkName'].forEach(function (key) { if (channel[key] !== draft[key]) { primary[key] = channel[key]; if (key === 'landing') delete primary.landingId; } });
+        if (JSON.stringify(channel.tracking) !== JSON.stringify(draft.tracking)) primary.tracking = clone(channel.tracking);
+        var linksProblem = window.CMLinks && window.CMLinks.validateChannel(channel, {channels: state.channels, packages: state.packages});
+        if (linksProblem) return invalid(linksProblem, 'promotion');
+      }
       var next = clone(state); if (saved) next.channels = next.channels.map(function (c) { return c.id === id ? channel : c; }); else next.channels.unshift(channel);
       saveState(next); close(); renderChannels(); toast(saved ? '渠道配置已保存' : '渠道已创建，尚无投放历史数据');
     }});
@@ -222,9 +240,9 @@
     var c = channelById(id); if (!c) return;
     var short = c.restrictions.masked ? 'https://' + c.domain + '/s/' + encodeURIComponent(c.id) : '';
     var rows = [['渠道编码', c.code], ['推广类型', TYPE_NAMES[c.type]], ['媒体 / 币种 / 语言', c.media + ' / ' + c.currency + ' / ' + c.language], ['投放状态', c.status === 'enabled' ? '启用' : '停用'], ['直达位置 / 落地页', DEST_NAMES[c.destination] + ' / ' + c.landing], ['关联包', c.packageIds.map(function (id) { var pkg = state.packages.find(function (p) { return p.id === id; }); return pkg ? pkg.name + ' ' + (pkg.currentVersion || '草稿') : id; }).join('、') || '未关联'], ['下载策略', (c.download.show ? '展示' : '隐藏') + ' · ' + (c.download.popup ? '开启弹窗' : '关闭弹窗') + ' · ' + (c.download.force === 'app' ? '仅APP' : c.download.force === 'remind' ? '强制提醒' : '不强制')], ['埋点 / 归因工具', c.tracking.provider], ['像素 ID / App Token', c.tracking.pixel || '—'], ['注册 / 首充 / 复充事件', [c.tracking.registerEvent, c.tracking.firstPayEvent, c.tracking.repeatPayEvent].join(' / ')], ['地区限制', c.restrictions.region ? c.restrictions.countries : '关闭'], ['创建时间', c.createdAt]];
-    dialog({title: '渠道预览 · ' + c.name, width: 'wide', readonly: true, html: '<div class="cm-form-grid">' + rows.map(function (r) { return field(r[0], '<div>' + esc(r[1]) + '</div>'); }).join('') + field('完整推广链接', input('fullLink', promotionUrl(c), 'readonly'), '推广地址附带渠道、媒体、广告链接、语言及币种；落地页按直达位置识别。', true) + (short ? field('渠道短链接', input('shortLink', short, 'readonly'), '本机演示的短链接样式，需在正式环境配置解析服务。', true) : '') + '</div><div class="cm-actions"><button type="button" class="cm-btn" data-detail-copy="full">复制推广链接</button>' + (short ? '<button type="button" class="cm-btn" data-detail-copy="short">复制短链接</button>' : '') + '<button type="button" class="cm-btn primary" data-detail-target="edit">编辑渠道</button><button type="button" class="cm-btn" data-detail-target="packages">关联包</button><button type="button" class="cm-btn" data-detail-target="conversion">转化统计</button></div>', onOpen: function (form) {
-      form.querySelectorAll('[data-detail-copy]').forEach(function (b) { b.addEventListener('click', function () { copy(b.dataset.detailCopy === 'short' ? short : promotionUrl(c)); }); });
-      form.querySelectorAll('[data-detail-target]').forEach(function (b) { b.addEventListener('click', function () { closeModal(); if (b.dataset.detailTarget === 'edit') editor(id); else go(b.dataset.detailTarget, {channelId: id}); }); });
+    dialog({title: '渠道预览 · ' + c.name, width: 'wide', readonly: true, html: '<div class="cm-form-grid">' + rows.map(function (r) { return field(r[0], '<div>' + esc(r[1]) + '</div>'); }).join('') + field('当前主推广链接', input('fullLink', channelPromotionUrl(c), 'readonly'), '此处显示当前主链接；可在“推广链接”中管理同一渠道的所有入口。', true) + (short ? field('渠道短链接', input('shortLink', short, 'readonly'), '本机演示的短链接样式，需在正式环境配置解析服务。', true) : '') + '</div><div class="cm-actions"><button type="button" class="cm-btn" data-detail-copy="full"' + (!mainLink(c) ? ' disabled' : '') + '>复制推广链接</button>' + (short ? '<button type="button" class="cm-btn" data-detail-copy="short">复制短链接</button>' : '') + '<button type="button" class="cm-btn primary" data-detail-target="edit">编辑渠道</button><button type="button" class="cm-btn" data-detail-target="links">推广链接</button><button type="button" class="cm-btn" data-detail-target="packages">关联包</button><button type="button" class="cm-btn" data-detail-target="conversion">转化统计</button></div>', onOpen: function (form) {
+      form.querySelectorAll('[data-detail-copy]').forEach(function (b) { b.addEventListener('click', function () { copy(b.dataset.detailCopy === 'short' ? short : channelPromotionUrl(c)); }); });
+      form.querySelectorAll('[data-detail-target]').forEach(function (b) { b.addEventListener('click', function () { closeModal(); if (b.dataset.detailTarget === 'edit') editor(id); else if (b.dataset.detailTarget === 'links' && window.CMLinks) window.CMLinks.open(id); else go(b.dataset.detailTarget, b.dataset.detailTarget === 'conversion' ? entityReportContext({channelId: id}) : {channelId: id}); }); });
     }});
   }
   function confirmStatus(ids, enabled) {
@@ -265,19 +283,88 @@
       var next = clone(state); next.channels.forEach(function (c) { if (ids.includes(c.id)) { c.download = clone(dl); var error = checkDownload(c, next.packages); if (error) throw new Error(c.name + '：' + error); } }); saveState(next); close(); selected.clear(); renderChannels(); toast('下载策略已批量保存');
     }});
   }
-  function exportChannels() { var rows = [['渠道ID', '渠道名称', '编码', '媒体', '推广类型', '币种', '语言', '广告链接', '关联包', '下载入口', '状态', '创建日期', '推广链接']]; filteredChannels().forEach(function (c) { rows.push([c.id, c.name, c.code, c.media, TYPE_NAMES[c.type], c.currency, c.language, c.linkName, c.packageIds.join('|'), c.download.show ? '展示' : '隐藏', c.status === 'enabled' ? '启用' : '停用', c.createdAt, promotionUrl(c)]); }); csvDownload('渠道列表.csv', rows); }
+  function exportChannels() {
+    var rows = [['渠道ID', '渠道名称', '编码', '链接ID', '链接标识', '媒体', '推广类型', '币种', '语言', '关联包', '下载入口', '渠道状态', '链接状态', '创建日期', '推广链接']];
+    filteredChannels().forEach(function (c) {
+      var links = c.links || []; if (!links.length) links = [null];
+      links.forEach(function (link) { var effective = link && window.CMLinks ? window.CMLinks.effective(c, link) : c; rows.push([c.id, c.name, c.code, link ? link.id : '', link ? link.linkName : '', effective.media, TYPE_NAMES[c.type], c.currency, c.language, effective.packageIds.join('|'), effective.download.show ? '展示' : '隐藏', c.status === 'enabled' ? '启用' : '停用', link ? link.status === 'disabled' ? '停用' : '启用' : '', link ? link.createdAt : c.createdAt, link && window.CMLinks ? window.CMLinks.url(c, link) : '']); });
+    });
+    csvDownload('渠道列表.csv', rows);
+  }
   function help() {
-    dialog({title: '渠道管理说明', width: 'wide', readonly: true, html: '<div class="cm-form-section"><h3>管理流程</h3><p>先在包管理保存版本草稿并发布，再创建渠道、配置推广入口、下载方式和埋点，关联对应已发布包。列表支持筛选、批量配置及查看分类转化、资金、留存和 ROI。</p><p>独立渠道包需先在包信息中选定专属渠道，再能绑定到该渠道；同一下载类型和平台只允许一个生效包。多包并用时按平台与展示类型拆分。</p><h3>数据与使用边界</h3><p>报表按事件当时的渠道、广告、包及版本归因。配置保存在本机浏览器，报表为固定演示数据；包文件仅记录本地文件名和大小，下载链接需另填。域名、短链接为示例，不执行真实文件上传、打包、短链解析或事件回传。</p></div>'});
+    dialog({title: '渠道管理说明', width: 'wide', readonly: true, html: '<div class="cm-form-section"><h3>渠道与推广链接</h3><p>渠道管理配置渠道、包及 APP 更新统计；每个渠道可维护多条推广链接，分别选择媒体、广告标识、直达位置和落地页，可继承渠道包与下载策略，或独立配置。广告消耗在广告消耗数据页面维护，投放日报与 ROI 在投放数据报表查看，获客、包转化和留存在渠道报表查看。</p><p>独立渠道包先创建停用渠道，再在包管理选择专属渠道、发布版本，绑定完成后启用。同一下载类型和平台只允许一个生效包。</p><h3>历史与保存</h3><p>报表按事件发生时的渠道、链接、包和版本归因；编辑、停用或删除推广链接不会重写历史，新链接没有历史数据。配置保存在本机浏览器，取消不保存草稿，保存失败保留输入；包文件只记录文件名和大小，公开下载地址在包管理维护。</p></div>'});
+  }
+  function pageType() { return document.body.dataset && document.body.dataset.cmPage || 'channels'; }
+  function normalizedContext(context) {
+    var result = Object.assign({}, context || {});
+    [['channel', 'channelId'], ['package', 'packageId'], ['link', 'linkId']].forEach(function (pair) {
+      if (Object.prototype.hasOwnProperty.call(result, pair[1])) result[pair[0]] = result[pair[1]];
+      else if (Object.prototype.hasOwnProperty.call(result, pair[0])) result[pair[1]] = result[pair[0]];
+    });
+    if (result.returnView && !VIEW_PAGES[result.returnView]) delete result.returnView;
+    if (result.returnUrl && !safeReturnUrl(result.returnUrl)) delete result.returnUrl;
+    return result;
+  }
+  function entityReportContext(entity) {
+    var result = {channelId: '', media: '', link: '', currency: '', packageId: '', version: '', source: '', scene: '', category: 'all', classify: 'scene', breakdown: 'summary', metrics: 'register', group: 'channel', period: 'current', promotionMetrics: 'acquisition', returnView: '', returnUrl: '', entry: ''};
+    ['start', 'end'].forEach(function (key) { if (currentContext[key] != null) result[key] = currentContext[key]; });
+    return Object.assign(result, entity || {});
+  }
+  function safeReturnUrl(value) {
+    if (typeof value !== 'string' || /[\\\r\n]/.test(value)) return false;
+    var path = value.split(/[?#]/)[0];
+    try { path = decodeURIComponent(path); } catch (error) { return false; }
+    return Object.keys(VIEW_PAGES).some(function (key) { return VIEW_PAGES[key] === path; });
+  }
+  function navigateUrl(view, context) {
+    if (!VIEW_PAGES[view]) view = 'channels';
+    var values = normalizedContext(context), params = new URLSearchParams();
+    params.set('view', view);
+    QUERY_KEYS.forEach(function (key) { if (values[key] != null && values[key] !== '') params.set(key, String(values[key])); });
+    return VIEW_PAGES[view] + '?' + params.toString();
+  }
+  function rememberContext(view, context) {
+    var base = viewContexts[view] || currentContext;
+    var result = normalizedContext(Object.assign({}, base, normalizedContext(context)));
+    viewContexts[view] = result;
+    return result;
+  }
+  function updateTargetUrls() {
+    document.querySelectorAll('a[data-cm-target]').forEach(function (anchor) { anchor.href = navigateUrl(anchor.dataset.cmTarget, Object.assign({}, currentContext, {returnView: currentView, returnUrl: navigateUrl(currentView, currentContext)})); });
+  }
+  function navigateContext(context) {
+    currentContext = rememberContext(currentView, context);
+    updateTargetUrls();
+    try { history.replaceState(null, '', navigateUrl(currentView, currentContext)); } catch (error) { /* A preview may disallow history changes. */ }
+    return clone(currentContext);
   }
   function go(view, context) {
-    if (!['channels', 'packages', 'promotion', 'retention', 'conversion', 'updates', 'roi'].includes(view)) view = 'channels';
-    currentView = view;
+    var allowed = PAGE_VIEWS[pageType()] || PAGE_VIEWS.channels;
+    if (!VIEW_PAGES[view]) view = allowed[0];
+    var nextContext = rememberContext(view, context);
+    if (allowed.indexOf(view) === -1) {
+      if (!nextContext.returnView) nextContext.returnView = currentView;
+      if (!nextContext.returnUrl) nextContext.returnUrl = navigateUrl(currentView, currentContext);
+      window.location.href = navigateUrl(view, nextContext);
+      return;
+    }
+    currentView = view; currentContext = nextContext;
     document.querySelectorAll('[data-cm-view]').forEach(function (b) { var active = b.dataset.cmView === view; b.classList.toggle('is-active', active); b.setAttribute('aria-selected', String(active)); b.tabIndex = active ? 0 : -1; });
-    document.getElementById('cm-channels').hidden = view !== 'channels'; document.getElementById('cm-packages').hidden = view !== 'packages'; document.getElementById('cm-reports').hidden = view === 'channels' || view === 'packages';
-    if (view === 'channels') { if (context && context.channelId) { filters = {keyword: context.channelId}; silentFilterReset = true; document.getElementById('cm-channel-filter').reset(); silentFilterReset = false; document.querySelector('#cm-channel-filter [name=keyword]').value = context.channelId; page = 1; selected.clear(); } renderChannels(); }
-    else if (view === 'packages') window.CMPackages.render(context || {});
-    else window.CMReports.render(view, context || {});
-    try { var url = new URL(window.location.href); url.search = ''; url.searchParams.set('view', view); if (context && context.channelId) url.searchParams.set('channel', context.channelId); if (context && context.packageId) url.searchParams.set('package', context.packageId); history.replaceState(null, '', url.href); } catch (error) { /* File previews may disallow history changes. */ }
+    ['channels', 'packages', 'spend', 'reports'].forEach(function (name) { var node = document.getElementById('cm-' + name); if (node) node.hidden = name === 'reports' ? ['channels', 'packages', 'spend'].indexOf(view) !== -1 : view !== name; });
+    if (view === 'channels') {
+      if (context && Object.prototype.hasOwnProperty.call(normalizedContext(context), 'channelId')) {
+        filters.keyword = nextContext.channelId || ''; silentFilterReset = true;
+        var form = document.getElementById('cm-channel-filter');
+        if (form && form.elements.keyword) form.elements.keyword.value = filters.keyword;
+        silentFilterReset = false; page = 1; selected.clear();
+      }
+      renderChannels();
+    } else if (view === 'packages') window.CMPackages.render(nextContext);
+    else if (view === 'spend') { if (window.CMSpend) window.CMSpend.render(nextContext); }
+    else window.CMReports.render(view, nextContext);
+    if (view === 'spend' && currentContext.entry) { delete currentContext.entry; viewContexts[view] = currentContext; }
+    updateTargetUrls();
+    try { history.replaceState(null, '', navigateUrl(view, currentContext)); } catch (error) { /* File previews may disallow history changes. */ }
   }
   function onAction(action, id) {
     var c = id ? channelById(id) : null;
@@ -285,8 +372,9 @@
     else if (action === 'edit') editor(id);
     else if (action === 'detail') channelDetail(id);
     else if (action === 'bind') window.CMPackages.openBind(id);
-    else if (action === 'copy-link' && c) copy(c.restrictions.masked ? 'https://' + c.domain + '/s/' + encodeURIComponent(c.id) : promotionUrl(c));
-    else if (action === 'report') go('promotion', {channelId: id});
+    else if (action === 'links' && window.CMLinks) window.CMLinks.open(id);
+    else if (action === 'copy-link' && c) copy(c.restrictions.masked ? 'https://' + c.domain + '/s/' + encodeURIComponent(c.id) : channelPromotionUrl(c));
+    else if (action === 'report') go('promotion', entityReportContext({channelId: id}));
     else if (action === 'toggle' && c) confirmStatus([id], c.status !== 'enabled');
     else if (action === 'global') globalConfig();
     else if (action === 'batch-add') batchAdd();
@@ -302,9 +390,13 @@
   function init() {
     var app = document.getElementById('cm-app'); if (!app) return;
     state = loadState();
-    window.CM = {getState: function () { return clone(state); }, saveState: saveState, escape: esc, toast: toast, dialog: dialog, download: csvDownload, copy: copy, go: go, channelReport: function (channel) { return '渠道报表明细.html?channel=' + encodeURIComponent(channel.code) + '&media=' + encodeURIComponent(channel.media) + '&link=' + encodeURIComponent(channel.linkName); }};
-    window.CMPackages.init(); window.CMReports.init();
-    app.addEventListener('click', function (event) { var b = event.target.closest('[data-cm-view],[data-cm-action]'); if (!b || b.disabled) return; if (b.dataset.cmView) go(b.dataset.cmView); else onAction(b.dataset.cmAction, b.dataset.id); });
+    window.CM = {getState: function () { return clone(state); }, saveState: saveState, escape: esc, toast: toast, dialog: dialog, download: csvDownload, copy: copy, go: go, navigateUrl: navigateUrl, urlFor: navigateUrl, navigate: go, navigateContext: navigateContext, entityReportContext: entityReportContext, currentContext: function () { return clone(currentContext); }, channelReport: function (channel) { return navigateUrl('detail', entityReportContext({channelId: channel.id})); }};
+    window.CMPackages.init(); window.CMReports.init(); if (window.CMLinks) window.CMLinks.init(); if (window.CMSpend) window.CMSpend.init();
+    app.addEventListener('click', function (event) {
+      var target = event.target.closest('[data-cm-target]');
+      if (target) { if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button > 0) return; event.preventDefault(); go(target.dataset.cmTarget, Object.assign({}, currentContext, {returnView: currentView, returnUrl: navigateUrl(currentView, currentContext)})); return; }
+      var b = event.target.closest('[data-cm-view],[data-cm-action]'); if (!b || b.disabled) return; if (b.dataset.cmView) go(b.dataset.cmView); else onAction(b.dataset.cmAction, b.dataset.id);
+    });
     app.addEventListener('change', function (event) {
       var t = event.target;
       if (t.matches('[data-cm-select]')) { if (t.checked) selected.add(t.dataset.cmSelect); else selected.delete(t.dataset.cmSelect); renderChannels(); }
@@ -312,8 +404,10 @@
       else if (t.id === 'cm-page-size') { pageSize = Number(t.value); page = 1; renderChannels(); }
     });
     var form = document.getElementById('cm-channel-filter');
-    form.addEventListener('submit', function (event) { event.preventDefault(); var next = queryValues(form); if (next.start && next.end && next.start > next.end) return toast('开始日期不能晚于结束日期。'); filters = next; page = 1; selected.clear(); renderChannels(); });
-    form.addEventListener('reset', function () { if (silentFilterReset) return; window.setTimeout(function () { filters = {}; page = 1; selected.clear(); renderChannels(); }, 0); });
+    if (form) {
+      form.addEventListener('submit', function (event) { event.preventDefault(); var next = queryValues(form); if (next.start && next.end && next.start > next.end) return toast('开始日期不能晚于结束日期。'); filters = next; page = 1; selected.clear(); renderChannels(); });
+      form.addEventListener('reset', function () { if (silentFilterReset) return; window.setTimeout(function () { filters = {}; page = 1; selected.clear(); renderChannels(); }, 0); });
+    }
     document.getElementById('cm-modal').addEventListener('click', function (event) { if (event.target.closest('[data-cm-close]')) closeModal(); });
     document.addEventListener('keydown', function (event) {
       var layer = document.getElementById('cm-modal');
@@ -321,8 +415,12 @@
       if (!layer.hidden && event.key === 'Tab') { var nodes = Array.from(layer.querySelectorAll('button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),a[href]')).filter(function (n) { return n.offsetParent !== null; }); var first = nodes[0], last = nodes[nodes.length - 1]; if (!layer.contains(document.activeElement)) { event.preventDefault(); first.focus(); } else if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); } else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); } }
       if (layer.hidden && event.target.matches('[data-cm-view]') && ['ArrowLeft', 'ArrowRight'].includes(event.key)) { var tabs = Array.from(document.querySelectorAll('[data-cm-view]')); var index = tabs.indexOf(event.target); var target = tabs[(index + (event.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length]; event.preventDefault(); go(target.dataset.cmView); target.focus(); }
     });
-    var params = new URLSearchParams(window.location.search);
-    go(params.get('view') || 'channels', {channelId: params.get('channel') || '', packageId: params.get('package') || ''});
+    var params = new URLSearchParams(window.location.search), context = {};
+    QUERY_KEYS.forEach(function (key) { if (params.has(key)) context[key] = params.get(key); });
+    var allowed = PAGE_VIEWS[pageType()] || PAGE_VIEWS.channels;
+    currentView = allowed[0];
+    var initialView = params.get('view');
+    go(allowed.indexOf(initialView) !== -1 ? initialView : allowed[0], context);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();

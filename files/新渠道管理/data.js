@@ -1,6 +1,6 @@
 $axure.loadCurrentPage({
   "url": "新渠道管理.html",
-  "generationDate": new Date(1794412800000),
+  "generationDate": "2026-11-11T16:00:00.000Z",
   "defaultAdaptiveView": {
     "name": "",
     "cursor": 1,

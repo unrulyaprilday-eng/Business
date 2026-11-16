@@ -663,6 +663,65 @@ textarea {
 .mini-icon.vip { background: linear-gradient(135deg, #111827, #facc15); }
 .mini-icon.promo { background: linear-gradient(135deg, #059669, #f97316); }
 
+.builtin-float-card .customer-service {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 26px;
+  background: #5c92d6;
+  color: #fff;
+}
+
+.builtin-float-card .customer-service img {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: contain;
+  background: #fff;
+}
+
+.customer-service-modal .service-image-upload {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.customer-service-modal .service-image-preview {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 5px;
+  background: #5c92d6;
+  color: #fff;
+}
+
+.customer-service-modal .service-image-preview img {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: contain;
+  background: #fff;
+}
+
+.customer-service-modal .service-image-hint {
+  margin: 8px 0 0;
+  color: #8a94a6;
+  font-size: 12px;
+}
+
+.customer-service-modal .service-form-error {
+  margin: 12px 0 0 110px;
+  color: #d93025;
+  line-height: 20px;
+}
+
+.customer-service-modal .modal-actions button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
 .modal-mask {
   position: fixed;
   inset: 0;
@@ -687,6 +746,17 @@ textarea {
 
 .modal-card.float-modal {
   width: 800px;
+}
+
+.modal-card.customer-service-modal {
+  position: relative;
+  width: 560px;
+}
+
+.customer-service-modal .modal-close {
+  top: 0;
+  right: 0;
+  margin-left: 0;
 }
 
 .modal-card h3 {
@@ -730,6 +800,11 @@ textarea {
 .form-row label em {
   color: #f05252;
   font-style: normal;
+}
+
+.readonly-value {
+  color: #606a79;
+  line-height: 32px;
 }
 
 .form-row input,

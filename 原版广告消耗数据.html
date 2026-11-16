@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>广告消耗数据</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/原版广告消耗数据/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/placement-original/广告消耗数据.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/原版广告消耗数据/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell ad-spend-shell">
+        <div class="page-crumb">
+          <span>投放管理</span>
+          <i>/</i>
+          <strong>广告消耗数据</strong>
+        </div>
+
+        <main class="page-main">
+          <form class="filter-bar" id="spendFilter" aria-label="筛选条件">
+            <label class="range-field">
+              <span class="date-control">
+                <input id="filterStartDate" type="date" aria-label="开始日期"/>
+                <span class="date-placeholder">请选择</span>
+              </span>
+              <span>至</span>
+              <span class="date-control">
+                <input id="filterEndDate" type="date" aria-label="结束日期"/>
+                <span class="date-placeholder">请选择</span>
+              </span>
+            </label>
+            <label class="inline-field">
+              <span>渠道</span>
+              <select id="filterChannel">
+                <option>请选择渠道</option>
+                <option>Facebook测试</option>
+                <option>adjust测试</option>
+                <option>Google UAC</option>
+                <option>TikTok Ads</option>
+              </select>
+            </label>
+            <button class="primary-btn" type="submit">搜索</button>
+            <button class="plain-btn" type="reset">重置</button>
+            <button class="primary-btn entry-btn" type="button" data-entry-action="add">新增渠道消耗</button>
+          </form>
+
+          <section class="table-card" aria-label="广告消耗数据列表">
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>消耗日期</th>
+                    <th>渠道名称</th>
+                    <th>渠道编码</th>
+                    <th>消耗金额(USDT)</th>
+                    <th>备注</th>
+                    <th>操作人</th>
+                    <th>最后更新时间</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-row-id="row-1" data-channel="Facebook测试" data-channel-code="101102" data-date="2026-07-13" data-amount="1000" data-remark="7月品牌推广消耗" data-user="Admin" data-time="2026-07-14T13:41:21.487398+08:00">
+                    <td>2026-07-13</td>
+                    <td class="channel-cell">Facebook测试</td>
+                    <td class="code-cell">101102</td>
+                    <td class="amount-cell">1000</td>
+                    <td class="remark-cell">7月品牌推广消耗</td>
+                    <td class="user-cell">Admin</td>
+                    <td class="time-cell">2026-07-14T13:41:21.487398+08:00</td>
+                    <td class="action-cell"><button class="link-btn" type="button" data-entry-action="edit" data-row-id="row-1">编辑</button><button class="link-btn danger-link" type="button" data-entry-action="delete" data-row-id="row-1">删除</button></td>
+                  </tr>
+                  <tr data-row-id="row-2" data-channel="adjust测试" data-channel-code="101101" data-date="2026-07-01" data-amount="111" data-remark="归因链路测试消耗" data-user="操作员" data-time="2026-07-02T13:46:42.161814+08:00">
+                    <td>2026-07-01</td>
+                    <td class="channel-cell">adjust测试</td>
+                    <td class="code-cell">101101</td>
+                    <td class="amount-cell">111</td>
+                    <td class="remark-cell">归因链路测试消耗</td>
+                    <td class="user-cell">操作员</td>
+                    <td class="time-cell">2026-07-02T13:46:42.161814+08:00</td>
+                    <td class="action-cell"><button class="link-btn" type="button" data-entry-action="edit" data-row-id="row-2">编辑</button><button class="link-btn danger-link" type="button" data-entry-action="delete" data-row-id="row-2">删除</button></td>
+                  </tr>
+                  <tr data-row-id="row-3" data-channel="Google UAC" data-channel-code="101103" data-date="2026-06-25" data-amount="856.75" data-remark="安卓端应用拉新投放" data-user="Admin" data-time="2026-06-26T09:18:35.682410+08:00">
+                    <td>2026-06-25</td>
+                    <td class="channel-cell">Google UAC</td>
+                    <td class="code-cell">101103</td>
+                    <td class="amount-cell">856.75</td>
+                    <td class="remark-cell">安卓端应用拉新投放</td>
+                    <td class="user-cell">Admin</td>
+                    <td class="time-cell">2026-06-26T09:18:35.682410+08:00</td>
+                    <td class="action-cell"><button class="link-btn" type="button" data-entry-action="edit" data-row-id="row-3">编辑</button><button class="link-btn danger-link" type="button" data-entry-action="delete" data-row-id="row-3">删除</button></td>
+                  </tr>
+                  <tr data-row-id="row-4" data-channel="TikTok Ads" data-channel-code="101104" data-date="2026-06-18" data-amount="2360.50" data-remark="短视频素材放量测试" data-user="操作员" data-time="2026-06-19T16:27:08.315206+08:00">
+                    <td>2026-06-18</td>
+                    <td class="channel-cell">TikTok Ads</td>
+                    <td class="code-cell">101104</td>
+                    <td class="amount-cell">2360.50</td>
+                    <td class="remark-cell">短视频素材放量测试</td>
+                    <td class="user-cell">操作员</td>
+                    <td class="time-cell">2026-06-19T16:27:08.315206+08:00</td>
+                    <td class="action-cell"><button class="link-btn" type="button" data-entry-action="edit" data-row-id="row-4">编辑</button><button class="link-btn danger-link" type="button" data-entry-action="delete" data-row-id="row-4">删除</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="pager">
+              <button type="button" disabled>首页</button>
+              <button type="button" disabled>上一页</button>
+              <input type="text" value="1" aria-label="当前页"/>
+              <span>/ 1</span>
+              <button type="button" disabled>下一页</button>
+              <button type="button" disabled>尾页</button>
+              <select>
+                <option>20条/页</option>
+                <option>50条/页</option>
+              </select>
+              <span id="recordCount">共 4 条记录</span>
+            </div>
+          </section>
+        </main>
+
+        <div class="modal-mask" id="entryModal" hidden>
+          <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="entryModalTitle">
+            <div class="modal-head">
+              <h3 id="entryModalTitle">新增渠道消耗</h3>
+              <button class="modal-close" type="button" data-close-modal="entryModal" aria-label="关闭">×</button>
+            </div>
+            <div class="modal-body">
+              <div class="form-grid">
+                <label class="form-row" id="entryChannelRow">
+                  <span><em>*</em> 渠道名称:</span>
+                  <select id="entryChannel">
+                    <option>Facebook测试</option>
+                    <option>adjust测试</option>
+                    <option>Google UAC</option>
+                    <option>TikTok Ads</option>
+                  </select>
+                </label>
+                <label class="form-row" id="entryCodeRow">
+                  <span><em>*</em> 渠道编码:</span>
+                  <input id="entryCode" type="text" placeholder="请输入渠道编码"/>
+                </label>
+                <label class="form-row" id="entryAmountRow">
+                  <span><em>*</em> 消耗金额（USDT）:</span>
+                  <input id="entryAmount" type="text" placeholder="请输入消耗金额"/>
+                </label>
+                <label class="form-row" id="entryDateRow">
+                  <span><em>*</em> 消耗日期:</span>
+                  <input id="entryDate" type="date"/>
+                </label>
+                <label class="form-row textarea-row" id="entryRemarkRow">
+                  <span>备注:</span>
+                  <div class="textarea-wrap">
+                    <textarea id="entryRemark" maxlength="100" placeholder="请输入备注"></textarea>
+                    <div class="textarea-count"><span id="remarkCount">0</span> / 100</div>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <div class="modal-foot">
+              <div class="modal-actions">
+                <button class="plain-btn" type="button" data-close-modal="entryModal">取消</button>
+                <button class="primary-btn" type="button" id="entrySubmit">提交</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/placement-original/广告消耗数据.js"></script>
+  </body>
+</html>

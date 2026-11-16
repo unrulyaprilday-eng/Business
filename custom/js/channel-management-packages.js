@@ -17,7 +17,13 @@
   function findChannel(id, source) { return (source || state()).channels.find(function (item) { return item.id === id; }); }
   function currentVersion(item) { return item.versions.find(function (version) { return version.version === item.currentVersion; }); }
   function packageGroup(item) { return item.type === 'pwa' || item.platform === 'PWA' ? 'pwa' : item.type === 'fast' ? 'fast' : 'native'; }
-  function relatedChannels(id, source) { return (source || state()).channels.filter(function (channel) { return (channel.packageIds || []).indexOf(id) !== -1; }); }
+  function relatedChannels(id, source) { return (source || state()).channels.filter(function (channel) { return (channel.packageIds || []).indexOf(id) !== -1 || (channel.links || []).some(function (link) { return link.inheritConfig === false && (link.config && link.config.packageIds || []).indexOf(id) !== -1; }); }); }
+  function replaceBindings(channel, id, replacement, source) {
+    function replace(ids) { return (ids || []).map(function (value) { return value === id ? replacement : value; }).filter(function (value, index, all) { return all.indexOf(value) === index; }); }
+    channel.packageIds = replace(channel.packageIds);
+    (channel.links || []).forEach(function (link) { if (link.inheritConfig === false && link.config) link.config.packageIds = replace(link.config.packageIds); });
+    return validateBindings(channel, channel.packageIds, source) || (window.CMLinks ? window.CMLinks.validateChannel(channel, source) : '');
+  }
   function packageChannelCode(item, source) {
     if (item.type !== 'channel') return '';
     if (item.channelCode) return item.channelCode;
@@ -249,6 +255,7 @@
         var chosenCode = chosenType === 'channel' ? (code || form.elements.channelCode.value.trim()) : '';
         if (chosenType === 'channel') {
           if (!chosenCode || !next.channels.some(function (channel) { return channel.code.toLowerCase() === chosenCode.toLowerCase(); })) return error(form, '请选择已存在渠道的专属渠道码。');
+          if (isNew && next.channels.some(function (channel) { return channel.code.toLowerCase() === chosenCode.toLowerCase() && channel.status !== 'disabled'; })) return error(form, '新增独立渠道包前，请先停用专属渠道；发布并绑定后再启用。');
           var references = item ? relatedChannels(item.id, next) : [];
           if (references.some(function (channel) { return channel.code.toLowerCase() !== chosenCode.toLowerCase(); })) return error(form, '现有绑定包含其他渠道，请先到渠道列表解除不匹配的绑定，再补充专属渠道码。');
         }
@@ -371,8 +378,7 @@
       if (entry.id === id || entry.status !== 'published') return false;
       if (entry.platform !== item.platform || packageGroup(entry) !== packageGroup(item)) return false;
       return channels.every(function (channel) {
-        var replacement = (channel.packageIds || []).map(function (value) { return value === id ? entry.id : value; });
-        return !validateBindings(channel, replacement, source);
+        return !replaceBindings(clone(channel), id, entry.id, source);
       });
     });
     api().dialog({
@@ -390,10 +396,8 @@
           if (!replacementPackage || replacementPackage.platform !== target.platform || packageGroup(replacementPackage) !== packageGroup(target)) return error(form, '替代包必须与当前包的下载类型和平台一致。');
           for (var i = 0; i < references.length; i += 1) {
             var channel = references[i];
-            var ids = (channel.packageIds || []).map(function (value) { return value === id ? replacement : value; }).filter(function (value, index, all) { return all.indexOf(value) === index; });
-            var reason = validateBindings(channel, ids, next);
+            var reason = replaceBindings(channel, id, replacement, next);
             if (reason) return error(form, channel.name + '：' + reason);
-            channel.packageIds = ids;
           }
         }
         target.status = 'disabled';
@@ -445,9 +449,12 @@
         var target = findChannel(channelId, next);
         if (!target) return error(form, '该渠道已不存在，请关闭后刷新。');
         var ids = Array.prototype.map.call(form.querySelectorAll('input[name="packageIds"]:checked'), function (entry) { return entry.value; });
+        if (target.status !== 'disabled' && ids.some(function (id) { var pkg = findPackage(id, next); return pkg && pkg.type === 'channel' && (target.packageIds || []).indexOf(id) === -1; })) return error(form, '绑定新的独立渠道包前，请先停用渠道；保存绑定后再启用。');
         var reason = validateBindings(target, ids, next);
         if (reason) return error(form, reason);
         target.packageIds = ids;
+        var linksReason = window.CMLinks && window.CMLinks.validateChannel(target, next);
+        if (linksReason) return error(form, linksReason);
         var saved = save(next, form, close, '渠道包绑定已保存');
         var channelPanel = document.getElementById('cm-channels');
         if (saved && channelPanel && !channelPanel.hidden) api().go('channels');
@@ -481,10 +488,14 @@
       if (action === 'disable') disablePackage(id);
       if (action === 'restore') restorePackage(id);
       if (action === 'copy') copyVersion(id);
-      if (action === 'conversion') api().go('conversion', { packageId: id });
+      if (action === 'conversion') packageReport(id);
       if (action === 'previous') { page = Math.max(1, page - 1); render(); }
       if (action === 'next') { page += 1; render(); }
     });
+  }
+  function packageReport(id) {
+    var report = {packageId: id, channelId: filters.channelId || '', media: '', link: '', currency: '', version: '', source: '', scene: '', category: 'all', period: 'current', returnView: '', returnUrl: '', entry: ''};
+    api().go('conversion', api().entityReportContext ? api().entityReportContext(report) : report);
   }
   window.CMPackages = { init: init, render: render, openBind: openBind, validateBindings: validateBindings, packageGroup: packageGroup, packageChannelCode: packageChannelCode };
 }());

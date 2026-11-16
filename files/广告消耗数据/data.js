@@ -1,6 +1,6 @@
 $axure.loadCurrentPage({
   "url": "广告消耗数据.html",
-  "generationDate": new Date(1781136000000),
+  "generationDate": "2026-11-11T16:00:00.000Z",
   "defaultAdaptiveView": {
     "name": "",
     "cursor": 1,
@@ -31,10 +31,10 @@ $axure.loadCurrentPage({
     "annotations": [],
     "style": {
       "baseStyle": "627587b6038d43cca051c114ac41ad32",
-      "pageAlignment": "center",
+      "pageAlignment": "left",
       "fill": {
         "fillType": "solid",
-        "color": 0xFFFFFFFF
+        "color": 4294967295
       },
       "image": null,
       "imageAlignment": {
@@ -50,7 +50,7 @@ $axure.loadCurrentPage({
       "borderVisibility": "top right bottom left",
       "borderFill": {
         "fillType": "solid",
-        "color": 0xFF797979
+        "color": 4286151033
       },
       "cornerRadius": "0",
       "cornerVisibility": "top right bottom left",

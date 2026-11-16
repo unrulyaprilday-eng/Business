@@ -289,7 +289,10 @@ const exclusive = harness();
 exclusive.data.channels = [channel('FACEBOOK', ['native']), channel('TIKTOK', ['native'])];
 exclusive.data.packages.push({id: 'CP1', name: 'TikTok Independent', type: 'channel', channelCode: 'TIKTOK', platform: 'Android', status: 'published', currentVersion: '1.0', versions: [published('1.0', '2026-11-11')]});
 assert.equal(exclusive.bind('FACEBOOK', ['CP1']), false, 'independent package cannot bind another channel code');
+assert.equal(exclusive.bind('TIKTOK', ['CP1']), false, 'stop channel before first binding a new independent package');
+exclusive.data.channels[1].status = 'disabled';
 assert.equal(exclusive.bind('TIKTOK', ['CP1']), true);
+exclusive.data.channels[1].status = 'enabled';
 assert.equal(exclusive.bind('TIKTOK', ['CP1', 'PK2']), false, 'channel packages and native packages share the native download slot');
 exclusive.data.packages.push({id: 'LEGACY', name: 'Legacy Independent', type: 'channel', platform: 'Android', status: 'published', currentVersion: '1.0', versions: [published('1.0', '2026-11-11')]});
 assert.equal(exclusive.bind('FACEBOOK', ['LEGACY']), false, 'unassigned legacy independent package must be edited first');
@@ -297,7 +300,10 @@ exclusive.click('edit', 'LEGACY');
 exclusive.set({channelCode: 'FACEBOOK'});
 assert.equal(exclusive.submit(), true);
 assert.equal(exclusive.find('LEGACY').channelCode, 'FACEBOOK');
+assert.equal(exclusive.bind('FACEBOOK', ['LEGACY']), false, 'existing independent packages also require stopping the channel before a new binding');
+exclusive.data.channels[0].status = 'disabled';
 assert.equal(exclusive.bind('FACEBOOK', ['LEGACY']), true);
+exclusive.data.channels[0].status = 'enabled';
 exclusive.click('edit', 'LEGACY');
 assert.ok(/name="channelCode"[^>]*readonly/.test(exclusive.latest().options.html));
 exclusive.set({channelCode: 'TIKTOK'}); // Readonly field tampering must not move package ownership.
@@ -318,6 +324,8 @@ assert.equal(exclusive.submit(), false, 'creating independent package requires a
 exclusive.set({channelCode: 'DOES_NOT_EXIST'});
 assert.equal(exclusive.submit(), false);
 exclusive.set({channelCode: 'TIKTOK'});
+assert.equal(exclusive.submit(), false, 'stop owner channel before creating a new independent package');
+exclusive.data.channels[1].status = 'disabled';
 assert.equal(exclusive.submit(), true);
 assert.equal(exclusive.data.packages[exclusive.data.packages.length - 1].channelCode, 'TIKTOK');
 exclusive.click('versions', 'CP1');
@@ -378,6 +386,7 @@ assert.equal(rebind.snapshot(), beforeRebind, 'failed binding persistence retain
 assert.deepEqual(rebind.latest().form.checked, ['PK1004', 'PK1002'], 'failed save retains binding selections');
 assert.equal(rebind.latest().form.closed, false);
 rebind.fail = false;
+rebind.data.channels[0].status = 'disabled';
 assert.equal(rebind.submit(), true);
 assert.deepEqual(rebind.data.channels[0].packageIds, ['PK1004', 'PK1002']);
 

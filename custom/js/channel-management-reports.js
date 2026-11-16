@@ -3,8 +3,8 @@
 
   var AS_OF = '2026-11-12';
   var DAY = 86400000;
-  var VIEWS = ['promotion', 'retention', 'conversion', 'updates', 'roi'];
-  var TITLES = { promotion: '推广数据', retention: '渠道 / 广告留存', conversion: '分类转化', updates: 'APP更新统计', roi: '注册批次充值 ROI' };
+  var VIEWS = ['promotion', 'retention', 'conversion', 'updates', 'roi', 'daily', 'detail'];
+  var TITLES = { promotion: '推广数据', retention: '渠道 / 广告留存', conversion: '分类转化', updates: 'APP更新统计', roi: '注册批次回收分析', daily: '注册批次投放日报', detail: '渠道报表明细' };
   // 2026-11-12不可变历史归因快照；现态只可提供显示名称，不参与重算历史。
   var CHANNEL_FACTS = {
     CH1001: { code: 'AAAA', media: 'Facebook', type: 'link', currency: 'INR', createdAt: '2026-11-01', packageIds: ['PK1001', 'PK1002'], linkName: 'homepageads' },
@@ -39,7 +39,7 @@
   function timestamp(date) { return Date.parse(date + 'T00:00:00Z'); }
   function age(date) { return Math.floor((timestamp(AS_OF) - timestamp(date)) / DAY); }
   function validDate(value) { return /^\d{4}-\d{2}-\d{2}$/.test(value) && !isNaN(timestamp(value)) && new Date(timestamp(value)).toISOString().slice(0, 10) === value; }
-  function defaults() { return { start: '2026-11-01', end: AS_OF, channel: '', media: '', link: '', source: '', scene: '', currency: '', group: 'channel', classify: 'scene', breakdown: 'summary', metrics: 'register', promotionMetrics: 'acquisition', category: 'all', period: 'current', page: 1, packageId: '', version: '' }; }
+  function defaults() { return { start: '2026-11-01', end: AS_OF, channel: '', media: '', link: '', source: '', scene: '', currency: '', group: 'channel', classify: 'scene', breakdown: 'summary', metrics: 'register', promotionMetrics: 'acquisition', category: 'all', period: 'current', page: 1, packageId: '', version: '', returnView: 'promotion', returnUrl: '' }; }
   function has(object, key) { return Object.prototype.hasOwnProperty.call(object || {}, key); }
   function share(f) { sharedFilter = {}; COMMON.forEach(function (key) { sharedFilter[key] = f[key]; }); }
   function currentFilter() { return filters[activeView] || (filters[activeView] = defaults()); }
@@ -106,15 +106,18 @@
           var paymentParts = [];
           var paymentCounts = payParts.slice();
           var payerOwners = [];
+          var payerSeen = targets.map(function () { return {}; });
           var repeatSeen = targets.map(function () { return {}; });
           var repeatParts = {};
           payParts.forEach(function (count, owner) { for (var payer = 0; payer < count; payer += 1) payerOwners.push(owner); });
           for (var offset = 0; offset <= age(date); offset += 1) {
+            if (offset === 0) payerOwners.forEach(function (owner, payerIndex) { payerSeen[owner][payerIndex] = true; });
             var repeatCount = offset === 0 ? 0 : Math.floor(firstPay * (0.38 + seed % 3 * 0.05) / Math.sqrt(offset));
             var repeatCounts = targets.map(function () { return 0; });
             for (var repeat = 0; repeat < repeatCount; repeat += 1) {
               var payerIndex = (offset * 3 + repeat) % firstPay;
               var owner = payerOwners[payerIndex];
+              payerSeen[owner][payerIndex] = true;
               repeatCounts[owner] += 1;
               repeatSeen[owner][payerIndex] = true;
               paymentCounts[owner] += 1;
@@ -149,7 +152,7 @@
               nativeClicks: pkg && pkg.type === 'native' ? clicks : 0, nativeStarts: pkg && pkg.type === 'native' ? startup : 0,
               channelClicks: pkg && pkg.type === 'channel' ? clicks : 0, channelStarts: pkg && pkg.type === 'channel' ? startup : 0,
               fastClicks: pkg && pkg.type === 'fast' ? clicks : 0, fastStarts: pkg && pkg.type === 'fast' ? startup : 0,
-              firstPay: payParts[index], firstCents: amounts[0], payments: amounts, retention: retention, recharge: recharge,
+              firstPay: payParts[index], firstPayDate: date, payerUsers: Object.keys(payerSeen[index]).length, firstCents: amounts[0], payments: amounts, retention: retention, recharge: recharge,
               withdrawCents: withdrawals[index], betsCents: bets[index], paymentCount: paymentCounts[index], ticketCents: ticketCents, seed: seed });
           });
         });
@@ -167,22 +170,32 @@
   }
   function selectedChannels(state, f) {
     return historicalChannels(state).filter(function (channel) {
-      return (!f.channel || channel.id === f.channel) && (!f.media || channel.media === f.media) && (!f.link || channel.linkName === f.link) && (!f.currency || currencyOf(channel) === f.currency) && (!f.source || sourceOf(channel) === f.source);
+      var current = channelById(state, channel.id) || channel;
+      var links = current.links || [];
+      var mediaMatch = !f.media || channel.media === f.media || links.some(function (link) { return link.media === f.media; }) || (state.spend || []).some(function (record) { return record.channelId === channel.id && record.media === f.media; });
+      var linkMatch = !f.link || f.link === '__unassigned' && (state.spend || []).some(function (record) { return record.channelId === channel.id && !record.linkId && !record.linkName; }) || channel.linkName === f.link || 'LK-' + channel.id + '-MAIN' === f.link && Boolean(CHANNEL_FACTS[channel.id]) || links.some(function (link) { return link.id === f.link || link.linkName === f.link; });
+      return (!f.channel || channel.id === f.channel || channel.code === f.channel) && mediaMatch && linkMatch && (!f.currency || currencyOf(channel) === f.currency) && (!f.source || sourceOf(channel) === f.source);
     });
   }
   function selectedDaily(state, f) {
     var selected = selectedChannels(state, f).map(function (channel) { return channel.id; });
     return dailyRows(state).filter(function (row) {
-      return selected.indexOf(row.channelId) !== -1 && row.date >= f.start && row.date <= f.end && (!f.scene || row.scene === f.scene) && (!f.packageId || (f.packageId === '__none__' ? !row.packageId : row.packageId === f.packageId)) && (!f.version || row.packageId + '@' + row.version === f.version);
+      return selected.indexOf(row.channelId) !== -1 && (!f.media || row.channel.media === f.media) && (!f.link || row.channel.linkName === f.link || f.link === 'LK-' + row.channelId + '-MAIN') && row.date >= f.start && row.date <= f.end && (!f.scene || row.scene === f.scene) && (!f.packageId || (f.packageId === '__none__' ? !row.packageId : row.packageId === f.packageId)) && (!f.version || row.packageId + '@' + row.version === f.version || f.version.indexOf('@') === -1 && row.version === f.version);
     });
   }
   function sumRows(rows) {
     return rows.reduce(function (total, row) {
-      ['visits', 'registrations', 'pwa', 'native', 'downloads', 'firstPay', 'firstCents', 'exposure', 'pwaClicks', 'nativeClicks', 'nativeStarts', 'channelClicks', 'channelStarts', 'fastClicks', 'fastStarts', 'withdrawCents', 'betsCents', 'paymentCount'].forEach(function (key) { total[key] += row[key]; });
+      ['visits', 'registrations', 'pwa', 'native', 'downloads', 'firstPay', 'payerUsers', 'firstCents', 'exposure', 'pwaClicks', 'nativeClicks', 'nativeStarts', 'channelClicks', 'channelStarts', 'fastClicks', 'fastStarts', 'withdrawCents', 'betsCents', 'paymentCount'].forEach(function (key) { total[key] += row[key]; });
       total.totalCents += payment(row, 'current');
       return total;
-    }, { visits: 0, registrations: 0, pwa: 0, native: 0, downloads: 0, firstPay: 0, firstCents: 0, totalCents: 0, exposure: 0, pwaClicks: 0, nativeClicks: 0, nativeStarts: 0, channelClicks: 0, channelStarts: 0, fastClicks: 0, fastStarts: 0, withdrawCents: 0, betsCents: 0, paymentCount: 0 });
+    }, { visits: 0, registrations: 0, pwa: 0, native: 0, downloads: 0, firstPay: 0, payerUsers: 0, firstCents: 0, totalCents: 0, exposure: 0, pwaClicks: 0, nativeClicks: 0, nativeStarts: 0, channelClicks: 0, channelStarts: 0, fastClicks: 0, fastStarts: 0, withdrawCents: 0, betsCents: 0, paymentCount: 0 });
   }
+  function registrationHistory(state, f) { return selectedDaily(state, Object.assign({}, f, { start: '2026-11-01' })); }
+  function cumulativeRegistrations(history, channelId, end) {
+    return history.reduce(function (total, row) { return total + (row.channelId === channelId && row.date <= end ? row.registrations : 0); }, 0);
+  }
+  function averageRecharge(t) { return t.payerUsers ? money(t.totalCents / t.payerUsers) : '—'; }
+  function cumulativeHeading() { return '<span title="2026-11-01起截至本行日期（汇总截至查询结束日）的历史注册，保留其他筛选；不受查询开始日限制，不可按日求和">累计注册</span>'; }
   function groupBy(rows, keyFn) {
     var groups = {};
     rows.forEach(function (row) { var key = keyFn(row); (groups[key] || (groups[key] = [])).push(row); });
@@ -190,6 +203,7 @@
   }
   function option(value, label, selected) { return '<option value="' + esc(value) + '"' + (value === selected ? ' selected' : '') + '>' + esc(label) + '</option>'; }
   function selectField(label, name, options, selected) {
+    if (selected && !options.some(function (item) { return item[0] === selected; })) options = options.concat([[selected, selected + '（当前筛选）']]);
     return '<label class="cm-field"><span>' + esc(label) + '</span><select class="cm-input" name="' + name + '">' + options.map(function (item) { return option(item[0], item[1], selected); }).join('') + '</select></label>';
   }
   function reportPackages(state, updatesOnly) {
@@ -218,10 +232,12 @@
     html += '<button class="cm-btn primary" type="submit">查询</button>' + button('reset', '重置') + button('export', '导出CSV') + button('definitions', '数据口径');
     var advanced = f.period !== 'current' || ['link', 'currency', 'source', 'scene', 'packageId', 'version'].some(function (key) { return Boolean(f[key]); });
     html += '<details class="cm-report-more"' + (advanced ? ' open' : '') + '><summary>更多筛选</summary><div class="cm-filter">';
-    html += selectField('历史广告链接', 'link', [['', '全部广告链接']].concat(Array.from(new Set(historicalChannels(state).map(function (channel) { return channel.linkName; }).filter(Boolean))).sort().map(function (link) { return [link, link]; })), f.link);
+    var linkOptions = [['', '全部广告链接'], ['__unassigned', '渠道消耗未细分链接（无批次归因）']].concat(Array.from(new Set(historicalChannels(state).map(function (channel) { return channel.linkName; }).filter(Boolean))).sort().map(function (link) { return [link, link]; }));
+    (state.channels || []).forEach(function (channel) { (channel.links || []).forEach(function (link) { if (!link.legacy) linkOptions.push([link.id, (link.linkName || link.name || link.id) + '（新增链接，无历史）']); }); });
+    html += selectField('历史广告链接', 'link', linkOptions, f.link);
     html += selectField('币种', 'currency', [['', '全部币种']].concat(Array.from(new Set(historicalChannels(state).map(currencyOf))).sort().map(function (currency) { return [currency, currency]; })), f.currency);
     if (activeView !== 'updates') html += selectField('注册来源', 'source', [['', '全部来源']].concat(Object.keys(SOURCES).map(function (key) { return [key, SOURCES[key]]; })), f.source);
-    if (activeView === 'promotion' || activeView === 'retention') html += selectField('访问场景', 'scene', [['', '全部场景']].concat(Object.keys(SCENES).map(function (key) { return [key, SCENES[key]]; })), f.scene);
+    if (activeView === 'promotion' || activeView === 'retention' || activeView === 'detail') html += selectField('访问场景', 'scene', [['', '全部场景']].concat(Object.keys(SCENES).map(function (key) { return [key, SCENES[key]]; })), f.scene);
     var packageOptions = reportPackages(state, activeView === 'updates');
     if (activeView === 'updates' && f.packageId && !packageOptions.some(function (pkg) { return pkg.id === f.packageId; })) {
       var selectedPackage = historicalPackages(state).find(function (pkg) { return pkg.id === f.packageId; });
@@ -229,7 +245,7 @@
     }
     html += selectField('历史归因包', 'packageId', [['', activeView === 'updates' ? '全部安装包' : '全部包 / 无包访问']].concat(activeView === 'updates' ? [] : [['__none__', '无包WEB访问']]).concat(packageOptions.map(function (pkg) { return [pkg.id, pkg.name]; })), f.packageId);
     html += selectField('归因版本', 'version', versionOptions(state, f.packageId, activeView === 'updates'), f.version);
-    if (activeView === 'roi') html += selectField('累计充值周期', 'period', [['current', '截至快照日'], ['1', 'D1'], ['3', 'D3'], ['7', 'D7'], ['14', 'D14'], ['30', 'D30']], f.period);
+    if (activeView === 'roi') html += selectField('累计观察周期', 'period', [['current', '截至快照日'], ['0', 'D0'], ['1', 'D1'], ['3', 'D3'], ['7', 'D7'], ['14', 'D14'], ['15', 'D15'], ['30', 'D30']], f.period);
     html += '</div></details></form>';
     return html;
   }
@@ -258,39 +274,40 @@
   function promotionTabs(f) { return tabsHtml('promotion-metrics', [['acquisition', '获客转化'], ['funds', '资金表现']], f.promotionMetrics); }
   function fundingView(state, f, rows) {
     rows.forEach(function (row) { row.repeats = [1, 3, 7].map(function (days) { return repeatMetric(row.cohort, days); }); });
-    activeRows = csvRows(['渠道编码', '渠道名称', '历史媒体', '币种', '充值人数', '充值次数', '批次累计充值', '次日复充人数', '次日复充占比', '3日复充人数', '3日复充占比', '7日复充人数', '7日复充占比', '累计提现', '充提差', '有效投注额'], rows.map(function (row) {
+    activeRows = csvRows(['渠道编码', '渠道名称', '历史媒体', '币种', '充值人数', '充值次数', '批次累计充值', '次日复充人数', '次日复充占比', '3日复充人数', '3日复充占比', '7日复充人数', '7日复充占比', '累计提现', '充提差', '有效投注额', '充值转化率', '人均充值', '提现次数'], rows.map(function (row) {
       var t = row.totals;
-      if (!row.cohort.length) return [row.channel.code, row.channel.name, row.channel.media, currencyOf(row.channel)].concat(Array(12).fill('暂无数据'));
-      var cells = [row.channel.code, row.channel.name, row.channel.media, currencyOf(row.channel), t.firstPay, t.paymentCount, money(t.totalCents)];
+      if (!row.cohort.length) return [row.channel.code, row.channel.name, row.channel.media, currencyOf(row.channel)].concat(Array(14).fill('暂无数据'), ['—']);
+      var cells = [row.channel.code, row.channel.name, row.channel.media, currencyOf(row.channel), t.payerUsers, t.paymentCount, money(t.totalCents)];
       row.repeats.forEach(function (repeat) { cells.push(repeat.users == null ? repeat.text : repeat.users, repeat.text); });
-      return cells.concat([money(t.withdrawCents), money(t.totalCents - t.withdrawCents), money(t.betsCents)]);
+      return cells.concat([money(t.withdrawCents), money(t.totalCents - t.withdrawCents), money(t.betsCents), rate(t.payerUsers, t.registrations), averageRecharge(t), '—']);
     }));
     var page = paginate(rows, f);
-    return promotionTabs(f) + note('按所选注册批次累计至 ' + AS_OF + '，各币种独立；充值 − 提现 = 充提差。复充占比以首充人数为分母，观察周期未满或分母为 0 时显示“—”。') + table(['渠道', '币种', '充值人数', '充值次数', '累计充值', '次日复充', '3日复充', '7日复充', '累计提现', '充提差', '有效投注额', '操作'], page.rows.map(function (row) {
+    return promotionTabs(f) + note('所选注册批次累计至 ' + AS_OF + '，各币种独立。充值转化率 = 去重充值人数 / 注册人数；人均充值 = 累计充值 / 去重充值人数；充值 − 提现 = 充提差。复充观察窗口未满或分母为0显示“—”；提现次数快照缺失，显示“—”。') + table(['渠道', '币种', '充值人数', '充值次数', '累计充值', '次日复充占比', '3日复充占比', '7日复充占比', '累计提现', '充提差', '有效投注额', '充值转化率', '人均充值', '提现次数', '操作'], page.rows.map(function (row) {
       var t = row.totals;
-      if (!row.cohort.length) return [channelCell(row.channel), esc(currencyOf(row.channel)), '暂无数据', '—', '—', '—', '—', '—', '—', '—', '—', '—'];
-      var cells = [channelCell(row.channel), esc(currencyOf(row.channel)), number(t.firstPay), number(t.paymentCount), money(t.totalCents)];
+      if (!row.cohort.length) return [channelCell(row.channel), esc(currencyOf(row.channel)), '暂无数据'].concat(Array(12).fill('—'));
+      var cells = [channelCell(row.channel), esc(currencyOf(row.channel)), number(t.payerUsers), number(t.paymentCount), money(t.totalCents)];
       row.repeats.forEach(function (repeat) { cells.push(repeat.users == null ? pendingCell() : repeat.text + '<br><span class="cm-muted">' + number(repeat.users) + ' 人</span>'); });
-      return cells.concat([money(t.withdrawCents), money(t.totalCents - t.withdrawCents), money(t.betsCents), button('daily-detail', '批次明细', 'small', ' data-channel="' + esc(row.channel.id) + '"')]);
+      return cells.concat([money(t.withdrawCents), money(t.totalCents - t.withdrawCents), money(t.betsCents), rate(t.payerUsers, t.registrations), averageRecharge(t), unavailable('当前演示快照未提供提现次数'), button('daily-detail', '批次明细', 'small', ' data-channel="' + esc(row.channel.id) + '"')]);
     })) + page.html;
   }
 
   function promotionView(state, f, daily) {
+    var history = registrationHistory(state, f);
     var rows = selectedChannels(state, f).map(function (channel) {
       var cohort = daily.filter(function (row) { return row.channelId === channel.id; });
-      return { channel: channel, cohort: cohort, totals: sumRows(cohort) };
+      return { channel: channel, cohort: cohort, totals: sumRows(cohort), cumulativeRegistrations: cumulativeRegistrations(history, channel.id, f.end) };
     });
     if (f.promotionMetrics === 'funds') return fundingView(state, f, rows);
-    activeRows = csvRows(['渠道编码', '渠道名称', '历史媒体', '币种', '访问人数(分场景人日加总)', '注册人数', '注册转化率', 'PWA安装', '安装包首次启动', '首充人数', '首充金额', '批次累计充值', '访问首充率', '注册首充率'], rows.map(function (row) {
+    activeRows = csvRows(['渠道编码', '渠道名称', '历史媒体', '币种', '访问人次（入口人日）', '注册人数', '注册转化率', 'PWA安装', '安装包首次启动', '首充人数', '首充金额', '批次累计充值', '访问-首充转化率', '注册-首充转化率', '累计注册'], rows.map(function (row) {
       var t = row.totals;
-      if (!row.cohort.length) return [row.channel.code, row.channel.name, row.channel.media, currencyOf(row.channel)].concat(Array(10).fill('暂无数据'));
-      return [row.channel.code, row.channel.name, row.channel.media, currencyOf(row.channel), t.visits, t.registrations, rate(t.registrations, t.visits), t.pwa, t.native, t.firstPay, money(t.firstCents), money(t.totalCents), rate(t.firstPay, t.visits), rate(t.firstPay, t.registrations)];
+      if (!row.cohort.length) return [row.channel.code, row.channel.name, row.channel.media, currencyOf(row.channel)].concat(Array(10).fill('暂无数据'), [row.cumulativeRegistrations || '暂无数据']);
+      return [row.channel.code, row.channel.name, row.channel.media, currencyOf(row.channel), t.visits, t.registrations, rate(t.registrations, t.visits), t.pwa, t.native, t.firstPay, money(t.firstCents), money(t.totalCents), rate(t.firstPay, t.visits), rate(t.firstPay, t.registrations), row.cumulativeRegistrations];
     }));
     var page = paginate(rows, f);
-    return promotionTabs(f) + note('演示快照 ' + AS_OF + '：按注册批次及首次入口归因，历史不随配置变更；访问为入口人日加总。PWA安装与安装包首次启动独立。') + table(['渠道', '历史媒体', '币种', '访问人次（入口人日）', '注册人数', '注册转化率', 'PWA安装', '安装包首次启动', '首充人数', '首充金额', '批次累计充值', '访问首充率', '注册首充率', '操作'], page.rows.map(function (row) {
+    return promotionTabs(f) + note('演示快照 ' + AS_OF + '：按注册批次及首次入口归因，历史不随配置变更；访问为入口人日加总。PWA安装与安装包首次启动独立。累计注册为2026-11-01起截至查询结束日的历史注册，保留其他筛选，不受开始日限制。') + table(['渠道', '历史媒体', '币种', '访问人次（入口人日）', '注册人数', '注册转化率', 'PWA安装', '安装包首次启动', '首充人数', '首充金额', '批次累计充值', '访问-首充转化率', '注册-首充转化率', cumulativeHeading(), '操作'], page.rows.map(function (row) {
       var t = row.totals;
-      if (!row.cohort.length) return [channelCell(row.channel), esc(row.channel.media), esc(currencyOf(row.channel)), '<span class="cm-muted">暂无数据</span>'].concat(Array(10).fill('—'));
-      return [channelCell(row.channel), esc(row.channel.media), esc(currencyOf(row.channel)), number(t.visits), number(t.registrations), rate(t.registrations, t.visits), number(t.pwa), number(t.native), number(t.firstPay), money(t.firstCents), money(t.totalCents), rate(t.firstPay, t.visits), rate(t.firstPay, t.registrations), button('daily-detail', '每日明细', 'small', ' data-channel="' + esc(row.channel.id) + '"')];
+      if (!row.cohort.length) return [channelCell(row.channel), esc(row.channel.media), esc(currencyOf(row.channel)), '<span class="cm-muted">暂无数据</span>'].concat(Array(9).fill('—'), [row.cumulativeRegistrations ? number(row.cumulativeRegistrations) : '—', '—']);
+      return [channelCell(row.channel), esc(row.channel.media), esc(currencyOf(row.channel)), number(t.visits), number(t.registrations), rate(t.registrations, t.visits), number(t.pwa), number(t.native), number(t.firstPay), money(t.firstCents), money(t.totalCents), rate(t.firstPay, t.visits), rate(t.firstPay, t.registrations), number(row.cumulativeRegistrations), button('daily-detail', '每日明细', 'small', ' data-channel="' + esc(row.channel.id) + '"')];
     })) + page.html;
   }
 
@@ -318,13 +335,15 @@
   }
 
   function conversionView(state, f, daily) {
-    var labels = f.classify === 'type' ? TYPES : SCENES;
-    function categoryOf(row) { return f.classify === 'type' ? row.channel.type : row.scene; }
+    var packageTypes = { native: '原生APP包', pwa: 'PWA包', channel: '渠道包', fast: '极速 APP', none: '无包WEB访问' };
+    var labels = f.classify === 'type' ? TYPES : f.classify === 'packageType' ? packageTypes : f.classify === 'media' ? {} : SCENES;
+    if (f.classify === 'media') daily.forEach(function (row) { labels[row.channel.media] = row.channel.media; });
+    function categoryOf(row) { return f.classify === 'type' ? row.channel.type : f.classify === 'packageType' ? row.packageType || 'none' : f.classify === 'media' ? row.channel.media : row.scene; }
     var categoryRows = daily.filter(function (row) { return f.category === 'all' || categoryOf(row) === f.category; });
     var summary = f.breakdown !== 'channel';
     var rows = groupBy(categoryRows, function (row) { return categoryOf(row) + '|' + row.currency + (summary ? '' : '|' + row.channelId); }).map(function (group) { return { category: categoryOf(group.rows[0]), currency: group.rows[0].currency, channel: group.rows[0].channel, total: sumRows(group.rows) }; });
-    var categoryTitle = f.classify === 'type' ? '历史推广类型' : '首次引流入口';
-    var controls = tabsHtml('conversion-classify', [['scene', '按访问场景'], ['type', '按推广类型']], f.classify) + tabsHtml('conversion-breakdown', [['summary', '分类汇总'], ['channel', '渠道明细']], f.breakdown) + tabsHtml('conversion-metrics', [['register', '注册与付费'], ['download', '下载与安装']], f.metrics) + tabsHtml('conversion-category', [['all', f.classify === 'type' ? '全部推广类型' : '全部入口']].concat(Object.keys(labels).map(function (key) { return [key, labels[key]]; })), f.category);
+    var categoryTitle = f.classify === 'type' ? '历史推广类型' : f.classify === 'media' ? '历史媒体' : f.classify === 'packageType' ? '历史包类型' : '首次引流入口';
+    var controls = tabsHtml('conversion-classify', [['scene', '按访问场景'], ['type', '按推广类型'], ['media', '按历史媒体'], ['packageType', '按历史包类型']], f.classify) + tabsHtml('conversion-breakdown', [['summary', '分类汇总'], ['channel', '渠道明细']], f.breakdown) + tabsHtml('conversion-metrics', [['register', '注册与付费'], ['download', '下载与安装']], f.metrics) + tabsHtml('conversion-category', [['all', '全部分类']].concat(Object.keys(labels).map(function (key) { return [key, labels[key]]; })), f.category);
     function csvLead(row) { return summary ? [labels[row.category], row.currency] : [labels[row.category], row.channel.code, row.channel.name, row.currency]; }
     function tableLead(row) { return summary ? [esc(labels[row.category]), esc(row.currency)] : [esc(labels[row.category]), channelCell(row.channel), esc(row.currency)]; }
     var csvHeaders = summary ? [categoryTitle, '币种'] : [categoryTitle, '渠道编码', '渠道名称', '币种'];
@@ -341,13 +360,13 @@
         return tableLead(row).concat([number(t.exposure), number(t.downloads), rate(t.downloads, t.exposure), number(t.pwaClicks), number(t.pwa), rate(t.pwa, t.pwaClicks), number(t.nativeClicks), number(t.nativeStarts), rate(t.nativeStarts, t.nativeClicks), number(t.channelClicks), number(t.channelStarts), rate(t.channelStarts, t.channelClicks), number(t.fastClicks), number(t.fastStarts), rate(t.fastStarts, t.fastClicks)]);
       })) + page.html;
     }
-    activeRows = csvRows(csvHeaders.concat(['访问人次（入口人日）', '注册人数', '注册转化率', '下载点击人次', 'PWA安装人次', '安装包首次启动人次', '首充人数', '访问首充率', '注册首充率']), rows.map(function (row) {
+    activeRows = csvRows(csvHeaders.concat(['访问人次（入口人日）', '注册人数', '注册转化率', '下载点击人次', 'PWA安装人次', '安装包首次启动人次', '首充人数', '访问-首充转化率', '注册-首充转化率', '充值人数', '充值转化率']), rows.map(function (row) {
       var t = row.total;
-      return csvLead(row).concat([t.visits, t.registrations, rate(t.registrations, t.visits), t.downloads, t.pwa, t.native, t.firstPay, rate(t.firstPay, t.visits), rate(t.firstPay, t.registrations)]);
+      return csvLead(row).concat([t.visits, t.registrations, rate(t.registrations, t.visits), t.downloads, t.pwa, t.native, t.firstPay, rate(t.firstPay, t.visits), rate(t.firstPay, t.registrations), t.payerUsers, rate(t.payerUsers, t.registrations)]);
     }));
-    return controls + note('各币种独立比较；分类比例由合计分子 / 合计分母重算。后续转化保留首次入口归因，访问为入口人日加总；可切换渠道明细。') + table(tableHeaders.concat(['访问人次（入口人日）', '注册人数', '注册转化率', '下载点击人次', 'PWA安装人次', '安装包首次启动人次', '首充人数', '访问首充率', '注册首充率']), page.rows.map(function (row) {
+    return controls + note('各币种独立比较；分类比例由合计分子 / 合计分母重算。后续转化保留首次入口归因，访问为入口人日加总；充值转化率 = 去重充值人数 / 注册人数。样本首充均在注册日，独立统计的充值人数与首充人数同值；可切换渠道明细。') + table(tableHeaders.concat(['访问人次（入口人日）', '注册人数', '注册转化率', '下载点击人次', 'PWA安装人次', '安装包首次启动人次', '首充人数', '访问-首充转化率', '注册-首充转化率', '充值人数', '充值转化率']), page.rows.map(function (row) {
       var t = row.total;
-      return tableLead(row).concat([number(t.visits), number(t.registrations), rate(t.registrations, t.visits), number(t.downloads), number(t.pwa), number(t.native), number(t.firstPay), rate(t.firstPay, t.visits), rate(t.firstPay, t.registrations)]);
+      return tableLead(row).concat([number(t.visits), number(t.registrations), rate(t.registrations, t.visits), number(t.downloads), number(t.pwa), number(t.native), number(t.firstPay), rate(t.firstPay, t.visits), rate(t.firstPay, t.registrations), number(t.payerUsers), rate(t.payerUsers, t.registrations)]);
     })) + page.html;
   }
 
@@ -356,12 +375,12 @@
     // 安装包更新事件独立于当前渠道绑定及版本发布状态，仅来自固定历史快照。
     historicalPackages(state).forEach(function (pkg) {
       if (!installPackage(pkg.id) || f.packageId && pkg.id !== f.packageId) return;
-      var channels = selectedChannels(state, f).filter(function (channel) { return CHANNEL_FACTS[channel.id] && CHANNEL_FACTS[channel.id].packageIds.indexOf(pkg.id) !== -1; });
+      var channels = selectedChannels(state, f).filter(function (channel) { return CHANNEL_FACTS[channel.id] && CHANNEL_FACTS[channel.id].packageIds.indexOf(pkg.id) !== -1 && (!f.media || channel.media === f.media) && (!f.link || channel.linkName === f.link || f.link === 'LK-' + channel.id + '-MAIN'); });
       channels.forEach(function (channel) {
         for (var day = 1; day <= 12; day += 1) {
           var date = '2026-11-' + String(day).padStart(2, '0');
           var version = versionAt(pkg.id, date);
-          if (!version || date < f.start || date > f.end || date < channel.createdAt || f.version && pkg.id + '@' + version.version !== f.version) continue;
+          if (!version || date < f.start || date > f.end || date < channel.createdAt || f.version && pkg.id + '@' + version.version !== f.version && version.version !== f.version) continue;
           var seed = Number(channel.id.slice(2)) + Number(pkg.id.slice(2)) + String(version.version).split('').reduce(function (sum, ch) { return sum + ch.charCodeAt(0); }, 0);
           var eligible = 75 + (seed + day * 23) % 180;
           var prompted = Math.floor(eligible * 0.88);
@@ -386,30 +405,126 @@
   function roiData(state, f, daily) {
     return selectedChannels(state, f).map(function (channel) {
       var cohort = daily.filter(function (row) { return row.channelId === channel.id; });
-      var records = (state.spend || []).filter(function (record) { return record.channelId === channel.id && record.currency === currencyOf(channel) && record.date >= f.start && record.date <= f.end; });
+      var records = spendRecordsFor(state, f, channel);
       var mature = f.period === 'current' || cohort.length > 0 && cohort.every(function (row) { return age(row.date) >= Number(f.period); });
-      return { channel: channel, cohort: cohort, records: records, spend: spendCents(records), registrations: sumRows(cohort).registrations, recharge: cohort.reduce(function (sum, row) { return sum + payment(row, f.period); }, 0), mature: mature, unallocated: Boolean(f.packageId || f.version) };
+      var reason = costReason(state, f, channel);
+      return { channel: channel, cohort: cohort, records: records, spend: spendCents(records), registrations: sumRows(cohort).registrations, recharge: cohort.reduce(function (sum, row) { return sum + payment(row, f.period); }, 0), withdraw: sumRows(cohort).withdrawCents, mature: mature, unallocated: Boolean(reason), costReason: reason };
     });
   }
-  function roiText(row) { return !row.cohort.length ? '暂无批次数据' : !row.mature ? '—' : row.unallocated ? '—（消耗未分包）' : row.spend ? (row.recharge / row.spend * 100).toFixed(2) + '%' : '—'; }
+  function roiText(row) { return !row.cohort.length ? '暂无批次数据' : !row.mature || row.unallocated || !row.spend ? '—' : rate(row.recharge, row.spend); }
+  function unavailable(reason) { return '<span class="cm-muted" title="' + esc(reason) + '">—</span>'; }
+  function spendRecordsFor(state, f, channel) {
+    return (state.spend || []).filter(function (record) {
+      var legacyId = 'LK-' + channel.id + '-MAIN';
+      var linkMatch = !f.link || f.link === '__unassigned' && !record.linkId && !record.linkName || record.linkName === f.link || record.linkId === f.link || f.link === legacyId && record.linkName === channel.linkName || f.link === channel.linkName && record.linkId === legacyId;
+      return record.channelId === channel.id && record.currency === currencyOf(channel) && record.date >= f.start && record.date <= f.end && (!f.media || record.media === f.media) && linkMatch;
+    });
+  }
+  function costReason(state, f, channel) {
+    if (f.packageId || f.version) return '消耗未分包 / 版本，不能计算该包的成本或回收率';
+    if (f.scene || f.source) return '消耗未细分场景 / 注册来源，不能计算该筛选的成本或回收率';
+    if (f.media && (state.spend || []).some(function (record) { return record.channelId === channel.id && record.currency === currencyOf(channel) && record.date >= f.start && record.date <= f.end && !record.media; })) return '所选范围存在未细分媒体的渠道消耗，不能计算媒体成本 / 回收率';
+    if (f.link && f.link !== '__unassigned' && (state.spend || []).some(function (record) { return record.channelId === channel.id && record.currency === currencyOf(channel) && record.date >= f.start && record.date <= f.end && (!f.media || !record.media || record.media === f.media) && !record.linkId && !record.linkName; })) return '所选范围存在渠道级未细分链接消耗，不能分摊或计算链接成本 / 回收率';
+    return '';
+  }
+  function navigationContext(extra) {
+    var f = currentFilter(), result = {};
+    COMMON.concat(['source', 'scene', 'period', 'promotionMetrics', 'classify', 'breakdown', 'metrics', 'category', 'group', 'returnView', 'returnUrl']).forEach(function (key) { result[key] = f[key]; });
+    return Object.assign(result, extra || {});
+  }
+  function returnTarget(value) {
+    if (typeof value !== 'string' || !value || /[\\\x00-\x20#]/.test(value)) return null;
+    var parts = value.split('?'), path;
+    if (parts.length > 2) return null;
+    try { path = decodeURIComponent(parts[0]); } catch (error) { return null; }
+    var views = path === '渠道报表.html' ? ['promotion', 'conversion', 'retention'] : path === '投放数据报表.html' ? ['daily', 'roi'] : null;
+    if (!views) return null;
+    var params = new URLSearchParams(parts[1] || ''), view = params.get('view') || views[0];
+    if (views.indexOf(view) === -1) return null;
+    var context = defaults();
+    COMMON.concat(['source', 'scene', 'period', 'promotionMetrics', 'classify', 'breakdown', 'metrics', 'category', 'group', 'returnView']).forEach(function (key) {
+      if (params.has(key)) context[key] = params.get(key);
+    });
+    [['channelId', 'channel'], ['package', 'packageId'], ['linkId', 'link']].forEach(function (pair) {
+      if (!params.has(pair[1]) && params.has(pair[0])) context[pair[1]] = params.get(pair[0]);
+    });
+    context.returnUrl = '';
+    return { view: view, context: context, url: value };
+  }
+  function spendToolbar() { return '<div class="cm-toolbar">' + button('spend-view', '查看消耗') + button('spend-entry', '录入消耗', 'primary') + '</div>'; }
   function roiView(state, f, daily) {
     var rows = roiData(state, f, daily);
-    activeRows = csvRows(['注册批次开始', '注册批次结束', '渠道编码', '渠道名称', '币种', '注册人数', '广告消耗', '累计充值周期', '批次累计充值', '充值ROI', '成熟状态'], rows.map(function (row) { return [f.start, f.end, row.channel.code, row.channel.name, currencyOf(row.channel), row.registrations, money(row.spend), f.period === 'current' ? '截至' + AS_OF : 'D' + f.period, row.mature && row.cohort.length ? money(row.recharge) : '—', roiText(row), !row.cohort.length ? '暂无数据' : row.mature ? '已成熟' : '—']; }));
-    var html = '<div class="cm-toolbar">' + button('spend-records', '消耗记录') + button('spend-add', '新增消耗', 'primary') + button('spend-import', 'CSV导入') + button('spend-template', '下载导入模板') + '</div>';
-    html += note('充值ROI = 对应批次累计充值 / 同渠道同币种消耗；观察周期未满或消耗为 0 时显示“—”。消耗未分包，包 / 版本筛选不计算ROI；观察截止 ' + AS_OF + '。');
+    activeRows = csvRows(['注册批次开始', '注册批次结束', '渠道编码', '渠道名称', '币种', '注册人数', '广告消耗', '累计观察周期', '批次累计充值', '充值回收率', '成熟状态', '周期提现', '净回收率', '成本口径说明'], rows.map(function (row) { return [f.start, f.end, row.channel.code, row.channel.name, currencyOf(row.channel), row.registrations, row.unallocated ? '—' : money(row.spend), f.period === 'current' ? '截至' + AS_OF : 'D' + f.period, row.mature && row.cohort.length ? money(row.recharge) : '—', roiText(row), !row.cohort.length ? '暂无数据' : row.mature ? '已成熟' : '—', f.period === 'current' && row.cohort.length ? money(row.withdraw) : '—', f.period === 'current' && row.cohort.length && !row.unallocated && row.spend ? rate(row.recharge - row.withdraw, row.spend) : '—', row.costReason || (f.period !== 'current' ? '历史快照不含分期提现，周期净回收率不可计算' : '')]; }));
+    var html = spendToolbar();
+    html += note('充值回收率 = 批次累计充值 / 同渠道同币种消耗；净回收率 =（充值 − 提现）/ 消耗，并非利润。周期统一作用于所有行；D0为注册当日，D1为当日及次日。历史快照只有截至快照日累计提现，因此仅累计周期计算净回收率，其他周期显示—。包 / 版本及未细分链接消耗不计算成本或回收率；观察截止 ' + AS_OF + '。');
     var currencies = Array.from(new Set(rows.map(function (row) { return currencyOf(row.channel); })));
     currencies.forEach(function (currency) {
       var grouped = rows.filter(function (row) { return currencyOf(row.channel) === currency; });
-      html += '<h3>' + esc(currency) + '</h3>' + table(['渠道', '注册人数', f.packageId || f.version ? '渠道总消耗（未分包）' : '消耗', '批次累计充值', '充值ROI', '周期状态', '操作'], grouped.map(function (row) {
+      html += '<h3>' + esc(currency) + '</h3>' + table(['渠道', '注册人数', '匹配广告消耗', '批次累计充值', '充值回收率', '累计提现', '净回收率', '周期状态', '操作'], grouped.map(function (row) {
         var pending = row.cohort.length && !row.mature;
-        return [channelCell(row.channel), row.cohort.length ? number(row.registrations) : '暂无数据', money(row.spend), pending ? pendingCell() : row.cohort.length ? money(row.recharge) : '—', pending ? pendingCell() : roiText(row), !row.cohort.length ? '<span class="cm-muted">暂无批次</span>' : row.mature ? '<span class="cm-badge green">已成熟</span>' : pendingCell(), button('roi-detail', '批次明细', 'small', ' data-channel="' + esc(row.channel.id) + '"')];
+        return [channelCell(row.channel), row.cohort.length ? number(row.registrations) : '暂无数据', row.unallocated ? unavailable(row.costReason) : money(row.spend), pending ? pendingCell() : row.cohort.length ? money(row.recharge) : '—', pending ? pendingCell() : row.unallocated ? unavailable(row.costReason) : row.spend ? roiText(row) : unavailable('匹配消耗为0，不能计算回收率'), f.period === 'current' && row.cohort.length ? money(row.withdraw) : unavailable('历史快照不含分期提现'), f.period !== 'current' ? unavailable('历史快照不含分期提现，周期净回收率不可计算') : row.unallocated ? unavailable(row.costReason) : row.cohort.length && row.spend ? rate(row.recharge - row.withdraw, row.spend) : unavailable('暂无批次或匹配消耗为0'), !row.cohort.length ? '<span class="cm-muted">暂无批次</span>' : row.mature ? '<span class="cm-badge green">已成熟</span>' : pendingCell(), button('roi-detail', '批次明细', 'small', ' data-channel="' + esc(row.channel.id) + '"')];
       }));
     });
     return html + (!rows.length ? '<div class="cm-empty">暂无符合条件的渠道</div>' : '');
   }
 
+  function dailyView(state, f, daily) {
+    // 首充事件日与注册批次日分开统计；固定样本恰好全部在注册日首充。
+    var firstPayEvents = registrationHistory(state, f);
+    var groups = groupBy(daily, function (row) { return row.date + '|' + row.channelId + '|' + row.currency; });
+    var channels = selectedChannels(state, f);
+    channels.forEach(function (channel) {
+      spendRecordsFor(state, f, channel).forEach(function (record) {
+        var key = record.date + '|' + channel.id + '|' + record.currency;
+        if (!groups.some(function (group) { return group.key === key; })) groups.push({ key: key, rows: [], date: record.date, channel: channel });
+      });
+    });
+    var rows = groups.map(function (group) {
+      var first = group.rows[0], channel = first ? first.channel : group.channel, date = first ? first.date : group.date;
+      var dayFilter = Object.assign({}, f, { start: date, end: date }), total = sumRows(group.rows);
+      var records = spendRecordsFor(state, dayFilter, channel);
+      var media = f.media || Array.from(new Set(records.map(function (record) { return record.media || '未细分媒体'; }).concat(first ? [channel.media] : []))).join(' / ') || channel.media;
+      return { date: date, channel: channel, media: media, cohort: group.rows, total: total, spend: spendCents(records), reason: costReason(state, dayFilter, channel) };
+    }).sort(function (a, b) { return b.date.localeCompare(a.date) || currencyOf(a.channel).localeCompare(currencyOf(b.channel)) || a.channel.code.localeCompare(b.channel.code); });
+    function cells(row, html) {
+      var t = row.total, validCost = !row.reason && row.spend > 0 && row.cohort.length;
+      function missing(reason) { return html ? unavailable(reason) : '—'; }
+      var firstPayOnDay = firstPayEvents.filter(function (event) { return event.channelId === row.channel.id && event.firstPayDate === row.date; }).reduce(function (total, event) { return total + event.firstPay; }, 0);
+      return [html ? esc(row.date) : row.date, html ? channelCell(row.channel) : row.channel.code, html ? esc(row.media) : row.media, html ? esc(currencyOf(row.channel)) : currencyOf(row.channel), row.reason ? missing(row.reason) : money(row.spend), row.cohort.length ? html ? number(t.registrations) : t.registrations : '暂无批次', validCost && t.registrations ? money(row.spend / t.registrations) : missing(row.reason || '匹配消耗或注册人数为0 / 暂无批次'), row.cohort.length ? html ? number(t.firstPay) : t.firstPay : '—', validCost && t.firstPay ? money(row.spend / t.firstPay) : missing(row.reason || '匹配消耗或首充人数为0 / 暂无批次'), row.cohort.length ? money(t.firstCents) : '—', row.cohort.length ? money(t.totalCents) : '—', row.cohort.length ? money(t.withdrawCents) : '—', validCost ? rate(t.totalCents, row.spend) : missing(row.reason || '匹配消耗为0 / 暂无批次'), validCost ? rate(t.totalCents - t.withdrawCents, row.spend) : missing(row.reason || '匹配消耗为0 / 暂无批次'), row.cohort.length ? html ? number(firstPayOnDay) : firstPayOnDay : '—'];
+    }
+    var headers = ['注册批次日期', '渠道', '历史媒体', '币种', '匹配广告消耗', '注册人数', '注册成本', '批次累计首充人数', '首充成本', '首充金额', '批次累计充值', '累计提现', '充值回收率', '净回收率', '当日首充人数'];
+    activeRows = csvRows(headers.concat(['成本口径说明']), rows.map(function (row) { return cells(row, false).concat([row.reason]); }));
+    var page = paginate(rows, f);
+    return spendToolbar() + note('按注册批次日期、渠道、币种汇总，不是事件日流水。当日首充人数单独按首充发生日统计，样本全部在注册日首充；其余首充、充值及提现累计至 ' + AS_OF + '。首充成本即原充值成本；充值回收率 = 充值 / 消耗，净回收率 =（充值 − 提现）/ 消耗，并非利润。消耗未分包 / 链接时不分摊成本。') + table(headers.map(function (header) { return header === '首充成本' ? '<span title="充值成本 = 消耗 / 批次累计首充人数">首充成本</span>' : header; }).concat(['操作']), page.rows.map(function (row) { return cells(row, true).concat([button('cohort-detail', '批次明细', 'small', ' data-channel="' + esc(row.channel.id) + '" data-date="' + row.date + '"')]); })) + page.html;
+  }
+
+  function detailView(state, f, daily) {
+    var funds = f.promotionMetrics === 'funds';
+    var history = registrationHistory(state, f);
+    var rows = groupBy(daily, function (row) { return row.date + '|' + row.channelId + '|' + row.channel.media + '|' + row.channel.linkName + '|' + row.currency; }).map(function (group) {
+      var first = group.rows[0];
+      return { date: first.date, channel: first.channel, rows: group.rows, total: sumRows(group.rows), mature: f.period === 'current' || age(first.date) >= Number(f.period), recharge: group.rows.reduce(function (sum, row) { return sum + payment(row, f.period); }, 0) };
+    }).sort(function (a, b) { return b.date.localeCompare(a.date) || a.channel.code.localeCompare(b.channel.code); });
+    var lead = ['注册批次日期', '渠道编码', '渠道名称', '历史媒体', '历史广告链接', '币种'];
+    var headers = funds ? ['充值人数', '充值次数', '批次累计充值', '次日复充人数', '次日复充占比', '3日复充人数', '3日复充占比', '7日复充人数', '7日复充占比', '累计提现', '充提差', '有效投注额', '充值转化率', '人均充值', '提现次数'] : ['访问人次（入口人日）', '注册人数', '注册转化率', 'PWA安装', '安装包首次启动', '首充人数', '首充金额', '批次累计充值', '访问-首充转化率', '注册-首充转化率', '累计注册'];
+    function values(row, html) {
+      var t = row.total;
+      var recharge = row.mature ? money(row.recharge) : html ? pendingCell() : '—';
+      var cumulative = cumulativeRegistrations(history, row.channel.id, row.date);
+      if (!funds) return [html ? number(t.visits) : t.visits, html ? number(t.registrations) : t.registrations, rate(t.registrations, t.visits), html ? number(t.pwa) : t.pwa, html ? number(t.native) : t.native, html ? number(t.firstPay) : t.firstPay, money(t.firstCents), recharge, rate(t.firstPay, t.visits), rate(t.firstPay, t.registrations), html ? number(cumulative) : cumulative];
+      var result = [html ? number(t.payerUsers) : t.payerUsers, html ? number(t.paymentCount) : t.paymentCount, recharge];
+      [1, 3, 7].forEach(function (days) { var repeat = repeatMetric(row.rows, days); result.push(repeat.users == null ? html ? pendingCell() : repeat.text : html ? number(repeat.users) : repeat.users, repeat.users == null && html ? pendingCell() : repeat.text); });
+      var current = f.period === 'current', missing = html ? unavailable('历史快照不含分期提现 / 投注，周期资金指标不可计算') : '—';
+      return result.concat([current ? money(t.withdrawCents) : missing, current ? money(t.totalCents - t.withdrawCents) : missing, current ? money(t.betsCents) : missing, rate(t.payerUsers, t.registrations), row.mature && t.payerUsers ? money(row.recharge / t.payerUsers) : html ? unavailable(row.mature ? '充值人数为0，无法计算人均充值' : '观察周期未满，暂不可计算') : '—', html ? unavailable('当前演示快照未提供提现次数') : '—']);
+    }
+    activeRows = csvRows(lead.concat(headers), rows.map(function (row) { return [row.date, row.channel.code, row.channel.name, row.channel.media, row.channel.linkName, currencyOf(row.channel)].concat(values(row, false)); }));
+    var page = paginate(rows, f);
+    return '<div class="cm-toolbar">' + button('back-summary', '返回汇总') + '</div>' + promotionTabs(f) + note('同汇总历史归因，包 / 版本筛选生效。充值观察周期：' + (f.period === 'current' ? '累计至 ' + AS_OF : 'D' + esc(f.period)) + '；人数及次数截至快照日，复充按各自窗口。累计注册滚动至本行日期，不受开始日限制，不可逐日求和。比例按分子 / 分母重算，人均充值按所选周期充值 / 去重充值人数。提现次数快照缺失；分期提现 / 投注缺失，仅累计周期展示。跨入口 / 跨日访问为人次。') + table(lead.concat(headers.map(function (header) { return header === '累计注册' ? cumulativeHeading() : header; })), page.rows.map(function (row) { return [esc(row.date), esc(row.channel.code), esc(row.channel.name), esc(row.channel.media), esc(row.channel.linkName), esc(currencyOf(row.channel))].concat(values(row, true)); })) + page.html;
+  }
+
   function render(view, context) {
     if (VIEWS.indexOf(view) === -1) view = 'promotion';
+    if (context && !has(context, 'link') && context.linkId != null) context = Object.assign({}, context, { link: context.linkId });
     activeView = view;
     var section = document.getElementById('cm-reports');
     if (!section || !api()) return;
@@ -427,17 +542,31 @@
     if (context) {
       if (context.packageId != null && context.version == null) f.version = '';
       if (context.classify != null && context.classify !== f.classify) f.category = 'all';
-      ['channel', 'media', 'link', 'source', 'scene', 'currency', 'packageId', 'version', 'start', 'end', 'period', 'classify', 'breakdown', 'category', 'metrics', 'promotionMetrics'].forEach(function (key) {
+      ['channel', 'media', 'link', 'source', 'scene', 'currency', 'packageId', 'version', 'start', 'end', 'period', 'classify', 'breakdown', 'category', 'metrics', 'promotionMetrics', 'returnView', 'returnUrl', 'group'].forEach(function (key) {
         var contextKey = key === 'channel' && context.channelId != null ? 'channelId' : key;
         if (context[contextKey] != null) f[key] = String(context[contextKey]);
       });
       f.page = 1;
     }
+    Object.keys(CHANNEL_FACTS).some(function (channelId) {
+      if (f.link !== 'LK-' + channelId + '-MAIN') return false;
+      f.link = CHANNEL_FACTS[channelId].linkName;
+      return true;
+    });
     if (f.version && f.version.indexOf('@') === -1 && f.packageId && f.packageId !== '__none__') f.version = f.packageId + '@' + f.version;
+    if (['current', '0', '1', '3', '7', '14', '15', '30'].indexOf(f.period) === -1) f.period = 'current';
+    if (f.returnUrl && !returnTarget(f.returnUrl)) f.returnUrl = '';
     if (!validDate(f.start) || !validDate(f.end) || f.start > f.end || f.end > AS_OF) Object.assign(f, defaults());
-    if (view === 'roi' || view === 'updates' || view === 'conversion') f.scene = '';
+    if (view === 'roi' || view === 'updates' || view === 'conversion' || view === 'daily') f.scene = '';
     if (view === 'updates') f.source = '';
     share(f);
+    if (api().navigateContext) api().navigateContext(navigationContext());
+    if (view === 'detail') {
+      var back = document.getElementById('cm-detail-back');
+      var returnView = ['promotion', 'conversion', 'retention', 'daily', 'roi'].indexOf(f.returnView) !== -1 ? f.returnView : 'promotion';
+      var target = returnTarget(f.returnUrl);
+      if (back && api().navigateUrl) back.href = target ? target.url : api().navigateUrl(returnView, navigationContext());
+    }
     var state = api().getState();
     var daily = selectedDaily(state, f);
     var body;
@@ -445,6 +574,8 @@
     else if (view === 'retention') body = retentionView(state, f, daily);
     else if (view === 'conversion') body = conversionView(state, f, daily);
     else if (view === 'updates') body = updatesView(state, f);
+    else if (view === 'daily') body = dailyView(state, f, daily);
+    else if (view === 'detail') body = detailView(state, f, daily);
     else body = roiView(state, f, daily);
     section.innerHTML = '<h2>' + TITLES[view] + '</h2>' + filterHtml(state, f) + body;
     init();
@@ -458,41 +589,12 @@
       '访问场景指首次访问 / 引流入口：渠道入口、WEB大厅、APP大厅、下载站。注册来源指当时进入方式；推广类型为当时渠道类型。后续注册、付费、点击及安装都保留入口与媒体广告归因。历史版本按当日已发布版本归属，与当前绑定、包状态或新版本发布无关。',
       '下载漏斗：曝光为同一来源批次看见下载入口的人数，点击下载为该批次点击人数，点击率=点击/曝光。按原生包、渠道包、极速 APP分别统计同入口、同包版本点击及首次启动，安装率=对应首次启动/对应点击；PWA安装率=对应PWA安装/对应PWA点击，互不混用。APP大厅为已安装用户，无下载曝光，下载漏斗显示—。后续首次启动保留原引流入口，不能用另一个场景的启动数除以下载点击。',
       '资金表现累计至快照日，归属所选注册批次且各币种独立。样本首充发生于注册日，充值人数按批次用户去重，充值次数为事件数；充值-提现=充提差，有效投注为符合有效规则的投注金额，不是利润。次日复充为首充次日再次充值人数/首充人数，3日及7日为首充后对应窗口内再次充值去重人数/首充人数。任何批次未到窗口则整组显示—，不以已完成周期的部分代替。',
+      '注册转化率=注册人数/访问人次；访问-首充转化率=首充人数/访问人次；注册-首充转化率=首充人数/注册人数；充值转化率=批次去重充值人数/注册人数；人均充值=批次累计充值/去重充值人数，明细选择D周期时按对应周期充值计算。充值人数独立按支付用户归属去重，当前样本全部首充发生于注册日，因此与首充人数同值，不代表生产环境两者恒等。当日首充人数按首充事件日期统计，批次累计首充人数按注册批次累计至快照日，生产需分别接入注册日期与首充发生日期；首充成本即原充值成本=消耗/批次累计首充人数。累计注册从演示历史起点2026-11-01计至查询结束日，明细滚动至本行日期；保留渠道、媒体、来源、场景、币种、包版本等筛选，不受查询开始日限制，不按日求和。当前演示快照未提供提现次数，需接入提现事件数；不得根据提现金额反推次数，表格与CSV显示—。',
       '活跃留存=注册后第N日活跃人数/批次注册人数，与复充占比不同。观察周期未满显示—，悬停提示原因；零分母也显示—。已完成周期且人数为0时，人数显示0，有效分母下比率显示0.00%。广告留存使用事件时广告链接归因；每个原始渠道当前演示一条历史广告链接。',
-      '充值ROI=对应注册批次指定周期累计充值/同渠道同币种同日期范围消耗。D1含注册日及次日，D3同理。观察周期未全部完成时不计算并显示—；零消耗也显示—，不同币种不合并。消耗只含渠道级归因，包/版本筛选只展示包收入与渠道总消耗，不计算包ROI。',
+      '充值回收率=对应注册批次指定周期累计充值/同渠道同币种同日期范围消耗；净回收率=(充值-提现)/消耗，并非利润。D0为注册当日，D1含当日及次日，其他周期同理。观察周期未全部完成、消耗为0时显示—；不同币种不合并。历史快照只有截至快照日累计提现，仅累计周期计算净回收率，D周期的提现与净回收率均显示—。消耗没有包/版本归因时，包消耗、成本和回收率均显示—，不以全渠道消耗替代；具体链接筛选若范围有渠道级未细分消耗，也不分摊，消耗与链接成本 / 回收率显示—。未细分链接筛选只展示相应消耗，不冒充注册批次。消耗通过独立广告消耗页维护，金额使用报表币种，不重复换汇。',
       'APP更新来自原生包、渠道包、极速 APP固定历史发布记录；目标包版本上线前无事件，新包新版本不补历史。阶段人数按同日、渠道、目标包版本去重，成功率=成功/开始更新，跨日不去重。PWA发布不等于APP更新。分类汇总按类别及币种独立合计，比例由汇总分子/分母重算；下载曝光、点击及安装跨日均为人次，不冒充区间去重人数。'
     ];
     infoDialog('数据口径与演示范围', '<div class="cm-form-section">' + paragraphs.map(function (paragraph) { return '<p>' + esc(paragraph) + '</p>'; }).join('') + '</div>', true);
-  }
-  function dailyDetail(channelId, roi) {
-    var state = api().getState();
-    var f = currentFilter();
-    var channel = historicalChannels(state).find(function (item) { return item.id === channelId; });
-    if (!channel) return;
-    var funds = !roi && f.promotionMetrics === 'funds';
-    var rows = groupBy(selectedDaily(state, f).filter(function (row) { return row.channelId === channelId; }), function (row) { return row.date; }).map(function (group) {
-      var t = sumRows(group.rows);
-      var date = group.rows[0].date;
-      if (funds) return [date, number(t.firstPay), number(t.paymentCount), money(t.totalCents), money(t.withdrawCents), money(t.totalCents - t.withdrawCents), money(t.betsCents)].concat([1, 3, 7].map(function (days) { var repeat = repeatMetric(group.rows, days); return repeat.users == null ? pendingCell() : repeat.text + '（' + number(repeat.users) + '人）'; }));
-      if (!roi) return [date, number(t.visits), number(t.registrations), number(t.pwa), number(t.native), number(t.firstPay), money(t.firstCents), money(t.totalCents)];
-      var spent = spendCents((state.spend || []).filter(function (record) { return record.channelId === channelId && record.date === date && record.currency === currencyOf(channel); }));
-      var mature = f.period === 'current' || age(date) >= Number(f.period);
-      var recharge = group.rows.reduce(function (sum, row) { return sum + payment(row, f.period); }, 0);
-      return [date, number(t.registrations), money(spent), mature ? money(recharge) : pendingCell(), mature ? f.packageId || f.version ? '—（消耗未分包）' : rate(recharge, spent) : pendingCell()];
-    });
-    var breakdown = '';
-    if (!roi) {
-      var packages = historicalPackages(state);
-      var packageRows = groupBy(selectedDaily(state, f).filter(function (row) { return row.channelId === channelId; }), function (row) { return row.packageId + '@' + row.version; }).map(function (group) {
-        var first = group.rows[0];
-        var pkg = packages.find(function (item) { return item.id === first.packageId; });
-        var total = sumRows(group.rows);
-        return [esc(pkg ? pkg.name : '无包WEB访问'), esc(first.version || '—'), number(total.visits), number(total.registrations), number(total.pwa), number(total.native), money(total.firstCents), money(total.totalCents)];
-      });
-      breakdown = '<h3>历史包 / 版本归因</h3>' + table(['归因包', '归因版本', '访问人次（入口人日）', '注册人数', 'PWA安装人次', '安装包首次启动人次', '首充金额', '累计充值'], packageRows);
-    }
-    var headers = roi ? ['注册批次', '注册人数', f.packageId || f.version ? '渠道总消耗（未分包）' : '消耗', '批次累计充值', '充值ROI'] : funds ? ['注册批次', '充值人数', '充值次数', '累计充值', '累计提现', '充提差', '有效投注额', '次日复充', '3日复充', '7日复充'] : ['注册批次', '访问人次（入口人日）', '注册人数', 'PWA安装人次', '安装包首次启动人次', '首充人数', '首充金额', '累计充值'];
-    infoDialog(channel.code + ' · ' + (roi ? 'ROI注册批次明细' : funds ? '资金批次明细' : '每日推广明细'), note('历史币种：' + esc(currencyOf(channel)) + '；批次范围 ' + esc(f.start) + ' 至 ' + esc(f.end) + '，观察截止 ' + AS_OF + '。') + table(headers, rows) + breakdown, true);
   }
   function updateDetail(index) {
     var row = updateRows(api().getState(), currentFilter())[index];
@@ -500,184 +602,6 @@
     infoDialog('APP更新事件明细', '<div class="cm-form-section"><p>' + esc(row.pkg.name) + ' · ' + esc(row.version.version) + ' · build ' + esc(row.version.build) + '</p><p>更新日期：' + row.date + '；渠道：' + esc(row.channel.code) + '；平台：' + esc(row.pkg.platform) + '</p><p>目标版本发布时间：' + esc(row.version.publishedAt) + '</p></div>' + table(['符合条件设备', '收到提示', '开始更新', '成功', '失败', '成功率'], [[number(row.eligible), number(row.prompted), number(row.started), number(row.success), number(row.failed), rate(row.success, row.started)]]) + note('失败表示已开始更新但未成功的设备数；尚未开始更新的设备不计入失败。此处为聚合演示，不伪造设备ID。'), true);
   }
 
-  function formError(form, message) {
-    var target = form.querySelector('[data-cmr-error]');
-    if (target) { target.textContent = message; target.hidden = false; }
-    else api().toast(message);
-    return false;
-  }
-  function safeSave(next, form, close) {
-    try { api().saveState(next); }
-    catch (error) { return formError(form, '保存失败，草稿已保留：' + (error.message || '本地存储不可用')); }
-    close();
-    reRender();
-    api().toast('保存成功');
-    return true;
-  }
-  function spendFields(state, record) {
-    return '<div class="cm-form-grid"><label class="cm-field"><span>消耗日期</span><input class="cm-input" type="date" name="date" max="' + AS_OF + '" value="' + esc(record.date || AS_OF) + '" required></label>' + selectField('渠道', 'channelId', (state.channels || []).map(function (channel) { return [channel.id, channel.code + ' · ' + channel.name]; }), record.channelId || ((state.channels || [])[0] || {}).id || '') + '<label class="cm-field"><span>媒体</span><input class="cm-input" name="media" maxlength="80" value="' + esc(record.media || '') + '" required></label><label class="cm-field"><span>币种</span><input class="cm-input" name="currency" value="' + esc(record.currency || '') + '" readonly required></label><label class="cm-field"><span>消耗金额</span><input class="cm-input" type="number" name="amount" min="0.01" step="0.01" value="' + esc(record.amount == null ? '' : record.amount) + '" required></label><label class="cm-field"><span>备注</span><input class="cm-input" name="note" maxlength="200" value="' + esc(record.note || '') + '"></label></div><p class="cm-note">币种随渠道确定。保存后计入该日注册批次的渠道级消耗；不同币种不合并。每条记录表示一次消耗，允许同日追加。</p><p class="cm-error" data-cmr-error hidden></p>';
-  }
-  function validateSpend(record, state) {
-    var channel = channelById(state, record.channelId);
-    if (!validDate(record.date) || record.date > AS_OF) return '日期无效或晚于快照日';
-    if (!channel) return '渠道ID不存在';
-    if (record.currency !== currencyOf(channel)) return '币种必须与渠道币种 ' + currencyOf(channel) + ' 一致';
-    if (!record.media || record.media.length > 80) return '请填写不超过80字的媒体';
-    if (!/^\d+(?:\.\d{1,2})?$/.test(String(record.amount)) || !Number.isFinite(Number(record.amount)) || Number(record.amount) <= 0 || Number(record.amount) > 1000000000) return '消耗须大于0，最多2位小数且不超过1,000,000,000';
-    if (String(record.note || '').length > 200) return '备注最多200字';
-    return '';
-  }
-  function spendEditor(id) {
-    var state = api().getState();
-    if (!(state.channels || []).length) { api().toast('请先创建渠道'); return; }
-    var record = id ? (state.spend || []).find(function (item) { return item.id === id; }) : {};
-    if (!record) { api().toast('消耗记录已不存在'); return; }
-    api().dialog({ title: id ? '编辑消耗' : '新增消耗', html: spendFields(state, record), width: 'normal', onOpen: function (form) {
-      function syncChannel() {
-        var channel = channelById(api().getState(), form.elements.channelId.value);
-        if (!channel) return;
-        form.elements.currency.value = currencyOf(channel);
-        form.elements.media.value = channel.media || '';
-      }
-      form.elements.channelId.addEventListener('change', syncChannel);
-      if (!id) syncChannel();
-    }, onSubmit: function (form, close) {
-      var next = api().getState();
-      var item = {};
-      ['date', 'channelId', 'media', 'currency', 'amount', 'note'].forEach(function (name) { item[name] = form.elements[name].value.trim(); });
-      var error = validateSpend(item, next);
-      if (error) return formError(form, error);
-      item.amount = Number(item.amount);
-      item.id = id || 'SP' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
-      var records = (next.spend || []).slice();
-      if (id) {
-        var index = records.findIndex(function (existing) { return existing.id === id; });
-        if (index === -1) return formError(form, '记录已被删除，请关闭后刷新');
-        records[index] = item;
-      } else records.push(item);
-      return safeSave(Object.assign({}, next, { spend: records }), form, close);
-    } });
-  }
-  function spendRecords() {
-    var state = api().getState();
-    var f = currentFilter();
-    var channelIds = selectedChannels(state, f).map(function (channel) { return channel.id; });
-    var records = (state.spend || []).filter(function (record) { return channelIds.indexOf(record.channelId) !== -1 && record.date >= f.start && record.date <= f.end && (!f.currency || record.currency === f.currency); }).sort(function (a, b) { return b.date.localeCompare(a.date); });
-    var totals = {};
-    records.forEach(function (record) { totals[record.currency] = (totals[record.currency] || 0) + Math.round(Number(record.amount) * 100); });
-    var html = note('按当前报表日期 / 渠道 / 来源 / 币种筛选。' + Object.keys(totals).map(function (currency) { return esc(currency) + ' 合计 ' + money(totals[currency]); }).join('；'));
-    html += table(['日期', '渠道', '媒体', '币种', '消耗', '备注', '操作'], records.map(function (record) {
-      var channel = channelById(state, record.channelId);
-      return [esc(record.date), esc(channel ? channel.code : record.channelId), esc(record.media), esc(record.currency), money(Math.round(Number(record.amount) * 100)), esc(record.note || '—'), button('spend-edit-modal', '编辑', 'small', ' data-id="' + esc(record.id) + '"') + button('spend-delete-modal', '删除', 'small danger', ' data-id="' + esc(record.id) + '"')];
-    }), '当前条件下无消耗记录');
-    api().dialog({ title: '消耗记录', html: html, width: 'wide', submitLabel: '关闭', onSubmit: function (form, close) { close(); }, onOpen: function (form) {
-      form.addEventListener('click', function (event) {
-        var action = event.target.closest('[data-cmr-action]');
-        if (!action) return;
-        if (action.dataset.cmrAction === 'spend-edit-modal') spendEditor(action.dataset.id);
-        if (action.dataset.cmrAction === 'spend-delete-modal') deleteSpend(action.dataset.id);
-      });
-    } });
-  }
-  function deleteSpend(id) {
-    var record = (api().getState().spend || []).find(function (item) { return item.id === id; });
-    if (!record) return;
-    api().dialog({ title: '删除消耗记录', html: '<p>确认删除 ' + esc(record.date) + ' · ' + esc(record.currency) + ' ' + money(Math.round(Number(record.amount) * 100)) + ' 的消耗？删除后ROI会重新计算。</p><p class="cm-error" data-cmr-error hidden></p>', submitLabel: '删除', onSubmit: function (form, close) {
-      var next = api().getState();
-      return safeSave(Object.assign({}, next, { spend: (next.spend || []).filter(function (item) { return item.id !== id; }) }), form, close);
-    } });
-  }
-
-  function parseCsv(text) {
-    text = text.replace(/^\uFEFF/, '');
-    var rows = [], row = [], field = '', quoted = false, afterQuote = false;
-    for (var i = 0; i < text.length; i += 1) {
-      var ch = text[i];
-      if (quoted) {
-        if (ch === '"' && text[i + 1] === '"') { field += '"'; i += 1; }
-        else if (ch === '"') { quoted = false; afterQuote = true; }
-        else field += ch;
-      } else if (ch === '"') {
-        if (field || afterQuote) throw new Error('CSV引号格式不正确');
-        quoted = true;
-      } else if (ch === ',' || ch === '\n' || ch === '\r') {
-        row.push(field); field = ''; afterQuote = false;
-        if (ch !== ',') { if (ch === '\r' && text[i + 1] === '\n') i += 1; if (row.some(function (value) { return value.trim(); })) rows.push(row); row = []; }
-      } else {
-        if (afterQuote && ch.trim()) throw new Error('CSV引号后有多余字符');
-        if (!afterQuote) field += ch;
-      }
-    }
-    if (quoted) throw new Error('CSV引号未闭合');
-    row.push(field);
-    if (row.some(function (value) { return value.trim(); })) rows.push(row);
-    return rows;
-  }
-  function fingerprint(record) { return [record.date, record.channelId, record.media, record.currency, Math.round(Number(record.amount) * 100), record.note || ''].join('\u001f'); }
-  function importPreview(text, state) {
-    var rows = parseCsv(text);
-    if (rows.length < 2) throw new Error('CSV需包含表头及至少一条记录');
-    if (rows.length > 1001) throw new Error('每次最多导入1000条记录');
-    var fields = ['date', 'channelId', 'media', 'currency', 'amount', 'note'];
-    var header = rows.shift().map(function (value) { return value.trim(); });
-    if (header.length !== fields.length || fields.some(function (key) { return header.indexOf(key) === -1; })) throw new Error('表头必须包含 date,channelId,media,currency,amount,note；请使用模板');
-    var seen = new Set((state.spend || []).map(fingerprint));
-    return rows.map(function (row, index) {
-      if (row.length !== header.length) throw new Error('第' + (index + 2) + '行列数与表头不一致');
-      var record = {};
-      fields.forEach(function (key) { record[key] = row[header.indexOf(key)].trim(); });
-      var error = validateSpend(record, state);
-      if (error) throw new Error('第' + (index + 2) + '行：' + error);
-      var key = fingerprint(record);
-      if (seen.has(key)) throw new Error('第' + (index + 2) + '行与已保存或本次导入记录完全重复');
-      seen.add(key);
-      record.amount = Number(record.amount);
-      return record;
-    });
-  }
-  function spendImport() {
-    var pending = null;
-    var previewSource = '';
-    api().dialog({ title: 'CSV导入广告消耗', width: 'wide', submitLabel: '确认导入', html: '<div class="cm-form-section"><p>UTF-8 CSV，最多1000条；表头为 date,channelId,media,currency,amount,note。选择文件或粘贴内容后点击“校验预览”，所有行有效才可保存。导入为追加，完全重复记录会拒绝；各币种分别计算。</p><label class="cm-field"><span>CSV文件</span><input type="file" accept=".csv,text/csv" data-cmr-file></label><label class="cm-field"><span>CSV内容</span><textarea class="cm-input" name="csv" rows="7" spellcheck="false" placeholder="date,channelId,media,currency,amount,note"></textarea></label>' + button('import-preview', '校验预览') + '<p class="cm-error" data-cmr-error hidden></p><div data-cmr-preview></div></div>', onOpen: function (form) {
-      var input = form.querySelector('[data-cmr-file]');
-      input.addEventListener('change', function () {
-        var file = input.files[0];
-        if (!file) return;
-        pending = null;
-        if (file.size > 1024 * 1024) { formError(form, 'CSV文件不能超过1MB'); return; }
-        var reader = new FileReader();
-        reader.onload = function () { form.elements.csv.value = String(reader.result); form.querySelector('[data-cmr-preview]').innerHTML = ''; };
-        reader.onerror = function () { formError(form, '文件读取失败，请重新选择'); };
-        reader.readAsText(file, 'UTF-8');
-      });
-      form.elements.csv.addEventListener('input', function () { pending = null; form.querySelector('[data-cmr-preview]').innerHTML = ''; });
-      form.addEventListener('click', function (event) {
-        var target = event.target.closest('[data-cmr-action="import-preview"]');
-        if (!target) return;
-        try {
-          previewSource = form.elements.csv.value;
-          pending = importPreview(previewSource, api().getState());
-          form.querySelector('[data-cmr-error]').hidden = true;
-          var totals = {};
-          pending.forEach(function (record) { totals[record.currency] = (totals[record.currency] || 0) + Math.round(record.amount * 100); });
-          form.querySelector('[data-cmr-preview]').innerHTML = note('校验通过：' + pending.length + '条；' + Object.keys(totals).map(function (currency) { return esc(currency) + ' ' + money(totals[currency]); }).join('；') + '。预览前10条：') + table(['日期', '渠道ID', '媒体', '币种', '金额', '备注'], pending.slice(0, 10).map(function (record) { return [esc(record.date), esc(record.channelId), esc(record.media), esc(record.currency), money(Math.round(record.amount * 100)), esc(record.note)]; }));
-        } catch (error) { pending = null; form.querySelector('[data-cmr-preview]').innerHTML = ''; formError(form, error.message); }
-      });
-    }, onSubmit: function (form, close) {
-      if (!pending || form.elements.csv.value !== previewSource) return formError(form, '请先校验并预览当前CSV内容');
-      var next = api().getState();
-      try { pending = importPreview(previewSource, next); }
-      catch (error) { return formError(form, error.message); }
-      var batchId = 'SP' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
-      var records = pending.map(function (record, index) { return Object.assign({}, record, { id: batchId + '-' + index }); });
-      return safeSave(Object.assign({}, next, { spend: (next.spend || []).concat(records) }), form, close);
-    } });
-  }
-  function spendTemplate() {
-    var state = api().getState();
-    var channel = (state.channels || [])[0];
-    api().download('spend-import-template.csv', [['date', 'channelId', 'media', 'currency', 'amount', 'note'], [AS_OF, channel ? channel.id : 'CH1001', channel ? channel.media : 'Facebook', channel ? currencyOf(channel) : 'INR', '100.00', '示例记录，请替换后导入']]);
-  }
   function onAction(event) {
     var target = event.target.closest('[data-cmr-action]');
     if (!target || !boundSection.contains(target)) return;
@@ -693,13 +617,19 @@
     else if (action === 'conversion-breakdown') { f.breakdown = target.dataset.value; f.page = 1; reRender(); }
     else if (action === 'conversion-metrics') { f.metrics = target.dataset.value; f.page = 1; reRender(); }
     else if (action === 'conversion-category') { f.category = target.dataset.value; f.page = 1; reRender(); }
-    else if (action === 'daily-detail') dailyDetail(target.dataset.channel, false);
-    else if (action === 'roi-detail') dailyDetail(target.dataset.channel, true);
+    else if (action === 'daily-detail' || action === 'roi-detail' || action === 'cohort-detail') {
+      var origin = navigationContext({ returnUrl: '' });
+      var context = navigationContext({ channel: target.dataset.channel, returnView: activeView, returnUrl: api().navigateUrl ? api().navigateUrl(activeView, origin) : '', promotionMetrics: action === 'roi-detail' || activeView === 'daily' ? 'funds' : f.promotionMetrics, period: activeView === 'roi' ? f.period : 'current' });
+      if (target.dataset.date) { context.start = target.dataset.date; context.end = target.dataset.date; }
+      api().go('detail', context);
+    }
+    else if (action === 'back-summary') {
+      var destination = returnTarget(f.returnUrl);
+      if (destination) api().go(destination.view, destination.context);
+      else api().go(['promotion', 'conversion', 'retention', 'daily', 'roi'].indexOf(f.returnView) !== -1 ? f.returnView : 'promotion', navigationContext({ returnUrl: '' }));
+    }
     else if (action === 'update-detail') updateDetail(Number(target.dataset.index));
-    else if (action === 'spend-add') spendEditor();
-    else if (action === 'spend-records') spendRecords();
-    else if (action === 'spend-import') spendImport();
-    else if (action === 'spend-template') spendTemplate();
+    else if (action === 'spend-view' || action === 'spend-entry') api().go('spend', navigationContext({ entry: action === 'spend-entry' ? 'add' : '' }));
   }
   function onFilter(event) {
     if (!event.target.matches('[data-cmr-filter]')) return;

@@ -1,0 +1,117 @@
+{
+  "createdAt": "2026-11-13T06:20:49.162Z",
+  "pages": [
+    {
+      "name": "原版广告消耗数据",
+      "id": "original_placement_1",
+      "url": "原版广告消耗数据.html"
+    },
+    {
+      "name": "原版投放数据报表",
+      "id": "original_placement_2",
+      "url": "原版投放数据报表.html"
+    },
+    {
+      "name": "原版渠道报表",
+      "id": "original_placement_3",
+      "url": "原版渠道报表.html"
+    },
+    {
+      "name": "原版渠道报表明细",
+      "id": "original_placement_4",
+      "url": "原版渠道报表明细.html"
+    }
+  ],
+  "files": [
+    {
+      "source": "custom/css/广告消耗数据.css",
+      "target": "custom/css/placement-original/广告消耗数据.css",
+      "sha256": "ba9f25fdbd24ac965c382763387375911f730a421b58d086b4597be527b4bdfa"
+    },
+    {
+      "source": "custom/js/广告消耗数据.js",
+      "target": "custom/js/placement-original/广告消耗数据.js",
+      "sha256": "6aeb7537f12a546b53be1c6063fa4eba704f3eb4c52a31868b36247c1e68d74f"
+    },
+    {
+      "source": "files/广告消耗数据/data.js",
+      "target": "files/原版广告消耗数据/data.js",
+      "sha256": "fb761cae8d195df48d69f6d5be6f2c52d000519f56e0587347b1536a7aa18318"
+    },
+    {
+      "source": "files/广告消耗数据/styles.css",
+      "target": "files/原版广告消耗数据/styles.css",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "source": "广告消耗数据.html",
+      "target": "原版广告消耗数据.html",
+      "sha256": "57a5c19858bcce2d8666c9e8b37c55f4c143c0ea3358d3d4b0011a7ee0b1228e"
+    },
+    {
+      "source": "custom/css/投放数据报表.css",
+      "target": "custom/css/placement-original/投放数据报表.css",
+      "sha256": "bfbae786b81346403c58c96c7908e93ad75d4e4214b62c2c35a4c5a7dbf70e16"
+    },
+    {
+      "source": "custom/js/投放数据报表.js",
+      "target": "custom/js/placement-original/投放数据报表.js",
+      "sha256": "d3182e5ed6b249907bc7adca47a02357fa012f21e3be3291b9621308be90c627"
+    },
+    {
+      "source": "files/投放数据报表/data.js",
+      "target": "files/原版投放数据报表/data.js",
+      "sha256": "aec2b578ac023ceb8c7e17513168aae7e59c1e383b8f6b344c473c2e7be2c237"
+    },
+    {
+      "source": "files/投放数据报表/styles.css",
+      "target": "files/原版投放数据报表/styles.css",
+      "sha256": "9d8dd702cb715a13b6ca40065cfabeafa54b761f79201c9d062308139fd5414d"
+    },
+    {
+      "source": "投放数据报表.html",
+      "target": "原版投放数据报表.html",
+      "sha256": "e037db90eb2e8b5458b2081d08fffa0f908aa09f6d903793d8008c6226b9a8f9"
+    },
+    {
+      "source": "custom/css/渠道报表.css",
+      "target": "custom/css/placement-original/渠道报表.css",
+      "sha256": "d26a867d91aa2e91c9a2d1b5b5bf4cea95465d64a26949992d42cb20cd3995b5"
+    },
+    {
+      "source": "custom/js/渠道报表.js",
+      "target": "custom/js/placement-original/渠道报表.js",
+      "sha256": "15ee8abe1531951d373ff92f64bfe1c418ae97d4fc28add99554abeba3fd5b4a"
+    },
+    {
+      "source": "files/渠道报表/data.js",
+      "target": "files/原版渠道报表/data.js",
+      "sha256": "5c293ecd44321e1bb70667b6ee2ecb86b364e1f1c401328fea7780dee520229f"
+    },
+    {
+      "source": "files/渠道报表/styles.css",
+      "target": "files/原版渠道报表/styles.css",
+      "sha256": "074282f891a4b183b5f630000a3b79d1371460cca2fd5076fceda9c5c499c318"
+    },
+    {
+      "source": "渠道报表.html",
+      "target": "原版渠道报表.html",
+      "sha256": "eddf4ca52d6d3c8873ebf4e69ebd07a6128ff10ae7255b080ddfc488b76c3856"
+    },
+    {
+      "source": "files/渠道报表明细/data.js",
+      "target": "files/原版渠道报表明细/data.js",
+      "sha256": "8f6f019f82ebd5e7d33f905e4c5d5feb3aa94b9b2fa51a9edd800fca309ff001"
+    },
+    {
+      "source": "files/渠道报表明细/styles.css",
+      "target": "files/原版渠道报表明细/styles.css",
+      "sha256": "9d8dd702cb715a13b6ca40065cfabeafa54b761f79201c9d062308139fd5414d"
+    },
+    {
+      "source": "渠道报表明细.html",
+      "target": "原版渠道报表明细.html",
+      "sha256": "38c5c49d694bdd39356783bea334f4dc47107a829aed959f70fd65412305bb9d"
+    }
+  ]
+}

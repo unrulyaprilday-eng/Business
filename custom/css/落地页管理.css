@@ -625,3 +625,30 @@ body {
   margin: 0;
   color: #344052;
 }
+
+/* Persisted landing catalog: additions remain inside this page. */
+.landing-page-admin .btn.primary { min-height: 32px; border: 1px solid #409eff; background: #409eff; color: #fff; overflow: visible; }
+.landing-page-admin .btn.primary:hover { border-color: #66b1ff; background: #66b1ff; }
+.landing-page-admin .filter-bar { height: auto; min-height: 52px; flex-wrap: wrap; }
+.landing-page-admin .modal-mask { padding: 12px; }
+.landing-page-admin .modal { display: flex; flex-direction: column; max-width: 100%; max-height: calc(100vh - 24px); }
+.landing-page-admin .modal-header, .landing-page-admin .modal-footer { flex: 0 0 auto; }
+.landing-page-admin .modal-body { overflow-y: auto; min-height: 0; }
+.landing-page-admin .table-shell { overflow-x: auto; }
+.landing-page-admin .landing-table { min-width: 1050px; }
+.landing-page-admin .landing-table td { padding: 6px; box-sizing: border-box; }
+.landing-page-admin .form-row em { display: none; }
+.landing-page-admin .landing-download-help { margin: -4px 0 14px 100px; color: #79869a; font-size: 12px; line-height: 1.6; }
+.landing-page-admin .landing-status { margin: 0 0 12px; color: #267341; line-height: 1.6; }
+.landing-page-admin .landing-status.is-error, .landing-page-admin .landing-form-error { color: #c33d3d; white-space: pre-wrap; overflow-wrap: anywhere; }
+.landing-page-admin .landing-form-error { margin: 6px 16px; line-height: 1.6; }
+.landing-page-admin .landing-table-icon, .landing-page-admin .landing-table-shot { width: 36px; height: 36px; border-radius: 4px; object-fit: contain; }
+.landing-page-admin .landing-editor-icon { display: block; width: 64px; height: 64px; object-fit: contain; }
+.landing-page-admin .landing-editor-shot { display: block; width: 52px; height: 95px; object-fit: contain; }
+.landing-page-admin .landing-no-image { color: #9ba5b4; }
+.landing-page-admin .upload-line { flex-wrap: wrap; }
+.landing-page-admin .shot-preview { flex: 0 0 54px; }
+.landing-page-admin .select-field:disabled { color: #344052; background: #f6f8fa; cursor: default; }
+.landing-page-admin .select-field:disabled span { color: #344052; }
+.landing-page-admin button:disabled { cursor: default; opacity: .55; }
+.landing-page-admin button:focus-visible, .landing-page-admin input:focus-visible, .landing-page-admin textarea:focus-visible { outline: 2px solid #a8d0ff; outline-offset: 2px; }

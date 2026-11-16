@@ -34,23 +34,31 @@ const initial = {
 let state = structuredClone(initial);
 let exported;
 let dialog;
-let saveFails = false;
 let lastToast;
+let navigation;
+let urlContext;
+const detailBack = { href: '' };
 const handlers = {};
 const section = { innerHTML: '', contains: () => true, addEventListener: (name, fn) => { handlers[name] = fn; } };
 const escape = (value) => String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
 const context = {
   window: { CM: {
     getState: () => structuredClone(state),
-    saveState: next => { if (saveFails) throw new Error('quota'); state = structuredClone(next); },
+    saveState: () => { throw new Error('Reports must never mutate spend or shared state'); },
     escape, toast: text => { lastToast = text; },
     dialog: config => { dialog = config; },
     download: (name, rows) => { exported = { name, rows }; },
     channelReport: channel => '渠道报表明细.html?channel=' + channel.code,
-    go: () => {}
+    go: (view, filters) => { navigation = { view, filters }; },
+    navigateContext: filters => { urlContext = filters; },
+    navigateUrl: (view, filters) => {
+      const params = new URLSearchParams({ view });
+      Object.entries(filters).forEach(([key, value]) => { if (value != null && value !== '') params.set(key === 'packageId' ? 'package' : key, value); });
+      return (['daily', 'roi'].includes(view) ? '投放数据报表.html' : '渠道报表.html') + '?' + params.toString();
+    }
   } },
-  document: { getElementById: id => id === 'cm-reports' ? section : null },
-  FileReader: function () {}
+  document: { getElementById: id => id === 'cm-reports' ? section : id === 'cm-detail-back' ? detailBack : null },
+  FileReader: function () {}, URLSearchParams
 };
 vm.createContext(context);
 vm.runInContext(script, context);
@@ -78,6 +86,14 @@ function assertCsvColumns(rows, label) {
   assert(rows.length > 0);
   for (const [index, row] of rows.entries()) assert.equal(row.length, rows[0].length, label + ': CSV row ' + index + '列数一致');
 }
+function csvRecords(rows) {
+  return rows.slice(1).map(row => Object.fromEntries(rows[0].map((header, index) => [header, row[index]])));
+}
+function csvValue(rows, row, header) {
+  const index = rows[0].indexOf(header);
+  assert(index !== -1, 'CSV须保留指标：' + header);
+  return row[index];
+}
 function show(view, options) {
   if (view === 'conversion') options = { breakdown: 'channel', ...options };
   reports.render(view, options); click('export');
@@ -96,7 +112,6 @@ function fakeForm(values = {}) {
   Object.entries(values).forEach(([key, value]) => { elements[key] = { value: String(value), addEventListener: () => {} }; });
   return { elements, events, nodes, querySelector: key => nodes[key], addEventListener: (name, fn) => { events[name] = fn; } };
 }
-function preview(form) { form.events.click({ target: { closest: () => ({}) } }); }
 let rows = show('promotion', { start: '2026-11-01', end: '2026-11-01', channel: 'CH1001' });
 assert.equal(rows.length, 2);
 assert.equal(rows[1][4], 670);
@@ -131,8 +146,11 @@ assert.equal(rows[1][9], '—');
 assert.equal(rows[1][10], '—', 'ROI未完成周期状态统一显示横杠');
 assert(section.innerHTML.includes('title="观察周期未满，暂不可计算"'));
 click('roi-detail', { channel: 'CH1001' });
-assert(dialog.html.includes('title="观察周期未满，暂不可计算"'), 'ROI明细与主表使用相同横杠和提示');
-assert(!dialog.html.includes('未成熟'));
+assert.equal(navigation.view, 'detail');
+assert.equal(navigation.filters.returnView, 'roi');
+show('detail', navigation.filters);
+assert(section.innerHTML.includes('title="观察周期未满，暂不可计算"'), 'ROI明细与主表使用相同横杠和提示');
+assert(!section.innerHTML.includes('未成熟'));
 rows = show('roi', { start: '2026-11-02', end: '2026-11-02', period: 'current' });
 assert.equal(rows[1][9], '—', '消耗为零时不得显示0或无穷大');
 rows = show('roi', { channel: '', start: '2026-11-01', end: '2026-11-01', period: 'current' });
@@ -202,8 +220,10 @@ rows = show('promotion', { ...historyFilter, media: '', link: '', channel: 'CH10
 for (const index of [7, 8, 9, 10, 11, 12]) assert.equal(rows[1][index], '—', '复充观察周期未满时人数和占比均显示横杠');
 assert(section.innerHTML.includes('title="观察周期未满，暂不可计算"'));
 click('daily-detail', { channel: 'CH1001' });
-assert(dialog.html.includes('title="观察周期未满，暂不可计算"'), '复充明细与主表使用相同横杠和提示');
-assert(!dialog.html.includes('未成熟'));
+assert.equal(navigation.view, 'detail');
+show('detail', navigation.filters);
+assert(section.innerHTML.includes('title="观察周期未满，暂不可计算"'), '复充明细与主表使用相同横杠和提示');
+assert(!section.innerHTML.includes('未成熟'));
 show('promotion', { ...historyFilter, media: '', link: '', channel: '', promotionMetrics: 'acquisition' });
 show('conversion', { ...historyFilter, media: '', link: '', channel: '', classify: 'scene', metrics: 'register' });
 const baselinePromotion = JSON.stringify(show('promotion', historyFilter));
@@ -232,7 +252,8 @@ for (const index of [4, 5, 8, 9]) assert.equal(versionParts.reduce((total, row) 
 rows = show('promotion', { ...historyFilter, channel: 'CH1002', packageId: 'PK1003', version: '2.4.1', start: '2026-11-02', end: '2026-11-07' });
 assert.equal(rows[1][4], '暂无数据', '新版本发布前不存在归因事件');
 rows = show('roi', { ...historyFilter, channel: 'CH1001', packageId: 'PK1001' });
-assert.equal(rows[1][9], '—（消耗未分包）', '渠道消耗无包归因时不得冒充包ROI');
+assert.equal(rows[1][9], '—', '渠道消耗无包归因时不得冒充包ROI');
+assert(section.innerHTML.includes('消耗未分包 / 版本'));
 for (const channel of state.channels.filter(channel => channel.id !== 'CH9999')) {
   Object.assign(channel, { code: 'EDITED', type: 'pwa', media: 'changed-media', currency: 'EUR', createdAt: '2026-11-12', packageIds: ['PK9999'], linkName: 'changed-link' });
 }
@@ -254,44 +275,6 @@ let liveVersionSelect = { innerHTML: '', value: 'stale' };
 handlers.change({ target: { value: 'PK1003', matches: () => true, closest: () => ({ elements: { version: liveVersionSelect } }) } });
 assert(liveVersionSelect.innerHTML.includes('PK1003@2.4.1') && !liveVersionSelect.innerHTML.includes('PK1001@2.4.0'), '包切换必须联动版本选项');
 assert.equal(liveVersionSelect.value, '', '包切换清空旧版本条件');
-show('roi', { channel: '', start: '2026-11-01', end: '2026-11-12', period: 'current' });
-click('spend-add');
-let form = fakeForm({ date: '2026-11-10', channelId: 'CH1001', media: 'Facebook', currency: 'USD', amount: '10', note: 'wrong currency' });
-let closed = false;
-assert.equal(dialog.onSubmit(form, () => { closed = true; }), false);
-assert.equal(state.spend.length, 2);
-assert.equal(closed, false);
-form.elements.currency.value = 'INR';
-saveFails = true;
-assert.equal(dialog.onSubmit(form, () => { closed = true; }), false);
-assert(form.nodes['[data-cmr-error]'].textContent.includes('保存失败'));
-assert.equal(state.spend.length, 2, '保存失败不应影响已保存消耗');
-saveFails = false;
-assert.equal(dialog.onSubmit(form, () => { closed = true; }), true);
-assert.equal(state.spend.length, 3);
-assert.equal(closed, true);
-assert.equal(lastToast, '保存成功');
-click('spend-import');
-form = fakeForm({ csv: '\uFEFFdate,channelId,media,currency,amount,note\r\n2026-11-10,CH1001,Facebook,INR,120.25,"first, line\nsecond ""quoted"" line"' });
-dialog.onOpen(form);
-preview(form);
-assert(form.nodes['[data-cmr-preview]'].innerHTML.includes('校验通过：1条'));
-assert.equal(dialog.onSubmit(form, () => {}), true);
-assert.equal(state.spend.length, 4);
-assert.equal(state.spend[3].amount, 120.25);
-assert.equal(state.spend[3].note, 'first, line\nsecond "quoted" line');
-click('spend-import');
-form = fakeForm({ csv: 'date,channelId,media,currency,amount,note\n2026-11-10,CH1001,Facebook,INR,120.25,"first, line\nsecond ""quoted"" line"' });
-dialog.onOpen(form); preview(form);
-assert(form.nodes['[data-cmr-error]'].textContent.includes('重复'));
-assert.equal(dialog.onSubmit(form, () => {}), false);
-assert.equal(state.spend.length, 4);
-click('spend-import');
-form = fakeForm({ csv: 'date,channelId,media,currency,amount,note\n2026-11-11,CH1001,Facebook,INR,15,ok\n2026-02-30,CH1001,Facebook,INR,10,bad date' });
-dialog.onOpen(form); preview(form);
-assert(form.nodes['[data-cmr-error]'].textContent.includes('日期无效'));
-assert.equal(dialog.onSubmit(form, () => {}), false);
-assert.equal(state.spend.length, 4, '一行失败应阻止整批导入');
 const badFilter = fakeForm({ start: '2026-11-12', end: '2026-11-01' });
 badFilter.matches = () => true;
 handlers.submit({ target: badFilter, preventDefault: () => {} });
@@ -317,7 +300,7 @@ for (const channel of ['', 'CH9999']) {
   show('updates', { ...historyFilter, channel });
   show('roi', { ...historyFilter, channel });
 }
-console.log('PASS channel reports: immutable attribution, media/ad filters, type/scene classification, matched download funnels, funding/recharge conservation, disjoint package/version totals, linked filters, maturity, currency isolation, update timeline, spend persistence and atomic CSV import');
+console.log('PASS channel reports: immutable attribution, media/ad filters, classification, matched download funnels, funding/recharge conservation, disjoint package/version totals, linked filters, maturity, currency isolation, update timeline');
 console.log('PASS display matrix: all subtabs, promotion funding/acquisition, scene/type categories, download/register metrics, new-channel empty rows; table and CSV column counts agree');
 // 分类汇总按类别+币种合计，各比例重新计算，媒体过滤后仍遵守相同分组。
 for (const classify of ['scene', 'type']) {
@@ -329,7 +312,7 @@ for (const classify of ['scene', 'type']) {
       details.slice(1).forEach(row => {
         const key = row[0] + '|' + row[3];
         const totals = groups.get(key) || [];
-        const rateOffsets = metrics === 'register' ? [2, 7, 8] : [2, 5, 8, 11, 14];
+        const rateOffsets = metrics === 'register' ? [2, 7, 8, 10] : [2, 5, 8, 11, 14];
         for (let i = 4; i < row.length - 4; i++) if (!rateOffsets.includes(i - 4)) totals[i - 4] = (totals[i - 4] || 0) + row[i];
         groups.set(key, totals);
       });
@@ -360,7 +343,7 @@ assert(exported.rows[1][4] > 0, '新渠道钻取清除旧USD/Google/包冲突');
 assert(section.innerHTML.includes('value="2026-11-03"') && section.innerHTML.includes('value="2026-11-08"'), '新钻取保留日期');
 reports.render('roi'); click('export');
 assert.equal(exported.rows[1][2], 'AAAA', '普通回Tab从共享条件继续');
-assert(section.innerHTML.includes('注册批次充值 ROI'));
+assert(section.innerHTML.includes('注册批次回收分析'));
 reports.render('conversion', { packageId: 'PK1002' }); click('export');
 assert(section.innerHTML.includes('cm-report-more" open'), '带包context自动展开高级筛选');
 assert(exported.rows.length > 1 && !exported.rows[0].includes('渠道编码'), '分类默认以汇总展示');
@@ -377,7 +360,7 @@ assertTableColumns(section.innerHTML, '切回分类汇总'); assertCsvColumns(ex
 click('reset');
 reports.render('promotion', {}); click('export');
 assert.equal(exported.rows.length, 8, '重置清共享条件并恢复全部渠道');
-assert(section.innerHTML.includes('访问人次（入口人日）') && section.innerHTML.includes('访问首充率'));
+assert(section.innerHTML.includes('访问人次（入口人日）') && section.innerHTML.includes('访问-首充转化率'));
 assert(!section.innerHTML.includes('渠道报表明细.html'), '新模块不保留重复旧报表入口');
 click('definitions'); assert.equal(dialog.readonly, true, '纯详情弹窗使用单关闭按钮');
 for (const classify of ['scene', 'type']) for (const metrics of ['register', 'download']) {
@@ -386,3 +369,206 @@ for (const classify of ['scene', 'type']) for (const metrics of ['register', 'do
   assertTableColumns(section.innerHTML, '分类汇总空态/' + classify + '/' + metrics);
 }
 console.log('PASS audit regression: currency-separated category comparisons, weighted ratios, shared filters, fresh-context conflict reset, summary/detail toggles, explicit person-day labels, readonly details');
+
+// 新报表同源勾稽：注册批次日报与渠道汇总、独立按日明细的人数和资金合计一致。
+state = structuredClone(initial);
+const complete = { ...historyFilter, channel: 'CH1001', promotionMetrics: 'acquisition' };
+const acquisitionTable = show('promotion', complete);
+const acquisitionSummary = acquisitionTable[1];
+const acquisitionDetails = show('detail', { ...complete, returnView: 'promotion' });
+const dailySummary = show('daily', complete);
+for (const [metric, dailyMetric] of [['注册人数', '注册人数'], ['首充人数', '批次累计首充人数']]) {
+  const expected = csvValue(acquisitionTable, acquisitionSummary, metric);
+  assert.equal(csvRecords(acquisitionDetails).reduce((sum, row) => sum + row[metric], 0), expected, '获客独立明细与汇总人数勾稽');
+  assert.equal(csvRecords(dailySummary).reduce((sum, row) => sum + row[dailyMetric], 0), expected, '投放日报注册/首充与汇总勾稽');
+}
+for (const metric of ['首充金额', '批次累计充值']) {
+  const expected = cents(csvValue(acquisitionTable, acquisitionSummary, metric));
+  assert.equal(csvRecords(acquisitionDetails).reduce((sum, row) => sum + cents(row[metric]), 0), expected);
+  assert.equal(csvRecords(dailySummary).reduce((sum, row) => sum + cents(row[metric]), 0), expected);
+}
+assert(section.innerHTML.includes('不是事件日流水') && section.innerHTML.includes('并非利润'));
+let dayOne = dailySummary.find(row => row[0] === '2026-11-01');
+assert.equal(dayOne[4], '100.00');
+assert.equal(dayOne[6], '0.81');
+assert.equal(dayOne[8], '6.67');
+assert.equal(dayOne[12], percentage(cents(dayOne[10]), cents(dayOne[4])));
+assert.equal(dayOne[13], percentage(cents(dayOne[10]) - cents(dayOne[11]), cents(dayOne[4])));
+const fundTable = show('promotion', { ...complete, promotionMetrics: 'funds' });
+const fundSummary = fundTable[1];
+const fundDetails = show('detail', { ...complete, promotionMetrics: 'funds' });
+for (const metric of ['充值人数', '充值次数']) assert.equal(csvRecords(fundDetails).reduce((sum, row) => sum + row[metric], 0), csvValue(fundTable, fundSummary, metric));
+for (const metric of ['批次累计充值', '累计提现', '充提差', '有效投注额']) assert.equal(csvRecords(fundDetails).reduce((sum, row) => sum + cents(row[metric]), 0), cents(csvValue(fundTable, fundSummary, metric)));
+for (const view of ['daily', 'detail']) for (const channel of ['', 'CH9999']) show(view, { ...historyFilter, channel });
+
+// 分类扩展仍按唯一历史事实及币种分组；媒体、包类型不复制渠道总量。
+for (const classify of ['media', 'packageType']) for (const metrics of ['register', 'download']) {
+  const detail = show('conversion', { ...historyFilter, classify, metrics, breakdown: 'channel' });
+  const summary = show('conversion', { ...historyFilter, classify, metrics, breakdown: 'summary' });
+  assert.equal(new Set(summary.slice(1).map(row => row[0] + '|' + row[1])).size, summary.length - 1);
+  assert.equal(summary.slice(1).reduce((sum, row) => sum + row[2], 0), detail.slice(1).reduce((sum, row) => sum + row[4], 0));
+  if (metrics === 'register') assert.equal(summary.slice(1).reduce((sum, row) => sum + row[3], 0), show('promotion', { ...historyFilter, promotionMetrics: 'acquisition' }).slice(1).filter(row => row[5] !== '暂无数据').reduce((sum, row) => sum + row[5], 0));
+}
+
+// 每个观察周期统一用于所有行；没有分期提现时，绝不能借用累计提现计算D周期净回收率。
+for (const period of ['0', '1', '3', '7', '15', '30']) {
+  const roi = show('roi', { ...complete, start: '2026-11-01', end: '2026-11-01', period });
+  assert.equal(roi[1][7], 'D' + period);
+  assert.equal(roi[1][11], '—');
+  assert.equal(roi[1][12], '—');
+  assert(section.innerHTML.includes('历史快照不含分期提现'));
+  if (Number(period) > 11) { assert.equal(roi[1][8], '—'); assert.equal(roi[1][9], '—'); }
+  else assert(roi[1][9] !== '—');
+}
+const cumulativeRoi = show('roi', { ...complete, start: '2026-11-01', end: '2026-11-01', period: 'current' })[1];
+assert.equal(cumulativeRoi[12], percentage(cents(cumulativeRoi[8]) - cents(cumulativeRoi[11]), cents(cumulativeRoi[6])));
+assert(!/data-cmr-action="spend-(?:add|edit|delete|import|template|records)/.test(section.innerHTML), '报表不保留第二个消耗编辑器');
+
+// 跨页传参显式条件全部保留；从详情返回保留汇总来源；消耗录入由独立模块负责。
+const deepContext = { ...complete, start: '2026-11-03', end: '2026-11-08', media: 'Facebook', link: 'homepageads', currency: 'INR', packageId: 'PK1001', version: '2.4.0', period: '3', promotionMetrics: 'funds' };
+show('roi', deepContext);
+click('spend-entry');
+assert.equal(navigation.view, 'spend');
+assert.equal(navigation.filters.entry, 'add');
+for (const key of ['start', 'end', 'channel', 'media', 'link', 'currency', 'packageId', 'period']) assert.equal(navigation.filters[key], deepContext[key]);
+assert.equal(navigation.filters.version, 'PK1001@2.4.0');
+click('spend-view'); assert.equal(navigation.filters.entry, '');
+click('roi-detail', { channel: 'CH1001' });
+assert.equal(navigation.view, 'detail'); assert.equal(navigation.filters.returnView, 'roi');
+show('detail', navigation.filters); click('back-summary');
+assert.equal(navigation.view, 'roi'); assert.equal(navigation.filters.packageId, 'PK1001');
+assert.equal(urlContext.media, 'Facebook'); assert.equal(urlContext.version, 'PK1001@2.4.0');
+assert(detailBack.href.startsWith('投放数据报表.html?view=roi&'));
+assert.equal(new URLSearchParams(detailBack.href.split('?')[1]).get('start'), '2026-11-03');
+show('daily', complete); click('cohort-detail', { channel: 'CH1001', date: '2026-11-01' });
+assert.equal(navigation.filters.start, '2026-11-01'); assert.equal(navigation.filters.end, '2026-11-01'); assert.equal(navigation.filters.returnView, 'daily');
+const dailyDetailContext = structuredClone(navigation.filters);
+const dailyReturnUrl = dailyDetailContext.returnUrl;
+assert.equal(new URLSearchParams(dailyReturnUrl.split('?')[1]).get('start'), '2026-11-01');
+assert.equal(new URLSearchParams(dailyReturnUrl.split('?')[1]).get('end'), '2026-11-12', '单日钻取前保存多日汇总范围');
+show('detail', dailyDetailContext);
+assert.equal(detailBack.href, dailyReturnUrl, '顶部返回与工具栏使用同一来源快照');
+click('promotion-metrics', { value: 'acquisition' });
+assert.equal(urlContext.returnUrl, dailyReturnUrl, '明细切换资金/获客不得改写来源快照');
+click('back-summary');
+assert.equal(navigation.view, 'daily'); assert.equal(navigation.filters.start, '2026-11-01'); assert.equal(navigation.filters.end, '2026-11-12');
+assert.equal(navigation.filters.promotionMetrics, 'acquisition');
+const fundsOrigin = { ...complete, start: '2026-11-03', end: '2026-11-09', promotionMetrics: 'funds', period: '7', returnUrl: '渠道报表.html?view=retention&start=2026-11-01&end=2026-11-02' };
+show('promotion', fundsOrigin); click('daily-detail', { channel: 'CH1001' });
+const fundsDetailContext = structuredClone(navigation.filters);
+assert.equal(new URLSearchParams(fundsDetailContext.returnUrl.split('?')[1]).get('view'), 'promotion', '新明细入口覆盖之前的来源returnUrl');
+show('detail', fundsDetailContext); click('promotion-metrics', { value: 'acquisition' }); click('back-summary');
+assert.equal(navigation.view, 'promotion'); assert.equal(navigation.filters.promotionMetrics, 'funds', '返回恢复原资金Tab');
+assert.equal(navigation.filters.period, '7', '返回恢复原来源period');
+assert.equal(navigation.filters.end, '2026-11-09');
+show('roi', { ...complete, period: '3' }); click('roi-detail', { channel: 'CH1001' });
+show('detail', navigation.filters); click('back-summary');
+assert.equal(navigation.view, 'roi'); assert.equal(navigation.filters.period, '3');
+for (const returnUrl of ['https://evil.test/渠道报表.html?view=promotion', '//evil.test/渠道报表.html?view=promotion', '../渠道报表.html?view=promotion', '渠道报表明细.html?view=detail', '广告消耗数据.html?view=spend', '渠道报表.html?view=roi', '投放数据报表.html?view=promotion', 'javascript:alert(1)', '%2f%2fevil.test?view=promotion', '渠道报表.html\\evil?view=promotion', '渠道报表.html?view=promotion#bad']) {
+  show('detail', { ...complete, returnView: 'daily', returnUrl });
+  assert.equal(urlContext.returnUrl, '', '拒绝外部、路径穿越及非允许报表返回地址');
+  assert(detailBack.href.startsWith('投放数据报表.html?view=daily&'));
+  click('back-summary'); assert.equal(navigation.view, 'daily'); assert.equal(navigation.filters.returnUrl, '');
+}
+
+// 链接成本覆盖：旧记录未分链接，不能分摊；全部消耗明确归属主链接时，ID和历史名称结果相同。
+let linked = show('roi', { ...complete, link: 'LK-CH1001-MAIN', start: '2026-11-01', end: '2026-11-01' });
+const linkSelect = section.innerHTML.match(/<select\b[^>]*name="link"[^>]*>([\s\S]*?)<\/select>/)[1];
+assert.equal((linkSelect.match(/\bselected\b/g) || []).length, 1, '广告链接下拉必须唯一选中实际生效条件');
+assert(linkSelect.includes('<option value="homepageads" selected>homepageads</option>'), 'legacy链接ID入口须显示正确历史广告标识');
+assert(!linkSelect.includes('value="LK-CH1001-MAIN"'), '主链接ID不增加同义重复选项');
+assert.equal(urlContext.link, 'homepageads', '同步后的筛选也使用不可变历史广告标识');
+assert.equal(linked[1][6], '—'); assert.equal(linked[1][9], '—');
+assert(section.innerHTML.includes('渠道级未细分链接消耗'));
+state.spend[0].linkId = 'LK-CH1001-MAIN';
+linked = show('roi', { ...complete, link: 'LK-CH1001-MAIN', start: '2026-11-01', end: '2026-11-01' });
+assert.equal(linked[1][6], '100.00'); assert.equal(linked[1][9], cumulativeRoi[9]);
+assert.equal(JSON.stringify(linked.slice(1).map(row => row.slice(0, -1))), JSON.stringify(show('roi', { ...complete, link: 'homepageads', start: '2026-11-01', end: '2026-11-01' }).slice(1).map(row => row.slice(0, -1))), '主链接ID和历史名称均精确匹配');
+for (const view of ['roi', 'daily']) {
+  const packageRows = show(view, { ...complete, packageId: 'PK1001' });
+  assert(section.innerHTML.includes('消耗未分包 / 版本'));
+  assert(packageRows.slice(1).every(row => row[view === 'roi' ? 9 : 12] === '—'));
+}
+state.channels[0].links = [{ id: 'LK-NEW', linkName: 'new-link', media: 'NewMedia', legacy: false }];
+state.spend.push({ id: 'S3', date: '2026-11-01', channelId: 'CH1001', media: 'NewMedia', currency: 'INR', amount: 12, linkId: 'LK-NEW', linkName: 'new-link' });
+const newLinkDaily = show('daily', { ...complete, link: 'LK-NEW', media: 'NewMedia', start: '2026-11-01', end: '2026-11-01' });
+assert.equal(newLinkDaily[1][4], '12.00'); assert.equal(newLinkDaily[1][5], '暂无批次'); assert.equal(newLinkDaily[1][12], '—');
+assert.equal(show('detail', { ...complete, link: 'LK-NEW', media: 'NewMedia' }).length, 1, '新增链接不造历史');
+state.spend[0].linkId = '';
+const unassigned = show('daily', { ...complete, link: '__unassigned', start: '2026-11-01', end: '2026-11-01' });
+assert.equal(unassigned[1][4], '100.00'); assert.equal(unassigned[1][5], '暂无批次'); assert.equal(unassigned[1][12], '—');
+assert.equal(show('detail', { ...complete, link: '__unassigned' }).length, 1, '未细分消耗不能冒充链接归因');
+assert(!script.includes('function spendEditor') && !script.includes('function spendImport') && !script.includes('saveState('));
+assert(!script.includes('\uFFFD'), '报表中文不存在替换字符');
+click('definitions');
+assert(dialog.html.includes('充值回收率') && dialog.html.includes('净回收率') && dialog.html.includes('仅累计周期计算净回收率'));
+assert(dialog.html.includes('包消耗、成本和回收率均显示—') && !dialog.html.includes('充值ROI'), '数据口径与实际禁算、展示规则一致');
+console.log('PASS placement reports: cohort daily/detail reconciliation, period maturity, cumulative-only net recovery, currency and package cost boundaries, exact legacy-link costs, new-link/unassigned isolation, full navigation context; no spend mutation');
+
+// 对照真实旧版表头保留全部指标；业务同义名称明确映射，禁止用新字段覆盖旧字段。
+state = structuredClone(initial);
+function legacyHeaders(filename) {
+  const html = fs.readFileSync(path.join(__dirname, '..', filename), 'utf8');
+  const head = html.match(/<thead\b[^>]*>([\s\S]*?)<\/thead>/)[1];
+  return [...head.matchAll(/<th\b[^>]*>([\s\S]*?)<\/th>/g)].map(match => match[1].replace(/<button\b[\s\S]*?<\/button>/g, '').replace(/<[^>]*>/g, '').replace(/\s+/g, ''));
+}
+const aliases = {
+  渠道名: '渠道编码', 日期: '注册批次日期', 访问人数: '访问人次（入口人日）', 新增: '注册人数',
+  PWA安装数: 'PWA安装', 充值金额: '批次累计充值', 提现金额: '累计提现',
+  '消耗金额(本地币)': '匹配广告消耗', 当日注册充值人数: '当日首充人数', 新增充值人数: '批次累计首充人数',
+  充值成本: '首充成本', 累计充值金额: '批次累计充值', 累计提现金额: '累计提现'
+};
+for (const [view, original] of [['promotion', '原版渠道报表.html'], ['detail', '原版渠道报表明细.html']]) {
+  const acquisition = show(view, { ...complete, promotionMetrics: 'acquisition' });
+  const funding = show(view, { ...complete, promotionMetrics: 'funds' });
+  const available = new Set(acquisition[0].concat(funding[0]));
+  for (const heading of legacyHeaders(original).filter(heading => heading !== '操作')) assert(available.has(aliases[heading] || heading), original + '不得丢失指标：' + heading);
+  assert(!acquisition[0].includes('访问首充率') && !acquisition[0].includes('注册首充率'), '转化率沿用可识别的完整原名');
+  const f = csvRecords(funding)[0];
+  const a = csvRecords(acquisition)[0];
+  assert.equal(f['充值转化率'], percentage(f['充值人数'], a['注册人数']));
+  assert.equal(cents(f['人均充值']), Math.round(cents(f['批次累计充值']) / f['充值人数']));
+  assert.equal(f['提现次数'], '—', '缺少提现事件数时不得按金额虚构次数');
+  assert(section.innerHTML.includes('title="当前演示快照未提供提现次数"'));
+}
+const dailyCoverage = show('daily', complete);
+for (const heading of legacyHeaders('原版投放数据报表.html').filter(heading => !/ROI$/.test(heading))) assert(dailyCoverage[0].includes(aliases[heading] || heading), '投放旧指标不得丢失：' + heading);
+for (const row of csvRecords(dailyCoverage)) assert.equal(row['当日首充人数'], row['批次累计首充人数'], '仅当前固定样本事件首充与批次首充同值');
+assert(section.innerHTML.includes('当日首充人数单独按首充发生日统计') && section.innerHTML.includes('充值成本 = 消耗 / 批次累计首充人数'));
+for (const heading of legacyHeaders('原版投放数据报表.html').filter(heading => /ROI$/.test(heading))) {
+  const period = heading === '当日ROI' ? '0' : heading.replace('日ROI', '');
+  const row = csvRecords(show('roi', { ...complete, period, start: '2026-11-01', end: '2026-11-01' }))[0];
+  assert.equal(row['累计观察周期'], 'D' + period);
+  assert.equal(row['净回收率'], '—', '旧净ROI窗口继续保留，缺分期提现时不得借累计提现虚算');
+}
+
+// 历史累计不受查询开始日影响；逐日累计截至当日，包/版本/场景/来源等约束不丢。
+for (const constraints of [{}, { packageId: 'PK1001' }, { packageId: 'PK1002', version: '1.8.0' }, { scene: 'web', source: 'link', currency: 'INR', media: 'Facebook', link: 'homepageads' }]) {
+  const context = { ...complete, ...constraints, start: '2026-11-08', end: '2026-11-10' };
+  const narrow = csvRecords(show('promotion', context))[0];
+  const full = csvRecords(show('promotion', { ...context, start: '2026-11-01' }))[0];
+  assert.equal(narrow['累计注册'], full['注册人数'], '累计注册须包含开始日前历史，且保留其他筛选');
+  assert(narrow['累计注册'] > narrow['注册人数']);
+  const detail = csvRecords(show('detail', context));
+  const newest = detail.find(row => row['注册批次日期'] === context.end);
+  assert.equal(newest['累计注册'], narrow['累计注册'], '末日累计与渠道汇总勾稽，不能逐日累计值相加');
+  const sorted = detail.slice().sort((a, b) => a['注册批次日期'].localeCompare(b['注册批次日期']));
+  for (let index = 1; index < sorted.length; index++) assert.equal(sorted[index]['累计注册'] - sorted[index - 1]['累计注册'], sorted[index]['注册人数']);
+}
+for (const classify of ['scene', 'type', 'media', 'packageType']) for (const breakdown of ['summary', 'channel']) {
+  const table = show('conversion', { ...historyFilter, classify, breakdown, metrics: 'register' });
+  for (const row of csvRecords(table)) {
+    assert.equal(row['注册转化率'], percentage(row['注册人数'], row['访问人次（入口人日）']));
+    assert.equal(row['访问-首充转化率'], percentage(row['首充人数'], row['访问人次（入口人日）']));
+    assert.equal(row['注册-首充转化率'], percentage(row['首充人数'], row['注册人数']));
+    assert.equal(row['充值转化率'], percentage(row['充值人数'], row['注册人数']), '分类充值转化率由去重人数分子/注册分母重算');
+  }
+}
+show('detail', { ...complete, promotionMetrics: 'funds', period: '30', start: '2026-11-12', end: '2026-11-12' });
+const immatureFunding = csvRecords(exported.rows)[0];
+assert.equal(immatureFunding['人均充值'], '—');
+assert.equal(immatureFunding['提现次数'], '—');
+assert.equal(csvRecords(show('promotion', { ...complete, channel: 'CH9999', promotionMetrics: 'funds' }))[0]['提现次数'], '—', '无历史渠道也不虚构提现次数');
+click('definitions');
+assert(dialog.html.includes('不得根据提现金额反推次数') && dialog.html.includes('不代表生产环境两者恒等'));
+console.log('PASS original metric coverage: all legacy channel summary/detail headers, exact conversion names, payer conversion and average, missing withdrawal counts, filtered rolling cumulative registration, distinct event/cohort first pay, and all legacy recovery windows');
