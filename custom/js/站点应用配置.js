@@ -98,13 +98,17 @@
   }
 
   function customerServiceForm() {
-    customerServiceDraft = { image: customerServiceConfig.image, loading: false };
+    customerServiceDraft = {};
     return [
-      row('位置', '<span class="readonly-value">右</span>', false),
-      row('排序', '<input id="customerServiceSort" type="number" min="0" step="1" value="' + customerServiceConfig.sort + '" aria-label="排序" required/>', true),
-      row('图片', '<div class="service-image-upload"><span class="service-image-preview" id="customerServiceImagePreview">' + customerServiceImageMarkup(customerServiceDraft.image) + '</span><button class="ghost-btn" type="button" data-service-pick-image>更换图片</button><input id="customerServiceImageInput" type="file" accept="image/png,image/jpeg,image/gif,image/webp" hidden/></div><p class="service-image-hint">支持 PNG、JPG、GIF、WebP，500KB 以内</p>', false),
+      '<div class="service-config-form">',
+      '<div class="form-row"><label for="customerServiceName"><em>*</em>名称</label><div><input id="customerServiceName" value="右侧客服" disabled/></div></div>',
+      '<div class="form-row"><span class="service-field-label"><em>*</em>位置</span><div class="service-position" role="group" aria-label="位置"><label><input type="radio" name="customer-service-position" value="left" disabled/>左</label><label><input type="radio" name="customer-service-position" value="right" checked disabled/>右</label></div></div>',
+      '<div class="form-row service-sort-row"><label for="customerServiceSort"><em>*</em>排序</label><div class="service-sort-box"><input id="customerServiceSort" type="number" min="0" step="1" value="' + customerServiceConfig.sort + '" required/><div class="service-sort-stepper"><button type="button" data-service-step="1" aria-label="增加排序">＋</button><button type="button" data-service-step="-1" aria-label="减少排序">−</button></div></div></div>',
+      '<p class="service-config-note">支持调整排序和启用状态</p>',
+      '<div class="form-row service-icon-row"><span class="service-field-label">图标（icon）</span><div class="service-icon-display"><span class="mini-icon customer-service">' + customerServiceImageMarkup(customerServiceConfig.image) + '</span></div></div>',
       row('启用状态', '<label class="switch"><input id="customerServiceEnabled" type="checkbox" aria-label="启用状态"' + (customerServiceConfig.enabled ? ' checked' : '') + '/><i></i></label>', false),
-      '<p class="service-form-error" id="customerServiceError" role="alert" hidden></p>'
+      '<p class="service-form-error" id="customerServiceError" role="alert" hidden></p>',
+      '</div>'
     ].join('');
   }
 
@@ -115,7 +119,7 @@
   }
 
   function saveCustomerService() {
-    if (!customerServiceDraft || customerServiceDraft.loading) {
+    if (!customerServiceDraft) {
       return;
     }
     var sortField = document.getElementById('customerServiceSort');
@@ -128,7 +132,7 @@
     var nextConfig = {
       sort: sort,
       enabled: document.getElementById('customerServiceEnabled').checked,
-      image: customerServiceDraft.image
+      image: customerServiceConfig.image
     };
     try {
       localStorage.setItem(customerServiceStorageKey, JSON.stringify(nextConfig));
@@ -161,8 +165,9 @@
     card.className = 'modal-card';
     customerServiceDraft = null;
     submitButton.disabled = false;
-    submitButton.textContent = modalTitle.indexOf('客服弹窗') !== -1 ? '保存' : '提交';
+    submitButton.textContent = '提交';
     if (modalTitle.indexOf('客服弹窗') !== -1) {
+      title.textContent = '编辑悬浮按钮';
       card.className = 'modal-card customer-service-modal';
       body.innerHTML = customerServiceForm();
     } else if (modalTitle.indexOf('侧滑项') !== -1) {
@@ -184,53 +189,6 @@
     submitButton.disabled = false;
   }
 
-  document.addEventListener('change', function (event) {
-    if (event.target.id !== 'customerServiceImageInput' || !customerServiceDraft) {
-      return;
-    }
-    var file = event.target.files[0];
-    event.target.value = '';
-    if (!file) {
-      return;
-    }
-    if (!/^image\/(png|jpeg|gif|webp)$/.test(file.type) || file.size > 500 * 1024) {
-      showCustomerServiceError('请选择 500KB 以内的 PNG、JPG、GIF 或 WebP 图片。');
-      return;
-    }
-    var activeDraft = customerServiceDraft;
-    var reader = new FileReader();
-    activeDraft.loading = true;
-    submitButton.disabled = true;
-    showCustomerServiceError('');
-    function finishImageLoad(message, imageData) {
-      if (customerServiceDraft !== activeDraft) {
-        return;
-      }
-      activeDraft.loading = false;
-      submitButton.disabled = false;
-      showCustomerServiceError(message);
-      if (imageData) {
-        activeDraft.image = imageData;
-        document.getElementById('customerServiceImagePreview').innerHTML = customerServiceImageMarkup(imageData);
-      }
-    }
-    reader.onerror = function () {
-      finishImageLoad('图片读取失败，请重新选择。');
-    };
-    reader.onload = function () {
-      var imageData = reader.result;
-      if (!validServiceImage(imageData)) {
-        finishImageLoad('图片读取失败，请重新选择。');
-        return;
-      }
-      var image = new Image();
-      image.onload = function () { finishImageLoad('', imageData); };
-      image.onerror = function () { finishImageLoad('图片无法显示，请更换有效图片。'); };
-      image.src = imageData;
-    };
-    reader.readAsDataURL(file);
-  });
-
   function setPanelEditing(panel, editing) {
     panel.classList.toggle('is-editing', editing);
     var view = panel.querySelector('.panel-view');
@@ -248,10 +206,15 @@
   }
 
   document.addEventListener('click', function (event) {
-    if (event.target.closest('[data-service-pick-image]')) {
-      if (customerServiceDraft && !customerServiceDraft.loading) {
-        document.getElementById('customerServiceImageInput').click();
+    var serviceStep = event.target.closest('[data-service-step]');
+    if (serviceStep && customerServiceDraft) {
+      var sortField = document.getElementById('customerServiceSort');
+      var currentSort = Number(sortField.value);
+      if (!Number.isSafeInteger(currentSort) || currentSort < 0) {
+        currentSort = 0;
       }
+      sortField.value = Math.max(0, Math.min(Number.MAX_SAFE_INTEGER, currentSort + Number(serviceStep.getAttribute('data-service-step'))));
+      showCustomerServiceError('');
       return;
     }
     if (event.target === submitButton && customerServiceDraft) {

@@ -663,7 +663,8 @@ textarea {
 .mini-icon.vip { background: linear-gradient(135deg, #111827, #facc15); }
 .mini-icon.promo { background: linear-gradient(135deg, #059669, #f97316); }
 
-.builtin-float-card .customer-service {
+.builtin-float-card .customer-service,
+.customer-service-modal .customer-service {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -672,7 +673,16 @@ textarea {
   color: #fff;
 }
 
-.builtin-float-card .customer-service img {
+.builtin-float-card .customer-service svg,
+.customer-service-modal .customer-service svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+}
+
+.builtin-float-card .customer-service img,
+.customer-service-modal .customer-service img {
   width: 100%;
   height: 100%;
   border-radius: inherit;
@@ -680,46 +690,29 @@ textarea {
   background: #fff;
 }
 
-.customer-service-modal .service-image-upload {
+.customer-service-modal .service-icon-display {
   display: flex;
   align-items: center;
-  gap: 12px;
+  min-height: 80px;
 }
 
-.customer-service-modal .service-image-preview {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 5px;
-  background: #5c92d6;
-  color: #fff;
+.customer-service-modal .customer-service {
+  flex-basis: 80px;
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
 }
 
-.customer-service-modal .service-image-preview img {
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
-  object-fit: contain;
-  background: #fff;
-}
-
-.customer-service-modal .service-image-hint {
-  margin: 8px 0 0;
-  color: #8a94a6;
-  font-size: 12px;
+.customer-service-modal .customer-service svg {
+  width: 55.38px;
+  height: 55.38px;
+  flex-basis: 55.38px;
 }
 
 .customer-service-modal .service-form-error {
-  margin: 12px 0 0 110px;
+  margin: 12px 0 0 88px;
   color: #d93025;
   line-height: 20px;
-}
-
-.customer-service-modal .modal-actions button:disabled {
-  cursor: wait;
-  opacity: 0.6;
 }
 
 .modal-mask {
@@ -750,13 +743,239 @@ textarea {
 
 .modal-card.customer-service-modal {
   position: relative;
-  width: 560px;
+  width: 620px;
+  max-width: calc(100vw - 32px);
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.modal-card.customer-service-modal h3 {
+  position: relative;
+  height: 60px;
+  padding: 0 38px;
+  border-bottom-color: #e1e8f5;
+  background: linear-gradient(110deg, #edf2ff, #fff 70%);
+  color: #27364f;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 60px;
+}
+
+.modal-card.customer-service-modal h3::before {
+  position: absolute;
+  top: 21px;
+  left: 24px;
+  width: 3px;
+  height: 18px;
+  border-radius: 2px;
+  background: #3166ff;
+  content: "";
 }
 
 .customer-service-modal .modal-close {
-  top: 0;
-  right: 0;
+  top: 14px;
+  right: 16px;
+  z-index: 1;
+  width: 32px;
+  height: 32px;
   margin-left: 0;
+  padding: 0;
+  border-radius: 8px;
+  background: #f4f6fb;
+  color: #8290a8;
+  font-size: 25px;
+  line-height: 30px;
+}
+
+.customer-service-modal .modal-body {
+  max-height: calc(88vh - 128px);
+  padding: 30px 30px 40px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.customer-service-modal .form-row {
+  grid-template-columns: 78px minmax(0, 1fr);
+  column-gap: 10px;
+  min-height: 36px;
+  margin: 0 0 14px;
+}
+
+.customer-service-modal .form-row:last-of-type {
+  margin-bottom: 0;
+}
+
+.customer-service-modal .form-row > label,
+.customer-service-modal .service-field-label {
+  color: #60656e;
+  font-size: 14px;
+  line-height: 22px;
+  text-align: right;
+}
+
+.customer-service-modal .service-field-label em {
+  color: #f05252;
+  font-style: normal;
+}
+
+.customer-service-modal input:disabled {
+  width: 260px;
+  max-width: 100%;
+  height: 36px;
+  border-color: #d5deee;
+  border-radius: 8px;
+  background: #f4f4f5;
+  color: #b8b8bc;
+  -webkit-text-fill-color: #b8b8bc;
+  opacity: 1;
+}
+
+.customer-service-modal .service-position {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+}
+
+.customer-service-modal .service-position label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #b8b8bc;
+}
+
+.customer-service-modal .service-position input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #d7dce5;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.customer-service-modal .service-position input[type="radio"]:disabled {
+  background: #dce0e8;
+}
+
+.customer-service-modal .service-position input[type="radio"]:checked {
+  border: 5px solid #678eff;
+  background: #fff;
+}
+
+.customer-service-modal .service-position input[type="radio"]:focus-visible {
+  outline: 2px solid #d5e4ff;
+  outline-offset: 2px;
+}
+
+.customer-service-modal .service-sort-row {
+  margin-bottom: 0;
+}
+
+.customer-service-modal .service-sort-box {
+  display: flex;
+  width: 120px;
+  height: 36px;
+  box-sizing: border-box;
+  border: 1px solid #d5deee;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.customer-service-modal .service-sort-box input {
+  appearance: textfield;
+  -moz-appearance: textfield;
+  width: 80px;
+  min-width: 0;
+  height: 34px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 8px 0 0 8px;
+  color: #4d6393;
+}
+
+.customer-service-modal .service-sort-box input::-webkit-inner-spin-button,
+.customer-service-modal .service-sort-box input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.customer-service-modal .service-sort-stepper {
+  display: grid;
+  flex: 0 0 38px;
+  grid-template-rows: 1fr 1fr;
+  overflow: hidden;
+  border-left: 1px solid #d5deee;
+  border-radius: 0 7px 7px 0;
+}
+
+.customer-service-modal .service-sort-stepper button {
+  padding: 0;
+  border: 0;
+  background: #f5f7fb;
+  color: #8091b2;
+  font-size: 13px;
+  line-height: 16px;
+  cursor: pointer;
+}
+
+.customer-service-modal .service-sort-stepper button + button {
+  border-top: 1px solid #d5deee;
+}
+
+.customer-service-modal .service-sort-stepper button:hover {
+  background: #edf2ff;
+  color: #3166ff;
+}
+
+.customer-service-modal .service-config-note {
+  margin: 16px 0 16px 88px;
+  color: #7b8eb3;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.customer-service-modal .service-icon-row {
+  margin-bottom: 20px;
+}
+
+.customer-service-modal input[type="number"]:focus-visible {
+  outline: 2px solid #cfe2fa;
+  outline-offset: 2px;
+  border-color: #6a9cd9;
+}
+
+.customer-service-modal .switch {
+  margin-left: 0;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.customer-service-modal .modal-actions {
+  gap: 8px;
+  padding: 14px 24px;
+  border-top: 1px solid #e1e8f5;
+  background: #f5f7fd;
+}
+
+.customer-service-modal .modal-actions button {
+  min-width: 58px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 8px;
+}
+
+.customer-service-modal .modal-actions .ghost-btn {
+  border-color: #d5deee;
+  color: #4c5e85;
+}
+
+.customer-service-modal .modal-actions .blue-btn {
+  border-color: #3166ff;
+  background: #3166ff;
 }
 
 .modal-card h3 {
