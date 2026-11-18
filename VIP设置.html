@@ -43,7 +43,6 @@
     <script src="files/VIP设置/data.js"></script>
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
-    <script src="custom/js/VIP设置.js"></script>
     <script type="text/javascript">
       $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
       $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
@@ -55,94 +54,71 @@
       <div class="custom-page-shell vip-settings-page">
         <nav class="vip-tabs" aria-label="VIP设置标签">
           <button class="tab-btn is-active" type="button" data-tab="level" aria-pressed="true">VIP晋级条件</button>
-          <button class="tab-btn" type="button" data-tab="keep" aria-pressed="false">VIP降级配置</button>
-          <button class="tab-btn" type="button" data-tab="daily" aria-pressed="false">日俸禄</button>
-          <button class="tab-btn" type="button" data-tab="weekly" aria-pressed="false">周俸禄</button>
-          <button class="tab-btn" type="button" data-tab="monthly" aria-pressed="false">月俸禄</button>
+          <button class="tab-btn" type="button" data-tab="weekly" aria-pressed="false">周工资</button>
+          <button class="tab-btn" type="button" data-tab="monthly" aria-pressed="false">月工资</button>
+          <button class="tab-btn" type="button" data-tab="birthday" aria-pressed="false">生日奖励</button>
           <button class="tab-btn" type="button" data-tab="whale" aria-pressed="false">大R等级定义</button>
         </nav>
         <div class="vip-actionbar">
-          <div class="vip-config-controls">
-            <span class="vip-section-title">VIP晋级条件</span>
-            <div class="vip-inline-toggle" aria-label="当前配置状态" hidden>
-              <span class="vip-toggle-title">配置开关</span>
-              <button class="feature-switch is-on" type="button" role="switch" aria-checked="true" data-action="toggle-setting" aria-label="切换当前配置状态">
-                <span class="feature-switch-track">
-                  <span class="feature-switch-thumb"></span>
-                </span>
-                <span class="feature-switch-text">已开启</span>
-              </button>
-            </div>
-            <div class="vip-keep-period" role="group" aria-labelledby="keepPeriodLabel" hidden>
-              <span class="vip-period-title" id="keepPeriodLabel">保级周期</span>
-              <div class="vip-period-options">
-                <label class="vip-period-option"><input type="radio" name="keep-period" value="week" aria-describedby="keepPeriodHint" disabled/><span>自然周</span></label>
-                <label class="vip-period-option is-selected"><input type="radio" name="keep-period" value="month" aria-describedby="keepPeriodHint" checked disabled/><span>自然月</span></label>
-              </div>
-            </div>
-          </div>
+          <h1 class="vip-section-title">VIP晋级条件</h1>
           <div class="vip-actions" aria-label="配置编辑操作">
-            <button class="btn btn-default" type="button" data-action="cancel" hidden>取消</button>
+            <button class="btn btn-default" type="button" data-action="add" hidden>新增等级</button>
+            <button class="btn btn-default" type="button" data-action="remove" hidden>删除最高等级</button>
             <button class="btn btn-primary" type="button" data-action="edit">
               <svg class="btn-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5l3 3M4 13l-.5 3.5L7 16l9-9a2.1 2.1 0 0 0-3-3z"/></svg>
               <span>编辑</span>
             </button>
-            <button class="btn btn-primary" type="button" data-action="save" hidden>
-              <svg class="btn-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10l4 4 8-8"/></svg>
-              <span>保存</span>
-            </button>
           </div>
-          <div class="vip-config-description">
-            <span class="vip-toggle-hint">按VIP等级设置累计充值、累计打码门槛及晋级奖励。</span>
-            <span class="vip-period-hint" id="keepPeriodHint" aria-live="polite" hidden>自然月：每月1日00:00至次月1日00:00；周期结束未达标降一级，最低VIP1。</span>
+          <div class="vip-config-controls">
+            <div class="vip-control-group" data-control="mode" role="group" aria-label="晋级条件类型">
+              <span class="vip-control-label" data-mode-label>晋级条件</span>
+              <label><input type="radio" name="vip-promotion-mode" value="recharge" checked disabled/><span>累计充值</span></label>
+              <label><input type="radio" name="vip-promotion-mode" value="wager" disabled/><span>累计打码</span></label>
+            </div>
+            <div class="vip-control-group" data-control="enabled" hidden>
+              <span class="vip-control-label">配置开关</span>
+              <label class="vip-switch"><input type="checkbox" aria-label="启用当前奖励配置" checked disabled/><span class="vip-switch-track" aria-hidden="true"></span><span>启用</span></label>
+            </div>
           </div>
+          <p class="vip-config-description" data-hint>按累计充值门槛晋级，VIP0 为默认等级。</p>
+          <p class="vip-error" data-error role="alert" hidden></p>
         </div>
         <main class="vip-table-panel">
-          <table class="vip-table" data-tab="level" aria-label="VIP晋级条件表格">
-            <thead>
-              <tr>
-                <th>VIP等级</th>
-                <th>累计充值</th>
-                <th>累计打码</th>
-                <th>奖励金额</th>
-              </tr>
-            </thead>
+          <table class="vip-table" aria-label="VIP晋级条件表格">
+            <thead><tr><th>VIP等级</th><th>累计充值</th><th>晋级奖励</th></tr></thead>
             <tbody>
-              <tr><td>1</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr class="is-focus-row"><td>2</td><td>20</td><td>100</td><td>20</td></tr>
-              <tr><td>3</td><td>50</td><td>200</td><td>40</td></tr>
-              <tr><td>4</td><td>100</td><td>400</td><td>100</td></tr>
-              <tr><td>5</td><td>150</td><td>500</td><td>200</td></tr>
-              <tr><td>6</td><td>200</td><td>1000</td><td>400</td></tr>
-              <tr><td>7</td><td>400</td><td>1500</td><td>600</td></tr>
-              <tr><td>8</td><td>800</td><td>2000</td><td>800</td></tr>
-              <tr><td>9</td><td>1000</td><td>3000</td><td>1000</td></tr>
-              <tr><td>10</td><td>1500</td><td>4000</td><td>1200</td></tr>
-              <tr><td>11</td><td>2000</td><td>5000</td><td>1400</td></tr>
-              <tr><td>12</td><td>4000</td><td>7000</td><td>1600</td></tr>
-              <tr><td>13</td><td>8000</td><td>8000</td><td>2000</td></tr>
-              <tr><td>14</td><td>10000</td><td>12000</td><td>2500</td></tr>
-              <tr><td>15</td><td>15000</td><td>20000</td><td>3000</td></tr>
+              <tr><td>VIP0 <span class="vip-default-tag">默认</span></td><td>-</td><td>-</td></tr>
+              <tr><td>VIP1</td><td>20</td><td>20</td></tr>
+              <tr><td>VIP2</td><td>50</td><td>40</td></tr>
+              <tr><td>VIP3</td><td>100</td><td>100</td></tr>
+              <tr><td>VIP4</td><td>150</td><td>200</td></tr>
+              <tr><td>VIP5</td><td>200</td><td>400</td></tr>
+              <tr><td>VIP6</td><td>400</td><td>600</td></tr>
+              <tr><td>VIP7</td><td>800</td><td>800</td></tr>
+              <tr><td>VIP8</td><td>1000</td><td>1000</td></tr>
+              <tr><td>VIP9</td><td>1500</td><td>1200</td></tr>
+              <tr><td>VIP10</td><td>2000</td><td>1400</td></tr>
             </tbody>
           </table>
         </main>
-        <div class="modal-mask" data-dialog="cancel" hidden>
-          <section class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="cancelTitle">
-            <header class="confirm-header">
-              <h2 id="cancelTitle">放弃编辑</h2>
-              <button class="dialog-close" type="button" data-dialog-close aria-label="关闭弹窗">×</button>
-            </header>
-            <div class="confirm-body">
-              <span class="warning-icon" aria-hidden="true">!</span>
-              <span>本次未保存的修改将被撤销，确认放弃吗？</span>
-            </div>
-            <footer class="confirm-footer">
-              <button class="btn btn-default" type="button" data-dialog-close>继续编辑</button>
-              <button class="btn btn-primary" type="button" data-action="confirm-cancel">放弃修改</button>
-            </footer>
-          </section>
-        </div>
+        <footer class="vip-savebar" data-footer hidden>
+          <span>修改后请保存生效</span>
+          <button class="btn btn-default" type="button" data-action="cancel">取消</button>
+          <button class="btn btn-primary" type="button" data-action="save">保存</button>
+        </footer>
+        <dialog class="confirm-dialog" data-confirm aria-labelledby="vipConfirmTitle">
+          <header class="confirm-header">
+            <h2 id="vipConfirmTitle">操作确认</h2>
+            <button class="dialog-close" type="button" data-action="dismiss" aria-label="关闭弹窗">×</button>
+          </header>
+          <div class="confirm-body"><span class="warning-icon" aria-hidden="true">!</span><span data-message>确认执行当前操作吗？</span></div>
+          <footer class="confirm-footer">
+            <button class="btn btn-default" type="button" data-action="dismiss">取消</button>
+            <button class="btn btn-primary" type="button" data-action="confirm">确定</button>
+          </footer>
+        </dialog>
       </div>
     </div>
+    <script src="custom/js/VIP设置.js"></script>
   </body>
 </html>

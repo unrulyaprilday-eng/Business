@@ -4,11 +4,64 @@ const path = require("node:path");
 const vm = require("node:vm");
 
 const root = path.resolve(__dirname, "..");
-const originalName = "VIP\u8bbe\u7f6e";
-const pageName = "\u72ec\u7acb\u89c4\u5219" + originalName;
+const pageName = "\u72ec\u7acb\u89c4\u5219VIP\u8bbe\u7f6e";
 const html = fs.readFileSync(path.join(root, pageName + ".html"), "utf8");
 const levelKeys = ["level", "keep", "daily", "weekly", "monthly"];
 const clone = (value) => JSON.parse(JSON.stringify(value));
+
+// Historical independent-rules defaults. Keep these fixtures independent of the
+// user-management VIP page, whose configuration and behavior may evolve separately.
+// Rows omit the grade column: the independent page numbers these from VIP0.
+const historicalRows = {
+  level: [
+    [0, 0, 0], [20, 100, 20], [50, 200, 40], [100, 400, 100],
+    [150, 500, 200], [200, 1000, 400], [400, 1500, 600], [800, 2000, 800],
+    [1000, 3000, 1000], [1500, 4000, 1200], [2000, 5000, 1400],
+    [4000, 7000, 1600], [8000, 8000, 2000], [10000, 12000, 2500], [15000, 20000, 3000]
+  ],
+  keep: [
+    ["\u65e0\u6761\u4ef6", "\u65e0\u6761\u4ef6"], [10, 100], [20, 200], [40, 400],
+    [80, 800], [120, 1200], [160, 1600], [200, 2000], [250, 2500],
+    [300, 3000], [400, 4000], [500, 5000], [600, 6000], [700, 7000], [800, 8000]
+  ],
+  daily: [
+    [50, 100, 10], [100, 200, 20], [200, 400, 40], [300, 800, 80],
+    [400, 1200, 120], [500, 1800, 200], [600, 2500, 250], [700, 4000, 400],
+    [800, 8000, 800], [900, 12000, 1200], [1000, 30000, 2000],
+    [1100, 40000, 2500], [1200, 80000, 3000], [1300, 150000, 4000], [1500, 200000, 5000]
+  ],
+  weekly: [
+    [500, 1000, 100], [1000, 2000, 200], [2000, 4000, 400], [3000, 8000, 800],
+    [4000, 12000, 1200], [5000, 18000, 2000], [6000, 25000, 2500], [7000, 40000, 4000],
+    [8000, 80000, 8000], [9000, 120080, 12000], [10000, 300000, 20000],
+    [11000, 400000, 25000], [12000, 800000, 30000], [13000, 1500000, 40000], [15000, 2000000, 50000]
+  ],
+  monthly: [
+    [5000, 10000, 1000], [10000, 20000, 2000], [20000, 40000, 4000], [30000, 80000, 8000],
+    [40000, 120000, 12000], [50000, 180000, 20000], [60000, 250000, 25000], [70000, 400000, 40000],
+    [80000, 800000, 80000], [90000, 1200000, 120000], [100000, 3000000, 200000],
+    [110000, 4000000, 250000], [120000, 8000000, 300000], [130000, 15000000, 400000], [150000, 20000000, 500000]
+  ]
+};
+const historicalWhale = {
+  headers: ["\u7c7b\u578b", "\u7d2f\u8ba1\u5145\u503c"],
+  rows: [["\u5c0fR\u73a9\u5bb6", 1000000], ["\u4e2dR\u73a9\u5bb6", 10000000], ["\u5927R\u73a9\u5bb6", 100000000]],
+  focusLevel: null
+};
+const historicalSwitches = {
+  level: { switchLabel: "", enabled: true, offHint: "" },
+  whale: { switchLabel: "", enabled: true, offHint: "" }
+};
+for (const [key, label] of Object.entries({
+  keep: "VIP\u964d\u7ea7\u914d\u7f6e", daily: "\u65e5\u4ff8\u7984",
+  weekly: "\u5468\u4ff8\u7984", monthly: "\u6708\u4ff8\u7984"
+})) {
+  historicalSwitches[key] = {
+    switchLabel: label, enabled: true,
+    onHint: "\u5f00\u542f\u540e\uff0c\u5f53\u524d\u8bbe\u7f6e\u751f\u6548\u3002",
+    offHint: "\u5173\u95ed\u540e\uff0c" + label + (key === "keep" ? "" : "\u8bbe\u7f6e") + "\u4e0d\u751f\u6548\u3002"
+  };
+}
 
 // Exercise the actual event handlers in a small DOM fixture; no browser or server.
 function createHarness(name) {
@@ -93,16 +146,15 @@ function createHarness(name) {
   };
 }
 
-const baseline = createHarness(originalName).state();
 const page = createHarness(pageName);
 const initial = page.state();
 for (const key of levelKeys) {
-  const expected = baseline.tabs[key].rows.map((row, index) => [index, ...row.slice(1)]);
-  assert.deepEqual(initial.tabs[key].rows, expected, "Original values changed: " + key);
+  const expected = historicalRows[key].map((row, index) => [index, ...row]);
+  assert.deepEqual(initial.tabs[key].rows, expected, "Historical independent-rules values changed: " + key);
 }
-assert.deepEqual(initial.tabs.whale, baseline.tabs.whale, "Whale settings changed");
-assert.deepEqual(initial.tabMeta, baseline.tabMeta, "Feature switches changed");
-assert.equal(initial.keepPeriod, baseline.keepPeriod);
+assert.deepEqual(initial.tabs.whale, historicalWhale, "Whale settings changed");
+assert.deepEqual(initial.tabMeta, historicalSwitches, "Feature switches changed");
+assert.equal(initial.keepPeriod, "month");
 assert(html.includes('data-axure-page-id="independent_vip_settings"'));
 assert(/<tbody>\s*<tr><td>0<span/.test(html), "Static first screen must start at VIP0");
 
@@ -119,7 +171,7 @@ for (let added = 0; added < 2; added += 1) {
 }
 for (const key of levelKeys) {
   const rows = page.state().tabs[key].rows;
-  assert.equal(rows.length, 17, "Levels must grow beyond the original fixed count");
+  assert.equal(rows.length, 17, "Levels must grow beyond the historical fixed count");
   assert.equal(rows.at(-1)[0], 16, "VIP16 must be supported");
   for (let col = 1; col < rows.at(-1).length; col += 1) {
     assert.equal(rows.at(-1)[col], configuredValues[key + "-" + col], "New configuration not synchronized");
@@ -191,4 +243,4 @@ vm.runInNewContext(fs.readFileSync(path.join(root, "files", pageName, "data.js")
 assert.equal(metadata.page.packageId, menuPages[0].id);
 assert.equal(metadata.page.name, menuPages[0].pageName);
 assert.equal(metadata.url, menuPages[0].url);
-console.log("PASS: original configuration values, VIP0 default/protection, dynamic VIP16, five-tab synchronization, save/cancel, delete confirmation, relative assets, UTF-8, menu/page metadata and snapshot.");
+console.log("PASS: historical independent-rules configuration values, VIP0 default/protection, dynamic VIP16, five-tab synchronization, save/cancel, delete confirmation, relative assets, UTF-8, menu/page metadata and snapshot.");
