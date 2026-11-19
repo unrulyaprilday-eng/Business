@@ -95,7 +95,6 @@ function csvValue(rows, row, header) {
   return row[index];
 }
 function show(view, options) {
-  if (view === 'conversion') options = { breakdown: 'channel', ...options };
   reports.render(view, options); click('export');
   assertTableColumns(section.innerHTML, view);
   assertCsvColumns(exported.rows, view);
@@ -158,11 +157,7 @@ assert(section.innerHTML.includes('<h3>INR</h3>') && section.innerHTML.includes(
 assert.equal(rows.filter(row => row[4] === 'INR').length, 4);
 assert.equal(rows.filter(row => row[4] === 'USD').length, 3);
 rows = show('conversion', { channel: 'CH1001', start: '2026-11-01', end: '2026-11-01' });
-const allVisits = rows.slice(1).reduce((sum, row) => sum + row[4], 0);
-assert.equal(allVisits, 670, '分类结果须与推广总量一致');
-click('conversion-category', { value: 'app' }); click('export');
-assert.equal(exported.rows.length, 2);
-assert.equal(exported.rows[1][0], 'APP大厅');
+assert.equal(rows.slice(1).reduce((sum, row) => sum + row[6], 0), 670, '平铺结果须与推广总量一致');
 rows = show('updates', { start: '2026-11-01', end: '2026-11-12', channel: '' });
 assert(rows.length > 1);
 assert(rows.slice(1).every(row => row[2] !== '新建安卓包' && row[3] !== '2.5.0'), '新包与草稿无历史');
@@ -177,7 +172,7 @@ function cents(value) { return Math.round(Number(String(value).replace(/,/g, '')
 function percentage(numerator, denominator) { return denominator ? (numerator / denominator * 100).toFixed(2) + '%' : '—'; }
 for (const view of ['promotion', 'retention', 'conversion', 'updates', 'roi']) {
   const byMedia = show(view, { ...historyFilter, media: 'TikTok', link: '' });
-  const codeColumn = view === 'retention' ? 1 : view === 'conversion' ? 1 : view === 'updates' ? 1 : view === 'roi' ? 2 : 0;
+  const codeColumn = view === 'retention' ? 1 : view === 'updates' ? 1 : view === 'roi' ? 2 : 0;
   assert(byMedia.slice(1).every(row => ['CCCC', 'WEB01'].includes(row[codeColumn])), view + ' 应按历史媒体筛选');
   const byLink = show(view, { ...historyFilter, media: '', link: 'feed-video-01' });
   assert(byLink.slice(1).every(row => row[codeColumn] === 'CCCC'), view + ' 应按历史广告链接筛选');
@@ -186,26 +181,33 @@ rows = show('updates', { ...historyFilter, media: '', link: '' });
 assert(rows.slice(1).filter(row => row[3] === '2.4.0').every(row => row[4] === '20400'));
 assert(rows.slice(1).filter(row => row[3] === '2.4.1').every(row => row[4] === '20401'));
 assert(rows.slice(1).filter(row => row[3] === '1.3.0').every(row => row[4] === '10300'));
-rows = show('conversion', { ...historyFilter, media: '', link: '', metrics: 'download', classify: 'scene' });
-assert(rows.length > 1);
-for (const row of rows.slice(1)) {
-  assert(row[5] <= row[4], '同入口下载点击不能超过下载曝光');
-  assert.equal(row[6], percentage(row[5], row[4]));
-  assert.equal(row[5], row[7] + row[10] + row[13] + row[16], '下载点击按包类型互斥归属');
-  for (const [clickIndex, startIndex, rateIndex] of [[7, 8, 9], [10, 11, 12], [13, 14, 15], [16, 17, 18]]) {
-    assert(row[startIndex] <= row[clickIndex], '对应包首次启动不能超过同入口该包点击');
-    assert.equal(row[rateIndex], percentage(row[startIndex], row[clickIndex]));
+const flatLead = ['渠道编码', '渠道名称', '广告链接', '包ID', '包名称', '币种'];
+const registerMetrics = ['访问人次（入口人日）', '注册人数', '注册转化率', '下载点击人次', 'PWA安装人次', '安装包首次启动人次', '首充人数', '访问-首充转化率', '注册-首充转化率', '充值人数', '充值转化率'];
+const downloadMetrics = ['下载入口曝光人次', '点击下载人次', '下载点击率', '安装 / 首次启动人次', '安装转化率'];
+function flatKey(row) { return [row['渠道编码'], row['广告链接'], row['包ID'], row['币种']].join('|'); }
+function numericTotal(records, metric) { return records.reduce((sum, row) => sum + (typeof row[metric] === 'number' ? row[metric] : 0), 0); }
+const flatRegister = show('conversion', { ...historyFilter, metrics: 'register' });
+assert.equal(JSON.stringify(flatRegister[0].slice(0, 17)), JSON.stringify(flatLead.concat(registerMetrics)), '注册导出固定维度及指标顺序');
+const flatRegistrations = csvRecords(flatRegister);
+assert.equal(new Set(flatRegistrations.map(flatKey)).size, flatRegistrations.length, '渠道/历史链接/包/币种组合唯一，跨场景日期版本合计');
+assert(flatRegistrations.some(row => row['包ID'] === '' && row['包名称'] === '未关联包' && row['访问人次（入口人日）'] > 0), '无包访问不得丢失或归到任意包');
+rows = show('conversion', { ...historyFilter, metrics: 'download' });
+assert.equal(JSON.stringify(rows[0].slice(0, 11)), JSON.stringify(flatLead.concat(downloadMetrics)), '下载导出不再分四种包类型');
+assert(!rows[0].includes('PWA点击人次') && !rows[0].includes('原生安装率'));
+const flatDownloads = csvRecords(rows);
+assert.equal(new Set(flatDownloads.map(flatKey)).size, flatDownloads.length);
+assert.equal(JSON.stringify(flatDownloads.map(flatKey)), JSON.stringify(flatRegistrations.map(flatKey)), '两组指标使用相同平铺维度');
+for (const row of flatDownloads) {
+  const registration = flatRegistrations.find(item => flatKey(item) === flatKey(row));
+  assert(row['点击下载人次'] <= row['下载入口曝光人次'], '同包点击不得超过曝光');
+  assert.equal(row['下载点击率'], percentage(row['点击下载人次'], row['下载入口曝光人次']));
+  assert.equal(row['安装 / 首次启动人次'], registration['PWA安装人次'] + registration['安装包首次启动人次'], '安装数仅合计同归因包PWA安装及首次启动');
+  assert.equal(row['安装转化率'], percentage(row['安装 / 首次启动人次'], row['点击下载人次']));
+  if (!row['包ID']) {
+    assert.equal(row['下载入口曝光人次'], 0); assert.equal(row['点击下载人次'], 0);
+    assert.equal(row['安装 / 首次启动人次'], 0); assert.equal(row['下载点击率'], '—'); assert.equal(row['安装转化率'], '—');
   }
-  if (row[0] === 'APP大厅') assert.equal(row[4], 0, '已安装APP访问不能产生下载曝光');
 }
-const sceneDownloads = rows.slice(1).reduce((total, row) => total + row[5], 0);
-click('conversion-classify', { value: 'type' }); click('export');
-assert.equal(exported.rows.slice(1).reduce((total, row) => total + row[5], 0), sceneDownloads, '推广类型与入口分类保持同一下载事实总量');
-assert.equal(new Set(exported.rows.slice(1).map(row => row[0])).size, 6, '六类推广类型均可统计');
-const downloadNativePart = show('conversion', { ...historyFilter, media: '', link: '', channel: 'CH1001', packageId: 'PK1001', metrics: 'download', classify: 'scene' });
-assert(downloadNativePart.slice(1).every(row => row[7] === 0 && row[8] === 0), '原生包下载事实不能混入PWA');
-const downloadPwaPart = show('conversion', { ...historyFilter, media: '', link: '', channel: 'CH1001', packageId: 'PK1002', metrics: 'download', classify: 'scene' });
-assert(downloadPwaPart.slice(1).every(row => row[10] === 0 && row[11] === 0 && row[13] === 0 && row[16] === 0), 'PWA下载事实不能混入安装包');
 rows = show('promotion', { ...historyFilter, media: '', link: '', channel: 'CH1001', promotionMetrics: 'funds', start: '2026-11-01', end: '2026-11-01' });
 assert.equal(cents(rows[1][6]), 1505250, '补充资金指标不能改写已有累计充值总量');
 assert.equal(cents(rows[1][6]) - cents(rows[1][13]), cents(rows[1][14]), '充值-提现必须等于充提差');
@@ -225,12 +227,13 @@ show('detail', navigation.filters);
 assert(section.innerHTML.includes('title="观察周期未满，暂不可计算"'), '复充明细与主表使用相同横杠和提示');
 assert(!section.innerHTML.includes('未成熟'));
 show('promotion', { ...historyFilter, media: '', link: '', channel: '', promotionMetrics: 'acquisition' });
-show('conversion', { ...historyFilter, media: '', link: '', channel: '', classify: 'scene', metrics: 'register' });
+show('conversion', { ...historyFilter, media: '', link: '', channel: '', metrics: 'register' });
 const baselinePromotion = JSON.stringify(show('promotion', historyFilter));
 const baselineRetention = JSON.stringify(show('retention', historyFilter));
 const baselineUpdates = JSON.stringify(show('updates', historyFilter));
 const baselineFunds = JSON.stringify(show('promotion', { ...historyFilter, promotionMetrics: 'funds' }));
-const baselineDownloads = JSON.stringify(show('conversion', { ...historyFilter, classify: 'type', metrics: 'download' }));
+const baselineConversions = JSON.stringify(show('conversion', { ...historyFilter, metrics: 'register' }));
+const baselineDownloads = JSON.stringify(show('conversion', { ...historyFilter, metrics: 'download' }));
 show('promotion', { ...historyFilter, promotionMetrics: 'acquisition' });
 const baseMixed = show('promotion', { ...historyFilter, channel: 'CH1001', start: '2026-11-01', end: '2026-11-01' })[1];
 const packageParts = ['PK1001', 'PK1002', '__none__'].map(packageId => show('promotion', { ...historyFilter, channel: 'CH1001', start: '2026-11-01', end: '2026-11-01', packageId })[1]);
@@ -264,7 +267,8 @@ assert.equal(JSON.stringify(show('promotion', historyFilter)), baselinePromotion
 assert.equal(JSON.stringify(show('retention', historyFilter)), baselineRetention, '媒体/来源/币种/链接变更不得重写留存');
 assert.equal(JSON.stringify(show('updates', historyFilter)), baselineUpdates, '现态版本/类型/发布状态变化不得重写APP更新历史');
 assert.equal(JSON.stringify(show('promotion', { ...historyFilter, promotionMetrics: 'funds' })), baselineFunds, '历史资金及复充归因不得随配置变更');
-assert.equal(JSON.stringify(show('conversion', { ...historyFilter, classify: 'type', metrics: 'download' })), baselineDownloads, '历史推广类型和下载漏斗不得随现态配置变更');
+assert.equal(JSON.stringify(show('conversion', { ...historyFilter, metrics: 'register' })), baselineConversions, '历史渠道/链接/包归因及注册付费不得随现态配置变更');
+assert.equal(JSON.stringify(show('conversion', { ...historyFilter, metrics: 'download' })), baselineDownloads, '历史归因下载漏斗不得随现态配置变更');
 show('promotion', { ...historyFilter, promotionMetrics: 'acquisition' });
 rows = show('promotion', { ...historyFilter, packageId: 'PK1001', version: '9.9.9' });
 assert(rows.slice(1).every(row => row[4] === '暂无数据'), '新建版本不能伪造历史');
@@ -282,16 +286,11 @@ assert(lastToast.includes('开始日期不能晚于结束日期'));
 // 展示矩阵：覆盖全部子切换、无历史新渠道行和整表空态，不启动浏览器。
 for (const channel of ['', 'CH9999']) {
   for (const promotionMetrics of ['acquisition', 'funds']) show('promotion', { ...historyFilter, channel, promotionMetrics });
-  for (const classify of ['scene', 'type']) {
-    for (const metrics of ['register', 'download']) {
-      show('conversion', { ...historyFilter, channel, classify, metrics });
-      const categories = classify === 'scene' ? ['channel', 'web', 'app', 'download'] : ['link', 'pwa', 'trial', 'channel', 'native', 'download'];
-      for (const value of categories) {
-        click('conversion-category', { value }); click('export');
-        assertTableColumns(section.innerHTML, classify + '/' + metrics + '/' + value + '/' + channel);
-        assertCsvColumns(exported.rows, classify + '/' + metrics + '/' + value + '/' + channel);
-      }
-    }
+  for (const metrics of ['register', 'download']) {
+    const conversion = show('conversion', { ...historyFilter, channel, metrics });
+    if (channel) assert.equal(conversion.length, 1, '无历史渠道平铺表为空，不造维度行');
+    assert(!/data-cmr-action="conversion-(?:classify|breakdown|category)"/.test(section.innerHTML), '不再提供旧分类层级按钮');
+    assert.equal((section.innerHTML.match(/data-cmr-action="conversion-metrics"/g) || []).length, 2, '只有注册与付费、下载与安装两按钮');
   }
   show('retention', { ...historyFilter, channel });
   click('retention-group', { value: 'ad' }); click('export');
@@ -300,37 +299,29 @@ for (const channel of ['', 'CH9999']) {
   show('updates', { ...historyFilter, channel });
   show('roi', { ...historyFilter, channel });
 }
-console.log('PASS channel reports: immutable attribution, media/ad filters, classification, matched download funnels, funding/recharge conservation, disjoint package/version totals, linked filters, maturity, currency isolation, update timeline');
-console.log('PASS display matrix: all subtabs, promotion funding/acquisition, scene/type categories, download/register metrics, new-channel empty rows; table and CSV column counts agree');
-// 分类汇总按类别+币种合计，各比例重新计算，媒体过滤后仍遵守相同分组。
-for (const classify of ['scene', 'type']) {
-  for (const metrics of ['register', 'download']) {
-    for (const media of ['', 'Facebook']) {
-      const details = show('conversion', { ...historyFilter, classify, metrics, media, breakdown: 'channel' });
-      const summaries = show('conversion', { ...historyFilter, classify, metrics, media, breakdown: 'summary' });
-      const groups = new Map();
-      details.slice(1).forEach(row => {
-        const key = row[0] + '|' + row[3];
-        const totals = groups.get(key) || [];
-        const rateOffsets = metrics === 'register' ? [2, 7, 8, 10] : [2, 5, 8, 11, 14];
-        for (let i = 4; i < row.length - 4; i++) if (!rateOffsets.includes(i - 4)) totals[i - 4] = (totals[i - 4] || 0) + row[i];
-        groups.set(key, totals);
-      });
-      assert.equal(summaries.length - 1, groups.size, '汇总须按类别和币种唯一分组');
-      summaries.slice(1).forEach(row => {
-        const totals = groups.get(row[0] + '|' + row[1]);
-        assert(totals, '不能跨币种合并分类');
-        totals.forEach((total, offset) => assert.equal(row[offset + 2], total, '分类汇总数值守恒'));
-        if (metrics === 'register') {
-          assert.equal(row[4], percentage(row[3], row[2]));
-          assert.equal(row[9], percentage(row[8], row[2]));
-          assert.equal(row[10], percentage(row[8], row[3]));
-        } else {
-          assert.equal(row[4], percentage(row[3], row[2]));
-          for (const [clickIndex, startIndex, rateIndex] of [[5, 6, 7], [8, 9, 10], [11, 12, 13], [14, 15, 16]]) assert.equal(row[rateIndex], percentage(row[startIndex], row[clickIndex]));
-        }
-      });
-    }
+console.log('PASS channel reports: immutable attribution, media/ad filters, flat conversion, matched download funnels, funding/recharge conservation, disjoint package/version totals, linked filters, maturity, currency isolation, update timeline');
+console.log('PASS display matrix: promotion funding/acquisition, flat download/register metrics, new-channel empty rows; table and CSV column counts agree');
+// 平铺数据按渠道及包与原推广报表勾稽，不可复制全渠道值到每个包。
+for (const media of ['', 'Facebook']) for (const channel of ['', 'CH1001', 'CH1002']) for (const packageId of ['', 'PK1001', 'PK1002', '__none__']) {
+  const filters = { ...historyFilter, media, channel, packageId, metrics: 'register' };
+  const flat = csvRecords(show('conversion', filters));
+  const promotion = csvRecords(show('promotion', { ...filters, promotionMetrics: 'acquisition' }));
+  for (const [metric, promotionMetric] of [['访问人次（入口人日）', '访问人次（入口人日）'], ['注册人数', '注册人数'], ['PWA安装人次', 'PWA安装'], ['安装包首次启动人次', '安装包首次启动'], ['首充人数', '首充人数']]) {
+    assert.equal(numericTotal(flat, metric), numericTotal(promotion, promotionMetric), '平铺筛选与推广汇总守恒：' + metric + '/' + channel + '/' + packageId);
+  }
+  const funding = csvRecords(show('promotion', { ...filters, promotionMetrics: 'funds' }));
+  assert.equal(numericTotal(flat, '充值人数'), numericTotal(funding, '充值人数'));
+}
+for (const filters of [{ channel: 'CH1001' }, { link: 'homepageads' }, { packageId: 'PK1002' }, { currency: 'USD' }, { media: 'Facebook' }, { packageId: 'PK1003', version: '2.4.1' }]) {
+  const filtered = csvRecords(show('conversion', { ...historyFilter, ...filters, metrics: 'register' }));
+  assert(filtered.length > 0, '历史维度筛选须保留匹配记录');
+  if (filters.channel) assert(filtered.every(row => row['渠道编码'] === 'AAAA'));
+  if (filters.link) assert(filtered.every(row => row['广告链接'] === filters.link));
+  if (filters.packageId) assert(filtered.every(row => row['包ID'] === filters.packageId));
+  if (filters.currency) assert(filtered.every(row => row['币种'] === filters.currency));
+  if (filters.version) {
+    const expected = csvRecords(show('promotion', { ...historyFilter, ...filters, promotionMetrics: 'acquisition' }));
+    assert.equal(numericTotal(filtered, '注册人数'), numericTotal(expected, '注册人数'), '版本筛选在平铺合计之前生效');
   }
 }
 show('promotion', { ...historyFilter, channel: 'CH1003', media: 'Google', currency: 'USD', packageId: 'PK1001', start: '2026-11-03', end: '2026-11-08' });
@@ -345,30 +336,43 @@ reports.render('roi'); click('export');
 assert.equal(exported.rows[1][2], 'AAAA', '普通回Tab从共享条件继续');
 assert(section.innerHTML.includes('注册批次回收分析'));
 reports.render('conversion', { packageId: 'PK1002' }); click('export');
-assert(section.innerHTML.includes('cm-report-more" open'), '带包context自动展开高级筛选');
-assert(exported.rows.length > 1 && !exported.rows[0].includes('渠道编码'), '分类默认以汇总展示');
+assert(exported.rows.length > 1 && exported.rows[0][0] === '渠道编码', '分类默认直接展示平铺渠道/链接/包数据');
+assert(!/<select\b[^>]*name="(?:source|scene)"/.test(section.innerHTML), '分类不提供来源或场景筛选');
+const conversionMore = section.innerHTML.match(/<details\b[^>]*class="cm-report-more"[^>]*>([\s\S]*?)<\/details>/);
+assert(conversionMore, '保留更多筛选');
+assert.equal(JSON.stringify([...conversionMore[1].matchAll(/<select\b[^>]*name="([^"]+)"/g)].map(match => match[1]).sort()), JSON.stringify(['media', 'version']), '更多筛选仅历史媒体及归因版本');
 reports.render('updates', {}); click('export');
 assert(section.innerHTML.includes('value="PK1002" selected') && section.innerHTML.includes('无APP更新事件'), '跨Tab不支持PWA更新时仍明确显示正在生效的包筛选');
 assert.equal(exported.rows.length, 1);
 reports.render('conversion', {});
-click('conversion-breakdown', { value: 'channel' }); click('export');
-assert(exported.rows[0].includes('渠道编码'));
-assertTableColumns(section.innerHTML, '切到渠道明细'); assertCsvColumns(exported.rows, '切到渠道明细');
-click('conversion-breakdown', { value: 'summary' }); click('export');
-assert(!exported.rows[0].includes('渠道编码'));
-assertTableColumns(section.innerHTML, '切回分类汇总'); assertCsvColumns(exported.rows, '切回分类汇总');
+click('conversion-metrics', { value: 'download' }); click('export');
+assert(exported.rows[0].includes('安装转化率'));
+assertTableColumns(section.innerHTML, '切换下载指标'); assertCsvColumns(exported.rows, '切换下载指标');
+click('conversion-metrics', { value: 'register' }); click('export');
+assert(exported.rows[0].includes('注册转化率'));
+assertTableColumns(section.innerHTML, '切回注册指标'); assertCsvColumns(exported.rows, '切回注册指标');
 click('reset');
 reports.render('promotion', {}); click('export');
 assert.equal(exported.rows.length, 8, '重置清共享条件并恢复全部渠道');
 assert(section.innerHTML.includes('访问人次（入口人日）') && section.innerHTML.includes('访问-首充转化率'));
 assert(!section.innerHTML.includes('渠道报表明细.html'), '新模块不保留重复旧报表入口');
 click('definitions'); assert.equal(dialog.readonly, true, '纯详情弹窗使用单关闭按钮');
-for (const classify of ['scene', 'type']) for (const metrics of ['register', 'download']) {
-  const emptySummary = show('conversion', { ...historyFilter, channel: 'CH9999', classify, metrics, breakdown: 'summary' });
-  assert.equal(emptySummary.length, 1);
-  assertTableColumns(section.innerHTML, '分类汇总空态/' + classify + '/' + metrics);
+for (const metrics of ['register', 'download']) {
+  const baseline = JSON.stringify(show('conversion', { ...historyFilter, metrics }));
+  for (const classify of ['scene', 'type', 'media', 'packageType', 'invalid']) {
+    const legacy = show('conversion', { ...historyFilter, metrics, classify, breakdown: 'summary', category: 'app', source: 'native', scene: 'app' });
+    assert.equal(JSON.stringify(legacy), baseline, '旧分类/汇总/分类值/来源/场景条件均不得改变结果');
+    for (const key of ['classify', 'breakdown', 'source', 'scene']) assert.equal(urlContext[key], '', '同步URL清空废弃条件：' + key);
+    assert.equal(urlContext.category, 'all');
+  }
+  const empty = show('conversion', { ...historyFilter, channel: 'CH9999', metrics });
+  assert.equal(empty.length, 1);
+  assertTableColumns(section.innerHTML, '分类平铺空态/' + metrics);
+  assert.equal(show('conversion', { ...historyFilter, start: '2026-10-01', end: '2026-10-02', metrics }).length, 1, '无历史日期保持空表');
 }
-console.log('PASS audit regression: currency-separated category comparisons, weighted ratios, shared filters, fresh-context conflict reset, summary/detail toggles, explicit person-day labels, readonly details');
+const fallbackMetrics = show('conversion', { ...historyFilter, metrics: 'invalid' });
+assert(fallbackMetrics[0].includes('注册转化率')); assert.equal(urlContext.metrics, 'register');
+console.log('PASS audit regression: flat dimensions, weighted ratios, shared filters, legacy URL cleanup, metric toggles, explicit person-day labels, readonly details');
 
 // 新报表同源勾稽：注册批次日报与渠道汇总、独立按日明细的人数和资金合计一致。
 state = structuredClone(initial);
@@ -401,13 +405,48 @@ for (const metric of ['充值人数', '充值次数']) assert.equal(csvRecords(f
 for (const metric of ['批次累计充值', '累计提现', '充提差', '有效投注额']) assert.equal(csvRecords(fundDetails).reduce((sum, row) => sum + cents(row[metric]), 0), cents(csvValue(fundTable, fundSummary, metric)));
 for (const view of ['daily', 'detail']) for (const channel of ['', 'CH9999']) show(view, { ...historyFilter, channel });
 
-// 分类扩展仍按唯一历史事实及币种分组；媒体、包类型不复制渠道总量。
-for (const classify of ['media', 'packageType']) for (const metrics of ['register', 'download']) {
-  const detail = show('conversion', { ...historyFilter, classify, metrics, breakdown: 'channel' });
-  const summary = show('conversion', { ...historyFilter, classify, metrics, breakdown: 'summary' });
-  assert.equal(new Set(summary.slice(1).map(row => row[0] + '|' + row[1])).size, summary.length - 1);
-  assert.equal(summary.slice(1).reduce((sum, row) => sum + row[2], 0), detail.slice(1).reduce((sum, row) => sum + row[4], 0));
-  if (metrics === 'register') assert.equal(summary.slice(1).reduce((sum, row) => sum + row[3], 0), show('promotion', { ...historyFilter, promotionMetrics: 'acquisition' }).slice(1).filter(row => row[5] !== '暂无数据').reduce((sum, row) => sum + row[5], 0));
+// 翻页只影响可见表格，不裁剪导出；首行维度顺序和两组指标切换保持固定。
+for (const metrics of ['register', 'download']) {
+  const all = show('conversion', { ...historyFilter, metrics });
+  const firstPage = section.innerHTML;
+  const headings = [...firstPage.matchAll(/<th\b[^>]*>([\s\S]*?)<\/th>/g)].slice(0, 4).map(match => match[1].replace(/<[^>]*>/g, ''));
+  assert.equal(JSON.stringify(headings), JSON.stringify(['渠道', '链接', '包', '币种']));
+  const pageMatch = firstPage.match(/共 (\d+) 条 · 第 1 \/ (\d+) 页/);
+  assert(pageMatch); assert.equal(Number(pageMatch[1]), all.length - 1);
+  if (Number(pageMatch[2]) > 1) {
+    click('page-next'); click('export');
+    assert(section.innerHTML.includes('第 2 / '));
+    assert.equal(JSON.stringify(exported.rows), JSON.stringify(all), '非首页导出仍覆盖全部平铺行');
+    click('page-prev'); assert.equal(section.innerHTML, firstPage, '返回首页恢复相同内容');
+  }
+}
+// 固定历史快照目前不足默认20行；独立VM仅缩小页长，以实际覆盖第二页导出。
+assert(script.includes('var pageSize = 20;'), '分页夹具需对齐业务默认页长');
+const pagingHandlers = {};
+const pagingSection = { innerHTML: '', contains: () => true, addEventListener: (name, fn) => { pagingHandlers[name] = fn; } };
+const pagingContext = {
+  ...context,
+  window: { CM: context.window.CM },
+  document: { getElementById: id => id === 'cm-reports' ? pagingSection : null }
+};
+vm.createContext(pagingContext);
+vm.runInContext(script.replace('var pageSize = 20;', 'var pageSize = 2;'), pagingContext);
+function pagingClick(action) {
+  const target = { dataset: { cmrAction: action } };
+  pagingHandlers.click({ target: { closest: () => target } });
+}
+for (const metrics of ['register', 'download']) {
+  const expected = show('conversion', { ...historyFilter, metrics });
+  pagingContext.window.CMReports.render('conversion', { ...historyFilter, metrics });
+  assert(pagingSection.innerHTML.includes('第 1 / '));
+  assert(expected.length > 3, '分页夹具须超过两行');
+  pagingClick('page-next');
+  assert(pagingSection.innerHTML.includes('第 2 / '));
+  assertTableColumns(pagingSection.innerHTML, '受控第二页/' + metrics);
+  pagingClick('export');
+  assert.equal(JSON.stringify(exported.rows), JSON.stringify(expected), '实际第二页导出全部历史平铺行');
+  pagingClick('page-prev');
+  assert(pagingSection.innerHTML.includes('第 1 / '));
 }
 
 // 每个观察周期统一用于所有行；没有分期提现时，绝不能借用累计提现计算D周期净回收率。
@@ -555,8 +594,8 @@ for (const constraints of [{}, { packageId: 'PK1001' }, { packageId: 'PK1002', v
   const sorted = detail.slice().sort((a, b) => a['注册批次日期'].localeCompare(b['注册批次日期']));
   for (let index = 1; index < sorted.length; index++) assert.equal(sorted[index]['累计注册'] - sorted[index - 1]['累计注册'], sorted[index]['注册人数']);
 }
-for (const classify of ['scene', 'type', 'media', 'packageType']) for (const breakdown of ['summary', 'channel']) {
-  const table = show('conversion', { ...historyFilter, classify, breakdown, metrics: 'register' });
+for (const filters of [{}, { media: 'Facebook' }, { packageId: 'PK1001' }, { channel: 'CH1002', packageId: 'PK1003' }]) {
+  const table = show('conversion', { ...historyFilter, ...filters, metrics: 'register' });
   for (const row of csvRecords(table)) {
     assert.equal(row['注册转化率'], percentage(row['注册人数'], row['访问人次（入口人日）']));
     assert.equal(row['访问-首充转化率'], percentage(row['首充人数'], row['访问人次（入口人日）']));

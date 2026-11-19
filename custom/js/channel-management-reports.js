@@ -22,7 +22,6 @@
   };
   var SCENES = { channel: '渠道入口', web: 'WEB大厅', app: 'APP大厅', download: '下载站' };
   var SOURCES = { link: '推广链接', pwa: 'PWA安装入口', native: '原生APP包', direct: '直接访问' };
-  var TYPES = { link: '链接推广', pwa: 'PWA推广', trial: '试玩推广', channel: '渠道推广', native: '原生APP推广', download: '下载站推广' };
   var activeView = 'promotion';
   var filters = {};
   var COMMON = ['start', 'end', 'channel', 'media', 'link', 'currency', 'packageId', 'version'];
@@ -224,17 +223,32 @@
     return options;
   }
   function button(action, label, extraClass, extra) { return '<button type="button" class="cm-btn ' + (extraClass || '') + '" data-cmr-action="' + action + '"' + (extra || '') + '>' + label + '</button>'; }
+  function reportLinkOptions(state) {
+    var options = [['', '全部广告链接']];
+    if (activeView !== 'conversion') options.push(['__unassigned', '渠道消耗未细分链接（无批次归因）']);
+    options = options.concat(Array.from(new Set(historicalChannels(state).map(function (channel) { return channel.linkName; }).filter(Boolean))).sort().map(function (link) { return [link, link]; }));
+    (state.channels || []).forEach(function (channel) { (channel.links || []).forEach(function (link) { if (!link.legacy) options.push([link.id, (link.linkName || link.name || link.id) + '（新增链接，无历史）']); }); });
+    return options;
+  }
   function filterHtml(state, f) {
     var html = '<form class="cm-filter" data-cmr-filter><label class="cm-field"><span>' + (activeView === 'updates' ? '更新日期' : '注册批次日期') + '</span><input class="cm-input" type="date" name="start" value="' + esc(f.start) + '" max="' + AS_OF + '" required></label>';
     html += '<label class="cm-field"><span>至</span><input class="cm-input" type="date" name="end" value="' + esc(f.end) + '" max="' + AS_OF + '" required></label>';
     html += selectField('渠道', 'channel', [['', '全部渠道']].concat(historicalChannels(state).map(function (channel) { return [channel.id, channel.code + ' · ' + channel.name]; })), f.channel);
+    var actions = '<button class="cm-btn primary" type="submit">查询</button>' + button('reset', '重置') + button('export', '导出CSV') + button('definitions', '数据口径');
+    if (activeView === 'conversion') {
+      html += selectField('历史广告链接', 'link', reportLinkOptions(state), f.link);
+      html += selectField('历史归因包', 'packageId', [['', '全部包'], ['__none__', '未关联包']].concat(reportPackages(state, false).map(function (pkg) { return [pkg.id, pkg.name]; })), f.packageId);
+      html += selectField('币种', 'currency', [['', '全部币种']].concat(Array.from(new Set(historicalChannels(state).map(currencyOf))).sort().map(function (currency) { return [currency, currency]; })), f.currency);
+      html += actions + '<details class="cm-report-more"' + (f.media || f.version ? ' open' : '') + '><summary>更多筛选</summary><div class="cm-filter">';
+      html += selectField('历史媒体', 'media', [['', '全部媒体']].concat(Array.from(new Set(historicalChannels(state).map(function (channel) { return channel.media; }))).sort().map(function (media) { return [media, media]; })), f.media);
+      html += selectField('归因版本', 'version', versionOptions(state, f.packageId, false), f.version);
+      return html + '</div></details></form>';
+    }
     html += selectField('历史媒体', 'media', [['', '全部媒体']].concat(Array.from(new Set(historicalChannels(state).map(function (channel) { return channel.media; }))).sort().map(function (media) { return [media, media]; })), f.media);
-    html += '<button class="cm-btn primary" type="submit">查询</button>' + button('reset', '重置') + button('export', '导出CSV') + button('definitions', '数据口径');
+    html += actions;
     var advanced = f.period !== 'current' || ['link', 'currency', 'source', 'scene', 'packageId', 'version'].some(function (key) { return Boolean(f[key]); });
     html += '<details class="cm-report-more"' + (advanced ? ' open' : '') + '><summary>更多筛选</summary><div class="cm-filter">';
-    var linkOptions = [['', '全部广告链接'], ['__unassigned', '渠道消耗未细分链接（无批次归因）']].concat(Array.from(new Set(historicalChannels(state).map(function (channel) { return channel.linkName; }).filter(Boolean))).sort().map(function (link) { return [link, link]; }));
-    (state.channels || []).forEach(function (channel) { (channel.links || []).forEach(function (link) { if (!link.legacy) linkOptions.push([link.id, (link.linkName || link.name || link.id) + '（新增链接，无历史）']); }); });
-    html += selectField('历史广告链接', 'link', linkOptions, f.link);
+    html += selectField('历史广告链接', 'link', reportLinkOptions(state), f.link);
     html += selectField('币种', 'currency', [['', '全部币种']].concat(Array.from(new Set(historicalChannels(state).map(currencyOf))).sort().map(function (currency) { return [currency, currency]; })), f.currency);
     if (activeView !== 'updates') html += selectField('注册来源', 'source', [['', '全部来源']].concat(Object.keys(SOURCES).map(function (key) { return [key, SOURCES[key]]; })), f.source);
     if (activeView === 'promotion' || activeView === 'retention' || activeView === 'detail') html += selectField('访问场景', 'scene', [['', '全部场景']].concat(Object.keys(SCENES).map(function (key) { return [key, SCENES[key]]; })), f.scene);
@@ -263,7 +277,8 @@
   function tabsHtml(kind, values, active) { return '<div class="cm-subtabs">' + values.map(function (item) { return button(kind, esc(item[1]), active === item[0] ? 'primary' : '', ' data-value="' + esc(item[0]) + '" aria-pressed="' + (active === item[0]) + '"'); }).join('') + '</div>'; }
   function csvRows(headers, rows) {
     var f = currentFilter();
-    return [headers.concat(['归因包筛选', '归因版本筛选', '历史媒体筛选', '历史广告链接筛选'])].concat(rows.map(function (row) { return row.concat([f.packageId === '__none__' ? '无包WEB访问' : f.packageId || '全部包 / 无包访问', f.version || '全部版本', f.media || '全部媒体', f.link || '全部广告链接']); }));
+    var packageFilter = f.packageId === '__none__' ? (activeView === 'conversion' ? '未关联包' : '无包WEB访问') : f.packageId || (activeView === 'conversion' ? '全部包' : '全部包 / 无包访问');
+    return [headers.concat(['归因包筛选', '归因版本筛选', '历史媒体筛选', '历史广告链接筛选'])].concat(rows.map(function (row) { return row.concat([packageFilter, f.version || '全部版本', f.media || '全部媒体', f.link || '全部广告链接']); }));
   }
   function repeatMetric(cohort, days) {
     if (!cohort.length) return { users: null, text: '暂无数据' };
@@ -335,36 +350,33 @@
   }
 
   function conversionView(state, f, daily) {
-    var packageTypes = { native: '原生APP包', pwa: 'PWA包', channel: '渠道包', fast: '极速 APP', none: '无包WEB访问' };
-    var labels = f.classify === 'type' ? TYPES : f.classify === 'packageType' ? packageTypes : f.classify === 'media' ? {} : SCENES;
-    if (f.classify === 'media') daily.forEach(function (row) { labels[row.channel.media] = row.channel.media; });
-    function categoryOf(row) { return f.classify === 'type' ? row.channel.type : f.classify === 'packageType' ? row.packageType || 'none' : f.classify === 'media' ? row.channel.media : row.scene; }
-    var categoryRows = daily.filter(function (row) { return f.category === 'all' || categoryOf(row) === f.category; });
-    var summary = f.breakdown !== 'channel';
-    var rows = groupBy(categoryRows, function (row) { return categoryOf(row) + '|' + row.currency + (summary ? '' : '|' + row.channelId); }).map(function (group) { return { category: categoryOf(group.rows[0]), currency: group.rows[0].currency, channel: group.rows[0].channel, total: sumRows(group.rows) }; });
-    var categoryTitle = f.classify === 'type' ? '历史推广类型' : f.classify === 'media' ? '历史媒体' : f.classify === 'packageType' ? '历史包类型' : '首次引流入口';
-    var controls = tabsHtml('conversion-classify', [['scene', '按访问场景'], ['type', '按推广类型'], ['media', '按历史媒体'], ['packageType', '按历史包类型']], f.classify) + tabsHtml('conversion-breakdown', [['summary', '分类汇总'], ['channel', '渠道明细']], f.breakdown) + tabsHtml('conversion-metrics', [['register', '注册与付费'], ['download', '下载与安装']], f.metrics) + tabsHtml('conversion-category', [['all', '全部分类']].concat(Object.keys(labels).map(function (key) { return [key, labels[key]]; })), f.category);
-    function csvLead(row) { return summary ? [labels[row.category], row.currency] : [labels[row.category], row.channel.code, row.channel.name, row.currency]; }
-    function tableLead(row) { return summary ? [esc(labels[row.category]), esc(row.currency)] : [esc(labels[row.category]), channelCell(row.channel), esc(row.currency)]; }
-    var csvHeaders = summary ? [categoryTitle, '币种'] : [categoryTitle, '渠道编码', '渠道名称', '币种'];
-    var tableHeaders = summary ? [categoryTitle, '币种'] : [categoryTitle, '渠道', '币种'];
+    var packages = historicalPackages(state);
+    var rows = groupBy(daily, function (row) { return JSON.stringify([row.channelId, row.channel.linkName, row.packageId, row.currency]); }).map(function (group) {
+      var first = group.rows[0];
+      var pkg = packages.find(function (item) { return item.id === first.packageId; });
+      return { channel: first.channel, link: first.channel.linkName || '未关联链接', packageId: first.packageId, packageName: pkg ? pkg.name : first.packageId || '未关联包', currency: first.currency, total: sumRows(group.rows) };
+    }).sort(function (a, b) { return a.channel.code.localeCompare(b.channel.code) || a.link.localeCompare(b.link) || a.packageId.localeCompare(b.packageId); });
+    var controls = tabsHtml('conversion-metrics', [['register', '注册与付费'], ['download', '下载与安装']], f.metrics);
+    function csvLead(row) { return [row.channel.code, row.channel.name, row.link, row.packageId, row.packageName, row.currency]; }
+    function tableLead(row) { return [channelCell(row.channel), esc(row.link), esc(row.packageName) + (row.packageId ? '<div class="cm-cell-sub">' + esc(row.packageId) + '</div>' : ''), esc(row.currency)]; }
+    var csvHeaders = ['渠道编码', '渠道名称', '广告链接', '包ID', '包名称', '币种'];
+    var tableHeaders = ['渠道', '链接', '包', '币种'];
     var page = paginate(rows, f);
     if (f.metrics === 'download') {
-      activeRows = csvRows(csvHeaders.concat(['下载入口曝光人次', '点击下载人次', '下载点击率', 'PWA点击人次', 'PWA安装人次', 'PWA安装率', '原生下载点击人次', '原生首次启动人次', '原生安装率', '渠道包下载点击人次', '渠道包首次启动人次', '渠道包安装率', '极速 APP下载点击人次', '极速 APP首次启动人次', '极速 APP安装率']), rows.map(function (row) {
+      activeRows = csvRows(csvHeaders.concat(['下载入口曝光人次', '点击下载人次', '下载点击率', '安装 / 首次启动人次', '安装转化率']), rows.map(function (row) {
         var t = row.total;
-        return csvLead(row).concat([t.exposure, t.downloads, rate(t.downloads, t.exposure), t.pwaClicks, t.pwa, rate(t.pwa, t.pwaClicks), t.nativeClicks, t.nativeStarts, rate(t.nativeStarts, t.nativeClicks), t.channelClicks, t.channelStarts, rate(t.channelStarts, t.channelClicks), t.fastClicks, t.fastStarts, rate(t.fastStarts, t.fastClicks)]);
+        return csvLead(row).concat([t.exposure, t.downloads, rate(t.downloads, t.exposure), t.pwa + t.native, rate(t.pwa + t.native, t.downloads)]);
       }));
-      return controls + note('各币种独立汇总，跨日为人次加总。点击率 = 同入口点击 / 曝光；安装率 = 对应首次启动 / 点击。PWA独立计算；APP大厅无下载曝光，显示—。') + table(tableHeaders.concat(['下载曝光人次', '点击下载人次', '点击率', 'PWA点击人次', 'PWA安装人次', 'PWA安装率', '原生点击人次', '原生启动人次', '原生安装率', '渠道包点击人次', '渠道包启动人次', '渠道包安装率', '极速 APP点击人次', '极速 APP启动人次', '极速 APP安装率']), page.rows.map(function (row) {
+      return controls + note('每行按渠道、链接、包汇总，各币种独立。点击率 = 点击下载 / 下载曝光；安装转化率 = 本包安装或首次启动 / 本包点击下载。PWA统计安装，其他安装包统计首次启动；跨日为人次加总，分母为0显示“—”。') + table(tableHeaders.concat(['下载曝光人次', '点击下载人次', '点击率', '安装 / 首次启动人次', '安装转化率']), page.rows.map(function (row) {
         var t = row.total;
-        if (!t.exposure) return tableLead(row).concat(Array(15).fill('—'));
-        return tableLead(row).concat([number(t.exposure), number(t.downloads), rate(t.downloads, t.exposure), number(t.pwaClicks), number(t.pwa), rate(t.pwa, t.pwaClicks), number(t.nativeClicks), number(t.nativeStarts), rate(t.nativeStarts, t.nativeClicks), number(t.channelClicks), number(t.channelStarts), rate(t.channelStarts, t.channelClicks), number(t.fastClicks), number(t.fastStarts), rate(t.fastStarts, t.fastClicks)]);
+        return tableLead(row).concat([number(t.exposure), number(t.downloads), rate(t.downloads, t.exposure), number(t.pwa + t.native), rate(t.pwa + t.native, t.downloads)]);
       })) + page.html;
     }
     activeRows = csvRows(csvHeaders.concat(['访问人次（入口人日）', '注册人数', '注册转化率', '下载点击人次', 'PWA安装人次', '安装包首次启动人次', '首充人数', '访问-首充转化率', '注册-首充转化率', '充值人数', '充值转化率']), rows.map(function (row) {
       var t = row.total;
       return csvLead(row).concat([t.visits, t.registrations, rate(t.registrations, t.visits), t.downloads, t.pwa, t.native, t.firstPay, rate(t.firstPay, t.visits), rate(t.firstPay, t.registrations), t.payerUsers, rate(t.payerUsers, t.registrations)]);
     }));
-    return controls + note('各币种独立比较；分类比例由合计分子 / 合计分母重算。后续转化保留首次入口归因，访问为入口人日加总；充值转化率 = 去重充值人数 / 注册人数。样本首充均在注册日，独立统计的充值人数与首充人数同值；可切换渠道明细。') + table(tableHeaders.concat(['访问人次（入口人日）', '注册人数', '注册转化率', '下载点击人次', 'PWA安装人次', '安装包首次启动人次', '首充人数', '访问-首充转化率', '注册-首充转化率', '充值人数', '充值转化率']), page.rows.map(function (row) {
+    return controls + note('每行按渠道、链接、包汇总，各币种独立；未关联包的访问与转化单独保留。转化率由本行合计人数重算，访问为入口人日加总；充值转化率 = 去重充值人数 / 注册人数。样本首充均在注册日，充值人数与首充人数同值。') + table(tableHeaders.concat(['访问人次（入口人日）', '注册人数', '注册转化率', '下载点击人次', 'PWA安装人次', '安装包首次启动人次', '首充人数', '访问-首充转化率', '注册-首充转化率', '充值人数', '充值转化率']), page.rows.map(function (row) {
       var t = row.total;
       return tableLead(row).concat([number(t.visits), number(t.registrations), rate(t.registrations, t.visits), number(t.downloads), number(t.pwa), number(t.native), number(t.firstPay), rate(t.firstPay, t.visits), rate(t.firstPay, t.registrations), number(t.payerUsers), rate(t.payerUsers, t.registrations)]);
     })) + page.html;
@@ -559,6 +571,11 @@
     if (!validDate(f.start) || !validDate(f.end) || f.start > f.end || f.end > AS_OF) Object.assign(f, defaults());
     if (view === 'roi' || view === 'updates' || view === 'conversion' || view === 'daily') f.scene = '';
     if (view === 'updates') f.source = '';
+    if (view === 'conversion') {
+      // 旧分类链接统一进入平铺报表，移除已经隐藏的分类及来源条件。
+      f.source = ''; f.classify = ''; f.breakdown = ''; f.category = 'all';
+      if (['register', 'download'].indexOf(f.metrics) === -1) f.metrics = 'register';
+    }
     share(f);
     if (api().navigateContext) api().navigateContext(navigationContext());
     if (view === 'detail') {
@@ -592,7 +609,7 @@
       '注册转化率=注册人数/访问人次；访问-首充转化率=首充人数/访问人次；注册-首充转化率=首充人数/注册人数；充值转化率=批次去重充值人数/注册人数；人均充值=批次累计充值/去重充值人数，明细选择D周期时按对应周期充值计算。充值人数独立按支付用户归属去重，当前样本全部首充发生于注册日，因此与首充人数同值，不代表生产环境两者恒等。当日首充人数按首充事件日期统计，批次累计首充人数按注册批次累计至快照日，生产需分别接入注册日期与首充发生日期；首充成本即原充值成本=消耗/批次累计首充人数。累计注册从演示历史起点2026-11-01计至查询结束日，明细滚动至本行日期；保留渠道、媒体、来源、场景、币种、包版本等筛选，不受查询开始日限制，不按日求和。当前演示快照未提供提现次数，需接入提现事件数；不得根据提现金额反推次数，表格与CSV显示—。',
       '活跃留存=注册后第N日活跃人数/批次注册人数，与复充占比不同。观察周期未满显示—，悬停提示原因；零分母也显示—。已完成周期且人数为0时，人数显示0，有效分母下比率显示0.00%。广告留存使用事件时广告链接归因；每个原始渠道当前演示一条历史广告链接。',
       '充值回收率=对应注册批次指定周期累计充值/同渠道同币种同日期范围消耗；净回收率=(充值-提现)/消耗，并非利润。D0为注册当日，D1含当日及次日，其他周期同理。观察周期未全部完成、消耗为0时显示—；不同币种不合并。历史快照只有截至快照日累计提现，仅累计周期计算净回收率，D周期的提现与净回收率均显示—。消耗没有包/版本归因时，包消耗、成本和回收率均显示—，不以全渠道消耗替代；具体链接筛选若范围有渠道级未细分消耗，也不分摊，消耗与链接成本 / 回收率显示—。未细分链接筛选只展示相应消耗，不冒充注册批次。消耗通过独立广告消耗页维护，金额使用报表币种，不重复换汇。',
-      'APP更新来自原生包、渠道包、极速 APP固定历史发布记录；目标包版本上线前无事件，新包新版本不补历史。阶段人数按同日、渠道、目标包版本去重，成功率=成功/开始更新，跨日不去重。PWA发布不等于APP更新。分类汇总按类别及币种独立合计，比例由汇总分子/分母重算；下载曝光、点击及安装跨日均为人次，不冒充区间去重人数。'
+      'APP更新来自原生包、渠道包、极速 APP固定历史发布记录；目标包版本上线前无事件，新包新版本不补历史。阶段人数按同日、渠道、目标包版本去重，成功率=成功/开始更新，跨日不去重。PWA发布不等于APP更新。分类转化直接按渠道、历史广告链接、历史归因包及币种平铺，不再拆分访问场景或推广类型；未关联包单列，比例由汇总分子/分母重算。下载安装指标按每个包合计，PWA用安装人次，其他安装包用首次启动人次；曝光、点击及安装跨日均为人次，不冒充区间去重人数。'
     ];
     infoDialog('数据口径与演示范围', '<div class="cm-form-section">' + paragraphs.map(function (paragraph) { return '<p>' + esc(paragraph) + '</p>'; }).join('') + '</div>', true);
   }
@@ -613,10 +630,7 @@
     else if (action === 'page-prev' || action === 'page-next') { f.page += action === 'page-next' ? 1 : -1; reRender(); }
     else if (action === 'retention-group') { f.group = target.dataset.value; f.page = 1; reRender(); }
     else if (action === 'promotion-metrics') { f.promotionMetrics = target.dataset.value; f.page = 1; reRender(); }
-    else if (action === 'conversion-classify') { f.classify = target.dataset.value; f.category = 'all'; f.page = 1; reRender(); }
-    else if (action === 'conversion-breakdown') { f.breakdown = target.dataset.value; f.page = 1; reRender(); }
     else if (action === 'conversion-metrics') { f.metrics = target.dataset.value; f.page = 1; reRender(); }
-    else if (action === 'conversion-category') { f.category = target.dataset.value; f.page = 1; reRender(); }
     else if (action === 'daily-detail' || action === 'roi-detail' || action === 'cohort-detail') {
       var origin = navigationContext({ returnUrl: '' });
       var context = navigationContext({ channel: target.dataset.channel, returnView: activeView, returnUrl: api().navigateUrl ? api().navigateUrl(activeView, origin) : '', promotionMetrics: action === 'roi-detail' || activeView === 'daily' ? 'funds' : f.promotionMetrics, period: activeView === 'roi' ? f.period : 'current' });
