@@ -53,13 +53,13 @@
         <nav class="crumb"><span>游戏中心</span><b>/</b><strong>子游戏列表</strong></nav>
 
         <section class="toolbar-panel">
-          <form class="filter-grid">
-            <label>供应商:<select><option>请选择厂商</option><option>GX-INR</option><option>HG-USD</option><option>GB-USD</option></select></label>
-            <label>游戏类型:<select><option>请选择游戏类型</option><option>电子</option><option>区块链</option><option>捕鱼</option></select></label>
-            <label>游戏名称:<input type="text" placeholder="请输入游戏名称"/></label>
-            <label>游戏开关:<select><option>请选择游戏开关</option><option>开启</option><option>关闭</option></select></label>
-            <label>热门开关:<select><option>请选择热门开关</option><option>开启</option><option>关闭</option></select></label>
-            <button class="primary-btn" type="button">搜索</button>
+          <form class="filter-grid" id="gameFilterForm">
+            <label>供应商:<select id="filterSupplier"><option value="">全部供应商</option><option>GX-INR</option><option>HG-USD</option><option>GB-USD</option></select></label>
+            <label>游戏类型:<select id="filterType"><option value="">全部游戏类型</option><option>电子</option><option>区块链</option><option>捕鱼</option></select></label>
+            <label>游戏名称:<input id="filterName" type="text" placeholder="请输入游戏名称"/></label>
+            <label>游戏开关:<select id="filterEnabled"><option value="">全部状态</option><option value="on">开启</option><option value="off">关闭</option></select></label>
+            <label>游戏标签:<select id="filterTag"><option value="">全部标签</option><option value="hot">HOT</option><option value="new">NEW</option><option value="none">无标签</option></select></label>
+            <button class="primary-btn" type="submit">搜索</button>
             <button class="plain-btn" type="reset">重置</button>
           </form>
           <div class="actions">
@@ -68,8 +68,9 @@
               <div class="batch-menu" id="batchMenu" hidden>
                 <button type="button" data-batch="enabled:on">游戏开关-开启</button>
                 <button type="button" data-batch="enabled:off">游戏开关-关闭</button>
-                <button type="button" data-batch="hot:on">热门开关-开启</button>
-                <button type="button" data-batch="hot:off">热门开关-关闭</button>
+                <button type="button" data-batch="tag:hot">标签-设为 HOT</button>
+                <button type="button" data-batch="tag:new">标签-设为 NEW</button>
+                <button type="button" data-batch="tag:none">标签-清除标签</button>
               </div>
             </div>
             <button class="plain-btn" type="button">同步游戏</button>
@@ -82,16 +83,36 @@
           <table class="data-table">
             <thead>
               <tr>
-                <th><input id="selectAllRows" type="checkbox"/></th><th>排序</th><th>游戏ID</th><th>游戏名称</th><th>供应商</th><th>厂商</th><th>游戏类型</th><th>热门开关</th><th>游戏开关</th><th>方形图</th><th>竖版图</th><th>操作</th>
+                <th><input id="selectAllRows" type="checkbox" aria-label="全选当前列表"/></th><th>排序</th><th>游戏ID</th><th>游戏名称</th><th>供应商</th><th>厂商</th><th>游戏类型</th><th>游戏标签</th><th>游戏开关</th><th>方形图</th><th>竖版图</th><th>操作</th>
               </tr>
             </thead>
             <tbody id="gameRows"><tr><td colspan="12">游戏列表加载中，请稍候。若未显示，请刷新页面。</td></tr></tbody>
           </table>
         </section>
 
-        <footer class="pager"><span>|&lt;</span><span>&lt;&lt;</span><span>&lt;</span><strong>1</strong><span>/ 15</span><span>&gt;</span><span>&gt;&gt;</span><span>&gt;|</span><button>20条/页</button><span>共 281 条记录</span></footer>
+        <footer class="pager"><span>|&lt;</span><span>&lt;&lt;</span><span>&lt;</span><strong>1</strong><span>/ 1</span><span>&gt;</span><span>&gt;&gt;</span><span>&gt;|</span><button>20条/页</button><span id="gameTotal">共 7 条记录</span></footer>
 
+        <div class="subgame-notice" id="gameNotice" role="status" hidden></div>
         <div class="image-transfer-notice" id="imageTransferNotice" role="status" hidden></div>
+
+        <div class="modal-mask tag-modal-mask" id="tagModal" hidden>
+          <section class="tag-modal" role="dialog" aria-modal="true" aria-labelledby="tagTitle" aria-describedby="tagTarget tagHelp" tabindex="-1">
+            <form id="tagForm">
+              <header><h2 id="tagTitle">设置游戏标签</h2><button class="icon-close" type="button" data-tag-close aria-label="关闭标签设置">×</button></header>
+              <div class="tag-modal-body">
+                <p class="tag-target" id="tagTarget"></p>
+                <fieldset class="subgame-tag-field"><legend>游戏标签</legend><div class="subgame-tag-options">
+                  <label><input type="radio" name="gameTag" value="none" checked/><span>无标签</span></label>
+                  <label><input type="radio" name="gameTag" value="hot"/><span class="subgame-tag subgame-tag-hot">HOT</span></label>
+                  <label><input type="radio" name="gameTag" value="new"/><span class="subgame-tag subgame-tag-new">NEW</span></label>
+                </div></fieldset>
+                <p class="tag-help" id="tagHelp">HOT 与 NEW 只能选择一个，选择“无标签”可清除已有标签。</p>
+                <p class="subgame-form-error" id="tagError" role="alert" hidden></p>
+              </div>
+              <footer><button class="plain-btn" type="button" data-tag-close>取消</button><button class="primary-btn" type="submit">保存</button></footer>
+            </form>
+          </section>
+        </div>
 
         <div class="modal-mask image-transfer-mask" id="imageExportModal" hidden>
           <section class="image-transfer-modal" role="dialog" aria-modal="true" aria-labelledby="imageExportTitle" tabindex="-1">
@@ -132,22 +153,27 @@
         </div>
 
         <div class="modal-mask" id="editModal" hidden>
-          <section class="edit-modal" role="dialog" aria-modal="true" aria-labelledby="editTitle">
-            <header><h2 id="editTitle">编辑子游戏</h2><button class="icon-close" type="button" data-close>×</button></header>
+          <section class="edit-modal" role="dialog" aria-modal="true" aria-labelledby="editTitle" tabindex="-1">
+            <header><h2 id="editTitle">编辑子游戏</h2><button class="icon-close" type="button" data-close aria-label="关闭编辑弹窗">×</button></header>
             <div class="modal-body">
               <label class="form-row upload-row"><span>方形图</span><div><div class="image-card"><img id="modalIcon" alt="方形图"/><button class="remove" type="button">×</button></div><p>请上传180×180或等比例，PNG/JPG/GIF格式小于100KB的图片</p></div></label>
               <label class="form-row upload-row"><span>竖版图</span><div><div class="image-card tall"><img id="modalActiveIcon" alt="竖版图"/><button class="remove" type="button">×</button></div><p>请上传320×427或等比例，PNG/JPG/GIF格式小于100KB的图片</p></div></label>
               <label class="form-row"><span>排序</span><div class="stepper"><input id="modalSort" type="number" value="1"/><button type="button">＋</button><button type="button">－</button></div></label>
-              <label class="form-row switch-row"><span>热门</span><input id="modalHot" class="switch-input" type="checkbox"/><i></i><em>否</em></label>
-              <label class="form-row switch-row"><span>状态</span><input id="modalStatus" class="switch-input" type="checkbox" checked/><i></i><em>启用</em></label>
+              <fieldset class="subgame-tag-field edit-tag-field"><legend>游戏标签</legend><div class="subgame-tag-options">
+                <label><input type="radio" name="editGameTag" value="none" checked/><span>无标签</span></label>
+                <label><input type="radio" name="editGameTag" value="hot"/><span class="subgame-tag subgame-tag-hot">HOT</span></label>
+                <label><input type="radio" name="editGameTag" value="new"/><span class="subgame-tag subgame-tag-new">NEW</span></label>
+              </div><p class="tag-help">只能设置一个标签。</p></fieldset>
+              <label class="form-row switch-row"><span>状态</span><input id="modalStatus" class="switch-input" type="checkbox" checked/><i></i><em id="modalStatusText">启用</em></label>
+              <p class="subgame-form-error" id="editError" role="alert" hidden></p>
             </div>
-            <footer><button class="plain-btn" type="button" data-close>取消</button><button class="primary-btn" type="button" data-close>确定</button></footer>
+            <footer><button class="plain-btn" type="button" data-close>取消</button><button class="primary-btn" id="saveGameEdit" type="button">保存</button></footer>
           </section>
         </div>
       </div>
     </div>
-    <script src="custom/js/子游戏列表.js"></script>
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/子游戏列表.js"></script>
   </body>
 </html>

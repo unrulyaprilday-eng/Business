@@ -120,13 +120,13 @@
   var fallbackActiveIcon = "data:image/svg+xml;utf8," + encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' width='320' height='427'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop stop-color='#0f1b2d'/><stop offset='1' stop-color='#b35b32'/></linearGradient></defs><rect width='320' height='427' fill='url(#g)'/><text x='160' y='76' text-anchor='middle' font-size='34' font-family='Arial' font-weight='700' fill='#ffd45d'>BLACK MYTH</text><text x='160' y='120' text-anchor='middle' font-size='46' font-family='Arial' font-weight='700' fill='#fff'>WUKONG</text><circle cx='160' cy='245' r='76' fill='#573320'/></svg>");
 
   var games = [
-    { sort: 999, id: "slot-yellowbat::tigerboom", name: "Tiger Boom", supplier: "GX-INR", vendor: "GXgame", type: "电子", hot: true, enabled: true, icon: fallbackIcon, activeIcon: "" },
-    { sort: 3, id: "60096", name: "Crash Touchdown", supplier: "GB-USD", vendor: "JL", type: "区块链", hot: false, enabled: true, icon: "", activeIcon: "" },
-    { sort: 1, id: "wg_3025", name: "Black Myth: Wukong", supplier: "HG-USD", vendor: "WG", type: "电子", hot: false, enabled: true, icon: fallbackIcon, activeIcon: fallbackActiveIcon },
-    { sort: 0, id: "wg_3032", name: "Mahjong Ways 2", supplier: "HG-USD", vendor: "WG", type: "电子", hot: false, enabled: true, icon: "", activeIcon: "" },
-    { sort: 0, id: "wg_3031", name: "Fortune Tiger", supplier: "HG-USD", vendor: "WG", type: "电子", hot: false, enabled: true, icon: "", activeIcon: "" },
-    { sort: 0, id: "wg_3029", name: "Mahjong Ways", supplier: "HG-USD", vendor: "WG", type: "电子", hot: false, enabled: true, icon: "", activeIcon: "" },
-    { sort: 0, id: "wg_3028", name: "Dragon's Treasure2", supplier: "HG-USD", vendor: "WG", type: "电子", hot: true, enabled: true, icon: "", activeIcon: "" }
+    { sort: 999, id: "slot-yellowbat::tigerboom", name: "Tiger Boom", supplier: "GX-INR", vendor: "GXgame", type: "电子", tag: "hot", enabled: true, icon: fallbackIcon, activeIcon: "" },
+    { sort: 3, id: "60096", name: "Crash Touchdown", supplier: "GB-USD", vendor: "JL", type: "区块链", tag: "none", enabled: true, icon: "", activeIcon: "" },
+    { sort: 1, id: "wg_3025", name: "Black Myth: Wukong", supplier: "HG-USD", vendor: "WG", type: "电子", tag: "new", enabled: true, icon: fallbackIcon, activeIcon: fallbackActiveIcon },
+    { sort: 0, id: "wg_3032", name: "Mahjong Ways 2", supplier: "HG-USD", vendor: "WG", type: "电子", tag: "none", enabled: true, icon: "", activeIcon: "" },
+    { sort: 0, id: "wg_3031", name: "Fortune Tiger", supplier: "HG-USD", vendor: "WG", type: "电子", tag: "none", enabled: true, icon: "", activeIcon: "" },
+    { sort: 0, id: "wg_3029", name: "Mahjong Ways", supplier: "HG-USD", vendor: "WG", type: "电子", tag: "none", enabled: true, icon: "", activeIcon: "" },
+    { sort: 0, id: "wg_3028", name: "Dragon's Treasure2", supplier: "HG-USD", vendor: "WG", type: "电子", tag: "hot", enabled: true, icon: "", activeIcon: "" }
   ];
 
   var rows = document.getElementById("gameRows");
@@ -137,11 +137,126 @@
   var modalIcon = document.getElementById("modalIcon");
   var modalActiveIcon = document.getElementById("modalActiveIcon");
   var modalSort = document.getElementById("modalSort");
-  var modalHot = document.getElementById("modalHot");
   var modalStatus = document.getElementById("modalStatus");
+  var tagModal = document.getElementById("tagModal");
+  var tagForm = document.getElementById("tagForm");
+  var filterForm = document.getElementById("gameFilterForm");
+  var activeFilters = {};
+  var editingIndex = -1;
+  var tagTargets = [];
+  var returnFocus = null;
+  var previousOverflow = "";
+  var noticeTimer;
+  var storageKey = "business.subgames.config.v1";
+
+  function showNotice(text, error) {
+    var element = document.getElementById("gameNotice");
+    window.clearTimeout(noticeTimer);
+    element.textContent = text;
+    element.classList.toggle("is-error", !!error);
+    element.hidden = false;
+    noticeTimer = window.setTimeout(function () { element.hidden = true; }, 4500);
+  }
+
+  function formError(id, text) {
+    var element = document.getElementById(id);
+    element.textContent = text;
+    element.hidden = !text;
+  }
+
+  function validTag(tag) {
+    return tag === "none" || tag === "hot" || tag === "new";
+  }
+
+  function loadSavedGames() {
+    try {
+      var saved = JSON.parse(window.localStorage.getItem(storageKey) || "[]");
+      if (!Array.isArray(saved) || saved.some(function (item) {
+        return !item || !validTag(item.tag) || !Number.isSafeInteger(item.sort) || item.sort < 0 || typeof item.enabled !== "boolean";
+      })) throw new Error("Invalid configuration");
+      games.forEach(function (game) {
+        var item = saved.find(function (entry) { return entry.id === game.id && entry.supplier === game.supplier && entry.vendor === game.vendor; });
+        if (item) {
+          game.tag = item.tag;
+          game.sort = item.sort;
+          game.enabled = item.enabled;
+        }
+      });
+    } catch (error) {
+      showNotice("已保存配置读取失败，请检查浏览器存储后重试。", true);
+    }
+  }
+
+  // Commit configuration only after storage succeeds; images remain independent.
+  function saveChanges(changes, errorId) {
+    var next = games.map(function (game, index) {
+      var change = changes.find(function (item) { return item.index === index; });
+      return Object.assign({ id: game.id, supplier: game.supplier, vendor: game.vendor, sort: game.sort, tag: game.tag, enabled: game.enabled }, change ? change.values : {});
+    });
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify(next));
+    } catch (error) {
+      var text = "保存失败，请检查浏览器存储空间或权限后重试。";
+      if (errorId) formError(errorId, text);
+      else showNotice(text, true);
+      return false;
+    }
+    changes.forEach(function (change) { Object.assign(games[change.index], change.values); });
+    return true;
+  }
+
+  function matchesFilters(game) {
+    return (!activeFilters.supplier || game.supplier === activeFilters.supplier) &&
+      (!activeFilters.type || game.type === activeFilters.type) &&
+      (!activeFilters.name || game.name.toLowerCase().indexOf(activeFilters.name) !== -1) &&
+      (!activeFilters.enabled || game.enabled === (activeFilters.enabled === "on")) &&
+      (!activeFilters.tag || game.tag === activeFilters.tag);
+  }
+
+  function chooseTag(layer, value) {
+    layer.querySelectorAll('input[type="radio"]').forEach(function (input) { input.checked = input.value === value; });
+  }
+
+  function selectedTag(layer) {
+    var input = layer.querySelector('input[type="radio"]:checked');
+    return input ? input.value : "";
+  }
+
+  function openLayer(layer) {
+    closeBatchMenu();
+    returnFocus = document.activeElement;
+    previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    layer.hidden = false;
+    layer.querySelector('[role="dialog"]').focus();
+  }
+
+  function closeLayer(layer) {
+    layer.hidden = true;
+    document.body.style.overflow = previousOverflow;
+    if (returnFocus && returnFocus.isConnected) returnFocus.focus();
+    else batchToggle.focus();
+    if (layer === modal) editingIndex = -1;
+    if (layer === tagModal) tagTargets = [];
+  }
+
+  function openTagModal(indices, value, batch) {
+    tagTargets = indices.slice();
+    chooseTag(tagForm, value);
+    document.getElementById("tagTitle").textContent = batch ? "批量设置游戏标签" : "设置游戏标签";
+    document.getElementById("tagTarget").textContent = batch ? "已选择 " + indices.length + " 个游戏" : games[indices[0]].name + "（" + games[indices[0]].id + "）";
+    document.getElementById("tagHelp").textContent = batch ? "保存后，所选游戏的原有标签将统一替换；选择“无标签”将清除原有标签。" : "HOT 与 NEW 只能选择一个，选择“无标签”可清除已有标签。";
+    formError("tagError", "");
+    openLayer(tagModal);
+  }
 
   function switchCell(value) {
-    return "<span class=\"switch" + (value ? " on" : "") + "\"></span>";
+    return "<span class=\"switch" + (value ? " on" : "") + "\" role=\"img\" aria-label=\"" + (value ? "开启" : "关闭") + "\"></span>";
+  }
+
+  function tagCell(game, index) {
+    var badge = game.tag === "none" ? '<span class="subgame-no-tag">无标签</span>' : '<span class="subgame-tag subgame-tag-' + game.tag + '">' + game.tag.toUpperCase() + '</span>';
+    return '<div class="subgame-tag-cell">' + badge + '<button class="tag-edit-link" type="button" data-index="' + index + '" aria-label="设置 ' + escapeHtml(game.name) + ' 的游戏标签">设置</button></div>';
   }
 
   function imageCell(src, active) {
@@ -149,35 +264,40 @@
   }
 
   function renderRows() {
+    games.forEach(function (game) { if (!matchesFilters(game)) game.selected = false; });
     rows.innerHTML = games.map(function (game, index) {
+      if (!matchesFilters(game)) return "";
       return "<tr" + (game.selected ? " class=\"is-selected\"" : "") + ">" +
         "<td><input class=\"row-check\" type=\"checkbox\" data-index=\"" + index + "\"" + (game.selected ? " checked" : "") + "></td>" +
         "<td>" + game.sort + "</td>" +
-        "<td>" + game.id + "</td>" +
-        "<td>" + game.name + "</td>" +
+        "<td>" + escapeHtml(game.id) + "</td>" +
+        "<td>" + escapeHtml(game.name) + "</td>" +
         "<td>" + game.supplier + "</td>" +
         "<td>" + game.vendor + "</td>" +
         "<td>" + game.type + "</td>" +
-        "<td>" + switchCell(game.hot) + "</td>" +
+        "<td>" + tagCell(game, index) + "</td>" +
         "<td>" + switchCell(game.enabled) + "</td>" +
         "<td>" + imageCell(game.icon, false) + "</td>" +
         "<td>" + imageCell(game.activeIcon, true) + "</td>" +
         "<td><button class=\"edit-link\" type=\"button\" data-index=\"" + index + "\">修改</button></td>" +
       "</tr>";
-    }).join("");
+    }).join("") || '<tr><td colspan="12">暂无符合筛选条件的游戏，请调整条件或重置。</td></tr>';
+    document.getElementById("gameTotal").textContent = "共 " + games.filter(matchesFilters).length + " 条记录";
     updateSelectAllState();
   }
 
   function getSelectedGames() {
     return games.filter(function (game) {
-      return game.selected;
+      return game.selected && matchesFilters(game);
     });
   }
 
   function updateSelectAllState() {
     var selectedCount = getSelectedGames().length;
-    selectAllRows.checked = games.length > 0 && selectedCount === games.length;
-    selectAllRows.indeterminate = selectedCount > 0 && selectedCount < games.length;
+    var visibleCount = games.filter(matchesFilters).length;
+    selectAllRows.disabled = !visibleCount;
+    selectAllRows.checked = visibleCount > 0 && selectedCount === visibleCount;
+    selectAllRows.indeterminate = selectedCount > 0 && selectedCount < visibleCount;
   }
 
   function closeBatchMenu() {
@@ -186,30 +306,42 @@
   }
 
   function applyBatch(action) {
+    var indices = [];
+    games.forEach(function (game, index) { if (game.selected && matchesFilters(game)) indices.push(index); });
+    if (!indices.length) {
+      showNotice("请先勾选需要操作的游戏。", true);
+      return;
+    }
     var parts = action.split(":");
-    var key = parts[0];
-    var value = parts[1] === "on";
-    games.forEach(function (game) {
-      if (game.selected) {
-        game[key] = value;
-      }
-    });
-    renderRows();
+    if (parts[0] === "tag" && validTag(parts[1])) {
+      openTagModal(indices, parts[1], true);
+    } else if (parts[0] === "enabled" && (parts[1] === "on" || parts[1] === "off")) {
+      if (!saveChanges(indices.map(function (index) { return { index: index, values: { enabled: parts[1] === "on" } }; }))) return;
+      renderRows();
+      showNotice("已更新 " + indices.length + " 个游戏的游戏开关。");
+    }
   }
 
-  function openModal(game) {
+  function openModal(index) {
+    var game = games[index];
+    editingIndex = index;
     modalIcon.src = game.icon || fallbackIcon;
     modalActiveIcon.src = game.activeIcon || fallbackActiveIcon;
     modalSort.value = game.sort;
-    modalHot.checked = game.hot;
+    chooseTag(modal, game.tag);
     modalStatus.checked = game.enabled;
-    modal.hidden = false;
+    document.getElementById("modalStatusText").textContent = game.enabled ? "启用" : "停用";
+    formError("editError", "");
+    openLayer(modal);
   }
 
   rows.addEventListener("click", function (event) {
     var target = event.target;
     if (target && target.matches(".edit-link")) {
-      openModal(games[Number(target.getAttribute("data-index"))]);
+      openModal(Number(target.getAttribute("data-index")));
+    } else if (target && target.matches(".tag-edit-link")) {
+      var index = Number(target.getAttribute("data-index"));
+      openTagModal([index], games[index].tag, false);
     }
   });
 
@@ -223,7 +355,7 @@
 
   selectAllRows.addEventListener("change", function () {
     games.forEach(function (game) {
-      game.selected = selectAllRows.checked;
+      game.selected = matchesFilters(game) && selectAllRows.checked;
     });
     renderRows();
   });
@@ -250,8 +382,81 @@
 
   modal.addEventListener("click", function (event) {
     if (event.target === modal || event.target.hasAttribute("data-close")) {
-      modal.hidden = true;
+      closeLayer(modal);
     }
+  });
+
+  modalStatus.addEventListener("change", function () {
+    document.getElementById("modalStatusText").textContent = modalStatus.checked ? "启用" : "停用";
+  });
+
+  document.getElementById("saveGameEdit").addEventListener("click", function () {
+    var sort = Number(modalSort.value);
+    var tag = selectedTag(modal);
+    if (!modalSort.value.trim() || !Number.isSafeInteger(sort) || sort < 0) {
+      formError("editError", "排序请输入大于或等于 0 的整数。");
+      return;
+    }
+    if (editingIndex < 0 || !validTag(tag)) return;
+    if (!saveChanges([{ index: editingIndex, values: { sort: sort, tag: tag, enabled: modalStatus.checked } }], "editError")) return;
+    renderRows();
+    closeLayer(modal);
+    showNotice("子游戏设置已保存。");
+  });
+
+  tagForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    var tag = selectedTag(tagForm);
+    if (!tagTargets.length || !validTag(tag)) return;
+    var count = tagTargets.length;
+    if (!saveChanges(tagTargets.map(function (index) { return { index: index, values: { tag: tag } }; }), "tagError")) return;
+    renderRows();
+    closeLayer(tagModal);
+    showNotice("已" + (tag === "none" ? "清除 " : "设置 ") + count + " 个游戏的标签" + (tag === "none" ? "。" : "为 " + tag.toUpperCase() + "。"));
+  });
+
+  tagModal.addEventListener("click", function (event) {
+    if (event.target === tagModal || event.target.closest("[data-tag-close]")) closeLayer(tagModal);
+  });
+
+  document.addEventListener("keydown", function (event) {
+    var layer = !tagModal.hidden ? tagModal : !modal.hidden ? modal : null;
+    if (event.key === "Escape") {
+      closeBatchMenu();
+      if (layer) closeLayer(layer);
+    } else if (event.key === "Tab" && layer) {
+      var controls = Array.from(layer.querySelectorAll("button, input")).filter(function (input) { return !input.disabled; });
+      var first = controls[0];
+      var last = controls[controls.length - 1];
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === layer.querySelector('[role="dialog"]'))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+  });
+
+  filterForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    activeFilters = {
+      supplier: document.getElementById("filterSupplier").value,
+      type: document.getElementById("filterType").value,
+      name: document.getElementById("filterName").value.trim().toLowerCase(),
+      enabled: document.getElementById("filterEnabled").value,
+      tag: document.getElementById("filterTag").value
+    };
+    games.forEach(function (game) { game.selected = false; });
+    closeBatchMenu();
+    renderRows();
+  });
+
+  filterForm.addEventListener("reset", function () {
+    activeFilters = {};
+    games.forEach(function (game) { game.selected = false; });
+    closeBatchMenu();
+    renderRows();
   });
 
   function initImageTransfer() {
@@ -609,6 +814,7 @@
     });
   }
 
+  loadSavedGames();
   initImageTransfer();
   renderRows();
   }
