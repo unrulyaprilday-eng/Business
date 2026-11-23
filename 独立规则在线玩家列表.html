@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>在线玩家列表</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/独立规则在线玩家列表/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/tokens.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/components.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/在线玩家列表.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/member-point-editor.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/独立规则在线玩家列表.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/独立规则在线玩家列表/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+      <div class="custom-page-shell online-user-page independent-online-page">
+        <header class="page-header">
+          <div>
+            <p class="breadcrumb">独立规则 / 在线玩家列表</p>
+            <h1>在线玩家列表</h1>
+          </div>
+          <div class="summary-strip">
+            <span><b>9</b> 在线玩家</span>
+            <span><b>2</b> 需关注</span>
+            <span><b>13,080.53</b> 总余额</span>
+          </div>
+        </header>
+
+        <section class="table-panel">
+          <div class="panel-title">
+            <h2>在线玩家列表</h2>
+          </div>
+          <form class="filter-bar">
+            <label>
+              <span>玩家ID:</span>
+              <input data-player-id-filter type="text" placeholder="请输入会员ID"/>
+            </label>
+            <label>
+              <span>渠道编码:</span>
+              <select data-channel-filter>
+                <option value="">全部</option>
+                <option>111</option>
+                <option>112</option>
+                <option>113</option>
+                <option value="none">无</option>
+              </select>
+            </label>
+            <label class="balance-filter">
+              <span>余额范围:</span>
+              <span class="balance-range">
+                <input data-balance-min type="number" min="0" placeholder="最小"/>
+                <i>-</i>
+                <input data-balance-max type="number" min="0" placeholder="最大"/>
+              </span>
+            </label>
+            <label>
+              <span>玩家类型:</span>
+              <select data-player-type-filter>
+                <option>全部</option>
+                <option>存款</option>
+                <option>免费</option>
+              </select>
+            </label>
+            <label>
+              <span>网站位置:</span>
+              <select data-website-position-filter>
+                <option>全部</option>
+                <option>首页</option>
+                <option>优惠</option>
+                <option>存款</option>
+                <option>提款</option>
+                <option>我的</option>
+              </select>
+            </label>
+            <label>
+              <span>登录IP:</span>
+              <input data-login-ip-filter type="text" placeholder="请输入IP"/>
+            </label>
+            <button class="btn primary" data-filter-search type="button">搜索</button>
+            <button class="btn" data-filter-reset type="button">重置</button>
+            <button class="btn success" data-open-create-player type="button">创建玩家</button>
+          </form>
+
+          <div class="table-wrap">
+            <table class="online-table">
+              <thead>
+                <tr>
+                  <th>序号</th>
+                  <th>玩家ID</th>
+                  <th>玩家名称</th>
+                  <th>渠道编码</th>
+                  <th>类型</th>
+                  <th>余额</th>
+                  <th>所在位置</th>
+                  <th class="metric-col">今日充值</th>
+                  <th class="metric-col">赎回累计</th>
+                  <th class="metric-col">今日领取</th>
+                  <th class="metric-col">累计充值</th>
+                  <th class="metric-col">剩余打码量</th>
+                  <th class="current-rtp-col" scope="col">当前RTP</th>
+                  <th class="wager-status-col">赎回和打码状态</th>
+                  <th class="online-duration-col">在线时长</th>
+                  <th class="login-ip-col">登录IP</th>
+                  <th class="action-col">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td><button class="text-link player-link" type="button">1010125283</button></td>
+                  <td>tjj7x3tz3</td>
+                  <td>-</td>
+                  <td><span class="type-tag free">免费</span></td>
+                  <td>12,710.00</td>
+                  <td><span class="position-tag">网站-我的</span></td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">30</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">10,000</td>
+                  <td class="metric-col wager-value">12,710</td>
+                  <td class="current-rtp-col" data-base-rtp="96">96%</td>
+                  <td class="wager-status-col"><span class="status normal">不满足</span></td>
+                  <td class="online-duration-col">02:22:46</td>
+                  <td class="login-ip-col">155.254.98.168</td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link manual-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link danger-link" data-open-action type="button">封禁</button><button class="text-link point-control-link" data-open-member-point type="button">点控</button></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td><button class="text-link player-link" type="button">1010010008</button></td>
+                  <td>tttt007</td>
+                  <td>-</td>
+                  <td><span class="type-tag free">免费</span></td>
+                  <td>331.03</td>
+                  <td><span class="position-tag">网站-我的</span></td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">20</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col wager-value">331.03</td>
+                  <td class="current-rtp-col" data-base-rtp="95">95%</td>
+                  <td class="wager-status-col"><span class="status normal">不满足</span></td>
+                  <td class="online-duration-col">1798:56:43</td>
+                  <td class="login-ip-col">207.189.9.24</td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link manual-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link danger-link" data-open-action type="button">封禁</button><button class="text-link point-control-link" data-open-member-point type="button">点控</button></td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td><button class="text-link player-link" type="button">1010125071</button></td>
+                  <td>jhkl</td>
+                  <td>-</td>
+                  <td><span class="type-tag free">免费</span></td>
+                  <td>10.00</td>
+                  <td><span class="position-tag offer">网站-优惠</span></td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col wager-value">10</td>
+                  <td class="current-rtp-col" data-base-rtp="97.5">97.5%</td>
+                  <td class="wager-status-col"><span class="status normal">不满足</span></td>
+                  <td class="online-duration-col">118:30:12</td>
+                  <td class="login-ip-col">50.7.250.106</td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link manual-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link danger-link" data-open-action type="button">封禁</button><button class="text-link point-control-link" data-open-member-point type="button">点控</button></td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td><button class="text-link player-link" type="button">1010123908</button></td>
+                  <td>thiqu52gz</td>
+                  <td>-</td>
+                  <td><span class="type-tag free">免费</span></td>
+                  <td>10.00</td>
+                  <td><span class="position-tag">网站-首页</span></td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col wager-value">10</td>
+                  <td class="current-rtp-col" data-base-rtp="96">96%</td>
+                  <td class="wager-status-col"><span class="status normal">不满足</span></td>
+                  <td class="online-duration-col">00:00:00</td>
+                  <td class="login-ip-col">40.77.178.10</td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link manual-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link danger-link" data-open-action type="button">封禁</button><button class="text-link point-control-link" data-open-member-point type="button">点控</button></td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td><button class="text-link player-link" type="button">1010123751</button></td>
+                  <td>tgmsox3il</td>
+                  <td>-</td>
+                  <td><span class="type-tag free">免费</span></td>
+                  <td>10.00</td>
+                  <td><span class="position-tag">网站-首页</span></td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col wager-value">100</td>
+                  <td class="current-rtp-col" data-base-rtp="94">94%</td>
+                  <td class="wager-status-col"><span class="status normal">不满足</span></td>
+                  <td class="online-duration-col">00:00:00</td>
+                  <td class="login-ip-col">65.55.210.251</td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link manual-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link danger-link" data-open-action type="button">封禁</button><button class="text-link point-control-link" data-open-member-point type="button">点控</button></td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td><button class="text-link player-link" type="button">1010125272</button></td>
+                  <td>hhshsh</td>
+                  <td>-</td>
+                  <td><span class="type-tag free">免费</span></td>
+                  <td>5.50</td>
+                  <td><span class="position-tag">网站-我的</span></td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col wager-value">5.5</td>
+                  <td class="current-rtp-col" data-base-rtp="96.5">96.5%</td>
+                  <td class="wager-status-col"><span class="status normal">不满足</span></td>
+                  <td class="online-duration-col">42:07:04</td>
+                  <td class="login-ip-col">171.217.42.97</td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link manual-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link danger-link" data-open-action type="button">封禁</button><button class="text-link point-control-link" data-open-member-point type="button">点控</button></td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td><button class="text-link player-link" type="button">1010125285</button></td>
+                  <td>tjj9ohbge</td>
+                  <td>-</td>
+                  <td><span class="type-tag free">免费</span></td>
+                  <td>4.00</td>
+                  <td><span class="position-tag offer">网站-优惠</span></td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col wager-value">4</td>
+                  <td class="current-rtp-col" data-base-rtp="95">95%</td>
+                  <td class="wager-status-col"><span class="status normal">不满足</span></td>
+                  <td class="online-duration-col">02:07:58</td>
+                  <td class="login-ip-col">178.173.243.42</td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link manual-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link danger-link" data-open-action type="button">封禁</button><button class="text-link point-control-link" data-open-member-point type="button">点控</button></td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td><button class="text-link player-link" type="button">1010125186</button></td>
+                  <td>tjdu8jqd6</td>
+                  <td>-</td>
+                  <td><span class="type-tag free">免费</span></td>
+                  <td class="danger">0.00</td>
+                  <td><span class="position-tag">网站-首页</span></td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">10</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">0</td>
+                  <td class="current-rtp-col" data-base-rtp="98">98%</td>
+                  <td class="wager-status-col"><span class="status met">已满足打码<br/>(Free*1)</span></td>
+                  <td class="online-duration-col">00:00:00</td>
+                  <td class="login-ip-col">65.55.210.132</td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link manual-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link danger-link" data-open-action type="button">封禁</button><button class="text-link point-control-link" data-open-member-point type="button">点控</button></td>
+                </tr>
+                <tr>
+                  <td>9</td>
+                  <td><button class="text-link player-link" type="button">1010010027</button></td>
+                  <td>gb103</td>
+                  <td>-</td>
+                  <td><span class="type-tag deposit">存款</span></td>
+                  <td class="danger">0.00</td>
+                  <td><span class="position-tag">网站-首页</span></td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col">0</td>
+                  <td class="metric-col wager-value">0</td>
+                  <td class="current-rtp-col" data-base-rtp="96">96%</td>
+                  <td class="wager-status-col"><span class="status met">已满足打码<br/>(Deposit*1)</span></td>
+                  <td class="online-duration-col">93:20:02</td>
+                  <td class="login-ip-col">135.84.210.172</td>
+                  <td class="action-col"><button class="text-link detail-link" type="button">详情</button><button class="text-link manual-link" data-open-manual-balance type="button">人工加扣款</button><button class="text-link danger-link" data-open-action type="button">封禁</button><button class="text-link point-control-link" data-open-member-point type="button">点控</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination-wrap">
+            <div class="pagination-info">
+              共 <b>9</b> 条记录，第 <b>1</b> / <b>1</b> 页
+            </div>
+            <div class="pagination-btns">
+              <button class="page-btn" disabled>首页</button>
+              <button class="page-btn" disabled>上一页</button>
+              <button class="page-btn active">1</button>
+              <button class="page-btn" disabled>下一页</button>
+              <button class="page-btn" disabled>末页</button>
+              <select class="page-size-select">
+                <option>10条/页</option>
+                <option>20条/页</option>
+                <option>50条/页</option>
+                <option>100条/页</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section class="logic-board" aria-label="在线玩家列表逻辑说明">
+          <article class="logic-card">
+            <h2>排序逻辑</h2>
+            <p>全部玩家合并展示，按余额倒序排列</p>
+            <p>可通过玩家类型筛选全部、存款玩家、免费玩家</p>
+          </article>
+          <article class="logic-card alert">
+            <h2>余额标红逻辑</h2>
+            <p>玩家余额为 0 时显示红色，便于快速识别空余额账号。</p>
+            <p>赎回或打码条件满足时，状态单独显示“已满足打码”。</p>
+          </article>
+          <article class="logic-card">
+            <h2>所在位置显示逻辑</h2>
+            <p>网站-首页/优惠/存款/提款/我的</p>
+            <p>游戏类型-游戏厂商-游戏名称</p>
+            <p>实时追踪玩家当前位置</p>
+          </article>
+          <article class="logic-card">
+            <h2>独立打码规则</h2>
+            <p>存款玩家：最近一次非游戏余额增加是充值或充值送</p>
+            <p>免费玩家：最近一次非游戏余额增加是领取免费奖励或未存款</p>
+          </article>
+          <article class="logic-card">
+            <h2>赎回与领取统计</h2>
+            <p>赎回累计：账号历史全部赎回金额；免费奖金玩家每次提现按 10 元计入。</p>
+            <p>今日领取：账号当日领取的全部免费奖金金额合计。</p>
+          </article>
+          <article class="logic-card">
+            <h2>常规打码规则</h2>
+            <p>存款玩家：有过充值</p>
+            <p>免费玩家：没有充值过</p>
+          </article>
+        </section>
+
+        <div class="modal-mask" data-action-modal hidden>
+          <div class="action-modal" role="dialog" aria-modal="true" aria-labelledby="actionModalTitle">
+            <div class="modal-head">
+              <strong id="actionModalTitle">操作</strong>
+              <button class="close-btn" data-close-action type="button" aria-label="关闭">×</button>
+            </div>
+            <div class="modal-body">
+              <label class="form-row">
+                <span><i>*</i> 操作类型:</span>
+                <select>
+                  <option>玩家禁用</option>
+                </select>
+              </label>
+            </div>
+            <div class="modal-footer">
+              <button class="btn" data-close-action type="button">取消</button>
+              <button class="btn primary" data-close-action type="button">保存</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-mask manual-balance-mask" data-manual-balance-modal hidden>
+          <section class="manual-balance-modal" role="dialog" aria-modal="true" aria-labelledby="manualBalanceTitle">
+            <div class="modal-head">
+              <strong id="manualBalanceTitle">新增人工加扣款</strong>
+              <button class="close-btn" data-close-manual-balance type="button" aria-label="关闭">×</button>
+            </div>
+            <div class="manual-balance-body">
+              <div class="balance-form-row required">
+                <label>会员ID:</label>
+                <div class="balance-search-group">
+                  <input data-balance-member-id value=""/>
+                  <button class="btn primary" data-search-manual-balance type="button">搜索</button>
+                </div>
+              </div>
+              <div class="balance-member-info">
+                <div><span>用户名:</span><b data-balance-member-name>-</b></div>
+                <div><span>商户ID:</span><b data-balance-merchant-id>-</b></div>
+                <div><span>余额:</span><b data-balance-member-balance>-</b></div>
+              </div>
+              <div class="balance-form-row required">
+                <label>操作:</label>
+                <div class="balance-radio-group">
+                  <label><input type="radio" name="onlineBalanceAction" value="add" checked/> 人工加款</label>
+                  <label><input type="radio" name="onlineBalanceAction" value="minus"/> 人工扣款</label>
+                </div>
+              </div>
+              <div class="balance-form-row required add-only">
+                <label>加款类型:</label>
+                <select data-balance-add-type>
+                  <option>人工赠金</option>
+                  <option>人工充值</option>
+                </select>
+              </div>
+              <div class="balance-form-row required minus-only">
+                <label>扣款类型:</label>
+                <select data-balance-minus-type>
+                  <option>人工扣款</option>
+                </select>
+              </div>
+              <div class="balance-form-row required">
+                <label>金额:</label>
+                <input class="number-input" data-balance-amount placeholder="请输入金额" type="number"/>
+              </div>
+              <div class="balance-form-row required add-only">
+                <label>打码倍数:</label>
+                <div class="balance-stack">
+                  <input class="number-input" data-balance-multiple placeholder="请输入打码倍数" type="number"/>
+                  <p>当打码倍数填0，取默认打码倍数1.5。当打码倍数填-1，则不需要打码</p>
+                </div>
+              </div>
+              <div class="balance-form-row textarea-row">
+                <label>备注:</label>
+                <textarea data-balance-remark placeholder="请输入备注"></textarea>
+              </div>
+            </div>
+            <div class="modal-footer manual-balance-footer">
+              <button class="btn" data-close-manual-balance type="button">取消</button>
+              <button class="btn primary" data-close-manual-balance type="button">提交</button>
+            </div>
+          </section>
+        </div>
+
+        <div class="modal-mask" data-create-player-modal hidden>
+          <section class="create-player-modal" role="dialog" aria-modal="true" aria-labelledby="createPlayerTitle">
+            <div class="modal-head">
+              <strong id="createPlayerTitle">创建玩家</strong>
+              <button class="close-btn" data-close-create-player type="button" aria-label="关闭">×</button>
+            </div>
+            <div class="create-player-body">
+              <p class="create-player-tip" data-create-player-tip>用户名和手机号至少填写一项</p>
+              <label class="create-player-row">
+                <span>用户名:</span>
+                <input data-create-player-name placeholder="请输入用户名" type="text"/>
+              </label>
+              <label class="create-player-row">
+                <span>手机号:</span>
+                <input data-create-player-phone placeholder="请输入手机号" type="text"/>
+              </label>
+              <label class="create-player-row required">
+                <span>密码:</span>
+                <input data-create-player-password value="123456" type="password"/>
+              </label>
+              <label class="create-player-row">
+                <span>渠道:</span>
+                <select data-create-player-channel>
+                  <option value="">请选择渠道</option>
+                  <option>111</option>
+                  <option>112</option>
+                  <option>113</option>
+                </select>
+              </label>
+            </div>
+            <div class="modal-footer create-player-footer">
+              <button class="btn" data-close-create-player type="button">取消</button>
+              <button class="btn primary" data-submit-create-player type="button">提交</button>
+            </div>
+          </section>
+        </div>
+        <div data-member-point-editor></div>
+      </div>
+    </div>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/在线玩家列表.js"></script>
+    <script src="custom/js/member-point-editor.js"></script>
+    <script src="custom/js/独立规则在线玩家列表.js"></script>
+  </body>
+</html>

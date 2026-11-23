@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-11-23T06:42:20.149Z",
+  "savedAt": "2026-11-23T08:47:54.122Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -536,6 +536,13 @@
           "children": []
         },
         {
+          "id": "game_center_channel_manage",
+          "pageName": "游戏频道管理",
+          "type": "Wireframe",
+          "url": "游戏频道管理_1.html",
+          "children": []
+        },
+        {
           "id": "game_type_settings",
           "pageName": "游戏类型设置",
           "type": "Wireframe",
@@ -1062,6 +1069,13 @@
               "children": []
             }
           ]
+        },
+        {
+          "id": "independent_online_players",
+          "pageName": "在线玩家列表",
+          "type": "Wireframe",
+          "url": "独立规则在线玩家列表.html",
+          "children": []
         }
       ]
     }

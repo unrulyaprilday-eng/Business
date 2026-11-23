@@ -1,0 +1,39 @@
+.independent-online-page .online-table {
+  min-width: 1570px;
+  font-size: 12px;
+}
+
+.independent-online-page .online-table td { padding: 6px; }
+.independent-online-page .online-table :is(th, td):first-child { width: 44px; }
+.independent-online-page .online-table :is(th, td):nth-child(2) { width: 101px; }
+.independent-online-page .online-table :is(th, td):nth-child(3) { width: 106px; }
+.independent-online-page .online-table :is(th, td):nth-child(4) { width: 74px; }
+.independent-online-page .online-table :is(th, td):nth-child(5) { width: 65px; }
+.independent-online-page .online-table :is(th, td):nth-child(6) { width: 87px; }
+.independent-online-page .online-table :is(th, td):nth-child(7) { width: 104px; }
+.independent-online-page .online-table .metric-col { width: 68px; }
+.independent-online-page .online-table .wager-value,
+.independent-online-page .online-table th:nth-child(12) { width: 84px; }
+.independent-online-page .online-table .current-rtp-col { width: 78px; }
+.independent-online-page .online-table .wager-status-col { width: 124px; }
+.independent-online-page .online-table .online-duration-col { width: 90px; }
+.independent-online-page .online-table .login-ip-col { width: 118px; }
+
+.independent-online-page .online-table td.current-rtp-col {
+  color: #145a9f;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.independent-online-page .online-table .action-col {
+  position: sticky;
+  right: 0;
+  z-index: 1;
+  width: 201px;
+  box-shadow: -4px 0 8px rgba(45, 65, 90, 0.08);
+}
+
+.independent-online-page .online-table td.action-col { background: #fff; }
+.independent-online-page .online-table .type-tag { min-width: 44px; }
+.independent-online-page .online-table .text-link { font-size: 12px; }
+.independent-online-page .online-table .point-control-link { color: #2f6fed; }

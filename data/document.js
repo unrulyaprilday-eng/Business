@@ -547,6 +547,13 @@ $axure.loadDocument({
             "children": []
           },
           {
+            "id": "game_center_channel_manage",
+            "pageName": "游戏频道管理",
+            "type": "Wireframe",
+            "url": "游戏频道管理_1.html",
+            "children": []
+          },
+          {
             "id": "game_type_settings",
             "pageName": "游戏类型设置",
             "type": "Wireframe",
@@ -1073,6 +1080,13 @@ $axure.loadDocument({
                 "children": []
               }
             ]
+          },
+          {
+            "id": "independent_online_players",
+            "pageName": "在线玩家列表",
+            "type": "Wireframe",
+            "url": "独立规则在线玩家列表.html",
+            "children": []
           }
         ]
       }

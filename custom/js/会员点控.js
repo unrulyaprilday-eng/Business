@@ -1,17 +1,13 @@
 (function () {
-  var records = [
-    { id: "pc-1001", memberId: "1010123475", username: "xxx123", vip: "VIP15", accountStatus: "启用", rtp: 105, targetAmount: 100000, completedAmount: 68450, status: "active", releaseResult: "", updatedAt: "2026-08-17 10:35:22", remark: "高价值玩家" },
-    { id: "pc-1002", memberId: "1010123468", username: "zzz123", vip: "VIP10", accountStatus: "启用", rtp: 98, targetAmount: 50000, completedAmount: 47500, status: "active", releaseResult: "", updatedAt: "2026-08-17 09:42:10", remark: "" },
-    { id: "pc-1003", memberId: "1010123462", username: "lucky77", vip: "VIP8", accountStatus: "启用", rtp: 90, targetAmount: 20000, completedAmount: 20000, status: "released", releaseResult: "amount", updatedAt: "2026-08-16 22:10:03", remark: "已达到目标" },
-    { id: "pc-1004", memberId: "1010123449", username: "gamer_01", vip: "VIP5", accountStatus: "启用", rtp: 100, targetAmount: 10000, completedAmount: 3650, status: "active", releaseResult: "", updatedAt: "2026-08-16 18:20:44", remark: "100%控赢" },
-    { id: "pc-1005", memberId: "1010123421", username: "betmaster", vip: "VIP12", accountStatus: "启用", rtp: 108, targetAmount: null, completedAmount: 123600, status: "active", releaseResult: "", updatedAt: "2026-08-15 16:04:18", remark: "无退出条件" },
-    { id: "pc-1006", memberId: "1010123398", username: "sunshine", vip: "VIP3", accountStatus: "冻结", rtp: 92, targetAmount: 5000, completedAmount: 5000, status: "released", releaseResult: "amount", updatedAt: "2026-08-14 12:55:27", remark: "" }
-  ];
+  var pointControl = window.memberPointControl;
+  var records = pointControl.getRecords();
+  var editor = pointControl.createEditor($("[data-member-point-editor]"), function () {
+    currentPage = 1;
+    renderRows();
+  });
 
   var pageSize = 5;
   var currentPage = 1;
-  var editingId = null;
-  var queriedMember = null;
   var releasingId = null;
   var globalConfig = {
     balanceTriggerAmount: 100000,
@@ -42,11 +38,6 @@
     return Number(value || 0).toLocaleString("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
-  function formatDate(date) {
-    var pad = function (number) { return String(number).padStart(2, "0"); };
-    return date.getFullYear() + "-" + pad(date.getMonth() + 1) + "-" + pad(date.getDate()) + " " + pad(date.getHours()) + ":" + pad(date.getMinutes()) + ":" + pad(date.getSeconds());
-  }
-
   function getDirection(rtp) {
     return Number(rtp) >= 100 ? "win" : "lose";
   }
@@ -60,15 +51,6 @@
     if (isTarget && !(value > 0)) return '<span class="no-exit-condition">不设置</span>';
     var label = direction === "win" ? "净赢 " : "净输 ";
     return '<span class="point-value point-value-' + direction + '">' + label + money(value) + "</span>";
-  }
-
-  function syncAutoRelease() {
-    records.forEach(function (record) {
-      if (record.targetAmount > 0 && record.status === "active" && record.completedAmount >= record.targetAmount) {
-        record.status = "released";
-        record.releaseResult = "amount";
-      }
-    });
   }
 
   function getFilteredRecords() {
@@ -96,7 +78,7 @@
   }
 
   function renderRows() {
-    syncAutoRelease();
+    records = pointControl.getRecords();
     var filtered = getFilteredRecords();
     var totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
     currentPage = Math.min(currentPage, totalPages);
@@ -159,155 +141,6 @@
     if (modal) modal.hidden = !open;
   }
 
-  function syncEditorDirection() {
-    var rtp = Number($("#editorRtp").value);
-    var direction = getDirection(rtp);
-    var hint = $("#editorDirectionHint");
-    var targetInput = $("#editorTargetAmount");
-    var targetLabel = $("#editorTargetLabel");
-    hint.className = "rtp-direction-hint direction-" + direction;
-    if (direction === "win") {
-      hint.innerHTML = "<strong>控赢</strong><span>RTP达到100%，目标按玩家净赢累计</span>";
-      targetLabel.textContent = "净赢目标金额";
-      targetInput.placeholder = "可不设置净赢目标";
-      targetInput.disabled = false;
-    } else if (direction === "lose") {
-      hint.innerHTML = "<strong>控输</strong><span>RTP低于100%，目标按玩家净输累计</span>";
-      targetLabel.textContent = "净输目标金额";
-      targetInput.placeholder = "可不设置净输目标";
-      targetInput.disabled = false;
-    }
-  }
-
-  function resetEditor() {
-    $("#editorMemberId").value = "";
-    $("#editorRtp").value = "95";
-    $("#editorTargetAmount").value = "";
-    $("#editorRemark").value = "";
-    $("#pointConfigStep").hidden = true;
-    $("#pointSave").disabled = true;
-    $("#pointQueryResult").hidden = true;
-    $("#pointQueryError").hidden = true;
-    $("#pointFormError").hidden = true;
-    queriedMember = null;
-    syncEditorDirection();
-  }
-
-  function queryMember(isEditing) {
-    var memberId = $("#editorMemberId").value.trim();
-    var queryError = $("#pointQueryError");
-    var queryResult = $("#pointQueryResult");
-    var configStep = $("#pointConfigStep");
-    var saveButton = $("#pointSave");
-    queriedMember = null;
-    configStep.hidden = true;
-    saveButton.disabled = true;
-    queryError.hidden = true;
-    queryResult.hidden = true;
-    if (!memberId) {
-      queryError.textContent = "请输入会员ID后查询。";
-      queryError.hidden = false;
-      return;
-    }
-    if (!/^\d+$/.test(memberId)) {
-      queryError.textContent = "会员ID只能输入数字。";
-      queryError.hidden = false;
-      return;
-    }
-    var existingRecord = records.find(function (item) { return item.memberId === memberId; });
-    if (existingRecord && (!isEditing || existingRecord.id !== editingId)) {
-      queryError.textContent = "该会员已有点控配置，请直接编辑已有配置。";
-      queryError.hidden = false;
-      return;
-    }
-    var member = existingRecord || { memberId: memberId, username: "会员" + memberId.slice(-4), vip: "", accountStatus: "启用" };
-    queriedMember = member;
-    queryResult.textContent = "已找到会员：" + member.username + "（ID：" + member.memberId + "）";
-    queryResult.hidden = false;
-    configStep.hidden = false;
-    saveButton.disabled = false;
-    syncEditorDirection();
-  }
-
-  function openEditor(id) {
-    editingId = id || null;
-    var title = $("#pointEditorTitle");
-    if (!id) {
-      title.textContent = "新增会员点控";
-      resetEditor();
-    } else {
-      var record = records.find(function (item) { return item.id === id; });
-      if (!record) return;
-      title.textContent = "编辑会员点控";
-      resetEditor();
-      $("#editorMemberId").value = record.memberId;
-      queryMember(true);
-      $("#editorRtp").value = record.rtp;
-      $("#editorTargetAmount").value = record.targetAmount == null ? "" : record.targetAmount;
-      $("#editorRemark").value = record.remark || "";
-      syncEditorDirection();
-    }
-    setModal("editor", true);
-  }
-
-  function saveEditor() {
-    var memberId = $("#editorMemberId").value.trim();
-    var rtp = Number($("#editorRtp").value);
-    var direction = getDirection(rtp);
-    var targetAmountInput = $("#editorTargetAmount").value.trim();
-    var targetAmount = targetAmountInput === "" ? null : Number(targetAmountInput);
-    var error = "";
-    if (!queriedMember || queriedMember.memberId !== memberId) error = "请先输入会员ID并查询会员。";
-    else if (!Number.isFinite(rtp) || rtp < 50 || rtp > 200) error = "设定RTP需填写50至200之间的百分比。";
-    else if (targetAmount !== null && (!Number.isFinite(targetAmount) || targetAmount <= 0)) error = "目标金额留空表示无退出条件，否则需填写大于0的金额。";
-    if (error) {
-      $("#pointFormError").textContent = error;
-      $("#pointFormError").hidden = false;
-      return;
-    }
-
-    var now = formatDate(new Date());
-    if (editingId) {
-      var current = records.find(function (item) { return item.id === editingId; });
-      if (!current) return;
-      current.memberId = memberId;
-      current.rtp = rtp;
-      current.targetAmount = targetAmount;
-      current.status = targetAmount !== null && current.completedAmount >= targetAmount ? "released" : "active";
-      current.releaseResult = current.status === "released" ? "amount" : "";
-      current.remark = $("#editorRemark").value.trim();
-      current.updatedAt = now;
-      showToast("点控配置已更新");
-    } else {
-      records.unshift({
-        id: "pc-" + Date.now(),
-        memberId: memberId,
-        username: queriedMember.username,
-        vip: queriedMember.vip || "-",
-        accountStatus: queriedMember.accountStatus || "启用",
-        rtp: rtp,
-        targetAmount: targetAmount,
-        completedAmount: 0,
-        status: "active",
-        releaseResult: "",
-        updatedAt: now,
-        remark: $("#editorRemark").value.trim()
-      });
-      showToast("点控配置已新增");
-    }
-    setModal("editor", false);
-    currentPage = 1;
-    renderRows();
-  }
-
-  function showToast(message) {
-    var toast = $("#pointToast");
-    toast.textContent = message;
-    toast.hidden = false;
-    window.clearTimeout(showToast.timer);
-    showToast.timer = window.setTimeout(function () { toast.hidden = true; }, 2200);
-  }
-
   function saveGlobalConfig() {
     var balanceTriggerAmount = Number($("#pointBalanceTrigger").value);
     var balanceReleaseAmount = Number($("#pointBalanceRelease").value);
@@ -345,7 +178,7 @@
     globalConfig.maxWinMultiplier = maxWinMultiplier;
     errorElement.hidden = true;
     saveState.textContent = "已保存";
-    showToast("全局配置已保存");
+    editor.notify("全局配置已保存");
     setModal("global", false);
   }
 
@@ -406,10 +239,10 @@
       if (openButton) {
         var openTarget = openButton.getAttribute("data-point-open");
         if (openTarget === "global") openGlobalConfig();
-        else openEditor(openTarget === "edit" ? editingId : null);
+        else if (openTarget === "create") editor.open();
       }
       if (closeButton) setModal(closeButton.getAttribute("data-point-close"), false);
-      if (editButton) openEditor(editButton.getAttribute("data-point-edit"));
+      if (editButton) editor.open({ id: editButton.getAttribute("data-point-edit") });
       if (releaseButton) confirmRelease(releaseButton.getAttribute("data-point-release"));
       if (pageButton && !pageButton.disabled) {
         var filtered = getFilteredRecords();
@@ -422,8 +255,6 @@
       }
     });
 
-    $("#pointSave").addEventListener("click", saveEditor);
-
     $("#pointGlobalConfigSave").addEventListener("click", saveGlobalConfig);
     $("#pointBalanceTrigger").addEventListener("input", markGlobalConfigDirty);
     $("#pointBalanceRelease").addEventListener("input", markGlobalConfigDirty);
@@ -434,35 +265,17 @@
     $("#pointMaxWinningAmount").addEventListener("input", markGlobalConfigDirty);
     $("#pointMaxWinMultiplier").addEventListener("input", markGlobalConfigDirty);
 
-    $("#editorMemberQuery").addEventListener("click", function () {
-      queryMember(Boolean(editingId));
-    });
-
-    $("#editorRtp").addEventListener("input", syncEditorDirection);
-
-    $("#editorMemberId").addEventListener("input", function () {
-      queriedMember = null;
-      $("#pointConfigStep").hidden = true;
-      $("#pointSave").disabled = true;
-      $("#pointQueryResult").hidden = true;
-      $("#pointQueryError").hidden = true;
-    });
-
     $("#pointReleaseConfirm").addEventListener("click", function () {
-      var record = records.find(function (item) { return item.id === releasingId; });
-      if (record) {
-        record.status = "released";
-        record.releaseResult = "manual";
-        record.updatedAt = formatDate(new Date());
-      }
+      var released = pointControl.release(releasingId);
       setModal("release", false);
       releasingId = null;
       renderRows();
-      showToast("点控已解除");
+      if (released) editor.notify("点控已解除");
     });
   }
 
   bindEvents();
+  pointControl.onStorageChange(renderRows);
   syncBalanceRtp();
   renderRows();
 })();

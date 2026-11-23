@@ -11,6 +11,7 @@
     <link href="custom/component-library/css/tokens.css" type="text/css" rel="stylesheet"/>
     <link href="custom/component-library/css/components.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/会员点控.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/member-point-editor.css" type="text/css" rel="stylesheet"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
     <script src="resources/scripts/axure/axQuery.js"></script>
     <script src="resources/scripts/axure/globals.js"></script>
@@ -151,48 +152,7 @@
           </section>
         </section>
 
-        <div class="cl-modal-layer" data-point-modal="editor" hidden>
-          <div class="cl-modal-mask" data-point-close="editor"></div>
-          <section class="cl-modal point-editor-modal" role="dialog" aria-modal="true" aria-labelledby="pointEditorTitle">
-            <header class="cl-modal-head">
-              <strong id="pointEditorTitle">新增会员点控</strong>
-              <button class="cl-close-btn" type="button" data-point-close="editor" aria-label="关闭">×</button>
-            </header>
-            <div class="cl-modal-body">
-              <div class="point-query-step">
-                <div class="cl-form-field">
-                  <label for="editorMemberId"><span class="cl-required">*</span>会员ID</label>
-                  <div class="member-query-row"><input class="cl-input" id="editorMemberId" type="text" placeholder="请输入会员ID"/><button class="cl-btn cl-btn-primary" id="editorMemberQuery" type="button">查询会员</button></div>
-                </div>
-                <p class="query-result" id="pointQueryResult" hidden></p>
-                <p class="field-error" id="pointQueryError" role="alert" hidden></p>
-              </div>
-              <div class="point-config-step" id="pointConfigStep" hidden>
-                <div class="cl-form-grid point-form-grid">
-                  <div class="cl-form-field">
-                    <label for="editorRtp"><span class="cl-required">*</span>设定RTP</label>
-                    <div class="input-suffix"><input class="cl-input" id="editorRtp" type="number" min="50" max="200" step="0.1" placeholder="请输入RTP"/><span>%</span></div>
-                    <div class="rtp-direction-hint direction-lose" id="editorDirectionHint"><strong>控输</strong><span>RTP低于100%，目标按玩家净输累计</span></div>
-                  </div>
-                  <div class="cl-form-field">
-                    <label for="editorTargetAmount" id="editorTargetLabel">净输目标金额</label>
-                    <div class="input-suffix"><input class="cl-input" id="editorTargetAmount" type="number" min="0.01" step="0.01" placeholder="可不设置净输目标"/></div>
-                    <p class="target-help">点控规则：目标金额可不设置，留空表示没有自动退出条件。</p>
-                  </div>
-                  <div class="cl-form-field is-wide">
-                    <label for="editorRemark">备注</label>
-                    <textarea class="cl-textarea" id="editorRemark" rows="3" placeholder="请输入点控备注"></textarea>
-                  </div>
-                </div>
-              </div>
-              <p class="field-error" id="pointFormError" role="alert" hidden></p>
-            </div>
-            <footer class="cl-modal-foot">
-              <button class="cl-btn" type="button" data-point-close="editor">取消</button>
-              <button class="cl-btn cl-btn-primary" id="pointSave" type="button" disabled>保存</button>
-            </footer>
-          </section>
-        </div>
+        <div data-member-point-editor></div>
 
         <div class="cl-modal-layer" data-point-modal="global" hidden>
           <div class="cl-modal-mask" data-point-close="global"></div>
@@ -269,11 +229,11 @@
             <footer class="cl-modal-foot"><button class="cl-btn" type="button" data-point-close="release">取消</button><button class="cl-btn cl-btn-primary" id="pointReleaseConfirm" type="button">确认解除</button></footer>
           </section>
         </div>
-        <div class="point-toast" id="pointToast" role="status" aria-live="polite" hidden></div>
       </main>
     </div>
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/member-point-editor.js"></script>
     <script src="custom/js/会员点控.js"></script>
   </body>
 </html>

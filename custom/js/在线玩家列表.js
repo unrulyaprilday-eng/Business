@@ -236,7 +236,7 @@
       var typeCell = row.cells[4];
       var balanceCell = row.cells[5];
       var locationCell = row.cells[6];
-      var ipCell = row.cells[14];
+      var ipCell = row.querySelector(".login-ip-col") || row.cells[14];
       if (!playerIdCell || !channelCell || !typeCell || !balanceCell || !locationCell || !ipCell) return;
 
       var playerIdText = getText(playerIdCell);
