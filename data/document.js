@@ -49,6 +49,13 @@ $axure.loadDocument({
             "children": []
           },
           {
+            "id": "site_skin_settings",
+            "pageName": "站点皮肤设置",
+            "type": "Wireframe",
+            "url": "站点皮肤设置.html",
+            "children": []
+          },
+          {
             "id": "brand_settings",
             "pageName": "品牌设置",
             "type": "Wireframe",
@@ -547,13 +554,6 @@ $axure.loadDocument({
             "children": []
           },
           {
-            "id": "gtd09p",
-            "pageName": "游戏频道管理",
-            "type": "Wireframe",
-            "url": "游戏频道管理.html",
-            "children": []
-          },
-          {
             "id": "sub_game_list",
             "pageName": "子游戏列表",
             "type": "Wireframe",
@@ -1022,6 +1022,20 @@ $axure.loadDocument({
             "pageName": "全局配置",
             "type": "Wireframe",
             "url": "全局配置.html",
+            "children": []
+          },
+          {
+            "id": "independent_site_app_settings",
+            "pageName": "站点应用配置",
+            "type": "Wireframe",
+            "url": "独立规则站点应用配置.html",
+            "children": []
+          },
+          {
+            "id": "gtd09p",
+            "pageName": "游戏频道管理",
+            "type": "Wireframe",
+            "url": "游戏频道管理.html",
             "children": []
           },
           {

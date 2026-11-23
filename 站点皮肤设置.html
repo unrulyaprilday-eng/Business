@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>站点皮肤设置</title>
+    <link href="resources/css/axure_rp_page.css" rel="stylesheet"/>
+    <link href="data/styles.css" rel="stylesheet"/>
+    <link href="files/站点皮肤设置/styles.css" rel="stylesheet"/>
+    <link href="custom/css/site-skin-settings.css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/站点皮肤设置/data.js"></script>
+    <script>
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body data-axure-page-id="site_skin_settings">
+    <div id="base" class="">
+      <main class="site-skin" id="siteSkin">
+        <section class="ss-panel" aria-labelledby="ss-title">
+          <header class="ss-heading">
+            <div>
+              <h1 id="ss-title">站点皮肤设置</h1>
+              <p>当前使用 <span class="ss-active-tag" id="ss-current">rs</span></p>
+            </div>
+            <button class="ss-btn ss-primary" id="ss-edit" type="button">编辑</button>
+          </header>
+          <div class="ss-picker">
+            <span class="ss-picker-label" id="ss-picker-label">皮肤列表</span>
+            <div class="ss-options" role="group" aria-labelledby="ss-picker-label">
+              <button type="button" data-skin="cm8" aria-pressed="false">cm8</button>
+              <button type="button" data-skin="cm7" aria-pressed="false">cm7</button>
+              <button type="button" data-skin="cm2" aria-pressed="false">cm2</button>
+              <button type="button" data-skin="cm1" aria-pressed="false">cm1</button>
+              <button type="button" data-skin="cm3" aria-pressed="false">cm3</button>
+              <button type="button" data-skin="cm4" aria-pressed="false">cm4</button>
+              <button type="button" data-skin="cm5" aria-pressed="false">cm5</button>
+              <button type="button" data-skin="cm6" aria-pressed="false">cm6</button>
+              <button type="button" data-skin="ct" aria-pressed="false">ct</button>
+              <button type="button" data-skin="ct2" aria-pressed="false">ct2</button>
+              <button type="button" data-skin="ct3" aria-pressed="false">ct3</button>
+              <button type="button" data-skin="ct4" aria-pressed="false">ct4</button>
+              <button type="button" data-skin="ct5" aria-pressed="false">ct5</button>
+              <button type="button" data-skin="bg" aria-pressed="false">bg</button>
+              <button type="button" data-skin="bg2" aria-pressed="false">bg2</button>
+              <button type="button" data-skin="as" aria-pressed="false">as</button>
+              <button type="button" data-skin="rs" aria-pressed="true" data-current="true">rs</button>
+            </div>
+          </div>
+          <section class="ss-preview" aria-labelledby="ss-preview-title">
+            <div class="ss-preview-heading">
+              <h2 id="ss-preview-title">皮肤预览 <span class="ss-code" id="ss-viewing">rs</span></h2>
+              <p id="ss-preview-caption">移动端示意 · 点击图片可放大</p>
+            </div>
+            <p class="ss-preview-help" id="ss-preview-help" hidden>仅预览。点击「编辑」可应用此皮肤。</p>
+            <div class="ss-gallery">
+              <figure class="ss-tile">
+                <figcaption>首页</figcaption>
+                <button class="ss-screen-frame" type="button" data-preview="首页" aria-label="放大首页预览">
+                  <span class="ss-screen ss-screen-home" aria-hidden="true">
+                    <span class="ss-mobile-head"><b><i>✦</i> 游戏大厅</b><span>◈</span></span>
+                    <span class="ss-banner"><span>精选推荐</span><b>热门游戏</b><small>进入大厅 ›</small></span>
+                    <span class="ss-quick"><span>↗<small>充值</small></span><span>↙<small>提款</small></span><span>♔<small>VIP</small></span><span>◇<small>任务</small></span></span>
+                    <strong class="ss-mobile-title">热门游戏 <small>全部 ›</small></strong>
+                    <span class="ss-game-grid"><span>♛<small>幸运大奖</small></span><span>◆<small>宝石派对</small></span><span>♠<small>经典棋牌</small></span></span>
+                    <span class="ss-nav"><b>⌂<small>首页</small></b><span>◇<small>活动</small></span><span>◉<small>我的</small></span></span>
+                  </span>
+                </button>
+              </figure>
+              <figure class="ss-tile">
+                <figcaption>活动列表</figcaption>
+                <button class="ss-screen-frame" type="button" data-preview="活动列表" aria-label="放大活动列表预览">
+                  <span class="ss-screen ss-screen-offers" aria-hidden="true">
+                    <span class="ss-mobile-head"><b>活动中心</b><span>◇</span></span>
+                    <span class="ss-filters"><b>全部</b><span>充值</span><span>任务</span><span>VIP</span></span>
+                    <span class="ss-offer"><span>新人专享</span><b>首充礼包</b><small>查看详情 ›</small></span>
+                    <span class="ss-offer"><span>每日活动</span><b>每日签到</b><small>查看详情 ›</small></span>
+                    <span class="ss-offer"><span>会员权益</span><b>VIP 专属活动</b><small>查看详情 ›</small></span>
+                    <span class="ss-nav"><span>⌂<small>首页</small></span><b>◇<small>活动</small></b><span>◉<small>我的</small></span></span>
+                  </span>
+                </button>
+              </figure>
+              <figure class="ss-tile">
+                <figcaption>个人中心</figcaption>
+                <button class="ss-screen-frame" type="button" data-preview="个人中心" aria-label="放大个人中心预览">
+                  <span class="ss-screen ss-screen-profile" aria-hidden="true">
+                    <span class="ss-mobile-head"><b>个人中心</b><span>⚙</span></span>
+                    <span class="ss-profile"><i>◉</i><span><b>玩家 10238</b><small>VIP 1</small></span></span>
+                    <span class="ss-wallet"><small>可用余额</small><b>1,280.00</b><span><strong>充值</strong><strong>提款</strong></span></span>
+                    <span class="ss-links"><b class="ss-services-title">账户服务</b><span>▤　交易记录 <b>›</b></span><span>♔　VIP 权益 <b>›</b></span><span>◈　账户安全 <b>›</b></span><span>☏　在线客服 <b>›</b></span></span>
+                    <span class="ss-nav"><span>⌂<small>首页</small></span><span>◇<small>活动</small></span><b>◉<small>我的</small></b></span>
+                  </span>
+                </button>
+              </figure>
+            </div>
+            <p class="ss-status" id="ss-status" role="status"></p>
+          </section>
+        </section>
+        <footer class="ss-edit-bar" id="ss-edit-bar" hidden>
+          <p id="ss-draft-summary">当前皮肤：rs</p>
+          <button class="ss-btn" id="ss-cancel" type="button">取消</button>
+          <button class="ss-btn ss-primary" id="ss-save" type="button" disabled>保存</button>
+          <p class="ss-save-error" id="ss-save-error" role="alert" hidden></p>
+        </footer>
+        <dialog class="ss-dialog" id="ss-dialog" aria-labelledby="ss-dialog-title">
+          <header>
+            <h2 id="ss-dialog-title">页面预览</h2>
+            <form method="dialog"><button class="ss-btn" type="submit" autofocus>关闭</button></form>
+          </header>
+          <div class="ss-dialog-image" id="ss-dialog-image"></div>
+        </dialog>
+      </main>
+    </div>
+    <script src="custom/js/axure-custom-page-ready.js"></script>
+    <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/site-skin-settings.js"></script>
+  </body>
+</html>
