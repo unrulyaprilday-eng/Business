@@ -1,8 +1,7 @@
 (function () {
   "use strict";
 
-  const defaultSkin = "rs";
-  const storageKey = "business.site-skin-settings.active";
+  const siteSkin = window.businessSiteSkin;
   const tokens = ["bg", "panel", "ink", "muted", "accent", "on-accent", "art", "art-alt"];
   const themes = {
     cm8: ["101b25", "1c2e3d", "edf7ff", "adc3d6", "6cd6ff", "122b3b", "1e5d88", "55539a"],
@@ -26,7 +25,7 @@
 
   function init() {
     const page = document.getElementById("siteSkin");
-    if (!page) return;
+    if (!page || !siteSkin) return;
 
     const byId = (id) => page.querySelector("#ss-" + id);
     const fields = Object.fromEntries([
@@ -38,15 +37,10 @@
     if (Object.values(fields).some((field) => !field) || !options.length || !previews.length) return;
 
     const available = new Set(options.map((button) => button.dataset.skin).filter(
-      (code) => Object.prototype.hasOwnProperty.call(themes, code)
+      (code) => siteSkin.hasSkin(code) && Object.prototype.hasOwnProperty.call(themes, code)
     ));
-    let active = defaultSkin;
-    try {
-      const stored = window.localStorage.getItem(storageKey);
-      if (available.has(stored)) active = stored;
-    } catch {
-      // The default skin remains available when storage is blocked.
-    }
+    const stored = siteSkin.readActive();
+    let active = available.has(stored) ? stored : siteSkin.defaultSkin;
 
     let selected = active;
     let editing = false;
@@ -64,7 +58,7 @@
       tokens.forEach((token, i) => {
         page.style.setProperty("--theme-" + token, "#" + themes[selected][i]);
       });
-      const landscape = selected === "ct";
+      const landscape = siteSkin.isLandscape(selected);
       page.classList.toggle("has-landscape-preview", landscape);
       fields["preview-caption"].textContent = landscape ? "横版示意 · 点击图片可放大" : "移动端示意 · 点击图片可放大";
       page.classList.toggle("is-editing", editing);
@@ -110,7 +104,7 @@
     fields.save.addEventListener("click", () => {
       if (!editing || selected === active || !available.has(selected)) return;
       try {
-        window.localStorage.setItem(storageKey, selected);
+        window.localStorage.setItem(siteSkin.storageKey, selected);
       } catch {
         fields["save-error"].textContent = "无法保存皮肤。请检查浏览器是否允许本地存储后重试。";
         fields["save-error"].hidden = false;

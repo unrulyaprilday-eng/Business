@@ -9,7 +9,7 @@
     <link href="files/游戏频道管理_1/styles.css" rel="stylesheet"/>
     <link href="custom/component-library/css/tokens.css" rel="stylesheet"/>
     <link href="custom/component-library/css/components.css" rel="stylesheet"/>
-    <link href="custom/css/游戏频道管理_1.css" rel="stylesheet"/>
+    <link href="custom/css/游戏频道管理_1.css?v=2" rel="stylesheet"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
     <script src="resources/scripts/axure/axQuery.js"></script>
     <script src="resources/scripts/axure/globals.js"></script>
@@ -79,14 +79,17 @@
                 <button id="gc-channel-settings" class="cl-btn" type="button" hidden>编辑频道</button>
               </header>
 
-              <section class="gc-preview" aria-labelledby="gc-preview-heading">
+              <section id="gc-preview" class="gc-preview" data-layout="portrait" aria-labelledby="gc-preview-heading">
                 <div class="gc-preview-heading">
-                  <h3 id="gc-preview-heading">横版排布预览</h3>
+                  <h3 id="gc-preview-heading">大厅布局预览</h3>
                   <span id="gc-preview-mode" class="gc-help">已保存配置</span>
                 </div>
-                <div id="gc-preview-nav" class="gc-preview-nav" aria-label="大厅导航顺序"></div>
-                <div id="gc-preview-games" class="gc-preview-games">
-                  <p class="gc-empty">频道游戏将在这里预览。</p>
+                <p class="gc-preview-skin gc-help"><span role="status">当前启用皮肤：<strong id="gc-active-skin">rs</strong></span> · 保存皮肤变更后，预览自动更新</p>
+                <div class="gc-preview-surface">
+                  <div id="gc-preview-nav" class="gc-preview-nav" aria-label="大厅导航顺序"></div>
+                  <div id="gc-preview-games" class="gc-preview-games is-empty">
+                    <p class="gc-empty">频道游戏将在这里预览。</p>
+                  </div>
                 </div>
               </section>
 
@@ -192,6 +195,7 @@
     </div>
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
-    <script src="custom/js/游戏频道管理_1.js"></script>
+    <script src="custom/js/site-skin-layout.js?v=2"></script>
+    <script src="custom/js/游戏频道管理_1.js?v=3"></script>
   </body>
 </html>

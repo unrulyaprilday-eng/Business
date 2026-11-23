@@ -2,6 +2,7 @@
   "use strict";
 
   const storageKey = "business.game-center.channels.v1";
+  const exampleRevision = 1;
   const maxIconBytes = 512 * 1024;
   const iconTypes = new Set(["image/png", "image/jpeg", "image/webp"]);
   const catalog = new Map([
@@ -12,7 +13,27 @@
     ["103", { name: "Chicken Road", tone: "red", mark: "➜" }],
     ["106", { name: "Fortune Ox", tone: "red", mark: "✺" }],
     ["107", { name: "Crazy Hunter", tone: "blue", mark: "◎" }],
-    ["108", { name: "Dream Catcher", tone: "plum", mark: "◈" }]
+    ["108", { name: "Dream Catcher", tone: "plum", mark: "◈" }],
+    ["109", { name: "Fortune Tiger", tone: "amber", mark: "✴" }],
+    ["110", { name: "Black Myth: Wukong", tone: "plum", mark: "☾" }],
+    ["111", { name: "Mahjong Ways 2", tone: "jade", mark: "◇" }],
+    ["112", { name: "Tiger Boom", tone: "red", mark: "✹" }],
+    ["113", { name: "Crazy Time", tone: "red", mark: "✸" }],
+    ["114", { name: "Lightning Roulette", tone: "blue", mark: "⚡" }],
+    ["115", { name: "Speed Baccarat", tone: "jade", mark: "♠" }],
+    ["116", { name: "Sweet Bonanza", tone: "plum", mark: "✺" }],
+    ["117", { name: "Sugar Rush", tone: "red", mark: "✿" }],
+    ["118", { name: "Big Bass Bonanza", tone: "blue", mark: "◉" }],
+    ["119", { name: "Starlight Princess", tone: "plum", mark: "✦" }],
+    ["120", { name: "Buffalo King Megaways", tone: "amber", mark: "✴" }],
+    ["121", { name: "Fortune Rabbit", tone: "jade", mark: "◇" }],
+    ["122", { name: "Rooster Rumble", tone: "red", mark: "✸" }],
+    ["123", { name: "Aztec Gems", tone: "jade", mark: "◆" }],
+    ["124", { name: "Crazy Coin Flip", tone: "amber", mark: "◎" }],
+    ["125", { name: "Monopoly Live", tone: "blue", mark: "◈" }],
+    ["126", { name: "Mega Ball", tone: "red", mark: "●" }],
+    ["127", { name: "Blackjack VIP", tone: "plum", mark: "♣" }],
+    ["128", { name: "Dragon Tiger", tone: "jade", mark: "♠" }]
   ]);
   const tags = [
     { key: "hot", text: "HOT" },
@@ -31,15 +52,47 @@
   }
 
   const defaults = [
-    channel("hot", "hot", "热门", "Popular", "Popular", "🔥", [game("106", { hot: true }), game("107"), game("102", { fresh: true })]),
+    channel("hot", "hot", "热门", "Popular", "Popular", "🔥", [
+      game("106", { hot: true }), game("107"), game("102", { fresh: true }),
+      game("109", { hot: true }), game("112"), game("113", { hot: true })
+    ]),
     channel("favorites", "favorites", "收藏", "Favorites", "Favoritos", "★", []),
     channel("recent", "recent", "最近", "Recent", "Recentes", "◷", []),
     channel("slots", "custom", "电子", "Slots", "Slots", "◈", [
       game("102", { fresh: true, guide: true }), game("104"), game("105", { large: true }),
-      game("101", { shown: false, hot: true }), game("103", { shown: false })
+      game("109", { hot: true }), game("110", { fresh: true }), game("111"),
+      game("101", { shown: false, hot: true }), game("103", { shown: false }), game("112", { shown: false })
     ]),
-    channel("live", "custom", "真人", "Live Casino", "Cassino", "♠", [game("108")])
+    channel("live", "custom", "真人", "Live Casino", "Cassino", "♠", [
+      game("108"), game("113", { hot: true }), game("114", { fresh: true }), game("115", { shown: false })
+    ]),
   ];
+
+  const extraExamples = new Map([
+    ["hot", [
+      game("116", { hot: true }), game("117", { fresh: true }), game("124", { hot: true }),
+      game("120", { shown: false }), game("123", { shown: false }), game("125", { shown: false })
+    ]],
+    ["slots", [
+      game("116", { hot: true }), game("118"), game("119", { fresh: true }),
+      game("117", { shown: false }), game("120", { shown: false }), game("121", { shown: false }),
+      game("122", { shown: false }), game("123", { shown: false })
+    ]],
+    ["live", [
+      game("124", { fresh: true }), game("125"), game("126"),
+      game("127", { shown: false }), game("128", { shown: false })
+    ]]
+  ]);
+
+  function appendExamples(channels) {
+    for (const item of channels) {
+      const extras = extraExamples.get(item.id);
+      if (!extras || !item.games.length) continue;
+      const existing = new Set(item.games.map((row) => row.id));
+      item.games.push(...extras.filter((row) => !existing.has(row.id)).map((row) => ({ ...row })));
+    }
+    return channels;
+  }
 
   function clone(value) {
     return JSON.parse(JSON.stringify(value));
@@ -51,19 +104,20 @@
 
   function readSaved() {
     try {
-      const value = JSON.parse(window.localStorage.getItem(storageKey));
+      const stored = JSON.parse(window.localStorage.getItem(storageKey));
+      const value = Array.isArray(stored) ? stored : stored?.channels;
       if (Array.isArray(value) && value.length && new Set(value.map((item) => item?.id)).size === value.length &&
           value.every((item) => item && ["id", "name", "en", "pt", "symbol"].every((key) => typeof item[key] === "string") &&
             ["custom", "hot", "favorites", "recent"].includes(item.kind) && typeof item.shown === "boolean" &&
             ["icon", "selectedIcon"].every((key) => item[key] === "" || safeIcon(item[key])) && Array.isArray(item.games) &&
             new Set(item.games.map((row) => row?.id)).size === item.games.length &&
             item.games.every((row) => row && catalog.has(row.id) && gameFlags.every((key) => typeof row[key] === "boolean")))) {
-        return value;
+        return stored.exampleRevision >= exampleRevision ? value : appendExamples(value);
       }
     } catch {
       // Keep the default configuration available when local storage is unavailable.
     }
-    return clone(defaults);
+    return appendExamples(clone(defaults));
   }
 
   const entities = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
@@ -95,9 +149,10 @@
 
   function init() {
     const root = document.getElementById("game-channel-center");
-    if (!root) return;
+    const siteSkin = window.businessSiteSkin;
+    if (!root || !siteSkin) return;
     const ids = [
-      "edit", "add", "channel-help", "channels", "current-name", "current-meta", "channel-settings", "preview-mode",
+      "edit", "add", "channel-help", "channels", "current-name", "current-meta", "channel-settings", "preview", "preview-mode", "active-skin",
       "preview-nav", "preview-games", "games-section", "game-help", "search", "pick", "games", "status", "edit-bar",
       "draft-status", "cancel", "save", "save-error", "channel-dialog", "channel-form", "channel-dialog-title", "name",
       "name-en", "name-pt", "icon", "icon-preview", "selected-icon", "selected-icon-preview", "channel-visible",
@@ -107,6 +162,7 @@
     const el = Object.fromEntries(ids.map((id) => [id, document.getElementById("gc-" + id)]));
     if (Object.values(el).some((node) => !node)) return;
 
+    let activeSkin = siteSkin.readActive();
     let saved = readSaved();
     let draft = null;
     let activeId = saved.some((item) => item.id === "slots") ? "slots" : saved[0].id;
@@ -162,6 +218,9 @@
     }
 
     function renderPreview(item) {
+      const landscape = siteSkin.isLandscape(activeSkin);
+      el.preview.dataset.layout = landscape ? "landscape" : "portrait";
+      if (el["active-skin"].textContent !== activeSkin) el["active-skin"].textContent = activeSkin;
       el["preview-mode"].textContent = draft ? "编辑预览 · 保存后生效" : "已保存配置";
       const nav = state().filter((entry) => entry.shown);
       el["preview-nav"].innerHTML = nav.map((entry) => {
@@ -178,10 +237,17 @@
         const info = catalog.get(row.id);
         const badges = tags.filter((tag) => row[tag.key]).map((tag) =>
           '<span class="gc-badge is-' + tag.key + '">' + tag.text + "</span>").join("");
-        return '<div class="gc-tile' + (row.large ? ' is-large' : '') + '" data-tone="' + info.tone + '">' +
+        return '<div class="gc-tile' + (landscape && row.large ? ' is-large' : '') + '" data-tone="' + info.tone + '">' +
           '<span class="gc-tile-mark" aria-hidden="true">' + info.mark + '</span><span class="gc-tile-name">' +
           escape(info.name) + '</span><span class="gc-tile-badges">' + badges + "</span></div>";
       }).join("") : '<p class="gc-empty">' + emptyMessage + "</p>";
+    }
+
+    function syncPreviewSkin() {
+      const nextSkin = siteSkin.readActive();
+      if (nextSkin === activeSkin) return;
+      activeSkin = nextSkin;
+      renderPreview(current());
     }
 
     function checkbox(row, key, title) {
@@ -288,7 +354,7 @@
     function commitDraft() {
       if (!draft || !dirty) return;
       try {
-        window.localStorage.setItem(storageKey, JSON.stringify(draft));
+        window.localStorage.setItem(storageKey, JSON.stringify({ exampleRevision, channels: draft }));
       } catch {
         showMessage(el["save-error"], "无法保存。请检查浏览器存储空间后重试，修改仍保留在编辑中。");
         return;
@@ -543,6 +609,15 @@
       updatePickedCount();
     });
     el["game-form"].addEventListener("submit", applyGamePicker);
+
+    window.addEventListener("storage", (event) => {
+      if (event.key === siteSkin.storageKey || event.key === null) syncPreviewSkin();
+    });
+    window.addEventListener("pageshow", syncPreviewSkin);
+    window.addEventListener("focus", syncPreviewSkin);
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") syncPreviewSkin();
+    });
 
     render();
     el.edit.disabled = false;
