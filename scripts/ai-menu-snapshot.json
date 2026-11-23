@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "savedAt": "2026-11-23T06:14:20.243Z",
+  "savedAt": "2026-11-23T06:42:20.149Z",
   "source": "data/document.js sitemap.rootNodes",
   "rootNodes": [
     {
@@ -32,7 +32,7 @@
         },
         {
           "id": "page_settings",
-          "pageName": "站点应用配置",
+          "pageName": "站点前台配置",
           "type": "Wireframe",
           "url": "站点应用配置.html",
           "children": []

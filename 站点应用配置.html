@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>站点应用配置</title>
+    <title>站点前台配置</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -47,9 +47,10 @@
       $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
     </script>
   </head>
-  <body>
+  <body data-axure-page-id="page_settings">
     <div id="base" class="">
       <div class="page-settings-shell">
+        <h1 class="site-front-title">站点前台配置</h1>
         <section class="setting-panel inline-config-panel">
           <div class="panel-head">
             <h2>网站图标</h2>
@@ -218,49 +219,83 @@
           </div>
         </section>
 
-        <section class="setting-panel">
+        <section class="setting-panel home-shortcuts" id="homeShortcuts" aria-labelledby="homeShortcutTitle">
           <div class="panel-head">
-            <h2>首页快捷操作配置</h2>
-            <button class="blue-btn" type="button" data-modal="新增快捷操作">+ 新增</button>
+            <h2 id="homeShortcutTitle">首页活动快捷入口</h2>
+            <button class="blue-btn" type="button" id="homeShortcutEdit" hidden>编辑</button>
           </div>
-          <div class="card-grid">
-            <article class="config-card">
-              <header><span class="code">share_earn</span><strong>分享赚钱</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
-              <dl><dt>路由</dt><dd>-</dd><dt>排序</dt><dd>1</dd><dt>颜色</dt><dd><span class="dot purple"></span>紫色</dd></dl>
-              <div class="icon-preview icon-soft">☁</div>
-              <footer><button type="button" data-modal="编辑快捷操作">编辑</button><button type="button" class="danger">删除</button></footer>
-            </article>
-            <article class="config-card">
-              <header><span class="code">unclaimed</span><strong>待领取</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
-              <dl><dt>路由</dt><dd>/</dd><dt>排序</dt><dd>2</dd><dt>颜色</dt><dd><span class="dot orange"></span>橙色</dd></dl>
-              <div class="icon-preview icon-warm">◉</div>
-              <footer><button type="button" data-modal="编辑快捷操作">编辑</button><button type="button" class="danger">删除</button></footer>
-            </article>
-            <article class="config-card">
-              <header><span class="code">interest</span><strong>利息宝</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
-              <dl><dt>路由</dt><dd>/</dd><dt>排序</dt><dd>3</dd><dt>颜色</dt><dd><span class="dot red"></span>红色</dd></dl>
-              <div class="icon-preview icon-yellow">♘</div>
-              <footer><button type="button" data-modal="编辑快捷操作">编辑</button><button type="button" class="danger">删除</button></footer>
-            </article>
-            <article class="config-card">
-              <header><span class="code">rebate</span><strong>实时返水</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
-              <dl><dt>路由</dt><dd>/</dd><dt>排序</dt><dd>4</dd><dt>颜色</dt><dd><span class="dot pink"></span>粉色</dd></dl>
-              <div class="icon-preview icon-cool">◎</div>
-              <footer><button type="button" data-modal="编辑快捷操作">编辑</button><button type="button" class="danger">删除</button></footer>
-            </article>
-            <article class="config-card">
-              <header><span class="code">task_center</span><strong>任务中心</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
-              <dl><dt>路由</dt><dd>/promotion?tab=task</dd><dt>排序</dt><dd>5</dd><dt>颜色</dt><dd><span class="dot green"></span>绿色</dd></dl>
-              <div class="icon-preview icon-lime">✓</div>
-              <footer><button type="button" data-modal="编辑快捷操作">编辑</button><button type="button" class="danger">删除</button></footer>
-            </article>
-            <article class="config-card">
-              <header><span class="code">vip</span><strong>VIP</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
-              <dl><dt>路由</dt><dd>/promotion?tab=vip</dd><dt>排序</dt><dd>6</dd><dt>颜色</dt><dd><span class="dot blue"></span>蓝色</dd></dl>
-              <div class="icon-preview icon-amber">V</div>
-              <footer><button type="button" data-modal="编辑快捷操作">编辑</button><button type="button" class="danger">删除</button></footer>
-            </article>
+          <div class="home-shortcuts-body">
+            <p class="home-shortcuts-note">配置用户点击首页展开面板中显示的入口及顺序。横竖版共用一套配置，按显示项的顺序排位，隐藏项不占位。</p>
+            <div class="home-shortcuts-layout">
+              <div>
+                <div class="home-shortcuts-edit-note" id="homeShortcutEditNote" hidden>
+                  <span>勾选显示入口，拖动手柄或使用上下箭头排序。</span>
+                  <button class="home-shortcut-template" id="homeShortcutTemplate" type="button">恢复样板</button>
+                </div>
+                <table class="home-shortcuts-table">
+                  <thead><tr><th scope="col">图标</th><th scope="col">入口名称</th><th scope="col">是否显示</th><th scope="col">排序</th></tr></thead>
+                  <tbody>
+                    <tr data-entry="new-user-bonus" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">🎁</span></td><th scope="row">新人奖励</th><td><span data-visibility>显示</span></td><td><span data-position>1</span></td></tr>
+                    <tr data-entry="carnival" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">🎉</span></td><th scope="row">嘉年华</th><td><span data-visibility>显示</span></td><td><span data-position>2</span></td></tr>
+                    <tr data-entry="limited-offer" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">⏱️</span></td><th scope="row">限时优惠</th><td><span data-visibility>显示</span></td><td><span data-position>3</span></td></tr>
+                    <tr data-entry="qa-rewards" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">📝</span></td><th scope="row">问答奖励</th><td><span data-visibility>显示</span></td><td><span data-position>4</span></td></tr>
+                    <tr data-entry="daily-coins" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">🪙</span></td><th scope="row">每日金币</th><td><span data-visibility>显示</span></td><td><span data-position>5</span></td></tr>
+                    <tr data-entry="piggy-bank" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">🐷</span></td><th scope="row">存钱罐</th><td><span data-visibility>显示</span></td><td><span data-position>6</span></td></tr>
+                    <tr data-entry="account-security" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">🔐</span></td><th scope="row">账户安全</th><td><span data-visibility>显示</span></td><td><span data-position>7</span></td></tr>
+                    <tr data-entry="join-us" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">👋</span></td><th scope="row">加入我们</th><td><span data-visibility>显示</span></td><td><span data-position>8</span></td></tr>
+                    <tr data-entry="holiday-benefits" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">🎊</span></td><th scope="row">节日福利</th><td><span data-visibility>显示</span></td><td><span data-position>9</span></td></tr>
+                    <tr data-entry="return-rewards" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">🎖️</span></td><th scope="row">回归奖励</th><td><span data-visibility>显示</span></td><td><span data-position>10</span></td></tr>
+                    <tr data-entry="unclaimed" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">🎒</span></td><th scope="row">待领取</th><td><span data-visibility>显示</span></td><td><span data-position>11</span></td></tr>
+                    <tr data-entry="gift-code" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">🏷️</span></td><th scope="row">礼品码</th><td><span data-visibility>显示</span></td><td><span data-position>12</span></td></tr>
+                    <tr data-entry="vip" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">👑</span></td><th scope="row">VIP</th><td><span data-visibility>显示</span></td><td><span data-position>13</span></td></tr>
+                    <tr data-entry="welcome-bonus" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">🎁</span></td><th scope="row">首充礼包</th><td><span data-visibility>显示</span></td><td><span data-position>14</span></td></tr>
+                    <tr data-entry="weekly-card" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">💳</span></td><th scope="row">周卡</th><td><span data-visibility>显示</span></td><td><span data-position>15</span></td></tr>
+                    <tr data-entry="check-in" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">📅</span></td><th scope="row">每日签到</th><td><span data-visibility>显示</span></td><td><span data-position>16</span></td></tr>
+                    <tr data-entry="cashback-bonus" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">💸</span></td><th scope="row">返现奖励</th><td><span data-visibility>显示</span></td><td><span data-position>17</span></td></tr>
+                    <tr data-entry="rebate" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">💵</span></td><th scope="row">实时返水</th><td><span data-visibility>显示</span></td><td><span data-position>18</span></td></tr>
+                    <tr data-entry="coupon" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">🎟️</span></td><th scope="row">优惠券</th><td><span data-visibility>显示</span></td><td><span data-position>19</span></td></tr>
+                    <tr data-entry="interest" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">💰</span></td><th scope="row">利息宝</th><td><span data-visibility>显示</span></td><td><span data-position>20</span></td></tr>
+                    <tr data-entry="special-offer" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">🎀</span></td><th scope="row">专属优惠</th><td><span data-visibility>显示</span></td><td><span data-position>21</span></td></tr>
+                    <tr data-entry="daily-missions" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">✅</span></td><th scope="row">每日任务</th><td><span data-visibility>显示</span></td><td><span data-position>22</span></td></tr>
+                    <tr data-entry="rank" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">🏆</span></td><th scope="row">排行榜</th><td><span data-visibility>显示</span></td><td><span data-position>23</span></td></tr>
+                    <tr data-entry="task-center" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">🎯</span></td><th scope="row">任务中心</th><td><span data-visibility>显示</span></td><td><span data-position>24</span></td></tr>
+                    <tr data-entry="referral" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">🤝</span></td><th scope="row">邀请好友</th><td><span data-visibility>显示</span></td><td><span data-position>25</span></td></tr>
+                    <tr data-entry="share-earn" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">📢</span></td><th scope="row">分享赚钱</th><td><span data-visibility>显示</span></td><td><span data-position>26</span></td></tr>
+                    <tr data-entry="prize-wheel" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">🎡</span></td><th scope="row">幸运转盘</th><td><span data-visibility>显示</span></td><td><span data-position>27</span></td></tr>
+                    <tr data-entry="partner-brands" data-visible="true"><td><span class="home-shortcut-icon" aria-hidden="true">💎</span></td><th scope="row">合作品牌</th><td><span data-visibility>显示</span></td><td><span data-position>28</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <aside class="home-shortcuts-preview" id="homeShortcutPreview" aria-labelledby="homeShortcutPreviewTitle" hidden>
+                <div class="home-shortcuts-preview-head">
+                  <h3 id="homeShortcutPreviewTitle">展开面板预览</h3>
+                  <div class="home-shortcuts-modes" role="group" aria-label="预览方向">
+                    <button type="button" data-shortcut-width="portrait" aria-pressed="true">竖版</button>
+                    <button type="button" data-shortcut-width="landscape" aria-pressed="false">横版</button>
+                  </div>
+                </div>
+                <p class="home-shortcuts-mode-note" id="homeShortcutModeNote">竖版 8 行 × 4 列：第 1 位从面板右上角开始，先向下，再向左。</p>
+                <div class="home-shortcut-stage" data-width="portrait">
+                  <div class="home-shortcut-top" id="homeShortcutTop" hidden>
+                    <ol class="home-shortcut-outside" id="homeShortcutOutside" aria-label="横版面板外的前三个位置"></ol>
+                    <span class="home-shortcut-static" title="固定入口">活动</span>
+                    <span class="home-shortcut-static" title="固定入口">优惠</span>
+                    <span class="home-shortcut-arrow" aria-label="面板已展开">⌃</span>
+                  </div>
+                  <div class="home-shortcut-frame">
+                    <ol class="home-shortcut-grid" id="homeShortcutGrid" aria-label="面板内的入口位置"></ol>
+                  </div>
+                </div>
+                <p class="home-shortcuts-preview-note" id="homeShortcutPreviewNote" hidden>正在预览编辑结果，保存后才会更新已保存的配置。</p>
+              </aside>
+            </div>
+            <p class="home-shortcuts-status" id="homeShortcutStatus" role="status"></p>
           </div>
+          <footer class="home-shortcuts-actions" id="homeShortcutActions" hidden>
+            <p id="homeShortcutError" role="alert" hidden></p>
+            <button class="home-shortcut-cancel" id="homeShortcutCancel" type="button">取消</button>
+            <button class="blue-btn" id="homeShortcutSave" type="button">保存</button>
+          </footer>
         </section>
 
         <section class="setting-panel">
@@ -312,5 +347,6 @@
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
     <script src="custom/js/站点应用配置.js"></script>
+    <script src="custom/js/home-activity-shortcuts.js"></script>
   </body>
 </html>

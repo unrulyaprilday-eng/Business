@@ -43,7 +43,7 @@ $axure.loadDocument({
           },
           {
             "id": "page_settings",
-            "pageName": "站点应用配置",
+            "pageName": "站点前台配置",
             "type": "Wireframe",
             "url": "站点应用配置.html",
             "children": []

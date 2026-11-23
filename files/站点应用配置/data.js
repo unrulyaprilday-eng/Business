@@ -26,7 +26,7 @@ $axure.loadCurrentPage({
   "page": {
     "packageId": "page_settings",
     "type": "Axure:Page",
-    "name": "站点应用配置",
+    "name": "站点前台配置",
     "notes": {},
     "annotations": [],
     "style": {

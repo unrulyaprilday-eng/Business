@@ -74,19 +74,6 @@
     ].join('');
   }
 
-  function shortcutForm() {
-    return [
-      row('名称（name）', '<input value="unclaimed"/>', true),
-      row('', languageTabs(), false),
-      row('显示文字（label）', '<input value="待领取"/>', true),
-      row('排序（sort）', numberBox('2'), true),
-      row('路由（url）', '<input value="/"/>', false),
-      row('按钮颜色', '<select><option>橙色</option><option>紫色</option><option>红色</option><option>绿色</option><option>蓝色</option></select>', true),
-      row('图标（icon）', uploadThumb('◉'), false),
-      row('启用状态', switchField(), false)
-    ].join('');
-  }
-
   function floatForm() {
     return [
       row('名称', '<input value="右侧悬浮窗2"/>', true),
@@ -172,8 +159,6 @@
       body.innerHTML = customerServiceForm();
     } else if (modalTitle.indexOf('侧滑项') !== -1) {
       body.innerHTML = sideForm();
-    } else if (modalTitle.indexOf('快捷操作') !== -1) {
-      body.innerHTML = shortcutForm();
     } else if (modalTitle.indexOf('悬浮按钮') !== -1) {
       card.className = 'modal-card float-modal';
       body.innerHTML = floatForm();
