@@ -9,6 +9,7 @@
     <link href="data/styles.css" type="text/css" rel="stylesheet"/>
     <link href="files/站点应用配置/styles.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/站点应用配置.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/css/side-menu-settings.css" rel="stylesheet"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
     <script src="resources/scripts/axure/axQuery.js"></script>
     <script src="resources/scripts/axure/globals.js"></script>
@@ -174,49 +175,97 @@
           </div>
         </section>
 
-        <section class="setting-panel">
+        <section class="setting-panel side-menu-settings" id="sideMenuSettings" aria-labelledby="sideMenuTitle">
           <div class="panel-head">
-            <h2>侧滑优惠中心</h2>
-            <button class="blue-btn" type="button" data-modal="新增侧滑项">+ 新增</button>
+            <h2 id="sideMenuTitle">侧滑菜单配置</h2>
+            <button class="blue-btn" type="button" id="sideMenuEdit" hidden>编辑</button>
           </div>
-          <div class="card-grid">
-            <article class="config-card" data-type="侧滑项">
-              <header><span class="code">activity</span><strong>活动</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
-              <dl><dt>路由</dt><dd>/promotion?tab=activity</dd><dt>排序</dt><dd>1</dd></dl>
-              <div class="icon-preview icon-purple">♛</div>
-              <footer><button type="button" data-modal="编辑侧滑项">编辑</button><button type="button" class="danger">删除</button></footer>
-            </article>
-            <article class="config-card" data-type="侧滑项">
-              <header><span class="code">task</span><strong>任务</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
-              <dl><dt>路由</dt><dd>/promotion?tab=task</dd><dt>排序</dt><dd>2</dd></dl>
-              <div class="icon-preview icon-green">▣</div>
-              <footer><button type="button" data-modal="编辑侧滑项">编辑</button><button type="button" class="danger">删除</button></footer>
-            </article>
-            <article class="config-card" data-type="侧滑项">
-              <header><span class="code">rebate</span><strong>返水</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
-              <dl><dt>路由</dt><dd>/</dd><dt>排序</dt><dd>3</dd></dl>
-              <div class="icon-preview icon-red">☘</div>
-              <footer><button type="button" data-modal="编辑侧滑项">编辑</button><button type="button" class="danger">删除</button></footer>
-            </article>
-            <article class="config-card" data-type="侧滑项">
-              <header><span class="code">interest</span><strong>利息宝</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
-              <dl><dt>路由</dt><dd>/</dd><dt>排序</dt><dd>4</dd></dl>
-              <div class="icon-preview icon-mint">●</div>
-              <footer><button type="button" data-modal="编辑侧滑项">编辑</button><button type="button" class="danger">删除</button></footer>
-            </article>
-            <article class="config-card" data-type="侧滑项">
-              <header><span class="code">vip</span><strong>VIP</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
-              <dl><dt>路由</dt><dd>/promotion?tab=vip</dd><dt>排序</dt><dd>5</dd></dl>
-              <div class="icon-preview icon-pink">♕</div>
-              <footer><button type="button" data-modal="编辑侧滑项">编辑</button><button type="button" class="danger">删除</button></footer>
-            </article>
-            <article class="config-card" data-type="侧滑项">
-              <header><span class="code">unclaimed</span><strong>存钱罐</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
-              <dl><dt>路由</dt><dd>/</dd><dt>排序</dt><dd>6</dd></dl>
-              <div class="icon-preview icon-gold">▣</div>
-              <footer><button type="button" data-modal="编辑侧滑项">编辑</button><button type="button" class="danger">删除</button></footer>
-            </article>
+          <div class="side-menu-body">
+            <p class="side-menu-help">配置侧滑菜单中部。白底游戏频道在上，紫底活动与功能入口在下。每行 3 个，按显示数量自动换行。编辑时可勾选显示项，拖动或用上下箭头排序。</p>
+            <div class="side-menu-layout">
+              <div class="side-menu-config">
+                <section class="side-menu-group" aria-labelledby="sideMenuChannelsTitle">
+                  <div class="side-menu-group-head">
+                    <h3 id="sideMenuChannelsTitle">游戏频道（白底）</h3>
+                  </div>
+                  <div class="side-menu-table-scroll" tabindex="0" aria-label="游戏频道配置列表">
+                    <table class="side-menu-table" aria-labelledby="sideMenuChannelsTitle">
+                      <thead><tr><th scope="col">图标</th><th scope="col">频道名称</th><th scope="col">是否显示</th><th scope="col">排序</th></tr></thead>
+                      <tbody id="sideMenuChannels">
+                    <tr data-side-entry="popular" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">🔥</span></td><th scope="row">热门</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>1</span></td></tr>
+                    <tr data-side-entry="new" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">🆕</span></td><th scope="row">最新</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>2</span></td></tr>
+                    <tr data-side-entry="favorites" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">❤️</span></td><th scope="row">收藏</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>3</span></td></tr>
+                    <tr data-side-entry="casino" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">🎲</span></td><th scope="row">真人</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>4</span></td></tr>
+                    <tr data-side-entry="slots" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">🎰</span></td><th scope="row">电子</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>5</span></td></tr>
+                    <tr data-side-entry="domino-poker" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">🃏</span></td><th scope="row">棋牌</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>6</span></td></tr>
+                    <tr data-side-entry="recent" data-visible="false"><td><span class="side-menu-icon" aria-hidden="true">🕘</span></td><th scope="row">最近</th><td><span class="side-menu-visibility">隐藏</span></td><td><span data-side-position>7</span></td></tr>
+                    <tr data-side-entry="fishing" data-visible="false"><td><span class="side-menu-icon" aria-hidden="true">🐟</span></td><th scope="row">捕鱼</th><td><span class="side-menu-visibility">隐藏</span></td><td><span data-side-position>8</span></td></tr>
+                    <tr data-side-entry="sports" data-visible="false"><td><span class="side-menu-icon" aria-hidden="true">⚽</span></td><th scope="row">体育</th><td><span class="side-menu-visibility">隐藏</span></td><td><span data-side-position>9</span></td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+                <section class="side-menu-group" aria-labelledby="sideMenuEntriesTitle">
+                  <div class="side-menu-group-head">
+                    <h3 id="sideMenuEntriesTitle">活动与功能入口（紫底）</h3>
+                  </div>
+                  <p class="side-menu-help">显隐与排序单独保存；隐藏入口只影响侧滑菜单。</p>
+                  <div class="side-menu-table-scroll" tabindex="0" aria-label="活动与功能入口配置列表">
+                    <table class="side-menu-table" aria-labelledby="sideMenuEntriesTitle">
+                      <thead><tr><th scope="col">图标</th><th scope="col">入口名称</th><th scope="col">是否显示</th><th scope="col">排序</th></tr></thead>
+                      <tbody id="sideMenuEntries">
+                    <tr data-side-entry="vip" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">👑</span></td><th scope="row">VIP</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>1</span></td></tr>
+                    <tr data-side-entry="referral" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">🤝</span></td><th scope="row">邀请好友</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>2</span></td></tr>
+                    <tr data-side-entry="rebate" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">🪙</span></td><th scope="row">实时返水</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>3</span></td></tr>
+                    <tr data-side-entry="mail" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">✉️</span></td><th scope="row">站内信</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>4</span></td></tr>
+                    <tr data-side-entry="record" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">📋</span></td><th scope="row">游戏记录</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>5</span></td></tr>
+                    <tr data-side-entry="payment" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">💳</span></td><th scope="row">支付记录</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>6</span></td></tr>
+                    <tr data-side-entry="bank" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">🏦</span></td><th scope="row">存钱罐</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>7</span></td></tr>
+                    <tr data-side-entry="settings" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">⚙️</span></td><th scope="row">设置</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>8</span></td></tr>
+                    <tr data-side-entry="free-cash" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">💰</span></td><th scope="row">免费现金</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>9</span></td></tr>
+                    <tr data-side-entry="timed-offer" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">⏱️</span></td><th scope="row">限时优惠</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>10</span></td></tr>
+                    <tr data-side-entry="security" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">🛡️</span></td><th scope="row">账户安全</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>11</span></td></tr>
+                    <tr data-side-entry="welcome-bonus" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">🎁</span></td><th scope="row">首充礼包</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>12</span></td></tr>
+                    <tr data-side-entry="join-us" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">👋</span></td><th scope="row">加入我们</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>13</span></td></tr>
+                    <tr data-side-entry="carnival" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">🏅</span></td><th scope="row">嘉年华</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>14</span></td></tr>
+                    <tr data-side-entry="prize-wheel" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">🎡</span></td><th scope="row">幸运转盘</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>15</span></td></tr>
+                    <tr data-side-entry="gift-code" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">🏷️</span></td><th scope="row">礼品码</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>16</span></td></tr>
+                    <tr data-side-entry="check-in" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">📅</span></td><th scope="row">每日签到</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>17</span></td></tr>
+                    <tr data-side-entry="cashback" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">💸</span></td><th scope="row">返现奖励</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>18</span></td></tr>
+                    <tr data-side-entry="weekly-card" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">🗓️</span></td><th scope="row">周卡</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>19</span></td></tr>
+                    <tr data-side-entry="coupon" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">🎟️</span></td><th scope="row">优惠券</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>20</span></td></tr>
+                    <tr data-side-entry="special-offer" data-visible="true"><td><span class="side-menu-icon" aria-hidden="true">🎀</span></td><th scope="row">专属优惠</th><td><span class="side-menu-visibility">显示</span></td><td><span data-side-position>21</span></td></tr>
+                    <tr data-side-entry="rank" data-visible="false"><td><span class="side-menu-icon" aria-hidden="true">🏆</span></td><th scope="row">排行榜</th><td><span class="side-menu-visibility">隐藏</span></td><td><span data-side-position>22</span></td></tr>
+                    <tr data-side-entry="challenge" data-visible="false"><td><span class="side-menu-icon" aria-hidden="true">🎯</span></td><th scope="row">挑战活动</th><td><span class="side-menu-visibility">隐藏</span></td><td><span data-side-position>23</span></td></tr>
+                    <tr data-side-entry="new-user-bonus" data-visible="false"><td><span class="side-menu-icon" aria-hidden="true">🎁</span></td><th scope="row">新人奖励</th><td><span class="side-menu-visibility">隐藏</span></td><td><span data-side-position>24</span></td></tr>
+                    <tr data-side-entry="live-center" data-visible="false"><td><span class="side-menu-icon" aria-hidden="true">📺</span></td><th scope="row">直播中心</th><td><span class="side-menu-visibility">隐藏</span></td><td><span data-side-position>25</span></td></tr>
+                    <tr data-side-entry="partner" data-visible="false"><td><span class="side-menu-icon" aria-hidden="true">💎</span></td><th scope="row">合作品牌</th><td><span class="side-menu-visibility">隐藏</span></td><td><span data-side-position>26</span></td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              </div>
+              <aside class="side-menu-preview" aria-labelledby="sideMenuPreviewTitle">
+                <h3 id="sideMenuPreviewTitle">侧滑菜单预览</h3>
+                <div class="side-menu-device">
+                  <div class="side-menu-device-head"><span aria-hidden="true">‹</span> 侧滑菜单</div>
+                  <div class="side-menu-device-scroll" tabindex="0" aria-label="预览中部入口，可滚动">
+                    <ul class="side-menu-tiles side-menu-channel-tiles" id="sideMenuChannelTiles" aria-label="游戏频道"></ul>
+                    <ul class="side-menu-tiles side-menu-entry-tiles" id="sideMenuEntryTiles" aria-label="活动与功能入口"></ul>
+                    <p class="side-menu-empty" id="sideMenuEmpty">正在加载中部入口预览…</p>
+                  </div>
+                  <div class="side-menu-device-foot">客服 · 分享</div>
+                </div>
+                <p class="side-menu-preview-note" id="sideMenuPreviewNote" hidden>正在预览编辑结果，保存后生效。</p>
+              </aside>
+            </div>
+            <p class="side-menu-status" id="sideMenuStatus" role="status"></p>
           </div>
+          <footer class="side-menu-actions" id="sideMenuActions" hidden>
+            <p class="side-menu-error" id="sideMenuError" role="alert" hidden></p>
+            <button class="side-menu-cancel" id="sideMenuCancel" type="button">取消</button>
+            <button class="blue-btn" id="sideMenuSave" type="button">保存</button>
+          </footer>
         </section>
 
         <section class="setting-panel home-shortcuts" id="homeShortcuts" aria-labelledby="homeShortcutTitle">
@@ -298,55 +347,56 @@
           </footer>
         </section>
 
-        <section class="setting-panel">
+        <section class="setting-panel floating-buttons" id="floatingButtons" aria-labelledby="floatingButtonsTitle">
           <div class="panel-head">
-            <h2>首页悬浮按钮配置</h2>
-            <button class="blue-btn" type="button" data-modal="新增悬浮按钮">+ 新增</button>
+            <h2 id="floatingButtonsTitle">首页悬浮按钮配置</h2>
+            <button class="blue-btn" type="button" id="floatingButtonsEdit" hidden>编辑</button>
+            <div class="panel-actions" id="floatingButtonsActions" hidden>
+              <button class="ghost-btn" type="button" id="floatingButtonsCancel">取消</button>
+              <button class="blue-btn" type="button" id="floatingButtonsSave">保存</button>
+            </div>
           </div>
           <div class="float-grid">
-            <article class="float-card">
-              <header><strong>左侧悬浮框1</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
-              <dl><dt>位置</dt><dd>左</dd><dt>排序</dt><dd>1</dd><dt>按钮数</dt><dd>3</dd></dl>
-              <ul><li><span class="mini-icon warm"></span>抽奖助力<label class="switch tiny"><input type="checkbox" checked/><i></i></label></li><li><span class="mini-icon dark"></span>邀请<label class="switch tiny"><input type="checkbox" checked/><i></i></label></li><li><span class="mini-icon gift"></span>任务<label class="switch tiny"><input type="checkbox" checked/><i></i></label></li></ul>
-              <footer><button type="button" data-modal="编辑悬浮按钮">编辑</button><button type="button" class="danger">删除</button></footer>
+            <article class="float-card" data-floating-button="service">
+              <header>
+                <span class="floating-button-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M4 14v-3a8 8 0 0 1 16 0v3M6 12H4a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h2zM18 12h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-2zM19 18v1a2 2 0 0 1-2 2h-5"/></svg></span>
+                <strong>客服</strong>
+                <span class="floating-button-state">已开启</span>
+                <label class="floating-button-switch" hidden><input type="checkbox" role="switch" aria-label="启用客服悬浮按钮" checked disabled/><span aria-hidden="true"></span></label>
+              </header>
             </article>
-            <article class="float-card">
-              <header><strong>右侧悬浮框1</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
-              <dl><dt>位置</dt><dd>右</dd><dt>排序</dt><dd>1</dd><dt>按钮数</dt><dd>1</dd></dl>
-              <ul><li><span class="mini-icon bright"></span>转盘抽奖<label class="switch tiny"><input type="checkbox" checked/><i></i></label></li></ul>
-              <footer><button type="button" data-modal="编辑悬浮按钮">编辑</button><button type="button" class="danger">删除</button></footer>
+            <article class="float-card" data-floating-button="download">
+              <header>
+                <span class="floating-button-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 3v12m-5-5 5 5 5-5M4 16v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></svg></span>
+                <strong>下载</strong>
+                <span class="floating-button-state">已开启</span>
+                <label class="floating-button-switch" hidden><input type="checkbox" role="switch" aria-label="启用下载悬浮按钮" checked disabled/><span aria-hidden="true"></span></label>
+              </header>
             </article>
-            <article class="float-card">
-              <header><strong>右侧悬浮窗2</strong><label class="switch"><input type="checkbox" checked/><i></i></label></header>
-              <dl><dt>位置</dt><dd>右</dd><dt>排序</dt><dd>2</dd><dt>按钮数</dt><dd>2</dd></dl>
-              <ul><li><span class="mini-icon vip"></span>vip<label class="switch tiny"><input type="checkbox" checked/><i></i></label></li><li><span class="mini-icon promo"></span>推广<label class="switch tiny"><input type="checkbox" checked/><i></i></label></li></ul>
-              <footer><button type="button" data-modal="编辑悬浮按钮">编辑</button><button type="button" class="danger">删除</button></footer>
-            </article>
-            <article class="float-card builtin-float-card" id="customerServiceCard">
-              <header><strong>右侧客服弹窗</strong><label class="switch" title="点击编辑调整启用状态"><input type="checkbox" aria-label="右侧客服弹窗启用状态" checked disabled/><i></i></label></header>
-              <dl><dt>位置</dt><dd>右</dd><dt>排序</dt><dd id="customerServiceSortValue">3</dd><dt>按钮数</dt><dd>1</dd></dl>
-              <ul><li><span class="mini-icon customer-service"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 14v-3a8 8 0 0 1 16 0v3M6 12H4a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h2zM18 12h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-2zM19 18v1a2 2 0 0 1-2 2h-5"/></svg></span>客服</li></ul>
-              <footer><button type="button" data-modal="编辑客服弹窗">编辑</button></footer>
+            <article class="float-card" data-floating-button="share">
+              <header>
+                <span class="floating-button-icon" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" focusable="false">
+                    <path d="M8 5H3v16h17v-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14.4 2.1a.55.55 0 0 1 .95-.38l6.2 6.85a.58.58 0 0 1 0 .76l-6.2 6.85a.55.55 0 0 1-.95-.38v-3.5c-4.27 0-6.8 1.24-8.4 4.23a.41.41 0 0 1-.77-.21c.05-5.37 3.75-9.53 9.17-9.62z" fill="currentColor"/>
+                  </svg>
+                </span>
+                <strong>分享</strong>
+                <span class="floating-button-state">已开启</span>
+                <label class="floating-button-switch" hidden><input type="checkbox" role="switch" aria-label="启用分享悬浮按钮" checked disabled/><span aria-hidden="true"></span></label>
+              </header>
             </article>
           </div>
+          <p class="floating-buttons-message" id="floatingButtonsError" role="alert" hidden></p>
+          <p class="floating-buttons-message" id="floatingButtonsStatus" role="status"></p>
         </section>
       </div>
     </div>
 
-    <div class="modal-mask" hidden>
-      <div class="modal-card modal-basic" role="dialog" aria-modal="true">
-        <button class="modal-close" type="button" aria-label="关闭">×</button>
-        <h3 id="modalTitle">编辑侧滑项</h3>
-        <div class="modal-body" id="modalBody"></div>
-        <footer class="modal-actions">
-          <button class="ghost-btn" type="button">取消</button>
-          <button class="blue-btn" type="button">提交</button>
-        </footer>
-      </div>
-    </div>
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
     <script src="custom/js/站点应用配置.js"></script>
+    <script src="custom/js/side-menu-settings.js"></script>
     <script src="custom/js/home-activity-shortcuts.js"></script>
   </body>
 </html>
