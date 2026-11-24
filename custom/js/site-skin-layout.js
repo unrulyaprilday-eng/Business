@@ -4,8 +4,8 @@
   const defaultSkin = "rs";
   const storageKey = "business.site-skin-settings.active";
   const layouts = new Map([
-    ["ct", "landscape"],
-    ...["cm8", "cm7", "cm2", "cm1", "cm3", "cm4", "cm5", "cm6", "ct2", "ct3", "ct4", "ct5", "bg", "bg2", "as", "rs"]
+    ...["ct", "ct2", "ct3", "ct4", "ct5"].map((code) => [code, "landscape"]),
+    ...["cm8", "cm7", "cm2", "cm1", "cm3", "cm4", "cm5", "cm6", "bg", "bg2", "as", "rs"]
       .map((code) => [code, "portrait"])
   ]);
 

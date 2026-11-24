@@ -37,12 +37,16 @@
   ]);
   const categories = { slots: "电子", live: "真人", fishing: "捕鱼", casual: "休闲" };
   const gameCategory = (info) => info.category ?? "slots";
-  const tags = [
+  const badgeTags = [
     { key: "hot", text: "HOT" },
-    { key: "fresh", text: "NEW" },
-    { key: "guide", text: "手指引导" }
+    { key: "fresh", text: "NEW" }
   ];
-  const gameFlags = ["shown", "large", ...tags.map((tag) => tag.key)];
+  const oppositeTag = { hot: "fresh", fresh: "hot" };
+  const gameFlags = ["shown", "large", ...badgeTags.map((tag) => tag.key), "guide"];
+  const guideIcon = '<svg class="gc-tile-guide" viewBox="0 0 32 32" role="img" aria-label="手指引导" focusable="false">' +
+    '<path d="M5.5 8h2M11.5 2.5v2M16 8h2" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>' +
+    '<path d="M10 17V8.4a2 2 0 0 1 4 0v6.1l1.3-.8a1.8 1.8 0 0 1 2.7 1.1l.8-.4a1.8 1.8 0 0 1 2.6 1.3l.7-.3a1.8 1.8 0 0 1 2.5 1.7v4.6a6.8 6.8 0 0 1-6.8 6.8h-2.5a5 5 0 0 1-4-2l-4.7-6.2a2 2 0 0 1 3-2.6l.4.4Z" fill="#fff4da" stroke="#56371d" stroke-width="1.55" stroke-linejoin="round"/>' +
+    "</svg>";
   const autoKinds = { favorites: "收藏", recent: "最近" };
 
   function game(id, options = {}) {
@@ -114,6 +118,10 @@
             ["icon", "selectedIcon"].every((key) => item[key] === "" || safeIcon(item[key])) && Array.isArray(item.games) &&
             new Set(item.games.map((row) => row?.id)).size === item.games.length &&
             item.games.every((row) => row && catalog.has(row.id) && gameFlags.every((key) => typeof row[key] === "boolean")))) {
+        for (const item of value) {
+          // Older configurations could select both badges; keep HOT in that case.
+          for (const row of item.games) if (row.hot && row.fresh) row.fresh = false;
+        }
         return stored.exampleRevision >= exampleRevision ? value : appendExamples(value);
       }
     } catch {
@@ -281,11 +289,12 @@
       el["preview-games"].tabIndex = visible.length ? 0 : -1;
       const tiles = visible.map((row) => {
         const info = catalog.get(row.id);
-        const badges = tags.filter((tag) => row[tag.key]).map((tag) =>
+        const badges = badgeTags.filter((tag) => row[tag.key]).map((tag) =>
           '<span class="gc-badge is-' + tag.key + '">' + tag.text + "</span>").join("");
-        return '<div class="gc-tile' + (landscape && row.large ? ' is-large' : '') + '" data-tone="' + info.tone + '">' +
-          '<span class="gc-tile-mark" aria-hidden="true">' + info.mark + '</span><span class="gc-tile-name">' +
-          escape(info.name) + '</span><span class="gc-tile-badges">' + badges + "</span></div>";
+        return '<div class="gc-tile' + (landscape && row.large ? ' is-large' : '') + ' gc-game-art" data-tone="' + info.tone + '">' +
+          '<span class="gc-tile-mark" aria-hidden="true">' + escape(info.mark) + '</span><span class="gc-tile-name">' +
+          escape(info.name) + '</span><span class="gc-tile-badges">' + badges + "</span>" +
+          (row.guide ? guideIcon : "") + "</div>";
       }).join("");
       el["preview-games"].innerHTML = tiles ? '<div class="gc-preview-tiles">' + tiles + "</div>" :
         '<p class="gc-empty">' + emptyMessage + "</p>";
@@ -315,23 +324,25 @@
       const visible = shownGames(item);
       const rows = visible.concat(item.games.filter((row) => !row.shown)).filter((row) => matchesGame(row.id, query));
       el["game-action-heading"].hidden = !draft;
-      el["game-help"].textContent = draft && query ? "搜索时可修改展示和标签。清空搜索后可调整顺序。" :
-        "已显示的游戏按顺序排列，隐藏的游戏列在下方。";
+      el["game-help"].textContent = (draft && query ? "清空搜索后可调整顺序。" : "已显示的游戏排在前面。") +
+        " HOT 与 NEW 只能选一个。";
       el.games.innerHTML = rows.map((row) => {
         const position = visible.indexOf(row);
         const info = catalog.get(row.id);
         const order = row.shown ? '<span class="gc-order">' + (position + 1) + "</span>" : "—";
         return '<tr' + (row.shown ? "" : ' class="gc-game-hidden"') + '><td><span class="gc-game-name">' +
           escape(info.name) + '</span><span class="gc-game-id">#' + row.id + "</span></td>" +
+          '<td><span class="gc-game-thumb gc-game-art" data-tone="' + info.tone + '" aria-hidden="true">' +
+          escape(info.mark) + "</span></td>" +
           checkbox(row, "shown", "显示") + checkbox(row, "large", "大图标") +
-          tags.map((tag) => checkbox(row, tag.key, tag.text)).join("") +
+          badgeTags.map((tag) => checkbox(row, tag.key, tag.text)).join("") + checkbox(row, "guide", "手指引导") +
           '<td><span class="gc-move-group">' + order + (draft && row.shown ?
             moveButton("game", row.id, info.name, "up", position === 0 || Boolean(query)) +
             moveButton("game", row.id, info.name, "down", position === visible.length - 1 || Boolean(query)) : "") +
           "</span></td>" + (draft ?
             '<td class="gc-game-action-col"><button class="gc-link gc-danger gc-game-remove" type="button" data-gc-remove-game="' +
             row.id + '" aria-label="' + escape("移出 " + info.name) + '">移出</button></td>' : "") + "</tr>";
-      }).join("") || '<tr><td colspan="' + (draft ? 8 : 7) + '" class="gc-empty">' +
+      }).join("") || '<tr><td colspan="' + (draft ? 9 : 8) + '" class="gc-empty">' +
         (query ? "没有符合条件的游戏。" : draft ? "频道内暂无游戏，点击「添加游戏」添加。" : "频道内暂无游戏。") +
         "</td></tr>";
     }
@@ -743,6 +754,12 @@
       const row = item.games.find((entry) => entry.id === input.dataset.id);
       if (!row || (!row.shown && key !== "shown")) return;
       row[key] = input.checked;
+      const opposite = oppositeTag[key];
+      if (input.checked && opposite) {
+        row[opposite] = false;
+        const otherInput = input.closest("tr")?.querySelector('[data-gc-flag="' + opposite + '"]');
+        if (otherInput) otherInput.checked = false;
+      }
       if (key === "shown") {
         // Newly displayed games go to the end of the visible order.
         item.games = item.games.filter((entry) => entry !== row).concat(row);
