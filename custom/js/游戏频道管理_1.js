@@ -7,7 +7,7 @@
   const iconTypes = new Set(["image/png", "image/jpeg", "image/webp"]);
   const catalog = new Map([
     ["102", { name: "Mahjong Ways", tone: "amber", mark: "◆" }],
-    ["104", { name: "Gates of Olympus", tone: "blue", mark: "ϟ" }],
+    ["104", { name: "Gates of Olympus", tone: "blue", mark: "ϟ", cover: "gates-of-olympus" }],
     ["105", { name: "Wild Ape", tone: "jade", mark: "♣" }],
     ["101", { name: "Wild Bounty", tone: "plum", mark: "✦" }],
     ["103", { name: "Chicken Road", tone: "red", mark: "➜", category: "casual" }],
@@ -21,10 +21,10 @@
     ["113", { name: "Crazy Time", tone: "red", mark: "✸", category: "live" }],
     ["114", { name: "Lightning Roulette", tone: "blue", mark: "⚡", category: "live" }],
     ["115", { name: "Speed Baccarat", tone: "jade", mark: "♠", category: "live" }],
-    ["116", { name: "Sweet Bonanza", tone: "plum", mark: "✺" }],
-    ["117", { name: "Sugar Rush", tone: "red", mark: "✿" }],
-    ["118", { name: "Big Bass Bonanza", tone: "blue", mark: "◉" }],
-    ["119", { name: "Starlight Princess", tone: "plum", mark: "✦" }],
+    ["116", { name: "Sweet Bonanza", tone: "plum", mark: "✺", cover: "sweet-bonanza" }],
+    ["117", { name: "Sugar Rush", tone: "red", mark: "✿", cover: "sugar-rush" }],
+    ["118", { name: "Big Bass Bonanza", tone: "blue", mark: "◉", cover: "big-bass-bonanza" }],
+    ["119", { name: "Starlight Princess", tone: "plum", mark: "✦", cover: "starlight-princess" }],
     ["120", { name: "Buffalo King Megaways", tone: "amber", mark: "✴" }],
     ["121", { name: "Fortune Rabbit", tone: "jade", mark: "◇" }],
     ["122", { name: "Rooster Rumble", tone: "red", mark: "✸" }],
@@ -135,6 +135,11 @@
     return String(value).replace(/[&<>"']/g, (char) => entities[char]);
   }
 
+  function gameCover(info) {
+    return info.cover ? '<img class="gc-tile-cover" src="custom/assets/game-channel-covers/' +
+      info.cover + '.png" alt="" decoding="async">' : "";
+  }
+
   function matchesGame(id, query) {
     return !query || id.toLowerCase().includes(query) || catalog.get(id).name.toLowerCase().includes(query);
   }
@@ -153,10 +158,10 @@
     return item.name || "未命名频道";
   }
 
-  function moveButton(kind, id, name, direction, disabled) {
+  function channelMoveButton(id, name, direction, disabled) {
     const up = direction === "up";
     const label = (up ? "上移 " : "下移 ") + name;
-    return '<button class="gc-move" type="button" data-gc-move="' + kind + '" data-id="' + escape(id) +
+    return '<button class="gc-move" type="button" data-gc-move="channel" data-id="' + escape(id) +
       '" data-direction="' + direction + '" aria-label="' + escape(label) + '" title="' + escape(label) +
       '"' + (disabled ? " disabled" : "") + ">" + (up ? "↑" : "↓") + "</button>";
   }
@@ -216,9 +221,17 @@
       node.hidden = !message;
     }
 
+    function activeGamePositionInput() {
+      const input = document.activeElement;
+      return input?.dataset.gcGamePosition && el.games.contains(input) ? input : null;
+    }
+
     function updateBar() {
       const readingIcon = pendingIcons.size > 0;
-      const changed = draft !== null && (readingIcon || JSON.stringify(draft) !== JSON.stringify(saved));
+      const input = activeGamePositionInput();
+      const position = input && readGamePosition(input);
+      const changingPosition = Boolean(position && position.target !== position.previous);
+      const changed = draft !== null && (readingIcon || changingPosition || JSON.stringify(draft) !== JSON.stringify(saved));
       if (dirty !== changed) {
         if (changed) window.addEventListener("beforeunload", askBeforeLeaving);
         else window.removeEventListener("beforeunload", askBeforeLeaving);
@@ -242,8 +255,8 @@
         '" type="button" role="switch" data-gc-toggle="' + id + '" aria-checked="' + item.shown +
         '" aria-label="' + escape(name + " 启用") + '"' + (draft ? "" : " disabled") +
         '></button><span aria-hidden="true">' + (item.shown ? "启用" : "停用") + "</span></span>" +
-        '<span class="gc-move-group">' + moveButton("channel", item.id, name, "up", !draft || index === 0) +
-        moveButton("channel", item.id, name, "down", !draft || index === total - 1) + "</span>" +
+        '<span class="gc-move-group">' + channelMoveButton(item.id, name, "up", !draft || index === 0) +
+        channelMoveButton(item.id, name, "down", !draft || index === total - 1) + "</span>" +
         '<button class="gc-link gc-channel-modify" type="button" data-gc-modify="' + id + '" aria-expanded="' + expanded +
         '" aria-label="' + escape((expanded ? "收起 " : "修改 ") + name) + '"' +
         (expanded ? ' aria-controls="gc-channel-form"' : '') + ">" + (expanded ? "收起" : "修改") + "</button>";
@@ -273,7 +286,7 @@
       }).join("");
     }
 
-    function renderPreview(item) {
+    function renderPreview(item, highlightedId) {
       const landscape = siteSkin.isLandscape(activeSkin);
       const layout = landscape ? "landscape" : "portrait";
       const resetScroll = previewChannelId !== item?.id || el.preview.dataset.layout !== layout;
@@ -291,8 +304,9 @@
         const info = catalog.get(row.id);
         const badges = badgeTags.filter((tag) => row[tag.key]).map((tag) =>
           '<span class="gc-badge is-' + tag.key + '">' + tag.text + "</span>").join("");
-        return '<div class="gc-tile' + (landscape && row.large ? ' is-large' : '') + ' gc-game-art" data-tone="' + info.tone + '">' +
-          '<span class="gc-tile-mark" aria-hidden="true">' + escape(info.mark) + '</span><span class="gc-tile-name">' +
+        return '<div class="gc-tile' + (landscape && row.large ? ' is-large' : '') +
+          (row.id === highlightedId ? ' is-highlighted' : '') + ' gc-game-art" data-tone="' + info.tone + '" title="' + escape(info.name) + '">' +
+          (gameCover(info) || '<span class="gc-tile-mark" aria-hidden="true">' + escape(info.mark) + '</span>') + '<span class="gc-tile-name">' +
           escape(info.name) + '</span><span class="gc-tile-badges">' + badges + "</span>" +
           (row.guide ? guideIcon : "") + "</div>";
       }).join("");
@@ -302,6 +316,22 @@
         el["preview-nav"].scrollLeft = 0;
         el["preview-games"].scrollLeft = 0;
         el["preview-games"].scrollTop = 0;
+      }
+      if (highlightedId) revealPreviewTile(landscape);
+    }
+
+    function revealPreviewTile(landscape) {
+      const viewport = el["preview-games"];
+      const tile = viewport.querySelector(".is-highlighted");
+      if (!tile || !viewport.clientWidth || !viewport.clientHeight) return;
+      const bounds = viewport.getBoundingClientRect();
+      const target = tile.getBoundingClientRect();
+      if (landscape) {
+        viewport.scrollLeft += target.left < bounds.left ? target.left - bounds.left :
+          Math.max(0, target.right - bounds.left - viewport.clientWidth);
+      } else {
+        viewport.scrollTop += target.top < bounds.top ? target.top - bounds.top :
+          Math.max(0, target.bottom - bounds.top - viewport.clientHeight);
       }
     }
 
@@ -324,27 +354,64 @@
       const visible = shownGames(item);
       const rows = visible.concat(item.games.filter((row) => !row.shown)).filter((row) => matchesGame(row.id, query));
       el["game-action-heading"].hidden = !draft;
-      el["game-help"].textContent = (draft && query ? "清空搜索后可调整顺序。" : "已显示的游戏排在前面。") +
+      el["game-help"].textContent = (draft ? "在「排序」填目标位置（1 排最前），回车或离开输入框后自动重排。" : "已显示的游戏排在前面。") +
         " HOT 与 NEW 只能选一个。";
       el.games.innerHTML = rows.map((row) => {
         const position = visible.indexOf(row);
         const info = catalog.get(row.id);
-        const order = row.shown ? '<span class="gc-order">' + (position + 1) + "</span>" : "—";
+        const order = !row.shown ? "—" : draft ?
+          '<input class="gc-order-input" type="text" inputmode="numeric" data-gc-game-position="' + row.id +
+          '" value="' + (position + 1) + '" aria-label="' + escape(info.name + " 的排序位置") + '" aria-describedby="gc-game-help">' :
+          '<span class="gc-order">' + (position + 1) + "</span>";
         return '<tr' + (row.shown ? "" : ' class="gc-game-hidden"') + '><td><span class="gc-game-name">' +
           escape(info.name) + '</span><span class="gc-game-id">#' + row.id + "</span></td>" +
           '<td><span class="gc-game-thumb gc-game-art" data-tone="' + info.tone + '" aria-hidden="true">' +
-          escape(info.mark) + "</span></td>" +
+          (gameCover(info) || escape(info.mark)) + "</span></td>" +
           checkbox(row, "shown", "显示") + checkbox(row, "large", "大图标") +
           badgeTags.map((tag) => checkbox(row, tag.key, tag.text)).join("") + checkbox(row, "guide", "手指引导") +
-          '<td><span class="gc-move-group">' + order + (draft && row.shown ?
-            moveButton("game", row.id, info.name, "up", position === 0 || Boolean(query)) +
-            moveButton("game", row.id, info.name, "down", position === visible.length - 1 || Boolean(query)) : "") +
-          "</span></td>" + (draft ?
+          "<td>" + order + "</td>" + (draft ?
             '<td class="gc-game-action-col"><button class="gc-link gc-danger gc-game-remove" type="button" data-gc-remove-game="' +
             row.id + '" aria-label="' + escape("移出 " + info.name) + '">移出</button></td>' : "") + "</tr>";
       }).join("") || '<tr><td colspan="' + (draft ? 9 : 8) + '" class="gc-empty">' +
         (query ? "没有符合条件的游戏。" : draft ? "频道内暂无游戏，点击「添加游戏」添加。" : "频道内暂无游戏。") +
         "</td></tr>";
+    }
+
+    function readGamePosition(input) {
+      const item = current();
+      if (!draft || !item || isAuto(item)) return null;
+      const id = input.dataset.gcGamePosition;
+      const visible = shownGames(item);
+      const previous = visible.findIndex((row) => row.id === id);
+      if (previous < 0) return null;
+
+      const value = input.value.trim().normalize("NFKC");
+      const target = /^\d+$/.test(value) ? Math.max(0, Math.min(visible.length - 1, Number(value) - 1)) : previous;
+      return { item, id, visible, previous, target };
+    }
+
+    function setGamePosition(input) {
+      const position = readGamePosition(input);
+      if (!position) return;
+      const { item, id, visible, previous, target } = position;
+      input.value = String(target + 1);
+      if (target === previous) {
+        updateBar();
+        return;
+      }
+
+      const [gameRow] = visible.splice(previous, 1);
+      visible.splice(target, 0, gameRow);
+      item.games = visible.concat(item.games.filter((row) => !row.shown));
+
+      // Move only the changed row so other controls keep their focus and state.
+      const positions = new Map(visible.map((row, index) => [row.id, index]));
+      const inputs = Array.from(el.games.querySelectorAll("[data-gc-game-position]"));
+      const next = inputs.find((field) => field !== input && positions.get(field.dataset.gcGamePosition) > target);
+      for (const field of inputs) field.value = String(positions.get(field.dataset.gcGamePosition) + 1);
+      el.games.insertBefore(input.closest("tr"), next?.closest("tr") || el.games.querySelector(".gc-game-hidden"));
+      renderPreview(item, id);
+      updateBar();
     }
 
     function removeGame(button) {
@@ -409,28 +476,16 @@
       refocus(el.channels.querySelectorAll("[data-gc-channel]"), (button) => button.dataset.gcChannel === id, el.edit);
     }
 
-    function move(button) {
+    function moveChannel(button) {
       if (!draft || button.disabled) return;
-      const { gcMove: kind, id, direction } = button.dataset;
+      const { id, direction } = button.dataset;
       const delta = direction === "up" ? -1 : 1;
-      if (kind === "channel") {
-        const index = draft.findIndex((item) => item.id === id);
-        if (index < 0 || !draft[index + delta]) return;
-        [draft[index], draft[index + delta]] = [draft[index + delta], draft[index]];
-        renderChannels();
-        renderPreview(current());
-      } else {
-        const item = current();
-        if (!item || queryOf(el.search)) return;
-        const visible = shownGames(item);
-        const index = visible.findIndex((row) => row.id === id);
-        if (index < 0 || !visible[index + delta]) return;
-        [visible[index], visible[index + delta]] = [visible[index + delta], visible[index]];
-        item.games = visible.concat(item.games.filter((row) => !row.shown));
-        renderDetail();
-      }
-      const container = kind === "channel" ? el.channels : el.games;
-      const siblings = [...container.querySelectorAll("[data-gc-move]")].filter((node) => node.dataset.id === id && !node.disabled);
+      const index = draft.findIndex((item) => item.id === id);
+      if (index < 0 || !draft[index + delta]) return;
+      [draft[index], draft[index + delta]] = [draft[index + delta], draft[index]];
+      renderChannels();
+      renderPreview(current());
+      const siblings = [...el.channels.querySelectorAll("[data-gc-move]")].filter((node) => node.dataset.id === id && !node.disabled);
       (siblings.find((node) => node.dataset.direction === direction) || siblings[0])?.focus({ preventScroll: true });
       updateBar();
     }
@@ -446,6 +501,8 @@
     }
 
     function commitDraft() {
+      const orderInput = activeGamePositionInput();
+      if (orderInput) setGamePosition(orderInput);
       if (!draft || !dirty || pendingIcons.size) return;
       const invalid = [editingChannel(), ...draft].find((item) => item && nameIssue(item));
       if (invalid) {
@@ -738,16 +795,29 @@
       const button = event.target.closest("button");
       if (button?.dataset.gcChannel) selectChannel(button.dataset.gcChannel);
       else if (button?.dataset.gcToggle) toggleChannel(button);
-      else if (button?.dataset.gcMove) move(button);
+      else if (button?.dataset.gcMove) moveChannel(button);
       else if (button?.dataset.gcModify) toggleChannelEditor(button.dataset.gcModify);
     });
     el.games.addEventListener("click", (event) => {
       const button = event.target.closest("button");
-      if (button?.dataset.gcMove) move(button);
-      else if (button?.dataset.gcRemoveGame) removeGame(button);
+      if (button?.dataset.gcRemoveGame) removeGame(button);
+    });
+    el.games.addEventListener("input", (event) => {
+      if (event.target.dataset.gcGamePosition) updateBar();
+    });
+    el.games.addEventListener("keydown", (event) => {
+      const input = event.target;
+      if (!input.dataset.gcGamePosition || event.key !== "Enter" || event.isComposing) return;
+      event.preventDefault();
+      setGamePosition(input);
+      input.focus();
     });
     el.games.addEventListener("change", (event) => {
       const input = event.target;
+      if (input.dataset.gcGamePosition) {
+        setGamePosition(input);
+        return;
+      }
       const item = current();
       const key = input.dataset.gcFlag;
       if (!draft || !item || !gameFlags.includes(key)) return;
@@ -766,7 +836,7 @@
         renderGames(item);
         refocus(el.games.querySelectorAll('[data-gc-flag="shown"]'), (node) => node.dataset.id === row.id);
       }
-      renderPreview(item);
+      renderPreview(item, row.shown ? row.id : undefined);
       updateBar();
     });
 
