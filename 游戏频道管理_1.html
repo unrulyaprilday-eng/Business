@@ -9,7 +9,7 @@
     <link href="files/游戏频道管理_1/styles.css" rel="stylesheet"/>
     <link href="custom/component-library/css/tokens.css" rel="stylesheet"/>
     <link href="custom/component-library/css/components.css" rel="stylesheet"/>
-    <link href="custom/css/游戏频道管理_1.css?v=2" rel="stylesheet"/>
+    <link href="custom/css/游戏频道管理_1.css?v=7" rel="stylesheet"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
     <script src="resources/scripts/axure/axQuery.js"></script>
     <script src="resources/scripts/axure/globals.js"></script>
@@ -66,8 +66,46 @@
                 <h2 id="gc-channel-heading">频道列表</h2>
                 <button id="gc-add" class="cl-btn gc-small" type="button" hidden>＋ 新增</button>
               </div>
-              <p id="gc-channel-help" class="gc-help" hidden>用 ↑ ↓ 调整大厅导航顺序。</p>
+              <p id="gc-channel-help" class="gc-help">启用的频道会出现在大厅。点击「编辑」可调整开关和顺序。</p>
               <ol id="gc-channels" class="gc-channels"><li class="gc-empty">频道配置加载中…</li></ol>
+              <section id="gc-channel-form" class="gc-inline-editor" aria-label="修改频道" hidden>
+                <label class="gc-field">频道名称<input id="gc-name" type="text" maxlength="30" placeholder="请输入频道名称" required aria-describedby="gc-channel-name-error"></label>
+                <p id="gc-channel-name-error" class="gc-error" hidden></p>
+                <div class="gc-field">
+                  <p>频道图标</p>
+                  <div class="gc-fields">
+                    <div class="gc-icon-card">
+                      <button class="gc-upload" type="button" data-gc-upload="icon" aria-label="替换普通图标">
+                        <span id="gc-icon-preview" class="gc-icon" aria-hidden="true"></span>
+                        <span>普通图标<small>替换</small></span>
+                      </button>
+                      <input id="gc-icon" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+                      <button class="gc-link" type="button" data-gc-reset-icon="icon" hidden>恢复默认</button>
+                    </div>
+                    <div class="gc-icon-card">
+                      <button class="gc-upload" type="button" data-gc-upload="selectedIcon" aria-label="替换选中图标">
+                        <span id="gc-selected-icon-preview" class="gc-icon is-selected" aria-hidden="true"></span>
+                        <span>选中图标<small id="gc-selected-icon-note">沿用普通图标</small></span>
+                      </button>
+                      <input id="gc-selected-icon" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+                      <button class="gc-link" type="button" data-gc-reset-icon="selectedIcon" hidden>沿用普通图标</button>
+                    </div>
+                  </div>
+                  <p class="gc-help">支持 PNG、JPG、WebP，单张不超过 512 KB。</p>
+                  <p id="gc-channel-icon-error" class="gc-error" role="alert" hidden></p>
+                </div>
+                <details id="gc-channel-languages" class="gc-channel-extra">
+                  <summary>多语言名称</summary>
+                  <div class="gc-fields">
+                    <label class="gc-field">英文（选填）<input id="gc-name-en" type="text" maxlength="30" placeholder="沿用频道名称"></label>
+                    <label class="gc-field">葡文（选填）<input id="gc-name-pt" type="text" maxlength="30" placeholder="沿用频道名称"></label>
+                  </div>
+                </details>
+                <details id="gc-channel-actions" class="gc-channel-extra" hidden>
+                  <summary>更多操作</summary>
+                  <button id="gc-remove-channel" class="gc-link gc-danger" type="button">删除频道</button>
+                </details>
+              </section>
             </aside>
 
             <section class="gc-detail" aria-labelledby="gc-current-name">
@@ -76,51 +114,57 @@
                   <h2 id="gc-current-name">频道游戏</h2>
                   <p id="gc-current-meta" class="gc-help">选择左侧频道查看配置。</p>
                 </div>
-                <button id="gc-channel-settings" class="cl-btn" type="button" hidden>编辑频道</button>
               </header>
 
-              <section id="gc-preview" class="gc-preview" data-layout="portrait" aria-labelledby="gc-preview-heading">
-                <div class="gc-preview-heading">
-                  <h3 id="gc-preview-heading">大厅布局预览</h3>
-                  <span id="gc-preview-mode" class="gc-help">已保存配置</span>
-                </div>
-                <p class="gc-preview-skin gc-help"><span role="status">当前启用皮肤：<strong id="gc-active-skin">rs</strong></span> · 保存皮肤变更后，预览自动更新</p>
-                <div class="gc-preview-surface">
-                  <div id="gc-preview-nav" class="gc-preview-nav" aria-label="大厅导航顺序"></div>
-                  <div id="gc-preview-games" class="gc-preview-games is-empty">
-                    <p class="gc-empty">频道游戏将在这里预览。</p>
+              <div class="gc-detail-body">
+                <section id="gc-preview" class="gc-preview" data-layout="portrait" aria-labelledby="gc-preview-heading">
+                  <div class="gc-preview-heading">
+                    <div class="gc-preview-title">
+                      <h3 id="gc-preview-heading">大厅布局预览</h3>
+                      <span id="gc-preview-mode" class="gc-help">已保存配置</span>
+                    </div>
+                    <button id="gc-preview-toggle" class="gc-link gc-preview-toggle" type="button" aria-expanded="true" aria-controls="gc-preview-surface" aria-label="收起大厅预览" hidden>收起</button>
                   </div>
-                </div>
-              </section>
+                  <p class="gc-preview-skin gc-help"><span role="status">当前启用皮肤：<strong id="gc-active-skin">rs</strong></span> · 保存皮肤后自动更新</p>
+                  <div id="gc-preview-surface" class="gc-preview-surface">
+                    <div id="gc-preview-nav" class="gc-preview-nav" aria-label="大厅导航顺序"></div>
+                    <div id="gc-preview-games" class="gc-preview-games is-empty" role="region" aria-label="游戏图标预览">
+                      <p class="gc-empty">频道游戏将在这里预览。</p>
+                    </div>
+                  </div>
+                </section>
 
-              <section id="gc-games-section" class="gc-games-section" aria-labelledby="gc-games-heading">
-                <div class="cl-toolbar gc-game-toolbar">
-                  <div>
-                    <h3 id="gc-games-heading">频道内游戏</h3>
-                    <p id="gc-game-help" class="gc-help">已显示的游戏按顺序排列，隐藏的游戏列在下方。</p>
+                <section id="gc-games-section" class="gc-games-section" aria-labelledby="gc-games-heading">
+                  <div class="cl-toolbar gc-game-toolbar">
+                    <div>
+                      <h3 id="gc-games-heading">频道内游戏</h3>
+                      <p id="gc-game-help" class="gc-help">已显示的游戏按顺序排列，隐藏的游戏列在下方。</p>
+                    </div>
+                    <div id="gc-game-tools" class="cl-toolbar-right gc-tools">
+                      <label class="gc-search"><span class="gc-sr">搜索频道内游戏</span><input id="gc-search" type="search" placeholder="搜索游戏名称或 ID" disabled></label>
+                      <button id="gc-pick" class="cl-btn" type="button" hidden>添加游戏</button>
+                    </div>
                   </div>
-                  <div class="cl-toolbar-right gc-tools">
-                    <label class="gc-search"><span class="gc-sr">搜索频道内游戏</span><input id="gc-search" type="search" placeholder="搜索游戏名称或 ID" disabled></label>
-                    <button id="gc-pick" class="cl-btn" type="button" hidden>选择游戏</button>
+                  <div id="gc-game-table" class="cl-table-wrap">
+                    <table class="cl-table gc-table">
+                      <thead>
+                        <tr>
+                          <th scope="col">游戏 / ID</th>
+                          <th scope="col">显示</th>
+                          <th scope="col">大图标<span class="gc-column-help" id="gc-large-help">竖版无视大图标选择</span></th>
+                          <th scope="col">HOT</th>
+                          <th scope="col">NEW</th>
+                          <th scope="col">手指引导</th>
+                          <th class="gc-game-order-col" scope="col">顺序</th>
+                          <th id="gc-game-action-heading" class="gc-game-action-col" scope="col" hidden>操作</th>
+                        </tr>
+                      </thead>
+                      <tbody id="gc-games"><tr><td colspan="7" class="gc-empty">选择频道后查看游戏。</td></tr></tbody>
+                    </table>
                   </div>
-                </div>
-                <div class="cl-table-wrap">
-                  <table class="cl-table gc-table">
-                    <thead>
-                      <tr>
-                        <th scope="col">游戏 / ID</th>
-                        <th scope="col">显示</th>
-                        <th scope="col">大图标<span class="gc-column-help" id="gc-large-help">竖版无视大图标选择</span></th>
-                        <th scope="col">HOT</th>
-                        <th scope="col">NEW</th>
-                        <th scope="col">手指引导</th>
-                        <th scope="col">顺序</th>
-                      </tr>
-                    </thead>
-                    <tbody id="gc-games"><tr><td colspan="7" class="gc-empty">选择频道后查看游戏。</td></tr></tbody>
-                  </table>
-                </div>
-              </section>
+                  <p id="gc-auto-games" class="gc-empty gc-auto-games" hidden></p>
+                </section>
+              </div>
             </section>
           </div>
           <p id="gc-status" class="gc-status" role="status"></p>
@@ -133,52 +177,25 @@
           <p id="gc-save-error" class="gc-error" role="alert" hidden></p>
         </footer>
 
-        <dialog id="gc-channel-dialog" class="gc-dialog" aria-labelledby="gc-channel-dialog-title" hidden>
-          <form id="gc-channel-form">
-            <header class="gc-dialog-header">
-              <h2 id="gc-channel-dialog-title">编辑频道</h2>
-              <button class="gc-close" type="button" data-gc-close aria-label="关闭">×</button>
-            </header>
-            <div class="gc-dialog-body">
-              <label class="gc-field">频道名称<input id="gc-name" type="text" maxlength="30" placeholder="请输入默认展示名称" required autofocus></label>
-              <div class="gc-fields">
-                <label class="gc-field">英文名称（选填）<input id="gc-name-en" type="text" maxlength="30" placeholder="未填写时使用默认名称"></label>
-                <label class="gc-field">葡文名称（选填）<input id="gc-name-pt" type="text" maxlength="30" placeholder="未填写时使用默认名称"></label>
-              </div>
-              <div class="gc-fields">
-                <div class="gc-field">
-                  <label for="gc-icon">普通图标</label>
-                  <div class="gc-icon-input"><span id="gc-icon-preview" class="gc-icon" aria-hidden="true"></span><input id="gc-icon" type="file" accept="image/png,image/jpeg,image/webp"><button class="gc-link" type="button" data-gc-reset-icon="icon" hidden>清除</button></div>
-                </div>
-                <div class="gc-field">
-                  <label for="gc-selected-icon">选中图标</label>
-                  <div class="gc-icon-input"><span id="gc-selected-icon-preview" class="gc-icon" aria-hidden="true"></span><input id="gc-selected-icon" type="file" accept="image/png,image/jpeg,image/webp"><button class="gc-link" type="button" data-gc-reset-icon="selectedIcon" hidden>清除</button></div>
-                </div>
-              </div>
-              <p class="gc-help">支持 PNG、JPG、WebP，单张不超过 512 KB。未上传选中图标时沿用普通图标。</p>
-              <label class="gc-toggle"><input id="gc-channel-visible" type="checkbox">在大厅显示此频道</label>
-              <p id="gc-channel-error" class="gc-error" role="alert" hidden></p>
-            </div>
-            <footer class="gc-dialog-footer">
-              <button id="gc-remove-channel" class="gc-link gc-danger" type="button" hidden>删除频道</button>
-              <div class="gc-dialog-actions">
-                <button class="cl-btn" type="button" data-gc-close>取消</button>
-                <button id="gc-confirm-channel" class="cl-btn cl-btn-primary" type="submit">确定</button>
-              </div>
-            </footer>
-          </form>
-        </dialog>
-
         <dialog id="gc-game-dialog" class="gc-dialog" aria-labelledby="gc-game-dialog-title" hidden>
           <form id="gc-game-form">
             <header class="gc-dialog-header">
-              <h2 id="gc-game-dialog-title">选择频道游戏</h2>
+              <h2 id="gc-game-dialog-title">添加频道游戏</h2>
               <button class="gc-close" type="button" data-gc-close aria-label="关闭">×</button>
             </header>
             <div class="gc-dialog-body">
-              <p class="gc-help">勾选要放入频道的游戏。取消勾选会移出游戏并清除它在本频道的设置；临时隐藏请在表格取消「显示」。</p>
+              <p class="gc-help">已加入的游戏会勾选并锁定。勾选新的游戏后点击「添加所选」，再保存频道配置。</p>
               <div class="cl-toolbar gc-picker-tools">
-                <label class="gc-search"><span class="gc-sr">搜索可选游戏</span><input id="gc-picker-search" type="search" placeholder="搜索游戏名称或 ID" autofocus></label>
+                <label class="gc-picker-filter"><span>游戏分类</span><select id="gc-picker-category" class="cl-select"><option value="">全部分类</option></select></label>
+                <label class="gc-picker-filter gc-search"><span>搜索游戏</span><input id="gc-picker-search" type="search" placeholder="游戏名称或 ID" autofocus></label>
+              </div>
+              <div class="gc-picker-batch">
+                <div class="cl-action-group" role="group" aria-label="批量勾选可添加游戏" aria-describedby="gc-picker-scope">
+                  <button id="gc-picker-all" class="cl-btn gc-small" type="button" disabled>全选</button>
+                  <button id="gc-picker-invert" class="cl-btn gc-small" type="button" disabled>反选</button>
+                  <button id="gc-picker-clear" class="cl-btn gc-small" type="button" disabled>清空</button>
+                </div>
+                <span id="gc-picker-scope" class="gc-help">仅操作筛选结果中可添加的游戏</span>
                 <span id="gc-picked-count" class="gc-help" role="status"></span>
               </div>
               <div id="gc-game-options" class="gc-game-options"></div>
@@ -186,7 +203,7 @@
             <footer class="gc-dialog-footer">
               <div class="gc-dialog-actions">
                 <button class="cl-btn" type="button" data-gc-close>取消</button>
-                <button class="cl-btn cl-btn-primary" type="submit">确定</button>
+                <button id="gc-picker-submit" class="cl-btn cl-btn-primary" type="submit" disabled>添加所选</button>
               </div>
             </footer>
           </form>
@@ -196,6 +213,6 @@
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
     <script src="custom/js/site-skin-layout.js?v=2"></script>
-    <script src="custom/js/游戏频道管理_1.js?v=3"></script>
+    <script src="custom/js/游戏频道管理_1.js?v=8"></script>
   </body>
 </html>
