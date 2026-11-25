@@ -1,0 +1,79 @@
+[hidden] { display: none !important; }
+
+html, body { margin: 0; min-height: 100%; background: #f3f5f7; }
+body #base { position: relative; width: 100%; min-height: 100vh; }
+.credit-page { min-height: 100vh; color: #344054; font: 12px/1.5 "Microsoft YaHei", Arial, sans-serif; text-align: left; }
+.credit-page *, .credit-page *::before, .credit-page *::after { box-sizing: border-box; }
+.credit-page button, .credit-page input, .credit-page select { font: inherit; }
+.credit-page :focus-visible { outline: 2px solid #9ecbfc; outline-offset: 2px; }
+.credit-titlebar { min-height: 34px; display: flex; gap: 9px; align-items: center; padding: 0 18px; color: #5d6b7c; background: #fff; border-bottom: 1px solid #edf0f3; }
+.credit-titlebar h1 { margin: 0; color: #1f2d3d; font-size: inherit; font-weight: 600; }
+.credit-workbench { margin-top: 16px; padding: 16px 20px 20px; background: #fff; }
+.credit-btn { height: 32px; min-width: 52px; padding: 0 14px; border: 1px solid #d4dbe5; border-radius: 4px; background: #fff; color: #344054; cursor: pointer; white-space: nowrap; }
+.credit-btn:hover { color: #1683ff; border-color: #82baf5; }
+.credit-btn.credit-primary { color: #fff; background: #2f8ff0; border-color: #2f8ff0; }
+.credit-btn.credit-primary:hover { background: #167de5; border-color: #167de5; }
+
+.credit-settings { width: 680px; max-width: 100%; margin-bottom: 16px; padding: 0 14px; border: 1px solid #e5e9ef; border-radius: 4px; }
+.credit-settings-head { min-height: 43px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid #edf0f3; }
+.credit-settings-head h2 { margin: 0; color: #1f2d3d; font-size: 14px; font-weight: 600; }
+.credit-settings-head .credit-btn { height: 26px; min-width: 48px; padding: 0 10px; }
+.credit-setting-row, .credit-rules { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.credit-setting-row { min-height: 41px; }
+.credit-setting-row > :first-child { color: #4d5966; }
+.credit-muted { color: #667384; }
+.credit-status { color: #667384; }
+.credit-status.is-on { color: #168544; }
+.credit-switch { position: relative; flex: 0 0 36px; width: 36px; height: 20px; padding: 0; border: 0; border-radius: 12px; background: #a5afbd; cursor: pointer; }
+.credit-switch:disabled { cursor: default; }
+.credit-switch::after { position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: #fff; content: ""; }
+.credit-switch.is-on { background: #2f8ff0; }
+.credit-switch.is-on::after { left: 19px; }
+.credit-rules { margin: 0; padding: 0 0 12px; column-gap: 22px; }
+.credit-rules > div { display: flex; gap: 4px; white-space: nowrap; }
+.credit-rules dt { color: #667384; }
+.credit-rules dd { margin: 0; }
+.credit-settings-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; padding: 9px 0; border-top: 1px solid #edf0f3; }
+.credit-settings-actions .credit-muted { flex: 1 1 185px; }
+.credit-notice { width: 680px; max-width: 100%; margin: 0; padding: 10px 12px; color: #5d6b7c; border: 1px solid #e5e9ef; border-radius: 4px; background: #f7f8fa; }
+.credit-field-error { margin: 0 0 10px; color: #b42318; }
+.credit-feedback { position: fixed; z-index: 10; top: 44px; left: 50%; transform: translateX(-50%); max-width: calc(100% - 28px); margin: 0; padding: 8px 14px; color: #166334; background: #f1fbf4; border: 1px solid #b7e2c3; border-radius: 4px; box-shadow: 0 2px 8px #24374e16; pointer-events: none; }
+.credit-feedback.is-error { color: #b42318; background: #fff4f3; border-color: #f2bfbc; }
+
+.credit-tabs { display: flex; gap: 20px; max-width: 1120px; margin-bottom: 12px; border-bottom: 1px solid #e5e9ef; }
+.credit-tab { height: 34px; padding: 0 2px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: #586575; cursor: pointer; }
+.credit-tab.is-active { border-bottom-color: #1683ff; color: #167de5; font-weight: 600; }
+.credit-filterbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; max-width: 1120px; margin: 0 0 10px; }
+.credit-filter-field, .credit-filter-actions { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.credit-filter-field input, .credit-filter-field select { width: 150px; height: 30px; min-width: 0; padding: 0 9px; border: 1px solid #d4dbe5; border-radius: 3px; background: #fff; color: #344054; }
+.credit-filter-field select { width: 96px; cursor: pointer; }
+.credit-filter-field input::placeholder { color: #8793a3; }
+.credit-time-field input { width: 172px; }
+.credit-filter-actions { gap: 8px; }
+
+.credit-grid { max-width: 100%; }
+.credit-members-table { width: 680px; }
+.credit-history-table { width: 1120px; }
+.credit-table-scroll { overflow-x: auto; border: 1px solid #e5e9ef; }
+.credit-table { width: 100%; border-collapse: collapse; color: #4d5966; }
+.credit-members-table .credit-table { min-width: 450px; }
+.credit-history-table .credit-table { min-width: 920px; }
+.credit-table th, .credit-table td { height: 36px; padding: 5px 10px; border-right: 1px solid #e7ebf0; border-bottom: 1px solid #e7ebf0; text-align: center; white-space: nowrap; }
+.credit-table th { background: #f7f7f9; color: #3e4650; font-weight: 600; }
+.credit-table tr > :last-child { border-right: 0; }
+.credit-table tbody tr:last-child td { border-bottom: 0; }
+.credit-table tbody tr:hover td { background: #f5f9ff; }
+.credit-table .credit-reason { min-width: 140px; max-width: 250px; text-align: left; white-space: pre-wrap; overflow-wrap: anywhere; }
+.credit-table .credit-empty-cell { height: 88px; color: #667384; }
+.credit-table .credit-delta-plus { color: #168544; }
+.credit-table .credit-delta-minus { color: #b42318; }
+.credit-row-actions { display: inline-flex; gap: 12px; align-items: center; }
+.credit-action { padding: 0; border: 0; color: #167de5; background: transparent; cursor: pointer; }
+.credit-action:hover { text-decoration: underline; }
+.credit-result-count { padding: 8px 0 0; text-align: right; color: #667384; }
+
+@media (max-width: 560px) {
+  .credit-workbench { margin-top: 10px; padding: 12px; }
+  .credit-time-field { flex-wrap: wrap; white-space: normal; }
+  .credit-time-field input { width: 156px; }
+}

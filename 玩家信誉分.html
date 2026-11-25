@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <title>玩家信誉分</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+  <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+  <link href="files/玩家信誉分/styles.css" type="text/css" rel="stylesheet"/>
+  <link href="custom/css/玩家信誉分.css" type="text/css" rel="stylesheet"/>
+  <link href="custom/css/credit-score-dialog.css" type="text/css" rel="stylesheet"/>
+  <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+  <script src="resources/scripts/axure/axQuery.js"></script>
+  <script src="resources/scripts/axure/globals.js"></script>
+  <script src="resources/scripts/axutils.js"></script>
+  <script src="resources/scripts/axure/annotation.js"></script>
+  <script src="resources/scripts/axure/axQuery.std.js"></script>
+  <script src="resources/scripts/axure/doc.js"></script>
+  <script src="resources/scripts/messagecenter.js"></script>
+  <script src="resources/scripts/axure/events.js"></script>
+  <script src="resources/scripts/axure/recording.js"></script>
+  <script src="resources/scripts/axure/action.js"></script>
+  <script src="resources/scripts/axure/expr.js"></script>
+  <script src="resources/scripts/axure/geometry.js"></script>
+  <script src="resources/scripts/axure/flyout.js"></script>
+  <script src="resources/scripts/axure/model.js"></script>
+  <script src="resources/scripts/axure/repeater.js"></script>
+  <script src="resources/scripts/axure/sto.js"></script>
+  <script src="resources/scripts/axure/utils.temp.js"></script>
+  <script src="resources/scripts/axure/variables.js"></script>
+  <script src="resources/scripts/axure/drag.js"></script>
+  <script src="resources/scripts/axure/move.js"></script>
+  <script src="resources/scripts/axure/visibility.js"></script>
+  <script src="resources/scripts/axure/style.js"></script>
+  <script src="resources/scripts/axure/adaptive.js"></script>
+  <script src="resources/scripts/axure/tree.js"></script>
+  <script src="resources/scripts/axure/init.temp.js"></script>
+  <script src="resources/scripts/axure/legacy.js"></script>
+  <script src="resources/scripts/axure/viewer.js"></script>
+  <script src="resources/scripts/axure/math.js"></script>
+  <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+  <script src="data/document.js"></script>
+  <script src="files/玩家信誉分/data.js"></script>
+  <script>
+    $axure.utils.getTransparentGifPath = function () { return "resources/images/transparent.gif"; };
+    $axure.utils.getOtherPath = function () { return "resources/Other.html"; };
+    $axure.utils.getReloadPath = function () { return "resources/reload.html"; };
+  </script>
+</head>
+<body>
+  <div id="base" class="">
+    <main class="credit-page" id="creditPage">
+      <header class="credit-titlebar">
+        <span>用户管理</span><span aria-hidden="true">/</span><h1>玩家信誉分</h1>
+      </header>
+      <div class="credit-workbench">
+        <section class="credit-settings" id="creditSettings" hidden aria-labelledby="creditSettingsTitle">
+          <header class="credit-settings-head">
+            <h2 id="creditSettingsTitle">信誉分设置</h2>
+            <button class="credit-btn" id="editSettings" type="button">编辑</button>
+          </header>
+          <div class="credit-setting-row">
+            <span>启用信誉分：</span>
+            <button class="credit-switch" id="enabledSwitch" type="button" role="switch" aria-checked="false" aria-label="启用信誉分" aria-describedby="enabledStatus" disabled></button>
+            <span class="credit-status" id="enabledStatus">未启用</span>
+            <span class="credit-muted" id="creditMerchant"></span>
+          </div>
+          <dl class="credit-rules">
+            <div><dt>默认信誉分：</dt><dd>100 分</dd></div>
+            <div><dt>分数范围：</dt><dd>0–100 分</dd></div>
+            <div><dt>管理方式：</dt><dd>人工调整</dd></div>
+          </dl>
+          <div class="credit-settings-actions" id="settingsActions" hidden>
+            <span class="credit-muted" id="draftHint">保存后生效。</span>
+            <button class="credit-btn" id="cancelSettings" type="button">取消</button>
+            <button class="credit-btn credit-primary" id="saveSettings" type="button">保存</button>
+          </div>
+          <p class="credit-field-error" id="settingsError" role="alert" hidden></p>
+        </section>
+        <p class="credit-notice" id="disabledState">启用后可管理本商户的玩家信誉分。</p>
+        <p class="credit-notice" id="deniedState" hidden>当前账号无权访问玩家信誉分。</p>
+        <p class="credit-notice" id="configOnlyState" hidden>当前账号没有查看或调整信誉分的权限。</p>
+        <section id="creditContent" hidden>
+          <div class="credit-tabs" role="tablist" aria-label="信誉分管理">
+            <button class="credit-tab is-active" id="membersTab" role="tab" aria-selected="true" aria-controls="membersPanel" type="button">信誉分列表</button>
+            <button class="credit-tab" id="historyTab" role="tab" aria-selected="false" aria-controls="historyPanel" tabindex="-1" type="button" hidden>变动记录</button>
+          </div>
+          <section id="membersPanel" role="tabpanel" aria-labelledby="membersTab">
+            <form class="credit-filterbar" id="memberFilters">
+              <label class="credit-filter-field">会员ID：<input id="memberId" placeholder="请输入会员ID"/></label>
+              <label class="credit-filter-field">会员账号：<input id="memberName" placeholder="请输入会员账号"/></label>
+              <label class="credit-filter-field" id="memberHistoryField" hidden>变动记录：
+                <select id="memberHistory">
+                  <option value="">全部</option>
+                  <option value="with">有记录</option>
+                  <option value="without">无记录</option>
+                </select>
+              </label>
+              <div class="credit-filter-actions"><button class="credit-btn credit-primary" type="submit">搜索</button><button class="credit-btn" id="resetMembers" type="button">重置</button></div>
+            </form>
+            <div class="credit-grid credit-members-table">
+              <div class="credit-table-scroll">
+                <table class="credit-table">
+                  <thead><tr><th scope="col">会员ID</th><th scope="col">会员账号</th><th scope="col">当前信誉分</th><th scope="col">操作</th></tr></thead>
+                  <tbody id="memberRows"><tr><td colspan="4" class="credit-empty-cell">暂无数据</td></tr></tbody>
+                </table>
+              </div>
+              <div class="credit-result-count" id="memberCount">共 0 条记录</div>
+            </div>
+          </section>
+          <section id="historyPanel" role="tabpanel" aria-labelledby="historyTab" hidden>
+            <form class="credit-filterbar" id="historyFilters">
+              <label class="credit-filter-field">会员ID：<input id="historyMemberId" placeholder="请输入会员ID"/></label>
+              <label class="credit-filter-field">会员账号：<input id="historyMemberName" placeholder="请输入会员账号"/></label>
+              <label class="credit-filter-field">操作人：<input id="historyOperator" placeholder="请输入操作人"/></label>
+              <div class="credit-filter-field credit-time-field" role="group" aria-label="操作时间">
+                <span>操作时间：</span><input id="historyStart" type="datetime-local" aria-label="开始时间" aria-describedby="historyError"/><span>至</span><input id="historyEnd" type="datetime-local" aria-label="结束时间" aria-describedby="historyError"/>
+              </div>
+              <div class="credit-filter-actions"><button class="credit-btn credit-primary" type="submit">搜索</button><button class="credit-btn" id="resetHistory" type="button">重置</button></div>
+            </form>
+            <p class="credit-field-error" id="historyError" role="alert" hidden></p>
+            <div class="credit-grid credit-history-table">
+              <div class="credit-table-scroll">
+                <table class="credit-table">
+                  <thead><tr><th scope="col">会员ID</th><th scope="col">会员账号</th><th scope="col">调整前</th><th scope="col">调整类型</th><th scope="col">调整分数</th><th scope="col">调整后</th><th scope="col">调整原因</th><th scope="col">操作人</th><th scope="col">操作时间</th></tr></thead>
+                  <tbody id="historyRows"><tr><td colspan="9" class="credit-empty-cell">暂无变动记录</td></tr></tbody>
+                </table>
+              </div>
+              <div class="credit-result-count" id="historyCount">共 0 条记录</div>
+            </div>
+          </section>
+        </section>
+      </div>
+      <p class="credit-feedback" id="creditFeedback" role="status" aria-live="polite" hidden></p>
+    </main>
+  </div>
+  <script src="custom/js/axure-custom-page-ready.js"></script>
+  <script src="resources/scripts/axure/ios.js"></script>
+  <script src="custom/js/credit-score-store.js"></script>
+  <script src="custom/js/credit-score-dialog.js"></script>
+  <script src="custom/js/玩家信誉分.js"></script>
+</body>
+</html>

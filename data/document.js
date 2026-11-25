@@ -626,6 +626,13 @@ $axure.loadDocument({
             "children": []
           },
           {
+            "id": "player_credit_score",
+            "pageName": "玩家信誉分",
+            "type": "Wireframe",
+            "url": "玩家信誉分.html",
+            "children": []
+          },
+          {
             "id": "member_withdraw_exempt_first_recharge",
             "pageName": "会员提现免首充",
             "type": "Wireframe",
