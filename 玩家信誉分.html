@@ -69,7 +69,6 @@
           <dl class="credit-rules">
             <div><dt>默认信誉分：</dt><dd>100 分</dd></div>
             <div><dt>分数范围：</dt><dd>0–100 分</dd></div>
-            <div><dt>管理方式：</dt><dd>人工调整</dd></div>
           </dl>
           <div class="credit-settings-actions" id="settingsActions" hidden>
             <span class="credit-muted" id="draftHint">保存后生效。</span>
@@ -100,13 +99,31 @@
               <div class="credit-filter-actions"><button class="credit-btn credit-primary" type="submit">搜索</button><button class="credit-btn" id="resetMembers" type="button">重置</button></div>
             </form>
             <div class="credit-grid credit-members-table">
-              <div class="credit-table-scroll">
+              <div class="credit-table-scroll" id="memberTableScroll">
                 <table class="credit-table">
+                  <colgroup><col class="credit-member-id"><col class="credit-member-account"><col class="credit-member-score"><col class="credit-member-actions"></colgroup>
                   <thead><tr><th scope="col">会员ID</th><th scope="col">会员账号</th><th scope="col">当前信誉分</th><th scope="col">操作</th></tr></thead>
                   <tbody id="memberRows"><tr><td colspan="4" class="credit-empty-cell">暂无数据</td></tr></tbody>
                 </table>
               </div>
-              <div class="credit-result-count" id="memberCount">共 0 条记录</div>
+              <form class="credit-member-pager" id="memberPager" aria-label="会员列表分页" novalidate>
+                <button type="button" id="memberPageFirst" title="首页" aria-label="首页" disabled>|‹</button>
+                <button type="button" id="memberPageBackFive" title="向前 5 页" aria-label="向前 5 页" disabled>≪</button>
+                <button type="button" id="memberPagePrev" title="上一页" aria-label="上一页" disabled>‹</button>
+                <div class="credit-page-position">
+                  <input id="memberPageInput" type="text" inputmode="numeric" value="1" aria-label="当前页，输入页码后按回车跳转" title="输入页码后按回车跳转" disabled/>
+                  <span aria-hidden="true">/</span><span id="memberPageTotal" aria-label="总页数">1</span>
+                </div>
+                <button type="button" id="memberPageNext" title="下一页" aria-label="下一页" disabled>›</button>
+                <button type="button" id="memberPageForwardFive" title="向后 5 页" aria-label="向后 5 页" disabled>≫</button>
+                <button type="button" id="memberPageLast" title="末页" aria-label="末页" disabled>›|</button>
+                <select id="memberPageSize" aria-label="每页条数">
+                  <option value="20" selected>20条/页</option>
+                  <option value="50">50条/页</option>
+                  <option value="100">100条/页</option>
+                </select>
+                <span id="memberCount" role="status">共 0 条记录</span>
+              </form>
             </div>
           </section>
           <section id="historyPanel" role="tabpanel" aria-labelledby="historyTab" hidden>

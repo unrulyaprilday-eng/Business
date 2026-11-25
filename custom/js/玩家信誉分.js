@@ -33,6 +33,9 @@
     var activeTab = 'members';
     var memberFilter = {};
     var historyFilter = {};
+    var memberPage = 1;
+    var memberPages = 1;
+    var memberPageSize = Number(el('memberPageSize').value);
 
     function context() {
       var session = api.session();
@@ -64,11 +67,24 @@
       button.addEventListener('click', function () { callback(button); });
       container.appendChild(button);
     }
+    function renderMemberPager(total) {
+      memberPages = Math.max(1, Math.ceil(total / memberPageSize));
+      var previousPage = memberPage;
+      memberPage = Math.min(previousPage, memberPages);
+      var pageInput = el('memberPageInput');
+      if (document.activeElement !== pageInput || pageInput.disabled || memberPage !== previousPage || !total) pageInput.value = String(memberPage);
+      pageInput.disabled = !total;
+      el('memberPageTotal').textContent = String(memberPages);
+      var count = '共 ' + total + ' 条记录';
+      if (el('memberCount').textContent !== count) el('memberCount').textContent = count;
+      ['memberPageFirst', 'memberPageBackFive', 'memberPagePrev'].forEach(function (id) { el(id).disabled = memberPage <= 1; });
+      ['memberPageNext', 'memberPageForwardFive', 'memberPageLast'].forEach(function (id) { el(id).disabled = memberPage >= memberPages; });
+    }
     function renderMembers(c) {
       var body = el('memberRows');
       body.replaceChildren();
       if (!canList(c)) {
-        el('memberCount').textContent = '共 0 条记录';
+        renderMemberPager(0);
         return;
       }
       var recordFilter = c.permissions.view ? memberFilter.records : '';
@@ -76,10 +92,12 @@
         return includes(member.memberId, memberFilter.id) && includes(member.memberName, memberFilter.name) &&
           (!recordFilter || member.hasAdjustments === (recordFilter === 'with'));
       });
-      list.forEach(function (member) {
+      renderMemberPager(list.length);
+      var first = (memberPage - 1) * memberPageSize;
+      list.slice(first, first + memberPageSize).forEach(function (member) {
         var tr = document.createElement('tr');
         cell(tr, member.memberId);
-        cell(tr, member.memberName);
+        cell(tr, member.memberName).title = member.memberName;
         cell(tr, member.score);
         var controls = document.createElement('span');
         controls.className = 'credit-row-actions';
@@ -115,7 +133,14 @@
         body.appendChild(tr);
       });
       if (!list.length) empty(body, 4, memberFilter.id || memberFilter.name || recordFilter ? '未找到符合条件的会员' : '暂无数据');
-      el('memberCount').textContent = '共 ' + list.length + ' 条记录';
+    }
+    function renderMemberPage(page) {
+      var c = context();
+      if (!api.canAccessPage() || !canList(c)) return refresh();
+      memberPage = Math.max(1, Math.min(page, memberPages));
+      renderMembers(c);
+      el('memberTableScroll').scrollTop = 0;
+      el('memberPageInput').value = String(memberPage);
     }
     function formatTime(timestamp) {
       var date = new Date(timestamp);
@@ -163,6 +188,7 @@
         el('memberFilters').reset();
         el('historyFilters').reset();
         activeTab = 'members';
+        memberPage = 1;
         editing = false;
         feedback('当前账号或权限已变更。', false);
       }
@@ -257,9 +283,32 @@
     el('memberFilters').addEventListener('submit', function (event) {
       event.preventDefault();
       memberFilter = { id: value('memberId'), name: value('memberName'), records: value('memberHistory') };
-      refresh();
+      renderMemberPage(1);
     });
-    el('resetMembers').addEventListener('click', function () { el('memberFilters').reset(); memberFilter = {}; refresh(); });
+    el('resetMembers').addEventListener('click', function () { el('memberFilters').reset(); memberFilter = {}; renderMemberPage(1); });
+    el('memberPageFirst').addEventListener('click', function () { renderMemberPage(1); });
+    el('memberPageBackFive').addEventListener('click', function () { renderMemberPage(memberPage - 5); });
+    el('memberPagePrev').addEventListener('click', function () { renderMemberPage(memberPage - 1); });
+    el('memberPageNext').addEventListener('click', function () { renderMemberPage(memberPage + 1); });
+    el('memberPageForwardFive').addEventListener('click', function () { renderMemberPage(memberPage + 5); });
+    el('memberPageLast').addEventListener('click', function () { renderMemberPage(memberPages); });
+    el('memberPager').addEventListener('submit', function (event) {
+      event.preventDefault();
+      var input = value('memberPageInput');
+      var page = /^\d+$/.test(input) ? Number(input) : NaN;
+      if (Number.isSafeInteger(page)) renderMemberPage(page);
+      else el('memberPageInput').value = String(memberPage);
+    });
+    el('memberPageInput').addEventListener('blur', function (event) { event.target.value = String(memberPage); });
+    el('memberPageSize').addEventListener('change', function (event) {
+      var selected = Number(event.target.value);
+      if (![20, 50, 100].includes(selected)) {
+        event.target.value = String(memberPageSize);
+        return;
+      }
+      memberPageSize = selected;
+      renderMemberPage(1);
+    });
     el('historyFilters').addEventListener('submit', function (event) {
       event.preventDefault();
       var start = value('historyStart') ? new Date(value('historyStart')).getTime() : null;

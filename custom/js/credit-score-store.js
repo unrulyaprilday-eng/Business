@@ -18,6 +18,10 @@
       ["1010123467", "lll123"], ["1010123466", "kkk123"]
     ]
   };
+  // Continue the exported first-page IDs with explicitly synthetic prototype accounts.
+  for (let index = 1; index <= 345; index += 1) {
+    members["101"].push([String(1010123466 - index), "demo_member_" + String(index).padStart(3, "0")]);
+  }
   const demoAdjustments = [
     ["1010123475", -20, "重复提交活动申请，核查后扣分", "qitian", "2026-11-18T10:24:06+08:00"],
     ["1010123474", -35, "活动申请异常，复核确认后扣分", "white2", "2026-11-18T14:38:25+08:00"],
