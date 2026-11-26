@@ -52,7 +52,7 @@
   </head>
   <body data-axure-page-id="operation_live_feed_config">
     <div id="base" class="">
-      <div class="custom-page-shell live-config-page">
+      <div class="custom-page-shell live-config-page is-readonly">
         <div class="topbar">
           <span class="nav-icon">‹</span>
           <span class="nav-icon refresh">↻</span>
@@ -64,11 +64,12 @@
             <div class="intro-copy">
               <h1>中奖动态配置</h1>
             </div>
+            <button class="btn primary" type="button" data-action="edit" hidden>编辑</button>
           </section>
 
-          <section class="config-section">
+          <fieldset class="config-section" aria-labelledby="liveSourceHeading" disabled>
             <div class="section-headline">
-              <h2>来源配置</h2>
+              <h2 id="liveSourceHeading">来源配置</h2>
             </div>
 
             <section class="rule-card">
@@ -79,7 +80,7 @@
                 <div class="source-list">
                   <section class="source-item source-item-game" id="gameSourceCard">
                     <div class="source-top">
-                      <label class="source-main-line"><input type="checkbox" id="sourceGame" checked/> 游戏中奖</label>
+                      <label class="source-main-line"><input type="checkbox" name="sourceGame" id="sourceGame" checked/> 游戏中奖</label>
                     </div>
                     <div class="source-detail">
                       <div class="group-caption">
@@ -168,7 +169,7 @@
                           <label class="field single-threshold-field" id="amountField">
                             <span>最低中奖金额</span>
                             <div class="number-input">
-                              <input type="text" value="500"/>
+                              <input type="text" name="minimumWin" value="500"/>
                               <em>元以上</em>
                             </div>
                           </label>
@@ -179,28 +180,29 @@
 
                   <section class="source-item source-item-event">
                     <div class="source-top">
-                      <div class="source-main-line source-title-only">系统奖励</div>
+                      <div class="source-main-line source-title-only">会员动态</div>
                     </div>
                     <div class="source-detail compact-detail">
                       <div class="event-source-grid">
-                        <label><input type="checkbox" checked/> VIP升级奖励</label>
-                        <label><input type="checkbox" checked/> VIP日俸禄</label>
-                        <label><input type="checkbox" checked/> VIP周俸禄</label>
-                        <label><input type="checkbox" checked/> VIP月俸禄</label>
-                        <label><input type="checkbox" checked/> 活动领奖</label>
-                        <label><input type="checkbox" checked/> 代理返佣</label>
-                        <label><input type="checkbox" checked/> 任务达成</label>
+                        <label><input type="checkbox" name="sourceVipUpgrade" checked/> VIP升级奖励</label>
+                        <label><input type="checkbox" name="sourceVipDaily" checked/> VIP日俸禄</label>
+                        <label><input type="checkbox" name="sourceVipWeekly" checked/> VIP周俸禄</label>
+                        <label><input type="checkbox" name="sourceVipMonthly" checked/> VIP月俸禄</label>
+                        <label><input type="checkbox" name="sourceActivity" checked/> 活动领奖</label>
+                        <label><input type="checkbox" name="sourceCommission" checked/> 代理返佣</label>
+                        <label><input type="checkbox" name="sourceTask" checked/> 任务达成</label>
+                        <label><input type="checkbox" name="sourceWithdrawal" id="sourceWithdrawal"/> 提款成功</label>
                       </div>
                     </div>
                   </section>
                 </div>
               </div>
             </section>
-          </section>
+          </fieldset>
 
-          <section class="config-section">
+          <fieldset class="config-section" aria-labelledby="liveRobotHeading" disabled>
             <div class="section-headline">
-              <h2>机器人补量配置</h2>
+              <h2 id="liveRobotHeading">机器人补量配置</h2>
             </div>
 
             <section class="rule-card">
@@ -211,7 +213,7 @@
                 <div class="robot-switch-row">
                   <div class="field inline">
                     <span>机器人开关</span>
-                    <button class="switch on" id="robotToggle" type="button" data-on="true" aria-label="机器人开关"></button>
+                    <button class="switch on" id="robotToggle" type="button" data-on="true" role="switch" aria-checked="true" aria-label="机器人开关"></button>
                   </div>
                 </div>
 
@@ -225,7 +227,7 @@
                         <label class="field">
                           <span>补充频率</span>
                           <div class="number-input">
-                            <input type="text" value="3"/>
+                            <input type="text" name="robotInterval" value="3"/>
                             <em>分钟补 1 条</em>
                           </div>
                         </label>
@@ -245,7 +247,7 @@
                       <div class="name-rule-grid">
                         <label class="field compact-field">
                           <span>自定义开头</span>
-                          <input id="namePrefixInput" type="text" placeholder="请输入数字开头"/>
+                          <input id="namePrefixInput" type="text" name="robotPrefix" placeholder="请输入数字开头"/>
                         </label>
                       </div>
                       <div class="helper-text preview-label">预览</div>
@@ -258,35 +260,35 @@
                       <div class="source-config-list">
                         <div class="source-config-row">
                           <div class="source-config-main">
-                            <label><input type="checkbox" checked/> 游戏中奖</label>
+                            <label><input type="checkbox" name="robotGame" checked/> 游戏中奖</label>
                           </div>
                           <div class="source-config-fields">
                             <label class="inline-config-field inline-weight-field">
                               <span>权重占比</span>
                               <div class="number-input">
-                                <input type="text" value="55"/>
+                                <input type="text" name="weightGame" value="55"/>
                                 <em>%</em>
                               </div>
                             </label>
                             <label class="inline-config-field">
                               <span>奖励范围</span>
                               <div class="range-input compact-range">
-                                <input type="text" value="100"/>
+                                <input type="text" name="gameAmountMin" value="100"/>
                                 <em>~</em>
-                                <input type="text" value="5000"/>
+                                <input type="text" name="gameAmountMax" value="5000"/>
                               </div>
                             </label>
                           </div>
                         </div>
                         <div class="source-config-row">
                           <div class="source-config-main">
-                            <label><input type="checkbox" checked/> VIP升级奖励</label>
+                            <label><input type="checkbox" name="robotVipUpgrade" checked/> VIP升级奖励</label>
                           </div>
                           <div class="source-config-fields">
                             <label class="inline-config-field inline-weight-field">
                               <span>权重占比</span>
                               <div class="number-input">
-                                <input type="text" value="6"/>
+                                <input type="text" name="weightVipUpgrade" value="6"/>
                                 <em>%</em>
                               </div>
                             </label>
@@ -294,13 +296,13 @@
                         </div>
                         <div class="source-config-row">
                           <div class="source-config-main">
-                            <label><input type="checkbox" checked/> VIP日俸禄</label>
+                            <label><input type="checkbox" name="robotVipDaily" checked/> VIP日俸禄</label>
                           </div>
                           <div class="source-config-fields">
                             <label class="inline-config-field inline-weight-field">
                               <span>权重占比</span>
                               <div class="number-input">
-                                <input type="text" value="8"/>
+                                <input type="text" name="weightVipDaily" value="8"/>
                                 <em>%</em>
                               </div>
                             </label>
@@ -308,13 +310,13 @@
                         </div>
                         <div class="source-config-row">
                           <div class="source-config-main">
-                            <label><input type="checkbox" checked/> VIP周俸禄</label>
+                            <label><input type="checkbox" name="robotVipWeekly" checked/> VIP周俸禄</label>
                           </div>
                           <div class="source-config-fields">
                             <label class="inline-config-field inline-weight-field">
                               <span>权重占比</span>
                               <div class="number-input">
-                                <input type="text" value="6"/>
+                                <input type="text" name="weightVipWeekly" value="6"/>
                                 <em>%</em>
                               </div>
                             </label>
@@ -322,13 +324,13 @@
                         </div>
                         <div class="source-config-row">
                           <div class="source-config-main">
-                            <label><input type="checkbox"/> VIP月俸禄</label>
+                            <label><input type="checkbox" name="robotVipMonthly"/> VIP月俸禄</label>
                           </div>
                           <div class="source-config-fields">
                             <label class="inline-config-field inline-weight-field">
                               <span>权重占比</span>
                               <div class="number-input">
-                                <input type="text" value="5"/>
+                                <input type="text" name="weightVipMonthly" value="5"/>
                                 <em>%</em>
                               </div>
                             </label>
@@ -336,13 +338,13 @@
                         </div>
                         <div class="source-config-row">
                           <div class="source-config-main">
-                            <label><input type="checkbox" checked/> 活动领奖</label>
+                            <label><input type="checkbox" name="robotActivity" checked/> 活动领奖</label>
                           </div>
                           <div class="source-config-fields">
                             <label class="inline-config-field inline-weight-field">
                               <span>权重占比</span>
                               <div class="number-input">
-                                <input type="text" value="10"/>
+                                <input type="text" name="weightActivity" value="10"/>
                                 <em>%</em>
                               </div>
                             </label>
@@ -350,35 +352,57 @@
                         </div>
                         <div class="source-config-row">
                           <div class="source-config-main">
-                            <label><input type="checkbox" checked/> 代理返佣</label>
+                            <label><input type="checkbox" name="robotCommission" checked/> 代理返佣</label>
                           </div>
                           <div class="source-config-fields">
                             <label class="inline-config-field inline-weight-field">
                               <span>权重占比</span>
                               <div class="number-input">
-                                <input type="text" value="10"/>
+                                <input type="text" name="weightCommission" value="10"/>
                                 <em>%</em>
                               </div>
                             </label>
                             <label class="inline-config-field">
                               <span>奖励范围</span>
                               <div class="range-input compact-range">
-                                <input type="text" value="200"/>
+                                <input type="text" name="commissionAmountMin" value="200"/>
                                 <em>~</em>
-                                <input type="text" value="3000"/>
+                                <input type="text" name="commissionAmountMax" value="3000"/>
                               </div>
                             </label>
                           </div>
                         </div>
                         <div class="source-config-row">
                           <div class="source-config-main">
-                            <label><input type="checkbox" checked/> 任务达成</label>
+                            <label><input type="checkbox" name="robotWithdrawal"/> 提款成功</label>
                           </div>
                           <div class="source-config-fields">
                             <label class="inline-config-field inline-weight-field">
                               <span>权重占比</span>
                               <div class="number-input">
-                                <input type="text" value="5"/>
+                                <input type="text" name="weightWithdrawal" value="0"/>
+                                <em>%</em>
+                              </div>
+                            </label>
+                            <div class="inline-config-field" role="group" aria-labelledby="withdrawalAmountLabel">
+                              <span id="withdrawalAmountLabel">提款金额</span>
+                              <div class="range-input compact-range">
+                                <input type="text" name="withdrawalAmountMin" inputmode="decimal" placeholder="下限" aria-label="提款金额下限"/>
+                                <em>~</em>
+                                <input type="text" name="withdrawalAmountMax" inputmode="decimal" placeholder="上限" aria-label="提款金额上限"/>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="source-config-row">
+                          <div class="source-config-main">
+                            <label><input type="checkbox" name="robotTask" checked/> 任务达成</label>
+                          </div>
+                          <div class="source-config-fields">
+                            <label class="inline-config-field inline-weight-field">
+                              <span>权重占比</span>
+                              <div class="number-input">
+                                <input type="text" name="weightTask" value="5"/>
                                 <em>%</em>
                               </div>
                             </label>
@@ -390,13 +414,7 @@
                 </div>
               </div>
             </section>
-          </section>
-
-          <div class="form-actions">
-            <button class="btn primary wide" type="button" data-action="edit">修改</button>
-            <button class="btn" type="button" data-action="cancel" hidden>取消</button>
-            <button class="btn primary wide" type="button" data-action="save" hidden>保存</button>
-          </div>
+          </fieldset>
 
           <section class="bottom-note-section">
             <div class="section-headline">
@@ -453,6 +471,11 @@
                         <td>任务达成</td>
                         <td>{name} 完成任务 {taskName} 获得 {reward}</td>
                         <td>{name} completed task {taskName} and received {reward}</td>
+                      </tr>
+                      <tr>
+                        <td>提款成功</td>
+                        <td>{name} 成功提款 {amount}</td>
+                        <td>{name} successfully withdrew {amount}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -512,6 +535,11 @@
                         <td>跟随任务设定</td>
                         <td>仅使用已启用任务与奖励</td>
                       </tr>
+                      <tr>
+                        <td>提款成功</td>
+                        <td>在配置的提款金额范围内随机取值</td>
+                        <td>勾选该补量来源后参与权重分配</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -532,6 +560,13 @@
             </section>
           </section>
         </main>
+        <div class="form-actions" data-config-actions role="group" aria-label="编辑操作" hidden>
+          <p class="config-error" data-config-error role="alert" hidden></p>
+          <div class="form-action-buttons">
+            <button class="btn" type="button" data-action="cancel">取消</button>
+            <button class="btn primary" type="button" data-action="save">保存</button>
+          </div>
+        </div>
       </div>
     </div>
   </body>

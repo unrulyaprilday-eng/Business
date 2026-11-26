@@ -5,11 +5,10 @@
     }
   }
 
-  function toggleSwitch(button) {
-    var next = button.getAttribute("data-on") !== "true";
-    button.setAttribute("data-on", next ? "true" : "false");
-    button.classList.toggle("on", next);
-    return next;
+  function setSwitch(button, enabled) {
+    button.setAttribute("data-on", String(enabled));
+    button.setAttribute("aria-checked", String(enabled));
+    button.classList.toggle("on", enabled);
   }
 
   function updateNameHint() {
@@ -45,6 +44,7 @@
     var searchInput = container.querySelector(".multiselect-search-input");
     var checkboxes = container.querySelectorAll('.multiselect-option input[type="checkbox"]');
     var selectAll = container.querySelector(".select-all-checkbox");
+    var fieldset = container.closest("fieldset");
 
     function updateView() {
       var values = [];
@@ -76,6 +76,7 @@
     }
 
     trigger.addEventListener("click", function () {
+      if (fieldset && fieldset.disabled) return;
       dropdown.hidden = !dropdown.hidden;
       if (!dropdown.hidden && searchInput) {
         searchInput.focus();
@@ -96,6 +97,7 @@
     }
 
     tags.addEventListener("click", function (event) {
+      if (fieldset && fieldset.disabled) return;
       var remove = event.target.closest(".tag-remove");
       if (!remove) return;
       Array.prototype.forEach.call(checkboxes, function (checkbox) {
@@ -118,8 +120,12 @@
       });
     }
 
-    updateView();
-    filterOptions("");
+    return function refresh() {
+      dropdown.hidden = true;
+      if (searchInput) searchInput.value = "";
+      filterOptions("");
+      updateView();
+    };
   }
 
   function setupTagRow(group) {
@@ -166,42 +172,134 @@
     var lastWeightInput = lastRow.querySelector(".inline-weight-field input");
     if (!lastWeightInput) return;
 
-    lastWeightInput.value = Math.max(0, 100 - totalBeforeLast);
+    lastWeightInput.value = Math.max(0, Number((100 - totalBeforeLast).toFixed(10)));
     lastWeightInput.readOnly = true;
     lastWeightInput.classList.add("auto-weight-input");
   }
 
   document.addEventListener("DOMContentLoaded", function () {
     var pageRoot = document.querySelector(".live-config-page");
+    if (!pageRoot) return;
     var robotToggle = document.getElementById("robotToggle");
     var sourceGame = document.getElementById("sourceGame");
     var prefixInput = document.getElementById("namePrefixInput");
-    var editBtn = document.querySelector('[data-action="edit"]');
-    var cancelBtn = document.querySelector('[data-action="cancel"]');
-    var saveBtn = document.querySelector('[data-action="save"]');
+    var editBtn = pageRoot.querySelector('[data-action="edit"]');
+    var cancelBtn = pageRoot.querySelector('[data-action="cancel"]');
+    var saveBtn = pageRoot.querySelector('[data-action="save"]');
+    var actions = pageRoot.querySelector("[data-config-actions]");
+    var errorNode = pageRoot.querySelector("[data-config-error]");
+    if (!robotToggle || !sourceGame || !editBtn || !cancelBtn || !saveBtn || !actions || !errorNode) return;
+
+    var sections = pageRoot.querySelectorAll("fieldset.config-section");
+    var robotRows = Array.from(pageRoot.querySelectorAll(".source-config-row"));
+    var fields = Array.from(pageRoot.querySelectorAll(".config-section input[name], .multiselect-option input"));
+    var refreshMultiselects = Array.from(pageRoot.querySelectorAll(".custom-multiselect"), setupMultiselect);
+    var storageKey = "business.liveFeed.config.v1";
     var editing = false;
+    var savedConfig = loadConfig();
+
+    function fieldKey(input) {
+      return input.name || input.closest("[data-multiselect]").dataset.multiselect + ":" + input.value;
+    }
+
+    function readConfig(defaults) {
+      var config = { robotEnabled: robotToggle.getAttribute("data-on") === "true" };
+      fields.forEach(function (input) {
+        config[fieldKey(input)] = input.type === "checkbox"
+          ? (defaults ? input.defaultChecked : input.checked)
+          : (defaults ? input.defaultValue : input.value);
+      });
+      return config;
+    }
+
+    function loadConfig() {
+      var config = readConfig(true);
+      try {
+        var stored = JSON.parse(window.localStorage.getItem(storageKey));
+        if (stored && typeof stored === "object") {
+          Object.keys(config).forEach(function (key) {
+            if (typeof stored[key] === typeof config[key]) config[key] = stored[key];
+          });
+        } else {
+          var legacyWithdrawal = window.localStorage.getItem("business.liveFeed.withdrawalSuccess");
+          if (legacyWithdrawal !== null) config.sourceWithdrawal = legacyWithdrawal === "true";
+        }
+      } catch (error) {
+        // Keep the page defaults when browser storage is unavailable.
+      }
+      return config;
+    }
+
+    function renderConfig(config) {
+      fields.forEach(function (input) {
+        var value = config[fieldKey(input)];
+        if (input.type === "checkbox") input.checked = value;
+        else input.value = value;
+      });
+      setSwitch(robotToggle, config.robotEnabled);
+      updateSourcePanels();
+      syncWeightInputs();
+      updateNameHint();
+      refreshMultiselects.forEach(function (refresh) { refresh(); });
+    }
+
+    function setError(message) {
+      errorNode.textContent = message;
+      errorNode.hidden = !message;
+    }
 
     function setEditing(next) {
       editing = next;
-      if (pageRoot) {
-        pageRoot.classList.toggle("is-readonly", !editing);
-      }
+      pageRoot.classList.toggle("is-readonly", !editing);
+      pageRoot.classList.toggle("is-editing", editing);
+      Array.prototype.forEach.call(sections, function (section) { section.disabled = !editing; });
       toggleHidden(editBtn, editing);
-      toggleHidden(cancelBtn, !editing);
-      toggleHidden(saveBtn, !editing);
+      toggleHidden(actions, !editing);
+      setError("");
+      if (!editing) renderConfig(savedConfig);
     }
 
-    updateNameHint();
-    updateSourcePanels();
-    syncWeightInputs();
+    function isAmount(value) {
+      return /^(?:\d+\.?\d*|\.\d+)$/.test(value.trim()) && Number.isFinite(Number(value));
+    }
+
+    function validateConfig(config) {
+      if (config.sourceGame && !isAmount(config.minimumWin)) return "请输入有效的最低中奖金额。";
+      if (!config.robotEnabled) return "";
+
+      var interval = Number(config.robotInterval);
+      if (!/^\d+$/.test(config.robotInterval.trim()) || !Number.isSafeInteger(interval) || interval < 1) {
+        return "补充频率须为正整数。";
+      }
+      if (!/^\d*$/.test(config.robotPrefix.trim())) return "机器人名称开头只能填写数字。";
+
+      var checkedRows = robotRows.filter(function (row) {
+        return row.querySelector(".source-config-main input").checked;
+      });
+      if (!checkedRows.length) return "启用机器人时，请至少勾选一个补量来源。";
+
+      var total = 0;
+      for (var index = 0; index < checkedRows.length; index += 1) {
+        var row = checkedRows[index];
+        var source = row.querySelector(".source-config-main").textContent.trim();
+        var weight = row.querySelector(".inline-weight-field input").value;
+        if (!isAmount(weight) || Number(weight) > 100) return source + "的权重须在 0% 至 100% 之间。";
+        if (index < checkedRows.length - 1) total += Number(weight);
+
+        var range = row.querySelectorAll(".range-input input");
+        if (range.length === 2 && (!isAmount(range[0].value) || !isAmount(range[1].value) || Number(range[0].value) > Number(range[1].value))) {
+          return source + "的金额范围须填写有效金额，且下限不能高于上限。";
+        }
+      }
+      if (Number(total.toFixed(10)) > 100) return "手动填写的权重合计不能超过 100%。";
+      return "";
+    }
+
     setEditing(false);
 
-    if (robotToggle) {
-      robotToggle.addEventListener("click", function () {
-        if (!editing) return;
-        toggleSwitch(robotToggle);
-      });
-    }
+    robotToggle.addEventListener("click", function () {
+      if (editing) setSwitch(robotToggle, robotToggle.getAttribute("data-on") !== "true");
+    });
 
     if (prefixInput) {
       prefixInput.addEventListener("input", function () {
@@ -209,11 +307,9 @@
       });
     }
 
-    if (sourceGame) {
-      sourceGame.addEventListener("change", updateSourcePanels);
-    }
+    sourceGame.addEventListener("change", updateSourcePanels);
 
-    Array.prototype.forEach.call(document.querySelectorAll(".robot-panel-column-right .source-config-row"), function (row) {
+    robotRows.forEach(function (row) {
       var checkbox = row.querySelector('.source-config-main input[type="checkbox"]');
       var weightInput = row.querySelector(".inline-weight-field input");
 
@@ -231,26 +327,34 @@
       setupTagRow(group);
     });
 
-    Array.prototype.forEach.call(document.querySelectorAll(".custom-multiselect"), function (container) {
-      setupMultiselect(container);
+    editBtn.addEventListener("click", function () {
+      setEditing(true);
+      sourceGame.focus({ preventScroll: true });
     });
 
-    if (editBtn) {
-      editBtn.addEventListener("click", function () {
-        setEditing(true);
-      });
-    }
+    cancelBtn.addEventListener("click", function () {
+      setEditing(false);
+      editBtn.focus({ preventScroll: true });
+    });
 
-    if (cancelBtn) {
-      cancelBtn.addEventListener("click", function () {
-        setEditing(false);
-      });
-    }
-
-    if (saveBtn) {
-      saveBtn.addEventListener("click", function () {
-        setEditing(false);
-      });
-    }
+    saveBtn.addEventListener("click", function () {
+      if (!editing) return;
+      syncWeightInputs();
+      var draft = readConfig(false);
+      var issue = validateConfig(draft);
+      if (issue) {
+        setError(issue);
+        return;
+      }
+      try {
+        window.localStorage.setItem(storageKey, JSON.stringify(draft));
+      } catch (error) {
+        setError("浏览器无法保存配置，修改已保留，请重试。");
+        return;
+      }
+      savedConfig = draft;
+      setEditing(false);
+      editBtn.focus({ preventScroll: true });
+    });
   });
 })();
