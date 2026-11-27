@@ -9,7 +9,7 @@
   function findChannel(id, state) { return (state || api().getState()).channels.find(function (channel) { return channel.id === id; }); }
   function effective(channel, link) {
     var result = Object.assign({}, channel, link), config = link.config || {};
-    result.id = channel.id; result.code = channel.code; result.currency = channel.currency; result.language = channel.language;
+    result.id = channel.id; result.code = channel.code;
     result.status = channel.status === 'enabled' && link.status !== 'disabled' ? 'enabled' : 'disabled';
     result.packageIds = clone(link.inheritConfig !== false ? channel.packageIds : config.packageIds || []);
     result.download = clone(link.inheritConfig !== false ? channel.download : config.download || channel.download);
@@ -30,7 +30,7 @@
   }
   function url(channel, link) {
     var item = effective(channel, link), paths = {lobby: '/', register: '/register', activity: '/promotions', trial: '/trial', download: '/download', landing: '/landing'};
-    var address = 'https://' + item.domain + (paths[item.destination] || '/') + '?channel=' + encodeURIComponent(channel.code) + '&media=' + encodeURIComponent(item.media) + '&link=' + encodeURIComponent(item.linkName) + '&linkId=' + encodeURIComponent(link.id) + '&lang=' + encodeURIComponent(channel.language) + '&currency=' + encodeURIComponent(channel.currency);
+    var address = 'https://' + item.domain + (paths[item.destination] || '/') + '?channel=' + encodeURIComponent(channel.code) + '&media=' + encodeURIComponent(item.media) + '&link=' + encodeURIComponent(item.linkName) + '&linkId=' + encodeURIComponent(link.id);
     if (item.destination === 'landing') address += '&template=' + encodeURIComponent(item.landingId || item.landing || '');
     return address;
   }

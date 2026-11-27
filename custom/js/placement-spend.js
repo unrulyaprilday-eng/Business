@@ -1,9 +1,10 @@
 (function () {
   'use strict';
   var AS_OF = '2026-11-12', MAX_AMOUNT = 1000000000, PAGE_SIZE = 20;
-  var CURRENCIES = ['USDT', 'INR', 'USD'];
+  var CURRENCIES = ['USDT', 'INR', 'USD', 'BRL', 'IDR'];
   var filter = defaults(), section = null, serial = 0;
   function api() { return window.CM; }
+  function siteCurrency() { return window.businessSiteCurrency.read(); }
   function clone(value) { return JSON.parse(JSON.stringify(value)); }
   function esc(value) { return api().escape(value == null ? '' : String(value)); }
   function defaults() { return { start: '2026-11-01', end: AS_OF, channelId: '', media: '', link: '', currency: '', page: 1 }; }
@@ -60,10 +61,10 @@
     var linkId = String(values.linkId || ''), link = links(channel).find(function (item) { return item.id === linkId; });
     var sameBinding = saved && saved.channelId === channel.id && String(saved.linkId || '') === linkId;
     if (linkId && !link && !sameBinding) throw new Error('广告链接不存在或不属于所选渠道');
-    var currency = sameBinding ? saved.currency : (channel.currency || 'INR');
+    var currency = sameBinding ? saved.currency : siteCurrency();
     var originalCurrency = String(values.originalCurrency || values.currency || '').toUpperCase();
-    if (CURRENCIES.indexOf(originalCurrency) < 0) throw new Error('原币仅支持 USDT、INR、USD');
-    if (CURRENCIES.indexOf(currency) < 0) throw new Error('渠道报表币种不受支持');
+    if (CURRENCIES.indexOf(originalCurrency) < 0) throw new Error('原币仅支持 USDT、INR、USD、BRL、IDR');
+    if (CURRENCIES.indexOf(currency) < 0) throw new Error('报表币种不受支持');
     var originalCents = cents(values.originalAmount == null ? values.amount : values.originalAmount);
     var exchangeRate = originalCurrency === currency ? '1' : rate(values.exchangeRate);
     var amountCents = convert(originalCents, exchangeRate), media = sameBinding ? saved.media : (link ? link.media : channel.media || '');
@@ -152,7 +153,7 @@
     var records = filtered(state), pages = Math.max(1, Math.ceil(records.length / PAGE_SIZE));
     filter.page = Math.min(Math.max(1, filter.page), pages);
     var start = (filter.page - 1) * PAGE_SIZE;
-    section.innerHTML = '<h2>广告消耗数据</h2><p class="cm-note">初始演示范围为 2026-11-01 至 ' + AS_OF + '；汇率与媒体、链接、报表币种随记录保存。演示报表仅使用截至快照日的统计。</p><form class="cm-filter" data-spend-filter>' + field('开始日期', input('start', filter.start, 'type="date"')) + field('结束日期', input('end', filter.end, 'type="date"')) + field('渠道', select('channelId', [['', '全部渠道']].concat(channelOptions(state)), filter.channelId)) + field('报表币种', select('currency', [['', '全部币种']].concat(CURRENCIES), filter.currency)) + field('媒体', select('media', [['', '全部媒体']].concat(mediaOptions(state)), filter.media)) + field('广告链接', select('link', currentLinks, filter.link)) + '<div class="cm-filter-actions"><button type="submit" class="cm-btn primary">查询</button>' + button('reset', '重置') + '</div></form><div class="cm-toolbar"><div>' + button('add', '新增消耗', true) + button('import', 'CSV 导入') + button('template', '下载模板') + button('export', '导出筛选结果') + '</div><div>' + button('roi', '看回收分析') + button('daily', '看投放日报') + '</div></div>' + table(records.slice(start, start + PAGE_SIZE)) + '<div class="cm-pagination"><span class="cm-muted">共 ' + records.length + ' 条 · 每页 ' + PAGE_SIZE + ' 条</span>' + '<button type="button" class="cm-btn" data-spend-action="previous"' + (filter.page <= 1 ? ' disabled' : '') + '>上一页</button><span>第 ' + filter.page + ' / ' + pages + ' 页</span><button type="button" class="cm-btn" data-spend-action="next"' + (filter.page >= pages ? ' disabled' : '') + '>下一页</button></div>';
+    section.innerHTML = '<h2>广告消耗数据</h2><p class="cm-note">初始演示范围为 2026-11-01 至 ' + AS_OF + '；新增消耗使用当前站点币种，汇率与媒体、链接、报表币种随记录保存。编辑历史记录且关联不变时保留原报表币种。演示报表仅使用截至快照日的统计。</p><form class="cm-filter" data-spend-filter>' + field('开始日期', input('start', filter.start, 'type="date"')) + field('结束日期', input('end', filter.end, 'type="date"')) + field('渠道', select('channelId', [['', '全部渠道']].concat(channelOptions(state)), filter.channelId)) + field('报表币种', select('currency', [['', '全部币种']].concat(CURRENCIES), filter.currency)) + field('媒体', select('media', [['', '全部媒体']].concat(mediaOptions(state)), filter.media)) + field('广告链接', select('link', currentLinks, filter.link)) + '<div class="cm-filter-actions"><button type="submit" class="cm-btn primary">查询</button>' + button('reset', '重置') + '</div></form><div class="cm-toolbar"><div>' + button('add', '新增消耗', true) + button('import', 'CSV 导入') + button('template', '下载模板') + button('export', '导出筛选结果') + '</div><div>' + button('roi', '看回收分析') + button('daily', '看投放日报') + '</div></div>' + table(records.slice(start, start + PAGE_SIZE)) + '<div class="cm-pagination"><span class="cm-muted">共 ' + records.length + ' 条 · 每页 ' + PAGE_SIZE + ' 条</span>' + '<button type="button" class="cm-btn" data-spend-action="previous"' + (filter.page <= 1 ? ' disabled' : '') + '>上一页</button><span>第 ' + filter.page + ' / ' + pages + ' 页</span><button type="button" class="cm-btn" data-spend-action="next"' + (filter.page >= pages ? ' disabled' : '') + '>下一页</button></div>';
     if (api().navigateContext) api().navigateContext(Object.assign(context(), {entry: ''}));
     if (incoming && incoming.entry === 'add') openEditor();
   }
@@ -166,7 +167,7 @@
     var same = saved && channel && saved.channelId === channel.id && saved.linkId === linkControl.value;
     form.elements.channelCode.value = channel ? channel.code : '';
     form.elements.media.value = same ? saved.media : (selected ? selected.media : channel ? channel.media : '');
-    form.elements.currency.value = same ? saved.currency : (channel ? channel.currency || 'INR' : '');
+    form.elements.currency.value = same ? saved.currency : (channel ? siteCurrency() : '');
     var isSameCurrency = form.elements.originalCurrency.value === form.elements.currency.value;
     form.elements.exchangeRate.readOnly = isSameCurrency;
     if (isSameCurrency) form.elements.exchangeRate.value = '1';
@@ -182,9 +183,9 @@
     var selectedLink = links(defaultChannel).some(function (item) { return item.id === filter.link; }) ? filter.link : '';
     var record = saved || { date: filter.end || AS_OF, channelId: defaultChannel.id, linkId: selectedLink, originalCurrency: '', originalAmount: '', exchangeRate: 1, note: '' };
     var channel = channelById(state, record.channelId);
-    if (!record.originalCurrency) record.originalCurrency = channel ? channel.currency || 'INR' : 'INR';
+    if (!record.originalCurrency) record.originalCurrency = siteCurrency();
     api().dialog({ title: saved ? '编辑消耗' : '新增消耗', width: 'normal', submitLabel: '保存',
-      html: '<div class="cm-form-grid">' + field('消耗日期 *', input('date', record.date, 'type="date" required')) + field('渠道 *', select('channelId', channelOptions(state), record.channelId)) + field('渠道编码', input('channelCode', '', 'readonly')) + field('广告链接', select('linkId', [['', '渠道未细分']].concat(links(channel).map(function (item) { return [item.id, item.name]; })), record.linkId)) + field('媒体（自动带出）', input('media', '', 'readonly')) + field('报表币种（自动带出）', input('currency', '', 'readonly')) + field('原币 *', select('originalCurrency', CURRENCIES, record.originalCurrency)) + field('原币金额 *', input('originalAmount', record.originalAmount, 'inputmode="decimal" placeholder="0.00"')) + field('汇率 *', input('exchangeRate', record.exchangeRate, 'inputmode="decimal"'), '1 原币 = 此数值的报表币；相同币种固定为 1。') + field('折算报表币金额', '<output data-spend-converted></output>') + field('备注', '<textarea class="cm-input" name="note" maxlength="500" rows="3">' + esc(record.note) + '</textarea>', '最多 500 字。', true) + '</div>',
+      html: '<div class="cm-form-grid">' + field('消耗日期 *', input('date', record.date, 'type="date" required')) + field('渠道 *', select('channelId', channelOptions(state), record.channelId)) + field('渠道编码', input('channelCode', '', 'readonly')) + field('广告链接', select('linkId', [['', '渠道未细分']].concat(links(channel).map(function (item) { return [item.id, item.name]; })), record.linkId)) + field('媒体（自动带出）', input('media', '', 'readonly')) + field('报表币种', input('currency', '', 'readonly'), '新增使用当前站点币种；编辑历史记录且关联不变时保留已保存币种。') + field('原币 *', select('originalCurrency', CURRENCIES, record.originalCurrency)) + field('原币金额 *', input('originalAmount', record.originalAmount, 'inputmode="decimal" placeholder="0.00"')) + field('汇率 *', input('exchangeRate', record.exchangeRate, 'inputmode="decimal"'), '1 原币 = 此数值的报表币；相同币种固定为 1。') + field('折算报表币金额', '<output data-spend-converted></output>') + field('备注', '<textarea class="cm-input" name="note" maxlength="500" rows="3">' + esc(record.note) + '</textarea>', '最多 500 字。', true) + '</div>',
       onOpen: function (form) {
         if (saved && saved.linkId && !links(channel).some(function (item) { return item.id === saved.linkId; })) form.elements.linkId.innerHTML += options([[saved.linkId, saved.linkName + '（历史）']], saved.linkId);
         refreshEditor(form, state, saved, false);
@@ -249,9 +250,9 @@
         var values = {}; header.forEach(function (key, col) { values[key] = row[col].trim(); });
         if (!modern) {
           var channel = channelById(state, values.channelId);
-          if (!channel || values.currency !== (channel.currency || 'INR')) throw new Error('旧格式 currency 必须与渠道报表币种一致；跨币种请使用新模板');
+          if (!channel || values.currency !== siteCurrency()) throw new Error('旧格式 currency 必须与当前站点币种一致；跨币种请使用新模板');
           values.originalCurrency = values.currency; values.originalAmount = values.amount; values.exchangeRate = '1';
-        } else if (values.currency && values.currency !== ((channelById(state, values.channelId) || {}).currency || 'INR')) throw new Error('currency 与渠道报表币种不一致');
+        } else if (values.currency && values.currency !== siteCurrency()) throw new Error('currency 与当前站点币种不一致');
         records.push(makeRecord(values, state));
       } catch (error) { errors.push('第 ' + (index + 2) + ' 行：' + error.message); }
     });
@@ -262,7 +263,7 @@
   function importCSV() {
     var preview = null, previewText = '', reading = false;
     api().dialog({ title: 'CSV 导入广告消耗', width: 'wide', submitLabel: '确认导入',
-      html: '<p class="cm-note">UTF-8 CSV，每次最多 1000 条、2 MB。先校验全部内容，再一次性追加；完全重复记录拒绝导入。报表币种由渠道带出；原币为 USDT / INR / USD。linkId 为空表示渠道未细分。日期不受演示快照限制。</p><div class="cm-form-grid">' + field('选择 CSV 文件', '<input type="file" accept=".csv,text/csv" data-spend-file>', '', true) + field('CSV 内容 *', '<textarea class="cm-input" name="csv" rows="8" spellcheck="false" placeholder="date,channelId,linkId,originalCurrency,originalAmount,exchangeRate,note"></textarea>', '', true) + '</div><div class="cm-actions">' + button('preview', '校验预览', true) + button('template', '下载模板') + '</div><p class="cm-error" data-spend-import-error role="alert"></p><div data-spend-preview></div>',
+      html: '<p class="cm-note">UTF-8 CSV，每次最多 1000 条、2 MB。先校验全部内容，再一次性追加；完全重复记录拒绝导入。新记录报表币种使用当前站点币种；原币支持 USDT / INR / USD / BRL / IDR。同币种汇率固定为 1。linkId 为空表示渠道未细分。日期不受演示快照限制。</p><div class="cm-form-grid">' + field('选择 CSV 文件', '<input type="file" accept=".csv,text/csv" data-spend-file>', '', true) + field('CSV 内容 *', '<textarea class="cm-input" name="csv" rows="8" spellcheck="false" placeholder="date,channelId,linkId,originalCurrency,originalAmount,exchangeRate,note"></textarea>', '', true) + '</div><div class="cm-actions">' + button('preview', '校验预览', true) + button('template', '下载模板') + '</div><p class="cm-error" data-spend-import-error role="alert"></p><div data-spend-preview></div>',
       onOpen: function (form) {
         function invalidate() { preview = null; form.querySelector('[data-spend-preview]').innerHTML = '<p class="cm-muted">内容已变更，请重新校验预览。</p>'; }
         form.elements.csv.addEventListener('input', invalidate);
@@ -292,8 +293,8 @@
       onSubmit: function (form, close) {
         if (reading || !preview || previewText !== form.elements.csv.value) throw new Error('请先对当前 CSV 内容校验预览');
         var latest = api().getState(), records = validateCSV(previewText, latest);
-        // Revalidate against current bindings; a changed channel requires review of the new preview.
-        if (JSON.stringify(records.map(signature)) !== JSON.stringify(preview.map(signature))) { preview = null; throw new Error('渠道配置已变化，请重新校验预览'); }
+        // Revalidate current bindings and site currency before committing the preview.
+        if (JSON.stringify(records.map(signature)) !== JSON.stringify(preview.map(signature))) { preview = null; throw new Error('站点币种或渠道配置已变化，请重新校验预览'); }
         var next = clone(latest); next.spend = records.concat(next.spend || []);
         api().saveState(next); close(); render(); api().toast('已一次性导入 ' + records.length + ' 条消耗记录');
       }
@@ -302,7 +303,7 @@
   function previewTable(records) { return '<div class="cm-table-wrap"><table class="cm-table"><thead><tr><th>日期</th><th>渠道</th><th>媒体 / 链接</th><th>原币</th><th>原币金额</th><th>汇率</th><th>报表币</th><th>报表币金额</th><th>备注</th></tr></thead><tbody>' + records.map(function (item) { return '<tr>' + [item.date, item.channelCode, item.media + ' / ' + (item.linkName || '渠道未细分'), item.originalCurrency, money(item.originalAmount), item.exchangeRate, item.currency, money(item.amount), item.note].map(function (value) { return '<td>' + esc(value) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>'; }
   function downloadTemplate() {
     var state = api().getState(), channel = channelById(state, filter.channelId) || (state.channels || [])[0];
-    api().download('spend-import-template.csv', [['date', 'channelId', 'linkId', 'originalCurrency', 'originalAmount', 'exchangeRate', 'note'], [AS_OF, channel ? channel.id : '', '', channel ? channel.currency || 'INR' : 'INR', '100.00', '1', '示例，请替换后导入']]);
+    api().download('spend-import-template.csv', [['date', 'channelId', 'linkId', 'originalCurrency', 'originalAmount', 'exchangeRate', 'note'], [AS_OF, channel ? channel.id : '', '', siteCurrency(), '100.00', '1', '示例，请替换后导入']]);
   }
   function exportRows() {
     var records = filtered(api().getState());

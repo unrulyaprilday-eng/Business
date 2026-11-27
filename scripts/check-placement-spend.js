@@ -9,12 +9,12 @@ let state = { channels: [
   { id: 'C1', code: 'AAAA', name: 'Alpha', currency: 'INR', media: 'Facebook', linkName: 'old-main', links: [{ id: 'L1', linkName: 'campaign-1', media: 'TikTok' }] },
   { id: 'C2', code: 'BBBB', name: 'Beta', currency: 'USD', media: 'Google', linkName: 'search' }
 ], spend: [], packages: [], global: {} };
-let modal, failSave = false, lastDownload, lastGo, closeCount = 0;
+let modal, failSave = false, lastDownload, lastGo, closeCount = 0, siteCurrency = 'INR';
 const root = { innerHTML: '', attributes: {}, events: {}, getAttribute(name) { return this.attributes[name]; }, setAttribute(name, value) { this.attributes[name] = value; }, addEventListener(name, handler) { this.events[name] = handler; } };
 const context = { console, Set, BigInt, Date, Number, String, JSON, Array, Object, Math, RegExp, Error, document: { getElementById: id => id === 'cm-spend' ? root : null }, FormData: class {
   constructor(form) { this.values = form.values; }
   forEach(fn) { Object.keys(this.values).forEach(key => fn(this.values[key], key)); }
-}, window: { CM: {
+}, window: { businessSiteCurrency: { read: () => siteCurrency }, CM: {
   getState: () => copy(state),
   saveState(next) { if (failSave) throw new Error('storage failed'); state = copy(next); },
   escape: value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]),
@@ -41,6 +41,24 @@ check('record uses selected link media and stores conversion snapshots', () => {
   const same = test.makeRecord(values({ originalCurrency: 'INR', exchangeRate: '0', originalAmount: '2.50' }), state);
   assert.equal(same.amount, 2.5); assert.equal(same.exchangeRate, 1);
 });
+check('all site currencies support original currency conversion and site currency templates', () => {
+  const before = JSON.stringify(state);
+  ['USD', 'BRL', 'IDR', 'INR'].forEach(code => {
+    siteCurrency = code;
+    ['USDT', 'INR', 'USD', code].forEach(originalCurrency => {
+      const row = test.makeRecord(values({originalCurrency, originalAmount: '2.50', exchangeRate: '2'}), state);
+      assert.equal(row.currency, code);
+      assert.equal(row.amount, originalCurrency === code ? 2.5 : 5);
+      assert.equal(row.exchangeRate, originalCurrency === code ? 1 : 2);
+    });
+    test.action('template'); assert.equal(lastDownload.rows[1][3], code);
+    test.openEditor(); assert.match(modal.html, new RegExp('value="' + code + '" selected'));
+    const imported = test.validateCSV('date,channelId,originalCurrency,originalAmount,exchangeRate\n2026-11-12,C1,' + code + ',2.50,0', state);
+    assert.equal(imported[0].currency, code); assert.equal(imported[0].amount, 2.5);
+  });
+  assert.equal(JSON.stringify(state), before);
+  siteCurrency = 'INR';
+});
 check('invalid bindings, unsupported currencies, and invalid dates rejected', () => {
   assert.throws(() => test.makeRecord(values({ channelId: 'missing' }), state));
   assert.throws(() => test.makeRecord(values({ linkId: 'foreign-link' }), state));
@@ -50,7 +68,7 @@ check('invalid bindings, unsupported currencies, and invalid dates rejected', ()
 check('legacy normalization and main link fallback', () => {
   const row = test.normalized({ id: 'old', date: '2026-11-01', channelId: 'C2', currency: 'USD', amount: 10, media: 'Google' }, state);
   assert.equal(row.originalCurrency, 'USD'); assert.equal(row.originalAmount, 10); assert.equal(row.exchangeRate, 1); assert.equal(row.note, '');
-  const linked = test.makeRecord(values({ channelId: 'C2', linkId: 'LK-C2-MAIN', originalCurrency: 'USD', exchangeRate: '' }), state);
+  const linked = test.makeRecord(values({ channelId: 'C2', linkId: 'LK-C2-MAIN', originalCurrency: 'USD', exchangeRate: '1' }), state);
   assert.equal(linked.linkName, 'search');
 });
 check('create saves one record without altering channels', () => {
@@ -63,8 +81,12 @@ check('duplicate create rejected and persisted data unchanged', () => {
 });
 check('edit preserves historical association after channel changes', () => {
   const id = state.spend[0].id; state.channels[0].currency = 'USD'; state.channels[0].media = 'Google'; state.channels[0].links[0].media = 'Google';
+  siteCurrency = 'BRL';
   test.openEditor(id); submit(values({ note: 'edited' }));
   assert.equal(state.spend[0].currency, 'INR'); assert.equal(state.spend[0].media, 'TikTok'); assert.equal(state.spend[0].note, 'edited');
+  const rebound = test.makeRecord(values({linkId: '', originalCurrency: 'BRL', exchangeRate: '0'}), state, state.spend[0]);
+  assert.equal(rebound.currency, 'BRL'); assert.equal(rebound.exchangeRate, 1);
+  siteCurrency = 'INR';
   state.channels[0].currency = 'INR';
 });
 check('storage failure leaves draft dialog and stored list unchanged', () => {
@@ -89,9 +111,9 @@ check('CSV validates whole batch, duplicate keys, amounts and 1000 row limit', (
   assert.throws(() => test.validateCSV(header + '\n2026-11-12,C1,L1,INR,1,1,a\n2026-11-12,C1,L1,INR,1,1,a', state), /重复/);
   assert.throws(() => test.validateCSV(header + '\n2026-11-12,C1,L1,INR,1.001,1,a', state));
   assert.throws(() => test.validateCSV(header + '\n' + Array(1001).fill('2026-11-12,C1,,INR,1,1,a').join('\n'), state), /1000/);
-  const old = test.validateCSV('date,channelId,media,currency,amount,note\n2026-11-12,C2,Google,USD,10.00,old', state);
-  assert.equal(old[0].originalCurrency, 'USD'); assert.equal(old[0].exchangeRate, 1);
-  assert.throws(() => test.validateCSV('date,channelId,media,currency,amount,note\n2026-11-12,C2,Google,INR,10.00,old', state));
+  const old = test.validateCSV('date,channelId,media,currency,amount,note\n2026-11-12,C2,Google,INR,10.00,old', state);
+  assert.equal(old[0].originalCurrency, 'INR'); assert.equal(old[0].exchangeRate, 1);
+  assert.throws(() => test.validateCSV('date,channelId,media,currency,amount,note\n2026-11-12,C2,Google,USD,10.00,old', state));
 });
 function importForm(text) {
   const handlers = {}, csvHandlers = {}, nodes = {};
@@ -114,8 +136,14 @@ check('changing CSV after preview requires a fresh validation', () => {
   form.elements.csv.value += '\n2026-11-12,C2,,USD,8,1,new'; form.invalidate();
   assert.throws(() => modal.onSubmit(form, () => {}), /预览/); assert.equal(state.spend.length, 2);
 });
+check('changing site currency after CSV preview requires review and preserves stored records', () => {
+  test.importCSV(); const form = importForm(header + '\n2026-11-12,C2,,USD,7,1,new'); modal.onOpen(form); form.preview();
+  const before = JSON.stringify(state); siteCurrency = 'IDR';
+  assert.throws(() => modal.onSubmit(form, () => {}), /重新校验预览/);
+  assert.equal(JSON.stringify(state), before); siteCurrency = 'INR';
+});
 check('filter exports all matching rows and forwards context to reports', () => {
-  app.render({ start: '2026-11-01', end: '2026-11-30', channel: 'BBBB', currency: 'USD' });
+  app.render({ start: '2026-11-01', end: '2026-11-30', channel: 'BBBB', currency: 'INR' });
   assert.match(root.innerHTML, /2026-11-13/); test.action('export');
   assert.equal(lastDownload.rows.length, 2); assert.equal(lastDownload.rows[1][1], 'C2'); assert.equal(lastDownload.rows[1][11], '5.00');
   test.action('roi'); assert.equal(lastGo.view, 'roi'); assert.equal(lastGo.values.channelId, 'C2'); assert.equal(lastGo.values.end, '2026-11-30');

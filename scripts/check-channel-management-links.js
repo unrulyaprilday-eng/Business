@@ -49,7 +49,10 @@ test('Migration creates one stable main link without changing the legacy history
   assert.deepEqual(clone(effective.packageIds), channel().packageIds);
   assert.deepEqual(clone(effective.download), channel().download);
   assert.equal(links.validateChannel(channel(), data), '');
-  assert.match(links.url(channel(), primary()), /linkId=LK-CH1001-MAIN/);
+  const url = new URL(links.url(Object.assign({}, channel(), {language: 'English', currency: 'INR'}), primary()));
+  assert.equal(url.searchParams.get('linkId'), 'LK-CH1001-MAIN');
+  assert.equal(url.searchParams.has('lang'), false);
+  assert.equal(url.searchParams.has('currency'), false);
 });
 
 test('Create, edit, duplicate, copy and report actions keep stable IDs and immutable history aliases', () => {

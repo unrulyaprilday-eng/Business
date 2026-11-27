@@ -167,6 +167,12 @@ assert(rows.slice(1).some(row => row[2] === '渠道包') && rows.slice(1).some(r
 assert(rows.slice(1).filter(row => row[2] === '渠道包' && row[3] === '2.4.0').every(row => row[0] < '2026-11-08'));
 assert(rows.slice(1).filter(row => row[2] === '渠道包' && row[3] === '2.4.1').every(row => row[0] >= '2026-11-08'));
 assert(rows.slice(1).every(row => row[7] === row[8] + row[9] && row[7] <= row[6] && row[6] <= row[5]), '更新漏斗人数守恒');
+const updatesWithoutCurrency = JSON.stringify(rows);
+for (const currency of ['USD', 'INR', 'EUR']) {
+  assert.equal(JSON.stringify(show('updates', { start: '2026-11-01', end: '2026-11-12', channel: '', currency })), updatesWithoutCurrency, 'APP更新忽略旧URL币种条件');
+  assert(!section.innerHTML.includes('name="currency"'), 'APP更新不显示币种筛选');
+  assert(!urlContext.currency, 'APP更新导航上下文不保留隐藏币种条件');
+}
 const historyFilter = { channel: '', media: '', link: '', source: '', scene: '', currency: '', packageId: '', version: '', category: 'all', start: '2026-11-01', end: '2026-11-12', period: 'current' };
 function cents(value) { return Math.round(Number(String(value).replace(/,/g, '')) * 100); }
 function percentage(numerator, denominator) { return denominator ? (numerator / denominator * 100).toFixed(2) + '%' : '—'; }
@@ -543,6 +549,21 @@ click('definitions');
 assert(dialog.html.includes('充值回收率') && dialog.html.includes('净回收率') && dialog.html.includes('仅累计周期计算净回收率'));
 assert(dialog.html.includes('包消耗、成本和回收率均显示—') && !dialog.html.includes('充值ROI'), '数据口径与实际禁算、展示规则一致');
 console.log('PASS placement reports: cohort daily/detail reconciliation, period maturity, cumulative-only net recovery, currency and package cost boundaries, exact legacy-link costs, new-link/unassigned isolation, full navigation context; no spend mutation');
+
+const beforeSiteCurrencySpend = JSON.stringify(show('roi', { ...complete, start: '2026-11-01', end: '2026-11-01' }));
+state.spend.push({ id: 'SITE-EUR', date: '2026-11-01', channelId: 'CH1001', media: 'Facebook', currency: 'EUR', amount: 19 });
+const mixedCurrencyDaily = show('daily', { ...complete, start: '2026-11-01', end: '2026-11-01' });
+const euroSpend = mixedCurrencyDaily.slice(1).find(row => row[1] === 'AAAA' && row[3] === 'EUR');
+assert(euroSpend, '站点币种变化后的实际消耗须独立展示');
+assert.equal(euroSpend[4], '19.00'); assert.equal(euroSpend[5], '暂无批次');
+for (const index of [6, 8, 9, 10, 11, 12, 13, 14]) assert.equal(euroSpend[index], '—', '异币种消耗不得借用历史批次指标');
+assert(section.innerHTML.includes('<option value="EUR">EUR</option>'), '日报币种筛选覆盖实际消耗币种');
+const euroOnly = show('daily', { ...complete, currency: 'EUR', start: '2026-11-01', end: '2026-11-01' });
+assert.equal(euroOnly.length, 2); assert.equal(euroOnly[1][4], '19.00');
+click('cohort-detail', { channel: 'CH1001', date: '2026-11-01', currency: 'EUR' });
+assert.equal(navigation.filters.currency, 'EUR', '日报明细沿用本行实际币种，不能跳回历史批次');
+assert.equal(JSON.stringify(show('roi', { ...complete, start: '2026-11-01', end: '2026-11-01' })), beforeSiteCurrencySpend, '异币种新消耗不影响历史ROI');
+state.spend.pop();
 
 // 对照真实旧版表头保留全部指标；业务同义名称明确映射，禁止用新字段覆盖旧字段。
 state = structuredClone(initial);

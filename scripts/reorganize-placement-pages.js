@@ -39,14 +39,14 @@ for (const page of pages) {
   const targets = {新渠道管理: 'channels', 广告消耗数据: 'spend', 投放数据报表: 'daily', 渠道报表: 'promotion'};
   const header = '<header class="cm-page-header"><div><div class="cm-muted">投放管理 / ' + page.name + '</div><h1>' + page.name + '</h1></div><div class="cm-actions">' + links.map(link => '<a class="cm-btn" data-cm-target="' + targets[link[0]] + '" href="' + link[0] + '.html">' + link[1] + '</a>').join('') + (page.role === 'detail' ? '<a class="cm-btn" href="渠道报表.html" id="cm-detail-back">返回汇总</a>' : '') + '<button type="button" class="cm-btn" data-cm-action="help">使用说明</button></div></header>';
   const channels = page.role === 'channels' ? channelSection : channelSection.replace('id="cm-channels"', 'id="cm-channels" hidden');
-  const reportFallback = page.role === 'detail' ? '请从渠道报表选择渠道查看明细；也可使用筛选条件查询。' : '暂无查询结果，请选择日期、渠道和币种后查询。';
+  const reportFallback = page.role === 'detail' ? '请从渠道报表选择渠道查看明细；也可使用筛选条件查询。' : page.role === 'channels' ? '暂无查询结果，可按日期和渠道查询。' : '暂无查询结果，请选择日期、渠道和币种后查询。';
   const spendFallback = '<form class="cm-filter"><label class="cm-field"><span>渠道</span><select class="cm-input" disabled><option>渠道列表将在初始化后显示</option></select></label><button type="button" class="cm-btn primary" disabled>查询</button></form><div class="cm-empty">暂无查询结果，可在初始化后录入或导入消耗。</div>';
   const html = head + '  <body class="cm-body" data-axure-page-id="' + page.id + '" data-cm-page="' + page.role + '">\n    <div id="base" class=""></div>\n    <main id="cm-app" class="cm-page">' + header + nav + '\n' + channels +
     '<section id="cm-packages" class="cm-panel" role="tabpanel" aria-label="包管理" hidden><div class="cm-empty">暂无包，请在初始化后新增或筛选。</div></section>\n' +
     '<section id="cm-spend" class="cm-panel" aria-label="广告消耗数据"' + (page.role === 'spend' ? '' : ' hidden') + '>' + spendFallback + '</section>\n' +
     '<section id="cm-reports" class="cm-panel" role="tabpanel" aria-label="统计报表"' + (['placement', 'reports', 'detail'].includes(page.role) ? '' : ' hidden') + '><div class="cm-empty">' + reportFallback + '</div></section>\n' +
     '<noscript><p class="cm-note">请启用 JavaScript 以使用筛选、配置、导出和页面联动。</p></noscript></main>\n' + modal +
-    ['custom/js/axure-custom-page-ready.js', 'resources/scripts/axure/ios.js', 'custom/js/placement-landing-catalog.js', 'custom/js/channel-management-packages.js', 'custom/js/channel-management-links.js', 'custom/js/channel-management-reports.js', 'custom/js/placement-spend.js', 'custom/js/新渠道管理.js'].map(file => '    <script src="' + file + '"></script>').join('\n') + '\n  </body>\n</html>\n';
+    ['custom/js/axure-custom-page-ready.js', 'resources/scripts/axure/ios.js', 'custom/js/placement-landing-catalog.js', 'custom/js/channel-management-packages.js', 'custom/js/channel-management-links.js', 'custom/js/channel-management-reports.js', ...(page.role === 'spend' ? ['custom/js/site-currency.js'] : []), 'custom/js/placement-spend.js', 'custom/js/新渠道管理.js'].map(file => '    <script src="' + file + '"></script>').join('\n') + '\n  </body>\n</html>\n';
   write(page.name + '.html', html);
   const data = JSON.parse(JSON.stringify(stableData));
   data.url = page.name + '.html'; data.page.name = page.name; data.page.packageId = page.id;

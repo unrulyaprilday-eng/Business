@@ -58,7 +58,6 @@
           <label class="cm-field"><span>状态</span><select class="cm-input" name="status"><option value="">全部状态</option><option value="enabled">启用</option><option value="disabled">停用</option></select></label>
           <div class="cm-actions"><button class="cm-btn primary" type="submit">查询</button><button class="cm-btn" type="reset">重置</button><button class="cm-link" type="button" data-cm-action="advanced" aria-expanded="false">更多筛选 ▾</button></div>
           <div id="cm-advanced" class="cm-advanced" hidden>
-            <label class="cm-field"><span>币种</span><select class="cm-input" name="currency"><option value="">全部币种</option><option>INR</option><option>USD</option></select></label>
             <label class="cm-field"><span>下载入口</span><select class="cm-input" name="show"><option value="">全部</option><option value="yes">展示</option><option value="no">隐藏</option></select></label>
             <label class="cm-field"><span>下载弹窗</span><select class="cm-input" name="popup"><option value="">全部</option><option value="yes">开启</option><option value="no">关闭</option></select></label>
             <label class="cm-field"><span>创建时间</span><span class="cm-inline"><input class="cm-input" type="date" name="start"/><span>至</span><input class="cm-input" type="date" name="end"/></span></label>
@@ -69,11 +68,11 @@
           <div class="cm-actions"><button type="button" class="cm-btn" data-cm-action="refresh">刷新</button><button type="button" class="cm-btn" data-cm-action="export">导出渠道</button></div>
         </div>
         <div class="cm-table-wrap">
-          <table class="cm-table cm-channel-table">
-            <thead><tr><th><input class="cm-check" type="checkbox" id="cm-select-all" aria-label="选择当前页渠道"/></th><th>渠道名称 / ID</th><th>媒体 / 推广类型</th><th>币种 / 语言</th><th>推广入口 / 广告链接</th><th>关联包</th><th>下载策略</th><th>状态</th><th>创建时间</th><th class="cm-sticky-action">操作</th></tr></thead>
+          <table class="cm-table">
+            <thead><tr><th><input class="cm-check" type="checkbox" id="cm-select-all" aria-label="选择当前页渠道"/></th><th>渠道名称 / ID</th><th>媒体 / 推广类型</th><th>推广入口 / 广告链接</th><th>关联包</th><th>下载策略</th><th>状态</th><th>创建时间</th><th class="cm-sticky-action">操作</th></tr></thead>
             <tbody id="cm-channel-rows">
-              <tr><td><input class="cm-check" type="checkbox" aria-label="选择 Facebook 印度主渠道"/></td><td><div class="cm-cell-title">Facebook 印度主渠道</div><div class="cm-cell-sub">CH1001 · AAAA</div></td><td>Facebook<div class="cm-cell-sub">普通渠道链接</div></td><td>INR<div class="cm-cell-sub">English</div></td><td>大厅<div class="cm-cell-sub">homepageads</div></td><td>Android 原生包<div class="cm-cell-sub">PWA 快捷入口</div></td><td>展示入口 · 开启提醒<div class="cm-cell-sub">不强制下载</div></td><td><span class="cm-badge green">启用</span></td><td>2026-11-01</td><td class="cm-sticky-action"><div class="cm-actions"><button type="button" class="cm-link">预览</button><button type="button" class="cm-link">编辑</button><button type="button" class="cm-link">报表</button></div></td></tr>
-              <tr><td colspan="10" class="cm-muted">其余渠道及配置将在页面初始化后显示。</td></tr>
+              <tr><td><input class="cm-check" type="checkbox" aria-label="选择 Facebook 印度主渠道"/></td><td><div class="cm-cell-title">Facebook 印度主渠道</div><div class="cm-cell-sub">CH1001 · AAAA</div></td><td>Facebook<div class="cm-cell-sub">普通渠道链接</div></td><td>大厅<div class="cm-cell-sub">homepageads</div></td><td>Android 原生包<div class="cm-cell-sub">PWA 快捷入口</div></td><td>展示入口 · 开启提醒<div class="cm-cell-sub">不强制下载</div></td><td><span class="cm-badge green">启用</span></td><td>2026-11-01</td><td class="cm-sticky-action"><div class="cm-actions"><button type="button" class="cm-link">预览</button><button type="button" class="cm-link">编辑</button><button type="button" class="cm-link">报表</button></div></td></tr>
+              <tr><td colspan="9" class="cm-muted">其余渠道及配置将在页面初始化后显示。</td></tr>
             </tbody>
           </table>
         </div>
@@ -82,7 +81,7 @@
       </section>
 <section id="cm-packages" class="cm-panel" role="tabpanel" aria-label="包管理" hidden><div class="cm-empty">暂无包，请在初始化后新增或筛选。</div></section>
 <section id="cm-spend" class="cm-panel" aria-label="广告消耗数据" hidden><form class="cm-filter"><label class="cm-field"><span>渠道</span><select class="cm-input" disabled><option>渠道列表将在初始化后显示</option></select></label><button type="button" class="cm-btn primary" disabled>查询</button></form><div class="cm-empty">暂无查询结果，可在初始化后录入或导入消耗。</div></section>
-<section id="cm-reports" class="cm-panel" role="tabpanel" aria-label="统计报表" hidden><div class="cm-empty">暂无查询结果，请选择日期、渠道和币种后查询。</div></section>
+<section id="cm-reports" class="cm-panel" role="tabpanel" aria-label="APP 更新统计" hidden><div class="cm-empty">暂无查询结果，可按日期和渠道查询。</div></section>
 <noscript><p class="cm-note">请启用 JavaScript 以使用筛选、配置、导出和页面联动。</p></noscript></main>
     <div id="cm-modal" class="cm-modal" hidden>
       <section class="cm-dialog" role="dialog" aria-modal="true" aria-labelledby="cm-modal-title">

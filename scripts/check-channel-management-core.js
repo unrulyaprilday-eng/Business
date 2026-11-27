@@ -489,6 +489,7 @@ test('Saving is atomic on storage failure and isolates caller-owned data', () =>
 
 test('Editor creates a channel and updates only the saved channel', () => {
   core.editor();
+  assert.doesNotMatch(capturedDialog.html, /name="(?:currency|language)"/);
   const values = editorValues(core.snapshot().channels[0]);
   Object.assign(values, {name: 'Created channel', code: 'TEST_NEW', linkName: 'test-new'});
   const created = submit(capturedDialog, fakeForm(values));
@@ -498,11 +499,12 @@ test('Editor creates a channel and updates only the saved channel', () => {
   assert.equal(added.code, 'TEST_NEW');
   core.editor(added.id);
   const changed = editorValues(added);
-  Object.assign(changed, {name: 'Edited channel', currency: 'USD'});
+  Object.assign(changed, {name: 'Edited channel', currency: 'USD', language: 'English'});
   assert.equal(submit(capturedDialog, fakeForm(changed)).closed, true);
   assert.equal(core.snapshot().channels.length, 7);
   assert.equal(core.snapshot().channels[0].name, 'Edited channel');
-  assert.equal(core.snapshot().channels[0].currency, 'INR', 'Editing must not change historical currency');
+  assert.equal('currency' in core.snapshot().channels[0], false);
+  assert.equal('language' in core.snapshot().channels[0], false);
   assert.equal(core.snapshot().channels[1].name, core.makeSeed().channels[0].name);
 });
 
@@ -578,13 +580,14 @@ test('Cancel and failed editor persistence do not apply drafts', () => {
 test('Public defaults apply to future channels without rewriting existing ones', () => {
   const before = core.snapshot();
   core.globalConfig();
+  assert.doesNotMatch(capturedDialog.html, /name="(?:currency|language)"/);
   const result = submit(capturedDialog, fakeForm({domain: 'new.example.com', currency: 'USD', language: '简体中文', show: 'yes', popup: 'yes', phone: 'required', email: 'required', maskLinks: 'yes', rechargeApp: 'yes', rechargeCount: '4'}));
   assert.equal(result.closed, true);
   assert.deepEqual(plain(core.snapshot().channels), plain(before.channels));
   const next = core.newChannel();
   assert.equal(next.domain, 'new.example.com');
-  assert.equal(next.currency, 'USD');
-  assert.equal(next.language, '简体中文');
+  assert.equal('currency' in next, false);
+  assert.equal('language' in next, false);
   assert.equal(next.download.deposits, 4);
   assert.equal(next.restrictions.masked, true);
   assert.equal(next.restrictions.phone, 'required');

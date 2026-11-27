@@ -14,9 +14,20 @@ const attr = (tag, name) => { const found = tag.match(new RegExp('\\b' + name + 
 
 function fakeForm(html) {
   const form = {elements: {}, dataset: {}, nodes: {}, listeners: {}, checked: [], closed: false};
+  const radios = {};
   for (const match of html.matchAll(/<input\b[^>]*>/g)) {
     const tag = match[0], name = attr(tag, 'name');
-    if (name) form.elements[name] = {value: attr(tag, 'value'), name, disabled: /\sdisabled\b/.test(tag), required: /\srequired\b/.test(tag), accept: attr(tag, 'accept'), files: []};
+    if (!name) continue;
+    const input = {value: attr(tag, 'value'), name, disabled: /\sdisabled\b/.test(tag), required: /\srequired\b/.test(tag), checked: /\schecked\b/.test(tag), accept: attr(tag, 'accept'), files: [], validity: {badInput: false}, focus() { this.focused = true; }};
+    if (attr(tag, 'type') === 'radio') (radios[name] ||= []).push(input);
+    else form.elements[name] = input;
+  }
+  for (const [name, group] of Object.entries(radios)) {
+    Object.defineProperty(group, 'value', {
+      get: () => group.find(input => input.checked)?.value || '',
+      set: value => group.forEach(input => { input.checked = input.value === value; })
+    });
+    form.elements[name] = group;
   }
   for (const match of html.matchAll(/<select\b([^>]*)>([\s\S]*?)<\/select>/g)) {
     const name = attr(match[1], 'name');
@@ -24,6 +35,10 @@ function fakeForm(html) {
     form.elements[name] = {name, options, disabled: /\sdisabled\b/.test(match[1]), value: (options.find(item => item.selected) || options[0] || {}).value || ''};
   }
   for (const key of ['data-pkg-error', 'data-pkg-file-area', 'data-pkg-build-required', 'data-pkg-url-label', 'data-pkg-channel-code']) form.nodes['[' + key + ']'] = {hidden: key === 'data-pkg-error', textContent: ''};
+  if (html.includes('data-pkg-reward-minimum')) form.nodes['[data-pkg-reward-minimum]'] = {hidden: true};
+  if (html.includes('data-pkg-use-legacy-reward')) form.nodes['[data-pkg-use-legacy-reward]'] = {
+    addEventListener(event, callback) { this[event] = callback; }
+  };
   form.querySelector = selector => form.nodes[selector] || null;
   form.querySelectorAll = selector => selector.includes('packageIds') ? form.checked.map(value => ({value})) : [];
   form.addEventListener = (name, callback) => { (form.listeners[name] || (form.listeners[name] = [])).push(callback); };
@@ -56,7 +71,7 @@ function seed() {
     {id: 'PK5', name: 'Invalid Current', type: 'native', platform: 'Android', status: 'published', currentVersion: '1.0', versions: [draft('1.0', '2026-11-01')]}
   ], spend: [], global: {}};
 }
-function harness() {
+function harness(legacy = {}) {
   const env = {data: seed(), saved: 0, dialogs: [], events: {}, fail: false, go: [], toasts: []};
   env.root = {innerHTML: '', hidden: true, addEventListener: (event, callback) => { (env.events[event] || (env.events[event] = [])).push(callback); }};
   env.channels = {hidden: false};
@@ -71,7 +86,7 @@ function harness() {
       return record.form;
     }
   };
-  const context = {window: {CM: api}, document: {getElementById: id => id === 'cm-packages' ? env.root : id === 'cm-channels' ? env.channels : null}, URL, Date, Promise};
+  const context = {window: {CM: api, localStorage: {getItem: key => legacy[key] || null}}, document: {getElementById: id => id === 'cm-packages' ? env.root : id === 'cm-channels' ? env.channels : null}, URL, Date, Promise};
   vm.runInNewContext(source, context, {filename: sourcePath});
   env.module = context.window.CMPackages;
   env.latest = () => env.dialogs[env.dialogs.length - 1];
@@ -98,6 +113,83 @@ assert.equal(env.events.click.length, 1, 'init must be idempotent');
 env.module.render();
 assert.ok(env.root.innerHTML.includes('Native One'));
 assert.ok(env.root.innerHTML.includes('cm-sticky-action'));
+
+// Rewards bind to the current package; old global values are opt-in draft fields.
+const rewards = harness({'business.placement.install-reward.v1': JSON.stringify({installEnabled: true, installReward: '50', installCondition: 'bet', installMinimum: '500'})});
+rewards.module.render();
+const rewardRow = id => Array.from(rewards.root.innerHTML.matchAll(/<tr>[\s\S]*?<\/tr>/g), match => match[0]).find(row => row.includes('data-pkg-id="' + id + '"')) || '';
+const rewardCell = id => {
+  const column = Array.from(rewards.root.innerHTML.matchAll(/<th\b[^>]*>([\s\S]*?)<\/th>/g), match => match[1]).indexOf('安装奖励');
+  return Array.from(rewardRow(id).matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/g), match => match[1])[column] || '';
+};
+assert.match(rewards.root.innerHTML, /<th\b[^>]*>安装奖励<\/th>/);
+for (const item of rewards.data.packages) {
+  const row = rewardRow(item.id);
+  const actions = Array.from(row.matchAll(/<button\b[^>]*>/g), match => match[0]).filter(tag => attr(tag, 'data-pkg-action') === 'install-reward');
+  assert.equal(actions.length, 1, item.id + ' has exactly one dedicated reward entry');
+  assert.equal(attr(actions[0], 'data-pkg-id'), item.id, 'reward entry carries its own package ID');
+  assert.ok(row.indexOf(actions[0]) > row.indexOf('cm-sticky-action'), 'reward entry is in the right-hand action cell');
+  assert.match(rewardCell(item.id), /未配置/);
+}
+const basic = rewards.click('edit', 'PK1');
+for (const name of ['installEnabled', 'installAmount', 'installCondition', 'installMinimum']) assert.equal(basic.form.elements[name], undefined, 'basic editing excludes reward fields');
+const beforeReward = copy(rewards.data);
+let rewardForm = rewards.click('install-reward', 'PK1').form;
+assert.equal(rewardForm.elements.name, undefined, 'dedicated reward form excludes basic package editing');
+assert.equal(rewardForm.elements.installEnabled.checked, false);
+assert.equal(rewardForm.elements.installAmount.value, '');
+rewardForm.nodes['[data-pkg-use-legacy-reward]'].click();
+assert.equal(rewardForm.elements.installAmount.value, '50');
+assert.equal(rewardForm.elements.installEnabled.checked, false, 'copying old values does not implicitly enable a package');
+rewardForm.elements.installEnabled.checked = true;
+rewardForm.elements.installCondition.value = 'deposit';
+rewardForm.emit('change', {name: 'installCondition'});
+assert.equal(rewardForm.elements.installMinimum.value, '');
+assert.equal(rewards.submit(), false, 'enabled reward needs a threshold for the selected condition');
+rewards.set({installAmount: '55.50', installMinimum: '300'});
+rewards.fail = true;
+assert.equal(rewards.submit(), false);
+assert.equal(rewards.find('PK1').installReward, undefined);
+assert.equal(rewardForm.elements.installMinimum.value, '300');
+assert.equal(rewardForm.closed, false, 'failed reward persistence keeps its draft open');
+assert.match(rewardCell('PK1'), /未配置/, 'failed save must not update the main table');
+rewards.fail = false;
+assert.equal(rewards.submit(), true);
+assert.deepEqual(rewards.find('PK1').installReward, {enabled: true, amount: '55.50', condition: 'deposit', minimum: '300'});
+assert.deepEqual(rewards.data.packages.filter(item => item.id !== 'PK1'), beforeReward.packages.filter(item => item.id !== 'PK1'), 'saving a reward leaves every other package untouched');
+assert.deepEqual(rewards.data.channels, beforeReward.channels, 'saving a reward leaves channel bindings untouched');
+for (const key of ['name', 'type', 'platform', 'status', 'currentVersion', 'versions']) assert.deepEqual(rewards.find('PK1')[key], beforeReward.packages[0][key], 'reward save preserves package ' + key);
+assert.equal(rewardCell('PK1'), '55.50 IDR');
+assert.match(rewardCell('PK2'), /未配置/);
+rewardForm = rewards.click('install-reward', 'PK2').form;
+assert.equal(rewardForm.elements.installAmount.value, '');
+const beforeCancelledReward = rewards.snapshot();
+rewards.set({installAmount: '88', installCondition: 'bet', installMinimum: '900'});
+rewardForm.elements.installEnabled.checked = true;
+rewardForm.closed = true; // Shared cancel/close discards the dedicated form draft.
+assert.equal(rewards.snapshot(), beforeCancelledReward, 'unsaved reward edits never affect another package');
+rewardForm = rewards.click('install-reward', 'PK1').form;
+assert.equal(rewardForm.elements.installEnabled.checked, true);
+assert.equal(rewardForm.elements.installAmount.value, '55.50');
+assert.equal(rewardForm.elements.installCondition.value, 'deposit');
+assert.equal(rewardForm.elements.installMinimum.value, '300');
+rewardForm.elements.installEnabled.checked = false;
+assert.equal(rewards.submit(), true);
+assert.deepEqual(rewards.find('PK1').installReward, {enabled: false, amount: '55.50', condition: 'deposit', minimum: '300'});
+assert.match(rewardCell('PK1'), /已停用/);
+assert.doesNotMatch(rewardCell('PK1'), /55\.50|300/);
+const savedReward = copy(rewards.find('PK1').installReward);
+rewards.click('edit', 'PK1');
+rewards.set({name: 'Native One Renamed'});
+assert.equal(rewards.submit(), true);
+assert.equal(rewards.find('PK1').name, 'Native One Renamed');
+assert.deepEqual(rewards.find('PK1').installReward, savedReward, 'saving basic information cannot overwrite the independent reward');
+assert.equal(rewards.find('PK2').installReward, undefined);
+assert.match(rewardCell('PK1'), /已停用/);
+rewardForm = rewards.click('install-reward', 'PK1').form;
+assert.equal(rewardForm.elements.installEnabled.checked, false);
+assert.equal(rewardForm.elements.installAmount.value, '55.50');
+assert.equal(rewardForm.elements.installMinimum.value, '300');
 
 // External channel drill-ins replace old filters; ordinary renders and successful saves retain them.
 const navigation = harness();
@@ -228,7 +320,14 @@ form.emit('change', {name: 'type'});
 assert.equal(form.elements.platform.value, 'PWA');
 assert.equal(form.nodes['[data-pkg-file-area]'].hidden, true);
 assert.equal(form.elements.build.required, false);
+form.elements.installEnabled.checked = true;
+env.set({installAmount: '80', installCondition: 'bet'});
+const beforeNewPackage = env.snapshot();
+assert.equal(env.submit(), false);
+assert.equal(env.snapshot(), beforeNewPackage, 'invalid reward does not create a partial package');
+env.set({installMinimum: '400'});
 assert.equal(env.submit(), true);
+assert.deepEqual(env.data.packages[env.data.packages.length - 1].installReward, {enabled: true, amount: '80', condition: 'bet', minimum: '400'});
 assert.equal(env.data.packages[env.data.packages.length - 1].status, 'draft');
 assert.equal(env.data.packages[env.data.packages.length - 1].currentVersion, '');
 env.click('new-version', 'PK1');
@@ -433,4 +532,4 @@ assert.equal(atomic.find('PK1').status, 'disabled');
 
 assert.equal(source.includes('\ufffd'), false, 'UTF-8 must contain no replacement characters');
 assert.equal(/\?{3}/.test(source), false, 'Chinese text must not degrade to question marks');
-console.log('PASS channel-management-packages: promotion requirements, binding slots, exclusive channel codes, atomic replacement, lifecycle, drafts, publishing, files and persistence');
+console.log('PASS channel-management-packages: isolated package rewards, table reward states, basic editing, promotion requirements, binding slots, exclusive channel codes, atomic replacement, lifecycle, drafts, publishing, files and persistence');

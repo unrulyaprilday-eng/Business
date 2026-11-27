@@ -249,7 +249,11 @@
     var advanced = f.period !== 'current' || ['link', 'currency', 'source', 'scene', 'packageId', 'version'].some(function (key) { return Boolean(f[key]); });
     html += '<details class="cm-report-more"' + (advanced ? ' open' : '') + '><summary>更多筛选</summary><div class="cm-filter">';
     html += selectField('历史广告链接', 'link', reportLinkOptions(state), f.link);
-    html += selectField('币种', 'currency', [['', '全部币种']].concat(Array.from(new Set(historicalChannels(state).map(currencyOf))).sort().map(function (currency) { return [currency, currency]; })), f.currency);
+    if (activeView !== 'updates') {
+      var currencies = historicalChannels(state).map(currencyOf);
+      if (activeView === 'daily') currencies = currencies.concat((state.spend || []).map(function (record) { return record.currency; }).filter(Boolean));
+      html += selectField('币种', 'currency', [['', '全部币种']].concat(Array.from(new Set(currencies)).sort().map(function (currency) { return [currency, currency]; })), f.currency);
+    }
     if (activeView !== 'updates') html += selectField('注册来源', 'source', [['', '全部来源']].concat(Object.keys(SOURCES).map(function (key) { return [key, SOURCES[key]]; })), f.source);
     if (activeView === 'promotion' || activeView === 'retention' || activeView === 'detail') html += selectField('访问场景', 'scene', [['', '全部场景']].concat(Object.keys(SCENES).map(function (key) { return [key, SCENES[key]]; })), f.scene);
     var packageOptions = reportPackages(state, activeView === 'updates');
@@ -425,11 +429,11 @@
   }
   function roiText(row) { return !row.cohort.length ? '暂无批次数据' : !row.mature || row.unallocated || !row.spend ? '—' : rate(row.recharge, row.spend); }
   function unavailable(reason) { return '<span class="cm-muted" title="' + esc(reason) + '">—</span>'; }
-  function spendRecordsFor(state, f, channel) {
+  function spendRecordsFor(state, f, channel, actualCurrencies) {
     return (state.spend || []).filter(function (record) {
       var legacyId = 'LK-' + channel.id + '-MAIN';
       var linkMatch = !f.link || f.link === '__unassigned' && !record.linkId && !record.linkName || record.linkName === f.link || record.linkId === f.link || f.link === legacyId && record.linkName === channel.linkName || f.link === channel.linkName && record.linkId === legacyId;
-      return record.channelId === channel.id && record.currency === currencyOf(channel) && record.date >= f.start && record.date <= f.end && (!f.media || record.media === f.media) && linkMatch;
+      return record.channelId === channel.id && (actualCurrencies ? !f.currency || record.currency === f.currency : record.currency === currencyOf(channel)) && record.date >= f.start && record.date <= f.end && (!f.media || record.media === f.media) && linkMatch;
     });
   }
   function costReason(state, f, channel) {
@@ -484,15 +488,15 @@
     // 首充事件日与注册批次日分开统计；固定样本恰好全部在注册日首充。
     var firstPayEvents = registrationHistory(state, f);
     var groups = groupBy(daily, function (row) { return row.date + '|' + row.channelId + '|' + row.currency; });
-    var channels = selectedChannels(state, f);
+    var channels = selectedChannels(state, Object.assign({}, f, { currency: '' }));
     channels.forEach(function (channel) {
-      spendRecordsFor(state, f, channel).forEach(function (record) {
+      spendRecordsFor(state, f, channel, true).forEach(function (record) {
         var key = record.date + '|' + channel.id + '|' + record.currency;
-        if (!groups.some(function (group) { return group.key === key; })) groups.push({ key: key, rows: [], date: record.date, channel: channel });
+        if (!groups.some(function (group) { return group.key === key; })) groups.push({ key: key, rows: [], date: record.date, channel: channel, currency: record.currency });
       });
     });
     var rows = groups.map(function (group) {
-      var first = group.rows[0], channel = first ? first.channel : group.channel, date = first ? first.date : group.date;
+      var first = group.rows[0], channel = Object.assign({}, first ? first.channel : group.channel, { currency: first ? first.currency : group.currency }), date = first ? first.date : group.date;
       var dayFilter = Object.assign({}, f, { start: date, end: date }), total = sumRows(group.rows);
       var records = spendRecordsFor(state, dayFilter, channel);
       var media = f.media || Array.from(new Set(records.map(function (record) { return record.media || '未细分媒体'; }).concat(first ? [channel.media] : []))).join(' / ') || channel.media;
@@ -507,7 +511,7 @@
     var headers = ['注册批次日期', '渠道', '历史媒体', '币种', '匹配广告消耗', '注册人数', '注册成本', '批次累计首充人数', '首充成本', '首充金额', '批次累计充值', '累计提现', '充值回收率', '净回收率', '当日首充人数'];
     activeRows = csvRows(headers.concat(['成本口径说明']), rows.map(function (row) { return cells(row, false).concat([row.reason]); }));
     var page = paginate(rows, f);
-    return spendToolbar() + note('按注册批次日期、渠道、币种汇总，不是事件日流水。当日首充人数单独按首充发生日统计，样本全部在注册日首充；其余首充、充值及提现累计至 ' + AS_OF + '。首充成本即原充值成本；充值回收率 = 充值 / 消耗，净回收率 =（充值 − 提现）/ 消耗，并非利润。消耗未分包 / 链接时不分摊成本。') + table(headers.map(function (header) { return header === '首充成本' ? '<span title="充值成本 = 消耗 / 批次累计首充人数">首充成本</span>' : header; }).concat(['操作']), page.rows.map(function (row) { return cells(row, true).concat([button('cohort-detail', '批次明细', 'small', ' data-channel="' + esc(row.channel.id) + '" data-date="' + row.date + '"')]); })) + page.html;
+    return spendToolbar() + note('按注册批次日期、渠道、币种汇总，不是事件日流水。消耗按实际币种展示，没有同币种批次时单独列示，不计算成本或回收率。当日首充人数单独按首充发生日统计，样本全部在注册日首充；其余首充、充值及提现累计至 ' + AS_OF + '。首充成本即原充值成本；充值回收率 = 充值 / 消耗，净回收率 =（充值 − 提现）/ 消耗，并非利润。消耗未分包 / 链接时不分摊成本。') + table(headers.map(function (header) { return header === '首充成本' ? '<span title="充值成本 = 消耗 / 批次累计首充人数">首充成本</span>' : header; }).concat(['操作']), page.rows.map(function (row) { return cells(row, true).concat([button('cohort-detail', '批次明细', 'small', ' data-channel="' + esc(row.channel.id) + '" data-date="' + row.date + '" data-currency="' + esc(currencyOf(row.channel)) + '"')]); })) + page.html;
   }
 
   function detailView(state, f, daily) {
@@ -570,7 +574,7 @@
     if (f.returnUrl && !returnTarget(f.returnUrl)) f.returnUrl = '';
     if (!validDate(f.start) || !validDate(f.end) || f.start > f.end || f.end > AS_OF) Object.assign(f, defaults());
     if (view === 'roi' || view === 'updates' || view === 'conversion' || view === 'daily') f.scene = '';
-    if (view === 'updates') f.source = '';
+    if (view === 'updates') { f.source = ''; f.currency = ''; }
     if (view === 'conversion') {
       // 旧分类链接统一进入平铺报表，移除已经隐藏的分类及来源条件。
       f.source = ''; f.classify = ''; f.breakdown = ''; f.category = 'all';
@@ -635,6 +639,7 @@
       var origin = navigationContext({ returnUrl: '' });
       var context = navigationContext({ channel: target.dataset.channel, returnView: activeView, returnUrl: api().navigateUrl ? api().navigateUrl(activeView, origin) : '', promotionMetrics: action === 'roi-detail' || activeView === 'daily' ? 'funds' : f.promotionMetrics, period: activeView === 'roi' ? f.period : 'current' });
       if (target.dataset.date) { context.start = target.dataset.date; context.end = target.dataset.date; }
+      if (action === 'cohort-detail' && activeView === 'daily' && target.dataset.currency) context.currency = target.dataset.currency;
       api().go('detail', context);
     }
     else if (action === 'back-summary') {

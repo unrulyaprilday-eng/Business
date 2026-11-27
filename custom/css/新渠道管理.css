@@ -129,13 +129,22 @@ textarea.cm-input, .cm-field textarea { height: auto; min-height: 76px; resize: 
 .cm-table tbody tr:last-child td { border-bottom: 0; }
 .cm-table tbody tr:hover td { background: #f8fbff; }
 .cm-table .cm-check-col, .cm-table th:first-child:has(input[type="checkbox"]), .cm-table td:first-child:has(input[type="checkbox"]) { width: 42px; min-width: 42px; padding: 10px 12px; text-align: center; }
-.cm-channel-table { min-width: 1260px; }
 .cm-table .cm-numeric { text-align: right; font-variant-numeric: tabular-nums; }
 .cm-table .cm-sticky-action { position: sticky; right: 0; z-index: 1; min-width: 180px; border-left: 1px solid #e5eaf1; box-shadow: -4px 0 7px -6px #94a3b8; }
 .cm-table th.cm-sticky-action { z-index: 3; background: #f2f5f9; }
 .cm-table td.cm-sticky-action { background: #fff; }
 .cm-table tbody tr:hover td.cm-sticky-action { background: #f8fbff; }
 .cm-table .cm-actions { flex-wrap: nowrap; gap: 10px; }
+.cm-package-toolbar > div { gap: 12px; }
+.cm-package-table { min-width: max(100%, 950px); }
+.cm-package-table th, .cm-package-table td { min-width: 0; }
+.cm-package-table .cm-cell-title, .cm-package-table .cm-cell-sub { max-width: 184px; }
+.cm-package-table .cm-cell-sub.cm-error { color: #a65353; }
+.cm-package-table .cm-sticky-action { min-width: 188px; }
+.cm-package-row-actions { display: grid; gap: 5px; }
+.cm-package-row-actions .cm-actions { gap: 10px; }
+.cm-package-row-actions .cm-actions + .cm-actions { font-size: 12px; }
+.cm-package-row-actions .cm-actions + .cm-actions .cm-link { color: #4e709a; }
 .cm-cell-title { display: block; max-width: 220px; overflow: hidden; color: #3d4d64; text-overflow: ellipsis; white-space: nowrap; }
 .cm-cell-sub { display: block; max-width: 240px; overflow: hidden; margin-top: 3px; color: #7d8796; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
 .cm-cell-text { display: inline-block; max-width: 220px; overflow: hidden; text-overflow: ellipsis; vertical-align: middle; white-space: nowrap; }
@@ -179,6 +188,16 @@ textarea.cm-input, .cm-field textarea { height: auto; min-height: 76px; resize: 
 .cm-form-section { margin: 0 0 18px; padding: 0 0 18px; border-bottom: 1px solid #edf0f5; }
 .cm-form-section:last-child { padding-bottom: 0; margin-bottom: 0; border-bottom: 0; }
 .cm-form-section h3 { margin: 0 0 13px; color: #536782; font-size: 13px; font-weight: 600; }
+.cm-package-form-section { margin-top: 16px; padding-top: 14px; border-top: 1px solid #e7edf4; }
+.cm-package-form-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; margin-bottom: 10px; }
+.cm-package-form-head h3 { margin: 0; color: #35445a; font-size: 14px; }
+.cm-package-reward-fields { max-width: 430px; gap: 8px 16px; }
+.cm-package-reward-fields .cm-option-list { padding-top: 0; padding-bottom: 4px; }
+.cm-package-reward-editor .cm-package-form-head { margin-bottom: 16px; }
+.cm-modal .cm-dialog:not(.is-wide):has(.cm-package-reward-editor) { width: 490px; }
+@media (max-width: 680px) {
+  .cm-package-table .cm-sticky-action { position: static; }
+}
 .cm-field-help { display: block; margin-top: 0; color: #7d8796; font-size: 12px; line-height: 1.6; }
 .cm-field .cm-inline > .cm-input { flex: 1 1 100px; width: auto; }
 .cm-field .cm-inline { min-height: 32px; }

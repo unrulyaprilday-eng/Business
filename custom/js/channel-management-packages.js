@@ -7,6 +7,9 @@
   var initialized = false;
   var types = { native: '原生 APP', pwa: 'PWA 快捷 APP', channel: '渠道包', fast: '极速 APP' };
   var statuses = { published: '已发布', draft: '草稿', disabled: '已停用' };
+  var rewardConditions = { bet: '有效投注', deposit: '充值' };
+  var rewardKey = 'business.placement.install-reward.v1';
+  var legacyRewardKey = 'business.activity-global-config.v1';
 
   function api() { return window.CM; }
   function esc(value) { return api().escape(value == null ? '' : value); }
@@ -65,6 +68,115 @@
     api().toast(message || '已保存');
     return true;
   }
+
+  function validRewardAmount(value) {
+    return typeof value === 'string' && /^\d{1,12}(?:\.\d{1,2})?$/.test(value) && Number(value) > 0;
+  }
+
+  function packageReward(value) {
+    value = value || {};
+    var amount = validRewardAmount(value.amount) ? value.amount : '';
+    var condition = value.condition === 'bet' || value.condition === 'deposit' ? value.condition : '';
+    var minimum = condition && validRewardAmount(value.minimum) ? value.minimum : '';
+    return { enabled: value.enabled === true && !!(amount && condition && minimum), amount: amount, condition: condition, minimum: minimum };
+  }
+
+  function legacyReward() {
+    var stored;
+    try { stored = JSON.parse(window.localStorage.getItem(rewardKey) || window.localStorage.getItem(legacyRewardKey) || 'null'); }
+    catch (failure) { /* Use a disabled rule if storage cannot be read. */ }
+    stored = stored || {};
+    var reward = validRewardAmount(stored.installReward) ? stored.installReward : '';
+    var condition = stored.installCondition === 'bet' || stored.installCondition === 'deposit' ? stored.installCondition : '';
+    var minimum = condition && validRewardAmount(stored.installMinimum) ? stored.installMinimum : '';
+    if (stored.installCondition === undefined && stored.installMinimum === undefined) {
+      var bet = validRewardAmount(stored.installBetMinimum);
+      var deposit = validRewardAmount(stored.installDepositMinimum);
+      if (bet !== deposit) {
+        condition = bet ? 'bet' : 'deposit';
+        minimum = bet ? stored.installBetMinimum : stored.installDepositMinimum;
+      }
+    }
+    return packageReward({ amount: reward, condition: condition, minimum: minimum });
+  }
+
+  function rewardFields(saved, canUseLegacy) {
+    return '<section class="cm-package-reward-editor"><div class="cm-package-form-head">' +
+      '<label class="cm-check"><input type="checkbox" name="installEnabled"' + (saved.enabled ? ' checked' : '') + '>启用安装奖励</label>' +
+      (canUseLegacy ? '<button class="cm-link" type="button" data-pkg-use-legacy-reward>沿用原配置</button>' : '') + '</div>' +
+      '<div class="cm-form-grid cm-package-reward-fields">' +
+      '<div class="cm-field wide" role="radiogroup" aria-labelledby="cm-install-condition"><span id="cm-install-condition">获奖条件</span><div class="cm-option-list">' +
+      Object.keys(rewardConditions).map(function (key) { return '<label class="cm-radio"><input type="radio" name="installCondition" value="' + key + '"' + (saved.condition === key ? ' checked' : '') + '>' + rewardConditions[key] + '</label>'; }).join('') + '</div></div>' +
+      field('奖励金额（IDR）', input('installAmount', saved.amount, ' type="number" min="0.01" step="0.01"')) +
+      '<label class="cm-field" data-pkg-reward-minimum' + (saved.condition ? '' : ' hidden') + '><span>达标金额（IDR）</span>' +
+      input('installMinimum', saved.minimum, ' type="number" min="0.01" step="0.01"' + (saved.condition ? '' : ' disabled')) + '</label></div></section>';
+  }
+
+  function setupRewardFields(form, legacy) {
+    var fields = form.elements;
+    function sync() {
+      var condition = fields.installCondition.value;
+      var row = form.querySelector('[data-pkg-reward-minimum]');
+      row.hidden = !condition;
+      fields.installMinimum.disabled = !condition;
+      fields.installMinimum.required = !!condition && fields.installEnabled.checked;
+      fields.installAmount.required = fields.installEnabled.checked;
+    }
+    sync();
+    form.addEventListener('change', function (event) {
+      if (event.target.name === 'installCondition') fields.installMinimum.value = '';
+      if (event.target.name === 'installCondition' || event.target.name === 'installEnabled') sync();
+    });
+    var reuse = form.querySelector('[data-pkg-use-legacy-reward]');
+    if (reuse) reuse.addEventListener('click', function () {
+      fields.installAmount.value = legacy.amount;
+      fields.installCondition.value = legacy.condition;
+      fields.installMinimum.value = legacy.minimum;
+      sync();
+    });
+  }
+
+  function readPackageReward(form) {
+    var enabled = form.elements.installEnabled.checked;
+    var amount = form.elements.installAmount;
+    var conditions = form.elements.installCondition;
+    var condition = conditions.value;
+    var minimum = form.elements.installMinimum;
+    function invalid(control, message) { control.focus(); return error(form, message); }
+    if (amount.validity.badInput || ((enabled || amount.value) && !validRewardAmount(amount.value))) return invalid(amount, '请输入大于 0 的奖励金额，最多 12 位整数、2 位小数。');
+    if (enabled && !condition) return invalid(conditions[0], '请选择一项获奖条件。');
+    if (condition && (minimum.validity.badInput || ((enabled || minimum.value) && !validRewardAmount(minimum.value)))) return invalid(minimum, '请输入大于 0 的达标金额，最多 12 位整数、2 位小数。');
+    return packageReward({ enabled: enabled, amount: amount.value, condition: condition, minimum: minimum.value });
+  }
+
+  function rewardSummary(value) {
+    var rule = packageReward(value);
+    if (!rule.amount && !rule.condition) return '<span class="cm-muted">未配置</span>';
+    return rule.enabled ? esc(rule.amount) + ' IDR' : '<span class="cm-muted">已停用</span>';
+  }
+
+  function editInstallReward(id) {
+    var item = findPackage(id);
+    if (!item) return;
+    var reward = packageReward(item.installReward);
+    var legacy = !reward.amount && !reward.condition ? legacyReward() : null;
+    api().dialog({
+      title: '安装奖励 · ' + item.name + '（' + item.id + '）',
+      html: errorHtml() + rewardFields(reward, legacy && (legacy.amount || legacy.condition)),
+      onOpen: function (form) { setupRewardFields(form, legacy); },
+      onSubmit: function (form, close) {
+        var updated = readPackageReward(form);
+        if (!updated) return false;
+        var next = clone(state());
+        var target = findPackage(id, next);
+        if (!target) return error(form, '该包已不存在，请关闭后刷新。');
+        target.installReward = updated;
+        target.updatedAt = today();
+        return save(next, form, close, '安装奖励已保存');
+      }
+    });
+  }
+
   function validateBindings(channel, ids, source) {
     source = source || state();
     var download = channel.download || {};
@@ -128,17 +240,27 @@
     var rows = results.slice((page - 1) * pageSize, page * pageSize).map(function (item) {
       var version = currentVersion(item);
       var channels = relatedChannels(item.id, source);
-      var links = channels.map(function (entry) { return '<span class="cm-nowrap">' + esc(entry.name) + ' <span class="cm-muted">(' + esc(entry.code) + ')</span></span>'; }).join('<br>');
-      var actions = button('edit', '编辑', item.id) + button('new-version', '新建版本', item.id) + button('versions', item.status === 'draft' ? '版本与发布' : '版本记录', item.id) + button('conversion', '查看转化', item.id);
-      if (item.status === 'published') actions += button('disable', '停用', item.id);
-      if (item.status === 'disabled') actions += button('restore', '恢复', item.id);
+      var links = channels.map(function (entry) { return entry.name + '（' + entry.code + '）'; });
+      var primary = button('edit', '编辑', item.id) + button('new-version', '新建版本', item.id) + button('versions', item.status === 'draft' ? '版本与发布' : '版本记录', item.id);
+      primary += button('install-reward', '安装奖励', item.id, ' aria-label="' + esc(item.name + '的安装奖励') + '"');
+      var secondary = button('conversion', '查看转化', item.id);
+      if (version && item.status === 'published') secondary += button('copy', '复制下载地址', item.id);
+      if (item.status === 'published') secondary += button('disable', '停用', item.id);
+      if (item.status === 'disabled') secondary += button('restore', '恢复', item.id);
       var code = item.type === 'channel' ? packageChannelCode(item, source) : '';
-      return '<tr><td><strong>' + esc(item.name) + '</strong><br><span class="cm-muted">' + esc(item.id) + '</span>' + (item.type === 'channel' ? '<br><span class="' + (code ? 'cm-muted' : 'cm-error') + '">专属渠道码：' + esc(code || '待补充，请先编辑') + '</span>' : '') + '</td><td>' + esc(types[item.type] || item.type) + '</td><td>' + esc(item.platform) + '</td><td>' + (version ? esc(version.version) + '<br><span class="cm-muted">Build ' + esc(version.build || '—') + '</span>' : '<span class="cm-muted">尚未发布</span>') + '</td><td>' + badge(item.status) + '</td><td>' + (links || '<span class="cm-muted">未关联</span>') + '</td><td class="cm-nowrap">' + esc(item.updatedAt || '—') + '</td><td>' + (version && item.status === 'published' ? button('copy', '复制下载地址', item.id) : '<span class="cm-muted">发布后可复制</span>') + '</td><td class="cm-sticky-action"><div class="cm-actions">' + actions + '</div></td></tr>';
+      return '<tr><td><strong class="cm-cell-title" title="' + esc(item.name) + '">' + esc(item.name) + '</strong><span class="cm-cell-sub">' + esc(item.id) + '</span>' +
+        (item.type === 'channel' ? '<span class="cm-cell-sub' + (code ? '' : ' cm-error') + '">专属渠道码：' + esc(code || '待补充') + '</span>' : '') + '</td>' +
+        '<td>' + esc(types[item.type] || item.type) + '<span class="cm-cell-sub">' + esc(item.platform) + '</span></td>' +
+        '<td>' + (version ? esc(version.version) + (version.build ? '<span class="cm-cell-sub">Build ' + esc(version.build) + '</span>' : '') : '<span class="cm-muted">尚未发布</span>') + '</td>' +
+        '<td>' + badge(item.status) + '</td>' +
+        '<td>' + (links.length ? '<span class="cm-cell-title" title="' + esc(links.join('、')) + '">' + esc(links[0]) + '</span>' + (links.length > 1 ? '<span class="cm-cell-sub">共 ' + links.length + ' 个渠道</span>' : '') : '<span class="cm-muted">未关联</span>') + '</td>' +
+        '<td>' + esc(item.updatedAt || '—') + '</td><td>' + rewardSummary(item.installReward) + '</td>' +
+        '<td class="cm-sticky-action"><div class="cm-package-row-actions"><div class="cm-actions">' + primary + '</div><div class="cm-actions">' + secondary + '</div></div></td></tr>';
     }).join('');
     container.innerHTML = '<form class="cm-filter" data-pkg-filter>' + field('包名 / 包 ID', input('keyword', filters.keyword, ' placeholder="请输入包名或 ID" maxlength="80"')) + field('包类型', '<select class="cm-input" name="type">' + typeOptions(filters.type, true) + '</select>') + field('平台', '<select class="cm-input" name="platform">' + platformOptions(filters.platform, true) + '</select>') + field('状态', '<select class="cm-input" name="status">' + statusOptions(filters.status) + '</select>') + '<div class="cm-actions"><button class="cm-btn primary" type="submit">查询</button><button class="cm-btn" type="button" data-pkg-action="reset">重置</button></div></form>' +
       (channel ? '<p class="cm-note">当前查看渠道：' + esc(channel.name) + '（' + esc(channel.code) + '） ' + button('clear-channel', '查看全部包', '') + button('bind-context', '调整绑定', channel.id) + '</p>' : '') +
-      '<div class="cm-toolbar"><strong>包列表 <span class="cm-muted">共 ' + results.length + ' 个</span></strong><button class="cm-btn primary" type="button" data-pkg-action="create">新增包</button></div>' +
-      '<div class="cm-table-wrap"><table class="cm-table"><thead><tr><th>包名称 / ID</th><th>包类型</th><th>平台</th><th>当前版本</th><th>状态</th><th>关联渠道</th><th>更新时间</th><th>下载地址</th><th class="cm-sticky-action">操作</th></tr></thead><tbody>' + (rows || '<tr><td colspan="9" class="cm-empty">暂无符合条件的包，请调整查询条件或新增包。</td></tr>') + '</tbody></table></div>' +
+      '<div class="cm-toolbar cm-package-toolbar"><div><h2>包列表</h2><span class="cm-muted">共 ' + results.length + ' 个包</span></div><button class="cm-btn primary" type="button" data-pkg-action="create">新增包</button></div>' +
+      '<div class="cm-table-wrap cm-package-table-wrap"><table class="cm-table cm-package-table" aria-label="包列表"><thead><tr><th scope="col">包名称 / ID</th><th scope="col">类型 / 平台</th><th scope="col">当前版本</th><th scope="col">状态</th><th scope="col">关联渠道</th><th scope="col">更新时间</th><th scope="col">安装奖励</th><th scope="col" class="cm-sticky-action">操作</th></tr></thead><tbody>' + (rows || '<tr><td colspan="8" class="cm-empty">暂无符合条件的包，请调整查询条件或新增包。</td></tr>') + '</tbody></table></div>' +
       '<div class="cm-pagination"><span>共 ' + results.length + ' 条，第 ' + page + ' / ' + pages + ' 页</span><button type="button" class="cm-btn small" data-pkg-action="previous"' + (page <= 1 ? ' disabled' : '') + '>上一页</button><button type="button" class="cm-btn small" data-pkg-action="next"' + (page >= pages ? ' disabled' : '') + '>下一页</button></div>';
   }
 
@@ -242,11 +364,11 @@
     var code = item ? packageChannelCode(item) : '';
     var codeControl = item && code ? input('channelCode', code, ' readonly') : '<select class="cm-input" name="channelCode">' + option('', '请选择专属渠道', '') + state().channels.map(function (channel) { return option(channel.code, channel.name + '（' + channel.code + '）', code); }).join('') + '</select>';
     api().dialog({
-      title: isNew ? '新增包' : '编辑包基本信息', width: isNew ? 'wide' : 'normal', submitLabel: isNew ? '保存草稿' : '保存',
+      title: isNew ? '新增包' : '编辑包 · ' + item.name, width: isNew ? 'wide' : 'normal', submitLabel: isNew ? '保存草稿' : '保存',
       html: errorHtml() + '<div class="cm-form-grid">' + field('包名称 <span class="cm-error">*</span>', input('name', item ? item.name : '', ' required maxlength="60" placeholder="请输入包名称"')) +
         field('包类型', '<select class="cm-input" name="type"' + (isNew ? '' : ' disabled') + '>' + typeOptions(type, false) + '</select>') + field('平台', '<select class="cm-input" name="platform"' + (isNew ? '' : ' disabled') + '>' + platformOptions(platform, false) + '</select>') + '</div><div data-pkg-channel-code' + (type === 'channel' ? '' : ' hidden') + '>' + field('专属渠道码 <span class="cm-error">*</span>', codeControl) + '<p class="cm-muted">独立渠道包只可绑定此渠道。专属码保存后固定，不通过修改包名称改变归属。</p></div>' +
-        (isNew ? '<div class="cm-form-section"><strong>首个版本</strong><p class="cm-muted">保存为草稿后，在版本记录中确认发布才会生效。</p>' + versionFields({}) + '</div>' : '<p class="cm-note">包类型和平台用于关联渠道及历史版本，创建后固定。如需更换，请新增包后调整渠道绑定。</p>'),
-      onOpen: function (form) { syncChannelCode(form); if (isNew) setupVersionForm(form, platform); },
+        (isNew ? '<section class="cm-package-form-section"><div class="cm-package-form-head"><h3>首个版本</h3></div>' + versionFields({}) + '</section><div class="cm-package-form-section">' + rewardFields(packageReward(), false) + '</div>' : ''),
+      onOpen: function (form) { syncChannelCode(form); if (isNew) { setupVersionForm(form, platform); setupRewardFields(form, null); } },
       onSubmit: function (form, close) {
         var name = form.elements.name.value.trim();
         if (!name) return error(form, '请填写包名称。');
@@ -265,7 +387,9 @@
           if ((nextType === 'pwa') !== (nextPlatform === 'PWA')) return error(form, 'PWA 类型必须选择 PWA 平台，其他包类型请选择 Android 或 iOS。');
           var read = readVersion(form, { platform: nextPlatform, versions: [] });
           if (read.error) return error(form, read.error);
-          next.packages.push({ id: nextId(next), name: name, type: nextType, platform: nextPlatform, channelCode: chosenCode, status: 'draft', versions: [read.value], currentVersion: '', updatedAt: today() });
+          var reward = readPackageReward(form);
+          if (!reward) return false;
+          next.packages.push({ id: nextId(next), name: name, type: nextType, platform: nextPlatform, channelCode: chosenCode, status: 'draft', versions: [read.value], currentVersion: '', installReward: reward, updatedAt: today() });
         } else {
           var target = findPackage(id, next);
           if (!target) return error(form, '该包已不存在，请关闭后刷新。');
@@ -273,7 +397,7 @@
           if (target.type === 'channel') target.channelCode = chosenCode;
           target.updatedAt = today();
         }
-        return save(next, form, close, isNew ? '包已保存为草稿，请在版本记录中发布。' : '基本信息已保存');
+        return save(next, form, close, isNew ? '包已保存为草稿，请在版本记录中发布。' : '包配置已保存');
       }
     });
   }
@@ -483,6 +607,7 @@
       if (action === 'bind-context') openBind(id);
       if (action === 'create') editPackage();
       if (action === 'edit') editPackage(id);
+      if (action === 'install-reward') editInstallReward(id);
       if (action === 'new-version') newVersion(id);
       if (action === 'versions') versionHistory(id);
       if (action === 'disable') disablePackage(id);
