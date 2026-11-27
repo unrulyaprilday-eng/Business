@@ -444,6 +444,27 @@ textarea {
   min-height: 122px;
 }
 
+.site-currency-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.site-currency-fields select {
+  background: #fff;
+}
+
+.site-currency-code {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  color: #111827;
+}
+
+.site-currency-fields .site-currency-error {
+  color: #c93434;
+}
+
 .coin-icon {
   width: 96px;
   height: 96px;

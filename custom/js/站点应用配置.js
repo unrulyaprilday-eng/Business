@@ -105,6 +105,22 @@
 
   initFloatingButtons();
 
+  var currencyPanel = document.getElementById('siteCurrencyPanel');
+  var siteCurrency = window.businessSiteCurrency;
+  var currencySelect = document.getElementById('siteCurrencySelect');
+  var currencyCode = document.getElementById('siteCurrencyCode');
+  var currencyError = document.getElementById('siteCurrencyError');
+
+  function renderSiteCurrency() {
+    if (!currencyPanel || !siteCurrency) return;
+    var saved = siteCurrency.read();
+    currencySelect.value = saved;
+    currencyCode.textContent = saved;
+    currencyError.hidden = true;
+  }
+
+  renderSiteCurrency();
+
   function setPanelEditing(panel, editing) {
     panel.classList.toggle('is-editing', editing);
     var view = panel.querySelector('.panel-view');
@@ -124,17 +140,29 @@
   document.addEventListener('click', function (event) {
     var editButton = event.target.closest('[data-edit-panel]');
     if (editButton) {
-      setPanelEditing(editButton.closest('.inline-config-panel'), true);
+      var editPanel = editButton.closest('.inline-config-panel');
+      if (editPanel === currencyPanel) renderSiteCurrency();
+      setPanelEditing(editPanel, true);
       return;
     }
     var saveButton = event.target.closest('[data-save-panel]');
     if (saveButton) {
-      setPanelEditing(saveButton.closest('.inline-config-panel'), false);
+      var savePanel = saveButton.closest('.inline-config-panel');
+      if (savePanel === currencyPanel) {
+        if (!siteCurrency || !siteCurrency.write(currencySelect.value)) {
+          currencyError.hidden = false;
+          return;
+        }
+        renderSiteCurrency();
+      }
+      setPanelEditing(savePanel, false);
       return;
     }
     var cancelButton = event.target.closest('[data-cancel-panel]');
     if (cancelButton) {
-      setPanelEditing(cancelButton.closest('.inline-config-panel'), false);
+      var cancelPanel = cancelButton.closest('.inline-config-panel');
+      if (cancelPanel === currencyPanel) renderSiteCurrency();
+      setPanelEditing(cancelPanel, false);
       return;
     }
     var removeButton = event.target.closest('.upload-remove');

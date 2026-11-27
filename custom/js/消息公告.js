@@ -1,5 +1,14 @@
 (function () {
-  var messages = [
+  var MESSAGE_STORAGE_KEY = "business-message-notices-v1";
+  var COUPON_STORAGE_KEY = "business-ticket-coupons-v1";
+  var MAIL_TYPE = "消息";
+  var DEFAULT_COUPONS = [
+    { id: "CPN-20261104-001", name: "新客优惠券", type: "percent" },
+    { id: "CPN-20261104-002", name: "满额赠送券", type: "recharge_fixed" },
+    { id: "CPN-20261104-003", name: "充值比例赠送券", type: "recharge_percent" }
+  ];
+  var sampleMessages = [
+    { id: "example-attachment-mail", title: "会员福利补发示例", type: "消息", recipient: "自定义玩家：1010010013", send: "2026-11-26 10:00", end: "2026-12-03 10:00", status: "已发送", operator: "qitian", operateTime: "2026-11-26 10:00", content: "本次补发福利包含余额与优惠券，附件内容请查收。", attachments: { balance: { currency: "USD", amount: "10.00" }, coupon: { id: "CPN-20261104-001", name: "新客优惠券", quantity: 1 } } },
     { id: "21ac3b54-f6c7-49a6-8426-511e7ea2efbf", title: "冲电股份还有大费劲", type: "公告", recipient: "全体玩家", send: "2026-05-24 17:42", end: "2026-05-26 00:00", status: "未开始", operator: "qitian", operateTime: "2026-05-21T17:43:02.353...", content: "大祥图好几年间意后觉特色人呀突然虎牙" },
     { id: "0f6eeacc-e788-44fe-91b0-885e0f8c0a25", title: "很过分党和国", type: "公告", recipient: "全体玩家", send: "2026-05-21 17:42", end: "2026-05-22 00:00", status: "已结束", operator: "qitian", operateTime: "2026-05-21T17:42:38.04...", content: "系统活动公告内容展示。" },
     { id: "798eedf8-986c-4f23-8d77-1cbda28f6242", title: "返回东干粉", type: "公告", recipient: "全体玩家", send: "2026-05-21 17:42", end: "2026-05-22 00:00", status: "已结束", operator: "qitian", operateTime: "2026-05-21T17:42:22.53...", content: "公告结束后保留详情可查看。" },
@@ -16,7 +25,9 @@
     { id: "6a2ec8c2-bd0f-47d5-a5df-1ad5e3e1f355", title: "测试公告", type: "公告", recipient: "全体玩家", send: "2026-05-09 16:22", end: "2026-09-20 00:00", status: "已发送", operator: "zhoudaxi", operateTime: "2026-05-09T16:22:24.21...", content: "测试公告正文。" }
   ];
 
+  var messages = readMessages();
   var recallTarget = null;
+  var draftBalanceCurrency = "USD";
 
   function $(selector) {
     return document.querySelector(selector);
@@ -39,6 +50,67 @@
     return text.length > length ? text.slice(0, length) + "..." : text;
   }
 
+  function readMessages() {
+    try {
+      var stored = JSON.parse(window.localStorage.getItem(MESSAGE_STORAGE_KEY));
+      if (Array.isArray(stored)) return stored;
+    } catch (error) {
+      return sampleMessages;
+    }
+    return sampleMessages;
+  }
+
+  function saveMessages(nextMessages) {
+    try {
+      window.localStorage.setItem(MESSAGE_STORAGE_KEY, JSON.stringify(nextMessages));
+    } catch (error) {
+      return false;
+    }
+    messages = nextMessages;
+    return true;
+  }
+
+  function enabledCoupons() {
+    try {
+      var stored = window.localStorage.getItem(COUPON_STORAGE_KEY);
+      var catalog = stored === null ? DEFAULT_COUPONS : JSON.parse(stored);
+      if (!Array.isArray(catalog)) return [];
+      return catalog.filter(function (coupon) {
+        return coupon && coupon.enabled !== false && coupon.id && coupon.name
+          && ["percent", "recharge_fixed", "recharge_percent"].indexOf(coupon.type) !== -1;
+      });
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function messageTypeLabel(type) {
+    return type === MAIL_TYPE ? "站内信" : type;
+  }
+
+  function messageStatus(item) {
+    if (!item.sendAt || item.status === "已撤回") return item.status;
+    var now = Date.now();
+    if (now >= item.endAt) return "已结束";
+    return now < item.sendAt ? "未开始" : "已发送";
+  }
+
+  function formatTime(date) {
+    function pad(value) { return String(value).padStart(2, "0"); }
+    return date.getFullYear() + "-" + pad(date.getMonth() + 1) + "-" + pad(date.getDate())
+      + " " + pad(date.getHours()) + ":" + pad(date.getMinutes());
+  }
+
+  function attachmentLabels(attachments, detailed) {
+    if (!attachments) return [];
+    var balance = attachments.balance;
+    var coupon = attachments.coupon;
+    var labels = [];
+    if (balance) labels.push(detailed ? "余额：" + balance.amount + "（币种：" + balance.currency + "）" : "余额");
+    if (coupon) labels.push(detailed ? "优惠券：" + coupon.name + " × " + coupon.quantity + " 张（" + coupon.id + "）" : "优惠券");
+    return labels;
+  }
+
   function statusClass(status) {
     if (status === "已发送") return "status-sent";
     if (status === "未开始") return "status-pending";
@@ -52,28 +124,32 @@
     var title = $("#filterTitle").value.trim();
     return messages.filter(function (item) {
       return (!type || item.type === type)
-        && (!status || item.status === status)
+        && (!status || messageStatus(item) === status)
         && (!title || item.title.indexOf(title) >= 0);
     });
   }
 
   function renderRows() {
-    $("#messageRows").innerHTML = filteredMessages().map(function (item) {
-      var action = item.status === "已撤回" ? "删除" : "撤回";
+    var rows = filteredMessages();
+    $("#messageTotal").textContent = "共 " + rows.length + " 条记录";
+    $("#messageRows").innerHTML = rows.map(function (item) {
+      var status = messageStatus(item);
+      var action = status === "已撤回" ? "删除" : "撤回";
       return "<tr>"
         + "<td title=\"" + escapeHtml(item.id) + "\">" + escapeHtml(shortText(item.id, 13)) + "</td>"
         + "<td title=\"" + escapeHtml(item.title) + "\">" + escapeHtml(shortText(item.title, 8)) + "</td>"
-        + "<td>" + escapeHtml(item.type) + "</td>"
-        + "<td>" + escapeHtml(item.recipient) + "</td>"
+        + "<td>" + escapeHtml(messageTypeLabel(item.type)) + "</td>"
+        + "<td title=\"" + escapeHtml(item.recipient) + "\">" + escapeHtml(item.recipient) + "</td>"
         + "<td>" + escapeHtml(item.send) + "</td>"
         + "<td>" + escapeHtml(item.end) + "</td>"
-        + "<td><span class=\"status-tag " + statusClass(item.status) + "\">" + escapeHtml(item.status) + "</span></td>"
+        + "<td><span class=\"status-tag " + statusClass(status) + "\">" + escapeHtml(status) + "</span></td>"
         + "<td>" + escapeHtml(item.operator) + "</td>"
         + "<td title=\"" + escapeHtml(item.operateTime) + "\">" + escapeHtml(item.operateTime) + "</td>"
+        + "<td>" + escapeHtml(attachmentLabels(item.attachments).join(" / ") || "—") + "</td>"
         + "<td><button class=\"table-action\" type=\"button\" data-detail=\"" + escapeHtml(item.id) + "\">详情</button>"
         + "<button class=\"table-action danger\" type=\"button\" data-recall=\"" + escapeHtml(item.id) + "\">" + action + "</button></td>"
         + "</tr>";
-    }).join("");
+    }).join("") || '<tr><td colspan="11">暂无符合条件的消息</td></tr>';
   }
 
   function openModal(id) {
@@ -93,14 +169,18 @@
   function showDetail(id) {
     var item = findMessage(id);
     if (!item) return;
+    var status = messageStatus(item);
+    var labels = attachmentLabels(item.attachments, true);
     $("#detailId").textContent = item.id;
-    $("#detailStatus").innerHTML = "<span class=\"status-tag " + statusClass(item.status) + "\">" + escapeHtml(item.status) + "</span>";
-    $("#detailType").textContent = item.type;
+    $("#detailStatus").innerHTML = "<span class=\"status-tag " + statusClass(status) + "\">" + escapeHtml(status) + "</span>";
+    $("#detailType").textContent = messageTypeLabel(item.type);
     $("#detailRecipient").textContent = item.recipient;
     $("#detailSend").textContent = item.send;
     $("#detailEnd").textContent = item.end;
     $("#detailMessageTitle").textContent = item.title;
     $("#detailContent").textContent = item.content;
+    $("#detailAttachmentRow").hidden = item.type !== MAIL_TYPE;
+    $("#detailAttachments").textContent = labels.join("\n") || "无附件";
     openModal("detailModal");
   }
 
@@ -132,6 +212,45 @@
     $("#scheduleTime").hidden = document.querySelector("input[name='sendTime']:checked").value !== "schedule";
   }
 
+  function refreshCouponOptions() {
+    var select = $("#attachmentCoupon");
+    var selectedId = select.value;
+    var coupons = enabledCoupons();
+    select.options.length = 1;
+    coupons.forEach(function (coupon) {
+      select.add(new Option(coupon.name + "（" + coupon.id + "）", coupon.id));
+    });
+    select.value = coupons.some(function (coupon) { return coupon.id === selectedId; }) ? selectedId : "";
+    select.disabled = coupons.length === 0;
+    $("#attachmentQuantity").disabled = select.disabled;
+    return coupons;
+  }
+
+  function currentSiteCurrency() {
+    try {
+      var source = window.businessSiteCurrency;
+      var currency = source && typeof source.read === "function" ? source.read() : "USD";
+      return typeof currency === "string" && /^[A-Z]{3}$/.test(currency) ? currency : "USD";
+    } catch (error) {
+      return "USD";
+    }
+  }
+
+  function setDraftBalanceCurrency(currency) {
+    draftBalanceCurrency = currency;
+    $("#attachmentCurrency").textContent = currency;
+  }
+
+  function updateAttachmentPanel() {
+    var isMail = $("#messageType").value === MAIL_TYPE;
+    var hasBalance = isMail && $("#attachBalance").checked;
+    var hasCoupon = isMail && $("#attachCoupon").checked;
+    $("#messageAttachmentPanel").hidden = !isMail;
+    $("#balanceAttachmentFields").hidden = !hasBalance;
+    $("#couponAttachmentFields").hidden = !hasCoupon;
+    $("#attachmentCouponEmpty").hidden = !hasCoupon || !$("#attachmentCoupon").disabled;
+  }
+
   function resetCreateForm() {
     $("#messageType").value = "";
     $("#recipientType").value = "";
@@ -140,8 +259,15 @@
     $("#playerIds").value = "";
     $("#scheduleTime").value = "";
     $("#endTime").value = "";
+    $("#createError").hidden = true;
     $("#contentError").hidden = true;
     $("#charCount").textContent = "0";
+    $("#attachBalance").checked = false;
+    $("#attachCoupon").checked = false;
+    setDraftBalanceCurrency(currentSiteCurrency());
+    $("#attachmentAmount").value = "";
+    $("#attachmentCoupon").value = "";
+    $("#attachmentQuantity").value = "1";
     $all("input[name='vip'], input[name='r']").forEach(function (input) {
       input.checked = false;
     });
@@ -149,14 +275,132 @@
     document.querySelector("input[name='sendTime'][value='now']").checked = true;
     updateRecipientPanel();
     updateScheduleInput();
+    updateAttachmentPanel();
+  }
+
+  function resetFilters() {
+    $("#filterType").value = "";
+    $("#filterStatus").value = "";
+    $("#filterTitle").value = "";
+  }
+
+  function createError(message, selector) {
+    var error = $("#createError");
+    error.textContent = message;
+    error.hidden = false;
+    if (selector) $(selector).focus();
+    return false;
+  }
+
+  function readRecipient() {
+    var type = $("#recipientType").value;
+    if (!type) return createError("请选择收件人。", "#recipientType");
+    if (type === "自定义玩家") {
+      var ids = $("#playerIds").value.split(/[,，\s]+/).filter(Boolean);
+      if (!ids.length || ids.some(function (id) { return !/^\d+$/.test(id); })) {
+        return createError("请输入有效的收件人ID，多个ID用逗号分隔。", "#playerIds");
+      }
+      return type + "：" + Array.from(new Set(ids)).join("、");
+    }
+    if (type === "VIP玩家" || type === "R玩家") {
+      var group = type === "VIP玩家" ? "vip" : "r";
+      var selector = "input[name='" + group + "']";
+      var selected = $all(selector + ":checked").map(function (input) { return input.value; });
+      if (!selected.length) return createError("请选择至少一个收件人分组。", selector);
+      return type + "：" + selected.join("、");
+    }
+    return type;
+  }
+
+  function readAttachments() {
+    if ($("#messageType").value !== MAIL_TYPE) return null;
+    var attachments = {};
+
+    if ($("#attachBalance").checked) {
+      var currency = currentSiteCurrency();
+      if (currency !== draftBalanceCurrency) {
+        setDraftBalanceCurrency(currency);
+        return createError("站点币种已变更为 " + currency + "，请核对每人金额后再次确定。", "#attachmentAmount");
+      }
+      var amountInput = $("#attachmentAmount").value;
+      if (!/^(?:\d+(?:\.\d{1,2})?|\.\d{1,2})$/.test(amountInput)) {
+        return createError("请输入大于 0 的余额金额，最多保留两位小数。", "#attachmentAmount");
+      }
+      var parts = amountInput.split(".");
+      var amount = (parts[0] || "0").replace(/^0+(?=\d)/, "") + "." + (parts[1] || "").padEnd(2, "0");
+      var cents = Number(amount.replace(".", ""));
+      if (!Number.isSafeInteger(cents) || cents <= 0) {
+        return createError("请输入有效的正数余额金额。", "#attachmentAmount");
+      }
+      attachments.balance = { currency: currency, amount: amount };
+    }
+
+    if ($("#attachCoupon").checked) {
+      var coupons = refreshCouponOptions();
+      updateAttachmentPanel();
+      var select = $("#attachmentCoupon");
+      if (select.disabled) return createError("没有启用中的优惠券，请先在票券中心配置。", "#attachCoupon");
+      var coupon = coupons.find(function (item) { return item.id === select.value; });
+      if (!coupon) return createError("请选择一张启用中的优惠券。", "#attachmentCoupon");
+      var quantityInput = $("#attachmentQuantity").value;
+      var quantity = Number(quantityInput);
+      if (!/^\d+$/.test(quantityInput) || !Number.isSafeInteger(quantity) || quantity < 1) {
+        return createError("优惠券张数须为正整数。", "#attachmentQuantity");
+      }
+      attachments.coupon = { id: coupon.id, name: coupon.name, quantity: quantity };
+    }
+
+    return attachments.balance || attachments.coupon ? attachments : null;
+  }
+
+  function saveCreateForm() {
+    $("#createError").hidden = true;
+    var type = $("#messageType").value;
+    if (!type) return createError("请选择消息类型。", "#messageType");
+    var recipient = readRecipient();
+    if (!recipient) return;
+    var title = $("#messageTitle").value.trim();
+    if (!title) return createError("请输入标题。", "#messageTitle");
+    var attachments = readAttachments();
+    if (attachments === false) return;
+    var content = $("#messageContent").value.trim();
+    if (!content) {
+      $("#contentError").hidden = false;
+      return createError("请输入显示内容。", "#messageContent");
+    }
+
+    var now = new Date();
+    var scheduled = document.querySelector("input[name='sendTime']:checked").value === "schedule";
+    var send = scheduled ? new Date($("#scheduleTime").value) : now;
+    var end = new Date($("#endTime").value);
+    if (scheduled && !(send > now)) return createError("定时发送时间须晚于当前时间。", "#scheduleTime");
+    if (!(end > send)) return createError("结束时间须晚于发送时间。", "#endTime");
+
+    var item = {
+      id: window.crypto && window.crypto.randomUUID ? window.crypto.randomUUID() : "msg-" + now.getTime(),
+      title: title,
+      type: type,
+      recipient: recipient,
+      content: content,
+      send: formatTime(send),
+      end: formatTime(end),
+      sendAt: send.getTime(),
+      endAt: end.getTime(),
+      status: scheduled ? "未开始" : "已发送",
+      operator: "qitian",
+      operateTime: formatTime(now),
+      attachments: attachments
+    };
+    if (!saveMessages([item].concat(messages))) return createError("记录保存失败，请检查浏览器存储后重试。");
+    if (filteredMessages().indexOf(item) === -1) resetFilters();
+    renderRows();
+    closeModal("createModal");
   }
 
   function initEvents() {
     $("#searchBtn").addEventListener("click", renderRows);
     $("#resetBtn").addEventListener("click", function () {
-      $("#filterType").value = "";
-      $("#filterStatus").value = "";
-      $("#filterTitle").value = "";
+      resetFilters();
       renderRows();
     });
     $("#openCreateBtn").addEventListener("click", function () {
@@ -173,6 +417,26 @@
       button.addEventListener("click", function () {
         closeModal(button.getAttribute("data-close"));
       });
+    });
+    $("#messageType").addEventListener("change", function () {
+      if (this.value === MAIL_TYPE) refreshCouponOptions();
+      updateAttachmentPanel();
+    });
+    $("#attachBalance").addEventListener("change", function () {
+      if (this.checked && !$("#attachmentAmount").value) setDraftBalanceCurrency(currentSiteCurrency());
+      updateAttachmentPanel();
+    });
+    $("#attachCoupon").addEventListener("change", function () {
+      if (this.checked) refreshCouponOptions();
+      updateAttachmentPanel();
+    });
+    window.addEventListener("storage", function (event) {
+      if (event.key !== COUPON_STORAGE_KEY || $("#messageAttachmentPanel").hidden || $("#createModal").hidden) return;
+      refreshCouponOptions();
+      updateAttachmentPanel();
+    });
+    $("#createModal").addEventListener("input", function () {
+      $("#createError").hidden = true;
     });
     $("#recipientType").addEventListener("change", updateRecipientPanel);
     $all("input[name='sendTime']").forEach(function (input) {
@@ -191,17 +455,17 @@
         });
       });
     });
-    $("#confirmCreateBtn").addEventListener("click", function () {
-      if (!$("#messageContent").value.trim()) {
-        $("#contentError").hidden = false;
-        return;
-      }
-      closeModal("createModal");
-    });
+    $("#confirmCreateBtn").addEventListener("click", saveCreateForm);
     $("#confirmRecallBtn").addEventListener("click", function () {
       if (recallTarget) {
-        recallTarget.status = "已撤回";
-        recallTarget.operateTime = "2026-05-23T10:32:00.00...";
+        var nextMessages = messages.map(function (item) {
+          return item === recallTarget ? Object.assign({}, item, { status: "已撤回", operateTime: formatTime(new Date()) }) : item;
+        });
+        if (!saveMessages(nextMessages)) {
+          window.alert("撤回记录保存失败，请检查浏览器存储后重试。");
+          return;
+        }
+        recallTarget = null;
         renderRows();
       }
       closeModal("recallModal");
@@ -209,9 +473,11 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
+    if (!$("#messageRows") || !$("#messageAttachmentPanel")) return;
     renderCheckLists();
     updateRecipientPanel();
     updateScheduleInput();
+    updateAttachmentPanel();
     initEvents();
     renderRows();
   });

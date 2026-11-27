@@ -97,7 +97,7 @@
           </div>
         </section>
 
-        <section class="setting-panel inline-config-panel">
+        <section class="setting-panel inline-config-panel" id="siteCurrencyPanel">
           <div class="panel-head">
             <h2>币种管理</h2>
             <div class="panel-actions view-actions">
@@ -114,8 +114,16 @@
               <div class="coin-icon">$</div>
             </div>
             <div class="asset-field">
-              <label>货币符号 <em>*</em></label>
-              <div class="currency-symbol">$</div>
+              <div class="site-currency-fields">
+                <div>
+                  <label>站点币种</label>
+                  <strong class="site-currency-code" id="siteCurrencyCode">USD</strong>
+                </div>
+                <div>
+                  <label>货币符号 <em>*</em></label>
+                  <div class="currency-symbol">$</div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="asset-grid currency-grid panel-edit" hidden>
@@ -129,8 +137,22 @@
               <p>仅支持 SVG 格式，小于 10KB</p>
             </div>
             <div class="asset-field">
-              <label>货币符号 <em>*</em></label>
-              <input class="inline-input" value="$"/>
+              <div class="site-currency-fields">
+                <div>
+                  <label for="siteCurrencySelect">站点币种 <em>*</em></label>
+                  <select class="inline-input" id="siteCurrencySelect">
+                    <option value="USD" selected>USD</option>
+                    <option value="BRL">BRL</option>
+                    <option value="IDR">IDR</option>
+                    <option value="INR">INR</option>
+                  </select>
+                  <p class="site-currency-error" id="siteCurrencyError" role="alert" hidden>币种保存失败，请检查浏览器存储后重试。</p>
+                </div>
+                <div>
+                  <label for="siteCurrencySymbol">货币符号 <em>*</em></label>
+                  <input class="inline-input" id="siteCurrencySymbol" value="$"/>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -396,6 +418,7 @@
 
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/js/site-currency.js"></script>
     <script src="custom/js/站点应用配置.js"></script>
     <script src="custom/js/side-menu-settings.js"></script>
     <script src="custom/js/home-activity-shortcuts.js"></script>

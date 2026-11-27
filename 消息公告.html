@@ -63,7 +63,7 @@
             <label>消息类型:
               <select id="filterType">
                 <option value="">请选择类型</option>
-                <option>消息</option>
+                <option value="消息">站内信</option>
                 <option>公告</option>
                 <option>跑马灯</option>
               </select>
@@ -98,10 +98,25 @@
                   <th>状态</th>
                   <th>操作人</th>
                   <th>操作时间</th>
+                  <th>附件</th>
                   <th>操作</th>
                 </tr>
               </thead>
-              <tbody id="messageRows"></tbody>
+              <tbody id="messageRows">
+                <tr>
+                  <td title="example-attachment-mail">example-attac...</td>
+                  <td>会员福利补发示例</td>
+                  <td>站内信</td>
+                  <td>自定义玩家：1010010013</td>
+                  <td>2026-11-26 10:00</td>
+                  <td>2026-12-03 10:00</td>
+                  <td><span class="status-tag status-sent">已发送</span></td>
+                  <td>qitian</td>
+                  <td>2026-11-26 10:00</td>
+                  <td>余额 / 优惠券</td>
+                  <td><button class="table-action" type="button" data-detail="example-attachment-mail">详情</button><button class="table-action danger" type="button" data-recall="example-attachment-mail">撤回</button></td>
+                </tr>
+              </tbody>
             </table>
           </section>
 
@@ -110,7 +125,7 @@
             <button type="button">‹‹</button>
             <button type="button">‹</button>
             <input value="1" aria-label="当前页"/>
-            <span>/ 2</span>
+            <span>/ 1</span>
             <button type="button">›</button>
             <button type="button">››</button>
             <button type="button">›|</button>
@@ -119,7 +134,7 @@
               <option>50条/页</option>
               <option>100条/页</option>
             </select>
-            <span>共 29 条记录</span>
+            <span id="messageTotal">共 1 条记录</span>
           </footer>
         </main>
       </div>
@@ -137,7 +152,7 @@
               <span class="field-label"><span class="required-mark">*</span>消息类型</span>
               <select id="messageType">
                 <option value="">请选择类型</option>
-                <option>消息</option>
+                <option value="消息">站内信</option>
                 <option>公告</option>
                 <option>跑马灯</option>
               </select>
@@ -183,6 +198,28 @@
             <input id="messageTitle" type="text" placeholder="请输入标题"/>
           </label>
 
+          <div class="message-attachment-panel" id="messageAttachmentPanel" role="group" aria-labelledby="messageAttachmentLabel" hidden>
+            <span class="field-label" id="messageAttachmentLabel">附件</span>
+            <div class="message-attachment-content">
+              <div class="message-attachment-choices">
+                <label><input id="attachBalance" type="checkbox"/>余额</label>
+                <label><input id="attachCoupon" type="checkbox"/>优惠券</label>
+                <span class="message-attachment-hint">可同时选择，金额与张数均按每位收件人设置</span>
+              </div>
+              <div class="message-attachment-fields" id="balanceAttachmentFields" hidden>
+                <span class="message-attachment-currency">币种：<strong id="attachmentCurrency">USD</strong></span>
+                <label>每人金额<input id="attachmentAmount" type="number" min="0.01" step="0.01" placeholder="请输入金额"/></label>
+              </div>
+              <div class="message-attachment-fields" id="couponAttachmentFields" hidden>
+                <label>优惠券
+                  <select id="attachmentCoupon"><option value="">请选择优惠券</option></select>
+                </label>
+                <label>每人张数<input id="attachmentQuantity" type="number" min="1" step="1" value="1"/></label>
+                <p class="message-attachment-empty" id="attachmentCouponEmpty" hidden>暂无启用的优惠券，请前往<a href="票券中心.html?tab=settings" target="_blank" rel="noopener">票券中心配置</a>。</p>
+              </div>
+            </div>
+          </div>
+
           <div class="editor-row required">
             <span class="field-label"><span class="required-mark">*</span>显示内容</span>
             <div class="editor-shell">
@@ -223,15 +260,16 @@
             <span>发送时间</span>
             <label><input type="radio" name="sendTime" value="now" checked/> 立即发送</label>
             <label><input type="radio" name="sendTime" value="schedule"/> 定时发送</label>
-            <input class="date-input" id="scheduleTime" type="text" placeholder="发送时间" hidden/>
+            <input class="date-input" id="scheduleTime" type="datetime-local" aria-label="定时发送日期与时间" hidden/>
           </div>
 
           <label class="field required end-field">
             <span class="field-label"><span class="required-mark">*</span>结束时间</span>
-            <input id="endTime" type="text" placeholder="结束时间"/>
+            <input id="endTime" type="datetime-local" aria-label="消息结束日期与时间"/>
           </label>
         </div>
         <footer class="modal-foot">
+          <p class="message-create-error" id="createError" role="alert" hidden></p>
           <button class="ghost-btn" type="button" data-close="createModal">取消</button>
           <button class="primary-btn" id="confirmCreateBtn" type="button">确定</button>
         </footer>
@@ -253,6 +291,7 @@
             <div><dt>发送时间</dt><dd id="detailSend"></dd></div>
             <div><dt>结束时间</dt><dd id="detailEnd"></dd></div>
             <div><dt>标题</dt><dd id="detailMessageTitle"></dd></div>
+            <div class="message-detail-attachments" id="detailAttachmentRow" hidden><dt>附件</dt><dd id="detailAttachments"></dd></div>
             <div class="content-detail"><dt>显示内容</dt><dd id="detailContent"></dd></div>
           </dl>
         </div>
@@ -279,6 +318,7 @@
       </section>
     </div>
 
+    <script src="custom/js/site-currency.js"></script>
     <script src="custom/js/消息公告.js"></script>
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>

@@ -17,6 +17,11 @@ html, body { margin: 0; background: #f4f7fb; }
 .activity-global-page .ag-value { display: flex; align-items: center; gap: 10px; min-height: 34px; }
 .activity-global-page .ag-value strong { font-weight: 500; }
 .activity-global-page .ag-currency { color: #8b97a6; font-size: 12px; }
+.activity-global-page .ag-condition-options { display: flex; flex-wrap: wrap; gap: 4px 20px; }
+.activity-global-page .ag-condition-options label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.activity-global-page .ag-radio { appearance: none; box-sizing: border-box; width: 16px; height: 16px; margin: 0; flex: 0 0 16px; border: 1px solid #c7d2df; border-radius: 50%; background: #fff; cursor: pointer; }
+.activity-global-page .ag-radio:checked { border-color: #3978ce; background: radial-gradient(circle, #3978ce 0 4px, #fff 4px); }
+.activity-global-page .ag-radio:focus-visible { outline: 2px solid #b1d2ff; outline-offset: 2px; }
 .activity-global-page .cl-input { width: 180px; max-width: 100%; height: 34px; }
 .activity-global-page .cl-switch-button:disabled { cursor: default; opacity: 1; }
 .activity-global-page .ag-note { margin: 2px 0 0; color: #8693a5; font-size: 12px; }

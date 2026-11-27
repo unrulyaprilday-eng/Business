@@ -190,7 +190,8 @@ textarea:focus {
 .push-table th:nth-child(7) { width: 145px; }
 .push-table th:nth-child(8) { width: 215px; }
 .push-table th:nth-child(9) { width: 160px; }
-.push-table th:nth-child(10) { width: 125px; }
+.push-table th:nth-child(10) { width: 140px; }
+.push-table th:nth-child(11) { width: 125px; }
 
 .status-tag {
   display: inline-flex;
@@ -288,8 +289,11 @@ textarea:focus {
 }
 
 .detail-modal {
+  display: flex;
+  flex-direction: column;
   width: 1044px;
   height: 682px;
+  max-height: calc(100vh - 2px);
 }
 
 .confirm-modal {
@@ -302,6 +306,7 @@ textarea:focus {
   align-items: center;
   justify-content: space-between;
   height: 39px;
+  flex-shrink: 0;
   padding: 0 10px;
   border-bottom: 1px solid #dfe5ee;
 }
@@ -370,6 +375,93 @@ textarea:focus {
 .field select,
 .field input {
   width: 100%;
+}
+
+.message-attachment-panel {
+  display: grid;
+  grid-template-columns: 62px 1fr;
+  gap: 8px;
+  align-items: start;
+  margin-top: 16px;
+}
+
+.message-attachment-panel > .field-label {
+  line-height: 32px;
+}
+
+.message-attachment-content {
+  min-width: 0;
+}
+
+.message-attachment-choices,
+.message-attachment-choices label,
+.message-attachment-fields,
+.message-attachment-fields label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.message-attachment-choices {
+  min-height: 32px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.message-attachment-choices input {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  accent-color: #348fff;
+}
+
+.message-attachment-hint {
+  color: #788598;
+  font-size: 12px;
+}
+
+.message-attachment-fields {
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  margin-top: 10px;
+}
+
+.message-attachment-fields label {
+  white-space: nowrap;
+}
+
+.message-attachment-fields select {
+  width: 174px;
+}
+
+.message-attachment-fields input {
+  width: 142px;
+}
+
+.message-attachment-currency {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+}
+
+.message-attachment-currency strong {
+  font-weight: 500;
+}
+
+#attachmentCoupon {
+  width: 280px;
+}
+
+.message-attachment-empty {
+  flex-basis: 100%;
+  margin: 0;
+  color: #788598;
+  font-size: 12px;
+}
+
+.message-attachment-empty a {
+  color: #2386ff;
 }
 
 .recipient-panel {
@@ -552,13 +644,29 @@ textarea:focus {
 }
 
 .send-row input[type="radio"] {
-  width: 14px;
-  height: 14px;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
   padding: 0;
+  border: 1px solid #cbd4e0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: none;
+}
+
+.send-row input[type="radio"]:checked {
+  border-color: #348fff;
+  background: radial-gradient(circle, #348fff 0, #348fff 3px, #fff 3.5px);
+}
+
+.send-row input[type="radio"]:focus-visible {
+  outline: 2px solid #cce3ff;
+  outline-offset: 2px;
 }
 
 .date-input {
-  width: 180px;
+  width: 240px;
 }
 
 .end-field {
@@ -567,11 +675,8 @@ textarea:focus {
 
 .date-input,
 .end-field input {
-  padding-right: 30px;
-  background-image: url("../assets/calendar-dot.svg");
-  background-repeat: no-repeat;
-  background-position: right 8px center;
-  background-size: 14px 14px;
+  padding-right: 8px;
+  color-scheme: light;
 }
 
 .modal-foot {
@@ -581,9 +686,34 @@ textarea:focus {
   gap: 8px;
   height: 49px;
   padding: 0 16px;
+  flex-shrink: 0;
+}
+
+.message-create-error {
+  flex: 1;
+  min-width: 0;
+  margin: 0 auto 0 0;
+  color: #d93d3d;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.create-modal .modal-foot {
+  min-height: 49px;
+  height: auto;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.create-modal .modal-foot button {
+  flex-shrink: 0;
 }
 
 .detail-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
   padding: 24px 40px;
 }
 
@@ -615,6 +745,20 @@ textarea:focus {
   grid-template-columns: 66px 1fr;
   align-items: start;
   margin-top: 0;
+}
+
+.detail-body .message-detail-attachments {
+  grid-column: 1 / -1;
+  align-items: start;
+}
+
+.message-detail-attachments dd {
+  white-space: pre-line;
+  line-height: 1.7;
+}
+
+#detailRecipient {
+  overflow-wrap: anywhere;
 }
 
 .content-detail dd {

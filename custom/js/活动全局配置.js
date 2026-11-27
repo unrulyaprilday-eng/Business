@@ -9,8 +9,13 @@
     bindingReward: "1000",
     updateEnabled: false,
     updateVersion: "V1.2.3",
-    updateReward: "777"
+    updateReward: "777",
+    installEnabled: false,
+    installReward: "",
+    installCondition: "",
+    installMinimum: ""
   };
+  var conditionNames = { bet: "有效投注", deposit: "充值" };
   var saved;
   var draft;
   var editing = false;
@@ -18,25 +23,63 @@
 
   function copy(value) {
     return {
-      schemaVersion: 1,
+      schemaVersion: value.schemaVersion,
       bindingEnabled: value.bindingEnabled,
       bindingReward: value.bindingReward,
       updateEnabled: value.updateEnabled,
       updateVersion: value.updateVersion === undefined ? defaults.updateVersion : value.updateVersion,
-      updateReward: value.updateReward
+      updateReward: value.updateReward,
+      installEnabled: value.installEnabled === undefined ? defaults.installEnabled : value.installEnabled,
+      installReward: value.installReward === undefined ? defaults.installReward : value.installReward,
+      installCondition: value.installCondition === undefined ? defaults.installCondition : value.installCondition,
+      installMinimum: value.installMinimum === undefined ? defaults.installMinimum : value.installMinimum
     };
   }
   function query(selector) { return page.querySelector(selector); }
   function all(selector) { return Array.prototype.slice.call(page.querySelectorAll(selector)); }
   function amount(value) { return typeof value === "string" && /^\d{1,12}(?:\.\d{1,2})?$/.test(value); }
+  function positiveAmount(value) { return amount(value) && Number(value) > 0; }
   function version(value) { return typeof value === "string" && value.length <= 64 && !/\s/.test(value); }
+
+  function restoreInstallCondition(value) {
+    var state = copy(value);
+    if (value.installCondition !== undefined || value.installMinimum !== undefined) return state;
+    var hasBet = positiveAmount(value.installBetMinimum);
+    var hasDeposit = positiveAmount(value.installDepositMinimum);
+    if (hasBet !== hasDeposit) {
+      state.installCondition = hasBet ? "bet" : "deposit";
+      state.installMinimum = hasBet ? value.installBetMinimum : value.installDepositMinimum;
+    } else if (state.installEnabled === true) {
+      state.installEnabled = false;
+    }
+    return state;
+  }
+
+  function installIssue(state) {
+    if (state.installReward !== "" && !positiveAmount(state.installReward)) {
+      return { field: "installReward", message: "安装包奖励金额须大于 0，最多 12 位整数、2 位小数。" };
+    }
+    if (state.installEnabled && !state.installReward) {
+      return { field: "installReward", message: "开启安装包奖励时，请填写奖励金额。" };
+    }
+    if (state.installCondition !== "bet" && state.installCondition !== "deposit") {
+      if (state.installEnabled || state.installCondition !== "" || state.installMinimum !== "") {
+        return { field: "installCondition", message: "请选择一项获奖条件。" };
+      }
+    } else if ((state.installEnabled || state.installMinimum !== "") && !positiveAmount(state.installMinimum)) {
+      return { field: "installMinimum", message: "达标金额须大于 0，最多 12 位整数、2 位小数。" };
+    }
+    return null;
+  }
+
   function validState(value) {
     return value && value.schemaVersion === 1 &&
       typeof value.bindingEnabled === "boolean" && typeof value.updateEnabled === "boolean" &&
       amount(value.bindingReward) && amount(value.updateReward) &&
       (value.updateVersion === undefined || (version(value.updateVersion) && (!value.updateEnabled || value.updateVersion.length > 0))) &&
       (!value.bindingEnabled || Number(value.bindingReward) > 0) &&
-      (!value.updateEnabled || Number(value.updateReward) > 0);
+      (!value.updateEnabled || Number(value.updateReward) > 0) &&
+      typeof value.installEnabled === "boolean" && !installIssue(value);
   }
 
   function notice(text, field) {
@@ -44,7 +87,7 @@
     error.textContent = text;
     error.hidden = !text;
     if (field) {
-      var input = query('[data-ag-field="' + field + '"]');
+      var input = field === "installCondition" ? query("[data-ag-condition]") : query('[data-ag-field="' + field + '"]');
       input.setAttribute("aria-invalid", "true");
       input.focus();
     }
@@ -69,6 +112,24 @@
     return state;
   }
 
+  function renderInstallCondition() {
+    var condition = draft.installCondition;
+    var display = query("[data-ag-condition-display]");
+    display.textContent = conditionNames[condition] || "未配置";
+    display.hidden = editing;
+    query("[data-ag-condition-options]").hidden = !editing;
+    all("[data-ag-condition]").forEach(function (radio) {
+      radio.checked = radio.value === condition;
+      radio.disabled = !editing;
+      radio.required = draft.installEnabled;
+    });
+    query("[data-ag-minimum-row]").hidden = !condition;
+    var minimum = query('[data-ag-field="installMinimum"]');
+    minimum.value = draft.installMinimum;
+    minimum.disabled = !editing || !condition;
+    minimum.required = draft.installEnabled && !!condition;
+  }
+
   function render() {
     page.classList.toggle("is-editing", editing);
     query('[data-ag-action="edit"]').hidden = editing;
@@ -81,9 +142,12 @@
       input.disabled = !editing;
       input.hidden = !editing;
       if (key === "updateVersion") input.required = draft.updateEnabled;
+      if (key === "installReward") input.required = draft.installEnabled;
       var display = query('[data-ag-display="' + key + '"]');
       display.textContent = draft[key] || "未配置";
       display.hidden = editing;
+      var currency = query('[data-ag-currency="' + key + '"]');
+      if (currency) currency.hidden = !editing && !draft[key];
     });
     all("[data-ag-switch]").forEach(function (button) {
       var key = button.getAttribute("data-ag-switch");
@@ -93,6 +157,7 @@
       button.setAttribute("aria-checked", String(enabled));
       query('[data-ag-switch-text="' + key + '"]').textContent = enabled ? "开启" : "关闭";
     });
+    renderInstallCondition();
   }
 
   function validate() {
@@ -108,6 +173,11 @@
         return false;
       }
     }
+    var issue = installIssue(draft);
+    if (issue) {
+      notice(issue.message, issue.field);
+      return false;
+    }
     return true;
   }
 
@@ -120,7 +190,8 @@
       var stored = window.localStorage.getItem(storageKey);
       if (stored === null) saved = restoreLegacy();
       else {
-        var value = JSON.parse(stored);
+        var storedValue = JSON.parse(stored);
+        var value = storedValue && restoreInstallCondition(storedValue);
         if (validState(value)) saved = copy(value);
         else loadError = "已保存配置格式异常，当前展示默认值。请核对后编辑保存。";
       }
@@ -135,6 +206,14 @@
       if (!editing || !input) return;
       draft[input.getAttribute("data-ag-field")] = input.value.trim();
       input.removeAttribute("aria-invalid");
+    });
+    page.addEventListener("change", function (event) {
+      var radio = event.target.closest("[data-ag-condition]");
+      if (!editing || !radio || !radio.checked || radio.value === draft.installCondition) return;
+      draft.installCondition = radio.value;
+      draft.installMinimum = "";
+      clearErrors();
+      renderInstallCondition();
     });
     page.addEventListener("click", function (event) {
       var toggle = event.target.closest("[data-ag-switch]");
@@ -160,7 +239,16 @@
         query('[data-ag-action="edit"]').focus();
       } else if (name === "save" && editing) {
         clearErrors();
-        all("[data-ag-field]").forEach(function (input) { draft[input.getAttribute("data-ag-field")] = input.value.trim(); });
+        var inputs = all("[data-ag-field]");
+        for (var index = 0; index < inputs.length; index++) {
+          var input = inputs[index];
+          var field = input.getAttribute("data-ag-field");
+          if (input.validity.badInput) {
+            notice("请输入有效的金额。", field);
+            return;
+          }
+          draft[field] = input.value.trim();
+        }
         if (!validate()) return;
         try { window.localStorage.setItem(storageKey, JSON.stringify(draft)); }
         catch (error) { notice("保存失败，请检查浏览器存储权限或空间后重试；当前修改已保留。"); return; }
