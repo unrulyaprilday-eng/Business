@@ -70,7 +70,7 @@ button {
 .push-main {
   position: relative;
   min-height: calc(100vh - 30px);
-  padding: 46px 14px 58px;
+  padding: 0 14px 58px;
   background: #fff;
 }
 
@@ -192,6 +192,27 @@ textarea:focus {
 .push-table th:nth-child(9) { width: 160px; }
 .push-table th:nth-child(10) { width: 140px; }
 .push-table th:nth-child(11) { width: 125px; }
+
+.push-page #manualMessagesPanel .table-wrap { height: calc(100vh - 180px); }
+.push-page .auto-inbox-table {
+  width: 640px;
+  min-width: 0;
+  border: 1px solid #e6eaf0;
+}
+.push-page .auto-inbox-table th:nth-child(1) { width: 140px; }
+.push-page .auto-inbox-table th:nth-child(2) { width: auto; }
+.push-page .auto-inbox-table th:nth-child(3) { width: 96px; }
+.push-page .auto-inbox-table th:nth-child(4) { width: 114px; }
+.push-page .auto-inbox-table th:nth-child(5) { width: 84px; }
+.push-page .auto-inbox-table th:nth-child(-n+2),
+.push-page .auto-inbox-table td:nth-child(-n+2) { padding-left: 14px; text-align: left; }
+.push-page [data-inbox-status] { color: #64748b; }
+.push-page [data-inbox-status].is-on { color: #20704f; }
+#createModal .message-trigger { margin-bottom: 16px; }
+#createModal .message-trigger-control,
+#createModal .message-relative-end > div { display: flex; align-items: center; gap: 9px; }
+#messageTriggerEvent { margin-left: 6px; font-weight: 500; }
+#messageExpiryDays { width: 90px; }
 
 .status-tag {
   display: inline-flex;

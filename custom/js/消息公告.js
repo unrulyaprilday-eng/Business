@@ -1,7 +1,20 @@
 (function () {
   var MESSAGE_STORAGE_KEY = "business-message-notices-v1";
+  var AUTO_INBOX_KEY = "business.site.auto-inbox.v1";
+  var LEGACY_AUTO_INBOX_KEY = "business.site.auto-mail.v1";
   var COUPON_STORAGE_KEY = "business-ticket-coupons-v1";
   var MAIL_TYPE = "消息";
+  var DEFAULT_EXPIRY_DAYS = 7;
+  var AUTO_INBOX_CONTENT = {
+    registerSuccess: "您好，您的账号已注册成功。",
+    depositSuccess: "您的充值已到账，可在充值记录中查看详情。",
+    depositFailure: "您提交的一笔充值未成功，可在充值记录中查看详情。如已扣款，请核对账单后联系官方客服。",
+    withdrawSuccess: "您的提现订单已出款，可在提现记录中查看详情，请核对收款账户。",
+    withdrawFailure: "您提交的一笔提现未成功，可在提现记录中查看订单状态。如有疑问，请联系官方客服。",
+    passwordChanged: "您好，您的账户密码已修改。如果这不是您本人的操作，请立即通过官方渠道联系客户服务。",
+    emailChanged: "您好，您的账户邮箱已变更。如果这不是您本人的操作，请立即通过官方渠道联系客户服务。",
+    newDeviceLogin: "您好，您的账户在新设备上登录。如果这不是您本人的操作，请及时修改密码并通过官方渠道联系客户服务。"
+  };
   var DEFAULT_COUPONS = [
     { id: "CPN-20261104-001", name: "新客优惠券", type: "percent" },
     { id: "CPN-20261104-002", name: "满额赠送券", type: "recharge_fixed" },
@@ -28,6 +41,9 @@
   var messages = readMessages();
   var recallTarget = null;
   var draftBalanceCurrency = "USD";
+  var inboxEntries = [];
+  var activeInbox = null;
+  var createOpener = null;
 
   function $(selector) {
     return document.querySelector(selector);
@@ -106,7 +122,10 @@
     var balance = attachments.balance;
     var coupon = attachments.coupon;
     var labels = [];
-    if (balance) labels.push(detailed ? "余额：" + balance.amount + "（币种：" + balance.currency + "）" : "余额");
+    if (balance) {
+      var multiple = balance.wagerMultiple === undefined ? "未设置" : balance.wagerMultiple + " 倍";
+      labels.push(detailed ? "余额：" + balance.amount + "（币种：" + balance.currency + "，打码倍数：" + multiple + "）" : "余额");
+    }
     if (coupon) labels.push(detailed ? "优惠券：" + coupon.name + " × " + coupon.quantity + " 张（" + coupon.id + "）" : "优惠券");
     return labels;
   }
@@ -158,6 +177,11 @@
 
   function closeModal(id) {
     $("#" + id).hidden = true;
+    if (id === "createModal") {
+      activeInbox = null;
+      if (createOpener) createOpener.focus();
+      createOpener = null;
+    }
   }
 
   function findMessage(id) {
@@ -247,8 +271,131 @@
     var hasCoupon = isMail && $("#attachCoupon").checked;
     $("#messageAttachmentPanel").hidden = !isMail;
     $("#balanceAttachmentFields").hidden = !hasBalance;
+    $("#attachmentWagerMultiple").disabled = !hasBalance;
+    $("#attachmentWagerMultiple").required = hasBalance;
     $("#couponAttachmentFields").hidden = !hasCoupon;
     $("#attachmentCouponEmpty").hidden = !hasCoupon || !$("#attachmentCoupon").disabled;
+  }
+
+  function setAutoTrigger(enabled) {
+    var toggle = $("#messageTriggerToggle");
+    toggle.classList.toggle("is-on", enabled);
+    toggle.setAttribute("aria-checked", String(enabled));
+    $("#messageTriggerStatus").textContent = enabled ? "启用" : "停用";
+  }
+
+  function setCreateMode(entry) {
+    activeInbox = entry;
+    $("#createTitle").textContent = entry ? "编辑自动站内信" : "新增";
+    $("#confirmCreateBtn").textContent = entry ? "保存" : "确定";
+    ["messageTriggerRow", "automaticMessageFields", "automaticSendFields", "automaticMessageEnd"].forEach(function (id) {
+      $("#" + id).hidden = !entry;
+    });
+    ["manualMessageFields", "manualSendFields", "manualMessageEnd"].forEach(function (id) {
+      $("#" + id).hidden = !!entry;
+    });
+    $("#messageTriggerEvent").textContent = entry ? entry.label : "";
+  }
+
+  function readAutoInbox() {
+    var stored;
+    try { stored = JSON.parse(window.localStorage.getItem(AUTO_INBOX_KEY) || window.localStorage.getItem(LEGACY_AUTO_INBOX_KEY) || "null"); }
+    catch (error) { /* Use the default templates if storage cannot be read. */ }
+    return inboxEntries.reduce(function (config, entry) {
+      var value = stored && stored[entry.key] || {};
+      config[entry.key] = {
+        enabled: value.enabled === true,
+        title: typeof value.title === "string" ? value.title : typeof value.subject === "string" ? value.subject : entry.defaultTitle,
+        content: typeof value.content === "string" ? value.content : typeof value.body === "string" ? value.body : AUTO_INBOX_CONTENT[entry.key],
+        attachments: value.attachments || null,
+        expiryDays: Number.isSafeInteger(value.expiryDays) && value.expiryDays > 0 ? value.expiryDays : DEFAULT_EXPIRY_DAYS
+      };
+      return config;
+    }, {});
+  }
+
+  function renderAutoInbox(config) {
+    inboxEntries.forEach(function (entry) {
+      var value = config[entry.key];
+      entry.title.textContent = value.title || "—";
+      entry.title.title = value.title;
+      entry.status.textContent = value.enabled ? "启用" : "停用";
+      entry.status.classList.toggle("is-on", value.enabled);
+      entry.attachments.textContent = attachmentLabels(value.attachments).join(" / ") || "—";
+      entry.attachments.title = attachmentLabels(value.attachments, true).join(" / ");
+    });
+  }
+
+  function openAutoInbox(entry) {
+    var value = readAutoInbox()[entry.key];
+    setCreateMode(entry);
+    resetCreateForm();
+    setAutoTrigger(value.enabled);
+    $("#messageType").value = MAIL_TYPE;
+    $("#messageTitle").value = value.title;
+    $("#messageContent").value = value.content;
+    $("#charCount").textContent = $("#messageContent").value.length;
+    $("#messageExpiryDays").value = value.expiryDays;
+    refreshCouponOptions();
+    var balance = value.attachments && value.attachments.balance;
+    var coupon = value.attachments && value.attachments.coupon;
+    if (balance) {
+      $("#attachBalance").checked = true;
+      setDraftBalanceCurrency(balance.currency);
+      $("#attachmentAmount").value = balance.amount;
+      if (balance.wagerMultiple !== undefined) $("#attachmentWagerMultiple").value = balance.wagerMultiple;
+    }
+    if (coupon) {
+      $("#attachCoupon").checked = true;
+      $("#attachmentCoupon").value = coupon.id;
+      $("#attachmentQuantity").value = coupon.quantity;
+    }
+    updateAttachmentPanel();
+    createOpener = entry.edit;
+    openModal("createModal");
+    $("#messageTitle").focus();
+  }
+
+  function initAutoInbox() {
+    inboxEntries = $all("[data-inbox-event]").map(function (row) {
+      var title = row.querySelector("[data-inbox-title]");
+      return {
+        key: row.getAttribute("data-inbox-event"),
+        label: row.cells[0].textContent.trim(),
+        defaultTitle: title.textContent.trim(),
+        title: title,
+        status: row.querySelector("[data-inbox-status]"),
+        attachments: row.querySelector("[data-inbox-attachments]"),
+        edit: row.querySelector("[data-inbox-edit]")
+      };
+    });
+    inboxEntries.forEach(function (entry) {
+      entry.edit.disabled = false;
+      entry.edit.setAttribute("aria-label", "编辑" + entry.label + "站内信");
+      entry.edit.addEventListener("click", function () { openAutoInbox(entry); });
+    });
+    renderAutoInbox(readAutoInbox());
+
+    var tabs = $all('[data-message-tabs] [role="tab"]');
+    tabs.forEach(function (tab, index) {
+      tab.addEventListener("click", function () {
+        tabs.forEach(function (item) {
+          item.setAttribute("aria-selected", String(item === tab));
+          item.tabIndex = item === tab ? 0 : -1;
+        });
+      });
+      tab.addEventListener("keydown", function (event) {
+        var next;
+        if (event.key === "ArrowLeft") next = (index + tabs.length - 1) % tabs.length;
+        else if (event.key === "ArrowRight") next = (index + 1) % tabs.length;
+        else if (event.key === "Home") next = 0;
+        else if (event.key === "End") next = tabs.length - 1;
+        else return;
+        event.preventDefault();
+        tabs[next].click();
+        tabs[next].focus();
+      });
+    });
   }
 
   function resetCreateForm() {
@@ -259,6 +406,7 @@
     $("#playerIds").value = "";
     $("#scheduleTime").value = "";
     $("#endTime").value = "";
+    $("#messageExpiryDays").value = DEFAULT_EXPIRY_DAYS;
     $("#createError").hidden = true;
     $("#contentError").hidden = true;
     $("#charCount").textContent = "0";
@@ -266,6 +414,7 @@
     $("#attachCoupon").checked = false;
     setDraftBalanceCurrency(currentSiteCurrency());
     $("#attachmentAmount").value = "";
+    $("#attachmentWagerMultiple").value = "";
     $("#attachmentCoupon").value = "";
     $("#attachmentQuantity").value = "1";
     $all("input[name='vip'], input[name='r']").forEach(function (input) {
@@ -332,7 +481,12 @@
       if (!Number.isSafeInteger(cents) || cents <= 0) {
         return createError("请输入有效的正数余额金额。", "#attachmentAmount");
       }
-      attachments.balance = { currency: currency, amount: amount };
+      var multipleInput = $("#attachmentWagerMultiple").value;
+      var wagerMultiple = Number(multipleInput);
+      if (!/^(?:\d+(?:\.\d{1,2})?|\.\d{1,2})$/.test(multipleInput) || !Number.isSafeInteger(Math.round(wagerMultiple * 100))) {
+        return createError("请输入不小于 0 的打码倍数，最多保留两位小数。", "#attachmentWagerMultiple");
+      }
+      attachments.balance = { currency: currency, amount: amount, wagerMultiple: wagerMultiple };
     }
 
     if ($("#attachCoupon").checked) {
@@ -353,12 +507,7 @@
     return attachments.balance || attachments.coupon ? attachments : null;
   }
 
-  function saveCreateForm() {
-    $("#createError").hidden = true;
-    var type = $("#messageType").value;
-    if (!type) return createError("请选择消息类型。", "#messageType");
-    var recipient = readRecipient();
-    if (!recipient) return;
+  function readMessageDraft() {
     var title = $("#messageTitle").value.trim();
     if (!title) return createError("请输入标题。", "#messageTitle");
     var attachments = readAttachments();
@@ -368,6 +517,35 @@
       $("#contentError").hidden = false;
       return createError("请输入显示内容。", "#messageContent");
     }
+    return { title: title, content: content, attachments: attachments };
+  }
+
+  function saveAutoInbox(draft) {
+    var expiryInput = $("#messageExpiryDays").value;
+    var expiryDays = Number(expiryInput);
+    if (!/^\d+$/.test(expiryInput) || !Number.isSafeInteger(expiryDays) || expiryDays < 1) {
+      return createError("发送后天数须为正整数。", "#messageExpiryDays");
+    }
+    var config = readAutoInbox();
+    config[activeInbox.key] = Object.assign(draft, {
+      enabled: $("#messageTriggerToggle").getAttribute("aria-checked") === "true",
+      expiryDays: expiryDays
+    });
+    try { window.localStorage.setItem(AUTO_INBOX_KEY, JSON.stringify(config)); }
+    catch (error) { return createError("自动站内信保存失败，请重试。"); }
+    renderAutoInbox(config);
+    closeModal("createModal");
+  }
+
+  function saveCreateForm() {
+    $("#createError").hidden = true;
+    var type = $("#messageType").value;
+    if (!type) return createError("请选择消息类型。", "#messageType");
+    var recipient = activeInbox ? null : readRecipient();
+    if (!activeInbox && !recipient) return;
+    var draft = readMessageDraft();
+    if (!draft) return;
+    if (activeInbox) return saveAutoInbox(draft);
 
     var now = new Date();
     var scheduled = document.querySelector("input[name='sendTime']:checked").value === "schedule";
@@ -378,10 +556,10 @@
 
     var item = {
       id: window.crypto && window.crypto.randomUUID ? window.crypto.randomUUID() : "msg-" + now.getTime(),
-      title: title,
+      title: draft.title,
       type: type,
       recipient: recipient,
-      content: content,
+      content: draft.content,
       send: formatTime(send),
       end: formatTime(end),
       sendAt: send.getTime(),
@@ -389,7 +567,7 @@
       status: scheduled ? "未开始" : "已发送",
       operator: "qitian",
       operateTime: formatTime(now),
-      attachments: attachments
+      attachments: draft.attachments
     };
     if (!saveMessages([item].concat(messages))) return createError("记录保存失败，请检查浏览器存储后重试。");
     if (filteredMessages().indexOf(item) === -1) resetFilters();
@@ -404,8 +582,17 @@
       renderRows();
     });
     $("#openCreateBtn").addEventListener("click", function () {
+      setCreateMode(null);
       resetCreateForm();
+      createOpener = this;
       openModal("createModal");
+    });
+    $("#messageTriggerToggle").addEventListener("click", function () {
+      if (!activeInbox) return;
+      setAutoTrigger(this.getAttribute("aria-checked") !== "true");
+    });
+    $("#createModal").addEventListener("keydown", function (event) {
+      if (event.key === "Escape") closeModal("createModal");
     });
     $("#messageRows").addEventListener("click", function (event) {
       var detailId = event.target.getAttribute("data-detail");
@@ -479,6 +666,7 @@
     updateScheduleInput();
     updateAttachmentPanel();
     initEvents();
+    initAutoInbox();
     renderRows();
   });
 })();

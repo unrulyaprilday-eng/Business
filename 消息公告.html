@@ -8,6 +8,8 @@
     <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
     <link href="data/styles.css" type="text/css" rel="stylesheet"/>
     <link href="files/消息公告/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/tokens.css" type="text/css" rel="stylesheet"/>
+    <link href="custom/component-library/css/components.css" type="text/css" rel="stylesheet"/>
     <link href="custom/css/消息公告.css" type="text/css" rel="stylesheet"/>
     <script src="resources/scripts/jquery-3.7.1.min.js"></script>
     <script src="resources/scripts/axure/axQuery.js"></script>
@@ -59,6 +61,11 @@
         </header>
 
         <main class="push-main">
+          <nav class="cl-tabs" role="tablist" aria-label="消息公告" data-message-tabs>
+            <button class="cl-tab is-active" id="manualMessagesTab" type="button" role="tab" aria-selected="true" aria-controls="manualMessagesPanel" data-cl-tab-group="messageNotice" data-cl-tab="manual">消息列表</button>
+            <button class="cl-tab" id="autoInboxTab" type="button" role="tab" aria-selected="false" aria-controls="autoInboxPanel" tabindex="-1" data-cl-tab-group="messageNotice" data-cl-tab="autoInbox">自动站内信</button>
+          </nav>
+          <section class="cl-tab-panel" id="manualMessagesPanel" role="tabpanel" aria-labelledby="manualMessagesTab" data-cl-tab-group="messageNotice" data-cl-tab-panel="manual">
           <section class="filter-bar" aria-label="筛选条件">
             <label>消息类型:
               <select id="filterType">
@@ -136,6 +143,24 @@
             </select>
             <span id="messageTotal">共 1 条记录</span>
           </footer>
+          </section>
+          <section class="cl-tab-panel" id="autoInboxPanel" role="tabpanel" aria-labelledby="autoInboxTab" data-cl-tab-group="messageNotice" data-cl-tab-panel="autoInbox" hidden>
+            <table class="push-table auto-inbox-table" aria-label="自动站内信场景">
+              <thead>
+                <tr><th scope="col">发送场景</th><th scope="col">站内信标题</th><th scope="col">自动发送</th><th scope="col">附件</th><th scope="col">操作</th></tr>
+              </thead>
+              <tbody>
+                <tr data-inbox-event="registerSuccess"><td>注册成功</td><td data-inbox-title>注册成功</td><td data-inbox-status>停用</td><td data-inbox-attachments>—</td><td><button class="table-action" type="button" data-inbox-edit disabled>编辑</button></td></tr>
+                <tr data-inbox-event="depositSuccess"><td>充值成功</td><td data-inbox-title>充值成功</td><td data-inbox-status>停用</td><td data-inbox-attachments>—</td><td><button class="table-action" type="button" data-inbox-edit disabled>编辑</button></td></tr>
+                <tr data-inbox-event="depositFailure"><td>充值失败</td><td data-inbox-title>充值失败</td><td data-inbox-status>停用</td><td data-inbox-attachments>—</td><td><button class="table-action" type="button" data-inbox-edit disabled>编辑</button></td></tr>
+                <tr data-inbox-event="withdrawSuccess"><td>提现成功</td><td data-inbox-title>提现成功</td><td data-inbox-status>停用</td><td data-inbox-attachments>—</td><td><button class="table-action" type="button" data-inbox-edit disabled>编辑</button></td></tr>
+                <tr data-inbox-event="withdrawFailure"><td>提现失败</td><td data-inbox-title>提现失败</td><td data-inbox-status>停用</td><td data-inbox-attachments>—</td><td><button class="table-action" type="button" data-inbox-edit disabled>编辑</button></td></tr>
+                <tr data-inbox-event="passwordChanged"><td>密码修改成功</td><td data-inbox-title>密码修改成功</td><td data-inbox-status>停用</td><td data-inbox-attachments>—</td><td><button class="table-action" type="button" data-inbox-edit disabled>编辑</button></td></tr>
+                <tr data-inbox-event="emailChanged"><td>邮箱变更</td><td data-inbox-title>账户邮箱已变更</td><td data-inbox-status>停用</td><td data-inbox-attachments>—</td><td><button class="table-action" type="button" data-inbox-edit disabled>编辑</button></td></tr>
+                <tr data-inbox-event="newDeviceLogin"><td>新设备登录</td><td data-inbox-title>新设备登录提醒</td><td data-inbox-status>停用</td><td data-inbox-attachments>—</td><td><button class="table-action" type="button" data-inbox-edit disabled>编辑</button></td></tr>
+              </tbody>
+            </table>
+          </section>
         </main>
       </div>
     </div>
@@ -147,7 +172,11 @@
           <button class="modal-close" type="button" data-close="createModal" aria-label="关闭">×</button>
         </header>
         <div class="modal-body create-body">
-          <div class="form-grid">
+          <div class="field message-trigger" id="messageTriggerRow" hidden>
+            <span class="field-label" id="messageTriggerLabel">自动触发</span>
+            <div class="message-trigger-control"><button class="cl-switch-button" id="messageTriggerToggle" type="button" role="switch" aria-labelledby="messageTriggerLabel" aria-describedby="messageTriggerEvent" aria-checked="false"></button><span aria-hidden="true" id="messageTriggerStatus">停用</span><strong id="messageTriggerEvent"></strong></div>
+          </div>
+          <div class="form-grid" id="manualMessageFields">
             <label class="field required">
               <span class="field-label"><span class="required-mark">*</span>消息类型</span>
               <select id="messageType">
@@ -168,6 +197,10 @@
               </select>
             </label>
             <div></div>
+          </div>
+          <div class="form-grid" id="automaticMessageFields" hidden>
+            <div class="field"><span class="field-label">消息类型</span><span>站内信</span></div>
+            <div class="field"><span class="field-label">收件人</span><span>触发事件的玩家</span></div>
           </div>
 
           <div class="recipient-panel" id="vipPanel" hidden>
@@ -209,6 +242,7 @@
               <div class="message-attachment-fields" id="balanceAttachmentFields" hidden>
                 <span class="message-attachment-currency">币种：<strong id="attachmentCurrency">USD</strong></span>
                 <label>每人金额<input id="attachmentAmount" type="number" min="0.01" step="0.01" placeholder="请输入金额"/></label>
+                <label>打码倍数<input id="attachmentWagerMultiple" type="number" min="0" step="0.01" placeholder="0 表示不打码" disabled/></label>
               </div>
               <div class="message-attachment-fields" id="couponAttachmentFields" hidden>
                 <label>优惠券
@@ -256,17 +290,22 @@
             <em class="error-tip" id="contentError" hidden>请输入显示内容</em>
           </div>
 
-          <div class="send-row">
+          <div class="send-row" id="manualSendFields">
             <span>发送时间</span>
             <label><input type="radio" name="sendTime" value="now" checked/> 立即发送</label>
             <label><input type="radio" name="sendTime" value="schedule"/> 定时发送</label>
             <input class="date-input" id="scheduleTime" type="datetime-local" aria-label="定时发送日期与时间" hidden/>
           </div>
+          <div class="send-row" id="automaticSendFields" hidden><span>发送时间</span><div>事件触发时</div></div>
 
-          <label class="field required end-field">
+          <label class="field required end-field" id="manualMessageEnd">
             <span class="field-label"><span class="required-mark">*</span>结束时间</span>
             <input id="endTime" type="datetime-local" aria-label="消息结束日期与时间"/>
           </label>
+          <div class="field required end-field message-relative-end" id="automaticMessageEnd" hidden>
+            <label class="field-label" for="messageExpiryDays"><span class="required-mark">*</span>结束时间</label>
+            <div><span aria-hidden="true">发送后</span><input id="messageExpiryDays" type="number" min="1" step="1" value="7" aria-label="发送后几天结束"/><span aria-hidden="true">天</span></div>
+          </div>
         </div>
         <footer class="modal-foot">
           <p class="message-create-error" id="createError" role="alert" hidden></p>
@@ -322,5 +361,6 @@
     <script src="custom/js/消息公告.js"></script>
     <script src="custom/js/axure-custom-page-ready.js"></script>
     <script src="resources/scripts/axure/ios.js"></script>
+    <script src="custom/component-library/js/components.js"></script>
   </body>
 </html>
