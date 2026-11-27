@@ -10,10 +10,7 @@
     depositSuccess: "您的充值已到账，可在充值记录中查看详情。",
     depositFailure: "您提交的一笔充值未成功，可在充值记录中查看详情。如已扣款，请核对账单后联系官方客服。",
     withdrawSuccess: "您的提现订单已出款，可在提现记录中查看详情，请核对收款账户。",
-    withdrawFailure: "您提交的一笔提现未成功，可在提现记录中查看订单状态。如有疑问，请联系官方客服。",
-    passwordChanged: "您好，您的账户密码已修改。如果这不是您本人的操作，请立即通过官方渠道联系客户服务。",
-    emailChanged: "您好，您的账户邮箱已变更。如果这不是您本人的操作，请立即通过官方渠道联系客户服务。",
-    newDeviceLogin: "您好，您的账户在新设备上登录。如果这不是您本人的操作，请及时修改密码并通过官方渠道联系客户服务。"
+    withdrawRejected: "您的提现申请未通过审核，可在提现记录中查看详情。如有疑问，请联系官方客服。"
   };
   var DEFAULT_COUPONS = [
     { id: "CPN-20261104-001", name: "新客优惠券", type: "percent" },
@@ -41,6 +38,7 @@
   var messages = readMessages();
   var recallTarget = null;
   var draftBalanceCurrency = "USD";
+  var balanceDraftShown = false;
   var inboxEntries = [];
   var activeInbox = null;
   var createOpener = null;
@@ -302,11 +300,21 @@
     try { stored = JSON.parse(window.localStorage.getItem(AUTO_INBOX_KEY) || window.localStorage.getItem(LEGACY_AUTO_INBOX_KEY) || "null"); }
     catch (error) { /* Use the default templates if storage cannot be read. */ }
     return inboxEntries.reduce(function (config, entry) {
-      var value = stored && stored[entry.key] || {};
+      var value = stored && stored[entry.key];
+      var legacyWithdrawal = !value && entry.key === "withdrawRejected" && stored && stored.withdrawFailure;
+      value = value || legacyWithdrawal || {};
+      var title = typeof value.title === "string" ? value.title : typeof value.subject === "string" ? value.subject : entry.defaultTitle;
+      var content = typeof value.content === "string" ? value.content : typeof value.body === "string" ? value.body : AUTO_INBOX_CONTENT[entry.key];
+      if (legacyWithdrawal) {
+        if (title === "提现失败") title = entry.defaultTitle;
+        if (content === "您提交的一笔提现未成功，可在提现记录中查看订单状态。如有疑问，请联系官方客服。") {
+          content = AUTO_INBOX_CONTENT[entry.key];
+        }
+      }
       config[entry.key] = {
         enabled: value.enabled === true,
-        title: typeof value.title === "string" ? value.title : typeof value.subject === "string" ? value.subject : entry.defaultTitle,
-        content: typeof value.content === "string" ? value.content : typeof value.body === "string" ? value.body : AUTO_INBOX_CONTENT[entry.key],
+        title: title,
+        content: content,
         attachments: value.attachments || null,
         expiryDays: Number.isSafeInteger(value.expiryDays) && value.expiryDays > 0 ? value.expiryDays : DEFAULT_EXPIRY_DAYS
       };
@@ -341,9 +349,10 @@
     var coupon = value.attachments && value.attachments.coupon;
     if (balance) {
       $("#attachBalance").checked = true;
+      balanceDraftShown = true;
       setDraftBalanceCurrency(balance.currency);
       $("#attachmentAmount").value = balance.amount;
-      if (balance.wagerMultiple !== undefined) $("#attachmentWagerMultiple").value = balance.wagerMultiple;
+      $("#attachmentWagerMultiple").value = balance.wagerMultiple == null ? "" : balance.wagerMultiple;
     }
     if (coupon) {
       $("#attachCoupon").checked = true;
@@ -412,11 +421,12 @@
     $("#charCount").textContent = "0";
     $("#attachBalance").checked = false;
     $("#attachCoupon").checked = false;
+    balanceDraftShown = false;
     setDraftBalanceCurrency(currentSiteCurrency());
-    $("#attachmentAmount").value = "";
-    $("#attachmentWagerMultiple").value = "";
+    $("#attachmentAmount").value = $("#attachmentAmount").defaultValue;
+    $("#attachmentWagerMultiple").value = $("#attachmentWagerMultiple").defaultValue;
     $("#attachmentCoupon").value = "";
-    $("#attachmentQuantity").value = "1";
+    $("#attachmentQuantity").value = $("#attachmentQuantity").defaultValue;
     $all("input[name='vip'], input[name='r']").forEach(function (input) {
       input.checked = false;
     });
@@ -610,7 +620,10 @@
       updateAttachmentPanel();
     });
     $("#attachBalance").addEventListener("change", function () {
-      if (this.checked && !$("#attachmentAmount").value) setDraftBalanceCurrency(currentSiteCurrency());
+      if (this.checked) {
+        if (!balanceDraftShown || !$("#attachmentAmount").value) setDraftBalanceCurrency(currentSiteCurrency());
+        balanceDraftShown = true;
+      }
       updateAttachmentPanel();
     });
     $("#attachCoupon").addEventListener("change", function () {

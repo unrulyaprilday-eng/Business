@@ -154,10 +154,7 @@
                 <tr data-inbox-event="depositSuccess"><td>充值成功</td><td data-inbox-title>充值成功</td><td data-inbox-status>停用</td><td data-inbox-attachments>—</td><td><button class="table-action" type="button" data-inbox-edit disabled>编辑</button></td></tr>
                 <tr data-inbox-event="depositFailure"><td>充值失败</td><td data-inbox-title>充值失败</td><td data-inbox-status>停用</td><td data-inbox-attachments>—</td><td><button class="table-action" type="button" data-inbox-edit disabled>编辑</button></td></tr>
                 <tr data-inbox-event="withdrawSuccess"><td>提现成功</td><td data-inbox-title>提现成功</td><td data-inbox-status>停用</td><td data-inbox-attachments>—</td><td><button class="table-action" type="button" data-inbox-edit disabled>编辑</button></td></tr>
-                <tr data-inbox-event="withdrawFailure"><td>提现失败</td><td data-inbox-title>提现失败</td><td data-inbox-status>停用</td><td data-inbox-attachments>—</td><td><button class="table-action" type="button" data-inbox-edit disabled>编辑</button></td></tr>
-                <tr data-inbox-event="passwordChanged"><td>密码修改成功</td><td data-inbox-title>密码修改成功</td><td data-inbox-status>停用</td><td data-inbox-attachments>—</td><td><button class="table-action" type="button" data-inbox-edit disabled>编辑</button></td></tr>
-                <tr data-inbox-event="emailChanged"><td>邮箱变更</td><td data-inbox-title>账户邮箱已变更</td><td data-inbox-status>停用</td><td data-inbox-attachments>—</td><td><button class="table-action" type="button" data-inbox-edit disabled>编辑</button></td></tr>
-                <tr data-inbox-event="newDeviceLogin"><td>新设备登录</td><td data-inbox-title>新设备登录提醒</td><td data-inbox-status>停用</td><td data-inbox-attachments>—</td><td><button class="table-action" type="button" data-inbox-edit disabled>编辑</button></td></tr>
+                <tr data-inbox-event="withdrawRejected"><td>提现拒绝</td><td data-inbox-title>提现拒绝</td><td data-inbox-status>停用</td><td data-inbox-attachments>—</td><td><button class="table-action" type="button" data-inbox-edit disabled>编辑</button></td></tr>
               </tbody>
             </table>
           </section>
@@ -241,8 +238,8 @@
               </div>
               <div class="message-attachment-fields" id="balanceAttachmentFields" hidden>
                 <span class="message-attachment-currency">币种：<strong id="attachmentCurrency">USD</strong></span>
-                <label>每人金额<input id="attachmentAmount" type="number" min="0.01" step="0.01" placeholder="请输入金额"/></label>
-                <label>打码倍数<input id="attachmentWagerMultiple" type="number" min="0" step="0.01" placeholder="0 表示不打码" disabled/></label>
+                <label>每人金额<input id="attachmentAmount" type="number" min="0.01" step="0.01" value="10" placeholder="请输入金额"/></label>
+                <label>打码倍数<input id="attachmentWagerMultiple" type="number" min="0" step="0.01" value="3" placeholder="0 表示不打码" disabled/></label>
               </div>
               <div class="message-attachment-fields" id="couponAttachmentFields" hidden>
                 <label>优惠券
