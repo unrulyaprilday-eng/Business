@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <title>机器人客服</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+  <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+  <link href="files/机器人客服/styles.css" type="text/css" rel="stylesheet"/>
+  <link href="custom/component-library/css/tokens.css" rel="stylesheet"/>
+  <link href="custom/component-library/css/components.css" rel="stylesheet"/>
+  <link href="custom/css/机器人客服.css" rel="stylesheet"/>
+  <script src="resources/scripts/jquery-3.7.1.min.js"></script>
+  <script src="resources/scripts/axure/axQuery.js"></script>
+  <script src="resources/scripts/axure/globals.js"></script>
+  <script src="resources/scripts/axutils.js"></script>
+  <script src="resources/scripts/axure/annotation.js"></script>
+  <script src="resources/scripts/axure/axQuery.std.js"></script>
+  <script src="resources/scripts/axure/doc.js"></script>
+  <script src="resources/scripts/messagecenter.js"></script>
+  <script src="resources/scripts/axure/events.js"></script>
+  <script src="resources/scripts/axure/recording.js"></script>
+  <script src="resources/scripts/axure/action.js"></script>
+  <script src="resources/scripts/axure/expr.js"></script>
+  <script src="resources/scripts/axure/geometry.js"></script>
+  <script src="resources/scripts/axure/flyout.js"></script>
+  <script src="resources/scripts/axure/model.js"></script>
+  <script src="resources/scripts/axure/repeater.js"></script>
+  <script src="resources/scripts/axure/sto.js"></script>
+  <script src="resources/scripts/axure/utils.temp.js"></script>
+  <script src="resources/scripts/axure/variables.js"></script>
+  <script src="resources/scripts/axure/drag.js"></script>
+  <script src="resources/scripts/axure/move.js"></script>
+  <script src="resources/scripts/axure/visibility.js"></script>
+  <script src="resources/scripts/axure/style.js"></script>
+  <script src="resources/scripts/axure/adaptive.js"></script>
+  <script src="resources/scripts/axure/tree.js"></script>
+  <script src="resources/scripts/axure/init.temp.js"></script>
+  <script src="resources/scripts/axure/legacy.js"></script>
+  <script src="resources/scripts/axure/viewer.js"></script>
+  <script src="resources/scripts/axure/math.js"></script>
+  <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+  <script src="data/document.js"></script>
+  <script src="files/机器人客服/data.js"></script>
+  <script>
+    $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+    $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+    $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+  </script>
+</head>
+<body>
+  <div id="base" class="">
+    <main class="custom-page-shell rc-page">
+      <nav class="rc-breadcrumb" aria-label="当前位置"><span>运营中心</span><span aria-hidden="true">/</span><strong>机器人客服</strong></nav>
+      <header class="rc-page-header">
+        <div><h1>机器人客服</h1><p>维护常见问题与接待规则，让机器人先行解答，复杂问题转交人工。</p></div>
+        <button class="cl-btn cl-btn-primary" type="button" data-rc-action="preview"><span aria-hidden="true">◇</span>试问机器人</button>
+      </header>
+
+      <div class="rc-workspace">
+        <div class="cl-tabs" role="tablist" aria-label="机器人客服功能">
+          <button class="cl-tab is-active" type="button" id="rc-tab-knowledge" role="tab" aria-selected="true" aria-controls="rc-panel-knowledge" data-cl-tab-group="robot-service" data-cl-tab="knowledge">知识库</button>
+          <button class="cl-tab" type="button" id="rc-tab-unanswered" role="tab" aria-selected="false" aria-controls="rc-panel-unanswered" tabindex="-1" data-cl-tab-group="robot-service" data-cl-tab="unanswered">待补问题</button>
+          <button class="cl-tab" type="button" id="rc-tab-settings" role="tab" aria-selected="false" aria-controls="rc-panel-settings" tabindex="-1" data-cl-tab-group="robot-service" data-cl-tab="settings">接待设置</button>
+        </div>
+
+        <section class="cl-tab-panel" id="rc-panel-knowledge" role="tabpanel" aria-labelledby="rc-tab-knowledge" data-cl-tab-group="robot-service" data-cl-tab-panel="knowledge">
+          <form class="cl-filter-bar" id="rc-filter">
+            <div class="cl-filter-field rc-keyword"><label for="rc-keyword">问题关键词</label><input class="cl-input" id="rc-keyword" name="keyword" type="search" maxlength="120" placeholder="搜索问题、主题或意图关键词"/></div>
+            <div class="cl-filter-field"><label for="rc-category-filter">分类</label><select class="cl-select" id="rc-category-filter" name="category"><option value="">全部分类</option><option value="account">账号</option><option value="deposit">充值</option><option value="withdraw">提现</option><option value="activity">活动</option><option value="other">其他</option></select></div>
+            <div class="cl-filter-field"><label for="rc-status-filter">状态</label><select class="cl-select" id="rc-status-filter" name="status"><option value="">全部状态</option><option value="published">已发布</option><option value="draft">草稿</option><option value="disabled">已停用</option></select></div>
+            <div class="cl-filter-actions"><button class="cl-btn cl-btn-primary" type="submit">查询</button><button class="cl-btn" type="reset">重置</button></div>
+          </form>
+          <div class="rc-section-toolbar"><div><h2>问答列表</h2><span class="rc-muted">从用户提问中识别主题和意图，匹配已发布问答</span></div><button class="cl-btn cl-btn-primary" type="button" data-rc-action="new">＋ 新增问答</button></div>
+          <div class="cl-table-wrap">
+            <table class="cl-table rc-knowledge-table"><colgroup><col class="rc-col-question"/><col style="width:80px"/><col style="width:210px"/><col style="width:90px"/><col style="width:146px"/><col style="width:122px"/></colgroup><thead><tr><th scope="col">标准问题</th><th scope="col">分类</th><th scope="col">匹配关键词</th><th scope="col">状态</th><th scope="col">更新时间</th><th scope="col">操作</th></tr></thead>
+              <tbody id="rc-knowledge-body"><tr><td><div class="rc-q-title">充值后多久到账？</div><div class="rc-q-detail">充值到账时间以订单页显示为准。</div></td><td>充值</td><td><span class="rc-keyword-line">主题：充值 / 存款</span><span class="rc-keyword-line">意图：到账 / 还没到</span></td><td><span class="cl-status cl-status-success">已发布</span></td><td>2026-11-26 10:30</td><td class="rc-muted">正在加载操作…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="cl-pagination"><span id="rc-knowledge-count">共 1 条</span><button class="cl-btn cl-page-btn" id="rc-page-prev" type="button" aria-label="上一页" disabled>‹</button><span class="rc-page-number" id="rc-page-number">1 / 1</span><button class="cl-btn cl-page-btn" id="rc-page-next" type="button" aria-label="下一页" disabled>›</button></div>
+        </section>
+
+        <section class="cl-tab-panel" id="rc-panel-unanswered" role="tabpanel" aria-labelledby="rc-tab-unanswered" data-cl-tab-group="robot-service" data-cl-tab-panel="unanswered" hidden>
+          <div class="rc-section-toolbar rc-unanswered-toolbar"><div><h2>待补问题</h2><span class="rc-muted">收集未命中的问题，补充问答后发布；试问中的未命中问题也会记录在此。</span></div><div class="rc-inline-filter"><label for="rc-unanswered-filter">处理状态</label><select class="cl-select" id="rc-unanswered-filter"><option value="">全部状态</option><option value="pending">待处理</option><option value="added">已入库</option><option value="ignored">已忽略</option></select></div></div>
+          <div class="cl-table-wrap"><table class="cl-table rc-unanswered-table"><colgroup><col/><col style="width:100px"/><col style="width:156px"/><col style="width:100px"/><col style="width:180px"/></colgroup><thead><tr><th scope="col">用户原问</th><th scope="col" class="rc-numeric">提问次数</th><th scope="col">最近提问</th><th scope="col">处理状态</th><th scope="col">操作</th></tr></thead><tbody id="rc-unanswered-body"><tr><td>异地登录提示怎么处理？</td><td class="rc-numeric">5</td><td>2026-11-26 10:36</td><td><span class="cl-status cl-status-warning">待处理</span></td><td class="rc-muted">正在加载操作…</td></tr></tbody></table></div>
+        </section>
+
+        <section class="cl-tab-panel" id="rc-panel-settings" role="tabpanel" aria-labelledby="rc-tab-settings" data-cl-tab-group="robot-service" data-cl-tab-panel="settings" hidden>
+          <form id="rc-settings" class="rc-settings">
+            <div class="rc-section-toolbar"><div><h2>接待设置</h2><span class="rc-muted">当前展示已保存配置，编辑并保存后生效。</span></div><button class="cl-btn" type="button" data-rc-action="edit-settings">编辑</button></div>
+            <section class="rc-config-group" aria-labelledby="rc-basic-title"><div class="rc-config-intro"><h3 id="rc-basic-title">基础接待</h3><p>设置机器人的启用状态与首次问候。</p></div><div class="rc-config-fields"><div class="cl-form-field"><label for="rc-enabled">机器人接待</label><select class="cl-select rc-short-control" id="rc-enabled" name="enabled" disabled required><option value="true">已启用</option><option value="false">已停用</option></select><small>启用后，机器人优先解答知识库中的常见问题。</small></div><div class="cl-form-field"><label for="rc-welcome">欢迎语 <span class="cl-required">*</span></label><textarea class="cl-textarea" id="rc-welcome" name="welcome" rows="3" maxlength="300" required disabled>您好，我是智能客服，请问有什么可以帮您？</textarea><small>进入会话时发送，最多 300 字。</small></div></div></section>
+            <section class="rc-config-group" aria-labelledby="rc-handoff-title"><div class="rc-config-intro"><h3 id="rc-handoff-title">未命中与转人工</h3><p>无法解答时给予提示，并引导人工接待。</p></div><div class="rc-config-fields"><div class="cl-form-field"><label for="rc-fallback">未命中回复 <span class="cl-required">*</span></label><textarea class="cl-textarea" id="rc-fallback" name="fallback" rows="3" maxlength="300" required disabled>抱歉，暂时没有找到相关答案，您可以换个问法，或转人工客服。</textarea><small>未匹配到已发布问答时发送，最多 300 字。</small></div><div class="cl-form-field"><label for="rc-threshold">连续未命中转人工</label><select class="cl-select rc-short-control" id="rc-threshold" name="threshold" disabled required><option value="1">连续 1 次</option><option value="2" selected>连续 2 次</option><option value="3">连续 3 次</option></select><small>达到次数后模拟转交人工客服；用户也可以主动转人工。</small></div><div class="cl-form-field"><label for="rc-handoff">转人工提示 <span class="cl-required">*</span></label><textarea class="cl-textarea" id="rc-handoff" name="handoff" rows="3" maxlength="300" required disabled>正在为您转接人工客服，请稍候。</textarea><small>转交人工时发送，最多 300 字。</small></div></div></section>
+            <div class="rc-config-footnote">需要处理人工会话？<a class="cl-link" href="index.html?id=operation_customer_service_center" target="_top">前往客服中心</a></div>
+            <footer class="rc-settings-actions" id="rc-settings-actions" hidden><span>编辑中的配置将在保存后生效</span><div class="cl-action-group"><button class="cl-btn" type="button" data-rc-action="cancel-settings">取消</button><button class="cl-btn cl-btn-primary" type="submit">保存</button></div></footer>
+          </form>
+        </section>
+      </div>
+
+      <div class="cl-modal-layer" data-rc-dialog="editor" hidden>
+        <div class="cl-modal-mask"></div>
+        <section class="cl-modal rc-editor-modal" role="dialog" aria-modal="true" aria-labelledby="rc-editor-title">
+          <header class="cl-modal-head">
+            <strong id="rc-editor-title">新增问答</strong>
+            <button class="cl-close-btn" type="button" data-rc-action="close-dialog" aria-label="关闭问答编辑">×</button>
+          </header>
+          <form id="rc-editor">
+            <div class="cl-modal-body">
+              <div class="cl-form-grid">
+                <div class="cl-form-field is-wide">
+                  <label for="rc-question"><span class="cl-required">*</span>标准问题</label>
+                  <input class="cl-input" id="rc-question" name="question" type="text" maxlength="120" required placeholder="输入用户常见问题，最多 120 字"/>
+                </div>
+                <div class="cl-form-field is-wide">
+                  <label for="rc-category"><span class="cl-required">*</span>分类</label>
+                  <select class="cl-select rc-short-control" id="rc-category" name="category" required><option value="">请选择分类</option><option value="account">账号</option><option value="deposit">充值</option><option value="withdraw">提现</option><option value="activity">活动</option><option value="other">其他</option></select>
+                </div>
+                <div class="cl-form-field">
+                  <label for="rc-topics"><span class="cl-required">*</span>主题关键词</label>
+                  <textarea class="cl-textarea rc-keywords-input" id="rc-topics" name="topics" maxlength="240" rows="2" required placeholder="充值、存款、充钱"></textarea>
+                  <small>用户在问什么业务？同组词用顿号或逗号分隔。</small>
+                </div>
+                <div class="cl-form-field">
+                  <label for="rc-intents"><span class="cl-required">*</span>意图关键词</label>
+                  <textarea class="cl-textarea rc-keywords-input" id="rc-intents" name="intents" maxlength="240" rows="2" required placeholder="到账、还没到、余额没变"></textarea>
+                  <small>用户想解决什么？两组各命中一个词即可，顺序不限。</small>
+                </div>
+                <div class="cl-form-field is-wide">
+                  <label for="rc-aliases">整句示例（选填）</label>
+                  <textarea class="cl-textarea" id="rc-aliases" name="aliases" maxlength="1200" rows="2" placeholder="例如：充值没到账"></textarea>
+                  <small>可补充整句问法，一行一条。日常匹配主要靠上面的关键词。</small>
+                </div>
+                <div class="cl-form-field is-wide">
+                  <label for="rc-answer"><span class="cl-required">*</span>回复内容</label>
+                  <textarea class="cl-textarea" id="rc-answer" name="answer" maxlength="1500" rows="5" required placeholder="输入清晰、准确的机器人回复，最多 1500 字"></textarea>
+                </div>
+              </div>
+              <p class="rc-error" id="rc-editor-error" role="alert" hidden></p>
+            </div>
+            <footer class="cl-modal-foot">
+              <button class="cl-btn" type="button" data-rc-action="close-dialog">取消</button>
+              <button class="cl-btn" type="submit" name="intent" value="draft" id="rc-save-draft">保存草稿</button>
+              <button class="cl-btn cl-btn-primary" type="submit" name="intent" value="publish" id="rc-save-publish">发布</button>
+            </footer>
+          </form>
+        </section>
+      </div>
+      <div class="cl-modal-layer" data-rc-dialog="confirm" hidden>
+        <div class="cl-modal-mask"></div>
+        <section class="cl-modal rc-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="rc-confirm-title">
+          <header class="cl-modal-head">
+            <strong id="rc-confirm-title">操作确认</strong>
+            <button class="cl-close-btn" type="button" data-rc-action="close-dialog" aria-label="关闭操作确认">×</button>
+          </header>
+          <div class="cl-modal-body">
+            <p id="rc-confirm-copy">请确认是否继续此操作。</p>
+          </div>
+          <footer class="cl-modal-foot">
+            <button class="cl-btn" type="button" data-rc-action="close-dialog">取消</button>
+            <button class="cl-btn cl-btn-primary" type="button" data-rc-action="confirm" id="rc-confirm-button">确定</button>
+          </footer>
+        </section>
+      </div>
+      <div class="cl-modal-layer" data-rc-dialog="preview" hidden>
+        <div class="cl-modal-mask"></div>
+        <section class="cl-modal rc-preview-modal" role="dialog" aria-modal="true" aria-labelledby="rc-preview-title">
+          <header class="cl-modal-head">
+            <div>
+              <strong id="rc-preview-title">试问机器人</strong>
+              <p class="rc-preview-description">从输入中识别关键词，查看命中问答、追问和转人工的效果。</p>
+            </div>
+            <button class="cl-close-btn" type="button" data-rc-action="close-dialog" aria-label="关闭试问机器人">×</button>
+          </header>
+          <div class="rc-chat-toolbar">
+            <span class="rc-muted">会话预览</span>
+            <div class="cl-action-group">
+              <button class="cl-link" type="button" data-rc-action="reset-chat">重新开始</button>
+              <button class="cl-link" type="button" data-rc-action="handoff">转人工</button>
+            </div>
+          </div>
+          <div class="rc-messages" id="rc-messages" role="log" aria-live="polite" aria-label="机器人试问消息">
+            <div class="rc-message is-bot">
+              <div class="rc-message-name">机器人客服</div>
+              <div class="rc-bubble">您好，我是智能客服，请问有什么可以帮您？</div>
+            </div>
+          </div>
+          <div class="rc-chat-examples">
+            <span>试试这样问</span>
+            <button class="cl-btn" type="button" data-rc-example="我刚充的钱怎么还没到">我刚充的钱怎么还没到</button>
+            <button class="cl-btn" type="button" data-rc-example="充值">充值</button>
+            <button class="cl-btn" type="button" data-rc-example="怎么修改手机号">怎么修改手机号</button>
+          </div>
+          <form class="rc-chat-composer" id="rc-chat">
+            <label class="rc-sr-only" for="rc-chat-message">输入试问问题</label>
+            <input class="cl-input" id="rc-chat-message" name="message" maxlength="200" required autocomplete="off" placeholder="输入问题，按 Enter 发送"/>
+            <button class="cl-btn cl-btn-primary" id="rc-chat-send" type="submit">发送</button>
+          </form>
+        </section>
+      </div>
+      <div class="rc-toast" id="rc-toast" role="status" aria-live="polite" hidden></div>
+    </main>
+  </div>
+  <script src="custom/js/axure-custom-page-ready.js"></script>
+  <script src="resources/scripts/axure/ios.js"></script>
+  <script src="custom/component-library/js/components.js"></script>
+  <script src="custom/js/机器人客服.js"></script>
+</body>
+</html>
